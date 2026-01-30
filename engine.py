@@ -3,79 +3,126 @@ import json
 import sys
 import logging
 from datetime import datetime
+from dotenv import load_dotenv
+from logging_config import setup_logging
+
+# Inicializa variáveis de ambiente e logging
+load_dotenv()
+setup_logging()
+logger = logging.getLogger(__name__)
 
 class ConnectionCLI:
-    """Representa um especialista em engenharia de software."""
+    """Motor de orquestração modelo para conectar metas do usuário aos agentes.
+    Serve como interface de comando para o ecossistema Personas Agentes.
+    """
+    
     def __init__(self):
-        """Executa funcionalidade da persona."""
+        """Inicializa o motor e carrega as configurações."""
         self.base_dir = os.path.dirname(os.path.abspath(__file__))
         self.project_root = os.path.dirname(self.base_dir)
         self.registry_path = os.path.join(self.base_dir, "agents_registry.json")
+        
+        # Carregamento seguro de configurações de nuvem
+        self.cloud_provider = os.getenv("CLOUD_PROVIDER", "None")
+        self.api_key_status = "✅ Ativa" if os.getenv("PERSONAS_API_KEY") else "❌ Ausente"
+        
         self.registry = self._load_registry()
         self.stack = self._detect_stack()
 
     def _load_registry(self):
-        """Executa funcionalidade da persona."""
+        """Carrega o registro compilado com tratamento de erro."""
         if not os.path.exists(self.registry_path):
+            logger.error(f"Registro não encontrado. Execute 'python compiler.py'.")
             return None
-        with open(self.registry_path, 'r', encoding='utf-8') as f:
-            return json.load(f)
+        try:
+            with open(self.registry_path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except Exception as e:
+            logger.error(f"Falha ao processar agents_registry.json: {e}")
+            return None
 
     def _detect_stack(self) -> str:
-        if os.path.exists(os.path.join(self.project_root, "pubspec.yaml")): return "Flutter"
-        if os.path.exists(os.path.join(self.project_root, "build.gradle.kts")): return "Kotlin"
-        return "Unknown"
+        """Detecta a tecnologia predominante usando assinaturas de arquivos."""
+        signatures = {
+            "Flutter": ["pubspec.yaml", "lib/main.dart"],
+            "Kotlin": ["build.gradle.kts", "build.gradle", "src/main/kotlin"],
+            "Python": ["requirements.txt", "pyproject.toml", "setup.py"]
+        }
+        for stack, files in signatures.items():
+            if any(os.path.exists(os.path.join(self.project_root, f)) for f in files):
+                return stack
+        return "Universal"
 
     def decide_agent(self, goal: str) -> str:
+        """Decide o agente especialista via mapeamento de intenção."""
         goal_lower = goal.lower()
-        mapping = {
-            "Bolt": ["performance", "lento", "fast", "fps", "speed"],
-            "Sentinel": ["segurança", "auth", "security", "login", "crypt"],
-            "Cache": ["banco", "cache", "database", "offline", "storage"],
-            "Nexus": ["api", "network", "connect", "http"],
-            "Palette": ["ui", "ux", "design", "cor", "acessibilidade"],
-            "Probe": ["bug", "erro", "crash", "diagnostico", "fix"],
-            "Warden": ["legal", "gdpr", "lgpd", "compliance"],
-            "Nebula": ["cloud", "serverless", "firebase", "supabase"]
+        intent_map = {
+            "Bolt": ["performance", "lento", "fast", "fps", "speed", "otimizar"],
+            "Sentinel": ["segurança", "auth", "security", "login", "crypt", "vazamento"],
+            "Cache": ["banco", "cache", "database", "offline", "storage", "sql"],
+            "Nexus": ["api", "network", "connect", "http", "rest", "endpoint"],
+            "Palette": ["ui", "ux", "design", "cor", "acessibilidade", "tela"],
+            "Probe": ["bug", "erro", "crash", "diagnostico", "fix", "ajuste"],
+            "Warden": ["legal", "gdpr", "lgpd", "compliance", "licença"],
+            "Nebula": ["cloud", "serverless", "firebase", "supabase", "nuvem"]
         }
-        for agent, keywords in mapping.items():
+        for agent, keywords in intent_map.items():
             if any(kw in goal_lower for kw in keywords):
                 return agent
         return "Director"
 
+    def print_banner(self, mode, timestamp):
+        """Imprime um banner visualmente rico no terminal."""
+        print("\033[94m" + "=" * 60 + "\033[0m")
+        print(f"\033[92m🏛️  PERSONAS AGENTES - CLI V3\033[0m")
+        print(f"Mode:  {mode}")
+        print(f"Stack: {self.stack}")
+        print(f"Time:  {timestamp}")
+        print(f"Cloud: {self.cloud_provider} | API: {self.api_key_status}")
+        print("\033[94m" + "=" * 60 + "\033[0m")
+
     def get_prompt(self, goal: str):
-        """Executa funcionalidade da persona."""
+        """Gera o prompt final otimizado para o LLM."""
         if not self.registry:
-            return "ERROR: Registry not found. Run compiler.py"
+            return "ERROR: Registry not found."
         
         agent_name = self.decide_agent(goal)
         agent_content = self.registry.get(self.stack, {}).get(agent_name)
         
-        # Fallback para o Diretor se o agente específico não existir na stack
         if not agent_content or agent_name == "Director":
-            agent_content = self.registry.get("Director", "Orchestrate the task.")
+            agent_content = self.registry.get("Director", "Orchestrate technical tasks.")
             mode = "MASTER ORCHESTRATOR"
         else:
-            mode = f"AGENT: {agent_name}"
+            mode = f"SPECIALIST AGENT: {agent_name}"
 
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.print_banner(mode, timestamp)
+        
         return f"""
-[SYSTEM: CONNECTION CLI V3]
-[MODE: {mode}] [STACK: {self.stack}] [TIME: {datetime.now().isoformat()}]
+[SYSTEM CONTEXT]
+AGENT_ROLE: {agent_name}
+PROJECT_STACK: {self.stack}
+PROJECT_ROOT: {self.project_root}
 
+[MISSION]
 {agent_content}
 
-GOAL: {goal}
+[USER_GOAL]
+{goal}
 
-CORE PROTOCOLS:
-1. AUDIT: Use 'ls -R' or 'tree' to map the project.
-2. SKILLS: Use 'activate_skill' if needed.
-3. PROACTIVE: Implement fixes immediately using 'write_file' or 'replace'.
-4. VALIDATE: Run build/lint after changes.
+[EXECUTION PROTOCOLS]
+1. AUDIT: Deep-scan the project structure.
+2. ANALYZE: Use tools to read and understand code patterns.
+3. ACT: Implement permanent fixes via 'write_file' or 'replace'.
+4. VERIFY: Always run build/tests after modifications.
 
-BEGIN.
+PROCEED WITH ACTION.
 """
 
 if __name__ == "__main__":
-    cli = ConnectionCLI()
+    engine = ConnectionCLI()
     if len(sys.argv) > 1:
-        print(cli.get_prompt(" ".join(sys.argv[1:])))
+        prompt = engine.get_prompt(" ".join(sys.argv[1:]))
+        print(prompt)
+    else:
+        logger.info("Uso: python engine.py 'sua meta técnica'")

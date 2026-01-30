@@ -4,12 +4,19 @@ import os
 import sys
 import threading
 import importlib.util
+import logging
+from logging_config import setup_logging
 from orchestrator import ProjectOrchestrator
 
+# Configura o logging
+setup_logging()
+logger = logging.getLogger(__name__)
+
 class OficinaApp:
-    """Especialista técnico do ecossistema Personas Agentes."""
+    """Interface Gráfica da Oficina de Software Autônoma 🏛️."""
+    
     def __init__(self, root):
-        """Executa funcionalidade da persona."""
+        """Inicializa a aplicação GUI e os componentes principais."""
         self.root = root
         self.root.title("Oficina de Software Autônoma 🏛️")
         self.root.geometry("1100x800")
@@ -17,22 +24,24 @@ class OficinaApp:
 
         self.project_root = None
         self.orchestrator = None
+        
         self.setup_styles()
         self.setup_ui()
+        logger.info("GUI da Oficina carregada.")
 
     def setup_styles(self):
-        """Executa funcionalidade da persona."""
+        """Configura os estilos visuais (Material Design Dark)."""
         style = ttk.Style()
         style.theme_use('clam')
         style.configure("TFrame", background="#121212")
         style.configure("TLabel", background="#121212", foreground="#e0e0e0", font=("Segoe UI", 10))
-        style.configure("Header.TLabel", font=("Segoe UI", 16, "bold"), foreground="#bb86fc")
-        style.configure("Action.TButton", font=("Segoe UI", 11, "bold"), padding=10, background="#03dac6", foreground="#000")
-        style.configure("Healing.TButton", font=("Segoe UI", 11, "bold"), padding=10, background="#cf6679", foreground="#000")
+        style.configure("Header.TLabel", font=("Segoe UI", 18, "bold"), foreground="#bb86fc")
+        style.configure("Action.TButton", font=("Segoe UI", 11, "bold"), padding=10)
+        style.configure("Healing.TButton", font=("Segoe UI", 11, "bold"), padding=10, background="#cf6679")
         style.configure("TLabelFrame", background="#121212", foreground="#bb86fc", font=("Segoe UI", 10, "bold"))
 
     def setup_ui(self):
-        """Executa funcionalidade da persona."""
+        """Monta a hierarquia de componentes da interface."""
         main_frame = ttk.Frame(self.root, padding="20")
         main_frame.pack(fill=tk.BOTH, expand=True)
 
@@ -41,10 +50,10 @@ class OficinaApp:
         header.pack(pady=(0, 20))
 
         # Project Selection
-        proj_frame = ttk.LabelFrame(main_frame, text=" VEÍCULO EM MANUTENÇÃO (REPOSITÓRIO) ", padding="15")
+        proj_frame = ttk.LabelFrame(main_frame, text=" 📂 VEÍCULO EM MANUTENÇÃO (REPOSITÓRIO) ", padding="15")
         proj_frame.pack(fill=tk.X, pady=10)
 
-        self.path_var = tk.StringVar(value="Selecione um projeto para iniciar a auditoria...")
+        self.path_var = tk.StringVar(value="Selecione um projeto para iniciar...")
         ttk.Label(proj_frame, textvariable=self.path_var, font=("Segoe UI", 11)).pack(side=tk.LEFT, padx=5, fill=tk.X, expand=True)
         
         ttk.Button(proj_frame, text="ABRIR OFICINA", command=self.browse_folder).pack(side=tk.RIGHT, padx=5)
@@ -67,30 +76,30 @@ class OficinaApp:
 
         self.btn_auto_heal = ttk.Button(left_pane, text="🩹 INICIAR AUTO-CURA TOTAL", style="Healing.TButton", command=self.start_auto_healing, state=tk.DISABLED)
         self.btn_auto_heal.pack(fill=tk.X, pady=5)
-        ttk.Label(left_pane, text="Ciclo completo: Diagnóstico -> Missão -> Reparo", font=("Segoe UI", 8, "italic")).pack()
+        ttk.Label(left_pane, text="Ciclo: Diagnóstico -> Missão -> Reparo", font=("Segoe UI", 8, "italic")).pack()
 
         # Right: Issues List
-        right_pane = ttk.LabelFrame(content_frame, text=" PRONTUÁRIO TÉCNICO (PROBLEMAS DETECTADOS) ", padding="10")
+        right_pane = ttk.LabelFrame(content_frame, text=" 🏥 PRONTUÁRIO TÉCNICO (PROBLEMAS DETECTADOS) ", padding="10")
         right_pane.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 
         self.issues_tree = ttk.Treeview(right_pane, columns=("Severity", "Persona", "Issue"), show='headings')
         self.issues_tree.heading("Severity", text="GRAVIDADE")
-        self.issues_tree.heading("Persona", text="ESPECIALISTA")
-        self.issues_tree.heading("Issue", text="PROBLEMA DETECTADO")
+        self.issues_tree.heading("Persona", text="AGENTE")
+        self.issues_tree.heading("Issue", text="DESCRIÇÃO DO PROBLEMA")
         self.issues_tree.column("Severity", width=100)
         self.issues_tree.column("Persona", width=120)
         self.issues_tree.column("Issue", width=400)
         self.issues_tree.pack(fill=tk.BOTH, expand=True)
 
         # Log Output
-        log_frame = ttk.LabelFrame(main_frame, text=" TERMINAL DO DIRETOR ", padding="10")
+        log_frame = ttk.LabelFrame(main_frame, text=" ⌨️ TERMINAL DO DIRETOR ", padding="10")
         log_frame.pack(fill=tk.X, side=tk.BOTTOM, pady=10)
         
         self.log_output = tk.Text(log_frame, height=10, bg="#000", fg="#00ff00", font=("Consolas", 10))
         self.log_output.pack(fill=tk.X)
 
     def browse_folder(self):
-        """Executa funcionalidade da persona."""
+        """Abre diálogo para seleção de pasta do projeto."""
         folder = filedialog.askdirectory()
         if folder:
             self.project_root = folder
@@ -99,116 +108,134 @@ class OficinaApp:
             self.load_active_personas()
             self.btn_audit.config(state=tk.NORMAL)
             self.btn_auto_heal.config(state=tk.NORMAL)
-            self.log_message(f"Oficina pronta em {folder}. {len(self.orchestrator.personas)} especialistas ativos.")
+            self.log_message(f"Oficina pronta em {folder}.")
+            logger.info(f"Projeto carregado: {folder}")
 
     def log_message(self, msg):
-        """Executa funcionalidade da persona."""
+        """Adiciona mensagem ao terminal interno e ao log do sistema."""
         self.log_output.insert(tk.END, f"> {msg}\n")
         self.log_output.see(tk.END)
+        logger.debug(msg)
 
     def load_active_personas(self):
-        """Carrega dinamicamente as personas Python para o orquestrador."""
+        """Varre as pastas de stack e carrega os agentes correspondentes."""
         base_path = os.path.dirname(os.path.abspath(__file__))
         
+        # Detecção de stack
         if os.path.exists(os.path.join(self.project_root, 'pubspec.yaml')):
             stack = "Flutter"
-        elif os.path.exists(os.path.join(self.project_root, 'build.gradle')) or os.path.exists(os.path.join(self.project_root, 'build.gradle.kts')):
+        elif os.path.exists(os.path.join(self.project_root, 'build.gradle.kts')):
             stack = "Kotlin"
         else:
-            has_py = any(f.endswith('.py') for f in os.listdir(self.project_root))
-            if has_py or os.path.exists(os.path.join(self.project_root, 'main_gui.py')):
-                stack = "Python"
-            else:
-                stack = "Unknown"
+            stack = "Python"
 
-        self.log_message(f"Ambiente identificado: {stack.upper()}")
+        self.log_message(f"Stack identificada: {stack}")
         
-        if stack == "Unknown":
-            return
-
         stack_path = os.path.join(base_path, stack)
         if os.path.exists(stack_path):
+            count = 0
             for filename in os.listdir(stack_path):
                 if filename.endswith(".py") and "__init__" not in filename:
                     f_path = os.path.join(stack_path, filename)
                     persona = self.import_persona(f_path)
                     if persona:
                         self.orchestrator.add_persona(persona)
+                        count += 1
+            self.log_message(f"{count} agentes especialistas mobilizados.")
 
     def import_persona(self, file_path):
-        """Executa funcionalidade da persona."""
-        module_name = os.path.basename(file_path).replace(".py", "")
-        spec = importlib.util.spec_from_file_location(module_name, file_path)
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        for attr in dir(module):
-            if attr.endswith("Persona") and attr != "BaseActivePersona":
-                return getattr(module, attr)(self.project_root)
+        """Importa dinamicamente uma classe Persona de um arquivo."""
+        try:
+            module_name = os.path.basename(file_path).replace(".py", "")
+            spec = importlib.util.spec_from_file_location(module_name, file_path)
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            for attr in dir(module):
+                if attr.endswith("Persona") and attr != "BaseActivePersona":
+                    return getattr(module, attr)(self.project_root)
+        except Exception as e:
+            logger.error(f"Erro ao importar persona de {file_path}: {e}")
         return None
 
     def start_diagnostic(self):
-        """Executa funcionalidade da persona."""
+        """Inicia o diagnóstico de auditoria em uma thread separada."""
         self.issues_tree.delete(*self.issues_tree.get_children())
-        self.log_message("Iniciando varredura profunda...")
+        self.log_message("Iniciando diagnóstico profundo...")
         
         def run():
-            """Executa funcionalidade da persona."""
-            issues = self.orchestrator.run_full_diagnostic()
-            for issue in issues:
-                self.issues_tree.insert("", tk.END, values=(issue['severity'].upper(), "Auditoria", issue['issue']))
-            
-            self.root.after(0, lambda: self.btn_fix.config(state=tk.NORMAL if issues else tk.DISABLED))
-            self.root.after(0, lambda: self.log_message(f"Diagnóstico concluído. {len(issues)} problemas detectados."))
+            try:
+                issues = self.orchestrator.run_full_diagnostic()
+                for issue in issues:
+                    self.issues_tree.insert("", tk.END, values=(
+                        issue.get('severity', 'LOW').upper(), 
+                        "Auditoria", 
+                        issue.get('issue', 'Desconhecido')
+                    ))
+                
+                self.root.after(0, lambda: self.btn_fix.config(state=tk.NORMAL if issues else tk.DISABLED))
+                self.root.after(0, lambda: self.log_message(f"Diagnóstico concluído. {len(issues)} alertas."))
+            except Exception as e:
+                logger.exception("Falha durante o diagnóstico.")
+                self.root.after(0, lambda: messagebox.showerror("Erro de Diagnóstico", str(e)))
 
-        threading.Thread(target=run).start()
+        threading.Thread(target=run, daemon=True).start()
 
     def start_auto_healing(self):
-        """Executa funcionalidade da persona."""
+        """Inicia o ciclo completo de auto-cura."""
         self.issues_tree.delete(*self.issues_tree.get_children())
-        self.log_message("⚡ INICIANDO CICLO DE AUTO-CURA TOTAL...")
+        self.log_message("⚡ INICIANDO CICLO DE AUTO-CURA...")
         
         def run_cycle():
-            """Executa funcionalidade da persona."""
-            self.log_message("Passo 1/3: Realizando diagnóstico...")
-            issues = self.orchestrator.run_full_diagnostic()
-            
-            if not issues:
-                self.log_message("✅ Projeto saudável. Auto-cura não necessária.")
-                return
+            try:
+                self.log_message("Passo 1/3: Diagnóstico...")
+                issues = self.orchestrator.run_full_diagnostic()
+                
+                if not issues:
+                    self.log_message("✅ Projeto saudável.")
+                    return
 
-            for issue in issues:
-                self.issues_tree.insert("", tk.END, values=(issue['severity'].upper(), "Auto-Cura", issue['issue']))
+                for issue in issues:
+                    self.issues_tree.insert("", tk.END, values=(
+                        issue.get('severity', 'LOW').upper(), 
+                        "Auto-Cura", 
+                        issue.get('issue', 'Desconhecido')
+                    ))
 
-            self.log_message(f"Passo 2/3: Gerando plano de reparo para {len(issues)} ocorrências...")
-            mission = self.orchestrator.prepare_mission_package()
+                self.log_message("Passo 2/3: Preparando Missão...")
+                mission = self.orchestrator.prepare_mission_package()
 
-            self.log_message("Passo 3/3: Despachando Gemini CLI para reparo...")
-            self.root.after(0, lambda: self.dispatch_fix(mission))
+                self.log_message("Passo 3/3: Despachando para Gemini CLI...")
+                self.root.after(0, lambda: self.dispatch_fix(mission))
+            except Exception as e:
+                logger.exception("Erro no ciclo de auto-cura.")
 
-        threading.Thread(target=run_cycle).start()
+        threading.Thread(target=run_cycle, daemon=True).start()
 
     def dispatch_fix(self, mission=None):
-        """Gera o arquivo de missão para reparo manual ou via CLI."""
+        """Gera e salva o arquivo de missão na raiz do projeto selecionado."""
         if not mission:
             mission = self.orchestrator.prepare_mission_package()
         
         if not mission:
-            messagebox.showwarning("Aviso", "Nenhuma missão para gerar.")
+            messagebox.showwarning("Aviso", "Nenhuma missão necessária.")
             return
 
-        # Caminho na raiz do projeto
         mission_file = os.path.join(self.project_root, 'auto_healing_mission.md')
         
         try:
             with open(mission_file, 'w', encoding='utf-8') as f:
                 f.write(mission)
             
-            self.log_message(f"✅ Missão gerada com sucesso: {mission_file}")
-            messagebox.showinfo("Sucesso", f"O plano de reparo foi salvo em:\n{mission_file}\n\nVocê pode agora copiar o conteúdo deste arquivo e colar para o Gemini.")
+            self.log_message(f"✅ Missão gerada: {mission_file}")
+            messagebox.showinfo("Missão Pronta", f"O plano foi salvo em:\n{mission_file}")
         except Exception as e:
-            messagebox.showerror("Erro ao salvar missão", str(e))
+            logger.error(f"Erro ao salvar missão: {e}")
+            messagebox.showerror("Erro de I/O", str(e))
 
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = OficinaApp(root)
-    root.mainloop()
+    try:
+        root = tk.Tk()
+        app = OficinaApp(root)
+        root.mainloop()
+    except Exception as e:
+        logger.critical(f"Falha ao iniciar aplicação: {e}")

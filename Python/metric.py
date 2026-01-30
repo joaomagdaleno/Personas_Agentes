@@ -1,34 +1,50 @@
 from persona_base import BaseActivePersona
 import os
-import re
+import logging
+
+logger = logging.getLogger(__name__)
 
 class MetricPersona(BaseActivePersona):
-    """Especialista em telemetria Python."""
+    """Especialista em telemetria Python do Personas Agentes.
+    Foca em garantir a observabilidade através de logging e métricas.
+    """
+    
     def __init__(self, project_root):
-        """Inicializa a persona com o diretório raiz do projeto."""
+        """Inicializa a persona Metric."""
         super().__init__(project_root)
         self.name = "Metric"
         self.emoji = "📊"
         self.role = "Analytics & Growth Specialist"
-        self.mission = "Telemetry and logging."
+        self.mission = "Telemetry, logging and observability excellence."
         self.stack = "Python"
 
     def perform_audit(self) -> list:
-        """Realiza auditoria técnica focada em telemetria."""
+        """Realiza auditoria técnica focada em práticas de logging e telemetria."""
         issues = []
-        if not self.project_root: return []
+        if not self.project_root:
+            return []
+            
         for root, dirs, files in os.walk(self.project_root):
-            dirs[:] = [d for d in dirs if d not in ['.git', 'build', 'node_modules', '__pycache__']]
+            dirs[:] = [d for d in dirs if d not in ['.git', 'build', 'node_modules', '__pycache__', 'venv']]
             for file in files:
                 if file.endswith('.py'):
                     rel_path = os.path.relpath(os.path.join(root, file), self.project_root)
                     try:
-                        with open(os.path.join(root, file), 'r', encoding='utf-8', errors='ignore') as f:
-                            content = f.read()
-                        if "print(" in content and "logging" not in content:
-                            issues.append({'file': rel_path, 'issue': 'Uso de print em vez de logging detectado.', 'severity': 'low', 'context': 'Metric'})
-                    except Exception:
-                        continue
+                        content = self.read_project_file(rel_path)
+                        if not content:
+                            continue
+                            
+                        # Detecta uso de print para logging (prática a ser evitada no estágio STABILITY/EVOLUTION)
+                        if "print(" in content and "logging" not in content and "main_gui.py" not in rel_path:
+                            issues.append({
+                                'file': rel_path, 
+                                'issue': 'Uso de print em vez de logging detectado (reduz observabilidade).', 
+                                'severity': 'low', 
+                                'context': 'Observability'
+                            })
+                    except Exception as e:
+                        logger.error(f"Erro ao auditar {rel_path}: {e}")
+                        
         return issues
 
     def get_system_prompt(self):

@@ -2,54 +2,85 @@ import os
 import json
 import importlib.util
 import sys
+import logging
+from logging_config import setup_logging
 
-def load_persona_from_file(file_path):
-    """Carrega dinamicamente a classe de persona de um arquivo .py"""
-    module_name = os.path.basename(file_path).replace(".py", "")
-    spec = importlib.util.spec_from_file_location(module_name, file_path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+# Configura o logging centralizado
+setup_logging()
+logger = logging.getLogger(__name__)
+
+class RegistryCompiler:
+    """Motor de compilação de registro de agentes. 
+    Serve de modelo para registrar especialistas de qualquer stack.
+    """
     
-    # Procura por classes que terminam com 'Persona'
-    for attr in dir(module):
-        if attr.endswith("Persona") and attr != "BasePersona":
-            persona_class = getattr(module, attr)
-            return persona_class()
-    return None
+    def __init__(self):
+        self.base_path = os.path.dirname(os.path.abspath(__file__))
+        self.registry_path = os.path.join(self.base_path, "agents_registry.json")
+        self.registry = {"Flutter": {}, "Kotlin": {}, "Director": ""}
 
-def compile_agents():
-    """Executa funcionalidade da persona."""
-    base_path = os.path.dirname(os.path.abspath(__file__))
-    registry_path = os.path.join(base_path, "agents_registry.json")
-    registry = {"Flutter": {}, "Kotlin": {}, "Director": ""}
-    
-    # 1. Carrega o Diretor
-    from director_persona import DirectorPersona
-    director = DirectorPersona()
-    registry["Director"] = director.get_system_prompt()
+    def load_persona_from_file(self, file_path):
+        """Carrega dinamicamente a classe de persona com validação rigorosa."""
+        try:
+            module_name = os.path.basename(file_path).replace(".py", "")
+            spec = importlib.util.spec_from_file_location(module_name, file_path)
+            if not spec or not spec.loader:
+                return None
+                
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            
+            # Procura por classes que implementam o contrato de Persona
+            for attr in dir(module):
+                if attr.endswith("Persona") and attr not in ["BaseActivePersona", "BasePersona"]:
+                    persona_class = getattr(module, attr)
+                    if isinstance(persona_class, type):
+                        # Instancia com dummy root para extrair metadados
+                        return persona_class(".")
+        except Exception as e:
+            logger.error(f"Erro fatal ao carregar {file_path}: {e}")
+        return None
 
-    # 2. Carrega os especialistas das pastas
-    for stack in ["Flutter", "Kotlin"]:
-        stack_path = os.path.join(base_path, stack)
-        if not os.path.exists(stack_path): continue
+    def compile(self):
+        """Executa o ciclo completo de compilação do registro."""
+        logger.info("🛠️ Iniciando compilação do registro mestre de agentes...")
         
-        for filename in os.listdir(stack_path):
-            if filename.endswith(".py") and "__init__" not in filename:
-                f_path = os.path.join(stack_path, filename)
-                try:
-                    persona = load_persona_from_file(f_path)
+        # 1. Carrega o Diretor (Obrigatório)
+        try:
+            from director_persona import DirectorPersona
+            director = DirectorPersona(".")
+            self.registry["Director"] = director.get_system_prompt()
+            logger.debug("Diretor mestre registrado.")
+        except Exception as e:
+            logger.critical(f"Falha ao carregar Diretor: {e}")
+            self.registry["Director"] = "You are the Director. Orchestrate the tasks."
+
+        # 2. Varre as stacks suportadas
+        total_agents = 0
+        for stack in ["Flutter", "Kotlin"]:
+            stack_dir = os.path.join(self.base_path, stack)
+            if not os.path.exists(stack_dir):
+                logger.warning(f"Stack {stack} não encontrada no diretório {stack_dir}")
+                continue
+            
+            logger.info(f"Processando stack: {stack}...")
+            for filename in os.listdir(stack_dir):
+                if filename.endswith(".py") and "__init__" not in filename:
+                    f_path = os.path.join(stack_dir, filename)
+                    persona = self.load_persona_from_file(f_path)
                     if persona:
-                        registry[stack][persona.name] = persona.get_system_prompt()
-                except Exception as e:
-                    print(f"Erro ao carregar {filename}: {e}")
+                        self.registry[stack][persona.name] = persona.get_system_prompt()
+                        total_agents += 1
+                        logger.debug(f"Agente [{stack}] {persona.name} registrado.")
 
-    with open(registry_path, 'w', encoding='utf-8') as f:
-        json.dump(registry, f, indent=4, ensure_ascii=False)
-    
-    print(f"💎 Ferramenta Compilada! {len(registry['Flutter']) + len(registry['Kotlin'])} especialistas em Python registrados.")
+        # 3. Persistência
+        try:
+            with open(self.registry_path, 'w', encoding='utf-8') as f:
+                json.dump(self.registry, f, indent=4, ensure_ascii=False)
+            logger.info(f"✅ Registro finalizado: {total_agents} especialistas em {self.registry_path}")
+        except Exception as e:
+            logger.error(f"Erro ao salvar registro: {e}")
 
 if __name__ == "__main__":
-    compile_agents()
-
-if __name__ == "__main__":
-    compile_agents()
+    compiler = RegistryCompiler()
+    compiler.compile()
