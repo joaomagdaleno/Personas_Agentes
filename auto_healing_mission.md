@@ -1,904 +1,895 @@
-You are "Director" 🏛️ - The Autonomous Master Architect and CLI Lead.
-Mission: To drive specialized personas to execute real actions and ensure project quality.
-Your primary goal is to orchestrate specialized agents and provide high-level technical guidance.
+# 🏛️ MISSÃO DE REPARO: STABILITY
+**Health Score:** 0% | **Audit Time:** 1.77s
 
-# 🏛️ MISSÃO DE REPARO: ESTÁGIO EVOLUTION (DÍVIDA TÉCNICA)
-**Health Score Atual:** 0%
-**Tempo de Auditoria:** 1.0s
+## 🎯 ALVO: `src\agents\Python\bridge.py`
+1. **[HIGH]** Chamada nativa detectada. Verifique a proteção try-except para evitar segmentation faults.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 📋 CONTEXTO ESTRATÉGICO
-- **Estágio:** EVOLUTION (DÍVIDA TÉCNICA)
-- **Especialistas Ativos:** 26
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Python\echo.py`
+1. **[LOW]** Captura de input sem feedback visual imediato ao usuário.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Python\bolt.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Loop com sleep detectado (polling ineficiente).
-2. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-3. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-4. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Python\bolt.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
+## 🎯 ALVO: `src\utils\indexer.py`
+1. **[MEDIUM]** Alta densidade de condicionais. Considere refatorar para Strategy ou Polimorfismo.
+2. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+3. **[LOW]** Uso de print direto detectado. Verifique se o texto deve ser internacionalizado.
+4. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+5. **[MEDIUM]** Arquivo de código sem arquivo de teste unitário correspondente.
 
-## 🎯 ALVO: `index_personas.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Excesso de condicionais detectado. Considere simplificar o fluxo ou usar polimorfismo.
-2. **[LOW]** String hardcoded detectada em saída de texto sem tradução (i18n).
-3. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-4. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `index_personas.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
-
-## 🎯 ALVO: `logging_config.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Script de automação sem tratamento formal de erro (try/trap).
-2. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-3. **[MEDIUM]** Função sem docstring detectada (Linha 23).
-4. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+## 🎯 ALVO: `scripts\run_self_diagnostic.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[LOW]** Uso de print direto detectado. Verifique se o texto deve ser internacionalizado.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+4. **[MEDIUM]** Arquivo de código sem arquivo de teste unitário correspondente.
 
-### 🛠️ Instrução de Ação para `logging_config.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `scripts\run_strategic_diagnostic.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[LOW]** Uso de print direto detectado. Verifique se o texto deve ser internacionalizado.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+4. **[MEDIUM]** Arquivo de código sem arquivo de teste unitário correspondente.
 
-## 🎯 ALVO: `run_self_diagnostic.py`
-### ⚠️ Problemas Detectados:
-1. **[LOW]** String hardcoded detectada em saída de texto sem tradução (i18n).
-2. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-3. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-4. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `run_self_diagnostic.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
-
-## 🎯 ALVO: `run_strategic_diagnostic.py`
-### ⚠️ Problemas Detectados:
-1. **[LOW]** String hardcoded detectada em saída de texto sem tradução (i18n).
-2. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-3. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-4. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+## 🎯 ALVO: `src\agents\base.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+4. **[MEDIUM]** Arquivo de código sem arquivo de teste unitário correspondente.
 
-### 🛠️ Instrução de Ação para `run_strategic_diagnostic.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Flutter\bridge.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `compiler.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-3. **[MEDIUM]** Função sem docstring detectada (Linha 17).
-4. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `compiler.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
-
-## 🎯 ALVO: `director_persona.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-3. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+## 🎯 ALVO: `src\agents\Flutter\cache.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `director_persona.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Flutter\echo.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `main_gui.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-3. **[MEDIUM]** Função sem docstring detectada (Linha 165).
-4. **[MEDIUM]** Função sem docstring detectada (Linha 188).
-5. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `main_gui.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
+## 🎯 ALVO: `src\agents\Flutter\flow.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Flutter\bolt.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-3. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Flutter\bolt.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
-
-## 🎯 ALVO: `Flutter\bridge.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+## 🎯 ALVO: `src\agents\Flutter\globe.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Flutter\bridge.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Flutter\hermes.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Flutter\cache.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Flutter\cache.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
-
-## 🎯 ALVO: `Flutter\echo.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+## 🎯 ALVO: `src\agents\Flutter\hype.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Flutter\echo.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Flutter\metric.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[LOW]** Uso de print direto detectado. Verifique se o texto deve ser internacionalizado.
+3. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+4. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Flutter\flow.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Flutter\flow.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
-
-## 🎯 ALVO: `Flutter\globe.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+## 🎯 ALVO: `src\agents\Flutter\nebula.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Flutter\globe.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Flutter\neural.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Parâmetro de temperatura exposto. Certifique-se de que está adequado ao contexto (Criatividade vs Precisão).
+4. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Flutter\hermes.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Flutter\hermes.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
+## 🎯 ALVO: `src\agents\Flutter\nexus.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Flutter\hype.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Flutter\hype.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
-
-## 🎯 ALVO: `Flutter\metric.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Uso de print em vez de logging detectado (reduz observabilidade).
-3. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-4. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+## 🎯 ALVO: `src\agents\Flutter\palette.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Flutter\metric.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Flutter\probe.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[LOW]** Uso de print direto detectado. Verifique se o texto deve ser internacionalizado.
+3. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+4. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Flutter\nebula.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Flutter\nebula.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
-
-## 🎯 ALVO: `Flutter\neural.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-3. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+## 🎯 ALVO: `src\agents\Flutter\scale.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Flutter\neural.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Flutter\scope.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Flutter\nexus.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Flutter\nexus.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
-
-## 🎯 ALVO: `Flutter\palette.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+## 🎯 ALVO: `src\agents\Flutter\scribe.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Flutter\palette.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Flutter\sentinel.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[MEDIUM]** Endpoint local (localhost) detectado. Use variáveis de ambiente para hosts de serviço.
+4. **[HIGH]** Endpoint HTTP detectado. Use HTTPS para garantir a segurança em trânsito.
+5. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Flutter\probe.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Uso de print em vez de logging detectado (reduz observabilidade).
-3. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-4. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Flutter\probe.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
-
-## 🎯 ALVO: `Flutter\scale.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+## 🎯 ALVO: `src\agents\Flutter\spark.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Flutter\scale.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Flutter\stream.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+4. **[MEDIUM]** Lógica de socket detectada. Verifique o tratamento de reconexão automática.
 
-## 🎯 ALVO: `Flutter\scope.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Flutter\scope.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
-
-## 🎯 ALVO: `Flutter\scribe.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+## 🎯 ALVO: `src\agents\Flutter\testify.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Flutter\scribe.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Flutter\vault.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+4. **[MEDIUM]** Lógica de pagamento detectada. Verifique se as URLs de sandbox/produção estão parametrizadas.
 
-## 🎯 ALVO: `Flutter\sentinel.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Flutter\sentinel.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
-
-## 🎯 ALVO: `Flutter\spark.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+## 🎯 ALVO: `src\agents\Flutter\voyager.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Flutter\spark.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Flutter\warden.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Flutter\stream.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Flutter\stream.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
-
-## 🎯 ALVO: `Flutter\testify.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
+## 🎯 ALVO: `src\agents\Kotlin\bolt.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Flutter\testify.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Kotlin\bridge.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Flutter\vault.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Flutter\vault.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
+## 🎯 ALVO: `src\agents\Kotlin\cache.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Flutter\voyager.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Flutter\voyager.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
-
-## 🎯 ALVO: `Flutter\warden.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+## 🎯 ALVO: `src\agents\Kotlin\echo.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Flutter\warden.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Kotlin\flow.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Kotlin\bolt.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Kotlin\bolt.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
-
-## 🎯 ALVO: `Kotlin\bridge.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+## 🎯 ALVO: `src\agents\Kotlin\globe.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Kotlin\bridge.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Kotlin\hermes.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Kotlin\cache.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Kotlin\cache.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
-
-## 🎯 ALVO: `Kotlin\echo.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+## 🎯 ALVO: `src\agents\Kotlin\hype.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Kotlin\echo.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Kotlin\metric.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Kotlin\flow.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Kotlin\flow.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
-
-## 🎯 ALVO: `Kotlin\globe.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+## 🎯 ALVO: `src\agents\Kotlin\nebula.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Kotlin\globe.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Kotlin\neural.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Kotlin\hermes.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Kotlin\hermes.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
-
-## 🎯 ALVO: `Kotlin\hype.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+## 🎯 ALVO: `src\agents\Kotlin\nexus.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Kotlin\hype.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Kotlin\palette.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Kotlin\metric.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Kotlin\metric.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
-
-## 🎯 ALVO: `Kotlin\nebula.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+## 🎯 ALVO: `src\agents\Kotlin\probe.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Kotlin\nebula.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Kotlin\scale.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Kotlin\neural.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Configuração de LLM detectada sem definição explícita de temperatura.
-3. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Kotlin\neural.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
-
-## 🎯 ALVO: `Kotlin\nexus.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+## 🎯 ALVO: `src\agents\Kotlin\scope.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Kotlin\nexus.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Kotlin\scribe.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Kotlin\palette.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Kotlin\palette.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
+## 🎯 ALVO: `src\agents\Kotlin\sentinel.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[MEDIUM]** Endpoint local (localhost) detectado. Use variáveis de ambiente para hosts de serviço.
+4. **[HIGH]** Endpoint HTTP detectado. Use HTTPS para garantir a segurança em trânsito.
+5. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Kotlin\probe.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Kotlin\probe.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
-
-## 🎯 ALVO: `Kotlin\scale.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+## 🎯 ALVO: `src\agents\Kotlin\spark.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Kotlin\scale.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Kotlin\stream.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+4. **[MEDIUM]** Lógica de socket detectada. Verifique o tratamento de reconexão automática.
 
-## 🎯 ALVO: `Kotlin\scope.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Kotlin\scope.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
-
-## 🎯 ALVO: `Kotlin\scribe.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+## 🎯 ALVO: `src\agents\Kotlin\testify.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Kotlin\scribe.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Kotlin\vault.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Kotlin\sentinel.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Kotlin\sentinel.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
-
-## 🎯 ALVO: `Kotlin\spark.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+## 🎯 ALVO: `src\agents\Kotlin\voyager.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Kotlin\spark.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Kotlin\warden.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Kotlin\stream.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Kotlin\stream.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
-
-## 🎯 ALVO: `Kotlin\testify.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
+## 🎯 ALVO: `src\agents\Python\flow.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Kotlin\testify.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Python\forge.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Kotlin\vault.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Kotlin\vault.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
-
 ---
+## 🎯 ALVO: `src\agents\Python\hermes.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-## 🎯 ALVO: `Kotlin\voyager.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+---
+## 🎯 ALVO: `src\agents\Python\hype.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Kotlin\voyager.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Python\scale.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-## 🎯 ALVO: `Kotlin\warden.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+---
+## 🎯 ALVO: `src\agents\Python\scope.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Kotlin\warden.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Python\testify.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-## 🎯 ALVO: `Python\bridge.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-3. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+---
+## 🎯 ALVO: `src\agents\Python\warden.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Python\bridge.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\core\compiler.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Python\cache.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-3. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
+
+---
+## 🎯 ALVO: `src\core\orchestrator.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Python\cache.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\interface\cli.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[LOW]** Uso de print direto detectado. Verifique se o texto deve ser internacionalizado.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+4. **[MEDIUM]** Arquivo de código sem arquivo de teste unitário correspondente.
 
-## 🎯 ALVO: `Python\echo.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-3. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Python\echo.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+---
+## 🎯 ALVO: `src\interface\gui.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+3. **[MEDIUM]** Arquivo de código sem arquivo de teste unitário correspondente.
+
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `tests\test_compiler.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Python\flow.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-3. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
+
+---
+## 🎯 ALVO: `tests\test_engine.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Python\flow.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `tests\test_index_personas.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Python\forge.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-3. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Python\forge.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+---
+## 🎯 ALVO: `tests\test_orchestrator.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
+
 ---
+## 🎯 ALVO: `tests\test_persona_base.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-## 🎯 ALVO: `Python\globe.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-3. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+---
+## 🎯 ALVO: `tests\test_python_personas.py`
+1. **[LOW]** Script de infraestrutura detectado. Certifique-se de que erros de comando externo sejam capturados.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Python\globe.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Python\probe.py`
+1. **[LOW]** Uso de print direto detectado. Verifique se o texto deve ser internacionalizado.
+2. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-## 🎯 ALVO: `Python\hermes.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+---
+## 🎯 ALVO: `src\agents\director.py`
+1. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+2. **[MEDIUM]** Chamada direta a SDK de IA detectada. Verifique se o retry-logic e timeouts estão configurados.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+4. **[MEDIUM]** Arquivo de código sem arquivo de teste unitário correspondente.
 
-### 🛠️ Instrução de Ação para `Python\hermes.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Flutter\bolt.py`
+1. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+2. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-## 🎯 ALVO: `Python\hype.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+---
+## 🎯 ALVO: `src\agents\Python\bolt.py`
+1. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+2. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Python\hype.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Python\cache.py`
+1. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+2. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Python\metric.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-3. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
+
+---
+## 🎯 ALVO: `src\agents\Python\globe.py`
+1. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+2. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Python\metric.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Python\mantra.py`
+1. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+2. **[LOW]** Padrão não Pythonico ou redundante detectado.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Python\nebula.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-3. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Python\nebula.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+---
+## 🎯 ALVO: `src\agents\Python\metric.py`
+1. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+2. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Python\nebula.py`
+1. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+2. **[MEDIUM]** Endpoint local (localhost) detectado. Use variáveis de ambiente para hosts de serviço.
+3. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Python\neural.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-3. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
+
+---
+## 🎯 ALVO: `src\agents\Python\neural.py`
+1. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+2. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Python\neural.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Python\nexus.py`
+1. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+2. **[MEDIUM]** Endpoint local (localhost) detectado. Use variáveis de ambiente para hosts de serviço.
+3. **[HIGH]** Endpoint HTTP detectado. Use HTTPS para garantir a segurança em trânsito.
+4. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Python\nexus.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-3. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Python\nexus.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+---
+## 🎯 ALVO: `src\agents\Python\palette.py`
+1. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+2. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Python\scribe.py`
+1. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+2. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Python\palette.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
+
+---
+## 🎯 ALVO: `src\agents\Python\sentinel.py`
+1. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+2. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+3. **[HIGH]** Uso da função perigosa eval() detectado. Risco potencial de execução de código arbitrário.
 
-### 🛠️ Instrução de Ação para `Python\palette.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Python\spark.py`
+1. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+2. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+3. **[LOW]** Lembrete de tarefa pendente detectado. Considere priorizar a conclusão deste Spark.
 
-## 🎯 ALVO: `Python\probe.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-3. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Python\probe.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+---
+## 🎯 ALVO: `src\agents\Python\stream.py`
+1. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+2. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+3. **[MEDIUM]** Lógica de socket detectada. Verifique o tratamento de reconexão automática.
+
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `src\agents\Python\vault.py`
+1. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+2. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+3. **[MEDIUM]** Lógica de pagamento detectada. Verifique se as URLs de sandbox/produção estão parametrizadas.
 
-## 🎯 ALVO: `Python\scale.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-3. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
+
+---
+## 🎯 ALVO: `src\agents\Python\voyager.py`
+1. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+2. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+3. **[MEDIUM]** Referência a legado (Python 2) ou sintaxe obsoleta detectada. Considere modernizar.
 
-### 🛠️ Instrução de Ação para `Python\scale.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `tests\test_director_persona.py`
+1. **[HIGH]** Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.
+2. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Python\scope.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `Python\scope.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+---
+## 🎯 ALVO: `src\utils\logging_config.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
+
 ---
+## 🎯 ALVO: `tests\test_bolt.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-## 🎯 ALVO: `Python\scribe.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-3. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+---
+## 🎯 ALVO: `tests\test_bridge.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Python\scribe.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `tests\test_cache.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-## 🎯 ALVO: `Python\sentinel.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-3. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+---
+## 🎯 ALVO: `tests\test_echo.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Python\sentinel.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `tests\test_flow.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-## 🎯 ALVO: `Python\spark.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-3. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+---
+## 🎯 ALVO: `tests\test_forge.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Python\spark.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `tests\test_globe.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-## 🎯 ALVO: `Python\stream.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-3. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+---
+## 🎯 ALVO: `tests\test_hermes.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Python\stream.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `tests\test_hype.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-## 🎯 ALVO: `Python\testify.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
+---
+## 🎯 ALVO: `tests\test_logging_config.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Python\testify.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `tests\test_mantra.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-## 🎯 ALVO: `Python\vault.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-3. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+---
+## 🎯 ALVO: `tests\test_metric.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Python\vault.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `tests\test_nebula.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-## 🎯 ALVO: `Python\voyager.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-3. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+---
+## 🎯 ALVO: `tests\test_neural.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Python\voyager.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `tests\test_nexus.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Python\warden.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Persona sem herança formal ou métodos abstratos detectada.
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
+
+---
+## 🎯 ALVO: `tests\test_palette.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Python\warden.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `tests\test_probe.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `engine.py`
-### ⚠️ Problemas Detectados:
-1. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `engine.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+---
+## 🎯 ALVO: `tests\test_scale.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `tests\test_scope.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `orchestrator.py`
-### ⚠️ Problemas Detectados:
-1. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
+
+---
+## 🎯 ALVO: `tests\test_scribe.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `orchestrator.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `tests\test_sentinel.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `persona_base.py`
-### ⚠️ Problemas Detectados:
-1. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `persona_base.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+---
+## 🎯 ALVO: `tests\test_spark.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `tests\test_stream.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `Python\mantra.py`
-### ⚠️ Problemas Detectados:
-1. **[LOW]** Interface CLI detectada sem uso de cores ou formatação rica (ANSI/Rich).
-2. **[MEDIUM]** Arquivo de código sem arquivo de teste correspondente no mesmo diretório.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
+
+---
+## 🎯 ALVO: `tests\test_testify.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-### 🛠️ Instrução de Ação para `Python\mantra.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `tests\test_vault.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
-## 🎯 ALVO: `test_orchestrator.py`
-### ⚠️ Problemas Detectados:
-1. **[MEDIUM]** Função sem docstring detectada (Linha 9).
-2. **[MEDIUM]** Função sem docstring detectada (Linha 13).
-3. **[MEDIUM]** Função sem docstring detectada (Linha 17).
-4. **[MEDIUM]** Função sem docstring detectada (Linha 23).
-5. **[MEDIUM]** Função sem docstring detectada (Linha 33).
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
-### 🛠️ Instrução de Ação para `test_orchestrator.py`:
-Aplique as correções mantendo a consistência e os padrões do projeto.
+---
+## 🎯 ALVO: `tests\test_voyager.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
+
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
 
 ---
+## 🎯 ALVO: `tests\test_warden.py`
+1. **[LOW]** Função detectada. Verifique se possui docstring explicativa.
 
+### 🛠️ Ação: Corrigir mantendo os padrões do projeto.
+
+---
