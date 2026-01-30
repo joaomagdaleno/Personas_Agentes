@@ -5,6 +5,7 @@ import argparse
 import sys
 
 def parse_persona_file(file_path):
+    """Executa funcionalidade da persona."""
     with open(file_path, 'r', encoding='utf-8') as f:
         content = f.read()
     
@@ -47,6 +48,7 @@ def parse_persona_file(file_path):
     }
 
 def rebuild_index(base_dir):
+    """Executa funcionalidade da persona."""
     directories = ["Flutter", "Kotlin"]
     index_data = []
     
@@ -106,6 +108,7 @@ def rebuild_index(base_dir):
     return index_data
 
 def search_index(query, base_dir):
+    """Executa funcionalidade da persona."""
     json_path = os.path.join(base_dir, "index.json")
     
     if not os.path.exists(json_path):
@@ -149,6 +152,7 @@ def search_index(query, base_dir):
         print("-" * 60)
 
 def main():
+    """Executa funcionalidade da persona."""
     parser = argparse.ArgumentParser(description="Manage and search Personas/Agents index.")
     parser.add_argument("query", nargs="?", help="Search query to find an agent (e.g., 'performance', 'security')")
     parser.add_argument("--rebuild", action="store_true", help="Force rebuild of the index")

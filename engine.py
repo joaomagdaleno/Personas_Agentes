@@ -5,7 +5,9 @@ import logging
 from datetime import datetime
 
 class ConnectionCLI:
+    """Representa um especialista em engenharia de software."""
     def __init__(self):
+        """Executa funcionalidade da persona."""
         self.base_dir = os.path.dirname(os.path.abspath(__file__))
         self.project_root = os.path.dirname(self.base_dir)
         self.registry_path = os.path.join(self.base_dir, "agents_registry.json")
@@ -13,6 +15,7 @@ class ConnectionCLI:
         self.stack = self._detect_stack()
 
     def _load_registry(self):
+        """Executa funcionalidade da persona."""
         if not os.path.exists(self.registry_path):
             return None
         with open(self.registry_path, 'r', encoding='utf-8') as f:
@@ -41,6 +44,7 @@ class ConnectionCLI:
         return "Director"
 
     def get_prompt(self, goal: str):
+        """Executa funcionalidade da persona."""
         if not self.registry:
             return "ERROR: Registry not found. Run compiler.py"
         

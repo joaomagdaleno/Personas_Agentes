@@ -1,0 +1,389 @@
+You are "Director" 🏛️ - The Autonomous Master Architect and CLI Lead. 
+Your mission is to drive the specialized personas to execute real actions.
+
+--- CONTEXTO ESTRATÉGICO: ESTÁGIO EVOLUTION (DÍVIDA TÉCNICA) ---
+VOCÊ É O EXECUTOR. FOCO EM EVOLUIR O PROJETO PARA O PRÓXIMO NÍVEL.
+
+--- ALVO: Python\bolt.py ---
+1. [MEDIUM] Loop com sleep detectado.
+2. [HIGH] Arquivo aberto sem fechamento detectado.
+3. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+4. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: apply_auto_healing.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [LOW] Uso de print em vez de logging detectado.
+3. [LOW] Interface CLI sem cores ou formatação rica.
+4. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: bulk_refactor.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [LOW] Uso de print em vez de logging detectado.
+4. [LOW] Interface CLI sem cores ou formatação rica.
+5. [MEDIUM] Captura de erro silenciosa detectada. Dificulta o debug.
+6. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: compiler.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [LOW] Uso de print em vez de logging detectado.
+3. [LOW] Interface CLI sem cores ou formatação rica.
+4. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: engine.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Configurações de nuvem sem uso de variáveis de ambiente.
+3. [LOW] Interface CLI sem cores ou formatação rica.
+4. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: final_polish.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [LOW] Uso de print em vez de logging detectado.
+3. [LOW] Interface CLI sem cores ou formatação rica.
+4. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: final_surgical_fix.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [LOW] Uso de print em vez de logging detectado.
+3. [LOW] Interface CLI sem cores ou formatação rica.
+4. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: index_personas.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Excesso de condicionais. Considere simplificar o fluxo.
+3. [LOW] String hardcoded sem tradução (i18n).
+4. [LOW] Uso de print em vez de logging detectado.
+5. [LOW] Interface CLI sem cores ou formatação rica.
+6. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: main_gui.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [LOW] Configuração de LLM sem definição de temperatura.
+4. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: orchestrator.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [LOW] Uso de print em vez de logging detectado.
+3. [LOW] Interface CLI sem cores ou formatação rica.
+4. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: persona_base.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Captura de erro silenciosa detectada. Dificulta o debug.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: reset_personas.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [LOW] Uso de print em vez de logging detectado.
+4. [LOW] Interface CLI sem cores ou formatação rica.
+5. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: run_self_diagnostic.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [LOW] String hardcoded sem tradução (i18n).
+3. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+4. [LOW] Uso de print em vez de logging detectado.
+5. [LOW] Interface CLI sem cores ou formatação rica.
+6. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: run_strategic_diagnostic.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [LOW] String hardcoded sem tradução (i18n).
+3. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+4. [LOW] Uso de print em vez de logging detectado.
+5. [LOW] Interface CLI sem cores ou formatação rica.
+6. [MEDIUM] Função sem docstring detectada.
+7. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Flutter\bolt.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Flutter\bridge.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Flutter\cache.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Flutter\echo.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Flutter\flow.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Flutter\globe.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Flutter\metric.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [LOW] Uso de print em vez de logging detectado.
+4. [LOW] Interface CLI sem cores ou formatação rica.
+5. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Flutter\nebula.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Flutter\neural.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [LOW] Configuração de LLM sem definição de temperatura.
+4. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Flutter\nexus.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Flutter\palette.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Flutter\probe.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [LOW] Uso de print em vez de logging detectado.
+4. [LOW] Interface CLI sem cores ou formatação rica.
+5. [MEDIUM] Captura de erro silenciosa detectada. Dificulta o debug.
+6. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Flutter\scale.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Flutter\scribe.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Flutter\sentinel.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Flutter\spark.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Captura de erro silenciosa detectada. Dificulta o debug.
+4. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Flutter\stream.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Flutter\vault.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Flutter\voyager.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Kotlin\bolt.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Kotlin\bridge.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Kotlin\cache.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Kotlin\echo.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Kotlin\flow.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Captura de erro silenciosa detectada. Dificulta o debug.
+4. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Kotlin\globe.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Kotlin\metric.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Kotlin\nebula.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Captura de erro silenciosa detectada. Dificulta o debug.
+4. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Kotlin\neural.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [LOW] Configuração de LLM sem definição de temperatura.
+4. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Kotlin\nexus.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Kotlin\palette.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Kotlin\probe.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Kotlin\scale.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Kotlin\scribe.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Kotlin\sentinel.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Kotlin\stream.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Captura de erro silenciosa detectada. Dificulta o debug.
+4. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Kotlin\vault.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Kotlin\voyager.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Python\bridge.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Python\echo.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [LOW] Uso de print em vez de logging detectado.
+4. [LOW] Interface CLI sem cores ou formatação rica.
+5. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Python\flow.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Python\forge.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Python\globe.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [LOW] Uso de print em vez de logging detectado.
+4. [LOW] Interface CLI sem cores ou formatação rica.
+5. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Python\mantra.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Python\metric.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [LOW] Interface CLI sem cores ou formatação rica.
+4. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Python\nebula.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Python\neural.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Python\nexus.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Python\palette.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [LOW] Uso de print em vez de logging detectado.
+4. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Python\probe.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [LOW] Uso de print em vez de logging detectado.
+4. [LOW] Interface CLI sem cores ou formatação rica.
+5. [MEDIUM] Captura de erro silenciosa detectada. Dificulta o debug.
+6. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Python\scale.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Python\scribe.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Python\sentinel.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Captura de erro silenciosa detectada. Dificulta o debug.
+4. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Python\spark.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [LOW] Lembrete de tarefa detectado. Vamos concluir este Spark?
+4. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Python\stream.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Python\vault.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+4. [HIGH] Possível chave de API exposta no código.
+--- ALVO: Python\voyager.py ---
+1. [HIGH] Arquivo aberto sem fechamento detectado.
+2. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+3. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+4. [MEDIUM] Referência a Python 2 detectada. Vamos atualizar para o futuro?
+--- ALVO: Raiz ---
+1. [HIGH] Falta arquivo de dependências (requirements.txt ou pyproject.toml).
+2. [HIGH] Arquivo LICENSE ausente. Risco legal.
+--- ALVO: director_persona.py ---
+1. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+2. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: fix_personas.py ---
+1. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+2. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Flutter\hermes.py ---
+1. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+2. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Flutter\hype.py ---
+1. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+2. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Flutter\scope.py ---
+1. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+2. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Flutter\testify.py ---
+1. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+--- ALVO: Flutter\warden.py ---
+1. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+2. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Kotlin\hermes.py ---
+1. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+2. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Kotlin\hype.py ---
+1. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+2. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Kotlin\scope.py ---
+1. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+2. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Kotlin\spark.py ---
+1. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+2. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Kotlin\testify.py ---
+1. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+--- ALVO: Kotlin\warden.py ---
+1. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+2. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Python\cache.py ---
+1. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+2. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Python\hermes.py ---
+1. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+2. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Python\hype.py ---
+1. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+2. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Python\scope.py ---
+1. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+2. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
+--- ALVO: Python\testify.py ---
+1. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+--- ALVO: Python\warden.py ---
+1. [MEDIUM] Persona sem herança formal ou métodos abstratos.
+2. [MEDIUM] Arquivo de código sem arquivo de teste correspondente.
