@@ -5,8 +5,8 @@ logger = logging.getLogger(__name__)
 
 class StreamPersona(BaseActivePersona):
     """
-    Especialista em Real-Time e streaming.
-    Garante que a comunicação bidirecional seja resiliente.
+    Core: Real-Time Specialist 📡
+    Foca em processamento de fluxos de dados, WebSockets e reatividade em tempo real.
     """
     
     def __init__(self, project_root):
@@ -17,23 +17,17 @@ class StreamPersona(BaseActivePersona):
         self.stack = "Python"
 
     def perform_audit(self) -> list:
-        """Audita conexões de rede e persistência de stream."""
-        logger.info(f"[{self.name}] Validando lógica de streaming...")
+        logger.info(f"[{self.name}] Audidando fluxos de dados em tempo real e reatividade...")
         
-        patterns = [
+        stream_rules = [
             {
-                'regex': r"socket\.|websocket", 
-                'issue': 'Lógica de socket detectada. Verifique o tratamento de reconexão automática.', 
-                'severity': 'medium'
-            },
-            {
-                'regex': r"while True:.*recv\(", 
-                'issue': 'Loop de recepção bloqueante detectado. Considere usar padrões assíncronos (asyncio).', 
+                'regex': r"websocket\.send\(", 
+                'issue': 'Ponto de envio de WebSocket detectado. Garanta o tratamento de desconexão e reconexão automática.', 
                 'severity': 'medium'
             }
         ]
         
-        return self.find_patterns('.py', patterns)
+        return self.find_patterns(('.py'), stream_rules)
 
     def get_system_prompt(self):
-        return f'You are "{self.name}" {self.emoji}. Mission: Maintain flow and resilience in real-time interactions.'
+        return f"You are {self.name} {self.emoji}. Mission: Ensure data flows smoothly and instantly."

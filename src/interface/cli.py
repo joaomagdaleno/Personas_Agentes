@@ -73,13 +73,13 @@ class ConnectionCLI:
 
     def print_banner(self, mode, timestamp):
         """Imprime um banner visualmente rico no terminal."""
-        print("\033[94m" + "=" * 60 + "\033[0m")
-        print(f"\033[92m🏛️  PERSONAS AGENTES - CLI V3\033[0m")
-        print(f"Mode:  {mode}")
-        print(f"Stack: {self.stack}")
-        print(f"Time:  {timestamp}")
-        print(f"Cloud: {self.cloud_provider} | API: {self.api_key_status}")
-        print("\033[94m" + "=" * 60 + "\033[0m")
+        logger.info("\033[94m" + "=" * 60 + "\033[0m")
+        logger.info(f"\033[92m🏛️  PERSONAS AGENTES - CLI V3\033[0m")
+        logger.info(f"Mode:  {mode}")
+        logger.info(f"Stack: {self.stack}")
+        logger.info(f"Time:  {timestamp}")
+        logger.info(f"Cloud: {self.cloud_provider} | API: {self.api_key_status}")
+        logger.info("\033[94m" + "=" * 60 + "\033[0m")
 
     def get_prompt(self, goal: str):
         """Gera o prompt final otimizado para o LLM."""
@@ -123,6 +123,6 @@ if __name__ == "__main__":
     engine = ConnectionCLI()
     if len(sys.argv) > 1:
         prompt = engine.get_prompt(" ".join(sys.argv[1:]))
-        print(prompt)
+        logger.info(prompt)
     else:
         logger.info("Uso: python engine.py 'sua meta técnica'")

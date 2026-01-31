@@ -1,41 +1,38 @@
 from src.agents.base import BaseActivePersona
 import logging
-import os
 
 logger = logging.getLogger(__name__)
 
 class FlowPersona(BaseActivePersona):
     """
-    Especialista em fluxos de controle e lógica de roteamento.
+    Core: Orchestration Specialist 🌊
+    Foca no controle de fluxo, lógica de roteamento e estados da aplicação.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
         self.name = "Flow"
         self.emoji = "🌊"
-        self.role = "Logic & Routing Specialist"
+        self.role = "Orchestration Specialist"
         self.stack = "Python"
 
     def perform_audit(self) -> list:
-        """Audita complexidade de condicionais."""
-        logger.info(f"[{self.name}] Analisando fluxos de decisão...")
+        logger.info(f"[{self.name}] Analisando fluxos de decisão e orquestração...")
         
-        # Auditoria personalizada (não baseada em regex simples de uma linha)
-        issues = []
-        for root, dirs, files in os.walk(self.project_root):
-            dirs[:] = [d for d in dirs if d not in self.ignored_dirs]
-            for file in files:
-                if file.endswith('.py'):
-                    rel_path = os.path.relpath(os.path.join(root, file), self.project_root)
-                    content = self.read_project_file(rel_path)
-                    if content and content.count('if ') > 20:
-                        issues.append({
-                            'file': rel_path,
-                            'issue': 'Alta densidade de condicionais. Considere refatorar para Strategy ou Polimorfismo.',
-                            'severity': 'medium',
-                            'context': self.name
-                        })
-        return issues
+        flow_rules = [
+            {
+                'regex': r"if .*:\s+.*if .*:\s+.*if .*:\s+.*if", 
+                'issue': 'Ninhagem excessiva de IFs detectada. Considere usar o padrão Strategy ou simplificar a lógica de fluxo.', 
+                'severity': 'medium'
+            },
+            {
+                'regex': r"while True:.*break", 
+                'issue': 'Loop infinito com interrupção manual detectado. Verifique se o critério de saída é robusto.', 
+                'severity': 'low'
+            }
+        ]
+        
+        return self.find_patterns(('.py'), flow_rules)
 
     def get_system_prompt(self):
-        return f'You are "{self.name}" {self.emoji}. Mission: Manage complex flows with elegance.'
+        return f"You are {self.name} {self.emoji}. Mission: Ensure logical paths are clear, efficient, and robust."

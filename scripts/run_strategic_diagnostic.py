@@ -44,20 +44,20 @@ def run_strategic_self_diagnostic():
     logger.info("🔍 Iniciando varredura estratégica profunda...")
     issues = orchestrator.run_full_diagnostic()
     
-    print("\n" + "="*60)
-    print(f"📋 RELATÓRIO ESTRATÉGICO: {len(issues)} OCORRÊNCIAS")
-    print("="*60)
+    logger.info("\n" + "="*60)
+    logger.info(f"📋 RELATÓRIO ESTRATÉGICO: {len(issues)} OCORRÊNCIAS")
+    logger.info("="*60)
     
     if not issues:
-        print("✅ O sistema avalia que o projeto está em excelente estado para seu estágio.")
+        logger.info("✅ O sistema avalia que o projeto está em excelente estado para seu estágio.")
     else:
         # Agrupa por gravidade para o relatório
         for severity in ['high', 'medium', 'low']:
             level_issues = [i for i in issues if i.get('severity') == severity]
             if level_issues:
-                print(f"\n[{severity.upper()} PRIORITY]")
+                logger.info(f"\n[{severity.upper()} PRIORITY]")
                 for issue in level_issues:
-                    print(f"  • {issue.get('file', 'Global')}: {issue.get('issue', 'Problema não especificado')}")
+                    logger.info(f"  • {issue.get('file', 'Global')}: {issue.get('issue', 'Problema não especificado')}")
 
     mission = orchestrator.prepare_mission_package()
     if mission:

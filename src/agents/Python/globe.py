@@ -5,31 +5,30 @@ logger = logging.getLogger(__name__)
 
 class GlobePersona(BaseActivePersona):
     """
-    Especialista em internacionalização e localização.
-    Foca em eliminar strings hardcoded e garantir suporte multi-idioma.
+    Core: Localization Specialist 🌎
+    Foca em internacionalização (i18n), localização (l10n) e suporte multi-idioma.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
         self.name = "Globe"
         self.emoji = "🌎"
-        self.role = "i18n & Localization Specialist"
+        self.role = "Localization Specialist"
         self.stack = "Python"
 
     def perform_audit(self) -> list:
-        """Busca strings hardcoded que deveriam estar em arquivos de tradução."""
-        logger.info(f"[{self.name}] Analisando strings hardcoded...")
+        logger.info(f"[{self.name}] Audidando suporte a idiomas e cultura...")
         
-        # Padrões para detectar textos que provavelmente deveriam ser traduzidos
-        patterns = [
+        globe_rules = [
             {
-                'regex': r"print\(.*\)", 
-                'issue': 'Uso de print direto detectado. Verifique se o texto deve ser internacionalizado.', 
-                'severity': 'low'
+                'regex': r"['\"][A-Z][a-z]+ [a-z]+['\"]", # String literal em inglês
+                'issue': 'String literal detectada fora de um sistema de tradução (gettext). Isso dificulta a localização.', 
+                'severity': 'medium'
             }
         ]
         
-        return self.find_patterns('.py', patterns)
+        return self.find_patterns(('.py', '.html'), globe_rules)
 
     def get_system_prompt(self):
-        return f'You are "{self.name}" {self.emoji}. Mission: Prepare the codebase for global accessibility.'
+        return f"You are {self.name} {self.emoji}. Mission: Make the application ready for a global audience."
+

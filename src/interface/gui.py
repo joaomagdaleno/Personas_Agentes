@@ -5,8 +5,10 @@ import sys
 import threading
 import importlib.util
 import logging
-from logging_config import setup_logging
-from orchestrator import ProjectOrchestrator
+import subprocess
+import re
+from src.utils.logging_config import setup_logging
+from src.core.orchestrator import ProjectOrchestrator
 
 # Configura o logging
 setup_logging()
@@ -76,6 +78,10 @@ class OficinaApp:
 
         self.btn_auto_heal = ttk.Button(left_pane, text="🩹 INICIAR AUTO-CURA TOTAL", style="Healing.TButton", command=self.start_auto_healing, state=tk.DISABLED)
         self.btn_auto_heal.pack(fill=tk.X, pady=5)
+
+        self.btn_update_agents = ttk.Button(left_pane, text="🔄 ATUALIZAR AGENTES (GIT)", style="Action.TButton", command=self.run_update_agents)
+        self.btn_update_agents.pack(fill=tk.X, pady=5)
+        
         ttk.Label(left_pane, text="Ciclo: Diagnóstico -> Missão -> Reparo", font=("Segoe UI", 8, "italic")).pack()
 
         # Right: Issues List
@@ -117,6 +123,31 @@ class OficinaApp:
         self.log_output.see(tk.END)
         logger.debug(msg)
 
+    def run_update_agents(self):
+        """Executa o script de atualização de submodules/agentes."""
+        self.log_message("Iniciando atualização dos Agentes e Skills...")
+        def run():
+            script_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "scripts", "update_agent_submodule.py")
+            try:
+                process = subprocess.Popen(
+                    [sys.executable, script_path],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    text=True,
+                    bufsize=1,
+                    universal_newlines=True
+                )
+                for line in process.stdout:
+                    clean_line = re.sub(r'\033\[[0-9;]*m', '', line.strip()) # Remove cores ANSI
+                    if clean_line:
+                        self.root.after(0, lambda l=clean_line: self.log_message(f"[GIT] {l}"))
+                process.wait()
+                self.root.after(0, lambda: self.log_message("✅ Atualização concluída!"))
+            except Exception as e:
+                self.root.after(0, lambda: self.log_message(f"❌ Erro na atualização: {e}"))
+
+        threading.Thread(target=run, daemon=True).start()
+
     def load_active_personas(self):
         """Varre as pastas de stack e carrega os agentes correspondentes."""
         base_path = os.path.dirname(os.path.abspath(__file__))
@@ -131,7 +162,7 @@ class OficinaApp:
 
         self.log_message(f"Stack identificada: {stack}")
         
-        stack_path = os.path.join(base_path, stack)
+        stack_path = os.path.abspath(os.path.join(base_path, '..', 'agents', stack))
         if os.path.exists(stack_path):
             count = 0
             for filename in os.listdir(stack_path):
@@ -164,12 +195,14 @@ class OficinaApp:
         
         def run():
             try:
-                issues = self.orchestrator.run_full_diagnostic()
+                # O Orquestrador agora retorna as issues com a tag 'is_protected'
+                issues = self.orchestrator.run_diagnostic()
                 for issue in issues:
+                    status = "🛡️ PROTEGIDO" if issue.get('is_protected') else "🛠️ REPARÁVEL"
                     self.issues_tree.insert("", tk.END, values=(
                         issue.get('severity', 'LOW').upper(), 
-                        "Auditoria", 
-                        issue.get('issue', 'Desconhecido')
+                        status, 
+                        f"[{issue.get('file')}] {issue.get('issue')}"
                     ))
                 
                 self.root.after(0, lambda: self.btn_fix.config(state=tk.NORMAL if issues else tk.DISABLED))
@@ -181,33 +214,28 @@ class OficinaApp:
         threading.Thread(target=run, daemon=True).start()
 
     def start_auto_healing(self):
-        """Inicia o ciclo completo de auto-cura."""
+        """Inicia o ciclo completo de auto-cura técnica."""
         self.issues_tree.delete(*self.issues_tree.get_children())
-        self.log_message("⚡ INICIANDO CICLO DE AUTO-CURA...")
+        self.log_message("⚡ INICIANDO CICLO DE AUTO-CURA PROFUNDA...")
         
         def run_cycle():
             try:
-                self.log_message("Passo 1/3: Diagnóstico...")
-                issues = self.orchestrator.run_full_diagnostic()
+                # O Orquestrador executa a lógica de cura soberana
+                fixed_count = self.orchestrator.run_auto_healing()
                 
-                if not issues:
-                    self.log_message("✅ Projeto saudável.")
-                    return
+                self.log_message(f"✅ Ciclo concluído. {fixed_count} arquivos foram curados automaticamente.")
+                
+                # Roda um diagnóstico final para mostrar o novo estado do projeto
+                self.root.after(0, self.start_diagnostic)
+                
+                if fixed_count > 0:
+                    self.root.after(0, lambda: messagebox.showinfo("Auto-Cura", f"Sucesso! {fixed_count} correções foram aplicadas com segurança."))
+                else:
+                    self.root.after(0, lambda: messagebox.showinfo("Auto-Cura", "Nenhum arquivo local precisava de reparo no momento."))
 
-                for issue in issues:
-                    self.issues_tree.insert("", tk.END, values=(
-                        issue.get('severity', 'LOW').upper(), 
-                        "Auto-Cura", 
-                        issue.get('issue', 'Desconhecido')
-                    ))
-
-                self.log_message("Passo 2/3: Preparando Missão...")
-                mission = self.orchestrator.prepare_mission_package()
-
-                self.log_message("Passo 3/3: Despachando para Gemini CLI...")
-                self.root.after(0, lambda: self.dispatch_fix(mission))
             except Exception as e:
                 logger.exception("Erro no ciclo de auto-cura.")
+                self.root.after(0, lambda: messagebox.showerror("Erro de Cura", str(e)))
 
         threading.Thread(target=run_cycle, daemon=True).start()
 

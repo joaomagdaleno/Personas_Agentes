@@ -47,22 +47,22 @@ def run_self_healing():
     issues = orchestrator.run_diagnostic()
     mission = orchestrator.get_mission_report()
     
-    print("\n" + "="*60)
-    print(f"📊 RELATÓRIO DE AUTO-DIAGNÓSTICO: {len(issues)} OCORRÊNCIAS")
-    print(f"🏥 Health Score Final: {orchestrator.metrics['health_score']}%")
-    print("="*60)
+    logger.info("\n" + "="*60)
+    logger.info(f"📊 RELATÓRIO DE AUTO-DIAGNÓSTICO: {len(issues)} OCORRÊNCIAS")
+    logger.info(f"🏥 Health Score Final: {orchestrator.metrics['health_score']}%")
+    logger.info("="*60)
     
     if not issues:
-        print("✅ O projeto está íntegro e segue todos os padrões!")
+        logger.info("✅ O projeto está íntegro e segue todos os padrões!")
     else:
         # Mostra apenas as top 10 para o log não ficar gigante
         for i, issue in enumerate(issues[:15]):
             severity = issue.get('severity', 'MEDIUM').upper()
             file = issue.get('file', 'Global')
-            print(f"{i+1}. [{severity}] {file} -> {issue.get('issue', 'N/A')}")
+            logger.info(f"{i+1}. [{severity}] {file} -> {issue.get('issue', 'N/A')}")
         
         if len(issues) > 15:
-            print(f"... e mais {len(issues) - 15} ocorrências.")
+            logger.info(f"... e mais {len(issues) - 15} ocorrências.")
 
     # Salva a missão
     if mission:

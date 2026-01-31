@@ -1,35 +1,33 @@
-from persona_base import BaseActivePersona
-import os
-import re
+from src.agents.base import BaseActivePersona
+import logging
+
+logger = logging.getLogger(__name__)
 
 class ProbePersona(BaseActivePersona):
-    """Especialista em diagnóstico Kotlin."""
+    """
+    Core: Kotlin Diagnostics Specialist 🔍
+    Foca no rastreio de erros, logs de sistema e diagnóstico de problemas em tempo real.
+    """
+    
     def __init__(self, project_root):
-        """Inicializa a persona Probe."""
         super().__init__(project_root)
         self.name = "Probe"
-        self.emoji = "🕵️"
+        self.emoji = "🔍"
         self.role = "Diagnostics Specialist"
-        self.mission = "Diagnose complex bugs and memory leaks in Android."
         self.stack = "Kotlin"
 
     def perform_audit(self) -> list:
-        """Audita logs de erro e pontos de falha no Kotlin."""
-        issues = []
-        if not self.project_root: return []
-        for root, dirs, files in os.walk(self.project_root):
-            dirs[:] = [d for d in dirs if d not in ['.git', 'build']]
-            for file in files:
-                if file.endswith('.kt'):
-                    rel_path = os.path.relpath(os.path.join(root, file), self.project_root)
-                    try:
-                        with open(os.path.join(root, file), 'r', encoding='utf-8', errors='ignore') as f:
-                            content = f.read()
-                        if "catch(e: Exception)" in content and "e.printStackTrace()" in content:
-                            issues.append({'file': rel_path, 'issue': 'printStackTrace detectado. Recomenda-se tratamento de erro estruturado.', 'severity': 'medium', 'context': 'Diagnostics'})
-                    except Exception: continue
-        return issues
+        logger.info(f"[{self.name}] Investigando logs e potenciais falhas no Android...")
+        
+        probe_rules = [
+            {
+                'regex': r"Log\.(d|i|w|e|v)\(", 
+                'issue': 'Uso de android.util.Log detectado. Prefira uma biblioteca como "Timber" para gerenciar logs de forma mais limpa em produção.', 
+                'severity': 'low'
+            }
+        ]
+        
+        return self.find_patterns(('.kt'), probe_rules)
 
     def get_system_prompt(self):
-        """Retorna o guia de conduta para o Gemini CLI."""
-        return f'You are "{self.name}" {self.emoji}. Focus on identifying and solving CPU bottlenecks and state inconsistencies.'
+        return f"You are {self.name} {self.emoji}. Mission: Find every error before the user does."

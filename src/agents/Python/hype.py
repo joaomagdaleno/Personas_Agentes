@@ -1,36 +1,33 @@
 from src.agents.base import BaseActivePersona
-import os
 import logging
 
 logger = logging.getLogger(__name__)
 
 class HypePersona(BaseActivePersona):
     """
-    Especialista em marketing técnico e visibilidade.
-    Garante que o projeto seja compreensível e atraente para outros desenvolvedores.
+    Core: Growth Engineering Specialist 📣
+    Foca em otimização de busca (SEO), metadados e engenharia de crescimento.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
         self.name = "Hype"
         self.emoji = "📣"
-        self.role = "Visibility & Growth Specialist"
+        self.role = "Growth Specialist"
         self.stack = "Python"
 
     def perform_audit(self) -> list:
-        """Verifica a qualidade da documentação de boas-vindas."""
-        logger.info(f"[{self.name}] Analisando visibilidade do projeto...")
+        logger.info(f"[{self.name}] Analisando metadados e gatilhos de crescimento...")
         
-        issues = []
-        if not os.path.exists(os.path.join(self.project_root, 'README.md')):
-            issues.append({
-                'file': 'root',
-                'issue': 'Projeto sem README.md. Barreiras críticas para adoção e clareza técnica.',
-                'severity': 'high',
-                'context': self.name
-            })
-            
-        return issues
+        hype_rules = [
+            {
+                'regex': r"<title>.*</title>", # SEO Básico
+                'issue': 'Tags de título detectadas. Garanta que sejam dinâmicas e otimizadas para SEO.', 
+                'severity': 'low'
+            }
+        ]
+        
+        return self.find_patterns(('.py', '.html'), hype_rules)
 
     def get_system_prompt(self):
-        return f'You are "{self.name}" {self.emoji}. Mission: Elevate the project visibility and clarity.'
+        return f"You are {self.name} {self.emoji}. Mission: Optimize for discovery and user acquisition."

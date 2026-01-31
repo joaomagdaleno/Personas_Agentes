@@ -5,8 +5,8 @@ logger = logging.getLogger(__name__)
 
 class NebulaPersona(BaseActivePersona):
     """
-    Especialista em Cloud e Integração de Provedores.
-    Foca em garantir que o projeto siga os princípios Cloud-Native.
+    Core: Cloud & Serverless Specialist ☁️
+    Foca na infraestrutura em nuvem, escalabilidade horizontal e serviços gerenciados.
     """
     
     def __init__(self, project_root):
@@ -17,22 +17,17 @@ class NebulaPersona(BaseActivePersona):
         self.stack = "Python"
 
     def perform_audit(self) -> list:
-        """Audita conformidade com práticas Cloud-Native."""
-        logger.info(f"[{self.name}] Validando conformidade Cloud-Native...")
+        logger.info(f"[{self.name}] Audidando configurações de nuvem e infra...")
         
-        patterns = [
+        nebula_rules = [
             {
-                'regex': r"localhost|127\.0\.0\.1", 
-                'issue': 'Endpoint local (localhost) detectado. Use variáveis de ambiente para hosts de serviço.', 
-                'severity': 'medium'
+                'regex': r"boto3\.client\(.*aws_access_key_id", 
+                'issue': 'Credenciais AWS detectadas no código. Use perfis IAM ou variáveis de ambiente.', 
+                'severity': 'critical'
             }
         ]
         
-        issues = self.find_patterns('.py', patterns)
-        
-        # Auditoria personalizada para caminhos absolutos perigosos
-        # (Substituindo a lógica que usava open direto)
-        return issues
+        return self.find_patterns(('.py', '.yml', '.yaml'), nebula_rules)
 
     def get_system_prompt(self):
-        return f'You are "{self.name}" {self.emoji}. Mission: Scale the architecture to the stars (Cloud).'
+        return f"You are {self.name} {self.emoji}. Mission: Ensure a scalable, secure, and cost-effective cloud infrastructure."

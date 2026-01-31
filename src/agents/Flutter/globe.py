@@ -1,35 +1,34 @@
-from persona_base import BaseActivePersona
-import os
-import re
+from src.agents.base import BaseActivePersona
+import logging
+
+logger = logging.getLogger(__name__)
 
 class GlobePersona(BaseActivePersona):
-    """Especialista em internacionalização Flutter."""
+    """
+    Core: Flutter i18n Specialist 🌎
+    Foca na localização do app para diferentes culturas e idiomas.
+    """
+    
     def __init__(self, project_root):
-        """Inicializa a persona Globe."""
         super().__init__(project_root)
         self.name = "Globe"
         self.emoji = "🌎"
-        self.role = "i18n & Localization Specialist"
-        self.mission = "Prepare Flutter apps for a global audience."
+        self.role = "i18n Specialist"
         self.stack = "Flutter"
 
     def perform_audit(self) -> list:
-        """Audita strings não traduzidas e suporte a RTL."""
-        issues = []
-        if not self.project_root: return []
-        for root, dirs, files in os.walk(self.project_root):
-            dirs[:] = [d for d in dirs if d not in ['.git', 'build', '.dart_tool']]
-            for file in files:
-                if file.endswith('.dart'):
-                    rel_path = os.path.relpath(os.path.join(root, file), self.project_root)
-                    try:
-                        with open(os.path.join(root, file), 'r', encoding='utf-8', errors='ignore') as f:
-                            content = f.read()
-                        if "Text('" in content and "AppLocalizations" not in content and ".tr" not in content:
-                            issues.append({'file': rel_path, 'issue': 'String literal detectada fora de sistema de tradução.', 'severity': 'low', 'context': 'i18n'})
-                    except Exception: continue
-        return issues
+        logger.info(f"[{self.name}] Audidando suporte a multi-idioma (l10n)...")
+        
+        globe_rules = [
+            {
+                'regex': r"text:\s*['\"][A-Z][a-z]", # String hardcoded
+                'issue': 'Texto visível hardcoded detectado. Use AppLocalizations ou Intl para suportar traduções.', 
+                'severity': 'medium'
+            }
+        ]
+        
+        return self.find_patterns(('.dart'), globe_rules)
 
     def get_system_prompt(self):
-        """Retorna o guia de conduta para o Gemini CLI."""
-        return f'You are "{self.name}" {self.emoji}. Focus on localization, cultural adaptation and RTL support.'
+        return f"You are {self.name} {self.emoji}. Mission: Make the app accessible and local for everyone on the planet."
+

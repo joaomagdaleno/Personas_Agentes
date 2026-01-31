@@ -5,31 +5,34 @@ logger = logging.getLogger(__name__)
 
 class EchoPersona(BaseActivePersona):
     """
-    Especialista em UX e Feedback.
-    Garante que a comunicação entre agente e usuário seja fluida.
+    Core: Observability Specialist 🗣️
+    Foca em logs, rastreabilidade e feedback do sistema para humanos.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
         self.name = "Echo"
         self.emoji = "🗣️"
-        self.role = "UX & Feedback Specialist"
+        self.role = "Observability Specialist"
         self.stack = "Python"
 
     def perform_audit(self) -> list:
-        """Audita interações sem feedback."""
-        logger.info(f"[{self.name}] Analisando qualidade da interação...")
+        logger.info(f"[{self.name}] Audidando qualidade de logs e feedback...")
         
-        patterns = [
+        echo_rules = [
             {
-                'regex': r"input(.*)[" 
-"s\n]*(?!.*(print|logger|display))", 
-                'issue': 'Captura de input sem feedback visual imediato ao usuário.', 
-                'severity': 'low'
+                'regex': r"except Exception:\s+pass", 
+                'issue': 'Erro silenciado sem log. Isso torna o sistema impossível de debugar em produção.', 
+                'severity': 'high'
+            },
+            {
+                'regex': r"logger\.info\(.*['\"]Erro", 
+                'issue': 'Uso de nível INFO para logar erros. Use logger.error() ou logger.exception() para correta categorização.', 
+                'severity': 'medium'
             }
         ]
         
-        return self.find_patterns('.py', patterns)
+        return self.find_patterns(('.py'), echo_rules)
 
     def get_system_prompt(self):
-        return f'You are "{self.name}" {self.emoji}. Mission: Ensure every action has a clear response.'
+        return f"You are {self.name} {self.emoji}. Mission: Ensure the system communicates clearly its internal state."

@@ -5,30 +5,43 @@ logger = logging.getLogger(__name__)
 
 class PalettePersona(BaseActivePersona):
     """
-    Especialista em design visual e interface.
-    Garante que a apresentação do projeto seja atraente e siga diretrizes estéticas.
+    Core: UX & Accessibility Specialist 🎨
+    Foca na experiência do usuário, padrões de design e acessibilidade.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
         self.name = "Palette"
         self.emoji = "🎨"
-        self.role = "Design Systems Specialist"
+        self.role = "UX Specialist"
         self.stack = "Python"
 
     def perform_audit(self) -> list:
-        """Audita conformidade estética e de interface."""
-        logger.info(f"[{self.name}] Analisando qualidade visual e UI...")
+        """
+        Individualidade: Regras de UX e Design Patterns.
+        """
+        logger.info(f"[{self.name}] Iniciando auditoria de UX e interface...")
         
-        patterns = [
+        # O Core do Palette: Foco na interação com o humano
+        ux_rules = [
             {
-                'regex': r"color\s*=", 
-                'issue': 'Definição de cor detectada. Verifique se segue o guia de estilos do projeto.', 
+                'regex': r"input\(", 
+                'issue': 'Uso de input() direto detectado. Para uma melhor UX CLI, considere usar bibliotecas como "questionary" ou "click".',
                 'severity': 'low'
+            },
+            {
+                'regex': r"color\s*=\s*['\"][^'\"]*['\"]", # Busca definições de cores hardcoded
+                'issue': 'Cores hardcoded detectadas. Considere usar um sistema de temas para garantir consistência visual.', 
+                'severity': 'low'
+            },
+            {
+                'regex': r"aria-label\s*=\s*['\"][^'\"]*['\"]", # HTML/Web embutido
+                'issue': 'Atributo aria-label vazio detectado. Isso quebra a acessibilidade para leitores de tela.', 
+                'severity': 'high'
             }
         ]
         
-        return self.find_patterns('.py', patterns)
+        return self.find_patterns(('.py', '.html', '.css'), ux_rules)
 
     def get_system_prompt(self):
-        return f'You are "{self.name}" {self.emoji}. Mission: Craft beautiful and usable software experiences.'
+        return f"You are {self.name} {self.emoji}. Mission: Ensure a delightful, consistent, and accessible user experience."

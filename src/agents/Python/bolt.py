@@ -5,8 +5,8 @@ logger = logging.getLogger(__name__)
 
 class BoltPersona(BaseActivePersona):
     """
-    Especialista em performance Python. 
-    Foca em identificar loops ineficientes e padrões de bloqueio.
+    Core: Performance Specialist ⚡
+    Foca no 'Como' e 'Por que' o código pode estar lento ou consumindo recursos indevidos.
     """
     
     def __init__(self, project_root):
@@ -17,23 +17,43 @@ class BoltPersona(BaseActivePersona):
         self.stack = "Python"
 
     def perform_audit(self) -> list:
-        """Audita gargalos de performance usando padrões conhecidos."""
-        logger.info(f"[{self.name}] Analisando performance em {self.project_root}")
+        """
+        Individualidade: Regras específicas de Performance.
+        Aqui definimos o conhecimento exclusivo do Bolt.
+        """
+        logger.info(f"[{self.name}] Iniciando auditoria de performance...")
         
-        patterns = [
+        # O Core do Bolt: O que ele procura especificamente
+        performance_rules = [
             {
                 'regex': r"for .* in .*:.*time\.sleep", 
-                'issue': 'Polling ineficiente: time.sleep detectado dentro de loop.', 
-                'severity': 'medium'
+                'issue': 'Polling ineficiente: time.sleep dentro de loop bloqueia a thread principal.', 
+                'severity': 'high'
             },
             {
                 'regex': r"while True:.*time\.sleep", 
-                'issue': 'Loop infinito com sleep (polling). Considere usar eventos ou webhooks.', 
+                'issue': 'Loop de espera ativa detectado. Considere usar Eventos ou Asyncio.', 
                 'severity': 'medium'
+            },
+            {
+                'regex': r"\[.*for .* in .* if .*\]", # List comprehension complexa
+                'issue': 'List comprehension potencialmente pesada. Avalie o uso de Generators para economizar memória.', 
+                'severity': 'low'
             }
         ]
         
-        return self.find_patterns('.py', patterns)
+        # Usa o motor da Base para aplicar essas regras
+        return self.find_patterns(('.py'), performance_rules)
+
+    def analyze_logic(self, file_path):
+        """
+        Análise de 'Cada Letra': Bolt olha para a eficiência da Árvore de Sintaxe.
+        """
+        issues = super().analyze_logic(file_path) # Pega erros de sintaxe da Base
+        
+        # Adiciona lógica individual do Bolt (ex: detectar recursão sem caso base)
+        # Isso será expandido conforme evoluirmos o Bolt individualmente.
+        return issues
 
     def get_system_prompt(self):
-        return f'You are "{self.name}" {self.emoji}. Mission: Optimize execution speed and resources.'
+        return f"You are {self.name} {self.emoji}. Mission: Optimize execution speed and resource usage."

@@ -1,35 +1,33 @@
-from persona_base import BaseActivePersona
-import os
-import re
+from src.agents.base import BaseActivePersona
+import logging
+
+logger = logging.getLogger(__name__)
 
 class SentinelPersona(BaseActivePersona):
-    """Especialista em segurança Flutter."""
+    """
+    Core: Flutter Security Specialist 🛡️
+    Foca na proteção de dados, segurança de rede e integridade do binário.
+    """
+    
     def __init__(self, project_root):
-        """Inicializa a persona Sentinel."""
         super().__init__(project_root)
         self.name = "Sentinel"
         self.emoji = "🛡️"
         self.role = "Security Specialist"
-        self.mission = "Protect Flutter applications from vulnerabilities."
         self.stack = "Flutter"
 
     def perform_audit(self) -> list:
-        """Audita vulnerabilidades e segredos expostos."""
-        issues = []
-        if not self.project_root: return []
-        for root, dirs, files in os.walk(self.project_root):
-            dirs[:] = [d for d in dirs if d not in ['.git', 'build', '.dart_tool']]
-            for file in files:
-                if file.endswith(('.dart', '.xml', '.yaml')):
-                    rel_path = os.path.relpath(os.path.join(root, file), self.project_root)
-                    try:
-                        with open(os.path.join(root, file), 'r', encoding='utf-8', errors='ignore') as f:
-                            content = f.read()
-                        if "http://" in content and "localhost" not in content:
-                            issues.append({'file': rel_path, 'issue': 'Uso de tráfego HTTP inseguro detectado.', 'severity': 'high', 'context': 'Security'})
-                    except Exception: continue
-        return issues
+        logger.info(f"[{self.name}] Audidando segurança e proteção de dados mobile...")
+        
+        sentinel_rules = [
+            {
+                'regex': r"http://", 
+                'issue': 'Uso de tráfego HTTP não criptografado. Mobile apps devem usar HTTPS obrigatoriamente.', 
+                'severity': 'high'
+            }
+        ]
+        
+        return self.find_patterns(('.dart'), sentinel_rules)
 
     def get_system_prompt(self):
-        """Retorna o guia de conduta para o Gemini CLI."""
-        return f'You are "{self.name}" {self.emoji}. Focus on identifying and fixing security risks in Flutter.'
+        return f"You are {self.name} {self.emoji}. Mission: Guard the app against every digital threat."

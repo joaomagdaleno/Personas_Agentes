@@ -1,25 +1,33 @@
-from persona_base import BaseActivePersona
-import os
-import re
+from src.agents.base import BaseActivePersona
+import logging
+
+logger = logging.getLogger(__name__)
 
 class SparkPersona(BaseActivePersona):
-    """Especialista em engajamento Kotlin."""
+    """
+    Core: Kotlin Engagement Specialist ✨
+    Foca no deleite do usuário através de animações e micro-interações no Android.
+    """
+    
     def __init__(self, project_root):
-        """Inicializa a persona Spark."""
         super().__init__(project_root)
         self.name = "Spark"
         self.emoji = "✨"
         self.role = "Engagement Specialist"
-        self.mission = "Implement game mechanics and social interactions in Android."
         self.stack = "Kotlin"
 
     def perform_audit(self) -> list:
-        """Audita deleite visual e mecânicas sociais no Android."""
-        issues = []
-        if not self.project_root: return []
-        # Exemplo simplificado de monitoramento de engajamento
-        return issues
+        logger.info(f"[{self.name}] Analisando elementos de animação e engajamento...")
+        
+        spark_rules = [
+            {
+                'regex': r"animate.*AsState", 
+                'issue': 'Animação do Compose detectada. Excelente para fluidez da UI!', 
+                'severity': 'low'
+            }
+        ]
+        
+        return self.find_patterns(('.kt'), spark_rules)
 
     def get_system_prompt(self):
-        """Retorna o guia de conduta para o Gemini CLI."""
-        return f'You are "{self.name}" {self.emoji}. Focus on points, badges, and delight factors in Kotlin apps.'
+        return f"You are {self.name} {self.emoji}. Mission: Create moments of delight that keep users coming back."

@@ -1,35 +1,33 @@
-from persona_base import BaseActivePersona
-import os
-import re
+from src.agents.base import BaseActivePersona
+import logging
+
+logger = logging.getLogger(__name__)
 
 class SentinelPersona(BaseActivePersona):
-    """Especialista em segurança Kotlin."""
+    """
+    Core: Kotlin Security Specialist 🛡️
+    Foca na proteção de dados sensíveis e segurança da aplicação Android.
+    """
+    
     def __init__(self, project_root):
-        """Inicializa a persona Sentinel."""
         super().__init__(project_root)
         self.name = "Sentinel"
         self.emoji = "🛡️"
         self.role = "Security Specialist"
-        self.mission = "Protect Android applications from vulnerabilities and security risks."
         self.stack = "Kotlin"
 
     def perform_audit(self) -> list:
-        """Audita permissões e segredos no Kotlin/XML."""
-        issues = []
-        if not self.project_root: return []
-        for root, dirs, files in os.walk(self.project_root):
-            dirs[:] = [d for d in dirs if d not in ['.git', 'build']]
-            for file in files:
-                if file.endswith(('.kt', '.xml')):
-                    rel_path = os.path.relpath(os.path.join(root, file), self.project_root)
-                    try:
-                        with open(os.path.join(root, file), 'r', encoding='utf-8', errors='ignore') as f:
-                            content = f.read()
-                        if "http://" in content and "localhost" not in content:
-                            issues.append({'file': rel_path, 'issue': 'Uso de tráfego HTTP inseguro detectado.', 'severity': 'high', 'context': 'Security'})
-                    except Exception: continue
-        return issues
+        logger.info(f"[{self.name}] Audidando segurança e privacidade de dados...")
+        
+        sentinel_rules = [
+            {
+                'regex': r"http://", 
+                'issue': 'Tráfego HTTP não criptografado detectado. Use HTTPS para proteger os dados do usuário.', 
+                'severity': 'high'
+            }
+        ]
+        
+        return self.find_patterns(('.kt', '.xml'), sentinel_rules)
 
     def get_system_prompt(self):
-        """Retorna o guia de conduta para o Gemini CLI."""
-        return f'You are "{self.name}" {self.emoji}. Focus on identifying and fixing security issues in Android.'
+        return f"You are {self.name} {self.emoji}. Mission: Guard the application and user data against all threats."

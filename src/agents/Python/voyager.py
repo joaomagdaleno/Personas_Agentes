@@ -5,8 +5,8 @@ logger = logging.getLogger(__name__)
 
 class VoyagerPersona(BaseActivePersona):
     """
-    Especialista em inovação e exploração tecnológica.
-    Identifica oportunidades de melhoria e caminhos de evolução do projeto.
+    Core: Innovation Specialist 🚀
+    Foca na exploração de novas tecnologias, padrões modernos e evolução tecnológica.
     """
     
     def __init__(self, project_root):
@@ -17,18 +17,17 @@ class VoyagerPersona(BaseActivePersona):
         self.stack = "Python"
 
     def perform_audit(self) -> list:
-        """Busca por tecnologias obsoletas e oportunidades de upgrade."""
-        logger.info(f"[{self.name}] Explorando novas fronteiras técnicas...")
+        logger.info(f"[{self.name}] Explorando oportunidades de evolução tecnológica...")
         
-        patterns = [
+        voyager_rules = [
             {
-                'regex': r"python2|print\s+['\"] பரிசு ['\"]", # Padrões do passado
-                'issue': 'Referência a legado (Python 2) ou sintaxe obsoleta detectada. Considere modernizar.', 
-                'severity': 'medium'
+                'regex': r"python2|os\.path\.", 
+                'issue': 'Padrões antigos detectados. Considere migrar para Python 3.10+ e usar a biblioteca "pathlib".', 
+                'severity': 'low'
             }
         ]
         
-        return self.find_patterns('.py', patterns)
+        return self.find_patterns(('.py'), voyager_rules)
 
     def get_system_prompt(self):
-        return f'You are "{self.name}" {self.emoji}. Mission: Guide the project through unknown technical territories and keep it modern.'
+        return f"You are {self.name} {self.emoji}. Mission: Push the boundaries of technology and keep the project at the cutting edge."

@@ -5,35 +5,34 @@ logger = logging.getLogger(__name__)
 
 class BridgePersona(BaseActivePersona):
     """
-    Especialista em integração nativa.
-    Foca em chamadas de sistema, C-extensions e segurança de tipos nativos.
+    Core: Integration Specialist 🌉
+    Foca na interoperabilidade entre diferentes sistemas, linguagens e camadas nativas.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
         self.name = "Bridge"
         self.emoji = "🌉"
-        self.role = "Native Integration Specialist"
+        self.role = "Integration Specialist"
         self.stack = "Python"
 
     def perform_audit(self) -> list:
-        """Audita riscos em chamadas nativas."""
-        logger.info(f"[{self.name}] Analisando integrações nativas...")
+        logger.info(f"[{self.name}] Audidando pontes de integração e chamadas nativas...")
         
-        patterns = [
+        bridge_rules = [
             {
-                'regex': r"ctypes\.|cffi", 
-                'issue': 'Chamada nativa detectada. Verifique a proteção try-except para evitar segmentation faults.', 
-                'severity': 'high'
+                'regex': r"ctypes\.CDLL\(.*\)|ctypes\.WinDLL\(.*\)", 
+                'issue': 'Carregamento de DLL nativa detectado. Garanta que o caminho seja dinâmico e seguro para diferentes SOs.', 
+                'severity': 'medium'
             },
             {
-                'regex': r"os\.system\(", 
-                'issue': 'Uso de os.system detectado. Recomenda-se o uso do módulo subprocess para maior segurança.', 
-                'severity': 'medium'
+                'regex': r"subprocess\.run\(.*shell=True", 
+                'issue': 'Uso de shell=True em integrações de sistema. Alto risco de injeção se houver parâmetros externos.', 
+                'severity': 'high'
             }
         ]
         
-        return self.find_patterns('.py', patterns)
+        return self.find_patterns(('.py'), bridge_rules)
 
     def get_system_prompt(self):
-        return f'You are "{self.name}" {self.emoji}. Mission: Ensure safe and efficient system-level connectivity.'
+        return f"You are {self.name} {self.emoji}. Mission: Bridge the gap between system layers with stability and safety."

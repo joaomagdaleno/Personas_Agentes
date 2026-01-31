@@ -5,35 +5,34 @@ logger = logging.getLogger(__name__)
 
 class MantraPersona(BaseActivePersona):
     """
-    Especialista em excelência arquitetural.
-    Guardião do contrato BaseActivePersona e padrões OOP.
+    Core: Code Quality Specialist 🧘
+    Foca em Clean Code, princípios SOLID e padrões de projeto.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
         self.name = "Mantra"
-        self.emoji = "🐍"
-        self.role = "Architecture Guardian"
+        self.emoji = "🧘"
+        self.role = "Quality Specialist"
         self.stack = "Python"
 
     def perform_audit(self) -> list:
-        """Audita a própria estrutura dos agentes para garantir conformidade OOP."""
-        logger.info(f"[{self.name}] Validando conformidade arquitetural...")
+        logger.info(f"[{self.name}] Audidando padrões de código e legibilidade...")
         
-        patterns = [
+        mantra_rules = [
             {
-                'regex': r"class .*Persona(?!\(BaseActivePersona\))", 
-                'issue': 'Persona detectada sem herança formal da classe base (BaseActivePersona). Violatão de contrato.', 
-                'severity': 'high'
+                'regex': r"def .*(self,.*,.*,.*,.*,.*):", # Muitos argumentos
+                'issue': 'Função com muitos argumentos detectada. Considere aplicar o padrão "Introduce Parameter Object".', 
+                'severity': 'medium'
             },
             {
-                'regex': r"import print", # Caso alguém tente importar print por algum motivo estranho
-                'issue': 'Padrão não Pythonico ou redundante detectado.', 
-                'severity': 'low'
+                'regex': r"class .*:.*class .*:.*class", # Classes aninhadas excessivas
+                'issue': 'Alta complexidade de aninhamento de classes. Pode violar o Princípio da Responsabilidade Única.', 
+                'severity': 'medium'
             }
         ]
         
-        return self.find_patterns('.py', patterns)
+        return self.find_patterns(('.py'), mantra_rules)
 
     def get_system_prompt(self):
-        return f'You are "{self.name}" {self.emoji}. Mission: Maintain the project technical soul and OOP integrity.'
+        return f"You are {self.name} {self.emoji}. Mission: Ensure the codebase is a temple of clean and maintainable code."

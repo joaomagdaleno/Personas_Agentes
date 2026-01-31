@@ -1,39 +1,43 @@
-from persona_base import BaseActivePersona
+from src.agents.base import BaseActivePersona
 import logging
 
 logger = logging.getLogger(__name__)
 
 class BoltPersona(BaseActivePersona):
-    """Especialista em performance Flutter do Personas Agentes."""
+    """
+    Core: Flutter Performance Specialist ⚡
+    Foca em otimização de renderização, redução de builds e eficiência de memória no Flutter.
+    """
     
     def __init__(self, project_root):
-        """Inicializa a persona Bolt."""
         super().__init__(project_root)
         self.name = "Bolt"
         self.emoji = "⚡"
         self.role = "Performance Specialist"
-        self.mission = "Optimize execution speed and UI smoothness in Flutter."
         self.stack = "Flutter"
 
     def perform_audit(self) -> list:
-        """Audita problemas de performance (jank) no código Flutter."""
-        logger.info(f"Iniciando auditoria de performance Flutter em: {self.project_root}")
+        logger.info(f"[{self.name}] Audidando performance do Widget Tree e Renderização...")
         
-        patterns = [
+        flutter_performance_rules = [
             {
-                'regex': r"setState\(.*\).*for ", 
-                'issue': 'Potencial jank: setState detectado próximo a loop ou lógica iterativa.', 
+                'regex': r"setState\(\(\) \{\}\)", 
+                'issue': 'setState vazio detectado. Isso dispara um build desnecessário.', 
+                'severity': 'medium'
+            },
+            {
+                'regex': r"ListView\(", 
+                'issue': 'ListView sem construtor .builder detectada. Para listas longas, isso causa alto consumo de memória.', 
                 'severity': 'high'
             },
             {
-                'regex': r"for .*setState", 
-                'issue': 'setState detectado dentro de loop (risco crítico de performance).', 
-                'severity': 'high'
+                'regex': r"Opacity\(", 
+                'issue': 'Widget Opacity detectado. Para animações, prefira AnimatedOpacity ou Opacity direto no decorador para evitar saveLayer.', 
+                'severity': 'low'
             }
         ]
         
-        return self.find_patterns_in_files('.dart', patterns)
+        return self.find_patterns(('.dart'), flutter_performance_rules)
 
     def get_system_prompt(self):
-        """Retorna o guia de conduta para o Gemini CLI."""
-        return f'You are "{self.name}" {self.emoji} - {self.role}. Focus on Flutter rendering performance and frame stability.'
+        return f"You are {self.name} {self.emoji}. Mission: Ensure the Flutter app runs at a constant 60/120 FPS."

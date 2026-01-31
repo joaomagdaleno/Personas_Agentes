@@ -5,32 +5,39 @@ logger = logging.getLogger(__name__)
 
 class CachePersona(BaseActivePersona):
     """
-    Especialista em gestão de recursos e persistência.
-    Foca em prevenir vazamentos de memória e handles de arquivos.
+    Core: Persistence & Storage Specialist 🗄️
+    Foca na eficiência do armazenamento de dados, consultas e estratégias de cache.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
         self.name = "Cache"
         self.emoji = "🗄️"
-        self.role = "Persistence Specialist"
+        self.role = "Storage Specialist"
         self.stack = "Python"
 
     def perform_audit(self) -> list:
-        """Audita vazamentos de recursos (arquivos abertos)."""
-        logger.info(f"[{self.name}] Verificando gestão de recursos...")
+        logger.info(f"[{self.name}] Audidando persistência de dados e eficiência de queries...")
         
-        patterns = [
+        cache_rules = [
             {
-                # Busca por open() que não seja precedido por 'with' nem seguido por '.close()'
-                # Simplificado para o motor de busca genérico
-                'regex': r"^(?!.*with).*open\(", 
-                'issue': 'Abertura de arquivo sem context manager (with). Risco de vazamento de handle.', 
+                'regex': r"SELECT \* FROM", 
+                'issue': 'Uso de "SELECT *" detectado. Especifique as colunas para otimizar a performance e reduzir consumo de memória.', 
+                'severity': 'medium'
+            },
+            {
+                'regex': r"sqlite3\.connect\(.*['\"]:memory:['\"]", 
+                'issue': 'Banco de dados em memória detectado. Garanta que a volatilidade dos dados seja aceitável para o caso de uso.', 
+                'severity': 'low'
+            },
+            {
+                'regex': r"for .* in .*:\s+.*\.execute\(", 
+                'issue': 'Execução de query dentro de loop (N+1 problem). Considere o uso de bulk inserts ou joins.', 
                 'severity': 'high'
             }
         ]
         
-        return self.find_patterns('.py', patterns)
+        return self.find_patterns(('.py', '.sql'), cache_rules)
 
     def get_system_prompt(self):
-        return f'You are "{self.name}" {self.emoji}. Mission: Efficient data handling and resource protection.'
+        return f"You are {self.name} {self.emoji}. Mission: Ensure data is stored and retrieved with maximum efficiency."

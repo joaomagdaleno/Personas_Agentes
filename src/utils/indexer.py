@@ -155,13 +155,13 @@ def search_index(query, base_dir):
         logger.info(STRINGS["no_agents_found"].format(query=query))
         return
 
-    print(STRINGS["found_agents"].format(count=len(results), query=query))
-    print("-" * 70)
+    logger.info(STRINGS["found_agents"].format(count=len(results), query=query))
+    logger.info("-" * 70)
     for score, p in results[:15]:
-        print(f"{p['emoji']}  {p['name']} ({p['category']})")
-        print(f"    Role:    {p['role']}")
-        print(f"    Mission: {p['mission']}")
-        print("-" * 70)
+        logger.info(f"{p['emoji']}  {p['name']} ({p['category']})")
+        logger.info(f"    Role:    {p['role']}")
+        logger.info(f"    Mission: {p['mission']}")
+        logger.info("-" * 70)
 
 def main():
     """Ponto de entrada da CLI para gerenciamento do índice."""

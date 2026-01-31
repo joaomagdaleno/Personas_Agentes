@@ -1,26 +1,33 @@
-from persona_base import BaseActivePersona
-import os
-import re
+from src.agents.base import BaseActivePersona
+import logging
+
+logger = logging.getLogger(__name__)
 
 class WardenPersona(BaseActivePersona):
-    """Especialista em compliance Kotlin."""
+    """
+    Core: Kotlin Compliance Specialist ⚖️
+    Foca na conformidade legal, permissões de sistema e privacidade no ecossistema Android.
+    """
+    
     def __init__(self, project_root):
-        """Inicializa a persona Warden."""
         super().__init__(project_root)
         self.name = "Warden"
         self.emoji = "⚖️"
         self.role = "Compliance Specialist"
-        self.mission = "Ensure application adheres to platform policies and legal regulations."
         self.stack = "Kotlin"
 
     def perform_audit(self) -> list:
-        """Audita conformidade com Play Store e privacidade."""
-        issues = []
-        if not self.project_root: return []
-        if not os.path.exists(os.path.join(self.project_root, 'LICENSE')):
-            issues.append({'file': 'Raiz', 'issue': 'LICENSE não detectada. Risco para projetos open source ou corporativos.', 'severity': 'high', 'context': 'Compliance'})
-        return issues
+        logger.info(f"[{self.name}] Audidando conformidade com as políticas do Google Play...")
+        
+        warden_rules = [
+            {
+                'regex': r"requestPermissions", 
+                'issue': 'Solicitação de permissão detectada. No Android 13+, garanta que a permissão de notificações seja tratada separadamente.', 
+                'severity': 'medium'
+            }
+        ]
+        
+        return self.find_patterns(('.kt', '.xml'), warden_rules)
 
     def get_system_prompt(self):
-        """Retorna o guia de conduta para o Gemini CLI."""
-        return f'You are "{self.name}" {self.emoji}. Focus on GDPR, data safety and legal operational compliance.'
+        return f"You are {self.name} {self.emoji}. Mission: Guard the application's legal and ethical standing."

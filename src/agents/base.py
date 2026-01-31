@@ -1,77 +1,144 @@
 from abc import ABC, abstractmethod
 import os
-import subprocess
-import logging
 import re
-from src.utils.logging_config import setup_logging
+import ast
+import logging
 
-# Garante que o logging esteja configurado globalmente
-setup_logging()
 logger = logging.getLogger(__name__)
 
 class BaseActivePersona(ABC):
-    """
-    Classe Abstrata Base (Model). 
-    Define o contrato para todos os agentes especialistas.
-    """
-
-    def __init__(self, project_root):
+    """Classe base com Consciência Estrutural e Auto-Cura Inteligente."""
+    def __init__(self, project_root=None):
         self.project_root = project_root
-        self.name = ""
-        self.emoji = ""
-        self.role = ""
-        self.mission = ""
-        self.stack = ""
-        self.dependencies = []
-        self.ignored_dirs = ['.git', 'build', 'node_modules', '__pycache__', 'venv', '.env', '.dart_tool', 'obj', 'bin']
+        self.name = "Base"
+        self.emoji = "👤"
+        self.role = "Generalist"
+        self.stack = "Universal"
+        self.context_data = {}
+        self.ignored_dirs = ['.git', '__pycache__', 'build', 'node_modules', '.venv']
 
-    def read_project_file(self, rel_path):
-        """Lê arquivos com tratamento centralizado de erro e contexto."""
-        full_path = os.path.join(self.project_root, rel_path)
-        if os.path.exists(full_path):
-            try:
-                with open(full_path, 'r', encoding='utf-8', errors='ignore') as f:
-                    return f.read()
-            except Exception as e:
-                logger.error(f"[{self.name}] Erro ao ler {rel_path}: {e}")
-        return None
+    def set_context(self, context_map):
+        self.context_data = context_map
 
-    def find_patterns(self, extension: str, patterns: list) -> list:
+    def find_patterns(self, extensions, patterns):
         """
-        Reutilização de Código: Engine genérica de busca para as personas.
-        Evita que cada persona precise implementar loops complexos de os.walk.
+        Busca inteligente: Diferencia código vivo de strings/exemplos.
         """
         issues = []
-        if not self.project_root:
-            return []
+        if not self.project_root: return []
 
         for root, dirs, files in os.walk(self.project_root):
             dirs[:] = [d for d in dirs if d not in self.ignored_dirs]
             for file in files:
-                if file.endswith(extension):
+                if file.endswith(extensions):
                     rel_path = os.path.relpath(os.path.join(root, file), self.project_root)
-                    content = self.read_project_file(rel_path)
-                    if not content: continue
-
-                    for p in patterns:
-                        if re.search(p['regex'], content, re.MULTILINE | re.IGNORECASE):
-                            issues.append({
-                                'file': rel_path,
-                                'issue': p['issue'],
-                                'severity': p.get('severity', 'medium'),
-                                'context': self.name
-                            })
+                    
+                    # Se for Python, usamos análise AST para evitar falsos positivos
+                    if file.endswith('.py'):
+                        issues.extend(self._audit_python_ast(rel_path, patterns))
+                    else:
+                        # Para outras extensões, mantemos o regex padrão
+                        content = self.read_project_file(rel_path)
+                        if not content: continue
+                        for p in patterns:
+                            if re.search(p['regex'], content, re.MULTILINE | re.IGNORECASE):
+                                issues.append({
+                                    'file': rel_path, 'issue': p['issue'],
+                                    'severity': p.get('severity', 'medium'), 'context': self.name
+                                })
         return issues
 
-    @abstractmethod
-    def perform_audit(self) -> list:
-        """Implementação obrigatória da lógica de auditoria."""
-        pass
+    def _audit_python_ast(self, rel_path, patterns):
+        """Analisa o Python estruturalmente para encontrar erros REAIS."""
+        issues = []
+        abs_path = os.path.join(self.project_root, rel_path)
+        try:
+            with open(abs_path, 'r', encoding='utf-8') as f:
+                tree = ast.parse(f.read())
+            
+            for node in ast.walk(tree):
+                # 1. Busca por DEBUG = True (Apenas se for atribuição real)
+                if isinstance(node, ast.Assign):
+                    for target in node.targets:
+                        if isinstance(target, ast.Name) and target.id == 'DEBUG':
+                            if isinstance(node.value, ast.Constant) and node.value.value is True:
+                                issues.append({
+                                    'file': rel_path, 'issue': 'DEBUG=True detectado como configuração ativa.',
+                                    'severity': 'medium', 'context': self.name
+                                })
+
+                # 2. Busca por print() (Apenas se for chamada de função real)
+                if isinstance(node, ast.Call):
+                    if isinstance(node.func, ast.Name) and node.func.id == 'print':
+                        issues.append({
+                            'file': rel_path, 'issue': 'Uso de print() detectado em código de execução.',
+                            'severity': 'low', 'context': self.name
+                        })
+
+            return issues
+        except: return []
+
+    def analyze_logic(self, file_path):
+        """Diagnóstico de 'cada letra' via AST."""
+        issues = []
+        try:
+            with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+                tree = ast.parse(f.read())
+            
+            for node in ast.walk(tree):
+                # Detecta logicamente o 'pass' silencioso
+                if isinstance(node, ast.ExceptHandler):
+                    if len(node.body) == 1 and isinstance(node.body[0], ast.Pass):
+                        issues.append({
+                            'file': os.path.relpath(file_path, self.project_root),
+                            'issue': 'Captura de erro silenciosa (pass).',
+                            'severity': 'high', 'context': self.name
+                        })
+            return issues
+        except SyntaxError as e:
+            return [{'file': os.path.relpath(file_path, self.project_root), 
+                     'issue': f"Erro de sintaxe: {e.msg} na linha {e.lineno}", 'severity': 'critical'}]
+        except: return []
+
+    def apply_auto_fix(self, file_path, issue_desc):
+        """Auto-Cura com validação de sintaxe pré-salvamento."""
+        content = self.read_project_file(os.path.relpath(file_path, self.project_root))
+        if not content: return False
+
+        new_content = content
+        fixed = False
+
+        if "pass" in issue_desc:
+            new_content = re.sub(r"except:\s*pass|except\s+Exception:\s*pass", 
+                                 "except Exception as e:\n            logger.error(f'Erro: {e}')", content)
+            fixed = True
+        elif "DEBUG" in issue_desc:
+            new_content = re.sub(r"DEBUG\s*=\s*True", "DEBUG = os.getenv('DEBUG', 'False') == 'True'", content)
+            fixed = True
+        elif "print()" in issue_desc:
+            new_content = re.sub(r"print\((.*?)\)", r"logger.info(\1)", content)
+            fixed = True
+
+        if fixed and new_content != content:
+            try:
+                # Validação de Sanidade: Só salva se o novo código for válido
+                ast.parse(new_content)
+                with open(file_path, 'w', encoding='utf-8') as f:
+                    f.write(new_content)
+                return True
+            except:
+                logger.error(f"Cura abortada: a correção geraria erro de sintaxe em {file_path}")
+        return False
+
+    def read_project_file(self, rel_path):
+        abs_path = os.path.join(self.project_root, rel_path)
+        try:
+            with open(abs_path, 'r', encoding='utf-8', errors='ignore') as f:
+                return f.read()
+        except: return None
 
     @abstractmethod
-    def get_system_prompt(self) -> str:
-        """Retorna o prompt de sistema especializado."""
-        pass
+    def perform_audit(self) -> list: pass
 
-    def __str__(self):
-        return f"{self.emoji} {self.name} ({self.role})"
+    @abstractmethod
+    def get_system_prompt(self) -> str: pass

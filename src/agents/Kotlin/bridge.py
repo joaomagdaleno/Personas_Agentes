@@ -1,35 +1,33 @@
-from persona_base import BaseActivePersona
-import os
-import re
+from src.agents.base import BaseActivePersona
+import logging
+
+logger = logging.getLogger(__name__)
 
 class BridgePersona(BaseActivePersona):
-    """Especialista em integração Kotlin."""
+    """
+    Core: Kotlin Integration Specialist 🌉
+    Foca na interoperabilidade entre Kotlin, Java e código nativo (C++ via JNI).
+    """
+    
     def __init__(self, project_root):
-        """Inicializa a persona Bridge."""
         super().__init__(project_root)
         self.name = "Bridge"
         self.emoji = "🌉"
-        self.role = "Native Integration Specialist"
-        self.mission = "Bridge the gap between Kotlin and underlying platform features."
+        self.role = "Integration Specialist"
         self.stack = "Kotlin"
 
     def perform_audit(self) -> list:
-        """Audita JNI e chamadas de sistema nativas."""
-        issues = []
-        if not self.project_root: return []
-        for root, dirs, files in os.walk(self.project_root):
-            dirs[:] = [d for d in dirs if d not in ['.git', 'build']]
-            for file in files:
-                if file.endswith('.kt'):
-                    rel_path = os.path.relpath(os.path.join(root, file), self.project_root)
-                    try:
-                        with open(os.path.join(root, file), 'r', encoding='utf-8', errors='ignore') as f:
-                            content = f.read()
-                        if "external fun" in content and "System.loadLibrary" not in content:
-                            issues.append({'file': rel_path, 'issue': 'Função nativa externa sem carregamento de biblioteca detectado.', 'severity': 'high', 'context': 'JNI Bridge'})
-                    except Exception: continue
-        return issues
+        logger.info(f"[{self.name}] Audidando pontes JNI e interoperabilidade Java...")
+        
+        bridge_rules = [
+            {
+                'regex': r"external fun", 
+                'issue': 'Função nativa detectada. Garanta que a biblioteca nativa correspondente seja carregada corretamente.', 
+                'severity': 'medium'
+            }
+        ]
+        
+        return self.find_patterns(('.kt'), bridge_rules)
 
     def get_system_prompt(self):
-        """Retorna o guia de conduta para o Gemini CLI."""
-        return f'You are "{self.name}" {self.emoji}. Focus on hardware integration and native C++ connectivity.'
+        return f"You are {self.name} {self.emoji}. Mission: Connect Kotlin to the deepest layers of the system."

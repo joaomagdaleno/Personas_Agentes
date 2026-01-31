@@ -5,8 +5,8 @@ logger = logging.getLogger(__name__)
 
 class SentinelPersona(BaseActivePersona):
     """
-    Especialista em segurança e integridade de dados.
-    Atua na linha de frente para prevenir a exposição de segredos e falhas críticas.
+    Core: Security Specialist 🛡️
+    Foca na identificação de vulnerabilidades, vazamento de credenciais e brechas de segurança.
     """
     
     def __init__(self, project_root):
@@ -17,23 +17,36 @@ class SentinelPersona(BaseActivePersona):
         self.stack = "Python"
 
     def perform_audit(self) -> list:
-        """Audita segredos hardcoded e vulnerabilidades comuns."""
-        logger.info(f"[{self.name}] Iniciando varredura de segurança...")
+        """
+        Individualidade: Regras de segurança e proteção de dados.
+        """
+        logger.info(f"[{self.name}] Iniciando auditoria de segurança e vulnerabilidades...")
         
-        patterns = [
+        # O Core do Sentinel: Foco em proteção
+        security_rules = [
             {
-                'regex': r"password\s*=\s*['\"]:.+['\"]|api_key\s*=\s*['\"]:.+['\"]", 
-                'issue': 'Possível credencial (senha ou chave) hardcoded detectada. Use variáveis de ambiente.', 
+                'regex': r"(password|passwd|pwd|token|api_key|secret)\s*=\s*['\"][^'\"]{5,}['\"]", 
+                'issue': 'Possível credencial ou segredo hardcoded detectado. Use variáveis de ambiente.', 
+                'severity': 'critical'
+            },
+            {
+                'regex': r"eval\(.*\)", 
+                'issue': 'Uso da função eval() detectado. Isso permite execução de código arbitrário e é um alto risco de segurança.', 
+                'severity': 'critical'
+            },
+            {
+                'regex': r"os\.system\(.*\)|subprocess\.Popen\(.*shell=True.*\)", 
+                'issue': 'Execução de comandos de shell detectada. Risco de Injeção de Comando se as entradas não forem sanitizadas.', 
                 'severity': 'high'
             },
             {
-                'regex': r"eval\(", 
-                'issue': 'Uso da função perigosa eval() detectado. Risco potencial de execução de código arbitrário.', 
-                'severity': 'high'
+                'regex': r"http://", 
+                'issue': 'Uso de protocolo HTTP inseguro detectado. Considere migrar para HTTPS.', 
+                'severity': 'medium'
             }
         ]
         
-        return self.find_patterns('.py', patterns)
+        return self.find_patterns(('.py', '.env', '.json', '.yml', '.yaml'), security_rules)
 
     def get_system_prompt(self):
-        return f'You are "{self.name}" {self.emoji}. Mission: Guard the codebase against vulnerabilities and leaks.'
+        return f"You are {self.name} {self.emoji}. Mission: Secure the application by finding vulnerabilities and protecting sensitive data."

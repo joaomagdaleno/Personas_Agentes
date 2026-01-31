@@ -1,26 +1,33 @@
-from persona_base import BaseActivePersona
-import os
-import re
+from src.agents.base import BaseActivePersona
+import logging
+
+logger = logging.getLogger(__name__)
 
 class WardenPersona(BaseActivePersona):
-    """Especialista em compliance Flutter."""
+    """
+    Core: Flutter Compliance Specialist ⚖️
+    Foca na privacidade de dados e conformidade com as diretrizes das lojas.
+    """
+    
     def __init__(self, project_root):
-        """Inicializa a persona Warden."""
         super().__init__(project_root)
         self.name = "Warden"
         self.emoji = "⚖️"
         self.role = "Compliance Specialist"
-        self.mission = "Ensure adherence to laws, regulations and platform policies."
         self.stack = "Flutter"
 
     def perform_audit(self) -> list:
-        """Audita políticas de privacidade e termos legais."""
-        issues = []
-        if not self.project_root: return []
-        if not os.path.exists(os.path.join(self.project_root, 'LICENSE')):
-            issues.append({'file': 'Raiz', 'issue': 'Falta o arquivo de LICENSE para conformidade legal.', 'severity': 'high', 'context': 'Legal/Policy'})
-        return issues
+        logger.info(f"[{self.name}] Audidando conformidade e permissões de usuário...")
+        
+        warden_rules = [
+            {
+                'regex': r"Permission\..*\.request\(", 
+                'issue': 'Solicitação de permissão detectada. Garanta que haja uma explicação clara para o usuário sobre o porquê dela ser necessária.', 
+                'severity': 'medium'
+            }
+        ]
+        
+        return self.find_patterns(('.dart', '.xml', '.plist'), warden_rules)
 
     def get_system_prompt(self):
-        """Retorna o guia de conduta para o Gemini CLI."""
-        return f'You are "{self.name}" {self.emoji}. Focus on GDPR, LGPD and protecting the project from liability.'
+        return f"You are {self.name} {self.emoji}. Mission: Protect the app and the user within legal boundaries."

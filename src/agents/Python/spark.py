@@ -5,8 +5,8 @@ logger = logging.getLogger(__name__)
 
 class SparkPersona(BaseActivePersona):
     """
-    Especialista em engajamento e motivação.
-    Foca em identificar pendências e incentivar a conclusão de tarefas.
+    Core: Engagement Specialist ✨
+    Foca em mecânicas de gamificação, interação social e retenção de usuários.
     """
     
     def __init__(self, project_root):
@@ -17,18 +17,17 @@ class SparkPersona(BaseActivePersona):
         self.stack = "Python"
 
     def perform_audit(self) -> list:
-        """Audita lembretes de tarefas pendentes."""
-        logger.info(f"[{self.name}] Buscando pendências de desenvolvimento...")
+        logger.info(f"[{self.name}] Analisando mecânicas de engajamento e feedback...")
         
-        patterns = [
+        spark_rules = [
             {
-                'regex': r"TODO:|FIXME:|HACK:", 
-                'issue': 'Lembrete de tarefa pendente detectado. Considere priorizar a conclusão deste Spark.', 
+                'regex': r"points|badges|leaderboard", 
+                'issue': 'Termos de gamificação detectados. Garanta que a lógica de progressão seja justa e clara.', 
                 'severity': 'low'
             }
         ]
         
-        return self.find_patterns('.py', patterns)
+        return self.find_patterns(('.py'), spark_rules)
 
     def get_system_prompt(self):
-        return f'You are "{self.name}" {self.emoji}. Mission: Energize the team and clear the path of pending tasks.'
+        return f"You are {self.name} {self.emoji}. Mission: Turn utility into delight and engagement."

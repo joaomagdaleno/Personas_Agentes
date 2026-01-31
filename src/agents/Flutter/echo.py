@@ -1,35 +1,33 @@
-from persona_base import BaseActivePersona
-import os
-import re
+from src.agents.base import BaseActivePersona
+import logging
+
+logger = logging.getLogger(__name__)
 
 class EchoPersona(BaseActivePersona):
-    """Especialista em feedback Flutter."""
+    """
+    Core: Flutter Feedback Specialist 🗣️
+    Foca na comunicação entre o app e o usuário (diálogos, toasts, feedbacks).
+    """
+    
     def __init__(self, project_root):
-        """Inicializa a persona Echo."""
         super().__init__(project_root)
         self.name = "Echo"
         self.emoji = "🗣️"
-        self.role = "Customer Success Specialist"
-        self.mission = "Build channels for feedback and automate changelogs."
+        self.role = "Feedback Specialist"
         self.stack = "Flutter"
 
     def perform_audit(self) -> list:
-        """Audita loops de feedback e diálogos de erro."""
-        issues = []
-        if not self.project_root: return []
-        for root, dirs, files in os.walk(self.project_root):
-            dirs[:] = [d for d in dirs if d not in ['.git', 'build', '.dart_tool']]
-            for file in files:
-                if file.endswith('.dart'):
-                    rel_path = os.path.relpath(os.path.join(root, file), self.project_root)
-                    try:
-                        with open(os.path.join(root, file), 'r', encoding='utf-8', errors='ignore') as f:
-                            content = f.read()
-                        if "showDialog" in content and "barrierDismissible: false" not in content:
-                            issues.append({'file': rel_path, 'issue': 'Diálogo de feedback pode ser fechado acidentalmente.', 'severity': 'low', 'context': 'UX Feedback'})
-                    except Exception: continue
-        return issues
+        logger.info(f"[{self.name}] Analisando qualidade dos feedbacks ao usuário...")
+        
+        echo_rules = [
+            {
+                'regex': r"showDialog\(", 
+                'issue': 'Diálogo genérico detectado. Garanta que o botão de fechar/cancelar esteja acessível.', 
+                'severity': 'low'
+            }
+        ]
+        
+        return self.find_patterns(('.dart'), echo_rules)
 
     def get_system_prompt(self):
-        """Retorna o guia de conduta para o Gemini CLI."""
-        return f'You are "{self.name}" {self.emoji}. Focus on user experience and feedback channels.'
+        return f"You are {self.name} {self.emoji}. Mission: Ensure the user always knows what is happening in the app."

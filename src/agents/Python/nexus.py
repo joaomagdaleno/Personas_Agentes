@@ -5,35 +5,39 @@ logger = logging.getLogger(__name__)
 
 class NexusPersona(BaseActivePersona):
     """
-    Especialista em conectividade e protocolos de rede.
-    Garante que as integrações externas sejam resilientes e seguras.
+    Core: API & Connectivity Specialist 🌐
+    Foca na integração com serviços externos, contratos de API e protocolos de comunicação.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
         self.name = "Nexus"
         self.emoji = "🌐"
-        self.role = "Connectivity Specialist"
+        self.role = "API Specialist"
         self.stack = "Python"
 
     def perform_audit(self) -> list:
-        """Audita resiliência de chamadas externas."""
-        logger.info(f"[{self.name}] Validando resiliência de rede...")
+        logger.info(f"[{self.name}] Audidando camadas de rede e integração...")
         
-        patterns = [
+        nexus_rules = [
             {
-                'regex': r"requests\.(get|post|put|delete)\((?!.*timeout)", 
-                'issue': 'Requisição HTTP sem timeout. Risco crítico de travar a aplicação indefinidamente.', 
+                'regex': r"requests\.(get|post|put|delete)\(.*\bverify=False\b", 
+                'issue': 'Requisição com verificação SSL desativada. Risco de segurança.', 
                 'severity': 'high'
             },
             {
-                'regex': r"http://(?!localhost|127\.0\.0\.1)", 
-                'issue': 'Endpoint HTTP detectado. Use HTTPS para garantir a segurança em trânsito.', 
-                'severity': 'high'
+                'regex': r"timeout=None", 
+                'issue': 'Requisição sem timeout definido. Pode causar travamento da aplicação se o servidor não responder.', 
+                'severity': 'medium'
+            },
+            {
+                'regex': r"json\.loads\(.*\.text\)", 
+                'issue': 'Serialização direta de texto para JSON detectada. Prefira usar .json() do requests para tratamento automático de encoding.', 
+                'severity': 'low'
             }
         ]
         
-        return self.find_patterns('.py', patterns)
+        return self.find_patterns(('.py'), nexus_rules)
 
     def get_system_prompt(self):
-        return f'You are "{self.name}" {self.emoji}. Mission: Connect worlds through reliable and secure protocols.'
+        return f"You are {self.name} {self.emoji}. Mission: Ensure robust, secure, and efficient API integrations."

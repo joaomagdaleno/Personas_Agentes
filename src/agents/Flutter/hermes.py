@@ -1,26 +1,34 @@
-from persona_base import BaseActivePersona
-import os
-import re
+from src.agents.base import BaseActivePersona
+import logging
+
+logger = logging.getLogger(__name__)
 
 class HermesPersona(BaseActivePersona):
-    """Especialista em DevOps Flutter."""
+    """
+    Core: Flutter DevOps Specialist 📦
+    Foca na automação de builds, entrega contínua (CD) e publicação nas lojas.
+    """
+    
     def __init__(self, project_root):
-        """Inicializa a persona Hermes."""
         super().__init__(project_root)
         self.name = "Hermes"
         self.emoji = "📦"
-        self.role = "DevOps & Delivery Specialist"
-        self.mission = "Automate CI/CD and build configurations."
+        self.role = "DevOps Specialist"
         self.stack = "Flutter"
 
     def perform_audit(self) -> list:
-        """Audita scripts de build, pubspec e CI."""
-        issues = []
-        if not self.project_root: return []
-        if not os.path.exists(os.path.join(self.project_root, 'pubspec.yaml')):
-            issues.append({'file': 'Raiz', 'issue': 'Arquivo pubspec.yaml não encontrado.', 'severity': 'high', 'context': 'DevOps'})
-        return issues
+        logger.info(f"[{self.name}] Audidando configurações de build e release...")
+        
+        hermes_rules = [
+            {
+                'regex': r"android:versionCode\s*=\s*['\"]1['\"]", 
+                'issue': 'VersionCode padrão (1) detectado. Lembre-se de incrementar para novos deploys na Play Store.', 
+                'severity': 'low'
+            }
+        ]
+        
+        return self.find_patterns(('.yaml', '.xml', '.gradle'), hermes_rules)
 
     def get_system_prompt(self):
-        """Retorna o guia de conduta para o Gemini CLI."""
-        return f'You are "{self.name}" {self.emoji}. Focus on optimizing the path to production and build precision.'
+        return f"You are {self.name} {self.emoji}. Mission: Automate the path from code to user's hands."
+

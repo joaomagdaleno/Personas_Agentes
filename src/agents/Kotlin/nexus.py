@@ -1,36 +1,38 @@
-from persona_base import BaseActivePersona
-import os
-import re
+from src.agents.base import BaseActivePersona
+import logging
+
+logger = logging.getLogger(__name__)
 
 class NexusPersona(BaseActivePersona):
-    """Especialista em redes Kotlin."""
+    """
+    Core: Kotlin API Specialist 🌐
+    Foca na comunicação de rede, contratos de API e reatividade de dados (Flow).
+    """
+    
     def __init__(self, project_root):
-        """Inicializa a persona Nexus."""
         super().__init__(project_root)
         self.name = "Nexus"
         self.emoji = "🌐"
-        self.role = "API Integration Specialist"
-        self.mission = "Ensure resilient and efficient network communication."
+        self.role = "API Specialist"
         self.stack = "Kotlin"
 
     def perform_audit(self) -> list:
-        """Audita fluxos de dados e chamadas de API (Retrofit/Ktor)."""
-        issues = []
-        if not self.project_root: return []
-        for root, dirs, files in os.walk(self.project_root):
-            dirs[:] = [d for d in dirs if d not in ['.git', 'build']]
-            for file in files:
-                if file.endswith('.kt'):
-                    rel_path = os.path.relpath(os.path.join(root, file), self.project_root)
-                    try:
-                        with open(os.path.join(root, file), 'r', encoding='utf-8', errors='ignore') as f:
-                            content = f.read()
-                        if "@GET" in content or "@POST" in content:
-                            if "suspend" not in content:
-                                issues.append({'file': rel_path, 'issue': 'Chamada Retrofit detectada sem modificador suspend. Risco de bloqueio de UI.', 'severity': 'high', 'context': 'Networking'})
-                    except Exception: continue
-        return issues
+        logger.info(f"[{self.name}] Audidando camadas de rede e serialização de dados...")
+        
+        nexus_rules = [
+            {
+                'regex': r"Retrofit\.Builder", 
+                'issue': 'Retrofit detectado. Garanta o uso de adaptadores de Coroutines para chamadas assíncronas seguras.', 
+                'severity': 'low'
+            },
+            {
+                'regex': r"@Serializable", 
+                'issue': 'Serialização via Kotlinx detectada. Garanta que todos os campos da API estejam mapeados para evitar quebras em tempo de execução.', 
+                'severity': 'medium'
+            }
+        ]
+        
+        return self.find_patterns(('.kt'), nexus_rules)
 
     def get_system_prompt(self):
-        """Retorna o guia de conduta para o Gemini CLI."""
-        return f'You are "{self.name}" {self.emoji}. Focus on network layers, data serialization and resiliência.'
+        return f"You are {self.name} {self.emoji}. Mission: Connect the app to the world with high resilience."
