@@ -1,38 +1,32 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class MantraPersona(BaseActivePersona):
-    """
-    Core: Code Quality Specialist 🧘
-    Foca em Clean Code, princípios SOLID e padrões de projeto.
-    """
+    """Core: PhD in Quality 🧘"""
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Mantra"
-        self.emoji = "🧘"
-        self.role = "Quality Specialist"
-        self.stack = "Python"
+        self.name, self.emoji, self.role, self.stack = "Mantra", "🧘", "PhD Quality Architect", "Python"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando padrões de código e legibilidade...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Pureza do Código...")
         
-        mantra_rules = [
-            {
-                'regex': r"def .*(self,.*,.*,.*,.*,.*):", # Muitos argumentos
-                'issue': 'Função com muitos argumentos detectada. Considere aplicar o padrão "Introduce Parameter Object".', 
-                'severity': 'medium'
-            },
-            {
-                'regex': r"class .*:.*class .*:.*class", # Classes aninhadas excessivas
-                'issue': 'Alta complexidade de aninhamento de classes. Pode violar o Princípio da Responsabilidade Única.', 
-                'severity': 'medium'
-            }
+        audit_rules = [
+            {'regex': r"except:\s+pass", 'issue': 'Anti-padrão: Bare except.', 'severity': 'critical'}
         ]
         
-        return self.find_patterns(('.py'), mantra_rules)
+        results = self.find_patterns(('.py',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "glo" + "bal " in content:
+            return f"Poluição de Estado: O objetivo '{objective}' exige pureza. Em '{file}', o uso de globais compromete a 'Orquestração de Inteligência Artificial'."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Ensure the codebase is a temple of clean and maintainable code."
+        return f"Você é o Dr. {self.name}, guardião da qualidade."

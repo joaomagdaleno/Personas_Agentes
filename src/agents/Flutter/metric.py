@@ -1,33 +1,36 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class MetricPersona(BaseActivePersona):
     """
-    Core: Flutter Analytics Specialist 📊
-    Foca na mensuração de eventos, comportamento do usuário e KPIs de negócio.
+    Core: PhD in Statistics & System Instrumentation (Flutter) 📊
+    Especialista em telemetria, análise de uso e detecção de anomalias em Dart.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Metric"
-        self.emoji = "📊"
-        self.role = "Analytics Specialist"
-        self.stack = "Flutter"
+        self.name, self.emoji, self.role, self.stack = "Metric", "📊", "PhD Telemetry Engineer", "Flutter"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando instrumentação de telemetria...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Instrumentação Flutter...")
         
-        metric_rules = [
-            {
-                'regex': r"FirebaseAnalytics\.instance\.logEvent\(", 
-                'issue': 'Rastreamento de evento detectado. Verifique se os nomes dos eventos seguem um padrão de nomenclatura.', 
-                'severity': 'low'
-            }
+        audit_rules = [
+            {'regex': r"logEvent\(", 'issue': 'Aviso: Evento analítico detectado. Verifique se segue o schema oficial.', 'severity': 'low'},
+            {'regex': r"print\(", 'issue': 'Saída não rastreável: Use o sistema de logs estruturado.', 'severity': 'medium'}
         ]
         
-        return self.find_patterns(('.dart'), metric_rules)
+        results = self.find_patterns(('.dart',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "print(" in content:
+            return f"Cegueira Analítica: O objetivo '{objective}' exige observabilidade. Em '{file}', o uso de print() impede a extração de métricas para a 'Orquestração de Inteligência Artificial'."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Turn every tap into a data-driven decision."
+        return f"Você é o Dr. {self.name}, mestre em telemetria e análise Flutter."

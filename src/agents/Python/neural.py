@@ -1,38 +1,32 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class NeuralPersona(BaseActivePersona):
-    """
-    Core: AI & Machine Learning Specialist 🧠
-    Foca na integração de modelos de inteligência artificial e processamento de dados.
-    """
+    """Core: PhD in AI 🧠"""
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Neural"
-        self.emoji = "🧠"
-        self.role = "AI Specialist"
-        self.stack = "Python"
+        self.name, self.emoji, self.role, self.stack = "Neural", "🧠", "PhD AI Architect", "Python"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando pipelines de IA e integrações com modelos...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Arquitetura de IA...")
         
-        neural_rules = [
-            {
-                'regex': r"openai\.api_key\s*=", 
-                'issue': 'Chave de API OpenAI hardcoded detectada. Risco crítico de segurança.', 
-                'severity': 'critical'
-            },
-            {
-                'regex': r"temperature\s*=\s*0", 
-                'issue': 'Temperatura do modelo definida como 0. Garanta que a falta de variabilidade seja desejada para este contexto.', 
-                'severity': 'low'
-            }
+        audit_rules = [
+            {'regex': r"openai\.api_key|GOOGLE_API_KEY", 'issue': 'Vulnerabilidade: Chave de IA exposta.', 'severity': 'critical'}
         ]
         
-        return self.find_patterns(('.py'), neural_rules)
+        results = self.find_patterns(('.py',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "api_key" in content.lower():
+            return f"Risco de Autonomia: O objetivo '{objective}' exige segurança de tokens. Em '{file}', a exposição de chaves compromete a 'Orquestração de Inteligência Artificial'."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Integrate intelligence into the core of the application."
+        return f"Você é o Dr. {self.name}, mestre em redes neurais."

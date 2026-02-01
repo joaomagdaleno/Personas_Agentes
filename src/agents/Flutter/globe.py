@@ -1,34 +1,36 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class GlobePersona(BaseActivePersona):
     """
-    Core: Flutter i18n Specialist 🌎
-    Foca na localização do app para diferentes culturas e idiomas.
+    Core: PhD in Linguistics & Global Information Distribution (Flutter) 🌎
+    Especialista em internacionalização (arb), adaptação cultural e distribuição global.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Globe"
-        self.emoji = "🌎"
-        self.role = "i18n Specialist"
-        self.stack = "Flutter"
+        self.name, self.emoji, self.role, self.stack = "Globe", "🌎", "PhD Localization Specialist", "Flutter"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando suporte a multi-idioma (l10n)...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Localização e i18n Flutter...")
         
-        globe_rules = [
-            {
-                'regex': r"text:\s*['\"][A-Z][a-z]", # String hardcoded
-                'issue': 'Texto visível hardcoded detectado. Use AppLocalizations ou Intl para suportar traduções.', 
-                'severity': 'medium'
-            }
+        audit_rules = [
+            {'regex': r"Text\(\s*['\"].*?['"]", 'issue': 'Aviso: String Hardcoded detectada. Use AppLocalizations ou .arb.', 'severity': 'high'},
+            {'regex': r"DateTime\.now\(\")", 'issue': 'Aviso: Uso de hora local. Verifique se deve usar UTC para consistência global.', 'severity': 'low'}
         ]
         
-        return self.find_patterns(('.dart'), globe_rules)
+        results = self.find_patterns(('.dart',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "Text('" in content or 'Text("' in content:
+            return f"Barreira Linguística: O objetivo '{objective}' exige alcance global. Em '{file}', o uso de strings fixas impede a 'Orquestração de Inteligência Artificial' de se adaptar a novos mercados."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Make the app accessible and local for everyone on the planet."
-
+        return f"Você é o Dr. {self.name}, mestre em distribuição global Flutter."

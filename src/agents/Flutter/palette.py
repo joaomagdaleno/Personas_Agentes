@@ -1,38 +1,36 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class PalettePersona(BaseActivePersona):
     """
-    Core: Flutter UX Specialist 🎨
-    Foca na interface do usuário, fidelidade visual e acessibilidade.
+    Core: PhD in Design Systems & UX Harmony (Flutter) 🎨
+    Especialista em Material 3, consistência visual e acessibilidade Dart.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Palette"
-        self.emoji = "🎨"
-        self.role = "UX Specialist"
-        self.stack = "Flutter"
+        self.name, self.emoji, self.role, self.stack = "Palette", "🎨", "PhD UX Designer", "Flutter"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando qualidade visual e acessibilidade...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Estética e UX Flutter...")
         
-        palette_rules = [
-            {
-                'regex': r"Container\(.*color:", 
-                'issue': 'Definição de cor direta no Container. Prefira usar o ColorScheme do Theme para suporte a Dark Mode.', 
-                'severity': 'low'
-            },
-            {
-                'regex': r"Semantics\(", 
-                'issue': 'Widget de Semântica detectado. Excelente prática para acessibilidade!', 
-                'severity': 'low'
-            }
+        audit_rules = [
+            {'regex': r"color\s*:\s*Colors\.\w+", 'issue': 'Aviso: Cor hardcoded detectada. Prefira usar o sistema de temas (Theme.of).', 'severity': 'low'},
+            {'regex': r"semanticsLabel\s*:\s*null", 'issue': 'Acessibilidade: Elemento visual sem rótulo de semântica.', 'severity': 'medium'}
         ]
         
-        return self.find_patterns(('.dart'), palette_rules)
+        results = self.find_patterns(('.dart',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "Colors." in content:
+            return f"Fragmentação Visual: O objetivo '{objective}' exige deleite. Em '{file}', o uso de cores fixas impede que a 'Orquestração de Inteligência Artificial' mantenha consistência de marca."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Craft beautiful and inclusive mobile experiences."
+        return f"Você é o Dr. {self.name}, mestre em design sistêmico Flutter."

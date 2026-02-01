@@ -1,63 +1,32 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class ProbePersona(BaseActivePersona):
-    """
-    Core: Diagnostics Specialist 🔍
-    Foca na detecção de "smells" de código, lógica inacabada e padrões de erro silenciosos.
-    """
+    """Core: PhD in Software Forensic 🔍"""
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Probe"
-        self.emoji = "🔍"
-        self.role = "Diagnostics Specialist"
-        self.stack = "Python"
+        self.name, self.emoji, self.role, self.stack = "Probe", "🔍", "PhD Diagnostics Engineer", "Python"
 
     def perform_audit(self) -> list:
-        """
-        Individualidade: Regras de diagnósticos e detecção de bugs.
-        """
-        logger.info(f"[{self.name}] Iniciando varredura de diagnósticos e integridade lógica...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Integridade Forense...")
         
-        # O Core do Probe: O que ele procura para evitar bugs
-        diagnostic_rules = [
-            {
-                'regex': r"except:\s+pass", 
-                'issue': 'Captura de erro silenciosa (pass). Prática perigosa que esconde a causa raiz de bugs.', 
-                'severity': 'high'
-            },
-            {
-                'regex': r"(TODO|FIXME):", 
-                'issue': 'Marcador de código pendente detectado. O código pode estar incompleto.', 
-                'severity': 'medium'
-            },
-            {
-                'regex': r"print\([^)]+\)", # Melhora para não pegar definições
-                'issue': 'Uso de print() detectado. Para produção, prefira o uso de logging apropriado.', 
-                'severity': 'low'
-            },
-            {
-                'regex': r"assert\s+False\b", 
-                'issue': 'Assert False detectado. Isso forçará uma quebra do programa se atingido.', 
-                'severity': 'high'
-            }
+        audit_rules = [
+            {'regex': r"except:\s+pass|except\s+Exception:\s+pass", 'issue': 'Risco Crítico: Erro silenciado.', 'severity': 'critical'}
         ]
         
-        return self.find_patterns(('.py'), diagnostic_rules)
+        results = self.find_patterns(('.py',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
 
-    def analyze_logic(self, file_path):
-        """
-        O Probe usa o AST da Base para ser o mais rigoroso na 'letra errada'.
-        """
-        # O Probe herda a análise de 'pass' e 'sintaxe' da Base
-        issues = super().analyze_logic(file_path)
-        
-        # Adicionalmente, o Probe poderia olhar para variáveis não utilizadas
-        # ou funções excessivamente complexas no futuro.
-        return issues
+    def _reason_about_objective(self, objective, file, content):
+        if "pass" in content and "except" in content:
+            return f"Instabilidade Sistêmica: O objetivo '{objective}' exige resiliência. Em '{file}', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Identify bugs, code smells, and logical inconsistencies."
+        return f"Você é o Dr. {self.name}, mestre em diagnósticos."

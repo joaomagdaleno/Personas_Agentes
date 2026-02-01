@@ -8,7 +8,7 @@ import logging
 import subprocess
 import re
 from src.utils.logging_config import setup_logging
-from src.core.orchestrator import ProjectOrchestrator
+from src.core.orchestrator import Orchestrator
 
 # Configura o logging
 setup_logging()
@@ -68,11 +68,23 @@ class OficinaApp:
         left_pane = ttk.Frame(content_frame)
         left_pane.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 10))
 
-        self.btn_audit = ttk.Button(left_pane, text="🔍 INICIAR DIAGNÓSTICO", style="Action.TButton", command=self.start_diagnostic, state=tk.DISABLED)
+        self.btn_audit = ttk.Button(left_pane, text="🔍 DIAGNÓSTICO TÉCNICO", style="Action.TButton", command=self.start_diagnostic, state=tk.DISABLED)
         self.btn_audit.pack(fill=tk.X, pady=(0, 5))
+
+        # Novo: Campo de Objetivo
+        obj_frame = ttk.LabelFrame(left_pane, text=" 🎯 OBJETIVO ESTRATÉGICO ", padding="5")
+        obj_frame.pack(fill=tk.X, pady=5)
+        self.obj_var = tk.StringVar(value="Ex: Por que o login falha?")
+        ttk.Entry(obj_frame, textvariable=self.obj_var).pack(fill=tk.X, padx=2, pady=2)
+        
+        self.btn_strategic = ttk.Button(left_pane, text="🧠 ANÁLISE DE CAUSA RAIZ", style="Action.TButton", command=self.start_strategic_audit, state=tk.DISABLED)
+        self.btn_strategic.pack(fill=tk.X, pady=5)
 
         self.btn_fix = ttk.Button(left_pane, text="📝 GERAR PLANO DE REPARO", style="Action.TButton", command=self.dispatch_fix, state=tk.DISABLED)
         self.btn_fix.pack(fill=tk.X, pady=5)
+
+        self.btn_copy_prompt = ttk.Button(left_pane, text="📋 COPIAR PROMPT LLM", style="Action.TButton", command=self.copy_selected_issue_prompt, state=tk.DISABLED)
+        self.btn_copy_prompt.pack(fill=tk.X, pady=5)
 
         ttk.Separator(left_pane, orient='horizontal').pack(fill=tk.X, pady=15)
 
@@ -110,12 +122,35 @@ class OficinaApp:
         if folder:
             self.project_root = folder
             self.path_var.set(folder)
-            self.orchestrator = ProjectOrchestrator(folder)
+            self.orchestrator = Orchestrator(folder)
             self.load_active_personas()
             self.btn_audit.config(state=tk.NORMAL)
+            self.btn_strategic.config(state=tk.NORMAL)
             self.btn_auto_heal.config(state=tk.NORMAL)
             self.log_message(f"Oficina pronta em {folder}.")
             logger.info(f"Projeto carregado: {folder}")
+
+    def start_strategic_audit(self):
+        """Inicia análise focada em um objetivo de negócio."""
+        objective = self.obj_var.get()
+        self.issues_tree.delete(*self.issues_tree.get_children())
+        self.log_message(f"🎯 Analisando falha funcional: {objective}")
+        
+        def run():
+            try:
+                issues = self.orchestrator.run_strategic_audit(objective)
+                for i, issue in enumerate(issues):
+                    self.issues_tree.insert("", tk.END, iid=str(i), values=(
+                        "STRATEGIC", 
+                        issue.get('context'), 
+                        f"[{issue.get('file')}] {issue.get('issue')}"
+                    ))
+                self.current_issues = issues
+                self.root.after(0, lambda: self.log_message(f"Análise de causa raiz concluída. {len(issues)} pontos identificados."))
+            except Exception as e:
+                self.root.after(0, lambda: messagebox.showerror("Erro Estratégico", str(e)))
+
+        threading.Thread(target=run, daemon=True).start()
 
     def log_message(self, msg):
         """Adiciona mensagem ao terminal interno e ao log do sistema."""
@@ -196,22 +231,53 @@ class OficinaApp:
         def run():
             try:
                 # O Orquestrador agora retorna as issues com a tag 'is_protected'
-                issues = self.orchestrator.run_diagnostic()
-                for issue in issues:
+                self.current_issues = self.orchestrator.run_diagnostic()
+                for i, issue in enumerate(self.current_issues):
                     status = "🛡️ PROTEGIDO" if issue.get('is_protected') else "🛠️ REPARÁVEL"
-                    self.issues_tree.insert("", tk.END, values=(
+                    self.issues_tree.insert("", tk.END, iid=str(i), values=(
                         issue.get('severity', 'LOW').upper(), 
                         status, 
-                        f"[{issue.get('file')}] {issue.get('issue')}"
+                        f"[{issue.get('file')}:{issue.get('line', '?')}] {issue.get('issue')}"
                     ))
                 
-                self.root.after(0, lambda: self.btn_fix.config(state=tk.NORMAL if issues else tk.DISABLED))
-                self.root.after(0, lambda: self.log_message(f"Diagnóstico concluído. {len(issues)} alertas."))
+                self.root.after(0, lambda: self.btn_fix.config(state=tk.NORMAL if self.current_issues else tk.DISABLED))
+                self.root.after(0, lambda: self.btn_copy_prompt.config(state=tk.NORMAL if self.current_issues else tk.DISABLED))
+                self.root.after(0, lambda: self.log_message(f"Diagnóstico concluído. {len(self.current_issues)} alertas."))
             except Exception as e:
                 logger.exception("Falha durante o diagnóstico.")
                 self.root.after(0, lambda: messagebox.showerror("Erro de Diagnóstico", str(e)))
 
         threading.Thread(target=run, daemon=True).start()
+
+    def copy_selected_issue_prompt(self):
+        """Gera um prompt focado no problema selecionado e copia para o clipboard."""
+        selected = self.issues_tree.selection()
+        if not selected:
+            messagebox.showwarning("Aviso", "Selecione um problema na lista primeiro.")
+            return
+        
+        issue_index = int(selected[0])
+        issue = self.current_issues[issue_index]
+        
+        prompt = f"""
+### 📋 INSTRUÇÃO TÉCNICA (OFICINA DE SOFTWARE)
+Você é um desenvolvedor sênior especialista em {issue.get('context', 'Desenvolvimento')}.
+Por favor, corrija o seguinte problema detectado no arquivo: `{issue.get('file')}`
+
+**PROBLEMA:** {issue.get('issue')}
+**GRAVIDADE:** {issue.get('severity').upper()}
+"""
+        if 'line' in issue:
+            prompt += f"**LINHA:** {issue.get('line')}\n"
+        if 'snippet' in issue:
+            prompt += f"**CÓDIGO AFETADO:**\n```\n{issue.get('snippet')}\n```\n"
+
+        prompt += "\n**REQUISITO:** Forneça apenas o código corrigido e uma breve explicação do porquê da mudança."
+        
+        self.root.clipboard_clear()
+        self.root.clipboard_append(prompt)
+        self.log_message(f"✅ Prompt para o problema {issue_index + 1} copiado!")
+        messagebox.showinfo("Copiado", "O prompt focado foi copiado para o clipboard. Cole no Gemini/ChatGPT.")
 
     def start_auto_healing(self):
         """Inicia o ciclo completo de auto-cura técnica."""

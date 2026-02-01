@@ -1,45 +1,49 @@
 import json
-import os
 import hashlib
+import logging
+from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 class CacheManager:
-    """
-    Gerenciador de Cache de Auditoria.
-    Garante que arquivos não modificados não sejam re-processados.
-    """
+    """Gerenciador de integridade PhD: Monitora mudanças via Hashing."""
     def __init__(self, project_root):
-        self.cache_dir = os.path.join(project_root, ".gemini", "cache")
-        self.cache_file = os.path.join(self.cache_dir, "audit_cache.json")
-        self.current_cache = self._load_cache()
-        os.makedirs(self.cache_dir, exist_ok=True)
+        self.project_root = Path(project_root)
+        self.cache_file = self.project_root / ".gemini" / "cache" / "audit_cache.json"
+        self.current_cache = self._load()
 
-    def _load_cache(self):
-        if os.path.exists(self.cache_file):
+    def _load(self):
+        if self.cache_file.exists():
             try:
-                with open(self.cache_file, 'r') as f:
-                    return json.load(f)
-            except:
-                return {}
+                return json.loads(self.cache_file.read_text(encoding='utf-8'))
+            except Exception as e:
+                logger.error(f"Erro ao carregar cache: {e}")
         return {}
 
     def get_file_hash(self, file_path):
-        """Gera um hash SHA-256 do conteúdo do arquivo."""
-        hasher = hashlib.sha256()
+        """Gera hash SHA-256 para detecção de mudança."""
+        path = Path(file_path)
+        if not path.exists():
+            return ""
         try:
-            with open(file_path, 'rb') as f:
-                buf = f.read()
-                hasher.update(buf)
-            return hasher.hexdigest()
-        except:
-            return None
+            sha256_hash = hashlib.sha256()
+            with open(path, "rb") as f:
+                for byte_block in iter(lambda: f.read(4096), b""):
+                    sha256_hash.update(byte_block)
+            return sha256_hash.hexdigest()
+        except Exception as e:
+            logger.debug(f"Erro ao gerar hash de {path}: {e}")
+            return ""
 
-    def is_changed(self, rel_path, current_hash):
-        """Verifica se o arquivo mudou desde a última auditoria."""
-        return self.current_cache.get(rel_path) != current_hash
+    def is_changed(self, rel_path, new_hash):
+        return self.current_cache.get(str(rel_path)) != new_hash
 
-    def update(self, rel_path, current_hash):
-        self.current_cache[rel_path] = current_hash
+    def update(self, rel_path, new_hash):
+        self.current_cache[str(rel_path)] = new_hash
 
     def save(self):
-        with open(self.cache_file, 'w') as f:
-            json.dump(self.current_cache, f)
+        try:
+            self.cache_file.parent.mkdir(parents=True, exist_ok=True)
+            self.cache_file.write_text(json.dumps(self.current_cache, indent=4), encoding='utf-8')
+        except Exception as e:
+            logger.error(f"Falha ao salvar cache: {e}")

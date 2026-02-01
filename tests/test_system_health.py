@@ -1,35 +1,30 @@
 import unittest
-import os
-import sys
+import logging
+from pathlib import Path
+from src.core.orchestrator import Orchestrator
 
-# Adiciona a raiz ao path
-sys.path.append(os.getcwd())
+# Telemetria para testes
+logger = logging.getLogger(__name__)
 
-from src.core.orchestrator import ProjectOrchestrator
-from src.agents.director import DirectorPersona
+class TestSystemHealth(unittest.TestCase):
+    """Auditoria PhD de Saúde do Sistema."""
+    
+    def setUp(self):
+        self.project_root = Path(__file__).parent.parent
+        self.orchestrator = Orchestrator(self.project_root)
+        logger.info(f"Iniciando teste de saúde: {self._testMethodName}")
 
-class TestSystemIntegrity(unittest.TestCase):
-    def test_director_initialization(self):
-        """Verifica se o Diretor (Core) inicializa corretamente."""
-        director = DirectorPersona()
-        self.assertEqual(director.name, "Director")
-        self.assertIsNotNone(director.get_system_prompt())
+    def test_orchestrator_load(self):
+        """Verifica se o orquestrador PhD carrega o DNA corretamente."""
+        self.assertIsNotNone(self.orchestrator)
+        logger.info("Orquestrador validado com sucesso.")
 
-    def test_orchestrator_stack_detection(self):
-        """Verifica se o orquestrador identifica o estágio do projeto."""
-        # Usa o próprio repositório como alvo de teste
-        orch = ProjectOrchestrator(os.getcwd())
-        stage = orch.detect_stage()
-        self.assertIn(stage, ["GENESIS", "EVOLUTION", "STABILITY"])
+    def test_context_engine_dna(self):
+        """Verifica se o ContextEngine descobre a missão de Orquestração."""
+        context = self.orchestrator.context_engine.analyze_project()
+        dna = context.get("identity", {})
+        self.assertEqual(dna.get("core_mission"), "Orquestração de Inteligência Artificial")
+        logger.info(f"DNA detectado: {dna.get('core_mission')}")
 
-    def test_agent_loading_python(self):
-        """Verifica se os agentes Python podem ser instanciados."""
-        agent_path = os.path.join("src", "agents", "Python", "bolt.py")
-        if os.path.exists(agent_path):
-            from src.agents.Python.bolt import BoltPersona
-            bolt = BoltPersona(os.getcwd())
-            self.assertEqual(bolt.name, "Bolt")
-            self.assertEqual(bolt.emoji, "⚡")
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

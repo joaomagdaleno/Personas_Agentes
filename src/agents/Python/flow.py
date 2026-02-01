@@ -1,38 +1,32 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class FlowPersona(BaseActivePersona):
-    """
-    Core: Orchestration Specialist 🌊
-    Foca no controle de fluxo, lógica de roteamento e estados da aplicação.
-    """
+    """Core: PhD in Control Theory 🌊"""
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Flow"
-        self.emoji = "🌊"
-        self.role = "Orchestration Specialist"
-        self.stack = "Python"
+        self.name, self.emoji, self.role, self.stack = "Flow", "🌊", "PhD Orchestration Architect", "Python"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Analisando fluxos de decisão e orquestração...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Auditando Topologia de Fluxo...")
         
-        flow_rules = [
-            {
-                'regex': r"if .*:\s+.*if .*:\s+.*if .*:\s+.*if", 
-                'issue': 'Ninhagem excessiva de IFs detectada. Considere usar o padrão Strategy ou simplificar a lógica de fluxo.', 
-                'severity': 'medium'
-            },
-            {
-                'regex': r"while True:.*break", 
-                'issue': 'Loop infinito com interrupção manual detectado. Verifique se o critério de saída é robusto.', 
-                'severity': 'low'
-            }
+        audit_rules = [
+            {'regex': r"if .*:\s+.*if .*:\s+.*if", 'issue': 'Complexidade: Arrow Pattern detectado.', 'severity': 'high'}
         ]
         
-        return self.find_patterns(('.py'), flow_rules)
+        results = self.find_patterns(('.py',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if content.count("if") > 15:
+            return f"Entropia Lógica: O objetivo '{objective}' exige clareza. Em '{file}', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Ensure logical paths are clear, efficient, and robust."
+        return f"Você é o Dr. {self.name}, mestre em fluxos."

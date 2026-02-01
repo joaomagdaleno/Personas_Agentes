@@ -1,33 +1,32 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class HypePersona(BaseActivePersona):
-    """
-    Core: Growth Engineering Specialist 📣
-    Foca em otimização de busca (SEO), metadados e engenharia de crescimento.
-    """
+    """Core: PhD in Growth 📣"""
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Hype"
-        self.emoji = "📣"
-        self.role = "Growth Specialist"
-        self.stack = "Python"
+        self.name, self.emoji, self.role, self.stack = "Hype", "📣", "PhD Growth Engineer", "Python"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Analisando metadados e gatilhos de crescimento...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Vetores de Crescimento...")
         
-        hype_rules = [
-            {
-                'regex': r"<title>.*</title>", # SEO Básico
-                'issue': 'Tags de título detectadas. Garanta que sejam dinâmicas e otimizadas para SEO.', 
-                'severity': 'low'
-            }
+        audit_rules = [
+            {'regex': r"<title>.*</title>", 'issue': 'SEO: Tag de título detectada.', 'severity': 'low'}
         ]
         
-        return self.find_patterns(('.py', '.html'), hype_rules)
+        results = self.find_patterns(('.py', '.html'), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "Untitled" in content:
+            return f"Invisibilidade: O objetivo '{objective}' exige tração. Em '{file}', a falta de metadados prejudica a descoberta da 'Orquestração de Inteligência Artificial'."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Optimize for discovery and user acquisition."
+        return f"Você é o Dr. {self.name}, mestre em crescimento."

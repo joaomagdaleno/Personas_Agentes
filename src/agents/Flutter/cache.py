@@ -1,38 +1,36 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class CachePersona(BaseActivePersona):
     """
-    Core: Flutter Storage Specialist 🗄️
-    Foca na persistência de dados local, cache de imagens e estado offline.
+    Core: PhD in Data Locality & Synchronization (Flutter) 🗄️
+    Especialista em persistência local e reatividade de estado no Flutter.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Cache"
-        self.emoji = "🗄️"
-        self.role = "Storage Specialist"
-        self.stack = "Flutter"
+        self.name, self.emoji, self.role, self.stack = "Cache", "🗄️", "PhD Data Architect", "Flutter"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando persistência local e cache...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Eficiência de Cache Flutter...")
         
-        cache_rules = [
-            {
-                'regex': r"SharedPreferences\.getInstance\(\)", 
-                'issue': 'Uso de SharedPreferences detectado. Para dados sensíveis, considere usar flutter_secure_storage.', 
-                'severity': 'medium'
-            },
-            {
-                'regex': r"await\s+Hive\.openBox\(", 
-                'issue': 'Abertura de Box do Hive detectada. Certifique-se de fechar ou gerenciar o ciclo de vida da conexão.', 
-                'severity': 'low'
-            }
+        audit_rules = [
+            {'regex': r"SharedPreferences\.getInstance\(\)", 'issue': 'Performance: Acesso repetitivo ao disco. Use um Singleton para SharedPreferences.', 'severity': 'medium'},
+            {'regex': r"hive\.box\(.*?\)\.clear\(\)", 'issue': 'Risco: Limpeza abrupta de cache detectada.', 'severity': 'low'}
         ]
         
-        return self.find_patterns(('.dart'), cache_rules)
+        results = self.find_patterns(('.dart',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "SharedPreferences" in content:
+            return f"Lentidão Sistêmica: O objetivo '{objective}' exige velocidade. Em '{file}', acessos frequentes ao disco prejudicam a 'Orquestração de Inteligência Artificial'."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Manage local data with speed and security."
+        return f"Você é o Dr. {self.name}, mestre em gestão de estados e persistência Flutter."

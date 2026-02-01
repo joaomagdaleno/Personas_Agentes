@@ -1,38 +1,32 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class VaultPersona(BaseActivePersona):
-    """
-    Core: Monetization Specialist 💎
-    Foca na gestão de pagamentos, assinaturas e integridade financeira.
-    """
+    """Core: PhD in Financial Integrity 💰"""
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Vault"
-        self.emoji = "💎"
-        self.role = "Monetization Specialist"
-        self.stack = "Python"
+        self.name, self.emoji, self.role, self.stack = "Vault", "💰", "PhD Financial Auditor", "Python"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando fluxos de pagamento e integridade financeira...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Integridade Financeira...")
         
-        vault_rules = [
-            {
-                'regex': r"price\s*=\s*[0-9]+", 
-                'issue': 'Preço hardcoded detectado. Prefira buscar valores de um serviço de catálogo ou banco de dados.', 
-                'severity': 'medium'
-            },
-            {
-                'regex': r"stripe\.Charge\.create|paypal", 
-                'issue': 'Integração de pagamento detectada. Garanta o uso de webhooks para confirmação segura de transações.', 
-                'severity': 'high'
-            }
+        audit_rules = [
+            {'regex': r"float\(.*price", 'issue': 'Imprecisão: Uso de float para dinheiro.', 'severity': 'critical'}
         ]
         
-        return self.find_patterns(('.py'), vault_rules)
+        results = self.find_patterns(('.py',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "float" in content and "price" in content:
+            return f"Erro de Precisão: O objetivo '{objective}' exige exatidão. Em '{file}', floats monetários invalidam os cálculos da 'Orquestração de Inteligência Artificial'."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Protect financial integrity and ensure a frictionless billing experience."
+        return f"Você é o Dr. {self.name}, mestre em finanças."

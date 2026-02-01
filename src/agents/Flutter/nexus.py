@@ -1,38 +1,36 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class NexusPersona(BaseActivePersona):
     """
-    Core: Flutter API Specialist 🌐
-    Foca na comunicação de rede, tratamento de erros HTTP e serialização de dados.
+    Core: PhD in Distributed Systems & Transport Layers (Flutter) 🌐
+    Especialista em resiliência de rede, protocolos HTTP/gRPC e timeouts Dart.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Nexus"
-        self.emoji = "🌐"
-        self.role = "API Specialist"
-        self.stack = "Flutter"
+        self.name, self.emoji, self.role, self.stack = "Nexus", "🌐", "PhD Network Engineer", "Flutter"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando camadas de networking e modelos de dados...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Camadas de Transporte Flutter...")
         
-        nexus_rules = [
-            {
-                'regex': r"http\.get\(", 
-                'issue': 'Uso da biblioteca http padrão detectado. Para projetos grandes, considere o "dio" pelo suporte a interceptores e cancelamento.', 
-                'severity': 'low'
-            },
-            {
-                'regex': r"jsonDecode\(", 
-                'issue': 'Serialização manual detectada. Considere usar "json_serializable" para evitar erros de digitação em chaves JSON.', 
-                'severity': 'medium'
-            }
+        audit_rules = [
+            {'regex': r"http\.get\(", 'issue': 'Resiliência: Uso da biblioteca http padrão. Considere Dio para melhor tratamento de erros e interceptores.', 'severity': 'medium'},
+            {'regex': r"connectTimeout\s*:\s*null", 'issue': 'Fragilidade: Timeout de conexão infinito detectado.', 'severity': 'high'}
         ]
         
-        return self.find_patterns(('.dart'), nexus_rules)
+        results = self.find_patterns(('.dart',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "connectTimeout: null" in content:
+            return f"Risco de Bloqueio: O objetivo '{objective}' exige reatividade. Em '{file}', a falta de timeout pode paralisar a 'Orquestração de Inteligência Artificial' em redes instáveis."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Connect the app to the world with resilience and speed."
+        return f"Você é o Dr. {self.name}, mestre em redes e transporte Flutter."

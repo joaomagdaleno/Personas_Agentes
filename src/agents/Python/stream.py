@@ -1,33 +1,32 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class StreamPersona(BaseActivePersona):
-    """
-    Core: Real-Time Specialist 📡
-    Foca em processamento de fluxos de dados, WebSockets e reatividade em tempo real.
-    """
+    """Core: PhD in Reactive Systems 📡"""
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Stream"
-        self.emoji = "📡"
-        self.role = "Real-Time Specialist"
-        self.stack = "Python"
+        self.name, self.emoji, self.role, self.stack = "Stream", "📡", "PhD Reactive Architect", "Python"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando fluxos de dados em tempo real e reatividade...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Fluxos de Dados...")
         
-        stream_rules = [
-            {
-                'regex': r"websocket\.send\(", 
-                'issue': 'Ponto de envio de WebSocket detectado. Garanta o tratamento de desconexão e reconexão automática.', 
-                'severity': 'medium'
-            }
+        audit_rules = [
+            {'regex': r"asyncio\.run\(", 'issue': 'Event Loop: Chamada síncrona bloqueante.', 'severity': 'high'}
         ]
         
-        return self.find_patterns(('.py'), stream_rules)
+        results = self.find_patterns(('.py',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "asyncio.run" in content:
+            return f"Conflito de Fluxo: O objetivo '{objective}' exige reatividade. Em '{file}', bloqueios no event loop paralisam a 'Orquestração de Inteligência Artificial'."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Ensure data flows smoothly and instantly."
+        return f"Você é o Dr. {self.name}, mestre em reatividade."

@@ -1,43 +1,38 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class BoltPersona(BaseActivePersona):
     """
-    Core: Flutter Performance Specialist ⚡
-    Foca em otimização de renderização, redução de builds e eficiência de memória no Flutter.
+    Core: PhD in Computational Efficiency (Flutter) ⚡
+    Especialista em detecção de frames perdidos e loops bloqueantes em Dart.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Bolt"
-        self.emoji = "⚡"
-        self.role = "Performance Specialist"
-        self.stack = "Flutter"
+        self.name, self.emoji, self.role, self.stack = "Bolt", "⚡", "PhD Performance Engineer", "Flutter"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando performance do Widget Tree e Renderização...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Eficiência no ecossistema Flutter...")
         
-        flutter_performance_rules = [
-            {
-                'regex': r"setState\(\(\) \{\}\)", 
-                'issue': 'setState vazio detectado. Isso dispara um build desnecessário.', 
-                'severity': 'medium'
-            },
-            {
-                'regex': r"ListView\(", 
-                'issue': 'ListView sem construtor .builder detectada. Para listas longas, isso causa alto consumo de memória.', 
-                'severity': 'high'
-            },
-            {
-                'regex': r"Opacity\(", 
-                'issue': 'Widget Opacity detectado. Para animações, prefira AnimatedOpacity ou Opacity direto no decorador para evitar saveLayer.', 
-                'severity': 'low'
-            }
+        # Regras específicas para Dart/Flutter
+        audit_rules = [
+            {'regex': r"while\s*\(true\)\s*\{\s*\}", 'issue': 'Gargalo: Busy-waiting detectado em Dart.', 'severity': 'critical'},
+            {'regex': r"sleep\(", 'issue': 'Risco: Uso de sleep bloqueia a UI Thread do Flutter.', 'severity': 'high'},
+            {'regex': r"for\s*\(var\s+i\s*=\s*0;\s*i\s*<\s*.*\.length;\s*i\+\+\)", 'issue': 'Otimização: Prefira .map() ou .forEach() para iteráveis em Dart.', 'severity': 'low'}
         ]
         
-        return self.find_patterns(('.dart'), flutter_performance_rules)
+        results = self.find_patterns(('.dart',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "sleep(" in content:
+            return f"Degradação de UX: O objetivo '{objective}' exige fluidez. Em '{file}', o uso de sleep() trava a Main Thread, impedindo a 'Orquestração de Inteligência Artificial' de manter 60fps."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Ensure the Flutter app runs at a constant 60/120 FPS."
+        return f"Você é o Dr. {self.name}, mestre em performance Flutter. Sua missão é garantir zero jank."

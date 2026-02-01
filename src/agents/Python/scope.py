@@ -1,34 +1,32 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class ScopePersona(BaseActivePersona):
-    """
-    Core: Product & Requirements Specialist 🔭
-    Foca no alinhamento técnico com os requisitos de negócio e escopo do produto.
-    """
+    """Core: PhD in Product Management 🔭"""
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Scope"
-        self.emoji = "🔭"
-        self.role = "Product Specialist"
-        self.stack = "Python"
+        self.name, self.emoji, self.role, self.stack = "Scope", "🔭", "PhD Product Architect", "Python"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando alinhamento de escopo e requisitos...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Escopo...")
         
-        # O Scope foca em marcadores de requisitos e dívida técnica
-        scope_rules = [
-            {
-                'regex': r"deprecated|obsoleto", 
-                'issue': 'Código marcado como depreciado/obsoleto detectado. Verifique o plano de migração ou remoção.', 
-                'severity': 'medium'
-            }
+        audit_rules = [
+            {'regex': r"TODO:|FIXME:", 'issue': 'Débito: Pendência detectada.', 'severity': 'low'}
         ]
         
-        return self.find_patterns(('.py', '.md'), scope_rules)
+        results = self.find_patterns(('.py', '.md'), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "TODO" in content:
+            return f"Incompleitude: O objetivo '{objective}' exige entrega. Em '{file}', débitos pendentes retardam a 'Orquestração de Inteligência Artificial'."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Bridge the gap between business vision and technical execution."
+        return f"Você é o Dr. {self.name}, mestre em gestão."

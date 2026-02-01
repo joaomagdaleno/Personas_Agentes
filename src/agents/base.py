@@ -7,7 +7,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 class BaseActivePersona(ABC):
-    """Classe base com Consciência Estrutural e Auto-Cura Inteligente."""
+    """Classe base PhD Otimizada: Zero redundância de leitura."""
     def __init__(self, project_root=None):
         self.project_root = project_root
         self.name = "Base"
@@ -15,130 +15,123 @@ class BaseActivePersona(ABC):
         self.role = "Generalist"
         self.stack = "Universal"
         self.context_data = {}
-        self.ignored_dirs = ['.git', '__pycache__', 'build', 'node_modules', '.venv']
+        self.project_dna = {}
+        # Arquivos de relatório que devem ser ignorados para evitar redundância
+        self.ignored_files = ['auto_healing_mission.md', 'strategic_mission.txt', 'todos_agentes_flutter.txt', 'todos_agentes_kotlin.txt']
 
-    def set_context(self, context_map):
-        self.context_data = context_map
+    def set_context(self, context_data):
+        self.project_dna = context_data.get("identity", {})
+        self.context_data = context_data.get("map", {})
+
+    def perform_strategic_audit(self, objective: str = None) -> list:
+        """Auditoria estratégica veloz usando dados já em memória."""
+        if not objective:
+            mission = self.project_dna.get('core_mission', 'Software Proposital')
+            objective = f"Otimizar o sistema de {mission}"
+        
+        strategic_issues = []
+        for file, info in self.context_data.items():
+            if file in self.ignored_files: continue
+            
+            # Só analisa arquivos da própria stack ou arquivos de config
+            if not self._is_relevant_file(file): continue
+
+            content = self.read_project_file(file)
+            if content:
+                reasoning = self._reason_about_objective(objective, file, content)
+                if reasoning: strategic_issues.append(reasoning)
+                
+        return strategic_issues
 
     def find_patterns(self, extensions, patterns):
-        """
-        Busca inteligente: Diferencia código vivo de strings/exemplos.
-        """
+        """Busca de padrões ultra-rápida em memória."""
         issues = []
-        if not self.project_root: return []
-
-        for root, dirs, files in os.walk(self.project_root):
-            dirs[:] = [d for d in dirs if d not in self.ignored_dirs]
-            for file in files:
-                if file.endswith(extensions):
-                    rel_path = os.path.relpath(os.path.join(root, file), self.project_root)
-                    
-                    # Se for Python, usamos análise AST para evitar falsos positivos
-                    if file.endswith('.py'):
-                        issues.extend(self._audit_python_ast(rel_path, patterns))
-                    else:
-                        # Para outras extensões, mantemos o regex padrão
-                        content = self.read_project_file(rel_path)
-                        if not content: continue
-                        for p in patterns:
-                            if re.search(p['regex'], content, re.MULTILINE | re.IGNORECASE):
-                                issues.append({
-                                    'file': rel_path, 'issue': p['issue'],
-                                    'severity': p.get('severity', 'medium'), 'context': self.name
-                                })
+        for file in self.context_data.keys():
+            if file in self.ignored_files: continue
+            if not file.endswith(extensions): continue
+            
+            content = self.read_project_file(file)
+            if not content: continue
+            
+            lines = content.splitlines()
+            for p in patterns:
+                for i, line in enumerate(lines):
+                    if re.search(p['regex'], line, re.IGNORECASE):
+                        start = max(0, i - 2)
+                        end = min(len(lines), i + 3)
+                        issues.append({
+                            'file': file, 'line': i + 1,
+                            'issue': p['issue'], 'severity': p.get('severity', 'medium'), 
+                            'context': self.name, 'snippet': "\n".join(lines[start:end])
+                        })
         return issues
 
-    def _audit_python_ast(self, rel_path, patterns):
-        """Analisa o Python estruturalmente para encontrar erros REAIS."""
-        issues = []
-        abs_path = os.path.join(self.project_root, rel_path)
-        try:
-            with open(abs_path, 'r', encoding='utf-8') as f:
-                tree = ast.parse(f.read())
-            
-            for node in ast.walk(tree):
-                # 1. Busca por DEBUG = True (Apenas se for atribuição real)
-                if isinstance(node, ast.Assign):
-                    for target in node.targets:
-                        if isinstance(target, ast.Name) and target.id == 'DEBUG':
-                            if isinstance(node.value, ast.Constant) and node.value.value is True:
-                                issues.append({
-                                    'file': rel_path, 'issue': 'DEBUG=True detectado como configuração ativa.',
-                                    'severity': 'medium', 'context': self.name
-                                })
-
-                # 2. Busca por print() (Apenas se for chamada de função real)
-                if isinstance(node, ast.Call):
-                    if isinstance(node.func, ast.Name) and node.func.id == 'print':
-                        issues.append({
-                            'file': rel_path, 'issue': 'Uso de print() detectado em código de execução.',
-                            'severity': 'low', 'context': self.name
-                        })
-
-            return issues
-        except: return []
+    def _is_relevant_file(self, file):
+        """Filtra se o arquivo pertence à stack do agente."""
+        if self.stack == "Universal": return True
+        ext_map = {"Flutter": ".dart", "Kotlin": ".kt", "Python": ".py"}
+        return file.endswith(ext_map.get(self.stack, "")) or file.endswith((".yaml", ".xml", ".json", ".gradle", ".kts"))
 
     def analyze_logic(self, file_path):
-        """Diagnóstico de 'cada letra' via AST."""
+        """Análise AST apenas para arquivos Python relevantes."""
+        if not file_path.endswith('.py'): return []
+        rel_path = os.path.relpath(file_path, self.project_root)
+        if rel_path in self.ignored_files: return []
+
         issues = []
         try:
             with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
-                tree = ast.parse(f.read())
-            
+                content = f.read()
+                lines = content.splitlines()
+                tree = ast.parse(content)
             for node in ast.walk(tree):
-                # Detecta logicamente o 'pass' silencioso
                 if isinstance(node, ast.ExceptHandler):
                     if len(node.body) == 1 and isinstance(node.body[0], ast.Pass):
+                        i = node.lineno - 1
                         issues.append({
-                            'file': os.path.relpath(file_path, self.project_root),
+                            'file': rel_path, 'line': node.lineno, 
                             'issue': 'Captura de erro silenciosa (pass).',
-                            'severity': 'high', 'context': self.name
+                            'severity': 'high', 'context': self.name,
+                            'snippet': "\n".join(lines[max(0, i-2):min(len(lines), i+3)])
                         })
             return issues
-        except SyntaxError as e:
-            return [{'file': os.path.relpath(file_path, self.project_root), 
-                     'issue': f"Erro de sintaxe: {e.msg} na linha {e.lineno}", 'severity': 'critical'}]
-        except: return []
+        except Exception as e:
+            logger.error(f"Falha na análise AST de {file_path}: {e}", exc_info=True)
+            return []
 
-    def apply_auto_fix(self, file_path, issue_desc):
-        """Auto-Cura com validação de sintaxe pré-salvamento."""
-        content = self.read_project_file(os.path.relpath(file_path, self.project_root))
-        if not content: return False
+    def get_maturity_metrics(self):
+        """Reporta o nível de evolução técnica do agente para o Analisador de Paridade."""
+        content = self.read_project_file(f"src/agents/{self.stack}/{self.name.lower()}.py")
+        if not content: return {"score": 0}
+        
+        return {
+            "has_telemetry": "time.time()" in content,
+            "has_reasoning": "_reason_about_objective" in content and "None" not in content,
+            "has_pathlib": "Path(" in content,
+            "is_linear_syntax": "rules =" in content or "r =" in content,
+            "stack": self.stack
+        }
 
-        new_content = content
-        fixed = False
-
-        if "pass" in issue_desc:
-            new_content = re.sub(r"except:\s*pass|except\s+Exception:\s*pass", 
-                                 "except Exception as e:\n            logger.error(f'Erro: {e}')", content)
-            fixed = True
-        elif "DEBUG" in issue_desc:
-            new_content = re.sub(r"DEBUG\s*=\s*True", "DEBUG = os.getenv('DEBUG', 'False') == 'True'", content)
-            fixed = True
-        elif "print()" in issue_desc:
-            new_content = re.sub(r"print\((.*?)\)", r"logger.info(\1)", content)
-            fixed = True
-
-        if fixed and new_content != content:
-            try:
-                # Validação de Sanidade: Só salva se o novo código for válido
-                ast.parse(new_content)
-                with open(file_path, 'w', encoding='utf-8') as f:
-                    f.write(new_content)
-                return True
-            except:
-                logger.error(f"Cura abortada: a correção geraria erro de sintaxe em {file_path}")
-        return False
+    def _log_performance(self, start_time, count):
+        """Centraliza a telemetria PhD para evitar alertas de cálculo manual."""
+        import time
+        duration = time.time() - start_time
+        logger.info(f"{self.emoji} [{self.name}] Auditoria concluída: {count} pontos em {duration:.4f}s.")
 
     def read_project_file(self, rel_path):
         abs_path = os.path.join(self.project_root, rel_path)
         try:
             with open(abs_path, 'r', encoding='utf-8', errors='ignore') as f:
                 return f.read()
-        except: return None
+        except Exception as e:
+            logger.debug(f"Erro ao ler {rel_path}: {e}")
+            return None
 
     @abstractmethod
     def perform_audit(self) -> list: pass
+
+    @abstractmethod
+    def _reason_about_objective(self, objective, file, content): pass
 
     @abstractmethod
     def get_system_prompt(self) -> str: pass

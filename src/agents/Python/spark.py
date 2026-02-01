@@ -1,33 +1,30 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class SparkPersona(BaseActivePersona):
-    """
-    Core: Engagement Specialist ✨
-    Foca em mecânicas de gamificação, interação social e retenção de usuários.
-    """
+    """Core: PhD in User Engagement ✨"""
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Spark"
-        self.emoji = "✨"
-        self.role = "Engagement Specialist"
-        self.stack = "Python"
+        self.name, self.emoji, self.role, self.stack = "Spark", "✨", "PhD Engagement Architect", "Python"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Analisando mecânicas de engajamento e feedback...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Deleite do Usuário...")
         
-        spark_rules = [
-            {
-                'regex': r"points|badges|leaderboard", 
-                'issue': 'Termos de gamificação detectados. Garanta que a lógica de progressão seja justa e clara.', 
-                'severity': 'low'
-            }
+        audit_rules = [
+            {'regex': r"print\(", 'issue': 'Interface: Uso de print para interação bruta.', 'severity': 'low'}
         ]
         
-        return self.find_patterns(('.py'), spark_rules)
+        results = self.find_patterns(('.py',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Turn utility into delight and engagement."
+        return f"Você é o Dr. {self.name}, mestre em engajamento."

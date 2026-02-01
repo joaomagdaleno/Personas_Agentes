@@ -1,33 +1,41 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
 class ScopePersona(BaseActivePersona):
     """
-    Core: Kotlin Product Specialist 🔭
-    Foca no alinhamento entre as funcionalidades técnicas e a visão do produto Android.
+    Core: PhD in Product Engineering & Technical Roadmap 🔭
+    Monitorado por Metric: Injeção de Telemetria de Auditoria.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Scope"
-        self.emoji = "🔭"
-        self.role = "Product Specialist"
-        self.stack = "Kotlin"
+        self.name, self.emoji, self.role, self.stack = "Scope", "🔭", "PhD Product Architect (Kotlin)", "Kotlin"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Analisando alinhamento de escopo técnico...")
+        """Auditoria com telemetria de alinhamento técnico integrada."""
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Backlog Técnico...")
         
-        scope_rules = [
-            {
-                'regex': r"TODO", 
-                'issue': 'Marcador de tarefa pendente detectado. Verifique se isso não atrasará o lançamento.', 
-                'severity': 'low'
-            }
+        # Sintaxe linear
+        rules = [
+            {'regex': r"//\s*TODO", 'issue': 'Débito Técnico: Marcador detectado.', 'severity': 'medium'},
+            {'regex': r"debuggable\s+true", 'issue': 'Risco Crítico: App debuggable em produção.', 'severity': 'high'}
         ]
         
-        return self.find_patterns(('.kt'), scope_rules)
+        results = self.find_patterns(('.kt', '.gradle', '.kts'), rules)
+        
+        duration = time.time() - start_time
+        logger.info(f"🔭 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "debuggable true" in content:
+            return f"Risco de Release: O objetivo '{objective}' exige segurança de binário. Em '{file}', a flag debuggable permite o sequestro da 'Orquestração de Inteligência Artificial' em runtime."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Maintain the technical focus on product goals."
+        return f"Você é o Dr. {self.name}, guardião da entrega JVM."

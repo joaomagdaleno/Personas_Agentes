@@ -1,33 +1,37 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
 class StreamPersona(BaseActivePersona):
     """
-    Core: Flutter Real-Time Specialist 📡
-    Foca no processamento de fluxos de dados (Streams) e comunicação reativa.
+    Core: PhD in Reactive Systems 📡
+    Paridade Técnica: Python -> Flutter.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Stream"
-        self.emoji = "📡"
-        self.role = "Real-Time Specialist"
-        self.stack = "Flutter"
+        self.name, self.emoji, self.role, self.stack = "Stream", "📡", "PhD Reactive Architect", "Flutter"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando reatividade e fluxos de dados...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Fluxos Reativos...")
         
-        stream_rules = [
-            {
-                'regex': r"StreamBuilder\(", 
-                'issue': 'Uso de StreamBuilder detectado. Garanta o fechamento dos Streams nos métodos de dispose.', 
-                'severity': 'medium'
-            }
+        audit_rules = [
+            {'regex': r"StreamController\(", 'issue': 'Vazamento: Controlador sem fechar.', 'severity': 'critical'},
+            {'regex': r"async\*", 'issue': 'Concorrência: Gerador assíncrono detectado.', 'severity': 'medium'}
         ]
         
-        return self.find_patterns(('.dart'), stream_rules)
+        results = self.find_patterns(('.dart',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "StreamController" in content and "dispose" not in content:
+            return f"Instabilidade Reativa: O objetivo '{objective}' exige vazão de dados contínua. Em '{file}', a má gestão de streams causa travamentos na 'Orquestração de Inteligência Artificial'."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Ensure data flows instantly and correctly."
+        return f"Você é o Dr. {self.name}, mestre em reatividade."

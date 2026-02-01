@@ -1,43 +1,33 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class CachePersona(BaseActivePersona):
-    """
-    Core: Persistence & Storage Specialist 🗄️
-    Foca na eficiência do armazenamento de dados, consultas e estratégias de cache.
-    """
+    """Core: PhD in Database Systems 🗄️"""
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Cache"
-        self.emoji = "🗄️"
-        self.role = "Storage Specialist"
-        self.stack = "Python"
+        self.name, self.emoji, self.role, self.stack = "Cache", "🗄️", "PhD Data Engineer", "Python"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando persistência de dados e eficiência de queries...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Auditando Eficiência de Acesso a Dados...")
         
-        cache_rules = [
-            {
-                'regex': r"SELECT \* FROM", 
-                'issue': 'Uso de "SELECT *" detectado. Especifique as colunas para otimizar a performance e reduzir consumo de memória.', 
-                'severity': 'medium'
-            },
-            {
-                'regex': r"sqlite3\.connect\(.*['\"]:memory:['\"]", 
-                'issue': 'Banco de dados em memória detectado. Garanta que a volatilidade dos dados seja aceitável para o caso de uso.', 
-                'severity': 'low'
-            },
-            {
-                'regex': r"for .* in .*:\s+.*\.execute\(", 
-                'issue': 'Execução de query dentro de loop (N+1 problem). Considere o uso de bulk inserts ou joins.', 
-                'severity': 'high'
-            }
+        audit_rules = [
+            {'regex': r"SELECT \* FROM", 'issue': 'Eficiência I/O: SELECT * detectado.', 'severity': 'medium'},
+            {'regex': r"for .* in .*:\s+.*\.execute\(", 'issue': 'N+1 Critical: Query em loop.', 'severity': 'critical'}
         ]
         
-        return self.find_patterns(('.py', '.sql'), cache_rules)
+        results = self.find_patterns(('.py',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "execute" in content and "for " in content:
+            return f"Gargalo de I/O: O objetivo '{objective}' exige velocidade. Em '{file}', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Ensure data is stored and retrieved with maximum efficiency."
+        return f"Você é o Dr. {self.name}, mestre em dados."

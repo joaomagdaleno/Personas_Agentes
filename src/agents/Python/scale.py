@@ -1,33 +1,32 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class ScalePersona(BaseActivePersona):
-    """
-    Core: Scalability & Architecture Specialist 🏗️
-    Foca na estrutura modular, escalabilidade e arquitetura de longo prazo.
-    """
+    """Core: PhD in Architecture 🏗️"""
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Scale"
-        self.emoji = "🏗️"
-        self.role = "Architecture Specialist"
-        self.stack = "Python"
+        self.name, self.emoji, self.role, self.stack = "Scale", "🏗️", "PhD Software Architect", "Python"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando modularidade e arquitetura...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Acoplamento...")
         
-        scale_rules = [
-            {
-                'regex': r"import .*\bfrom\s+\.\b", # Importação circular ou local confusa
-                'issue': 'Importação relativa detectada. Em grandes sistemas, prefira caminhos absolutos para evitar dependências circulares.', 
-                'severity': 'low'
-            }
+        audit_rules = [
+            {'regex': r"global\s+\w+", 'issue': 'Violação: Uso de estado global.', 'severity': 'high'}
         ]
         
-        return self.find_patterns(('.py'), scale_rules)
+        results = self.find_patterns(('.py',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "global " in content:
+            return f"Risco de Escalabilidade: O objetivo '{objective}' exige modularidade. Em '{file}', a poluição de estado impede a 'Orquestração de Inteligência Artificial'."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Build a foundation that can grow indefinitely."
+        return f"Você é o Dr. {self.name}, mestre em arquitetura."

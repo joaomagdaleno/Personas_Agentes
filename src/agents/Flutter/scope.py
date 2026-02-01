@@ -1,33 +1,36 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class ScopePersona(BaseActivePersona):
     """
-    Core: Flutter Product Specialist 🔭
-    Foca na entrega de valor, requisitos técnicos e gerenciamento de funcionalidades.
+    Core: PhD in Product Strategy & Technical Scope (Flutter) 🔭
+    Especialista em gestão de débitos técnicos, marcadores de incompletude e alinhamento de visão.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Scope"
-        self.emoji = "🔭"
-        self.role = "Product Specialist"
-        self.stack = "Flutter"
+        self.name, self.emoji, self.role, self.stack = "Scope", "🔭", "PhD Product Engineer", "Flutter"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando entrega de requisitos técnicos...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Escopo e Débitos Flutter...")
         
-        scope_rules = [
-            {
-                'regex': r"TODO", 
-                'issue': 'Marcador de tarefa pendente detectado. Garanta que o débito técnico não comprometa o escopo da sprint.', 
-                'severity': 'low'
-            }
+        audit_rules = [
+            {'regex': r"//\s*TODO", 'issue': 'Débito Técnico: Marcador TODO detectado. Verifique pendências de entrega.', 'severity': 'low'},
+            {'regex': r"throw\s+UnimplementedError\(\)", 'issue': 'Incompleitude: Funcionalidade prometida mas não implementada.', 'severity': 'high'}
         ]
         
-        return self.find_patterns(('.dart'), scope_rules)
+        results = self.find_patterns(('.dart',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "UnimplementedError" in content:
+            return f"Promessa Quebrada: O objetivo '{objective}' exige entrega. Em '{file}', lacunas de funcionalidade retardam a 'Orquestração de Inteligência Artificial'."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Ensure engineering excellence aligns with product goals."
+        return f"Você é o Dr. {self.name}, mestre em estratégia de produto Flutter."

@@ -1,33 +1,41 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
 class StreamPersona(BaseActivePersona):
     """
-    Core: Kotlin Real-Time Specialist 📡
-    Foca no processamento de fluxos de dados em tempo real e reatividade.
+    Core: PhD in Reactive Systems & Asynchronous Flow 📡
+    Monitorado por Metric: Injeção de Telemetria de Auditoria.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Stream"
-        self.emoji = "📡"
-        self.role = "Real-Time Specialist"
-        self.stack = "Kotlin"
+        self.name, self.emoji, self.role, self.stack = "Stream", "📡", "PhD Reactive Architect (Kotlin)", "Kotlin"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando fluxos reativos e dados em tempo real...")
+        """Auditoria com telemetria de concorrência estruturada integrada."""
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Reatividade JVM...")
         
-        stream_rules = [
-            {
-                'regex': r"MutableStateFlow|MutableSharedFlow", 
-                'issue': 'Uso de Kotlin Flows detectado. Garanta que a coleta (collect) seja feita de forma Lifecycle-aware no Compose.', 
-                'severity': 'medium'
-            }
+        # Sintaxe linear
+        rules = [
+            {'regex': r"callbackFlow\s*\{(?!.*awaitClose)", 'issue': 'Vazamento Crítico: Flow sem awaitClose.', 'severity': 'critical'},
+            {'regex': r"MutableStateFlow", 'issue': 'Gestão de Estado: Verifique conformidade de coleta.', 'severity': 'high'}
         ]
         
-        return self.find_patterns(('.kt'), stream_rules)
+        results = self.find_patterns(('.kt',), rules)
+        
+        duration = time.time() - start_time
+        logger.info(f"📡 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "callbackFlow" in content and "awaitClose" not in content:
+            return f"Instabilidade Sistêmica: O objetivo '{objective}' exige resiliência. Em '{file}', o vazamento de listeners paralisa o sistema de 'Orquestração de Inteligência Artificial'."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Ensure data is always fresh and reactive."
+        return f"Você é o Dr. {self.name}, mestre em concorrência estruturada Kotlin."

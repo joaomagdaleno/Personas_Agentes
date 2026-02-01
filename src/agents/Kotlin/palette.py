@@ -1,33 +1,41 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
 class PalettePersona(BaseActivePersona):
     """
-    Core: Kotlin UX Specialist 🎨
-    Foca na interface Jetpack Compose, fidelidade ao Material Design e acessibilidade.
+    Core: PhD in Design Engineering & Jetpack Compose UI Expert 🎨
+    Monitorado por Metric: Injeção de Telemetria de Auditoria.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Palette"
-        self.emoji = "🎨"
-        self.role = "UX Specialist"
-        self.stack = "Kotlin"
+        self.name, self.emoji, self.role, self.stack = "Palette", "🎨", "PhD UX Engineer (Kotlin)", "Kotlin"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando estética e acessibilidade no Android...")
+        """Auditoria com telemetria de design sistêmico JVM integrada."""
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Estética e UX Android...")
         
-        palette_rules = [
-            {
-                'regex': r"contentDescription\s*=\s*null", 
-                'issue': 'Elemento de UI sem descrição de conteúdo (contentDescription=null). Isso quebra a acessibilidade para TalkBack.', 
-                'severity': 'high'
-            }
+        # Sintaxe linear
+        rules = [
+            {'regex': r"contentDescription\s*=\s*null", 'issue': 'Exclusão: Falta semântica TalkBack.', 'severity': 'high'},
+            {'regex': r"Color\(\s*0x[0-9a-fA-F]{8}\s*\)", 'issue': 'Cor Estática: Quebra o Material You.', 'severity': 'medium'}
         ]
         
-        return self.find_patterns(('.kt'), palette_rules)
+        results = self.find_patterns(('.kt',), rules)
+        
+        duration = time.time() - start_time
+        logger.info(f"🎨 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos UX: {len(results)}")
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "contentDescription = null" in content:
+            return f"Fragmentação de UX: O objetivo '{objective}' exige inclusão. Em '{file}', a falha semântica impede a 'Orquestração de Inteligência Artificial' de ser universal."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Craft beautiful and highly accessible Android interfaces."
+        return f"Você é o Dr. {self.name}, guardião da estética Android."

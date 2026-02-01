@@ -1,33 +1,41 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
 class MetricPersona(BaseActivePersona):
     """
-    Core: Kotlin Analytics Specialist 📊
-    Foca na mensuração de comportamento do usuário e telemetria no Android.
+    Core: PhD in Applied Statistics & Telemetry Engineering 📊
+    Monitorado por si mesmo: Injeção de Telemetria de Auditoria.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Metric"
-        self.emoji = "📊"
-        self.role = "Analytics Specialist"
-        self.stack = "Kotlin"
+        self.name, self.emoji, self.role, self.stack = "Metric", "📊", "PhD Telemetry Architect (Kotlin)", "Kotlin"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando instrumentação de dados e eventos...")
+        """Auditoria com telemetria estatística JVM integrada."""
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Integridade da Telemetria...")
         
-        metric_rules = [
-            {
-                'regex': r"Firebase\.analytics\.logEvent", 
-                'issue': 'Rastreamento de evento detectado. Verifique se os nomes seguem o padrão snake_case recomendado.', 
-                'severity': 'low'
-            }
+        # Sintaxe linear
+        rules = [
+            {'regex': r"logEvent\(.*PII.*\)", 'issue': 'Violação: Dados sensíveis na telemetria JVM.', 'severity': 'critical'},
+            {'regex': r"Log\.d\(", 'issue': 'Log Primitivo: Uso de Log.d detectado.', 'severity': 'medium'}
         ]
         
-        return self.find_patterns(('.kt'), metric_rules)
+        results = self.find_patterns(('.kt', '.kts'), rules)
+        
+        duration = time.time() - start_time
+        logger.info(f"📊 [{self.name}] Auditoria finalizada em {duration:.4f}s. Amostras: {len(results)}")
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "logEvent" not in content:
+            return f"Cegueira Analítica: O objetivo '{objective}' exige visibilidade. Em '{file}', a ausência de telemetria isola a 'Orquestração de Inteligência Artificial' de dados reais de campo."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Turn every user action into valuable insights."
+        return f"Você é o Dr. {self.name}, mestre em telemetria Kotlin."

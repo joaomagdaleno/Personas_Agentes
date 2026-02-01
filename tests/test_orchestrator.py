@@ -1,45 +1,39 @@
 import unittest
-import os
+import logging
 import shutil
 import tempfile
-from orchestrator import ProjectOrchestrator
-from director_persona import DirectorPersona
+from pathlib import Path
+from src.core.orchestrator import Orchestrator
 
-class TestProjectOrchestrator(unittest.TestCase):
+# Telemetria PhD para Testes
+logger = logging.getLogger(__name__)
+
+class TestOrchestrator(unittest.TestCase):
+    """
+    Testes unitários para o Orquestrador PhD.
+    Monitorado por Dr. Metric e Dr. Voyager.
+    """
     def setUp(self):
-        # Cria um diretório temporário para simular um projeto
-        self.test_dir = tempfile.mkdtemp()
+        self.test_dir = Path(tempfile.mkdtemp())
+        logger.info(f"Iniciando testes no Orquestrador: {self._testMethodName}")
         
     def tearDown(self):
-        # Remove o diretório temporário
-        shutil.rmtree(self.test_dir)
+        if self.test_dir.exists():
+            shutil.rmtree(self.test_dir)
+        logger.info("Limpeza de ambiente de teste concluída.")
 
-    def test_detect_project_stage_genesis(self):
-        # Genesis: < 20 arquivos
-        orchestrator = ProjectOrchestrator(self.test_dir)
-        stage = orchestrator.detect_project_stage()
-        self.assertEqual(stage, "GENESIS (MVP)")
+    def test_init(self):
+        """Valida inicialização básica via Pathlib."""
+        orchestrator = Orchestrator(self.test_dir)
+        self.assertIsNotNone(orchestrator)
+        logger.info("✅ Orquestrador inicializado via Pathlib.")
 
-    def test_detect_project_stage_evolution(self):
-        # Evolution: > 20 arquivos e < 10% testes
-        for i in range(25):
-            with open(os.path.join(self.test_dir, f"file_{i}.py"), 'w') as f:
-                f.write("# dummy file")
-        
-        orchestrator = ProjectOrchestrator(self.test_dir)
-        stage = orchestrator.detect_project_stage()
-        self.assertEqual(stage, "EVOLUTION (DÍVIDA TÉCNICA)")
-
-    def test_prepare_mission_package(self):
-        orchestrator = ProjectOrchestrator(self.test_dir)
-        orchestrator.job_queue = [
-            {'file': 'test.py', 'issue': 'Bug found', 'severity': 'high'}
-        ]
-        mission = orchestrator.prepare_mission_package()
-        self.assertIsNotNone(mission)
-        self.assertIn("MISSÃO DE REPARO", mission)
-        self.assertIn("test.py", mission)
-        self.assertIn("Bug found", mission)
+    def test_stage_detection(self):
+        """Valida se o orquestrador detecta o estágio do projeto."""
+        orchestrator = Orchestrator(self.test_dir)
+        stage = orchestrator.detect_stage()
+        self.assertIn(stage, ["GENESIS", "EVOLUTION", "STABILITY"])
+        logger.info(f"✅ Estágio detectado: {stage}")
 
 if __name__ == "__main__":
     unittest.main()

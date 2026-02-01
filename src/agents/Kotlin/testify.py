@@ -1,33 +1,41 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
 class TestifyPersona(BaseActivePersona):
     """
-    Core: Kotlin Testing Specialist 🧪
-    Foca na qualidade de código através de testes unitários e de instrumentação.
+    Core: PhD in Software Verification & JVM Reliability 🧪
+    Monitorado por Metric: Injeção de Telemetria de Auditoria.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Testify"
-        self.emoji = "🧪"
-        self.role = "Testing Specialist"
-        self.stack = "Kotlin"
+        self.name, self.emoji, self.role, self.stack = "Testify", "🧪", "PhD QA Architect (Kotlin)", "Kotlin"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando cobertura de testes no Android...")
+        """Auditoria com telemetria de verificação formal integrada."""
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Confiabilidade JVM...")
         
-        testify_rules = [
-            {
-                'regex': r"@Test", 
-                'issue': 'Teste detectado. Garanta a cobertura de casos de borda e falha.', 
-                'severity': 'low'
-            }
+        # Sintaxe linear
+        rules = [
+            {'regex': r"assertEquals\(.*?\s*,\s*true\)", 'issue': 'Asserção Fraca: Use asserções expressivas.', 'severity': 'low'},
+            {'regex': r"Thread\.sleep", 'issue': 'Teste Instável: Flakiness detectado via sleep.', 'severity': 'high'}
         ]
         
-        return self.find_patterns(('.kt'), testify_rules)
+        results = self.find_patterns(('.kt',), rules)
+        
+        duration = time.time() - start_time
+        logger.info(f"🧪 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "test" not in content.lower():
+            return f"Risco de Regressão: O objetivo '{objective}' exige estabilidade. Em '{file}', a ausência de verificações automatizadas oculta falhas na 'Orquestração de Inteligência Artificial'."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Build a fortress of reliability around the application."
+        return f"Você é o Dr. {self.name}, guardião da confiabilidade técnica Kotlin."

@@ -1,38 +1,41 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
 class NexusPersona(BaseActivePersona):
     """
-    Core: Kotlin API Specialist 🌐
-    Foca na comunicação de rede, contratos de API e reatividade de dados (Flow).
+    Core: PhD in Distributed Systems & API Resiliency 🌐
+    Monitorado por Metric: Injeção de Telemetria de Auditoria.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Nexus"
-        self.emoji = "🌐"
-        self.role = "API Specialist"
-        self.stack = "Kotlin"
+        self.name, self.emoji, self.role, self.stack = "Nexus", "🌐", "PhD Network Architect (Kotlin)", "Kotlin"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando camadas de rede e serialização de dados...")
+        """Auditoria com telemetria de conectividade JVM integrada."""
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Resiliência de Rede...")
         
-        nexus_rules = [
-            {
-                'regex': r"Retrofit\.Builder", 
-                'issue': 'Retrofit detectado. Garanta o uso de adaptadores de Coroutines para chamadas assíncronas seguras.', 
-                'severity': 'low'
-            },
-            {
-                'regex': r"@Serializable", 
-                'issue': 'Serialização via Kotlinx detectada. Garanta que todos os campos da API estejam mapeados para evitar quebras em tempo de execução.', 
-                'severity': 'medium'
-            }
+        # Sintaxe linear
+        rules = [
+            {'regex': r"GlobalScope\.launch", 'issue': 'Quebra de Concorrência: Uso de GlobalScope detectado.', 'severity': 'high'},
+            {'regex': r"allowMainThreadQueries\(\)", 'issue': 'Violação Crítica: I/O bloqueante na UI thread.', 'severity': 'critical'}
         ]
         
-        return self.find_patterns(('.kt'), nexus_rules)
+        results = self.find_patterns(('.kt', '.kts'), rules)
+        
+        duration = time.time() - start_time
+        logger.info(f"🌐 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "GlobalScope" in content:
+            return f"Risco de Inconsistência: O objetivo '{objective}' exige gestão de escopo. Em '{file}', o uso de GlobalScope impede o controle de cancelamento da 'Orquestração de Inteligência Artificial'."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Connect the app to the world with high resilience."
+        return f"Você é o Dr. {self.name}, guardião da conectividade Kotlin."

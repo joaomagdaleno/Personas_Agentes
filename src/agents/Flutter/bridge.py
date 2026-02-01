@@ -1,33 +1,36 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class BridgePersona(BaseActivePersona):
     """
-    Core: Flutter Native Integration Specialist 🌉
-    Foca na comunicação entre Flutter e as plataformas nativas (Android/iOS).
+    Core: PhD in Distributed Systems (Flutter) 🌉
+    Especialista em pontes nativas (MethodChannels) e integração de APIs.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Bridge"
-        self.emoji = "🌉"
-        self.role = "Native Integration Specialist"
-        self.stack = "Flutter"
+        self.name, self.emoji, self.role, self.stack = "Bridge", "🌉", "PhD Systems Architect", "Flutter"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando MethodChannels e integrações nativas...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Camadas de Interoperabilidade Flutter...")
         
-        bridge_rules = [
-            {
-                'regex': r"MethodChannel\(", 
-                'issue': 'Uso de MethodChannel detectado. Garanta que o nome do canal seja único e os erros sejam tratados com Try-Catch.', 
-                'severity': 'medium'
-            }
+        audit_rules = [
+            {'regex': r"MethodChannel\(", 'issue': 'Aviso: Uso de canal nativo detectado. Garanta tipagem estrita.', 'severity': 'medium'},
+            {'regex': r"dynamic\s+\w+\s*\(", 'issue': 'Fragilidade: Uso de dynamic em assinaturas de método. Use tipos fortes.', 'severity': 'high'}
         ]
         
-        return self.find_patterns(('.dart'), bridge_rules)
+        results = self.find_patterns(('.dart',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "dynamic" in content:
+            return f"Quebra de Contrato: O objetivo '{objective}' exige previsibilidade. Em '{file}', o uso de 'dynamic' torna a 'Orquestração de Inteligência Artificial' vulnerável a erros em tempo de execução."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Bridge Flutter and Native code with seamless communication."
+        return f"Você é o Dr. {self.name}, arquiteto de integrações Flutter."

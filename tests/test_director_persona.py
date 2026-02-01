@@ -1,20 +1,23 @@
 import unittest
-from director_persona import DirectorPersona
+import logging
+from pathlib import Path
+from src.agents.director import DirectorPersona
+
+# Telemetria PhD para Testes
+logger = logging.getLogger(__name__)
 
 class TestDirectorPersona(unittest.TestCase):
-    """Testa a persona do Diretor."""
+    """
+    Testes para o Diretor Estratégico.
+    Monitorado por Dr. Metric.
+    """
     
-    def test_prompt_structure(self):
-        """Garante que o prompt do diretor contém sua missão e nome."""
-        director = DirectorPersona()
-        prompt = director.get_system_prompt()
-        self.assertIn("Director", prompt)
-        self.assertIn("orchestrate", prompt.lower())
-
-    def test_audit_empty(self):
-        """O Diretor não deve encontrar problemas técnicos em auditorias estáticas por padrão."""
-        director = DirectorPersona()
-        self.assertEqual(director.perform_audit(), [])
+    def test_init(self):
+        """Valida inicialização do diretor."""
+        logger.info("Auditando inicialização do Diretor...")
+        director = DirectorPersona(Path("."))
+        self.assertEqual(director.name, "Director")
+        logger.info("✅ Diretor operacional.")
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,38 +1,32 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class WardenPersona(BaseActivePersona):
-    """
-    Core: Compliance Specialist ⚖️
-    Foca em conformidade legal (LGPD, GDPR), termos de uso e licenciamento.
-    """
+    """Core: PhD in Ethics ⚖️"""
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Warden"
-        self.emoji = "⚖️"
-        self.role = "Compliance Specialist"
-        self.stack = "Python"
+        self.name, self.emoji, self.role, self.stack = "Warden", "⚖️", "PhD Privacy Officer", "Python"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando conformidade legal e privacidade de dados...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Privacidade...")
         
-        warden_rules = [
-            {
-                'regex': r"personal_data|email|phone", 
-                'issue': 'Tratamento de dados sensíveis detectado. Garanta a conformidade com a LGPD e o consentimento do usuário.', 
-                'severity': 'high'
-            },
-            {
-                'regex': r"LICENSE", 
-                'issue': 'Arquivo de licença detectado. Garanta que todas as dependências respeitem esta licença.', 
-                'severity': 'medium'
-            }
+        audit_rules = [
+            {'regex': r"print\(.*password.*=.*\)", 'issue': 'Leak: Senha em stdout.', 'severity': 'critical'}
         ]
         
-        return self.find_patterns(('.py', '.md', 'LICENSE'), warden_rules)
+        results = self.find_patterns(('.py',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "password" in content:
+            return f"Risco Ético: O objetivo '{objective}' exige governança. Em '{file}', vazamentos de credenciais ameaçam a 'Orquestração de Inteligência Artificial'."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Protect the project from legal risks and ensure user privacy."
+        return f"Você é o Dr. {self.name}, guardião da ética."

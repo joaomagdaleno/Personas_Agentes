@@ -1,33 +1,36 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class ScalePersona(BaseActivePersona):
     """
-    Core: Flutter Architecture Specialist 🏗️
-    Foca na organização do projeto, gerenciamento de estado e escalabilidade.
+    Core: PhD in System Architecture & Scalability (Flutter) 🏗️
+    Especialista em modularidade, gestão de pacotes e padrões arquiteturais Dart.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Scale"
-        self.emoji = "🏗️"
-        self.role = "Architecture Specialist"
-        self.stack = "Flutter"
+        self.name, self.emoji, self.role, self.stack = "Scale", "🏗️", "PhD Software Architect", "Flutter"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando padrões de arquitetura e estado...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Escalabilidade Flutter...")
         
-        scale_rules = [
-            {
-                'regex': r"extends StatefulWidget", 
-                'issue': 'Uso de StatefulWidget detectado. Avalie se o estado poderia ser gerenciado de forma mais desacoplada (BLoC, Riverpod).', 
-                'severity': 'low'
-            }
+        audit_rules = [
+            {'regex': r"import\s+['"]package:.*?/src/.*?['"]", 'issue': 'Acoplamento: Importação de pastas internas (/src/) de outros pacotes detectada.', 'severity': 'high'},
+            {'regex': r"global\s+", 'issue': 'Risco de Escalabilidade: Uso de estado global detectado.', 'severity': 'critical'}
         ]
         
-        return self.find_patterns(('.dart'), scale_rules)
+        results = self.find_patterns(('.dart',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "/src/" in content and "import" in content:
+            return f"Violência Arquitetural: O objetivo '{objective}' exige modularidade. Em '{file}', a quebra de encapsulamento impede a expansão da 'Orquestração de Inteligência Artificial'."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Build a codebase that can scale to millions of users."
+        return f"Você é o Dr. {self.name}, mestre em sistemas de larga escala Flutter."

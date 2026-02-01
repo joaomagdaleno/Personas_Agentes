@@ -1,43 +1,32 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class NexusPersona(BaseActivePersona):
-    """
-    Core: API & Connectivity Specialist 🌐
-    Foca na integração com serviços externos, contratos de API e protocolos de comunicação.
-    """
+    """Core: PhD in Distributed Systems 🌐"""
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Nexus"
-        self.emoji = "🌐"
-        self.role = "API Specialist"
-        self.stack = "Python"
+        self.name, self.emoji, self.role, self.stack = "Nexus", "🌐", "PhD Network Architect", "Python"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando camadas de rede e integração...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Camadas de Transporte...")
         
-        nexus_rules = [
-            {
-                'regex': r"requests\.(get|post|put|delete)\(.*\bverify=False\b", 
-                'issue': 'Requisição com verificação SSL desativada. Risco de segurança.', 
-                'severity': 'high'
-            },
-            {
-                'regex': r"timeout=None", 
-                'issue': 'Requisição sem timeout definido. Pode causar travamento da aplicação se o servidor não responder.', 
-                'severity': 'medium'
-            },
-            {
-                'regex': r"json\.loads\(.*\.text\)", 
-                'issue': 'Serialização direta de texto para JSON detectada. Prefira usar .json() do requests para tratamento automático de encoding.', 
-                'severity': 'low'
-            }
+        audit_rules = [
+            {'regex': r"verify\s*=\s*False", 'issue': 'Vulnerabilidade: SSL Verification desativado.', 'severity': 'critical'}
         ]
         
-        return self.find_patterns(('.py'), nexus_rules)
+        results = self.find_patterns(('.py',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "timeout" not in content and "requests" in content:
+            return f"Fragilidade Nervosa: O objetivo '{objective}' exige resiliência. Em '{file}', chamadas externas sem timeout ameaçam a 'Orquestração de Inteligência Artificial'."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Ensure robust, secure, and efficient API integrations."
+        return f"Você é o Dr. {self.name}, mestre em redes."

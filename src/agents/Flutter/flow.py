@@ -1,33 +1,36 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class FlowPersona(BaseActivePersona):
     """
-    Core: Flutter Navigation Specialist 🌊
-    Foca no fluxo de telas, rotas e gerenciamento de pilha de navegação.
+    Core: PhD in Topology & Reactive Navigation (Flutter) 🌊
+    Especialista em gestão de rotas, navegação profunda e UX flow em Dart.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Flow"
-        self.emoji = "🌊"
-        self.role = "Navigation Specialist"
-        self.stack = "Flutter"
+        self.name, self.emoji, self.role, self.stack = "Flow", "🌊", "PhD Navigation Architect", "Flutter"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando rotas e transições de tela...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Fluxos de Navegação Flutter...")
         
-        flow_rules = [
-            {
-                'regex': r"Navigator\.push\(.*MaterialPageRoute", 
-                'issue': 'Navegação imperativa detectada. Considere usar rotas nomeadas ou Navigator 2.0 para maior escalabilidade.', 
-                'severity': 'medium'
-            }
+        audit_rules = [
+            {'regex': r"Navigator\.push\(", 'issue': 'Aviso: Uso de navegação direta. Prefira rotas nomeadas ou GoRouter.', 'severity': 'low'},
+            {'regex': r"pushNamed\(['\"].*?['"]\)", 'issue': 'Fragilidade: Rota via String bruta. Use constantes tipadas.', 'severity': 'medium'}
         ]
         
-        return self.find_patterns(('.dart'), flow_rules)
+        results = self.find_patterns(('.dart',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "pushNamed" in content:
+            return f"Entropia Lógica: O objetivo '{objective}' exige previsibilidade. Em '{file}', o uso de Strings para navegação pode quebrar a 'Orquestração de Inteligência Artificial' em runtime."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Create seamless and predictable user journeys."
+        return f"Você é o Dr. {self.name}, mestre em arquitetura de fluxos Flutter."

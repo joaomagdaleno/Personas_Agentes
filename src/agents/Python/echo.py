@@ -1,38 +1,32 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class EchoPersona(BaseActivePersona):
-    """
-    Core: Observability Specialist 🗣️
-    Foca em logs, rastreabilidade e feedback do sistema para humanos.
-    """
+    """Core: PhD in Observability 🗣️"""
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Echo"
-        self.emoji = "🗣️"
-        self.role = "Observability Specialist"
-        self.stack = "Python"
+        self.name, self.emoji, self.role, self.stack = "Echo", "🗣️", "PhD Observability Engineer", "Python"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando qualidade de logs e feedback...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Visibilidade e Rastreabilidade...")
         
-        echo_rules = [
-            {
-                'regex': r"except Exception:\s+pass", 
-                'issue': 'Erro silenciado sem log. Isso torna o sistema impossível de debugar em produção.', 
-                'severity': 'high'
-            },
-            {
-                'regex': r"logger\.info\(.*['\"]Erro", 
-                'issue': 'Uso de nível INFO para logar erros. Use logger.error() ou logger.exception() para correta categorização.', 
-                'severity': 'medium'
-            }
+        audit_rules = [
+            {'regex': r"except Exception:\s+pass", 'issue': 'Cegueira: Exceção silenciada.', 'severity': 'critical'}
         ]
         
-        return self.find_patterns(('.py'), echo_rules)
+        results = self.find_patterns(('.py',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "pass" in content and "except" in content:
+            return f"Cegueira Operacional: O objetivo '{objective}' exige diagnóstico. Em '{file}', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Ensure the system communicates clearly its internal state."
+        return f"Você é o Dr. {self.name}, mestre em observabilidade."

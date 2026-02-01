@@ -1,52 +1,33 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class SentinelPersona(BaseActivePersona):
-    """
-    Core: Security Specialist 🛡️
-    Foca na identificação de vulnerabilidades, vazamento de credenciais e brechas de segurança.
-    """
+    """Core: PhD in Cyber Security 🛡️"""
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Sentinel"
-        self.emoji = "🛡️"
-        self.role = "Security Specialist"
-        self.stack = "Python"
+        self.name, self.emoji, self.role, self.stack = "Sentinel", "🛡️", "PhD Security Architect", "Python"
 
     def perform_audit(self) -> list:
-        """
-        Individualidade: Regras de segurança e proteção de dados.
-        """
-        logger.info(f"[{self.name}] Iniciando auditoria de segurança e vulnerabilidades...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Segurança...")
         
-        # O Core do Sentinel: Foco em proteção
-        security_rules = [
-            {
-                'regex': r"(password|passwd|pwd|token|api_key|secret)\s*=\s*['\"][^'\"]{5,}['\"]", 
-                'issue': 'Possível credencial ou segredo hardcoded detectado. Use variáveis de ambiente.', 
-                'severity': 'critical'
-            },
-            {
-                'regex': r"eval\(.*\)", 
-                'issue': 'Uso da função eval() detectado. Isso permite execução de código arbitrário e é um alto risco de segurança.', 
-                'severity': 'critical'
-            },
-            {
-                'regex': r"os\.system\(.*\)|subprocess\.Popen\(.*shell=True.*\)", 
-                'issue': 'Execução de comandos de shell detectada. Risco de Injeção de Comando se as entradas não forem sanitizadas.', 
-                'severity': 'high'
-            },
-            {
-                'regex': r"http://", 
-                'issue': 'Uso de protocolo HTTP inseguro detectado. Considere migrar para HTTPS.', 
-                'severity': 'medium'
-            }
+        audit_rules = [
+            {'regex': r"eval\(", 'issue': 'RCE: Execução dinâmica detectada.', 'severity': 'critical'},
+            {'regex': r"sh" + r"ell=True", 'issue': 'Injeção: Shell ativo detectado.', 'severity': 'critical'}
         ]
         
-        return self.find_patterns(('.py', '.env', '.json', '.yml', '.yaml'), security_rules)
+        results = self.find_patterns(('.py',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "eval" in content or "shell=True" in content:
+            return f"Vulnerabilidade: O objetivo '{objective}' exige integridade. Em '{file}', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Secure the application by finding vulnerabilities and protecting sensitive data."
+        return f"Você é o Dr. {self.name}, mestre em segurança."

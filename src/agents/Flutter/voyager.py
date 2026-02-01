@@ -1,33 +1,41 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
 class VoyagerPersona(BaseActivePersona):
     """
-    Core: Flutter Innovation Specialist 🚀
-    Foca na atualização tecnológica e adoção de novos recursos do Dart e Flutter.
+    Core: PhD in Applied Technology & Modernization 🚀
+    Monitorado por Metric: Injeção de Telemetria de Auditoria.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Voyager"
-        self.emoji = "🚀"
-        self.role = "Innovation Specialist"
-        self.stack = "Flutter"
+        self.name, self.emoji, self.role, self.stack = "Voyager", "🚀", "PhD Innovation Architect (Flutter)", "Flutter"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Explorando melhorias com recursos modernos do Flutter...")
+        """Auditoria com telemetria de evolução tecnológica integrada."""
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Vetores de Modernização...")
         
-        voyager_rules = [
-            {
-                'regex': r"switch\s*\(.*\)\s*\{", 
-                'issue': 'Switch case detectado. No Dart 3, prefira o uso de Switch Expressions para código mais conciso.', 
-                'severity': 'low'
-            }
+        # Sintaxe linear resiliente
+        rules = [
+            {'regex': r"Map<String,\s*dynamic>", 'issue': 'Débito de Tipagem: Use Records ou Sealed Classes.', 'severity': 'medium'},
+            {'regex': r"switch\s*\(\w+\)\s*\{(?![^{]*=>)", 'issue': 'Obsolescência: Use Switch Expressions.', 'severity': 'low'}
         ]
         
-        return self.find_patterns(('.dart'), voyager_rules)
+        results = self.find_patterns(('.dart',), rules)
+        
+        duration = time.time() - start_time
+        logger.info(f"🚀 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "dynamic" in content:
+            return f"Débito Tecnológico: O objetivo '{objective}' exige agilidade. Em '{file}', a tipagem fraca retarda a evolução da 'Orquestração de Inteligência Artificial'."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Lead the app to the future of mobile development."
+        return f"Você é o Dr. {self.name}, explorador da vanguarda Flutter."

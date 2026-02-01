@@ -1,18 +1,25 @@
 import unittest
-import os
-import json
-from compiler import RegistryCompiler
+import logging
+from pathlib import Path
+from src.core.compiler import Compiler
 
-class TestRegistryCompiler(unittest.TestCase):
-    def test_init(self):
-        compiler = RegistryCompiler()
-        self.assertIsNotNone(compiler.registry)
-        self.assertIn("Director", compiler.registry)
+# Telemetria PhD para Testes
+logger = logging.getLogger(__name__)
 
-    def test_load_persona_invalid(self):
-        compiler = RegistryCompiler()
-        persona = compiler.load_persona_from_file("non_existent.py")
-        self.assertIsNone(persona)
+class TestCompiler(unittest.TestCase):
+    """
+    Testes para o Sincronizador de Censo PhD.
+    Monitorado por Dr. Metric e Dr. Voyager.
+    """
+    
+    def test_registry_existence(self):
+        """Valida a criação do agents_registry.json via Pathlib."""
+        logger.info("Auditando persistência de registro PhD...")
+        compiler = Compiler()
+        compiler.compile_all()
+        registry_path = Path("agents_registry.json")
+        self.assertTrue(registry_path.exists())
+        logger.info("✅ Registro persistido com sucesso.")
 
 if __name__ == "__main__":
     unittest.main()

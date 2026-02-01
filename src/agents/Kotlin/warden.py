@@ -1,33 +1,41 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
 class WardenPersona(BaseActivePersona):
     """
-    Core: Kotlin Compliance Specialist ⚖️
-    Foca na conformidade legal, permissões de sistema e privacidade no ecossistema Android.
+    Core: PhD in Digital Rights & Android Privacy Compliance ⚖️
+    Monitorado por Metric: Injeção de Telemetria de Auditoria.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Warden"
-        self.emoji = "⚖️"
-        self.role = "Compliance Specialist"
-        self.stack = "Kotlin"
+        self.name, self.emoji, self.role, self.stack = "Warden", "⚖️", "PhD Privacy Officer (Kotlin)", "Kotlin"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando conformidade com as políticas do Google Play...")
+        """Auditoria com telemetria ética JVM integrada."""
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Governança de Dados...")
         
-        warden_rules = [
-            {
-                'regex': r"requestPermissions", 
-                'issue': 'Solicitação de permissão detectada. No Android 13+, garanta que a permissão de notificações seja tratada separadamente.', 
-                'severity': 'medium'
-            }
+        # Sintaxe linear
+        rules = [
+            {'regex': r"requestPermissions\(", 'issue': 'Risco Ético: Pedido de permissão sem UI informativa.', 'severity': 'high'},
+            {'regex': r"ANDROID_ID", 'issue': 'Violação: Uso de ID de hardware persistente.', 'severity': 'critical'}
         ]
         
-        return self.find_patterns(('.kt', '.xml'), warden_rules)
+        results = self.find_patterns(('.kt', '.xml'), rules)
+        
+        duration = time.time() - start_time
+        logger.info(f"⚖️ [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos éticos: {len(results)}")
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "ANDROID_ID" in content:
+            return f"Risco Jurídico: O objetivo '{objective}' exige conformidade legal. Em '{file}', o rastreamento via ID persistente viola a LGPD no sistema de 'Orquestração de Inteligência Artificial'."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Guard the application's legal and ethical standing."
+        return f"Você é o Dr. {self.name}, guardião da ética digital Kotlin."

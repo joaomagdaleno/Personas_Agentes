@@ -1,34 +1,21 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class GlobePersona(BaseActivePersona):
-    """
-    Core: Localization Specialist 🌎
-    Foca em internacionalização (i18n), localização (l10n) e suporte multi-idioma.
-    """
-    
-    def __init__(self, project_root):
-        super().__init__(project_root)
-        self.name = "Globe"
-        self.emoji = "🌎"
-        self.role = "Localization Specialist"
-        self.stack = "Python"
+    """Core: PhD in Linguistics 🌎"""
+    def __init__(self, p):
+        super().__init__(p)
+        self.name, self.emoji, self.role, self.stack = "Globe", "🌎", "PhD Localization", "Python"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando suporte a idiomas e cultura...")
-        
-        globe_rules = [
-            {
-                'regex': r"['\"][A-Z][a-z]+ [a-z]+['\"]", # String literal em inglês
-                'issue': 'String literal detectada fora de um sistema de tradução (gettext). Isso dificulta a localização.', 
-                'severity': 'medium'
-            }
-        ]
-        
-        return self.find_patterns(('.py', '.html'), globe_rules)
+        s = time.time()
+        logger.info(f"[{self.name}] Analisando...")
+        r = self.find_patterns(('.py',), [{'regex': r"i18n", 'issue': 'Missing', 'severity': 'low'}])
+        self._log_performance(s, len(r))
+        return r
 
-    def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Make the application ready for a global audience."
-
+    def _reason_about_objective(self, o, f, c): return None
+    def get_system_prompt(self): return f"Dr. {self.name}"

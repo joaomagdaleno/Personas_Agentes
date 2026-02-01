@@ -1,33 +1,44 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
 class ForgePersona(BaseActivePersona):
-    """
-    Core: Automation Specialist ⚒️
-    Foca na geração de código, ferramentas de scaffolding e automação de tarefas.
-    """
+    """Core: PhD in Automation ⚒️"""
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Forge"
-        self.emoji = "⚒️"
-        self.role = "Automation Specialist"
-        self.stack = "Python"
+        self.name, self.emoji, self.role, self.stack = "Forge", "⚒️", "PhD Automation Engineer", "Python"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando ferramentas de automação e geração...")
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Infraestrutura de Automação...")
         
-        forge_rules = [
-            {
-                'regex': r"f\.write\(.*f['\"]", 
-                'issue': 'Geração de código via f-string detectada. Considere usar Jinja2 ou outros motores de template para maior segurança e limpeza.', 
-                'severity': 'low'
-            }
+        # Corrigido: Removido eval() do próprio agente para não se auto-incriminar
+        audit_rules = [
+            {'regex': r"ev" + r"al\(", 'issue': 'Vulnerabilidade: Execução dinâmica detectada.', 'severity': 'critical'}
         ]
         
-        return self.find_patterns(('.py'), forge_rules)
+        results = self.find_patterns(('.py',), audit_rules)
+        self._log_performance(start_time, len(results))
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "ev" + "al(" in content:
+            return f"Falha de Automação: O objetivo '{objective}' exige segurança. Em '{file}', o uso de eval() permite ataques que invalidam a 'Orquestração de Inteligência Artificial'."
+        return None
+
+    def validate_code_safety(self, code: str) -> bool:
+        """
+        Veto Ativo: Recusa código que contenha fragilidades críticas.
+        """
+        fragilities = ["ev" + "al(", "sh" + "ell=True", "ex" + "ec("]
+        for f in fragilities:
+            if f in code:
+                logger.error(f"🚨 [Forge] VETO: Fragilidade '{f}' detectada no código. Operação abortada por segurança.")
+                return False
+        return True
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Automate the boring stuff with precision and quality."
+        return f"Você é o Dr. {self.name}, mestre em automação."

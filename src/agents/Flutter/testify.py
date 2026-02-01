@@ -1,33 +1,41 @@
 from src.agents.base import BaseActivePersona
 import logging
+import time
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
 class TestifyPersona(BaseActivePersona):
     """
-    Core: Flutter Testing Specialist 🧪
-    Foca na cobertura de testes e qualidade do código Dart/Flutter.
+    Core: PhD in Software Verification & Reliability 🧪
+    Monitorado por Metric: Injeção de Telemetria de Auditoria.
     """
     
     def __init__(self, project_root):
         super().__init__(project_root)
-        self.name = "Testify"
-        self.emoji = "🧪"
-        self.role = "Testing Specialist"
-        self.stack = "Flutter"
+        self.name, self.emoji, self.role, self.stack = "Testify", "🧪", "PhD QA Architect (Flutter)", "Flutter"
 
     def perform_audit(self) -> list:
-        logger.info(f"[{self.name}] Audidando cobertura e validade dos testes...")
+        """Auditoria com telemetria de verificação estruturada integrada."""
+        start_time = time.time()
+        logger.info(f"[{self.name}] Analisando Confiabilidade de Software...")
         
-        testify_rules = [
-            {
-                'regex': r"testWidgets\(", 
-                'issue': 'Widget Test detectado. Garanta que as interações de UI sejam validadas.', 
-                'severity': 'low'
-            }
+        # Sintaxe linear resiliente
+        rules = [
+            {'regex': r"expect\(.*?\s*,\s*true\)", 'issue': 'Asserção Fraca: Teste validando booleano genérico.', 'severity': 'low'},
+            {'regex': r"testWidgets\((?!.*pumpAndSettle)", 'issue': 'Teste Incompleto: Widget Test sem processamento de frames.', 'severity': 'medium'}
         ]
         
-        return self.find_patterns(('.dart'), testify_rules)
+        results = self.find_patterns(('.dart',), rules)
+        
+        duration = time.time() - start_time
+        logger.info(f"🧪 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
+        return results
+
+    def _reason_about_objective(self, objective, file, content):
+        if "test" not in content.lower():
+            return f"Fragilidade de Regressão: O objetivo '{objective}' exige robustez. Em '{file}', a falta de testes automatizados ameaça a integridade da 'Orquestração de Inteligência Artificial'."
+        return None
 
     def get_system_prompt(self):
-        return f"You are {self.name} {self.emoji}. Mission: Ensure every widget behaves as expected."
+        return f"Você é o Dr. {self.name}, guardião da confiabilidade técnica Flutter."

@@ -1,47 +1,28 @@
 import logging
 import sys
 
-def setup_logging(level=logging.INFO):
-    """Configura o sistema de logging para o projeto."""
-    # Cores para o terminal (ANSI)
-    BLUE = "\033[94m"
-    GREEN = "\033[92m"
-    YELLOW = "\033[93m"
-    RED = "\033[91m"
-    RESET = "\033[0m"
-
-    class CustomFormatter(logging.Formatter):
-        format_str = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-        FORMATS = {
-            logging.DEBUG: BLUE + format_str + RESET,
-            logging.INFO: GREEN + format_str + RESET,
-            logging.WARNING: YELLOW + format_str + RESET,
-            logging.ERROR: RED + format_str + RESET,
-            logging.CRITICAL: RED + format_str + RESET
-        }
-
+def configure_logging(level=logging.INFO):
+    """Configura o sistema de logging PhD resiliente."""
+    # Cores simples para evitar erros de format string
+    class SimpleFormatter(logging.Formatter):
         def format(self, record):
-            """Aplica a cor correspondente ao nível do log antes de formatar a mensagem."""
-            log_fmt = self.FORMATS.get(record.levelno)
-            formatter = logging.Formatter(log_fmt)
-            return formatter.format(record)
+            # Formatação manual para garantir estabilidade absoluta
+            level_name = record.levelname
+            msg = record.getMessage()
+            time_str = self.formatTime(record, self.datefmt)
+            return f"{time_str} - {record.name} - {level_name} - {msg}"
 
     try:
         handler = logging.StreamHandler(sys.stdout)
-        handler.setFormatter(CustomFormatter())
-        
-        root_logger = logging.getLogger()
-        root_logger.setLevel(level)
-        
-        # Remove handlers existentes se houver
-        for h in root_logger.handlers[:]:
-            root_logger.removeHandler(h)
-            
-        root_logger.addHandler(handler)
+        handler.setFormatter(SimpleFormatter())
+        root = logging.getLogger()
+        root.setLevel(level)
+        for h in root.handlers[:]: root.removeHandler(h)
+        root.addHandler(handler)
     except Exception as e:
-        # Fallback para stderr se a configuração falhar
-        sys.stderr.write(f"CRÍTICO: Falha ao configurar logging: {e}\n")
+        sys.stderr.write(f"Falha fatal no logging: {e}\n")
 
-# Inicializa por padrão
-if not logging.getLogger().handlers:
-    setup_logging()
+def setup_logging(level=logging.INFO): configure_logging(level)
+
+if not logging.getLogger().handlers: configure_logging()
+
