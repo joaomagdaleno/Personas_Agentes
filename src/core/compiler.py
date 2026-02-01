@@ -4,21 +4,23 @@ import time
 import sys
 from pathlib import Path
 
-# Adiciona o diretório raiz ao sys.path para permitir imports de src
-sys.path.append(str(Path(__file__).parent.parent.parent))
-
-from src.utils.logging_config import configure_logging
-
-configure_logging()
 logger = logging.getLogger(__name__)
 
 class Compiler:
     """Sincronizador de Censo PhD: Registra a paridade de agentes."""
     
-    def __init__(self):
-        self.project_root = Path(__file__).parent.parent.parent
+    def __init__(self, project_root=None):
+        if not project_root:
+            self.project_root = Path(__file__).parent.parent.parent
+        else:
+            self.project_root = Path(project_root)
+            
         self.registry_path = self.project_root / "agents_registry.json"
         self.base_agents_dir = self.project_root / "src" / "agents"
+        
+        # Garante logging apenas quando necessário
+        from src.utils.logging_config import configure_logging
+        configure_logging()
 
     def compile_all(self):
         logger.info("🚀 Sincronizando censo global de PhDs...")

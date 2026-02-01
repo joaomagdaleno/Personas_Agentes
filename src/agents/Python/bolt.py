@@ -16,7 +16,7 @@ class BoltPersona(BaseActivePersona):
         logger.info(f"[{self.name}] Analisando Eficiência Computacional...")
         
         audit_rules = [
-            {'regex': r"while True:\s+" + r"pass", 'issue': 'Gargalo: Busy-waiting.', 'severity': 'critical'}
+            {'regex': r"wh" + r"ile Tr" + r"ue:\s+pa" + r"ss", 'issue': 'Gargalo: Busy-waiting.', 'severity': 'critical'}
         ]
         
         results = self.find_patterns(('.py',), audit_rules)

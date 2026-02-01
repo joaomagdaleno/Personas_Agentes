@@ -46,7 +46,7 @@ class PersonaManager:
                 updated_count += 1
         
         duration = time.time() - start_time
-        logger.info(f"✅ Sincronização de templates concluída: {updated_count} PhDs validados em {duration:.2f}s.")
+        logger.info(f"✨ Sincronização concluída: {updated_count} PhDs validados em {duration:.4f}s.")
 
 if __name__ == "__main__":
     manager = PersonaManager(Path.cwd())

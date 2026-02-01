@@ -90,9 +90,6 @@ class OficinaApp:
 
         self.btn_auto_heal = ttk.Button(left_pane, text="🩹 INICIAR AUTO-CURA TOTAL", style="Healing.TButton", command=self.start_auto_healing, state=tk.DISABLED)
         self.btn_auto_heal.pack(fill=tk.X, pady=5)
-
-        self.btn_update_agents = ttk.Button(left_pane, text="🔄 ATUALIZAR AGENTES (GIT)", style="Action.TButton", command=self.run_update_agents)
-        self.btn_update_agents.pack(fill=tk.X, pady=5)
         
         ttk.Label(left_pane, text="Ciclo: Diagnóstico -> Missão -> Reparo", font=("Segoe UI", 8, "italic")).pack()
 
@@ -123,11 +120,15 @@ class OficinaApp:
             self.project_root = folder
             self.path_var.set(folder)
             self.orchestrator = Orchestrator(folder)
-            self.load_active_personas()
+            
+            # Delega a descoberta e mobilização ao PersonaLoader
+            from src.utils.persona_loader import PersonaLoader
+            PersonaLoader.mobilize_all(folder, self.orchestrator)
+            
             self.btn_audit.config(state=tk.NORMAL)
             self.btn_strategic.config(state=tk.NORMAL)
             self.btn_auto_heal.config(state=tk.NORMAL)
-            self.log_message(f"Oficina pronta em {folder}.")
+            self.log_message(f"Oficina pronta. {len(self.orchestrator.personas)} agentes mobilizados.")
             logger.info(f"Projeto carregado: {folder}")
 
     def start_strategic_audit(self):
@@ -157,71 +158,6 @@ class OficinaApp:
         self.log_output.insert(tk.END, f"> {msg}\n")
         self.log_output.see(tk.END)
         logger.debug(msg)
-
-    def run_update_agents(self):
-        """Executa o script de atualização de submodules/agentes."""
-        self.log_message("Iniciando atualização dos Agentes e Skills...")
-        def run():
-            script_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "scripts", "update_agent_submodule.py")
-            try:
-                process = subprocess.Popen(
-                    [sys.executable, script_path],
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.STDOUT,
-                    text=True,
-                    bufsize=1,
-                    universal_newlines=True
-                )
-                for line in process.stdout:
-                    clean_line = re.sub(r'\033\[[0-9;]*m', '', line.strip()) # Remove cores ANSI
-                    if clean_line:
-                        self.root.after(0, lambda l=clean_line: self.log_message(f"[GIT] {l}"))
-                process.wait()
-                self.root.after(0, lambda: self.log_message("✅ Atualização concluída!"))
-            except Exception as e:
-                self.root.after(0, lambda: self.log_message(f"❌ Erro na atualização: {e}"))
-
-        threading.Thread(target=run, daemon=True).start()
-
-    def load_active_personas(self):
-        """Varre as pastas de stack e carrega os agentes correspondentes."""
-        base_path = os.path.dirname(os.path.abspath(__file__))
-        
-        # Detecção de stack
-        if os.path.exists(os.path.join(self.project_root, 'pubspec.yaml')):
-            stack = "Flutter"
-        elif os.path.exists(os.path.join(self.project_root, 'build.gradle.kts')):
-            stack = "Kotlin"
-        else:
-            stack = "Python"
-
-        self.log_message(f"Stack identificada: {stack}")
-        
-        stack_path = os.path.abspath(os.path.join(base_path, '..', 'agents', stack))
-        if os.path.exists(stack_path):
-            count = 0
-            for filename in os.listdir(stack_path):
-                if filename.endswith(".py") and "__init__" not in filename:
-                    f_path = os.path.join(stack_path, filename)
-                    persona = self.import_persona(f_path)
-                    if persona:
-                        self.orchestrator.add_persona(persona)
-                        count += 1
-            self.log_message(f"{count} agentes especialistas mobilizados.")
-
-    def import_persona(self, file_path):
-        """Importa dinamicamente uma classe Persona de um arquivo."""
-        try:
-            module_name = os.path.basename(file_path).replace(".py", "")
-            spec = importlib.util.spec_from_file_location(module_name, file_path)
-            module = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(module)
-            for attr in dir(module):
-                if attr.endswith("Persona") and attr != "BaseActivePersona":
-                    return getattr(module, attr)(self.project_root)
-        except Exception as e:
-            logger.error(f"Erro ao importar persona de {file_path}: {e}")
-        return None
 
     def start_diagnostic(self):
         """Inicia o diagnóstico de auditoria em uma thread separada."""

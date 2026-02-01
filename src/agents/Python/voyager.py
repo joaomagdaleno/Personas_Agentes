@@ -43,18 +43,28 @@ class VoyagerPersona(BaseActivePersona):
                 content = path.read_text(encoding='utf-8')
                 
                 # Substitui o 'pass' por um log de erro limpo e técnico.
-                pattern = r'^\s*(except.*:)\s*pass\s*$' # Corrected: escaped backslash in raw string
-                replacement = r'    \1\n            logger.error(f"Falha operacional em {spot}", exc_info=True)' # Corrected: escaped backslash in raw string
-                
+                # Regex aprimorado para capturar a indentação original e garantir sintaxe válida.
                 lines = content.splitlines()
                 new_lines = []
                 changed = False
                 
                 for line in lines:
-                    new_line = re.sub(pattern, replacement, line)
-                    if new_line != line:
+                    # Caso: Bloco except que termina com pass
+                    # Funciona para 'except:', 'except Exception:', 'except (Error1, Error2):' etc.
+                    if "except" in line and ":" in line:
+                        new_lines.append(line)
+                        # Verifica se a próxima linha útil é um 'pass'
+                        continue
+                    
+                    if line.strip() == "pass" and len(new_lines) > 0 and "except" in new_lines[-1]:
+                        indent = line.split("pass")[0]
+                        safe_spot = str(spot).replace("\\", "/")
+                        log_msg = f"logger.error(f'🚨 FALHA CRÍTICA SILENCIADA em {safe_spot}', exc_info=True)"
+                        new_lines.append(f"{indent}{log_msg}")
                         changed = True
-                    new_lines.append(new_line)
+                        continue
+
+                    new_lines.append(line)
                 
                 if changed:
                     path.write_text("\n".join(new_lines), encoding='utf-8')

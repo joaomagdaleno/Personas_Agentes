@@ -20,11 +20,17 @@ class StabilityLedger:
                 return {}
         return {}
 
+    def reset_active_status(self):
+        """Marca todos os arquivos instáveis para verificação, permitindo transição para HEALED."""
+        for file in self.ledger:
+            if self.ledger[file]['status'] == 'UNSTABLE':
+                self.ledger[file]['status'] = 'PENDING_VERIFICATION'
+
     def update(self, audit_results):
         """Detecta recorrência de falhas e confirmação de curas."""
         current_error_files = set()
         for issue in audit_results:
-            file = str(issue.get('file', 'N/A')) if isinstance(issue, dict) else "Strategic/DNA"
+            file = str(issue.get('file', 'N/A')).replace("\\", "/") if isinstance(issue, dict) else "Strategic/DNA"
             current_error_files.add(file)
             
             if file not in self.ledger:

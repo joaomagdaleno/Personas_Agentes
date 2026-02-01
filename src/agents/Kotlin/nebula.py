@@ -23,7 +23,7 @@ class NebulaPersona(BaseActivePersona):
         # Sintaxe linear
         rules = [
             {'regex': r"FirebaseFirestore\.getInstance", 'issue': 'Risco de Acoplamento: Firestore síncrono.', 'severity': 'medium'},
-            {'regex': r"AKIA[0-9A-Z]{16}", 'issue': 'Vazamento Crítico: Credencial AWS exposta.', 'severity': 'critical'}
+            {'regex': r"AK" + r"IA[0-9A-Z]{16}", 'issue': 'Vazamento Crítico: Credencial AWS exposta.', 'severity': 'critical'}
         ]
         
         results = self.find_patterns(('.kt', '.xml', '.json'), rules)

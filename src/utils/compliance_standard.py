@@ -29,20 +29,21 @@ class ComplianceStandard:
             # Validação instantânea (CPU bound)
             clean_value = float(data_input)
             
-            # I/O Bound: Agrupado em um único contexto
+            # I/O Bound: Conexão única e transacional
             with sqlite3.connect(db_path) as conn:
+                conn.execute("PRAGMA journal_mode=WAL") # Alta performance
                 cursor = conn.cursor()
                 if db_path == ":memory:":
                     cursor.execute("CREATE TABLE IF NOT EXISTS agents (id INTEGER, name TEXT, status TEXT)")
                     cursor.execute("INSERT INTO agents VALUES (1, 'TestAgent', 'active')")
                 
-                # Batch Query: Busca todos os ativos de uma vez
-                cursor.execute("SELECT id, name FROM agents WHERE status = ?", ("active",))
-                results = cursor.fetchall()
+                # Batch Query: Colunas explícitas
+                cursor.execute("SELECT name FROM agents WHERE status = ?", ("active",))
+                results = [row[0] for row in cursor.fetchall()]
                 
-                # Processamento em memória (Eficiente)
-                for row in results:
-                    logger.debug(f"Auditando registro: {row[1]}")
+                # Processamento veloz em memória
+                for name in results:
+                    logger.debug(f"Auditando registro: {name}")
                     
             return Decimal(str(clean_value * 1.2))
             

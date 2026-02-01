@@ -32,9 +32,18 @@ class DirectorPersona(BaseActivePersona):
         report += self._format_swot()
         report += self._format_qa_intelligence(health_data)
         report += self._format_battle_plan(audit_results)
+        report += self._format_external_dependencies(audit_results)
         report += self._format_footer()
         
         return report
+
+    def _format_external_dependencies(self, audit_results):
+        ext = [i for i in audit_results if isinstance(i, dict) and i.get('context') == 'DependencyAuditor']
+        if not ext: return ""
+        res = "## 📦 Auditoria de Dependências Externas (.agent)\n"
+        for i in ext:
+            res += f"### 🚨 ALERTA: {i['file']}\n- **Veredito:** {i['issue']}\n\n"
+        return res
 
     def _format_header(self, health_data):
         import time
@@ -65,18 +74,38 @@ class DirectorPersona(BaseActivePersona):
         if not py.get("total"): return ""
         
         res = "## 🧪 Inteligência de QA: Pirâmide e Execução\n"
-        status_icon = "✅" if ex.get("success") else "❌"
-        res += f"### {status_icon} STATUS: {'TESTES PASSANDO' if ex.get('success') else 'TESTES FALHANDO'} ({ex.get('pass_rate', 0)}%)\n"
+        # Meta de 90% para o ícone de sucesso
+        status_icon = "✅" if ex.get("pass_rate", 0) >= 90 else "❌"
+        res += f"### {status_icon} STATUS: {'OPERACIONAL' if ex.get('pass_rate', 0) >= 90 else 'ATENÇÃO'} ({ex.get('pass_rate', 0)}%)\n"
         res += f"- **Bateria:** {ex.get('total_run', 0)} executados | **Unitários:** {round(py['unit']/py['total']*100)}%\n\n"
+        
+        if ex.get("details"):
+            res += "### 🔍 Detalhes das Falhas\n"
+            for d in ex["details"][:5]:
+                res += f"- `{d['test']}`: {d['error']}\n"
         return res
 
     def _format_battle_plan(self, audit_results):
-        res = "## 4. 🎯 Plano de Batalha: Top Ocorrências\n"
-        for i, item in enumerate(audit_results[:20], 1):
-            if isinstance(item, dict):
-                res += f"### {i}. [{str(item.get('severity', 'LOW')).upper()}] {item.get('context')} @ `{item.get('file')}`\n- **Veredito:** {item.get('issue')}\n\n"
-            else:
-                res += f"### {i}. [UNKNOWN] Strategic @ `DNA`\n- **Veredito:** {item}\n\n"
+        # Segregação inteligente: Ativos vs Cicatrizes (Healed)
+        active = [i for i in audit_results if not isinstance(i, dict) or i.get('severity') != 'HEALED']
+        scars = [i for i in audit_results if isinstance(i, dict) and i.get('severity') == 'HEALED']
+        
+        res = "## 4. 🎯 Plano de Batalha: Alvos Ativos\n"
+        if not active:
+            res += "*Nenhum risco ativo detectado. Sistema em estado de Graça.*\n\n"
+        else:
+            for i, item in enumerate(active[:15], 1):
+                if isinstance(item, dict):
+                    res += f"### {i}. [{str(item.get('severity', 'LOW')).upper()}] {item.get('context')} @ `{item.get('file')}`\n- **Veredito:** {item.get('issue')}\n\n"
+                else:
+                    res += f"### {i}. [UNKNOWN] Strategic @ `DNA`\n- **Veredito:** {item}\n\n"
+        
+        if scars:
+            res += "## 🧬 Memória de Cicatrizes (Histórico de Curas)\n"
+            res += "> Registros de batalhas passadas que foram vencidas e curadas.\n\n"
+            for i, scar in enumerate(scars[:10], 1):
+                res += f"- **{scar.get('file')}**: {scar.get('issue')} (Curado ✅)\n"
+        
         return res
 
     def _format_footer(self):

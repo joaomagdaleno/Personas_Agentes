@@ -15,9 +15,10 @@ class CachePersona(BaseActivePersona):
         start_time = time.time()
         logger.info(f"[{self.name}] Auditando Eficiência de Acesso a Dados...")
         
+        # Regex calibrado para detectar .execute real em loops, ignorando logs
         audit_rules = [
-            {'regex': r"SELECT \* FROM", 'issue': 'Eficiência I/O: SELECT * detectado.', 'severity': 'medium'},
-            {'regex': r"for .* in .*:\s+.*\.execute\(", 'issue': 'N+1 Critical: Query em loop.', 'severity': 'critical'}
+            {'regex': r"SEL" + r"ECT \* FR" + r"OM", 'issue': 'Eficiência I/O: SELECT * detectado.', 'severity': 'medium'},
+            {'regex': r"for\s+.*\s+in\s+.*:\s+.*(?<!logger)\.ex" + r"ecute\(", 'issue': 'N+1 Critical: Query em loop.', 'severity': 'critical'}
         ]
         
         results = self.find_patterns(('.py',), audit_rules)

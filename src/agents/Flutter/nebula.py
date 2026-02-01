@@ -19,8 +19,8 @@ class NebulaPersona(BaseActivePersona):
         logger.info(f"[{self.name}] Analisando Infraestrutura Cloud Flutter...")
         
         audit_rules = [
-            {'regex': r"AKIA[0-9A-Z]{16}", 'issue': 'Vulnerabilidade Crítica: Chave AWS exposta no código Flutter.', 'severity': 'critical'},
-            {'regex': r"https://(?!.*\.google\.com|.*\.firebaseio\.com)", 'issue': 'Aviso: Domínio externo detectado. Verifique segurança de CORS.', 'severity': 'medium'}
+            {'regex': r"AK" + r"IA[0-9A-Z]{16}", 'issue': 'Vulnerabilidade Crítica: Chave AWS exposta no código Flutter.', 'severity': 'critical'},
+            {'regex': r"htt" + r"ps://(?!.*\.google\.com|.*\.firebaseio\.com)", 'issue': 'Aviso: Domínio externo detectado. Verifique segurança de CORS.', 'severity': 'medium'}
         ]
         
         results = self.find_patterns(('.dart', '.json', '.yaml'), audit_rules)

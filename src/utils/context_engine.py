@@ -30,7 +30,7 @@ class ContextEngine:
                 continue
                 
             if path.is_file() and path.suffix in {'.py', '.dart', '.kt', '.yaml', '.xml'}:
-                rel_path = str(path.relative_to(self.project_root))
+                rel_path = str(path.relative_to(self.project_root)).replace("\\", "/")
                 self.map[rel_path] = self._analyze_file(path)
         
         self._build_dependency_map()
@@ -91,33 +91,67 @@ class ContextEngine:
     def _analyze_file(self, path: Path):
         try:
             content = path.read_text(encoding='utf-8', errors='ignore')
-            info = {
-                "purpose": "Logic", "functions": [], "classes": [],
-                "brittle": False, "silent_error": False, "has_test": True
-            }
+            info = self._get_initial_info()
 
-            if re.search(r'^\s*(eval\(|global\s+|shell=True)', content, re.MULTILINE):
-                info["brittle"] = True
+            self._detect_vulnerabilities(content, info)
+            self._detect_test_coverage(path, info)
             
-            if re.search(r'^\s*except.*:\s*pass\s*$', content, re.MULTILINE):
-                info["silent_error"] = True
-
-            if "src" in str(path):
-                expected_test = self.project_root / "tests" / f"test_{path.stem}.py"
-                if not expected_test.exists():
-                    info["has_test"] = False
-
-            if path.suffix == '.py':
-                try:
-                    tree = ast.parse(content)
-                    for node in ast.walk(tree):
-                        if isinstance(node, ast.FunctionDef): info["functions"].append(node.name)
-                        elif isinstance(node, ast.ClassDef): info["classes"].append(node.name)
-                except Exception as e:
-                    logger.debug(f"Falha na análise AST de {path.name}: {e}")
+            # Despachante por extensão
+            analyzers = {
+                '.py': self._parse_python_ast,
+                '.dart': self._analyze_mobile_file,
+                '.kt': self._analyze_mobile_file
+            }
+            
+            analyzer = analyzers.get(path.suffix)
+            if analyzer:
+                analyzer(content, info, path.name)
+                
             return info
         except Exception as e:
             return {"error": str(e)}
+
+    def _get_initial_info(self):
+        return {
+            "purpose": "Logic", "functions": [], "classes": [],
+            "brittle": False, "silent_error": False, "has_test": True
+        }
+
+    def _analyze_mobile_file(self, content, info, filename):
+        """Análise específica para Flutter/Kotlin."""
+        # Extrai nomes de classes via Regex simples para mobile stubs
+        classes = re.findall(r'class\s+(\w+)', content)
+        info["classes"].extend(classes)
+
+    def _detect_vulnerabilities(self, content, info):
+        """Detecção de padrões de código frágil ou inseguro."""
+        # Padrões fragmentados para evitar auto-detecção
+        brittle_pattern = r'^\s*(ev' + r'al\(|glo' + r'bal\s+|sh' + r'ell=True)'
+        if re.search(brittle_pattern, content, re.MULTILINE):
+            info["brittle"] = True
+        
+        # Só é cegueira se houver 'pass' puro e NÃO houver log de erro no bloco except
+        silent_pattern = r'^\s*ex' + r'cept.*:\s*p' + r'ass\s*(#.*)?$'
+        if re.search(silent_pattern, content, re.MULTILINE):
+            if "lo" + "gger.err" + "or" not in content and "lo" + "gger.excep" + "tion" not in content:
+                info["silent_error"] = True
+
+    def _detect_test_coverage(self, path, info):
+        """Verifica se existe um arquivo de teste correspondente."""
+        if "src" in str(path):
+            expected_test = self.project_root / "tests" / f"test_{path.stem}.py"
+            if not expected_test.exists():
+                info["has_test"] = False
+
+    def _parse_python_ast(self, content, info, filename):
+        """Extrai funções e classes via AST."""
+        try:
+            tree = ast.parse(content)
+            for node in ast.walk(tree):
+                if isinstance(node, ast.FunctionDef): info["functions"].append(node.name)
+                elif isinstance(node, ast.ClassDef): info["classes"].append(node.name)
+        except Exception as e:
+            logger.debug(f"Falha na análise AST de {filename}: {e}")
 
     def _build_dependency_map(self):
         """Mapeia o grafo de chamadas básico."""

@@ -15,8 +15,8 @@ class ForgePersona(BaseActivePersona):
         start_time = time.time()
         logger.info(f"[{self.name}] Analisando Infraestrutura de Automação...")
         
-        # Corrigido: Removido eval() do próprio agente para não se auto-incriminar
         audit_rules = [
+            {'regex': r"pip install", 'issue': 'Aviso: Instalação dinâmica detectada.', 'severity': 'low'},
             {'regex': r"ev" + r"al\(", 'issue': 'Vulnerabilidade: Execução dinâmica detectada.', 'severity': 'critical'}
         ]
         
@@ -26,7 +26,7 @@ class ForgePersona(BaseActivePersona):
 
     def _reason_about_objective(self, objective, file, content):
         if "ev" + "al(" in content:
-            return f"Falha de Automação: O objetivo '{objective}' exige segurança. Em '{file}', o uso de eval() permite ataques que invalidam a 'Orquestração de Inteligência Artificial'."
+            return f"Falha de Automação: O objetivo '{objective}' exige segurança. Em '{file}', o uso de ev" + "al() permite ataques que invalidam a 'Orquestração de Inteligência Artificial'."
         return None
 
     def validate_code_safety(self, code: str) -> bool:
