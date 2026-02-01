@@ -23,7 +23,7 @@ class VaultPersona(BaseActivePersona):
         # Sintaxe linear resiliente
         rules = [
             {'regex': r"InAppPurchase\.instance(?!.*completePurchase)", 'issue': 'Transação em Aberto: Risco de cobrança indevida.', 'severity': 'critical'},
-            {'regex': r"price:\s*['\"].*?['"]", 'issue': 'Preço Estático: Use localPrice da Store.', 'severity': 'high'}
+            {'regex': r'price:\s*["\'].*?["\']', 'issue': 'Preço Estático: Use localPrice da Store.', 'severity': 'high'}
         ]
         
         results = self.find_patterns(('.dart',), rules)

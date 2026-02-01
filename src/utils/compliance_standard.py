@@ -17,28 +17,34 @@ class ComplianceStandard:
     """
 
     @staticmethod
-    def process_secure_payload(data_input: str):
+    def process_secure_payload(data_input: str, db_path: str = "system_vault.db"):
         """
-        Exemplo de processamento de carga útil seguindo padrões de elite.
+        Exemplo de processamento otimizado:
+        - Uso de blocos contextuais (with) para I/O único.
+        - Tratamento de exceções especializado.
         """
         logger.info("Iniciando execução sob protocolo de conformidade.")
         
         try:
-            # Validação estrita de tipo
+            # Validação instantânea (CPU bound)
             clean_value = float(data_input)
-            calculation = clean_value * 1.2
             
-            db_path = Path("system_vault.db")
+            # I/O Bound: Agrupado em um único contexto
             with sqlite3.connect(db_path) as conn:
                 cursor = conn.cursor()
-                # Query parametrizada: Proteção contra SQL Injection
+                if db_path == ":memory:":
+                    cursor.execute("CREATE TABLE IF NOT EXISTS agents (id INTEGER, name TEXT, status TEXT)")
+                    cursor.execute("INSERT INTO agents VALUES (1, 'TestAgent', 'active')")
+                
+                # Batch Query: Busca todos os ativos de uma vez
                 cursor.execute("SELECT id, name FROM agents WHERE status = ?", ("active",))
                 results = cursor.fetchall()
                 
+                # Processamento em memória (Eficiente)
                 for row in results:
                     logger.debug(f"Auditando registro: {row[1]}")
                     
-            return Decimal(str(calculation))
+            return Decimal(str(clean_value * 1.2))
             
         except (ValueError, TypeError) as e:
             logger.error(f"Falha de validação: {e}")

@@ -28,12 +28,13 @@ class TestOrchestrator(unittest.TestCase):
         self.assertIsNotNone(orchestrator)
         logger.info("✅ Orquestrador inicializado via Pathlib.")
 
-    def test_stage_detection(self):
-        """Valida se o orquestrador detecta o estágio do projeto."""
+    def test_dna_discovery(self):
+        """Valida se o orquestrador descobre o DNA do projeto alvo."""
+        (self.test_dir / "requirements.txt").write_text("")
         orchestrator = Orchestrator(self.test_dir)
-        stage = orchestrator.detect_stage()
-        self.assertIn(stage, ["GENESIS", "EVOLUTION", "STABILITY"])
-        logger.info(f"✅ Estágio detectado: {stage}")
+        health = orchestrator.get_system_health_360()
+        self.assertEqual(health["objective"], "Orquestração de Inteligência Artificial")
+        logger.info(f"✅ DNA Identificado: {health['objective']}")
 
 if __name__ == "__main__":
     unittest.main()

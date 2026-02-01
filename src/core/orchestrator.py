@@ -61,17 +61,28 @@ class Orchestrator:
         self.job_queue = final_queue
         return final_queue
 
+    def generate_full_diagnostic(self):
+        """Protocolo Soberano: Mobilize, Audit, Heal, Report."""
+        if not self.personas: PersonaLoader.mobilize_all(self.project_root, self)
+        
+        results = self.run_phd_audit()
+        health = self.get_system_health_360()
+        
+        # Sincronização e Relatório
+        self.cache_manager.save()
+        report = self.director.format_360_report(health, results)
+        self._trigger_reflexes(health)
+        
+        output = self.project_root / "auto_healing_mission.md"
+        output.write_text(report, encoding="utf-8")
+        return output
+
     def get_system_health_360(self):
-        """Sintetiza a saúde sistêmica delegando análise para motores especializados."""
+        """Sintetiza a saúde sistêmica via motores especializados."""
         context = self.context_engine.analyze_project()
         map_data = context.get("map", {})
         
-        # Análise da Pirâmide e Execução via Testify
-        testify = next((p for p in self.personas if p.name == "Testify"), None)
-        pyramid_data = testify.analyze_test_pyramid() if testify else {}
-        execution_data = testify.run_test_suite() if testify else {}
-
-        health = {
+        return {
             "objective": context["identity"].get("core_mission"),
             "health_score": self.metrics.get("health_score", 0),
             "dark_matter": [f for f, i in map_data.items() if not i.get("has_test", True)],
@@ -80,29 +91,16 @@ class Orchestrator:
             "persona_maturity": self._get_persona_maturity(),
             "parity": self.context_engine.analyze_stack_parity(self.personas),
             "ledger": self.stability_ledger.ledger,
-            "pyramid": pyramid_data,
-            "test_execution": execution_data
+            "pyramid": self._get_qa_data()["pyramid"],
+            "test_execution": self._get_qa_data()["execution"]
         }
-        return health
 
-    def generate_full_diagnostic(self):
-        """Protocolo Soberano: Audit, Heal, Sync, Report."""
-        if not self.personas: PersonaLoader.mobilize_all(self.project_root, self)
-        
-        audit_results = self.run_phd_audit()
-        health_data = self.get_system_health_360()
-        
-        # Sincronização de Cache
-        for rel_path in health_data["parity"]["stats"].get("Python", {}).get("agents", []): # Simplificado
-            pass # A lógica de hash já está no audit. Apenas salvamos o estado.
-        self.cache_manager.save()
-
-        report = self.director.format_360_report(health_data, audit_results)
-        self._trigger_reflexes(health_data)
-        
-        output_path = self.project_root / "auto_healing_mission.md"
-        output_path.write_text(report, encoding="utf-8")
-        return output_path
+    def _get_qa_data(self):
+        testify = next((p for p in self.personas if p.name == "Testify"), None)
+        return {
+            "pyramid": testify.analyze_test_pyramid() if testify else {},
+            "execution": testify.run_test_suite() if testify else {}
+        }
 
     # --- MÉTODOS PRIVADOS DE SUPORTE (ORGANIZAÇÃO) ---
 
