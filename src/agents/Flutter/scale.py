@@ -19,7 +19,7 @@ class ScalePersona(BaseActivePersona):
         logger.info(f"[{self.name}] Analisando Escalabilidade Flutter...")
         
         audit_rules = [
-            {'regex': r"import\s+['"]package:.*?/src/.*?['"]", 'issue': 'Acoplamento: Importação de pastas internas (/src/) de outros pacotes detectada.', 'severity': 'high'},
+            {'regex': r'import\s+[\'"]package:.*?/src/.*?[\'"]', 'issue': 'Acoplamento: Importação de pastas internas (/src/) de outros pacotes detectada.', 'severity': 'high'},
             {'regex': r"global\s+", 'issue': 'Risco de Escalabilidade: Uso de estado global detectado.', 'severity': 'critical'}
         ]
         
@@ -29,7 +29,7 @@ class ScalePersona(BaseActivePersona):
 
     def _reason_about_objective(self, objective, file, content):
         if "/src/" in content and "import" in content:
-            return f"Violência Arquitetural: O objetivo '{objective}' exige modularidade. Em '{file}', a quebra de encapsulamento impede a expansão da 'Orquestração de Inteligência Artificial'."
+            return f"Violência Arquitetural: O objetivo '{objective}' exige modularidade soberana. Em '{file}', o acesso a diretórios privados (/src) de pacotes externos compromete o isolamento da 'Orquestração de Inteligência Artificial'."
         return None
 
     def get_system_prompt(self):

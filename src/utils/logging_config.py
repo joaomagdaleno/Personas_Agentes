@@ -13,6 +13,11 @@ def configure_logging(level=logging.INFO):
             return f"{time_str} - {record.name} - {level_name} - {msg}"
 
     try:
+        # Força UTF-8 no StreamHandler para suportar emojis no Windows
+        import io
+        if hasattr(sys.stdout, 'reconfigure'):
+            sys.stdout.reconfigure(encoding='utf-8')
+        
         handler = logging.StreamHandler(sys.stdout)
         handler.setFormatter(SimpleFormatter())
         root = logging.getLogger()

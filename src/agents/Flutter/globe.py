@@ -16,7 +16,7 @@ class GlobePersona(BaseActivePersona):
         logger.info(f"[{self.name}] Analisando i18n Flutter...")
         
         audit_rules = [
-            {'regex': r"text:\s+['"].*?['"]", 'issue': 'L10n: Widget Text com string hardcoded detectado.', 'severity': 'low'}
+            {'regex': r'text:\s+[\'"].*?[\'"]', 'issue': 'L10n: Widget Text com string hardcoded detectado.', 'severity': 'low'}
         ]
         
         results = self.find_patterns(('.dart',), audit_rules)

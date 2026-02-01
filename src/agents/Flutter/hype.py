@@ -20,7 +20,7 @@ class HypePersona(BaseActivePersona):
         
         audit_rules = [
             {'regex': r"com\.example", 'issue': 'Amadorismo: Package name padrão detectado. Altere para o seu domínio real.', 'severity': 'high'},
-            {'regex': r"displayName:\s*['"]", 'issue': 'Invisibilidade: Nome de exibição não parametrizado.', 'severity': 'low'}
+            {'regex': r'displayName:\s*[\'"]', 'issue': 'Invisibilidade: Nome de exibição não parametrizado.', 'severity': 'low'}
         ]
         
         results = self.find_patterns(('.dart', '.xml', '.yaml'), audit_rules)

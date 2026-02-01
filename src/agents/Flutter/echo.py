@@ -1,3 +1,9 @@
+"""
+SISTEMA DE PERSONAS AGENTES - NÚCLEO FLUTTER
+Módulo: Eco de Observabilidade (Echo)
+Função: Auditar rastreabilidade, logs estruturados e tratamento de erros em Dart.
+Soberania: ACTIVE-AGENT.
+"""
 from src.agents.base import BaseActivePersona
 import logging
 import time
@@ -7,7 +13,11 @@ logger = logging.getLogger(__name__)
 class EchoPersona(BaseActivePersona):
     """
     Core: PhD in System Observability & Real-time Telemetry (Flutter) 🗣️
-    Especialista em instrumentação de logs e rastreamento de erros no Dart.
+    
+    Responsabilidades:
+    1. Rastreabilidade: Garante que o fluxo de execução seja logado.
+    2. Gestão de Erros: Detecta blocos catch vazios ou print() genéricos.
+    3. Telemetria: Assegura que falhas críticas gerem eventos estruturados.
     """
     
     def __init__(self, project_root):
@@ -29,7 +39,7 @@ class EchoPersona(BaseActivePersona):
 
     def _reason_about_objective(self, objective, file, content):
         if "print(" in content:
-            return f"Cegueira Operacional: O objetivo '{objective}' exige diagnóstico estruturado. Em '{file}', o uso de print() impede que a 'Orquestração de Inteligência Artificial' tenha logs rastreáveis."
+            return f"Cegueira Operacional: O objetivo '{objective}' exige diagnóstico estruturado. Em '{file}', o uso de saídas não-estruturadas (print) impede a rastreabilidade pela 'Orquestração de Inteligência Artificial'."
         return None
 
     def get_system_prompt(self):

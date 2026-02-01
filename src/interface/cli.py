@@ -19,14 +19,14 @@ def main():
         if cmd == "audit":
             logger.info("Executando Auditoria Estrategica...")
             results = orchestrator.run_phd_audit()
-            print(f"Relatorio gerado com {len(results)} pontos.")
+            logger.info(f"Relatorio gerado com {len(results)} pontos.")
         elif cmd == "heal":
             logger.info("Iniciando Protocolo de Auto-Cura...")
             orchestrator.run_auto_healing()
     else:
         # Usa emoji mas texto ASCII seguro
-        print("🏛️ Workshop PhD CLI")
-        print("Comandos: audit, heal")
+        logger.info("🏛️ Workshop PhD CLI")
+        logger.info("Comandos: audit, heal")
 
 if __name__ == "__main__":
     main()

@@ -9,32 +9,28 @@ class PersonaLoader:
     
     @staticmethod
     def mobilize_all(target_project_root, orchestrator):
-        """
-        Varre o diretório interno de agentes da ferramenta e injeta as personas no orquestrador
-        para auditar o projeto alvo.
-        """
-        # Define o caminho dos agentes relativo a este arquivo (utils/../agents/Python)
+        """Varre todos os diretórios de stacks e mobiliza os PhDs correspondentes."""
         engine_root = Path(__file__).parent.parent
-        agents_dir = engine_root / "agents" / "Python"
+        agents_base = engine_root / "agents"
         
         count = 0
-        if not agents_dir.exists():
-            logger.error(f"❌ Repositório de PhDs não encontrado em {agents_dir}")
-            return 0
-
-        for f in agents_dir.glob("*.py"):
-            if f.name == "__init__.py": continue
-            try:
-                module_name = f.stem
-                spec = importlib.util.spec_from_file_location(module_name, f)
-                module = importlib.util.module_from_spec(spec)
-                spec.loader.exec_module(module)
-                for attr in dir(module):
-                    if attr.endswith("Persona") and attr != "BaseActivePersona":
-                        persona_cls = getattr(module, attr)
-                        # A persona é instanciada com o root do projeto ALVO
-                        orchestrator.add_persona(persona_cls(target_project_root))
-                        count += 1
-            except Exception as e:
-                logger.error(f"❌ Falha ao mobilizar {f.name}: {e}")
+        # Varre subdiretórios de stacks (Python, Flutter, Kotlin)
+        for stack_dir in agents_base.iterdir():
+            if not stack_dir.is_dir() or stack_dir.name in ["__pycache__", "Support"]:
+                continue
+                
+            for f in stack_dir.glob("*.py"):
+                if f.name == "__init__.py": continue
+                try:
+                    module_name = f"{stack_dir.name}_{f.stem}"
+                    spec = importlib.util.spec_from_file_location(module_name, f)
+                    module = importlib.util.module_from_spec(spec)
+                    spec.loader.exec_module(module)
+                    for attr in dir(module):
+                        if attr.endswith("Persona") and attr != "BaseActivePersona":
+                            persona_cls = getattr(module, attr)
+                            orchestrator.add_persona(persona_cls(target_project_root))
+                            count += 1
+                except Exception as e:
+                    logger.error(f"❌ Falha ao mobilizar {f.name} ({stack_dir.name}): {e}")
         return count

@@ -1,3 +1,9 @@
+"""
+SISTEMA DE PERSONAS AGENTES - NÚCLEO FLUTTER
+Módulo: Métrica de Telemetria (Metric)
+Função: Analisar a densidade de eventos analíticos e instrumentação de performance.
+Soberania: ACTIVE-AGENT.
+"""
 from src.agents.base import BaseActivePersona
 import logging
 import time
@@ -7,7 +13,11 @@ logger = logging.getLogger(__name__)
 class MetricPersona(BaseActivePersona):
     """
     Core: PhD in Statistics & System Instrumentation (Flutter) 📊
-    Especialista em telemetria, análise de uso e detecção de anomalias em Dart.
+    
+    Responsabilidades:
+    1. Compliance Analítico: Valida se eventos seguem o esquema oficial.
+    2. Detecção de Anomalias: Identifica gargalos via telemetria passiva.
+    3. Instrumentação: Audita o uso de ferramentas de performance em Dart.
     """
     
     def __init__(self, project_root):
@@ -29,7 +39,7 @@ class MetricPersona(BaseActivePersona):
 
     def _reason_about_objective(self, objective, file, content):
         if "print(" in content:
-            return f"Cegueira Analítica: O objetivo '{objective}' exige observabilidade. Em '{file}', o uso de print() impede a extração de métricas para a 'Orquestração de Inteligência Artificial'."
+            return f"Cegueira Analítica: O objetivo '{objective}' exige observabilidade. Em '{file}', o uso de saídas não rastreáveis impede a extração de métricas para a 'Orquestração de Inteligência Artificial'."
         return None
 
     def get_system_prompt(self):

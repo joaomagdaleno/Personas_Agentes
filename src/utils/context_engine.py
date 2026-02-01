@@ -1,4 +1,3 @@
-import ast
 import logging
 import re
 from pathlib import Path
@@ -6,154 +5,129 @@ from pathlib import Path
 logger = logging.getLogger(__name__)
 
 class ContextEngine:
-    """
-    Cérebro Semântico PhD: Analisa a intenção e dependências do projeto.
-    """
+    """Cérebro Semântico PhD: Orquestrador de metadados via delegação total."""
+    
     def __init__(self, project_root):
         self.project_root = Path(project_root)
-        self.map = {}
-        self.call_graph = {}
-        self.project_identity = {}
+        self.map, self.call_graph, self.project_identity = {}, {}, {}
+        
+        # Injeção via Assembler (Core Support)
+        from src.agents.Support.infrastructure_assembler import InfrastructureAssembler
+        support = InfrastructureAssembler.assemble_core_support()
+        
+        self.analyst = support["analyst"]
+        self.guardian = support["guardian"]
+        self.mapper = support["mapper"]
+        self.parity_analyst = support["parity"]
 
     def analyze_project(self):
-        """Varre o projeto com observabilidade nativa."""
-        logger.info("🧠 Mapeando topologia do projeto...")
-        
+        """Varre o projeto delegando a inteligência para os assistentes técnicos."""
+        logger.info("🧠 Mapeando topologia do projeto (Soberania Isolada)...")
         self.project_identity = self._discover_identity()
-        ignored = {'.git', '__pycache__', 'build', 'node_modules', '.venv', '.agent', '.gemini', 'submodules'}
-        
-        # Limpa o mapa para nova análise
         self.map = {}
         
+        # OTIMIZAÇÃO: Varre o disco apenas UMA vez para criar o índice de arquivos
+        self.all_files_index = [p.name.lower() for p in self.project_root.rglob('*') if p.is_file()]
+        
         for path in self.project_root.rglob('*'):
-            if any(part in ignored for part in path.parts):
-                continue
-                
-            if path.is_file() and path.suffix in {'.py', '.dart', '.kt', '.yaml', '.xml'}:
-                rel_path = str(path.relative_to(self.project_root)).replace("\\", "/")
+            if self.analyst.should_ignore(path): continue
+            if self.analyst.is_analyable(path):
+                # Modernização: as_posix() substitui replace(os.sep, "/")
+                rel_path = path.relative_to(self.project_root).as_posix()
                 self.map[rel_path] = self._analyze_file(path)
         
         self._build_dependency_map()
         logger.info(f"✅ DNA Processado: {len(self.map)} componentes identificados.")
-        
         return {"identity": self.project_identity, "map": self.map}
-
-    def get_criticality_score(self, file_path):
-        """Calcula a criticidade baseada em dependências e localização core."""
-        score = 0
-        file_name = Path(file_path).stem
-        for deps in self.call_graph.values():
-            if any(file_name in str(d) for d in deps):
-                score += 1
-        
-        if "core" in str(file_path) or "base" in str(file_path):
-            score += 10
-        return score
-
-    def deduce_project_dna(self):
-        """Alias para compatibilidade com testes legados."""
-        return self._discover_identity()
-
-    def _discover_identity(self):
-        dna = {
-            "stacks": set(),
-            "type": "Orquestrador Multi-Agente",
-            "core_mission": "Orquestração de Inteligência Artificial",
-            "is_multistack": False
-        }
-        if (self.project_root / 'pubspec.yaml').exists(): dna["stacks"].add("Flutter")
-        if (self.project_root / 'build.gradle').exists() or (self.project_root / 'build.gradle.kts').exists(): dna["stacks"].add("Kotlin")
-        if (self.project_root / 'requirements.txt').exists(): dna["stacks"].add("Python")
-        dna["is_multistack"] = len(dna["stacks"]) > 1
-        return dna
-
-    def analyze_stack_parity(self, personas):
-        parity_map = {}
-        for p in personas:
-            if p.stack not in parity_map:
-                parity_map[p.stack] = {"telemetry": 0, "reasoning": 0, "modernity": 0, "agents": set()}
-            
-            m = p.get_maturity_metrics()
-            parity_map[p.stack]["agents"].add(p.name)
-            if m.get("has_telemetry"): parity_map[p.stack]["telemetry"] += 1
-            if m.get("has_reasoning"): parity_map[p.stack]["reasoning"] += 1
-            if m.get("has_pathlib"): parity_map[p.stack]["modernity"] += 1
-
-        gaps = []
-        python_agents = parity_map.get("Python", {}).get("agents", set())
-        for stack in ["Flutter", "Kotlin"]:
-            stack_agents = parity_map.get(stack, {}).get("agents", set())
-            missing = python_agents - stack_agents
-            for agent in missing:
-                gaps.append(f"GAP DE EXISTÊNCIA: O PhD {agent} está ausente na stack {stack}.")
-        return {"stats": parity_map, "gaps": gaps}
 
     def _analyze_file(self, path: Path):
         try:
             content = path.read_text(encoding='utf-8', errors='ignore')
-            info = self._get_initial_info()
-
-            self._detect_vulnerabilities(content, info)
+            info = self._get_initial_info(path)
+            
+            # Agregação de inteligência via delegação
+            info.update(self.guardian.detect_vulnerabilities(content, info["component_type"]))
             self._detect_test_coverage(path, info)
             
-            # Despachante por extensão
-            analyzers = {
-                '.py': self._parse_python_ast,
-                '.dart': self._analyze_mobile_file,
-                '.kt': self._analyze_mobile_file
-            }
+            if path.suffix == '.py':
+                info.update(self.analyst.analyze_python(content, path.name))
             
-            analyzer = analyzers.get(path.suffix)
-            if analyzer:
-                analyzer(content, info, path.name)
+            if info["component_type"] == "TEST":
+                self._analyze_test_quality(content, info)
                 
             return info
         except Exception as e:
-            return {"error": str(e)}
+            logger.error(f"❌ Erro ao analisar metadados de {path}: {e}", exc_info=True)
+            return {"error": str(e), "component_type": "UNKNOWN"}
 
-    def _get_initial_info(self):
+    def _get_initial_info(self, path: Path):
+        rel_path = path.relative_to(self.project_root).as_posix().lower()
+        comp_type = self.analyst.map_component_type(rel_path)
+        is_gold = "compliance_standard.py" in rel_path or "standard" in rel_path
         return {
             "purpose": "Logic", "functions": [], "classes": [],
-            "brittle": False, "silent_error": False, "has_test": True
+            "brittle": False, "silent_error": False, "has_test": True,
+            "component_type": comp_type, 
+            "domain": "EXPERIMENTATION" if comp_type == "TEST" else ("KNOWLEDGE_BASE" if is_gold else "PRODUCTION"), 
+            "is_gold_standard": is_gold, "path": str(path)
         }
 
-    def _analyze_mobile_file(self, content, info, filename):
-        """Análise específica para Flutter/Kotlin."""
-        # Extrai nomes de classes via Regex simples para mobile stubs
-        classes = re.findall(r'class\s+(\w+)', content)
-        info["classes"].extend(classes)
-
-    def _detect_vulnerabilities(self, content, info):
-        """Detecção de padrões de código frágil ou inseguro."""
-        # Padrões fragmentados para evitar auto-detecção
-        brittle_pattern = r'^\s*(ev' + r'al\(|glo' + r'bal\s+|sh' + r'ell=True)'
-        if re.search(brittle_pattern, content, re.MULTILINE):
-            info["brittle"] = True
+    def _analyze_test_quality(self, content, info):
+        """Métricas simplificadas de qualidade de teste (Universal)."""
+        # Suporta Python (assert/self.assert) e Kotlin/Java (assert/check/assertEquals)
+        assertions = len(re.findall(r"assert[A-Z]\w*\(|self\.assert|check\(|assertThat\(|expect\(", content))
+        # Adição de contagem linear para assert simples
+        assertions += content.count("assert ")
         
-        # Só é cegueira se houver 'pass' puro e NÃO houver log de erro no bloco except
-        silent_pattern = r'^\s*ex' + r'cept.*:\s*p' + r'ass\s*(#.*)?$'
-        if re.search(silent_pattern, content, re.MULTILINE):
-            if "lo" + "gger.err" + "or" not in content and "lo" + "gger.excep" + "tion" not in content:
-                info["silent_error"] = True
+        info["test_depth"] = {
+            "assertion_count": assertions,
+            "quality_level": "DEEP" if assertions > 5 else "SHALLOW"
+        }
 
     def _detect_test_coverage(self, path, info):
-        """Verifica se existe um arquivo de teste correspondente."""
-        if "src" in str(path):
-            expected_test = self.project_root / "tests" / f"test_{path.stem}.py"
-            if not expected_test.exists():
-                info["has_test"] = False
-
-    def _parse_python_ast(self, content, info, filename):
-        """Extrai funções e classes via AST."""
-        try:
-            tree = ast.parse(content)
-            for node in ast.walk(tree):
-                if isinstance(node, ast.FunctionDef): info["functions"].append(node.name)
-                elif isinstance(node, ast.ClassDef): info["classes"].append(node.name)
-        except Exception as e:
-            logger.debug(f"Falha na análise AST de {filename}: {e}")
+        if ("src" in str(path) or "app" in str(path)) and info["component_type"] != "TEST":
+            stem = path.stem.lower()
+            # Busca Instantânea no índice em memória
+            # Reconhece: test_main.py, MainTest.kt, test_main_deep.py, etc.
+            has_test = any(
+                (f"test_{stem}" in f) or 
+                (f"{stem}test" in f) 
+                for f in self.all_files_index
+            )
+            info["has_test"] = has_test
 
     def _build_dependency_map(self):
-        """Mapeia o grafo de chamadas básico."""
         for file, data in self.map.items():
+            data["coupling"] = self.mapper.calculate_metrics(file, data, self.map)
             self.call_graph[file] = [f for f in self.map.keys() if f != file and any(c in str(data) for c in self.map[f].get('classes', []))]
+
+    def analyze_stack_parity(self, personas):
+        parity = self.parity_analyst.analyze_stack_gaps(personas)
+        parity["detected"] = self.project_identity.get("stacks", set())
+        return parity
+
+    def _discover_identity(self):
+        dna = {"stacks": set(), "type": "Orquestrador Multi-Agente", "core_mission": "Orquestração de Inteligência Artificial"}
+        if (self.project_root / 'pubspec.yaml').exists(): dna["stacks"].add("Flutter")
+        if (self.project_root / 'build.gradle').exists() or (self.project_root / 'build.gradle.kts').exists(): 
+            dna["stacks"].add("Kotlin")
+        if (self.project_root / 'requirements.txt').exists(): dna["stacks"].add("Python")
+        return dna
+
+    def get_criticality_score(self, file_path):
+        score = 0
+        file_name = Path(file_path).stem
+        for deps in self.call_graph.values():
+            if any(file_name in str(d) for d in deps): score += 1
+        if "core" in str(file_path) or "base" in str(file_path): score += 10
+        return score
+
+        def analyze_stack_parity(self, personas):
+
+            parity = self.parity_analyst.analyze_stack_gaps(personas)
+
+            parity["detected"] = self.project_identity.get("stacks", set())
+
+            return parity
+
+    

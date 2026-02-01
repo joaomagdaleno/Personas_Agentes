@@ -19,7 +19,7 @@ class ForgePersona(BaseActivePersona):
         logger.info(f"[{self.name}] Analisando Infraestrutura de Automação Flutter...")
         
         audit_rules = [
-            {'regex': r"Part\s+['\"].*?\.g\.dart['"]", 'issue': 'Aviso: Codegen detectado. Garanta que build_runner esteja atualizado.', 'severity': 'low'},
+            {'regex': r'Part\s+[\'"].*?\.g\.dart[\'"]', 'issue': 'Aviso: Codegen detectado. Garanta que build_runner esteja atualizado.', 'severity': 'low'},
             {'regex': r"ev" + r"al\(", 'issue': 'Vulnerabilidade: Execução dinâmica detectada no ambiente Flutter.', 'severity': 'critical'}
         ]
         

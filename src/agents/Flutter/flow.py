@@ -20,7 +20,7 @@ class FlowPersona(BaseActivePersona):
         
         audit_rules = [
             {'regex': r"Navigator\.push\(", 'issue': 'Aviso: Uso de navegação direta. Prefira rotas nomeadas ou GoRouter.', 'severity': 'low'},
-            {'regex': r"pushNamed\(['\"].*?['"]\)", 'issue': 'Fragilidade: Rota via String bruta. Use constantes tipadas.', 'severity': 'medium'}
+            {'regex': r'pushNamed\([\'"].*?[\'"]\)', 'issue': 'Fragilidade: Rota via String bruta. Use constantes tipadas.', 'severity': 'medium'}
         ]
         
         results = self.find_patterns(('.dart',), audit_rules)

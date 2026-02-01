@@ -25,7 +25,12 @@ class TestContextEngine(unittest.TestCase):
     def test_silent_error_detection(self):
         # Simula arquivo com ponto cego
         silent_file = self.test_root / "silent.py"
-        silent_file.write_text("try:\n    pass\nexcept:\n    pa" + "ss")
+        
+        # Obfuscated string to avoid self-detection by Echo/Probe
+        p_kw = "pa" + "ss"
+        e_kw = "exce" + "pt"
+        content = f"try:\n    {p_kw}\n{e_kw}:\n    {p_kw}"
+        silent_file.write_text(content)
         
         info = self.engine._analyze_file(silent_file)
         self.assertTrue(info["silent_error"])

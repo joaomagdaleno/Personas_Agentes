@@ -32,6 +32,18 @@ class TestSystemIntelligence(unittest.TestCase):
         self.assertEqual(data["status"], "HEALED")
         self.assertEqual(data["occurrences"], 0)
 
+    def test_gold_standard_veto(self):
+        """Garante que arquivos Gold Standard não são marcados como instáveis."""
+        results = [{"file": "src/utils/compliance_standard.py", "issue": "Pattern match", "severity": "MEDIUM"}]
+        context_map = {
+            "src/utils/compliance_standard.py": {"is_gold_standard": True, "component_type": "UTIL"}
+        }
+        
+        self.ledger.update(results, context_map)
+        data = self.ledger.get_file_data("src/utils/compliance_standard.py")
+        self.assertEqual(data["status"], "REFERENCE")
+        self.assertNotIn("occurrences", data)
+
     def test_criticality_mapping(self):
         """Valida se arquivos do 'core' recebem score de impacto maior."""
         core_file = self.test_root / "src" / "core" / "maestro.py"

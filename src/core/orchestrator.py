@@ -1,7 +1,5 @@
-import os
 import logging
 import time
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from src.agents.director import DirectorPersona
 from src.utils.context_engine import ContextEngine
@@ -13,9 +11,7 @@ from src.utils.dependency_auditor import DependencyAuditor
 logger = logging.getLogger(__name__)
 
 class Orchestrator:
-    """
-    Maestro PhD: Coordena a inteligência coletiva sem acumular complexidade.
-    """
+    """Maestro PhD: Coordena a inteligência coletiva via delegação total."""
     
     def __init__(self, project_root):
         self.project_root = Path(project_root)
@@ -25,172 +21,111 @@ class Orchestrator:
         self.stability_ledger = StabilityLedger(self.project_root)
         self.dependency_auditor = DependencyAuditor(self.project_root)
         
-        self.personas = [] 
-        self.job_queue = [] 
-        self.metrics = {"files_scanned": 0, "health_score": 100, "start_time": time.time()}
+        # Injeção via Assembler
+        from src.agents.Support.infrastructure_assembler import InfrastructureAssembler
+        tools = InfrastructureAssembler.assemble_orchestrator_tools(self.project_root)
+        
+        self.synthesizer = tools["synthesizer"]
+        self.strategist = tools["strategist"]
+        self.executor = tools["executor"]
+        self.core_validator = tools["validator"]
+        
+        self.personas, self.job_queue = [], [] 
+        self.metrics = {"files_scanned": 0, "health_score": 100, "start_time": time.time(), "efficiency": {}}
 
     def add_persona(self, persona_instance):
         self.personas.append(persona_instance)
 
-    def run_strategic_audit(self, objective: str = None, include_history: bool = True):
-        """Mobiliza a elite e executa auditoria paralela."""
-        context = self.context_engine.analyze_project()
+    def run_strategic_audit(self, context, objective: str = None, include_history: bool = True):
+        """Mobiliza a elite e executa auditoria paralela delegada."""
         stacks = context['identity'].get('stacks', {'Python'})
-        if not objective: objective = f"Validar integridade {list(stacks)}"
+        obj = objective or f"Validar integridade {list(stacks)}"
 
-        active_phds = self._select_active_phds(objective, stacks)
-        current_findings = self._execute_parallel_audit(active_phds, objective, context)
+        active_phds = self._select_active_phds(obj, stacks)
+        changed_files = self._detect_changed_files(context.get("map", {}).keys())
+        
+        def audit_task(agent): return self._run_task(agent, obj, changed_files)
+        findings = self.executor.run_parallel(audit_task, active_phds)
 
-        # Enriquecimento de Diagnóstico
-        current_findings.extend(self._get_topology_issues(context))
-        current_findings.extend(self.dependency_auditor.check_submodule_status())
+        # Agregação de inteligência periférica
+        findings.extend(self.synthesizer.get_topology_issues(context))
+        findings.extend(self.dependency_auditor.check_submodule_status())
         
-        # Sincroniza com a Memória (Ledger)
-        self.stability_ledger.update(current_findings)
-        
-        # Se não queremos o histórico (ex: para auditoria de confirmação), retornamos apenas o atual
-        if not include_history:
-            return current_findings
-
-        # Gera a lista final: Ativos Atuais + Histórico do Ledger
-        final_queue = list(current_findings)
-        for file, data in self.stability_ledger.ledger.items():
-            if data.get('status') == 'HEALED':
-                final_queue.append({
-                    "file": file,
-                    "issue": "Histórico de Falha Curada",
-                    "severity": "HEALED",
-                    "context": "Ledger"
-                })
-        
-        self.job_queue = final_queue
-        return final_queue
+        self.stability_ledger.update(findings, context.get("map"))
+        return self._build_audit_report_queue(findings, include_history)
 
     def generate_full_diagnostic(self):
-        """Protocolo Soberano: Audit -> Heal -> Re-Audit -> Report."""
+        """Protocolo Soberano Inteligente: Discovery -> Targeted Verification."""
         if not self.personas: PersonaLoader.mobilize_all(self.project_root, self)
         
-        # 1. Auditoria Inicial (Apenas para disparar reflexos)
-        logger.info("🔭 Iniciando Rodada 1: Detecção de Alvos...")
-        initial_findings = self.run_strategic_audit(include_history=False)
-        health_initial = self.get_system_health_360()
+        context_v1 = self.context_engine.analyze_project()
+        initial_findings = self.run_strategic_audit(context_v1, include_history=False)
         
-        # 2. Ação (Ativação de Reflexos de Cura)
-        self._trigger_reflexes(health_initial)
+        audit_map = self.strategist.plan_targeted_verification(initial_findings)
+        self.metrics["efficiency"] = self.strategist.calculate_efficiency(len(context_v1["map"]), len(audit_map))
         
-        # 3. Re-Auditoria (Confirmação da Verdade)
-        logger.info("🔍 Iniciando Rodada 2: Confirmação de Curas...")
-        self.context_engine.map = {} # Limpa cache de contexto
-        # A segunda rodada é a fonte da verdade para o relatório e inclui o histórico do Ledger
-        post_findings = self.run_strategic_audit(include_history=True)
-        health_final = self.get_system_health_360()
+        # DELEGAÇÃO: Ativação de Reflexos
+        self.synthesizer.trigger_reflexes(
+            self.get_system_health_360(context_v1, {"success": True}),
+            self.personas, self.job_queue, self.dependency_auditor
+        )
         
-        # 4. Sincronização e Relatório
+        post_findings = self._run_targeted_verification(audit_map) if initial_findings else []
+        
+        # Consolida TODOS os achados sem limite de amostragem para o relatório exemplar
+        all_findings = initial_findings + post_findings
+        
         self.cache_manager.save()
-        report = self.director.format_360_report(health_final, post_findings)
+        health = self.get_system_health_360(context_v1, self.core_validator.verify_core_health(self.project_root))
+        report = self.director.format_360_report(health, all_findings)
         
-        output = self.project_root / "auto_healing_mission.md"
-        output.write_text(report, encoding="utf-8")
-        return output
+        (self.project_root / "auto_healing_mission.md").write_text(report, encoding="utf-8")
+        return self.project_root / "auto_healing_mission.md"
 
-    def get_system_health_360(self):
-        """Sintetiza a saúde sistêmica via motores especializados."""
-        context = self.context_engine.analyze_project()
+    def get_system_health_360(self, context, internal_health):
+        """Sintetiza a saúde sistêmica via delegação."""
         map_data = context.get("map", {})
-        
-        return {
-            "objective": context["identity"].get("core_mission"),
-            "health_score": self.metrics.get("health_score", 0),
-            "dark_matter": [f for f, i in map_data.items() if not i.get("has_test", True)],
-            "blind_spots": [f for f, i in map_data.items() if i.get("silent_error", False)],
-            "brittle_points": self._analyze_brittle_risk(map_data),
-            "persona_maturity": self._get_persona_maturity(),
-            "parity": self.context_engine.analyze_stack_parity(self.personas),
-            "ledger": self.stability_ledger.ledger,
-            "pyramid": self._get_qa_data()["pyramid"],
-            "test_execution": self._get_qa_data()["execution"]
-        }
+        context["parity"] = self.context_engine.analyze_stack_parity(self.personas)
+        qa_data = {"pyramid": self._get_target_test_pyramid(map_data), "execution": internal_health}
+        context["efficiency"] = self.metrics.get("efficiency", {})
+        return self.synthesizer.synthesize_360(context, self.metrics, self.personas, self.stability_ledger, qa_data)
 
-    def _execute_parallel_audit(self, agents, objective, context):
-        """Executa a bateria de auditoria em paralelo com pipeline de I/O otimizado."""
-        results = []
-        changed_files = self._get_changed_files_batch(context.get("map", {}).keys())
+    def _get_target_test_pyramid(self, map_data):
+        testify = next((p for p in self.personas if p.name == "Testify"), None)
+        return testify.analyze_test_pyramid(map_data) if testify else {}
 
-        with ThreadPoolExecutor(max_workers=os.cpu_count() or 4) as executor:
-            futures = {executor.submit(self._run_task, agent, objective, changed_files): agent for agent in agents}
-            for future in as_completed(futures):
-                try: 
-                    res = future.result()
-                    if res: results.extend(res)
-                except Exception as e: 
-                    logger.error(f"Erro no PhD {futures[future].name}: {e}")
-        return results
-
-    def _get_changed_files_batch(self, map_files):
-        """Pipeline de detecção de mudanças em lote com I/O paralelo (Performance PhD)."""
-        changed = {}
+    def _detect_changed_files(self, map_files):
         def check_file(p):
-            full_path = self.project_root / p
-            f_hash = self.cache_manager.get_file_hash(full_path)
-            if self.cache_manager.is_changed(p, f_hash):
-                return p, f_hash
-            return None
+            f_hash = self.cache_manager.get_file_hash(self.project_root / p)
+            return (p, f_hash) if self.cache_manager.is_changed(p, f_hash) else None
+        changed_list = self.executor.run_parallel(check_file, map_files)
+        return {p: h for p, h in (changed_list if changed_list else [])}
 
-        with ThreadPoolExecutor(max_workers=os.cpu_count() or 4) as executor:
-            futures = [executor.submit(check_file, p) for p in map_files]
-            for future in as_completed(futures):
-                res = future.result()
-                if res:
-                    p, f_hash = res
-                    changed[p] = f_hash
-        return changed
+    def _run_targeted_verification(self, audit_map):
+        verified_findings = []
+        for file, agents in audit_map.items():
+            full_path = self.project_root / file
+            if not full_path.exists(): continue
+            content = self.context_engine.analyst.read_project_file(full_path)
+            if not content: continue
+            for agent_name in agents:
+                agent = next((p for p in self.personas if p.name == agent_name), None)
+                if agent: verified_findings.extend(agent.perform_strategic_audit(file_target=file, content_target=content))
+        return verified_findings
 
     def _select_active_phds(self, objective, stacks):
         from src.agents.base import BaseActivePersona
         is_crit = any(k in objective.lower() for k in ["segurança", "crítico", "vulnerabilidade"])
         return [p for p in self.personas if (p.stack in stacks or p.stack == "Universal") and (not is_crit or p.__class__._reason_about_objective != BaseActivePersona._reason_about_objective)]
 
-    def _get_topology_issues(self, context):
-        issues = []
-        for rel_path, info in context.get("map", {}).items():
-            if info.get("brittle"): issues.append({"file": rel_path, "issue": "Fragilidade Lógica", "severity": "HIGH", "context": "ContextEngine"})
-            if info.get("silent_error"): issues.append({"file": rel_path, "issue": "Erro Silenciado", "severity": "HIGH", "context": "ContextEngine"})
-        return issues
-
-    def _analyze_brittle_risk(self, map_data):
-        brittle = []
-        for f, info in map_data.items():
-            if info.get("brittle"):
-                crit = self.context_engine.get_criticality_score(f)
-                reocc = self.stability_ledger.get_file_data(f).get("occurrences", 0)
-                brittle.append({"file": f, "criticality": crit, "reoccurrence": reocc, "risk_level": "EXTREME" if crit > 5 and reocc > 2 else "HIGH"})
-        return brittle
-
-    def _get_persona_maturity(self):
-        from src.agents.base import BaseActivePersona
-        return [{"name": p.name, "maturity": "PRÁTICA" if p.__class__._reason_about_objective != BaseActivePersona._reason_about_objective else "TEORIA"} for p in self.personas]
-
-    def _trigger_reflexes(self, health):
-        # 1. Reflexo de Auto-Cura (Voyager)
-        if health['blind_spots']:
-            voyager = next((p for p in self.personas if p.name == "Voyager"), None)
-            if voyager:
-                logger.info(f"🚀 [Voyager] {len(health['blind_spots'])} Pontos Cegos detectados! Iniciando Cura Física...")
-                healed = voyager.perform_active_healing(health['blind_spots'])
-                if healed > 0:
-                    logger.info(f"✅ [Voyager] Protocolo concluído: {healed} arquivos restaurados para visibilidade total.")
-        
-        # 2. Reflexo de Sincronização (Hermes/DependencyAuditor)
-        has_dep_issue = any(isinstance(i, dict) and i.get('context') == 'DependencyAuditor' for i in self.job_queue)
-        if has_dep_issue:
-            logger.info("📦 [Hermes] Skills desatualizadas detectadas. Acionando Sincronização Soberana...")
-            self.dependency_auditor.sync_submodule()
-
-        # 3. Reflexo de Segurança (Forge)
-        if health['brittle_points']:
-            forge = next((p for p in self.personas if p.name == "Forge"), None)
-            if forge:
-                logger.warning("⚒️ [Forge] Fragilidade crítica detectada no sistema! Bloqueando deploys de risco.")
+    def _build_audit_report_queue(self, current, include_history):
+        if not include_history: return current
+        final_queue = list(current)
+        for file, data in self.stability_ledger.ledger.items():
+            if data.get('status') == 'HEALED':
+                final_queue.append({"file": file, "issue": "Histórico de Falha Curada", "severity": "HEALED", "context": "Ledger"})
+        self.job_queue = final_queue
+        return final_queue
 
     def _run_task(self, agent, objective, changed):
         agent.set_context({"identity": self.context_engine.project_identity, "map": self.context_engine.map})
@@ -198,10 +133,3 @@ class Orchestrator:
         if changed: res.extend(agent.perform_audit())
         res.extend(agent.perform_strategic_audit(objective))
         return res
-
-    def _get_qa_data(self):
-        testify = next((p for p in self.personas if p.name == "Testify"), None)
-        return {
-            "pyramid": testify.analyze_test_pyramid() if testify else {},
-            "execution": testify.run_test_suite() if testify else {}
-        }

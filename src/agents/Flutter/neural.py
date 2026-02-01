@@ -19,7 +19,7 @@ class NeuralPersona(BaseActivePersona):
         logger.info(f"[{self.name}] Analisando Camadas de IA Flutter...")
         
         audit_rules = [
-            {'regex': r"apiKey:\s*['\"].*?['"]", 'issue': 'Vulnerabilidade Crítica: Chave de API de IA exposta. Use .env ou secure storage.', 'severity': 'critical'},
+            {'regex': r'apiKey:\s*[\'"].*?[\'"]', 'issue': 'Vulnerabilidade Crítica: Chave de API de IA exposta. Use .env ou secure storage.', 'severity': 'critical'},
             {'regex': r"temperature:\s*[01]\.[0-9]+", 'issue': 'Aviso: Parâmetro de criatividade detectado. Verifique se condiz com o objetivo.', 'severity': 'low'}
         ]
         

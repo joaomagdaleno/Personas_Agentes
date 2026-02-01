@@ -1,12 +1,9 @@
 import tkinter as tk
 from tkinter import filedialog, ttk, messagebox
-import os
 import sys
 import threading
-import importlib.util
 import logging
-import subprocess
-import re
+from pathlib import Path
 from src.utils.logging_config import setup_logging
 from src.core.orchestrator import Orchestrator
 
@@ -26,6 +23,7 @@ class OficinaApp:
 
         self.project_root = None
         self.orchestrator = None
+        self.current_issues = []
         
         self.setup_styles()
         self.setup_ui()
@@ -117,19 +115,16 @@ class OficinaApp:
         """Abre diálogo para seleção de pasta do projeto."""
         folder = filedialog.askdirectory()
         if folder:
-            self.project_root = folder
-            self.path_var.set(folder)
-            self.orchestrator = Orchestrator(folder)
-            
-            # Delega a descoberta e mobilização ao PersonaLoader
-            from src.utils.persona_loader import PersonaLoader
-            PersonaLoader.mobilize_all(folder, self.orchestrator)
+            path = Path(folder)
+            self.project_root = path
+            self.path_var.set(str(path))
+            self.orchestrator = Orchestrator(path)
             
             self.btn_audit.config(state=tk.NORMAL)
             self.btn_strategic.config(state=tk.NORMAL)
             self.btn_auto_heal.config(state=tk.NORMAL)
             self.log_message(f"Oficina pronta. {len(self.orchestrator.personas)} agentes mobilizados.")
-            logger.info(f"Projeto carregado: {folder}")
+            logger.info(f"Projeto carregado: {path}")
 
     def start_strategic_audit(self):
         """Inicia análise focada em um objetivo de negócio."""
@@ -139,16 +134,26 @@ class OficinaApp:
         
         def run():
             try:
-                issues = self.orchestrator.run_strategic_audit(objective)
-                for i, issue in enumerate(issues):
-                    self.issues_tree.insert("", tk.END, iid=str(i), values=(
-                        "STRATEGIC", 
-                        issue.get('context'), 
-                        f"[{issue.get('file')}] {issue.get('issue')}"
-                    ))
-                self.current_issues = issues
-                self.root.after(0, lambda: self.log_message(f"Análise de causa raiz concluída. {len(issues)} pontos identificados."))
+                # O Orquestrador precisa do contexto atual para rodar a auditoria estratégica
+                from src.utils.context_engine import ContextEngine
+                engine = ContextEngine(self.project_root)
+                context = engine.analyze_project()
+                
+                issues = self.orchestrator.run_strategic_audit(context, objective)
+                
+                def update_ui():
+                    for i, issue in enumerate(issues):
+                        self.issues_tree.insert("", tk.END, iid=str(i), values=(
+                            issue.get('severity', 'STRATEGIC'), 
+                            issue.get('context', 'PhD'), 
+                            f"[{issue.get('file', 'DNA')}] {issue.get('issue', issue)}"
+                        ))
+                    self.current_issues = issues
+                    self.log_message(f"Análise de causa raiz concluída. {len(issues)} pontos identificados.")
+                
+                self.root.after(0, update_ui)
             except Exception as e:
+                logger.exception("Falha na auditoria estratégica.")
                 self.root.after(0, lambda: messagebox.showerror("Erro Estratégico", str(e)))
 
         threading.Thread(target=run, daemon=True).start()
@@ -166,19 +171,13 @@ class OficinaApp:
         
         def run():
             try:
-                # O Orquestrador agora retorna as issues com a tag 'is_protected'
-                self.current_issues = self.orchestrator.run_diagnostic()
-                for i, issue in enumerate(self.current_issues):
-                    status = "🛡️ PROTEGIDO" if issue.get('is_protected') else "🛠️ REPARÁVEL"
-                    self.issues_tree.insert("", tk.END, iid=str(i), values=(
-                        issue.get('severity', 'LOW').upper(), 
-                        status, 
-                        f"[{issue.get('file')}:{issue.get('line', '?')}] {issue.get('issue')}"
-                    ))
+                # O Orquestrador gera o relatório absoluto
+                report_path = self.orchestrator.generate_full_diagnostic()
                 
-                self.root.after(0, lambda: self.btn_fix.config(state=tk.NORMAL if self.current_issues else tk.DISABLED))
-                self.root.after(0, lambda: self.btn_copy_prompt.config(state=tk.NORMAL if self.current_issues else tk.DISABLED))
-                self.root.after(0, lambda: self.log_message(f"Diagnóstico concluído. {len(self.current_issues)} alertas."))
+                # Para a interface, mantemos uma versão simplificada da visualização
+                # Mas o relatório real está no markdown gerado.
+                self.root.after(0, lambda: self.log_message(f"✅ Diagnóstico concluído. Relatório: {report_path.name}"))
+                self.root.after(0, lambda: messagebox.showinfo("Sucesso", f"O diagnóstico foi consolidado em:\n{report_path}"))
             except Exception as e:
                 logger.exception("Falha durante o diagnóstico.")
                 self.root.after(0, lambda: messagebox.showerror("Erro de Diagnóstico", str(e)))
@@ -217,50 +216,26 @@ Por favor, corrija o seguinte problema detectado no arquivo: `{issue.get('file')
 
     def start_auto_healing(self):
         """Inicia o ciclo completo de auto-cura técnica."""
-        self.issues_tree.delete(*self.issues_tree.get_children())
         self.log_message("⚡ INICIANDO CICLO DE AUTO-CURA PROFUNDA...")
-        
-        def run_cycle():
-            try:
-                # O Orquestrador executa a lógica de cura soberana
-                fixed_count = self.orchestrator.run_auto_healing()
-                
-                self.log_message(f"✅ Ciclo concluído. {fixed_count} arquivos foram curados automaticamente.")
-                
-                # Roda um diagnóstico final para mostrar o novo estado do projeto
-                self.root.after(0, self.start_diagnostic)
-                
-                if fixed_count > 0:
-                    self.root.after(0, lambda: messagebox.showinfo("Auto-Cura", f"Sucesso! {fixed_count} correções foram aplicadas com segurança."))
-                else:
-                    self.root.after(0, lambda: messagebox.showinfo("Auto-Cura", "Nenhum arquivo local precisava de reparo no momento."))
+        messagebox.showinfo("Auto-Cura", "Esta funcionalidade executa refatoração automática via Personas. Verifique os backups antes de prosseguir.")
+        # Lógica de cura delegada ao orquestrador (em expansão)
+        self.log_message("⚠️ Protocolo de Cura em ambiente de validação.")
 
-            except Exception as e:
-                logger.exception("Erro no ciclo de auto-cura.")
-                self.root.after(0, lambda: messagebox.showerror("Erro de Cura", str(e)))
-
-        threading.Thread(target=run_cycle, daemon=True).start()
-
-    def dispatch_fix(self, mission=None):
-        """Gera e salva o arquivo de missão na raiz do projeto selecionado."""
-        if not mission:
-            mission = self.orchestrator.prepare_mission_package()
-        
-        if not mission:
-            messagebox.showwarning("Aviso", "Nenhuma missão necessária.")
-            return
-
-        mission_file = os.path.join(self.project_root, 'auto_healing_mission.md')
-        
+    def dispatch_fix(self):
+        """Gera e salva o relatório de missão na raiz do projeto."""
         try:
-            with open(mission_file, 'w', encoding='utf-8') as f:
-                f.write(mission)
-            
-            self.log_message(f"✅ Missão gerada: {mission_file}")
-            messagebox.showinfo("Missão Pronta", f"O plano foi salvo em:\n{mission_file}")
+            report_path = self.orchestrator.generate_full_diagnostic()
+            self.log_message(f"✅ Missão gerada: {report_path.name}")
+            messagebox.showinfo("Missão Pronta", f"O plano foi salvo em:\n{report_path}")
         except Exception as e:
-            logger.error(f"Erro ao salvar missão: {e}")
+            logger.error(f"Erro ao gerar missão: {e}")
             messagebox.showerror("Erro de I/O", str(e))
+
+    def log_message(self, msg):
+        """Adiciona mensagem ao terminal interno e ao log do sistema."""
+        self.log_output.insert(tk.END, f"> {msg}\n")
+        self.log_output.see(tk.END)
+        logger.debug(msg)
 
 if __name__ == "__main__":
     try:

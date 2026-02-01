@@ -24,25 +24,11 @@ class Compiler:
 
     def compile_all(self):
         logger.info("🚀 Sincronizando censo global de PhDs...")
-        registry = {"last_sync": time.time(), "stacks": {}}
-        total_count = 0
+        # Agente de Suporte ao Registro
+        from src.agents.Support.registry_compiler import RegistryCompiler
+        compiler_agent = RegistryCompiler()
         
-        for stack_dir in self.base_agents_dir.iterdir():
-            if not stack_dir.is_dir() or stack_dir.name == "__pycache__":
-                continue
-                
-            stack_name = stack_dir.name
-            registry["stacks"][stack_name] = []
-            
-            for agent_file in stack_dir.glob("*.py"):
-                if agent_file.name == "__init__.py": continue
-                
-                agent_info = {
-                    "name": agent_file.stem,
-                    "status": "STABLE"
-                }
-                registry["stacks"][stack_name].append(agent_info)
-                total_count += 1
+        registry, total_count = compiler_agent.compile_stacks(self.base_agents_dir)
 
         self.registry_path.write_text(json.dumps(registry, indent=4), encoding='utf-8')
         logger.info(f"✅ Registro concluído: {total_count} PhDs ativos.")

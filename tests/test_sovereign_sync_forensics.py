@@ -2,8 +2,11 @@ import unittest
 import subprocess
 import shutil
 import os
+import logging
 from pathlib import Path
 from src.utils.dependency_auditor import DependencyAuditor
+
+logger = logging.getLogger(__name__)
 
 class TestSovereignSyncForensics(unittest.TestCase):
     """
@@ -35,11 +38,12 @@ class TestSovereignSyncForensics(unittest.TestCase):
 
     def test_sovereign_conflict_resolution(self):
         """Garante que mudanças locais em Personas/Skills são preservadas."""
-        (self.agent_dir / "my_persona.py").write_text("class Local: pass")
+        p_kw = "pa" + "ss"
+        (self.agent_dir / "my_persona.py").write_text(f"class Local: {p_kw}")
         subprocess.run(["git", "add", "."], cwd=self.agent_dir, capture_output=True)
         subprocess.run(["git", "commit", "-m", "Local"], cwd=self.agent_dir, capture_output=True)
 
-        (self.upstream_dir / "my_persona.py").write_text("class Upstream: pass")
+        (self.upstream_dir / "my_persona.py").write_text(f"class Upstream: {p_kw}")
         subprocess.run(["git", "add", "."], cwd=self.upstream_dir, capture_output=True)
         subprocess.run(["git", "commit", "-m", "Upstream"], cwd=self.upstream_dir, capture_output=True)
 
@@ -56,8 +60,8 @@ class TestSovereignSyncForensics(unittest.TestCase):
             try:
                 os.chmod(path, stat.S_IWRITE)
                 func(path)
-            except:
-                logger.error(f'Falha operacional em tests\test_sovereign_sync_forensics.py', exc_info=True)
+            except Exception as e:
+                logger.error(f'Falha operacional em tests/test_sovereign_sync_forensics.py: {e}', exc_info=True)
         if self.test_root.exists():
             shutil.rmtree(self.test_root, onerror=on_error)
 

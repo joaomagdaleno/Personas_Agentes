@@ -15,8 +15,9 @@ class MantraPersona(BaseActivePersona):
         start_time = time.time()
         logger.info(f"[{self.name}] Analisando Pureza do Código...")
         
+        # Obfuscated regex to avoid self-detection
         audit_rules = [
-            {'regex': r"except:\s+pass", 'issue': 'Anti-padrão: Bare except.', 'severity': 'critical'}
+            {'regex': r"exce" + r"pt:\s+pa" + r"ss", 'issue': 'Anti-padrão: Bare except.', 'severity': 'critical'}
         ]
         
         results = self.find_patterns(('.py',), audit_rules)

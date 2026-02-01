@@ -19,7 +19,7 @@ class HermesPersona(BaseActivePersona):
         logger.info(f"[{self.name}] Analisando Cadeia de Suprimentos Flutter...")
         
         audit_rules = [
-            {'regex': r"storePassword\s*[:=]\s*['\"].*?['"]", 'issue': 'Vulnerabilidade Crítica: Segredo de KeyStore exposto no código.', 'severity': 'critical'},
+            {'regex': r'storePassword\s*[:=]\s*[\'"].*?[\'"]', 'issue': 'Vulnerabilidade Crítica: Segredo de KeyStore exposto no código.', 'severity': 'critical'},
             {'regex': r"debugPaintSizeEnabled\s*=\s*true", 'issue': 'Ambiente: Debug mode ativo no código de produção.', 'severity': 'high'}
         ]
         

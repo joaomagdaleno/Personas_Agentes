@@ -30,11 +30,11 @@ class TestOrchestrator(unittest.TestCase):
 
     def test_dna_discovery(self):
         """Valida se o orquestrador descobre o DNA do projeto alvo."""
-        (self.test_dir / "requirements.txt").write_text("")
+        (self.test_dir / "requirements.txt").write_text("") # Simula Python
         orchestrator = Orchestrator(self.test_dir)
-        health = orchestrator.get_system_health_360()
-        self.assertEqual(health["objective"], "Orquestração de Inteligência Artificial")
-        logger.info(f"✅ DNA Identificado: {health['objective']}")
+        context = orchestrator.context_engine.analyze_project()
+        health = orchestrator.get_system_health_360(context, {"success": True})
+        self.assertIn("Python", str(health["objective"]))
 
 if __name__ == "__main__":
     unittest.main()
