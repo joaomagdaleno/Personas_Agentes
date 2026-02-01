@@ -4,12 +4,12 @@ from src.interface.cli import main
 
 class TestCLISystem(unittest.TestCase):
     @patch('src.interface.cli.Orchestrator')
+    @patch('src.interface.cli.logger')
     @patch('sys.argv', ['cli.py'])
-    def test_cli_no_args(self, mock_orch):
+    def test_cli_no_args(self, mock_logger, mock_orch):
         # Apenas garante que não crasha sem argumentos
-        with patch('builtins.print') as mock_print:
-            main()
-            mock_print.assert_any_call("🏛️ Workshop PhD CLI")
+        main()
+        mock_logger.info.assert_any_call("🏛️ Workshop PhD CLI")
 
     @patch('src.interface.cli.Orchestrator')
     @patch('sys.argv', ['cli.py', 'audit'])

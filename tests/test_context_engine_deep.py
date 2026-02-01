@@ -57,6 +57,9 @@ def test_complex():
         """Valida integração com o ParityAnalyst."""
         # Cria um arquivo que indica necessidade de uma stack
         (self.test_root / "pubspec.yaml").write_text("name: my_app")
+        # Força o motor a re-analisar a identidade para popular o 'detected'
+        self.engine.project_identity = self.engine._discover_identity()
+        
         # Simula personas (sem a persona Flutter para gerar um gap)
         mock_personas = [] # Vazio
         parity = self.engine.analyze_stack_parity(mock_personas)
