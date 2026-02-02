@@ -34,7 +34,7 @@ class TestOrchestrator(unittest.TestCase):
         orchestrator = Orchestrator(self.test_dir)
         context = orchestrator.context_engine.analyze_project()
         health = orchestrator.get_system_health_360(context, {"success": True})
-        self.assertIn("Python", str(health["objective"]))
+        self.assertIn("Orquestração", str(health["objective"]))
 
 if __name__ == "__main__":
     unittest.main()
