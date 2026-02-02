@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 
 class PyramidAnalyst:
     """Assistente Técnico: Auditor de Distribuição de Testes (Pirâmide) 📐"""
@@ -8,7 +8,9 @@ class PyramidAnalyst:
         pyramid = {"unit": 0, "integration": 0, "e2e": 0, "total": 0}
         
         for file in map_data.keys():
-            if "tests/" not in file.replace(os.sep, "/"): continue
+            # Modernização: Path garante compatibilidade universal
+            path_obj = Path(file)
+            if "tests" not in path_obj.parts: continue
             
             content = read_func(file)
             if not content: continue

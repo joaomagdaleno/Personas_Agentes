@@ -1,4 +1,5 @@
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -9,20 +10,39 @@ class HealthSynthesizer:
         """Consolida todos os sinais vitais do sistema em um diagnóstico único."""
         map_data = context.get("map", {})
         
-        return {
+        # Robustez: suporta dict ou list para métricas
+        score = orchestrator_metrics.get("health_score", 0) if isinstance(orchestrator_metrics, dict) else 0
+        
+        health_data = {
             "objective": context["identity"].get("core_mission"),
-            "health_score": orchestrator_metrics.get("health_score", 0),
-            "dark_matter": self._find_dark_matter(map_data),
-            "blind_spots": self._find_blind_spots(map_data),
-            "brittle_points": self._analyze_brittle_risk(map_data, stability_ledger),
+            "health_score": score,
+            "timestamp": time.strftime('%Y-%m-%d %H:%M:%S'),
             "persona_maturity": self._get_persona_maturity(orchestrator_personas),
-            "parity": context["parity"] if "parity" in context else {}, # Injetado pelo motor
+            "parity": context.get("parity", {}),
             "ledger": stability_ledger.ledger,
             "pyramid": qa_data["pyramid"],
             "test_execution": qa_data["execution"],
             "test_quality_matrix": self._get_test_quality_matrix(orchestrator_personas, map_data),
-            "efficiency": context.get("efficiency", {}), # Nova métrica
+            "efficiency": context.get("efficiency", {}),
             "map": map_data 
+        }
+        
+        # Agregação de sinais vitais via sub-métodos
+        health_data.update(self._get_vitals(map_data, stability_ledger))
+        return health_data
+
+    def _calculate_score(self, blind_count, brittle_count):
+        """Algoritmo de pontuação PhD."""
+        base = 100
+        penalty = (blind_count * 5) + (brittle_count * 10)
+        return max(0, base - penalty)
+
+    def _get_vitals(self, map_data, stability_ledger):
+        """Coleta métricas de saúde de baixo nível."""
+        return {
+            "dark_matter": self._find_dark_matter(map_data),
+            "blind_spots": self._find_blind_spots(map_data),
+            "brittle_points": self._analyze_brittle_risk(map_data, stability_ledger)
         }
 
     def _find_dark_matter(self, map_data):

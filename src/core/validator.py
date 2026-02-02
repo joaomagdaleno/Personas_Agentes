@@ -30,25 +30,29 @@ class SystemValidator:
     def _parse_results(self, output: str, is_success: bool) -> dict:
         tests_run = 0
         failures = 0
-        # Captura estatísticas do unittest
-        run_match = re.search(r"Ran (\d+) tests", output)
-        if run_match: tests_run = int(run_match.group(1))
         
-        # Detecta falhas ou erros
-        fail_match = re.search(r"FAILED \((?:failures|errors|failures=\d+, errors=)(\d+)", output)
-        if fail_match: 
-            failures = int(fail_match.group(1))
-        elif not is_success: 
-            # Caso o returncode seja erro mas não achamos o padrão FAILED
-            failures = 1 if tests_run == 0 else tests_run 
+        # Captura total de testes
+        m_total = re.search(r"Ran (\d+) tests", output)
+        if m_total: tests_run = int(m_total.group(1))
+        
+        # Captura falhas e erros separadamente e soma
+        m_fail = re.search(r"failures=(\d+)", output)
+        m_err = re.search(r"errors=(\d+)", output)
+        
+        if m_fail: failures += int(m_fail.group(1))
+        if m_err: failures += int(m_err.group(1))
+        
+        # Caso especial para falha única (ex: FAILED (failures=1))
+        if not m_fail and not m_err:
+            m_single = re.search(r"FAILED \((?:failures|errors)=(\d+)\)", output)
+            if m_single: failures = int(m_single.group(1))
 
-        pass_rate = 0
-        if tests_run > 0:
-            pass_rate = round(((tests_run - failures) / tests_run * 100), 2)
-
+        if is_success and tests_run > 0:
+            return {"success": True, "pass_rate": 100, "total_run": tests_run, "failed": 0}
+        
+        pass_rate = round(((tests_run - failures) / tests_run) * 100, 2) if tests_run > 0 else 0
         return {
             "success": is_success and failures == 0,
-            "total_run": tests_run,
-            "failed": failures,
-            "pass_rate": pass_rate
+            "pass_rate": pass_rate,
+            "total_run": tests_run, "failed": failures
         }

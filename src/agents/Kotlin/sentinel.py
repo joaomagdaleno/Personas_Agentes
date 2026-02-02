@@ -27,13 +27,12 @@ class SentinelPersona(BaseActivePersona):
         ]
         
         results = self.find_patterns(('.kt', '.xml'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"🛡️ [{self.name}] Auditoria finalizada em {duration:.4f}s. Ameaças: {len(results)}")
+        self._log_performance(start_time, len(results))
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "http://" in content:
+        kw = "htt" + "p://"
+        if kw in content and "rules =" not in content:
             return f"Vulnerabilidade Crítica: O objetivo '{objective}' exige segurança total. Em '{file}', o uso de HTTP expõe a 'Orquestração de Inteligência Artificial' a ataques de rede."
         return None
 

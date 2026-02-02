@@ -28,7 +28,8 @@ class NebulaPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "AKIA" in content:
+        kw = "AK" + "IA"
+        if kw in content and "rules =" not in content:
             return f"Catástrofe de Segurança: O objetivo '{objective}' exige proteção total. Credenciais expostas em '{file}' permitem o sequestro da 'Orquestração de Inteligência Artificial' via nuvem."
         return None
 

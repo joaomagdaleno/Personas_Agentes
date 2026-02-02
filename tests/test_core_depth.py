@@ -15,10 +15,15 @@ class TestCoreDepth(unittest.TestCase):
     """
     
     def setUp(self):
-        self.test_root = Path("core_depth_env")
+        self.test_root = Path("temp_core_depth")
         self.test_root.mkdir(exist_ok=True)
-        self.engine = ContextEngine(self.test_root)
-        self.persona = MockPhD(self.test_root)
+        
+        # Injeção Manual para estabilidade de teste
+        from src.agents.Support.infrastructure_assembler import InfrastructureAssembler
+        support = InfrastructureAssembler.assemble_core_support()
+        self.engine = ContextEngine(self.test_root, support_tools=support)
+        self.persona = MockPhD(project_root=self.test_root)
+        self.persona.set_context({"map": {}})
 
     def tearDown(self):
         if self.test_root.exists():

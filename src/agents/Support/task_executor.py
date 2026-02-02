@@ -1,4 +1,4 @@
-import os
+import multiprocessing
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import logging
 
@@ -8,7 +8,11 @@ class TaskExecutor:
     """Assistente Técnico: Mestre em Execução Paralela e Concorrência 🚀"""
     
     def __init__(self):
-        self.max_workers = os.cpu_count() or 4
+        # Modernização: multiprocessing substitui os.cpu_count
+        try:
+            self.max_workers = multiprocessing.cpu_count() or 4
+        except Exception:
+            self.max_workers = 4
 
     def run_parallel(self, task_func, items):
         """Executa uma função em paralelo sobre uma lista de itens."""
@@ -22,5 +26,5 @@ class TaskExecutor:
                         if isinstance(res, list): results.extend(res)
                         else: results.append(res)
                 except Exception as e:
-                    logger.error(f"Falha na execução paralela: {e}")
+                    logger.error(f"🚨 Falha crítica na execução paralela: {e}", exc_info=True)
         return results

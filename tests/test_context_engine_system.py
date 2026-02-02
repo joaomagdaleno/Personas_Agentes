@@ -6,7 +6,11 @@ class TestContextEngine(unittest.TestCase):
     def setUp(self):
         self.test_root = Path("temp_context_test")
         self.test_root.mkdir(exist_ok=True)
-        self.engine = ContextEngine(self.test_root)
+        
+        # Injeção Manual para estabilidade de teste
+        from src.agents.Support.infrastructure_assembler import InfrastructureAssembler
+        support = InfrastructureAssembler.assemble_core_support()
+        self.engine = ContextEngine(self.test_root, support_tools=support)
 
     def test_identity_discovery(self):
         # Simula um projeto Python

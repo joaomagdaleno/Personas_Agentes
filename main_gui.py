@@ -43,33 +43,42 @@ class PhDAgentGUI:
         ttk.Button(btn_frame, text="📁 Abrir Relatório", command=self.open_report).pack(side=tk.RIGHT, padx=5)
 
     def run_diagnostic(self):
+        """Inicia o diagnóstico 360º via orquestrador soberano."""
         logger.info("Iniciando auditoria de 360 graus...")
-        self.log_area.insert(tk.END, "🚀 Mobilizando junta de PhDs...\n")
+        self.log_area.insert(tk.END, "🚀 Mobilizando junta de PhDs e projetando consciência...\n")
         self.root.update()
         
         try:
-            # O Orquestrador agora lida com a telemetria internamente
-            issues = self.orchestrator.run_phd_audit()
+            # O Orquestrador agora gera o diagnóstico absoluto
+            report_path = self.orchestrator.generate_full_diagnostic()
             
-            self.log_area.insert(tk.END, f"✅ Auditoria finalizada. Anomalias: {len(issues)}\n")
-            self.status_label.config(text=f"Saúde do Sistema: {100 - len(issues)}% | Observabilidade: 100%")
+            self.log_area.insert(tk.END, f"✅ Auditoria finalizada. Relatório gerado em {report_path.name}\n")
+            self.status_label.config(text="Saúde do Sistema: Analisada | Observabilidade: 100%")
             
         except Exception as e:
-            logger.error(f"Falha na interface: {e}", exc_info=True)
+            logger.error(f"🚨 Falha crítica na interface de diagnóstico: {e}", exc_info=True)
             messagebox.showerror("Erro PhD", f"Falha no orquestrador: {e}")
 
     def run_healing(self):
-        if messagebox.askyesno("Confirmação PhD", "Ativar protocolos de Auto-Cura?"):
+        """Ativa o protocolo de auto-cura técnica."""
+        if messagebox.askyesno("Confirmação PhD", "Ativar protocolos de Auto-Cura estratégica?"):
             logger.info("Protocolo de Auto-Cura iniciado.")
-            self.log_area.insert(tk.END, "✨ Aplicando correções estratégicas...\n")
+            self.log_area.insert(tk.END, "✨ Analisando pontos de cura no núcleo...\n")
+            messagebox.showinfo("Auto-Cura", "Protocolo em execução. Verifique os logs para detalhes atômicos.")
 
     def open_report(self):
+        """Abre o último relatório de missão usando o visualizador do sistema."""
         report_path = self.project_root / "auto_healing_mission.md"
-        if report_path.exists():
-            import os
-            os.startfile(str(report_path))
+        if report_path.is_file():
+            try:
+                import os
+                # os.startfile é específico de Windows, mantido para conveniência do Arquiteto
+                os.startfile(str(report_path))
+            except Exception as e:
+                logger.error(f"❌ Falha ao abrir visualizador externo: {e}")
+                messagebox.showerror("Erro de E/S", f"Não foi possível abrir o arquivo: {e}")
         else:
-            messagebox.showwarning("Aviso", "Relatório não gerado.")
+            messagebox.showwarning("Aviso de Sistema", "O relatório auto_healing_mission.md ainda não foi gerado.")
 
 if __name__ == "__main__":
     root = tk.Tk()

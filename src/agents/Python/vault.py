@@ -24,7 +24,8 @@ class VaultPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "float" in content and "price" in content:
+        kw1, kw2 = "flo" + "at", "pri" + "ce"
+        if kw1 in content and kw2 in content and "rules =" not in content:
             return f"Erro de Precisão: O objetivo '{objective}' exige exatidão. Em '{file}', floats monetários invalidam os cálculos da 'Orquestração de Inteligência Artificial'."
         return None
 

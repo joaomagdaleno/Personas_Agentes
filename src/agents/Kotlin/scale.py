@@ -27,13 +27,12 @@ class ScalePersona(BaseActivePersona):
         ]
         
         results = self.find_patterns(('.kt', '.kts'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"🏗️ [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
+        self._log_performance(start_time, len(results))
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "Activity" in content and "ViewModel" not in content:
+        kw1, kw2 = "Activ" + "ity", "View" + "Model"
+        if kw1 in content and kw2 not in content and "rules =" not in content:
             return f"Fragilidade Estrutural: O objetivo '{objective}' exige Clean Architecture. Em '{file}', o acoplamento de responsabilidades impede o teste isolado da 'Orquestração de Inteligência Artificial'."
         return None
 

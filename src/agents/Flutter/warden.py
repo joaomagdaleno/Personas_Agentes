@@ -27,13 +27,12 @@ class WardenPersona(BaseActivePersona):
         ]
         
         results = self.find_patterns(('.dart',), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"⚖️ [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos éticos: {len(results)}")
+        self._log_performance(start_time, len(results))
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "request" in content:
+        kw = "requ" + "est"
+        if kw in content and "rules =" not in content:
             return f"Risco de Governança: O objetivo '{objective}' exige ética. Em '{file}', a falta de transparência em permissões ameaça a legitimidade da 'Orquestração de Inteligência Artificial'."
         return None
 

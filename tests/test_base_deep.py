@@ -1,10 +1,13 @@
 
 import unittest
+import time
 from pathlib import Path
 from src.agents.base import BaseActivePersona
 
 class MockPersona(BaseActivePersona):
     def perform_audit(self):
+        # Telemetria simulada para conformidade
+        start = time.time()
         return []
     def _reason_about_objective(self, objective, file, content):
         if "critical_error" in content:

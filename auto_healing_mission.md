@@ -2,77 +2,217 @@
 > **Visão Holística do Arquiteto PhD**
 
 **STATUS:** ✅ ESTABILIDADE SOBERANA
-**SINCRONIA:** 2026-02-01 21:59:32 | **ÍNDICE DE SAÚDE:** 100%
+**SINCRONIA:** 2026-02-02 00:41:06 | **ÍNDICE DE SAÚDE:** 100%
 ---
+## 🧬 SINCRONIA DE IDENTIDADE
+| Fase | Status | Info |
+| :--- | :--- | :--- |
+| **Identidade** | SEED_IDENTITY | Ativa |
+| **Memória** | MEMORY_UPLOAD | Sincronizada |
+| **Treinamento** | TRAINING | Em curso |
+
 ## 🩺 SINAIS VITAIS DO PRODUTO
 | Métrica | Status | Impacto |
 | :--- | :--- | :--- |
 | **Pontos Cegos** | 0 | Baixo |
-| **Fragilidades** | 6 | Risco de Colapso |
+| **Fragilidades** | 9 | Risco de Colapso |
 | **Paridade de Stack** | 0 Gaps | Interoperabilidade |
 
 ## ⚡ EFICIÊNCIA OPERACIONAL
 | Indicador | Valor | Impacto |
 | :--- | :--- | :--- |
-| **Economia de I/O** | 69.27% | **MODERADA** |
+| **Economia de I/O** | 72.31% | **ALTA** |
 
 ## 🌪️ MAPA DE ENTROPIA & ACOPLAMENTO
 | Alvo | Complexidade | Instabilidade |
 | :--- | :---: | :---: |
-| `src/agents/Support/structural_analyst.py` | 31 | 0.6 |
-| `src/agents/Support/line_veto.py` | 27 | 0.25 |
-| `src/utils/context_engine.py` | 22 | 0.4 |
 | `src/agents/base.py` | 18 | 0.08 |
 | `src/utils/dependency_auditor.py` | 17 | 0.64 |
+| `src/agents/Support/line_veto.py` | 17 | 0.4 |
+| `src/utils/context_engine.py` | 16 | 0.5 |
+| `src/core/orchestrator.py` | 15 | 0.61 |
 
 ## 🧪 MATRIZ DE CONFIANÇA
 | Módulo | Entropia | Asserções | Status |
 | :--- | :---: | :---: | :--- |
-| `src/agents/Support/structural_analyst.py` | 31 | 17 | 🟢 PROFUNDO |
-| `src/agents/Support/line_veto.py` | 27 | 12 | 🟢 PROFUNDO |
-| `src/utils/context_engine.py` | 22 | 21 | 🟢 PROFUNDO |
 | `src/agents/base.py` | 18 | 11 | 🟢 PROFUNDO |
 | `src/utils/dependency_auditor.py` | 17 | 10 | 🟢 PROFUNDO |
+| `src/agents/Support/line_veto.py` | 17 | 10 | 🟢 PROFUNDO |
+| `src/utils/context_engine.py` | 16 | 21 | 🟢 PROFUNDO |
+| `src/core/orchestrator.py` | 15 | 11 | 🟢 PROFUNDO |
+| `src/agents/Support/battle_plan_formatter.py` | 15 | 9 | 🟢 PROFUNDO |
+| `src/agents/Python/voyager.py` | 14 | 2 | 🔴 FRÁGIL |
+| `src/agents/Support/health_synthesizer.py` | 14 | 9 | 🟢 PROFUNDO |
+| `src/core/validator.py` | 12 | 11 | 🟢 PROFUNDO |
+| `src/utils/stability_ledger.py` | 12 | 8 | 🟢 PROFUNDO |
+| `src/agents/Support/component_classifier.py` | 12 | 7 | 🟢 PROFUNDO |
+| `src/interface/gui.py` | 11 | 3 | 🟢 PROFUNDO |
+| `src/utils/persona_loader.py` | 10 | 0 | 🔴 FRÁGIL |
+| `src/agents/Support/source_code_parser.py` | 10 | 8 | 🟢 PROFUNDO |
+| `src/agents/Support/quality_analyst.py` | 9 | 0 | 🔴 FRÁGIL |
+| `src/utils/cache_manager.py` | 8 | 4 | 🟢 PROFUNDO |
+| `src/agents/Support/audit_engine.py` | 8 | 0 | 🔴 FRÁGIL |
+| `src/agents/Support/integrity_guardian.py` | 8 | 0 | 🔴 FRÁGIL |
+| `src/agents/Support/parity_analyst.py` | 8 | 0 | 🔴 FRÁGIL |
+| `src/agents/Support/pyramid_analyst.py` | 8 | 0 | 🔴 FRÁGIL |
+| `src/agents/Support/task_executor.py` | 8 | 0 | 🔴 FRÁGIL |
+| `src/utils/compliance_standard.py` | 7 | 0 | 🔴 FRÁGIL |
+| `src/agents/Support/diagnostic_strategist.py` | 7 | 0 | 🔴 FRÁGIL |
+| `src/interface/cli.py` | 6 | 0 | 🔴 FRÁGIL |
+| `src/agents/Support/logic_auditor.py` | 6 | 4 | 🟢 PROFUNDO |
+| `src/agents/Support/registry_compiler.py` | 6 | 0 | 🔴 FRÁGIL |
+| `src/agents/Support/structural_analyst.py` | 6 | 17 | 🟢 PROFUNDO |
+| `src/utils/indexer.py` | 5 | 3 | 🟢 PROFUNDO |
+| `src/utils/logging_config.py` | 5 | 1 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/probe.py` | 5 | 2 | 🟢 PROFUNDO |
+| `src/agents/Support/coverage_auditor.py` | 5 | 0 | 🔴 FRÁGIL |
+| `src/agents/Support/dna_profiler.py` | 5 | 0 | 🔴 FRÁGIL |
+| `src/core/compiler.py` | 4 | 1 | 🟢 PROFUNDO |
+| `src/agents/Flutter/forge.py` | 4 | 2 | 🟢 PROFUNDO |
+| `src/agents/Flutter/scale.py` | 4 | 2 | 🟢 PROFUNDO |
+| `src/agents/Flutter/scribe.py` | 4 | 2 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/forge.py` | 4 | 2 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/scale.py` | 4 | 2 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/spark.py` | 4 | 2 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/stream.py` | 4 | 2 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/vault.py` | 4 | 3 | 🟢 PROFUNDO |
+| `src/agents/Python/forge.py` | 4 | 2 | 🟢 PROFUNDO |
+| `src/agents/Python/sentinel.py` | 4 | 3 | 🟢 PROFUNDO |
+| `src/agents/Python/vault.py` | 4 | 3 | 🟢 PROFUNDO |
+| `src/agents/Support/connectivity_mapper.py` | 4 | 0 | 🔴 FRÁGIL |
+| `src/agents/Support/maturity_evaluator.py` | 4 | 0 | 🔴 FRÁGIL |
+| `src/agents/Support/memory_persistence.py` | 4 | 0 | 🔴 FRÁGIL |
+| `src/agents/Support/report_formatter.py` | 4 | 0 | 🔴 FRÁGIL |
+| `src/agents/Flutter/globe.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Flutter/nebula.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Flutter/probe.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Flutter/spark.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Flutter/stream.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Flutter/vault.py` | 3 | 3 | 🟢 PROFUNDO |
+| `src/agents/Flutter/voyager.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Flutter/warden.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/hermes.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/hype.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/mantra.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/metric.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/nebula.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/neural.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/palette.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/scope.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/scribe.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/sentinel.py` | 3 | 3 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/voyager.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/warden.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Python/cache.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Python/echo.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Python/globe.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Python/nebula.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Python/neural.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Python/nexus.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Python/probe.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Python/scale.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Python/scribe.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Python/stream.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src/agents/Flutter/bolt.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Flutter/bridge.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Flutter/cache.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Flutter/echo.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Flutter/flow.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Flutter/hermes.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Flutter/hype.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Flutter/mantra.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Flutter/metric.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Flutter/neural.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Flutter/nexus.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Flutter/palette.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Flutter/scope.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Flutter/sentinel.py` | 2 | 3 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/bolt.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/bridge.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/cache.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/echo.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/flow.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/globe.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Kotlin/nexus.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Python/bolt.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Python/bridge.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Python/flow.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Python/hermes.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Python/hype.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Python/mantra.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Python/metric.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Python/scope.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Python/warden.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src/agents/Support/vulnerability_heuristic.py` | 2 | 7 | 🟢 PROFUNDO |
+| `src/__init__.py` | 1 | 0 | 🔴 FRÁGIL |
+| `src/agents/director.py` | 1 | 1 | 🟢 PROFUNDO |
+| `src/agents/__init__.py` | 1 | 0 | 🔴 FRÁGIL |
+| `src/core/__init__.py` | 1 | 0 | 🔴 FRÁGIL |
+| `src/interface/__init__.py` | 1 | 0 | 🔴 FRÁGIL |
+| `src/utils/__init__.py` | 1 | 0 | 🔴 FRÁGIL |
+| `src/agents/Flutter/__init__.py` | 1 | 0 | 🔴 FRÁGIL |
+| `src/agents/Kotlin/__init__.py` | 1 | 0 | 🔴 FRÁGIL |
+| `src/agents/Python/palette.py` | 1 | 2 | 🟢 PROFUNDO |
+| `src/agents/Python/spark.py` | 1 | 2 | 🟢 PROFUNDO |
+| `src/agents/Support/infrastructure_assembler.py` | 1 | 0 | 🔴 FRÁGIL |
 
 ## 🎯 PLANO DE BATALHA: DIRETRIZES DE ENGENHARIA
-> Este seção contém instruções atômicas para correção automatizada.
+### 📊 RESUMO DE INTERVENÇÕES
+| Severidade | Quantidade |
+| :--- | :---: |
+| CRITICAL | 20 |
+| HIGH | 11 |
+| MEDIUM | 56 |
+| LOW | 29 |
+| STRATEGIC | 256 |
 
-### 1. [STRATEGIC] @ `DNA`
-- **Diretriz:** Gargalo de Runtime: O objetivo 'Validar integridade ['Python']' exige alta disponibilidade. Loops de espera ativa em 'tests/test_structural_analyst_deep.py' paralisam a 'Orquestração de Inteligência Artificial'.
+---
+## 🚩 NÍVEL: CRITICAL
+### 📂 Alvo: `tests/test_battle_plan_formatter_deep.py`
+#### 🔴 Item 32: Vulnerabilidade: Execução dinâmica detectada.
+- **Evidência:**
+```kotlin
+    def test_item_formatting(self):
+        """Valida a formatação atômica de cada item."""
+        item = {"file": "test.py", "issue": "Logic flaw", "severity": "high", "line": 5, "snippet": "eval(x)"}
+        res = self.formatter._format_item(item, "HIGH")
+        self.assertIn("#### 🔴 Item 5: Logic flaw", res)
+```
+- **Diretriz:** Padrão soberano de critical
 
-### 2. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_core_depth.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas.
+#### 🔴 Item 35: Vulnerabilidade: Execução dinâmica detectada.
+- **Evidência:**
+```kotlin
+        res = self.formatter._format_item(item, "HIGH")
+        self.assertIn("#### 🔴 Item 5: Logic flaw", res)
+        self.assertIn("```kotlin\neval(x)\n```", res)
+        self.assertIn("Padrão soberano de high", res)
+```
+- **Diretriz:** Padrão soberano de critical
 
-### 3. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_structural_analyst_deep.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas.
+#### 🔴 Item 32: RCE: Execução dinâmica detectada.
+- **Evidência:**
+```kotlin
+    def test_item_formatting(self):
+        """Valida a formatação atômica de cada item."""
+        item = {"file": "test.py", "issue": "Logic flaw", "severity": "high", "line": 5, "snippet": "eval(x)"}
+        res = self.formatter._format_item(item, "HIGH")
+        self.assertIn("#### 🔴 Item 5: Logic flaw", res)
+```
+- **Diretriz:** Padrão soberano de critical
 
-### 4. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'src/agents/base.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas.
+#### 🔴 Item 35: RCE: Execução dinâmica detectada.
+- **Evidência:**
+```kotlin
+        res = self.formatter._format_item(item, "HIGH")
+        self.assertIn("#### 🔴 Item 5: Logic flaw", res)
+        self.assertIn("```kotlin\neval(x)\n```", res)
+        self.assertIn("Padrão soberano de high", res)
+```
+- **Diretriz:** Padrão soberano de critical
 
-### 5. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'src/core/validator.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas.
-
-### 6. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'src/agents/Support/structural_analyst.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas.
-
-### 7. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'src/agents/Support/test_runner.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas.
-
-### 8. [STRATEGIC] @ `DNA`
-- **Diretriz:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src/core/orchestrator.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível.
-
-### 9. [STRATEGIC] @ `DNA`
-- **Diretriz:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src/utils/context_engine.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível.
-
-### 10. [STRATEGIC] @ `DNA`
-- **Diretriz:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src/agents/Support/health_synthesizer.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível.
-
-### 11. [STRATEGIC] @ `DNA`
-- **Diretriz:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src/agents/Support/structural_analyst.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível.
-
-### 12. [critical] @ `tests/test_core_depth.py`
-- **Problema:** Vulnerabilidade: Execução dinâmica detectada.
-- **Localização:** Linha 31
+### 📂 Alvo: `tests/test_core_depth.py`
+#### 🔴 Item 36: Vulnerabilidade: Execução dinâmica detectada.
 - **Evidência:**
 ```kotlin
         file = self.test_root / "logic.py"
@@ -81,12 +221,9 @@
         
         info = self.engine._analyze_file(file)
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de critical
 
-### 13. [critical] @ `tests/test_core_depth.py`
-- **Problema:** Vulnerabilidade: Execução dinâmica detectada.
-- **Localização:** Linha 37
+#### 🔴 Item 42: Vulnerabilidade: Execução dinâmica detectada.
 - **Evidência:**
 ```kotlin
         # Múltiplas asserções para garantir nível DEEP
@@ -95,12 +232,54 @@
         self.assertTrue(info["silent_error"], "Deveria detectar except pass")
         self.assertGreater(info["complexity"], 1, "Deveria calcular complexidade real")
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de critical
 
-### 14. [critical] @ `tests/test_self_awareness.py`
-- **Problema:** Vulnerabilidade: Execução dinâmica detectada.
-- **Localização:** Linha 69
+#### 🔴 Item 36: Anti-padrão: Bare except.
+- **Evidência:**
+```kotlin
+        file = self.test_root / "logic.py"
+        # Usamos eval direto aqui para garantir que o motor REALMENTE detecta
+        file.write_text("import os\ndef complex():\n    if True: pass\n    try: eval('1')\n    except: pass")
+        
+        info = self.engine._analyze_file(file)
+```
+- **Diretriz:** Padrão soberano de critical
+
+#### 🔴 Item 36: Risco Crítico: Erro silenciado.
+- **Evidência:**
+```kotlin
+        file = self.test_root / "logic.py"
+        # Usamos eval direto aqui para garantir que o motor REALMENTE detecta
+        file.write_text("import os\ndef complex():\n    if True: pass\n    try: eval('1')\n    except: pass")
+        
+        info = self.engine._analyze_file(file)
+```
+- **Diretriz:** Padrão soberano de critical
+
+#### 🔴 Item 36: RCE: Execução dinâmica detectada.
+- **Evidência:**
+```kotlin
+        file = self.test_root / "logic.py"
+        # Usamos eval direto aqui para garantir que o motor REALMENTE detecta
+        file.write_text("import os\ndef complex():\n    if True: pass\n    try: eval('1')\n    except: pass")
+        
+        info = self.engine._analyze_file(file)
+```
+- **Diretriz:** Padrão soberano de critical
+
+#### 🔴 Item 42: RCE: Execução dinâmica detectada.
+- **Evidência:**
+```kotlin
+        # Múltiplas asserções para garantir nível DEEP
+        self.assertEqual(info["component_type"], "LOGIC")
+        self.assertTrue(info["brittle"], "Deveria detectar eval()")
+        self.assertTrue(info["silent_error"], "Deveria detectar except pass")
+        self.assertGreater(info["complexity"], 1, "Deveria calcular complexidade real")
+```
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `tests/test_self_awareness.py`
+#### 🔴 Item 69: Vulnerabilidade: Execução dinâmica detectada.
 - **Evidência:**
 ```kotlin
         file_path = "src/agents/simulation_agent.py"
@@ -109,12 +288,9 @@
         content = f"def simulation_run():\n    # SIMULATING VULNERABILITY FOR TESTING\n    res = {danger}\n    return res"
         (self.test_root / "src/agents").mkdir(parents=True, exist_ok=True)
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de critical
 
-### 15. [critical] @ `tests/test_self_awareness.py`
-- **Problema:** Vulnerabilidade: Execução dinâmica detectada.
-- **Localização:** Linha 81
+#### 🔴 Item 81: Vulnerabilidade: Execução dinâmica detectada.
 - **Evidência:**
 ```kotlin
         patterns = [{'regex': r'eval\(', 'issue': 'Dangerous eval'}]
@@ -123,12 +299,9 @@
 
     def test_simulation_of_rule_definition_ignored(self):
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de critical
 
-### 16. [critical] @ `tests/test_self_awareness.py`
-- **Problema:** Vulnerabilidade: Execução dinâmica detectada.
-- **Localização:** Linha 115
+#### 🔴 Item 115: Vulnerabilidade: Execução dinâmica detectada.
 - **Evidência:**
 ```kotlin
         patterns = [{'regex': r'eval\(', 'issue': 'Dangerous eval'}]
@@ -137,569 +310,105 @@
 
 if __name__ == "__main__":
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de critical
 
-### 17. [STRATEGIC] @ `DNA`
-- **Diretriz:** Falha de Automação: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'tests/test_core_depth.py', o uso de eval() permite ataques que invalidam a 'Orquestração de Inteligência Artificial'.
-
-### 18. [STRATEGIC] @ `DNA`
-- **Diretriz:** Falha de Automação: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'tests/test_self_awareness.py', o uso de eval() permite ataques que invalidam a 'Orquestração de Inteligência Artificial'.
-
-### 19. [STRATEGIC] @ `DNA`
-- **Diretriz:** Falha de Automação: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src/agents/Support/line_veto.py', o uso de eval() permite ataques que invalidam a 'Orquestração de Inteligência Artificial'.
-
-### 20. [low] @ `scripts/analyze_external.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 52
+#### 🔴 Item 69: RCE: Execução dinâmica detectada.
 - **Evidência:**
 ```kotlin
-    try:
-        shutil.copy(report_path, local_report_path)
-        logger.info(f"✅ Auditoria de Território concluída em {time.time() - start_time:.2f}s.")
-        logger.info(f"📄 Relatório Soberano consolidado em: {local_report_name}")
-    except Exception as e:
+        file_path = "src/agents/simulation_agent.py"
+        danger = "ev" + "al('1+1')"
+        # O eval() aqui é um 'alvo de teste' para validar a detecção
+        content = f"def simulation_run():\n    # SIMULATING VULNERABILITY FOR TESTING\n    res = {danger}\n    return res"
+        (self.test_root / "src/agents").mkdir(parents=True, exist_ok=True)
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de critical
 
-### 21. [medium] @ `scripts/analyze_external.py`
-- **Problema:** Saída não rastreável: Use logger em vez de print.
-- **Localização:** Linha 25
+#### 🔴 Item 81: RCE: Execução dinâmica detectada.
 - **Evidência:**
 ```kotlin
-    if len(sys.argv) < 2:
-        logger.error("❌ Erro: Caminho do alvo não fornecido.")
-        print("Uso: python scripts/analyze_external.py <caminho_do_projeto>")
-        return
+        patterns = [{'regex': r'eval\(', 'issue': 'Dangerous eval'}]
+        issues = self.persona._scan_content_for_patterns(file_path, content, patterns)
+        self.assertEqual(len(issues), 1, "Deveria ter detectado eval() ativo na simulação de produção")
+
+    def test_simulation_of_rule_definition_ignored(self):
+```
+- **Diretriz:** Padrão soberano de critical
+
+#### 🔴 Item 115: RCE: Execução dinâmica detectada.
+- **Evidência:**
+```kotlin
+        patterns = [{'regex': r'eval\(', 'issue': 'Dangerous eval'}]
+        issues = self.persona._scan_content_for_patterns(file_path, content, patterns)
+        self.assertEqual(len(issues), 1, "Deveria ter detectado eval() ativo mesmo em arquivo de referência em domínio de produção")
+
+if __name__ == "__main__":
+```
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `tests/test_vulnerability_heuristic_deep.py`
+#### 🔴 Item 16: Vulnerabilidade: Execução dinâmica detectada.
+- **Evidência:**
+```kotlin
+        self.assertTrue(self.heuristic.is_obfuscated_vulnerability("regex = 'some'"))
+        # Devem retornar False (NÃO VETAR)
+        self.assertFalse(self.heuristic.is_obfuscated_vulnerability("eval('1+1')"))
+
+    def test_obfuscated_exec_detection(self):
+```
+- **Diretriz:** Padrão soberano de critical
+
+#### 🔴 Item 16: RCE: Execução dinâmica detectada.
+- **Evidência:**
+```kotlin
+        self.assertTrue(self.heuristic.is_obfuscated_vulnerability("regex = 'some'"))
+        # Devem retornar False (NÃO VETAR)
+        self.assertFalse(self.heuristic.is_obfuscated_vulnerability("eval('1+1')"))
+
+    def test_obfuscated_exec_detection(self):
+```
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src/agents/Support/line_veto.py`
+#### 🔴 Item 35: Vulnerabilidade: Execução dinâmica detectada.
+- **Evidência:**
+```kotlin
+        if "tests/" in ctx.get("file_path", "") and pattern.get("severity") == "critical":
+
+            if "eval(" in line or "exec(" in line: return True
+
 
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de critical
 
-### 22. [low] @ `scripts/persona_manager.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 48
+#### 🔴 Item 35: RCE: Execução dinâmica detectada.
 - **Evidência:**
 ```kotlin
-                updated_count += 1
-        
-        duration = time.time() - start_time
-        logger.info(f"✨ Sincronização concluída: {updated_count} PhDs validados em {duration:.4f}s.")
+        if "tests/" in ctx.get("file_path", "") and pattern.get("severity") == "critical":
+
+            if "eval(" in line or "exec(" in line: return True
+
 
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de critical
 
-### 23. [low] @ `src/agents/base.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 85
+## 🚩 NÍVEL: HIGH
+### 📂 Alvo: `src/core/compiler.py`
+#### 🔴 Item 34: Violação: Uso de estado global.
 - **Evidência:**
 ```kotlin
-    def _log_performance(self, start_time, count):
-        import time
-        logger.info(f"{self.emoji} [{self.name}] Auditoria: {count} pontos em {time.time() - start_time:.4f}s.")
-
-    def read_project_file(self, rel_path):
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 24. [low] @ `src/agents/Flutter/vault.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        results = self.find_patterns(('.dart',), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"💎 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
-        return results
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 25. [low] @ `src/agents/Flutter/voyager.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        results = self.find_patterns(('.dart',), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"🚀 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
-        return results
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 26. [low] @ `src/agents/Flutter/warden.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        results = self.find_patterns(('.dart',), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"⚖️ [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos éticos: {len(results)}")
-        return results
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 27. [low] @ `src/agents/Kotlin/flow.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        results = self.find_patterns(('.kt', '.kts'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"🌊 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
-        return results
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 28. [low] @ `src/agents/Kotlin/forge.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        results = self.find_patterns(('.kt', '.kts'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"⚒️ [{self.name}] Auditoria finalizada em {duration:.4f}s.")
-        return results
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 29. [low] @ `src/agents/Kotlin/globe.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        results = self.find_patterns(('.kt', '.xml'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"🌎 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
-        return results
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 30. [low] @ `src/agents/Kotlin/hermes.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        results = self.find_patterns(('.kts', '.gradle'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"📦 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
-        return results
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 31. [low] @ `src/agents/Kotlin/hype.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        results = self.find_patterns(('.xml', '.kt'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"📣 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
-        return results
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 32. [low] @ `src/agents/Kotlin/mantra.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        results = self.find_patterns(('.kt', '.kts'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"🧘 [{self.name}] Auditoria finalizada em {duration:.4f}s.")
-        return results
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 33. [low] @ `src/agents/Kotlin/metric.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        results = self.find_patterns(('.kt', '.kts'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"📊 [{self.name}] Auditoria finalizada em {duration:.4f}s. Amostras: {len(results)}")
-        return results
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 34. [low] @ `src/agents/Kotlin/nebula.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        results = self.find_patterns(('.kt', '.xml', '.json'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"☁️ [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
-        return results
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 35. [low] @ `src/agents/Kotlin/neural.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        results = self.find_patterns(('.kt', '.kts'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"🧠 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
-        return results
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 36. [low] @ `src/agents/Kotlin/nexus.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        results = self.find_patterns(('.kt', '.kts'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"🌐 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
-        return results
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 37. [low] @ `src/agents/Kotlin/palette.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        results = self.find_patterns(('.kt',), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"🎨 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos UX: {len(results)}")
-        return results
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 38. [low] @ `src/agents/Kotlin/probe.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        results = self.find_patterns(('.kt', '.kts'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"🔍 [{self.name}] Auditoria finalizada em {duration:.4f}s. Anomalias: {len(results)}")
-        return results
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 39. [low] @ `src/agents/Kotlin/scale.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        results = self.find_patterns(('.kt', '.kts'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"🏗️ [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
-        return results
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 40. [low] @ `src/agents/Kotlin/scope.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        results = self.find_patterns(('.kt', '.gradle', '.kts'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"🔭 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
-        return results
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 41. [low] @ `src/agents/Kotlin/sentinel.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        results = self.find_patterns(('.kt', '.xml'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"🛡️ [{self.name}] Auditoria finalizada em {duration:.4f}s. Ameaças: {len(results)}")
-        return results
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 42. [low] @ `src/agents/Kotlin/spark.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        results = self.find_patterns(('.kt',), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"✨ [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
-        return results
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 43. [low] @ `src/agents/Kotlin/stream.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        results = self.find_patterns(('.kt',), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"📡 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
-        return results
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 44. [low] @ `src/agents/Kotlin/vault.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        results = self.find_patterns(('.kt', '.kts'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"💎 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
-        return results
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 45. [low] @ `src/agents/Kotlin/voyager.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        results = self.find_patterns(('.kt', '.kts'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"🚀 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
-        return results
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 46. [low] @ `src/agents/Kotlin/warden.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        results = self.find_patterns(('.kt', '.xml'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"⚖️ [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos éticos: {len(results)}")
-        return results
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 47. [low] @ `src/agents/Python/nebula.py`
-- **Problema:** Telemetria Manual: Use o utilitário _log_performance da Base.
-- **Localização:** Linha 33
-- **Evidência:**
-```kotlin
-        results = self.find_patterns(('.py', '.yaml', '.yml'), audit_rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"☁️ [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
-        return results
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 48. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_base_deep.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 49. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_cache_manager_system.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 50. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_compliance.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 51. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_context_engine_deep.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 52. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_context_engine_system.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 53. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_core_depth.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 54. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_dependency_auditor_deep.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 55. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_dependency_auditor_system.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 56. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_director_system.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 57. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_flutter_sentinel.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 58. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_flutter_vault.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 59. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_gui_system.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 60. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_indexer_system.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 61. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_kotlin_flow.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 62. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_kotlin_hermes.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 63. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_kotlin_sentinel.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 64. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_line_veto_deep.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 65. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_package_integrity.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 66. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_self_awareness.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 67. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_structural_analyst_deep.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 68. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_sync_engine_mocks.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 69. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_system_intelligence.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 70. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src/agents/Support/infrastructure_assembler.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 71. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src/agents/Support/pyramid_analyst.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 72. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src/agents/Support/report_formatter.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
-
-### 73. [STRATEGIC] @ `DNA`
-- **Diretriz:** Catástrofe de Segurança: O objetivo 'Validar integridade ['Python']' exige proteção total. Credenciais em 'src/agents/Flutter/nebula.py' permitem o sequestro da 'Orquestração de Inteligência Artificial'.
-
-### 74. [STRATEGIC] @ `DNA`
-- **Diretriz:** Catástrofe de Segurança: O objetivo 'Validar integridade ['Python']' exige proteção total. Credenciais em 'src/agents/Kotlin/nebula.py' permitem o sequestro da 'Orquestração de Inteligência Artificial'.
-
-### 75. [STRATEGIC] @ `DNA`
-- **Diretriz:** Catástrofe de Segurança: O objetivo 'Validar integridade ['Python']' exige proteção total. Credenciais em 'src/agents/Python/nebula.py' permitem o sequestro da 'Orquestração de Inteligência Artificial'.
-
-### 76. [critical] @ `tests/test_core_depth.py`
-- **Problema:** Anti-padrão: Bare except.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        file = self.test_root / "logic.py"
-        # Usamos eval direto aqui para garantir que o motor REALMENTE detecta
-        file.write_text("import os\ndef complex():\n    if True: pass\n    try: eval('1')\n    except: pass")
-        
-        info = self.engine._analyze_file(file)
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 77. [STRATEGIC] @ `DNA`
-- **Diretriz:** Poluição de Estado: O objetivo 'Validar integridade ['Python']' exige pureza. Em 'src/core/compiler.py', o uso de globais compromete a 'Orquestração de Inteligência Artificial'.
-
-### 78. [STRATEGIC] @ `DNA`
-- **Diretriz:** Poluição de Estado: O objetivo 'Validar integridade ['Python']' exige pureza. Em 'src/agents/Flutter/scale.py', o uso de globais compromete a 'Orquestração de Inteligência Artificial'.
-
-### 79. [STRATEGIC] @ `DNA`
-- **Diretriz:** Poluição de Estado: O objetivo 'Validar integridade ['Python']' exige pureza. Em 'src/agents/Python/scale.py', o uso de globais compromete a 'Orquestração de Inteligência Artificial'.
-
-### 80. [STRATEGIC] @ `DNA`
-- **Diretriz:** Risco de Autonomia: O objetivo 'Validar integridade ['Python']' exige segurança de tokens. Em 'src/agents/Python/neural.py', a exposição de chaves compromete a 'Orquestração de Inteligência Artificial'.
-
-### 81. [critical] @ `tests/test_core_depth.py`
-- **Problema:** Risco Crítico: Erro silenciado.
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        file = self.test_root / "logic.py"
-        # Usamos eval direto aqui para garantir que o motor REALMENTE detecta
-        file.write_text("import os\ndef complex():\n    if True: pass\n    try: eval('1')\n    except: pass")
-        
-        info = self.engine._analyze_file(file)
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 82. [STRATEGIC] @ `DNA`
-- **Diretriz:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'tests/test_core_depth.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'.
-
-### 83. [STRATEGIC] @ `DNA`
-- **Diretriz:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'tests/test_structural_analyst_deep.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'.
-
-### 84. [STRATEGIC] @ `DNA`
-- **Diretriz:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src/agents/base.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'.
-
-### 85. [STRATEGIC] @ `DNA`
-- **Diretriz:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src/core/validator.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'.
-
-### 86. [STRATEGIC] @ `DNA`
-- **Diretriz:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src/agents/Support/structural_analyst.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'.
-
-### 87. [STRATEGIC] @ `DNA`
-- **Diretriz:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src/agents/Support/test_runner.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'.
-
-### 88. [high] @ `src/core/compiler.py`
-- **Problema:** Violação: Uso de estado global.
-- **Localização:** Linha 26
-- **Evidência:**
-```kotlin
-
-    def compile_all(self):
+        a prontidão técnica de cada agente.
+        """
         logger.info("🚀 Sincronizando censo global de PhDs...")
-        # Agente de Suporte ao Registro
-        from src.agents.Support.registry_compiler import RegistryCompiler
+        
+        try:
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de high
 
-### 89. [high] @ `src/agents/Flutter/scale.py`
-- **Problema:** Violação: Uso de estado global.
-- **Localização:** Linha 23
+#### 🔴 Item N/A: Fragilidade Lógica
+- **Diretriz:** Padrão soberano de high
+
+### 📂 Alvo: `src/agents/Flutter/scale.py`
+#### 🔴 Item 23: Violação: Uso de estado global.
 - **Evidência:**
 ```kotlin
         audit_rules = [
@@ -708,714 +417,817 @@ if __name__ == "__main__":
         ]
         
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de high
 
-### 90. [STRATEGIC] @ `DNA`
-- **Diretriz:** Risco de Escalabilidade: O objetivo 'Validar integridade ['Python']' exige modularidade. Em 'src/core/compiler.py', a poluição de estado impede a 'Orquestração de Inteligência Artificial'.
+#### 🔴 Item N/A: Fragilidade Lógica
+- **Diretriz:** Padrão soberano de high
 
-### 91. [STRATEGIC] @ `DNA`
-- **Diretriz:** Risco de Escalabilidade: O objetivo 'Validar integridade ['Python']' exige modularidade. Em 'src/agents/Flutter/scale.py', a poluição de estado impede a 'Orquestração de Inteligência Artificial'.
+### 📂 Alvo: `scripts/persona_manager.py`
+#### 🔴 Item N/A: Fragilidade Lógica
+- **Diretriz:** Padrão soberano de high
 
-### 92. [STRATEGIC] @ `DNA`
-- **Diretriz:** Risco de Escalabilidade: O objetivo 'Validar integridade ['Python']' exige modularidade. Em 'src/agents/Python/scale.py', a poluição de estado impede a 'Orquestração de Inteligência Artificial'.
+### 📂 Alvo: `tests/test_battle_plan_formatter_deep.py`
+#### 🔴 Item N/A: Fragilidade Lógica
+- **Diretriz:** Padrão soberano de high
 
-### 93. [STRATEGIC] @ `DNA`
-- **Diretriz:** Incompleitude: O objetivo 'Validar integridade ['Python']' exige entrega. Em 'src/core/orchestrator.py', débitos pendentes retardam a 'Orquestração de Inteligência Artificial'.
+### 📂 Alvo: `tests/test_core_depth.py`
+#### 🔴 Item N/A: Fragilidade Lógica
+- **Diretriz:** Padrão soberano de high
 
-### 94. [STRATEGIC] @ `DNA`
-- **Diretriz:** Incompleitude: O objetivo 'Validar integridade ['Python']' exige entrega. Em 'src/agents/Flutter/scope.py', débitos pendentes retardam a 'Orquestração de Inteligência Artificial'.
+### 📂 Alvo: `tests/test_self_awareness.py`
+#### 🔴 Item N/A: Fragilidade Lógica
+- **Diretriz:** Padrão soberano de high
 
-### 95. [STRATEGIC] @ `DNA`
-- **Diretriz:** Incompleitude: O objetivo 'Validar integridade ['Python']' exige entrega. Em 'src/agents/Kotlin/scope.py', débitos pendentes retardam a 'Orquestração de Inteligência Artificial'.
+### 📂 Alvo: `tests/test_vulnerability_heuristic_deep.py`
+#### 🔴 Item N/A: Fragilidade Lógica
+- **Diretriz:** Padrão soberano de high
 
-### 96. [STRATEGIC] @ `DNA`
-- **Diretriz:** Incompleitude: O objetivo 'Validar integridade ['Python']' exige entrega. Em 'src/agents/Python/scope.py', débitos pendentes retardam a 'Orquestração de Inteligência Artificial'.
+### 📂 Alvo: `src/utils/indexer.py`
+#### 🔴 Item N/A: Fragilidade Lógica
+- **Diretriz:** Padrão soberano de high
 
-### 97. [low] @ `src/agents/Flutter/scribe.py`
-- **Problema:** Docs
-- **Localização:** Linha 19
-- **Evidência:**
-```kotlin
-    def perform_audit(self) -> list:
-        start_time = time.time()
-        logger.info(f"[{self.name}] Analisando Documentação Flutter...")
-        
-        audit_rules = [
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+### 📂 Alvo: `src/agents/Support/line_veto.py`
+#### 🔴 Item N/A: Fragilidade Lógica
+- **Diretriz:** Padrão soberano de high
 
-### 98. [low] @ `src/agents/Flutter/scribe.py`
-- **Problema:** Docs
-- **Localização:** Linha 22
+## 🚩 NÍVEL: MEDIUM
+### 📂 Alvo: `src/agents/Flutter/echo.py`
+#### 🔴 Item 32: Saída não rastreável: Use logger em vez de print.
 - **Evidência:**
 ```kotlin
         
         audit_rules = [
-            {'regex': r"class\s+\w+\s*\{(?![^}]*///)", 'issue': 'Vácuo Documental: Classe sem DartDoc (///).', 'severity': 'low'},
-            {'regex': r"void\s+main\(\)\s*\{(?![^}]*///)", 'issue': 'Falta de Contexto: Ponto de entrada sem documentação.', 'severity': 'medium'}
+            {'regex': r"print\(", 'issue': 'Aviso: Uso de print() em vez de log() do developer ou logger.', 'severity': 'medium'},
+            {'regex': r"catch\s*\(\w+\)\s*\{\s*\}", 'issue': 'Cegueira: Ponto Cego detectado em Dart (except empty).', 'severity': 'critical'}
         ]
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de medium
 
-### 99. [low] @ `src/agents/Flutter/scribe.py`
-- **Problema:** Docs
-- **Localização:** Linha 23
+#### 🔴 Item 41: Saída não rastreável: Use logger em vez de print.
 - **Evidência:**
 ```kotlin
-        audit_rules = [
-            {'regex': r"class\s+\w+\s*\{(?![^}]*///)", 'issue': 'Vácuo Documental: Classe sem DartDoc (///).', 'severity': 'low'},
-            {'regex': r"void\s+main\(\)\s*\{(?![^}]*///)", 'issue': 'Falta de Contexto: Ponto de entrada sem documentação.', 'severity': 'medium'}
-        ]
-        
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
 
-### 100. [low] @ `src/agents/Flutter/scribe.py`
-- **Problema:** Docs
-- **Localização:** Linha 32
-- **Evidência:**
-```kotlin
     def _reason_about_objective(self, objective, file, content):
-        if "///" not in content and ("class" in content or "void" in content):
-            return f"Amnésia Técnica: O objetivo '{objective}' exige clareza. Em '{file}', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta."
+        if "print(" in content:
+            return f"Cegueira Operacional: O objetivo '{objective}' exige diagnóstico estruturado. Em '{file}', o uso de saídas não-estruturadas (print) impede a rastreabilidade pela 'Orquestração de Inteligência Artificial'."
+        return None
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/agents/Flutter/metric.py`
+#### 🔴 Item 41: Saída não rastreável: Use logger em vez de print.
+- **Evidência:**
+```kotlin
+
+    def _reason_about_objective(self, objective, file, content):
+        if "print(" in content:
+            return f"Cegueira Analítica: O objetivo '{objective}' exige observabilidade. Em '{file}', o uso de saídas não rastreáveis impede a extração de métricas para a 'Orquestração de Inteligência Artificial'."
+        return None
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts/persona_manager.py`
+#### 🔴 Item 25: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+    3. Monitoramento de Expansão: Cataloga novas identidades durante o ciclo de vida.
+    """
+    def __init__(self, project_root: Path):
+        self.project_root = Path(project_root)
+        self.base_path = self.project_root / "src" / "agents" / "Python"
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/agents/base.py`
+#### 🔴 Item 28: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+        self.context_data = context_data.get("map", {})
+
+    def perform_strategic_audit(self, objective: str = None, file_target: str = None, content_target: str = None) -> list:
+        """Executa auditoria focada no objetivo estratégico."""
+        if file_target and content_target:
+```
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 97: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+
+    @abstractmethod
+    def perform_audit(self) -> list: pass
+    @abstractmethod
+    def _reason_about_objective(self, objective, file, content): pass
+```
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 99: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+    def perform_audit(self) -> list: pass
+    @abstractmethod
+    def _reason_about_objective(self, objective, file, content): pass
+    @abstractmethod
+    def get_system_prompt(self) -> str: pass
+```
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 101: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+    def _reason_about_objective(self, objective, file, content): pass
+    @abstractmethod
+    def get_system_prompt(self) -> str: pass
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/core/orchestrator.py`
+#### 🔴 Item 39: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+        self.personas.append(persona_instance)
+
+    def run_strategic_audit(self, context, objective: str = None, include_history: bool = True):
+        """Mobiliza a elite e executa auditoria paralela delegada."""
+        stacks = context['identity'].get('stacks', {'Python'})
+```
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 47: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+        changed_files = self._detect_changed_files(context.get("map", {}).keys())
+        
+        def audit_task(agent): return self._run_task(agent, obj, changed_files)
+        findings = self.executor.run_parallel(audit_task, active_phds)
+
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/core/validator.py`
+#### 🔴 Item 12: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+    """Core: Protocolo de Auto-Verificação Vital 🛡️"""
+    
+    def verify_core_health(self, project_root: str) -> dict:
+        """Executa a bateria de testes internos de integridade."""
+        logger.info("🛡️ [Core] Iniciando Protocolo de Auto-Exame Vital...")
+```
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 30: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+            return {"success": False, "pass_rate": 0, "total_run": 0, "failed": 1}
+
+    def _parse_results(self, output: str, is_success: bool) -> dict:
+        tests_run = 0
+        failures = 0
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/utils/compliance_standard.py`
+#### 🔴 Item 28: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+
+    @staticmethod
+    def process_secure_payload(data_input: str, db_path: str = "system_vault.db"):
+        """
+        🛡️ Processamento de Carga com Segurança Soberana.
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/utils/context_engine.py`
+#### 🔴 Item 55: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+        return {"identity": self.project_identity, "map": self.map}
+
+    def _analyze_file(self, path: Path):
+        try:
+            content = path.read_text(encoding='utf-8', errors='ignore')
+```
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 75: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+            return {"error": str(e), "component_type": "UNKNOWN"}
+
+    def _get_initial_info(self, path: Path):
+        try:
+            rel_path = path.relative_to(self.project_root).as_posix().lower()
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/utils/dependency_auditor.py`
+#### 🔴 Item 62: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+            return False
+
+    def _is_locked(self): return self.lock_file.exists()
+    def _acquire_lock(self): 
+        self.lock_file.parent.mkdir(parents=True, exist_ok=True)
+```
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 63: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+
+    def _is_locked(self): return self.lock_file.exists()
+    def _acquire_lock(self): 
+        self.lock_file.parent.mkdir(parents=True, exist_ok=True)
+        self.lock_file.write_text("lock")
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/utils/indexer.py`
+#### 🔴 Item 53: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+            return index_data
+
+    def _extract_metadata(self, path: Path):
+        """Extrai a anatomia do módulo via análise AST."""
+        try:
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/utils/logging_config.py`
+#### 🔴 Item 30: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+        sys.stderr.write(f"Falha fatal no logging: {e}\n")
+
+def setup_logging(level=logging.INFO): configure_logging(level)
+
+if not logging.getLogger().handlers: configure_logging()
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/agents/Flutter/forge.py`
+#### 🔴 Item 35: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
         return None
 
+    def validate_code_safety(self, code: str) -> bool:
+        """Veto Ativo: Recusa código Dart com fragilidades críticas."""
+        fragilities = ["ev" + "al(", "sh" + "ell=True"]
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de medium
 
-### 101. [low] @ `src/agents/Flutter/scribe.py`
-- **Problema:** Docs
-- **Localização:** Linha 36
+### 📂 Alvo: `src/agents/Kotlin/forge.py`
+#### 🔴 Item 40: Vácuo Documental: Falta docstring PhD.
 - **Evidência:**
 ```kotlin
-
-    def get_system_prompt(self):
-        return f"Você é o Dr. {self.name}, mestre em documentação técnica Flutter."
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 102. [low] @ `src/agents/Kotlin/scribe.py`
-- **Problema:** Docs
-- **Localização:** Linha 38
-- **Evidência:**
-```kotlin
-        """
-        start_time = time.time()
-        logger.info(f"[{self.name}] Analisando Documentação JVM...")
-        
-        # Sintaxe linear
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 103. [low] @ `src/agents/Kotlin/scribe.py`
-- **Problema:** Docs
-- **Localização:** Linha 42
-- **Evidência:**
-```kotlin
-        # Sintaxe linear
-        rules = [
-            {'regex': r"(class|fun)\s+\w+\s+\{(?![^{]*/\*\*)", 'issue': 'Vácuo Documental: Falta KDoc público.', 'severity': 'medium'}
-        ]
-        
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 104. [low] @ `src/agents/Kotlin/scribe.py`
-- **Problema:** Docs
-- **Localização:** Linha 53
-- **Evidência:**
-```kotlin
-        """Avalia a explicabilidade da lógica frente ao objetivo de negócio."""
-        if "class" in content and "/**" not in content:
-            return f"Déficit de Explicabilidade: O objetivo '{objective}' exige transparência de lógica. Em '{file}', a ausência de KDoc isola a 'Orquestração de Inteligência Artificial' de sua base de conhecimento."
         return None
 
+    def validate_code_safety(self, code: str) -> bool:
+        """Veto Ativo: Recusa código Kotlin com fragilidades críticas."""
+        fragilities = ["ev" + "al(", "sh" + "ell=True", "ex" + "ec("]
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de medium
 
-### 105. [low] @ `src/agents/Support/audit_engine.py`
-- **Problema:** Docs
-- **Localização:** Linha 41
+### 📂 Alvo: `src/agents/Python/forge.py`
+#### 🔴 Item 32: Vácuo Documental: Falta docstring PhD.
 - **Evidência:**
 ```kotlin
-        
-        for p in patterns:
-            ctx["in_docstring"] = False
-            for i, line in enumerate(ctx["lines"]):
-                if self.veto.should_skip(line, p, ctx): continue
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+        return None
 
-### 106. [low] @ `src/agents/Support/audit_engine.py`
-- **Problema:** Docs
-- **Localização:** Linha 56
-- **Evidência:**
-```kotlin
-            "domain": info.get("domain", "PRODUCTION"),
-            "is_technical": info.get("component_type") == "AGENT" or info.get("is_gold_standard"),
-            "lines": content.splitlines(), "in_docstring": False, "agent_name": agent_name
-        }
-
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 107. [low] @ `src/agents/Support/line_veto.py`
-- **Problema:** Docs
-- **Localização:** Linha 31
-- **Evidência:**
-```kotlin
-        3. Alertas desnecessários em domínios de experimentação.
+    def validate_code_safety(self, code: str) -> bool:
         """
-        if self._is_docstring(line, ctx): return True
-        if self._is_domain_excluded(line, pattern, ctx): return True
-        if self._is_rule_definition(line, pattern, ctx): return True
+        Veto Ativo: Recusa código que contenha fragilidades críticas.
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de medium
 
-### 108. [low] @ `src/agents/Support/line_veto.py`
-- **Problema:** Docs
-- **Localização:** Linha 36
+### 📂 Alvo: `src/agents/Python/palette.py`
+#### 🔴 Item 20: Vácuo Documental: Falta docstring PhD.
 - **Evidência:**
 ```kotlin
-        return False
+        return r
 
-    def _is_docstring(self, line, ctx):
-        """Gerencia detecção de comentários multilinha."""
-        if '"""' in line or "'''" in line:
+    def _reason_about_objective(self, o, f, c): return None
+    def get_system_prompt(self): return f"Dr. {self.name}"
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de medium
 
-### 109. [low] @ `src/agents/Support/line_veto.py`
-- **Problema:** Docs
-- **Localização:** Linha 40
+#### 🔴 Item 21: Vácuo Documental: Falta docstring PhD.
 - **Evidência:**
 ```kotlin
-        if '"""' in line or "'''" in line:
-            if line.count('"""') % 2 != 0 or line.count("'''") % 2 != 0:
-                ctx["in_docstring"] = not ctx.get("in_docstring", False)
-            return True
-        return ctx.get("in_docstring", False)
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
 
-### 110. [low] @ `src/agents/Support/line_veto.py`
-- **Problema:** Docs
-- **Localização:** Linha 42
+    def _reason_about_objective(self, o, f, c): return None
+    def get_system_prompt(self): return f"Dr. {self.name}"
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/agents/Python/voyager.py`
+#### 🔴 Item 31: Vácuo Documental: Falta docstring PhD.
 - **Evidência:**
 ```kotlin
-                ctx["in_docstring"] = not ctx.get("in_docstring", False)
-            return True
-        return ctx.get("in_docstring", False)
+        return None
 
-    def _is_domain_excluded(self, line, pattern, ctx):
+    def perform_active_healing(self, blind_spots: list):
+        """
+        Cura Física Determinística: Reescreve arquivos para remover silenciamentos.
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de medium
 
-### 111. [critical] @ `tests/test_core_depth.py`
-- **Problema:** RCE: Execução dinâmica detectada.
-- **Localização:** Linha 31
+#### 🔴 Item 78: Vácuo Documental: Falta docstring PhD.
 - **Evidência:**
 ```kotlin
-        file = self.test_root / "logic.py"
-        # Usamos eval direto aqui para garantir que o motor REALMENTE detecta
-        file.write_text("import os\ndef complex():\n    if True: pass\n    try: eval('1')\n    except: pass")
+        return healed_count
+
+    def suggest_auto_healing(self, blind_spots: list):
+        """
+        Auto-Cura: Sugere correções para erros silenciados.
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/agents/Support/audit_engine.py`
+#### 🔴 Item 29: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+        self.veto = LineVeto()
+
+    def scan_content(self, file: str, content: str, patterns: list, context_data: dict, agent_name: str) -> list:
+        """
+        🚀 Executa a Varredura Estratégica.
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/agents/Support/battle_plan_formatter.py`
+#### 🔴 Item 16: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+    """
+    
+    def format(self, audit_results: list) -> str:
+        """Estrutura os resultados da auditoria em um plano de batalha hierárquico."""
+        active = [i for i in audit_results if not isinstance(i, dict) or i.get('severity') != 'HEALED']
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/agents/Support/component_classifier.py`
+#### 🔴 Item 9: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+    """Assistente Técnico: Especialista em Topologia de Arquivos 🗂️"""
+
+    def map_type(self, rel_path: str) -> str:
+        """Mapeamento semântico universal."""
+        p = rel_path.lower()
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/agents/Support/connectivity_mapper.py`
+#### 🔴 Item 9: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+    """Assistente Técnico: Especialista em Topologia e Acoplamento 🌐"""
+    
+    def calculate_metrics(self, file_path: str, data: dict, all_map: dict) -> dict:
+        """Calcula instabilidade e acoplamento aferente/eferente."""
+        eferent = len(data.get("dependencies", []))
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/agents/Support/diagnostic_strategist.py`
+#### 🔴 Item 8: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+    """Assistente Técnico: Planejador de Missão e Auditor de Eficiência 🧠"""
+    
+    def plan_targeted_verification(self, initial_findings: list) -> dict:
+        """Mapeia incidências para evitar redundância na Rodada 2."""
+        audit_map = {}
+```
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 19: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+        return audit_map
+
+    def calculate_efficiency(self, total_files: int, targeted_files: int) -> dict:
+        """Calcula o ganho de performance da orquestração cirúrgica."""
+        if total_files == 0: return {"saved_io": 0, "reduction_ratio": 0}
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/agents/Support/dna_profiler.py`
+#### 🔴 Item 14: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+    """
+    
+    def discover_identity(self, project_root: Path) -> dict:
+        """Mapeia o DNA técnico e estratégico do projeto."""
+        dna = {
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/agents/Support/integrity_guardian.py`
+#### 🔴 Item 9: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+    """Assistente Técnico: Especialista em Integridade Funcional e Segurança Core 🛡️"""
+    
+    def detect_vulnerabilities(self, content: str, component_type: str) -> dict:
+        """Identifica riscos lógicos sem poluir o Core."""
+        issues = {"brittle": False, "silent_error": False}
+```
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 27: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+        return issues
+
+    def is_relevant_file(self, file: str, stack: str) -> bool:
+        """Determina se o arquivo pertence à stack ou é config global."""
+        if stack == "Universal": return True
+```
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 33: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+        return file.endswith(ext_map.get(stack, "")) or file.endswith((".yaml", ".xml", ".json", ".gradle", ".kts"))
+
+    def get_audit_mission(self, dna: dict, objective: str = None) -> str:
+        """Define o objetivo estratégico da auditoria."""
+        if objective: return objective
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/agents/Support/line_veto.py`
+#### 🔴 Item 29: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+
+
+    def should_skip(self, line: str, pattern: dict, ctx: dict) -> bool:
+
+        """⚖️ Decisor de Veto Soberano."""
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/agents/Support/maturity_evaluator.py`
+#### 🔴 Item 16: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+    """
+    
+    def calculate_maturity(self, content: str, stack: str) -> dict:
+        """Reporta a evolução técnica usando detecção por presença de padrões core."""
+        evidences = {
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/agents/Support/memory_persistence.py`
+#### 🔴 Item 10: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+    """Assistente Técnico: Guardião da Memória e Persistência de Dados 💾"""
+    
+    def __init__(self, storage_path: Path):
+        self.path = storage_path
+
+```
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 23: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+        return {}
+
+    def save_ledger(self, data: dict):
+        """Persiste a memória de forma atômica."""
+        try:
+```
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 31: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+            logger.error(f"Falha ao salvar ledger: {e}")
+
+    def get_file_metadata(self, ledger: dict, file_path: str) -> dict:
+        """Busca histórico específico de um arquivo."""
+        return ledger.get(str(file_path), {})
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/agents/Support/parity_analyst.py`
+#### 🔴 Item 8: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+    """Assistente Técnico: Auditor de Simetria e Paridade de Stacks ⚖️"""
+    
+    def analyze_stack_gaps(self, personas: list) -> dict:
+        """Mapeia ausências de PhDs entre as stacks Python, Flutter e Kotlin."""
+        stats = {}
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/agents/Support/pyramid_analyst.py`
+#### 🔴 Item 6: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+    """Assistente Técnico: Auditor de Distribuição de Testes (Pirâmide) 📐"""
+    
+    def analyze(self, map_data: dict, read_func) -> dict:
+        """Classifica os testes entre Unit, Integration e E2E."""
+        pyramid = {"unit": 0, "integration": 0, "e2e": 0, "total": 0}
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/agents/Support/quality_analyst.py`
+#### 🔴 Item 9: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+    """Assistente Técnico: Analista de Densidade de Verificação 📏"""
+    
+    def calculate_confidence_matrix(self, map_data: dict) -> list:
+        """Correlaciona entropia de produção com cobertura de asserções via busca flexível."""
+        matrix = []
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/agents/Support/registry_compiler.py`
+#### 🔴 Item 11: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+    """Assistente Técnico: Cartógrafo de Personas e Stacks 🗺️"""
+    
+    def compile_stacks(self, agents_dir: Path) -> dict:
+        """Mapeia a topologia de agentes e suas capacidades."""
+        registry = {"last_sync": time.time(), "stacks": {}}
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/agents/Support/source_code_parser.py`
+#### 🔴 Item 14: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+    """Assistente Técnico: Especialista em Parsing de Linguagens 🔍"""
+
+    def analyze_py(self, content: str):
+        """Parsing profundo de Python via AST."""
+        try:
+```
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 26: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+            return {"functions": [], "classes": [], "tree": None}
+
+    def analyze_kt(self, content: str):
+        """Parsing heurístico de Kotlin."""
+        lines = content.splitlines()
+```
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 55: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+        return list(set(imports))
+
+    def calculate_kt_complexity(self, content: str) -> int:
+        """Heurística de complexidade para Kotlin."""
+        keywords = ['if ', 'for ', 'while ', 'when ', 'catch ', '?.let', '?.also', '?.run']
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/agents/Support/structural_analyst.py`
+#### 🔴 Item 19: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+        self.logic_auditor = LogicAuditor()
+
+    def analyze_python(self, content: str, filename: str) -> dict:
+        """Coordena a decomposição atômica via delegação."""
+        if filename.endswith('.py'):
+```
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 37: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+        return {"complexity": 1, "dependencies": [], "functions": [], "classes": []}
+
+    def map_component_type(self, rel_path: str):
+        return self.classifier.map_type(rel_path)
+
+```
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 43: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+        return self.logic_auditor.scan_flaws(tree, rel_path, lines, agent_name)
+
+    def calculate_maturity(self, content: str, stack: str) -> dict:
+        return self.maturity_evaluator.calculate_maturity(content, stack)
+
+```
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 46: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+        return self.maturity_evaluator.calculate_maturity(content, stack)
+
+    def should_ignore(self, path: Path):
+        ignored = {'.git', '__pycache__', 'build', 'node_modules', '.venv', '.agent', '.gemini', 'submodules'}
+        return any(part in ignored for part in path.parts)
+```
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 50: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+        return any(part in ignored for part in path.parts)
+
+    def is_analyable(self, path: Path):
+        return path.is_file() and path.suffix in {'.py', '.dart', '.kt', '.yaml', '.xml'}
+
+```
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 53: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+        return path.is_file() and path.suffix in {'.py', '.dart', '.kt', '.yaml', '.xml'}
+
+    def read_project_file(self, full_path: Path):
+        try:
+            return full_path.read_text(encoding='utf-8', errors='ignore')
+```
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src/agents/Support/vulnerability_heuristic.py`
+#### 🔴 Item 16: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+    """
+    
+    def is_obfuscated_vulnerability(self, line: str) -> bool:
+        """Identifica se a linha contém uma função perigosa quebrada por aspas."""
+        import re
+```
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 29: Vácuo Documental: Falta docstring PhD.
+- **Evidência:**
+```kotlin
+        return any(re.search(p, line.lower()) for p in patterns)
+
+    def is_strategic_phrase(self, line: str) -> bool:
+        """Identifica frases de raciocínio estratégicos que não devem ser tratadas como código."""
+        return "O objetivo" in line and "exige" in line
+```
+- **Diretriz:** Padrão soberano de medium
+
+## 🚩 NÍVEL: LOW
+### 📂 Alvo: `scripts/analyze_external.py`
+#### 🔴 Item 52: Telemetria Manual: Use o utilitário _log_performance da Base.
+- **Evidência:**
+```kotlin
+    try:
+        shutil.copy(report_path, local_report_path)
+        logger.info(f"✅ Auditoria de Território concluída em {time.time() - start_time:.2f}s.")
+        logger.info(f"📄 Relatório Soberano consolidado em: {local_report_name}")
+    except Exception as e:
+```
+- **Diretriz:** Padrão soberano de low
+
+### 📂 Alvo: `scripts/persona_manager.py`
+#### 🔴 Item 63: Telemetria Manual: Use o utilitário _log_performance da Base.
+- **Evidência:**
+```kotlin
+                    logger.warning(f"⚠️ PhD Fantasma: {name} possui identidade mas o arquivo {file_path.name} está ausente.")
+            
+            duration = time.time() - start_time
+            logger.info(f"✨ Censo concluído: {validated_count} PhDs operacionais em {duration:.4f}s.")
+            return validated_count
+```
+- **Diretriz:** Padrão soberano de low
+
+### 📂 Alvo: `src/agents/base.py`
+#### 🔴 Item 85: Telemetria Manual: Use o utilitário _log_performance da Base.
+- **Evidência:**
+```kotlin
+    def _log_performance(self, start_time, count):
+        import time
+        logger.info(f"{self.emoji} [{self.name}] Auditoria: {count} pontos em {time.time() - start_time:.4f}s.")
+
+    def read_project_file(self, rel_path):
+```
+- **Diretriz:** Padrão soberano de low
+
+### 📂 Alvo: `src/agents/Kotlin/forge.py`
+#### 🔴 Item 31: Telemetria Manual: Use o utilitário _log_performance da Base.
+- **Evidência:**
+```kotlin
+        results = self.find_patterns(('.kt', '.kts'), rules)
         
-        info = self.engine._analyze_file(file)
+        duration = time.time() - start_time
+        logger.info(f"⚒️ [{self.name}] Auditoria finalizada em {duration:.4f}s.")
+        return results
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de low
 
-### 112. [critical] @ `tests/test_core_depth.py`
-- **Problema:** RCE: Execução dinâmica detectada.
-- **Localização:** Linha 37
+### 📂 Alvo: `src/agents/Kotlin/globe.py`
+#### 🔴 Item 31: Telemetria Manual: Use o utilitário _log_performance da Base.
 - **Evidência:**
 ```kotlin
-        # Múltiplas asserções para garantir nível DEEP
-        self.assertEqual(info["component_type"], "LOGIC")
-        self.assertTrue(info["brittle"], "Deveria detectar eval()")
-        self.assertTrue(info["silent_error"], "Deveria detectar except pass")
-        self.assertGreater(info["complexity"], 1, "Deveria calcular complexidade real")
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 113. [critical] @ `tests/test_self_awareness.py`
-- **Problema:** RCE: Execução dinâmica detectada.
-- **Localização:** Linha 69
-- **Evidência:**
-```kotlin
-        file_path = "src/agents/simulation_agent.py"
-        danger = "ev" + "al('1+1')"
-        # O eval() aqui é um 'alvo de teste' para validar a detecção
-        content = f"def simulation_run():\n    # SIMULATING VULNERABILITY FOR TESTING\n    res = {danger}\n    return res"
-        (self.test_root / "src/agents").mkdir(parents=True, exist_ok=True)
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 114. [critical] @ `tests/test_self_awareness.py`
-- **Problema:** RCE: Execução dinâmica detectada.
-- **Localização:** Linha 81
-- **Evidência:**
-```kotlin
-        patterns = [{'regex': r'eval\(', 'issue': 'Dangerous eval'}]
-        issues = self.persona._scan_content_for_patterns(file_path, content, patterns)
-        self.assertEqual(len(issues), 1, "Deveria ter detectado eval() ativo na simulação de produção")
-
-    def test_simulation_of_rule_definition_ignored(self):
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 115. [critical] @ `tests/test_self_awareness.py`
-- **Problema:** RCE: Execução dinâmica detectada.
-- **Localização:** Linha 115
-- **Evidência:**
-```kotlin
-        patterns = [{'regex': r'eval\(', 'issue': 'Dangerous eval'}]
-        issues = self.persona._scan_content_for_patterns(file_path, content, patterns)
-        self.assertEqual(len(issues), 1, "Deveria ter detectado eval() ativo mesmo em arquivo de referência em domínio de produção")
-
-if __name__ == "__main__":
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 116. [STRATEGIC] @ `DNA`
-- **Diretriz:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'tests/test_base_deep.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'.
-
-### 117. [STRATEGIC] @ `DNA`
-- **Diretriz:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'tests/test_core_depth.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'.
-
-### 118. [STRATEGIC] @ `DNA`
-- **Diretriz:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'tests/test_line_veto_deep.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'.
-
-### 119. [STRATEGIC] @ `DNA`
-- **Diretriz:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'tests/test_self_awareness.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'.
-
-### 120. [STRATEGIC] @ `DNA`
-- **Diretriz:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'src/agents/Python/sentinel.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'.
-
-### 121. [STRATEGIC] @ `DNA`
-- **Diretriz:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'src/agents/Support/line_veto.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'.
-
-### 122. [low] @ `scripts/analyze_external.py`
-- **Problema:** Interface: Uso de print para interação bruta.
-- **Localização:** Linha 25
-- **Evidência:**
-```kotlin
-    if len(sys.argv) < 2:
-        logger.error("❌ Erro: Caminho do alvo não fornecido.")
-        print("Uso: python scripts/analyze_external.py <caminho_do_projeto>")
-        return
-
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 123. [STRATEGIC] @ `DNA`
-- **Diretriz:** Conflito de Fluxo: O objetivo 'Validar integridade ['Python']' exige reatividade. Em 'src/agents/Python/stream.py', bloqueios no event loop paralisam a 'Orquestração de Inteligência Artificial'.
-
-### 124. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'main_gui.py' é Matéria Escura (Sem testes detectados).
-
-### 125. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'scripts/persona_manager.py' é Matéria Escura (Sem testes detectados).
-
-### 126. [STRATEGIC] @ `DNA`
-- **Diretriz:** Ilusão de Cobertura: O teste 'tests/test_context_engine_deep.py' está silenciado. Isso invalida a segurança do objetivo 'Validar integridade ['Python']'.
-
-### 127. [STRATEGIC] @ `DNA`
-- **Diretriz:** Ilusão de Cobertura: O teste 'tests/test_core_depth.py' está silenciado. Isso invalida a segurança do objetivo 'Validar integridade ['Python']'.
-
-### 128. [STRATEGIC] @ `DNA`
-- **Diretriz:** Ilusão de Cobertura: O teste 'tests/test_indexer_system.py' está silenciado. Isso invalida a segurança do objetivo 'Validar integridade ['Python']'.
-
-### 129. [STRATEGIC] @ `DNA`
-- **Diretriz:** Ilusão de Cobertura: O teste 'tests/test_self_awareness.py' está silenciado. Isso invalida a segurança do objetivo 'Validar integridade ['Python']'.
-
-### 130. [STRATEGIC] @ `DNA`
-- **Diretriz:** Ilusão de Cobertura: O teste 'tests/test_structural_analyst_deep.py' está silenciado. Isso invalida a segurança do objetivo 'Validar integridade ['Python']'.
-
-### 131. [STRATEGIC] @ `DNA`
-- **Diretriz:** Ilusão de Cobertura: O teste 'tests/test_sync_engine_mocks.py' está silenciado. Isso invalida a segurança do objetivo 'Validar integridade ['Python']'.
-
-### 132. [STRATEGIC] @ `DNA`
-- **Diretriz:** Ilusão de Cobertura: O teste 'tests/test_system_intelligence.py' está silenciado. Isso invalida a segurança do objetivo 'Validar integridade ['Python']'.
-
-### 133. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/base.py' é Matéria Escura (Sem testes detectados).
-
-### 134. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/director.py' é Matéria Escura (Sem testes detectados).
-
-### 135. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/core/compiler.py' é Matéria Escura (Sem testes detectados).
-
-### 136. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/core/orchestrator.py' é Matéria Escura (Sem testes detectados).
-
-### 137. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/core/validator.py' é Matéria Escura (Sem testes detectados).
-
-### 138. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/interface/gui.py' é Matéria Escura (Sem testes detectados).
-
-### 139. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/utils/cache_manager.py' é Matéria Escura (Sem testes detectados).
-
-### 140. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/utils/compliance_standard.py' é Matéria Escura (Sem testes detectados).
-
-### 141. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/utils/context_engine.py' é Matéria Escura (Sem testes detectados).
-
-### 142. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/utils/dependency_auditor.py' é Matéria Escura (Sem testes detectados).
-
-### 143. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/utils/indexer.py' é Matéria Escura (Sem testes detectados).
-
-### 144. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/utils/logging_config.py' é Matéria Escura (Sem testes detectados).
-
-### 145. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/utils/persona_loader.py' é Matéria Escura (Sem testes detectados).
-
-### 146. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/utils/stability_ledger.py' é Matéria Escura (Sem testes detectados).
-
-### 147. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/bolt.py' é Matéria Escura (Sem testes detectados).
-
-### 148. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/bridge.py' é Matéria Escura (Sem testes detectados).
-
-### 149. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/cache.py' é Matéria Escura (Sem testes detectados).
-
-### 150. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/echo.py' é Matéria Escura (Sem testes detectados).
-
-### 151. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/flow.py' é Matéria Escura (Sem testes detectados).
-
-### 152. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/forge.py' é Matéria Escura (Sem testes detectados).
-
-### 153. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/globe.py' é Matéria Escura (Sem testes detectados).
-
-### 154. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/hermes.py' é Matéria Escura (Sem testes detectados).
-
-### 155. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/hype.py' é Matéria Escura (Sem testes detectados).
-
-### 156. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/mantra.py' é Matéria Escura (Sem testes detectados).
-
-### 157. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/metric.py' é Matéria Escura (Sem testes detectados).
-
-### 158. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/nebula.py' é Matéria Escura (Sem testes detectados).
-
-### 159. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/neural.py' é Matéria Escura (Sem testes detectados).
-
-### 160. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/nexus.py' é Matéria Escura (Sem testes detectados).
-
-### 161. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/palette.py' é Matéria Escura (Sem testes detectados).
-
-### 162. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/probe.py' é Matéria Escura (Sem testes detectados).
-
-### 163. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/scale.py' é Matéria Escura (Sem testes detectados).
-
-### 164. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/scope.py' é Matéria Escura (Sem testes detectados).
-
-### 165. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/scribe.py' é Matéria Escura (Sem testes detectados).
-
-### 166. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/sentinel.py' é Matéria Escura (Sem testes detectados).
-
-### 167. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/spark.py' é Matéria Escura (Sem testes detectados).
-
-### 168. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/stream.py' é Matéria Escura (Sem testes detectados).
-
-### 169. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/testify.py' é Matéria Escura (Sem testes detectados).
-
-### 170. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/vault.py' é Matéria Escura (Sem testes detectados).
-
-### 171. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/voyager.py' é Matéria Escura (Sem testes detectados).
-
-### 172. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/warden.py' é Matéria Escura (Sem testes detectados).
-
-### 173. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/bolt.py' é Matéria Escura (Sem testes detectados).
-
-### 174. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/bridge.py' é Matéria Escura (Sem testes detectados).
-
-### 175. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/cache.py' é Matéria Escura (Sem testes detectados).
-
-### 176. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/echo.py' é Matéria Escura (Sem testes detectados).
-
-### 177. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/flow.py' é Matéria Escura (Sem testes detectados).
-
-### 178. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/forge.py' é Matéria Escura (Sem testes detectados).
-
-### 179. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/globe.py' é Matéria Escura (Sem testes detectados).
-
-### 180. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/hermes.py' é Matéria Escura (Sem testes detectados).
-
-### 181. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/hype.py' é Matéria Escura (Sem testes detectados).
-
-### 182. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/mantra.py' é Matéria Escura (Sem testes detectados).
-
-### 183. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/metric.py' é Matéria Escura (Sem testes detectados).
-
-### 184. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/nebula.py' é Matéria Escura (Sem testes detectados).
-
-### 185. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/neural.py' é Matéria Escura (Sem testes detectados).
-
-### 186. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/nexus.py' é Matéria Escura (Sem testes detectados).
-
-### 187. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/palette.py' é Matéria Escura (Sem testes detectados).
-
-### 188. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/probe.py' é Matéria Escura (Sem testes detectados).
-
-### 189. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/scale.py' é Matéria Escura (Sem testes detectados).
-
-### 190. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/scope.py' é Matéria Escura (Sem testes detectados).
-
-### 191. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/scribe.py' é Matéria Escura (Sem testes detectados).
-
-### 192. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/sentinel.py' é Matéria Escura (Sem testes detectados).
-
-### 193. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/spark.py' é Matéria Escura (Sem testes detectados).
-
-### 194. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/stream.py' é Matéria Escura (Sem testes detectados).
-
-### 195. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/testify.py' é Matéria Escura (Sem testes detectados).
-
-### 196. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/vault.py' é Matéria Escura (Sem testes detectados).
-
-### 197. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/voyager.py' é Matéria Escura (Sem testes detectados).
-
-### 198. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/warden.py' é Matéria Escura (Sem testes detectados).
-
-### 199. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/bolt.py' é Matéria Escura (Sem testes detectados).
-
-### 200. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/bridge.py' é Matéria Escura (Sem testes detectados).
-
-### 201. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/cache.py' é Matéria Escura (Sem testes detectados).
-
-### 202. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/echo.py' é Matéria Escura (Sem testes detectados).
-
-### 203. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/flow.py' é Matéria Escura (Sem testes detectados).
-
-### 204. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/forge.py' é Matéria Escura (Sem testes detectados).
-
-### 205. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/globe.py' é Matéria Escura (Sem testes detectados).
-
-### 206. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/hermes.py' é Matéria Escura (Sem testes detectados).
-
-### 207. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/hype.py' é Matéria Escura (Sem testes detectados).
-
-### 208. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/mantra.py' é Matéria Escura (Sem testes detectados).
-
-### 209. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/metric.py' é Matéria Escura (Sem testes detectados).
-
-### 210. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/nebula.py' é Matéria Escura (Sem testes detectados).
-
-### 211. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/neural.py' é Matéria Escura (Sem testes detectados).
-
-### 212. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/nexus.py' é Matéria Escura (Sem testes detectados).
-
-### 213. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/palette.py' é Matéria Escura (Sem testes detectados).
-
-### 214. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/probe.py' é Matéria Escura (Sem testes detectados).
-
-### 215. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/scale.py' é Matéria Escura (Sem testes detectados).
-
-### 216. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/scope.py' é Matéria Escura (Sem testes detectados).
-
-### 217. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/scribe.py' é Matéria Escura (Sem testes detectados).
-
-### 218. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/sentinel.py' é Matéria Escura (Sem testes detectados).
-
-### 219. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/spark.py' é Matéria Escura (Sem testes detectados).
-
-### 220. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/stream.py' é Matéria Escura (Sem testes detectados).
-
-### 221. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/testify.py' é Matéria Escura (Sem testes detectados).
-
-### 222. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/vault.py' é Matéria Escura (Sem testes detectados).
-
-### 223. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/voyager.py' é Matéria Escura (Sem testes detectados).
-
-### 224. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/warden.py' é Matéria Escura (Sem testes detectados).
-
-### 225. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/audit_engine.py' é Matéria Escura (Sem testes detectados).
-
-### 226. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/connectivity_mapper.py' é Matéria Escura (Sem testes detectados).
-
-### 227. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/diagnostic_strategist.py' é Matéria Escura (Sem testes detectados).
-
-### 228. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/health_synthesizer.py' é Matéria Escura (Sem testes detectados).
-
-### 229. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/infrastructure_assembler.py' é Matéria Escura (Sem testes detectados).
-
-### 230. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/integrity_guardian.py' é Matéria Escura (Sem testes detectados).
-
-### 231. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/line_veto.py' é Matéria Escura (Sem testes detectados).
-
-### 232. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/memory_persistence.py' é Matéria Escura (Sem testes detectados).
-
-### 233. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/parity_analyst.py' é Matéria Escura (Sem testes detectados).
-
-### 234. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/pyramid_analyst.py' é Matéria Escura (Sem testes detectados).
-
-### 235. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/quality_analyst.py' é Matéria Escura (Sem testes detectados).
-
-### 236. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/registry_compiler.py' é Matéria Escura (Sem testes detectados).
-
-### 237. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/report_formatter.py' é Matéria Escura (Sem testes detectados).
-
-### 238. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/structural_analyst.py' é Matéria Escura (Sem testes detectados).
-
-### 239. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/task_executor.py' é Matéria Escura (Sem testes detectados).
-
-### 240. [STRATEGIC] @ `DNA`
-- **Diretriz:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/test_runner.py' é Matéria Escura (Sem testes detectados).
-
-### 241. [STRATEGIC] @ `DNA`
-- **Diretriz:** Erro de Precisão: O objetivo 'Validar integridade ['Python']' exige exatidão. Em 'src/agents/Python/vault.py', floats monetários invalidam os cálculos da 'Orquestração de Inteligência Artificial'.
-
-### 242. [low] @ `main_gui.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 70
-- **Evidência:**
-```kotlin
-        if report_path.exists():
-            import os
-            os.startfile(str(report_path))
-        else:
-            messagebox.showwarning("Aviso", "Relatório não gerado.")
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 243. [low] @ `scripts/persona_manager.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 45
-- **Evidência:**
-```kotlin
-                logger.debug(f"Verificando integridade técnica de {name}...")
-                # Nota: A atualização real de conteúdo de agentes é feita via 'replace' atômico
-                # para evitar sobrescrever lógicas customizadas que já implementamos.
-                updated_count += 1
+        results = self.find_patterns(('.kt', '.xml'), rules)
         
+        duration = time.time() - start_time
+        logger.info(f"🌎 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
+        return results
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de low
 
-### 244. [low] @ `scripts/update_agent_submodule.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 15
+### 📂 Alvo: `src/agents/Kotlin/nexus.py`
+#### 🔴 Item 31: Telemetria Manual: Use o utilitário _log_performance da Base.
+- **Evidência:**
+```kotlin
+        results = self.find_patterns(('.kt', '.kts'), rules)
+        
+        duration = time.time() - start_time
+        logger.info(f"🌐 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
+        return results
+```
+- **Diretriz:** Padrão soberano de low
+
+### 📂 Alvo: `src/agents/Flutter/echo.py`
+#### 🔴 Item 41: Interface: Uso de print para interação bruta.
+- **Evidência:**
+```kotlin
+
+    def _reason_about_objective(self, objective, file, content):
+        if "print(" in content:
+            return f"Cegueira Operacional: O objetivo '{objective}' exige diagnóstico estruturado. Em '{file}', o uso de saídas não-estruturadas (print) impede a rastreabilidade pela 'Orquestração de Inteligência Artificial'."
+        return None
+```
+- **Diretriz:** Padrão soberano de low
+
+### 📂 Alvo: `src/agents/Flutter/metric.py`
+#### 🔴 Item 41: Interface: Uso de print para interação bruta.
+- **Evidência:**
+```kotlin
+
+    def _reason_about_objective(self, objective, file, content):
+        if "print(" in content:
+            return f"Cegueira Analítica: O objetivo '{objective}' exige observabilidade. Em '{file}', o uso de saídas não rastreáveis impede a extração de métricas para a 'Orquestração de Inteligência Artificial'."
+        return None
+```
+- **Diretriz:** Padrão soberano de low
+
+### 📂 Alvo: `main_gui.py`
+#### 🔴 Item 67: Débito: O uso do módulo os é legado. Use pathlib.
+- **Evidência:**
+```kotlin
+            logger.info("Protocolo de Auto-Cura iniciado.")
+            self.log_area.insert(tk.END, "✨ Analisando pontos de cura no núcleo...\n")
+            messagebox.showinfo("Auto-Cura", "Protocolo em execução. Verifique os logs para detalhes atômicos.")
+
+    def open_report(self):
+```
+- **Diretriz:** Padrão soberano de low
+
+#### 🔴 Item 75: Débito: O uso do módulo os é legado. Use pathlib.
+- **Evidência:**
+```kotlin
+            try:
+                import os
+                # os.startfile é específico de Windows, mantido para conveniência do Arquiteto
+                os.startfile(str(report_path))
+            except Exception as e:
+```
+- **Diretriz:** Padrão soberano de low
+
+#### 🔴 Item 76: Débito: O uso do módulo os é legado. Use pathlib.
+- **Evidência:**
+```kotlin
+                import os
+                # os.startfile é específico de Windows, mantido para conveniência do Arquiteto
+                os.startfile(str(report_path))
+            except Exception as e:
+                logger.error(f"❌ Falha ao abrir visualizador externo: {e}")
+```
+- **Diretriz:** Padrão soberano de low
+
+### 📂 Alvo: `scripts/update_agent_submodule.py`
+#### 🔴 Item 15: Débito: O uso do módulo os é legado. Use pathlib.
 - **Evidência:**
 ```kotlin
     - Uso de Pathlib para caminhos
@@ -1424,40 +1236,10 @@ if __name__ == "__main__":
     project_root = Path(__file__).parent.parent
     
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de low
 
-### 245. [low] @ `src/core/compiler.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 34
-- **Evidência:**
-```kotlin
-
-        self.registry_path.write_text(json.dumps(registry, indent=4), encoding='utf-8')
-        logger.info(f"✅ Registro concluído: {total_count} PhDs ativos.")
-
-if __name__ == "__main__":
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 246. [low] @ `src/interface/cli.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 22
-- **Evidência:**
-```kotlin
-            logger.info("Executando Auditoria Estrategica...")
-            results = orchestrator.run_phd_audit()
-            logger.info(f"Relatorio gerado com {len(results)} pontos.")
-        elif cmd == "heal":
-            logger.info("Iniciando Protocolo de Auto-Cura...")
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 247. [low] @ `src/interface/gui.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 126
+### 📂 Alvo: `src/interface/gui.py`
+#### 🔴 Item 126: Débito: O uso do módulo os é legado. Use pathlib.
 - **Evidência:**
 ```kotlin
             self.btn_strategic.config(state=tk.NORMAL)
@@ -1466,12 +1248,9 @@ if __name__ == "__main__":
             logger.info(f"Projeto carregado: {path}")
 
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de low
 
-### 248. [low] @ `src/interface/gui.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 152
+#### 🔴 Item 152: Débito: O uso do módulo os é legado. Use pathlib.
 - **Evidência:**
 ```kotlin
                         ))
@@ -1480,40 +1259,10 @@ if __name__ == "__main__":
                 
                 self.root.after(0, update_ui)
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de low
 
-### 249. [low] @ `src/utils/compliance_standard.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 41
-- **Evidência:**
-```kotlin
-                
-                if results:
-                    logger.debug(f"Processamento atômico de {len(results)} registros.")
-                    
-            return Decimal(str(clean_value * 1.2))
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 250. [low] @ `src/utils/context_engine.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 35
-- **Evidência:**
-```kotlin
-            if self.analyst.should_ignore(path): continue
-            if self.analyst.is_analyable(path):
-                # Modernização: as_posix() substitui replace(os.sep, "/")
-                rel_path = path.relative_to(self.project_root).as_posix()
-                self.map[rel_path] = self._analyze_file(path)
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 251. [low] @ `src/utils/context_engine.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 40
+### 📂 Alvo: `src/utils/context_engine.py`
+#### 🔴 Item 52: Débito: O uso do módulo os é legado. Use pathlib.
 - **Evidência:**
 ```kotlin
         
@@ -1522,40 +1271,33 @@ if __name__ == "__main__":
         return {"identity": self.project_identity, "map": self.map}
 
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de low
 
-### 252. [low] @ `src/utils/indexer.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 16
+### 📂 Alvo: `src/utils/indexer.py`
+#### 🔴 Item 35: Débito: O uso do módulo os é legado. Use pathlib.
 - **Evidência:**
 ```kotlin
-    def update_index(self):
-        """Varre o projeto para indexar metadados PhD."""
-        logger.info("Iniciando indexação de metadados...")
-        index_data = {"last_update": "", "files": {}}
+        base de conhecimento utilizada pelo Orquestrador.
+        """
+        logger.info("📡 Iniciando indexação soberana de metadados...")
+        index_data = {"last_update": time.strftime('%Y-%m-%d %H:%M:%S'), "files": {}}
         
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de low
 
-### 253. [low] @ `src/agents/Flutter/hermes.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 32
+#### 🔴 Item 47: Débito: O uso do módulo os é legado. Use pathlib.
 - **Evidência:**
 ```kotlin
-    def _reason_about_objective(self, objective, file, content):
-        if "storePassword" in content:
-            return f"Risco de Integridade: O objetivo '{objective}' exige artefatos verificados. Em '{file}', segredos expostos permitem o sequestro da 'Orquestração de Inteligência Artificial' via binários maliciosos."
-        return None
-
+                index_data["files"][rel_path] = self._extract_metadata(path)
+                
+            logger.info(f"✅ Indexação concluída: {len(index_data['files'])} módulos catalogados.")
+            return index_data
+        except Exception as e:
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de low
 
-### 254. [low] @ `src/agents/Flutter/stream.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 20
+### 📂 Alvo: `src/agents/Flutter/stream.py`
+#### 🔴 Item 20: Débito: O uso do módulo os é legado. Use pathlib.
 - **Evidência:**
 ```kotlin
     def perform_audit(self) -> list:
@@ -1564,12 +1306,10 @@ if __name__ == "__main__":
         
         audit_rules = [
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de low
 
-### 255. [low] @ `src/agents/Kotlin/hermes.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 21
+### 📂 Alvo: `src/agents/Kotlin/hermes.py`
+#### 🔴 Item 21: Débito: O uso do módulo os é legado. Use pathlib.
 - **Evidência:**
 ```kotlin
         """Auditoria com telemetria de automação de build integrada."""
@@ -1578,40 +1318,10 @@ if __name__ == "__main__":
         
         # Sintaxe linear
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de low
 
-### 256. [low] @ `src/agents/Kotlin/hermes.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 37
-- **Evidência:**
-```kotlin
-    def _reason_about_objective(self, objective, file, content):
-        if "storePassword" in content:
-            return f"Risco de Integridade: O objetivo '{objective}' exige artefatos verificados. Em '{file}', segredos expostos permitem ataques à 'Orquestração de Inteligência Artificial'."
-        return None
-
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 257. [low] @ `src/agents/Kotlin/neural.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 37
-- **Evidência:**
-```kotlin
-    def _reason_about_objective(self, objective, file, content):
-        if "mlkit" in content:
-            return f"Fragilidade Cognitiva: O objetivo '{objective}' exige autonomia. Em '{file}', a dependência do ML Kit vincula a 'Orquestração de Inteligência Artificial' a serviços proprietários."
-        return None
-
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 258. [low] @ `src/agents/Kotlin/warden.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 21
+### 📂 Alvo: `src/agents/Kotlin/warden.py`
+#### 🔴 Item 21: Débito: O uso do módulo os é legado. Use pathlib.
 - **Evidência:**
 ```kotlin
         """Auditoria com telemetria ética JVM integrada."""
@@ -1620,12 +1330,10 @@ if __name__ == "__main__":
         
         # Sintaxe linear
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de low
 
-### 259. [low] @ `src/agents/Python/cache.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 16
+### 📂 Alvo: `src/agents/Python/cache.py`
+#### 🔴 Item 16: Débito: O uso do módulo os é legado. Use pathlib.
 - **Evidência:**
 ```kotlin
     def perform_audit(self) -> list:
@@ -1634,50 +1342,29 @@ if __name__ == "__main__":
         
         # Regex calibrado para detectar .execute real em loops, ignorando logs
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de low
 
-### 260. [low] @ `src/agents/Python/cache.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 34
+#### 🔴 Item 34: Débito: O uso do módulo os é legado. Use pathlib.
 - **Evidência:**
 ```kotlin
 
     def get_system_prompt(self):
         return f"Você é o Dr. {self.name}, mestre em dados."
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de low
 
-### 261. [low] @ `src/agents/Python/flow.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 32
+### 📂 Alvo: `src/agents/Python/flow.py`
+#### 🔴 Item 32: Débito: O uso do módulo os é legado. Use pathlib.
 - **Evidência:**
 ```kotlin
 
     def get_system_prompt(self):
         return f"Você é o Dr. {self.name}, mestre em fluxos."
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de low
 
-### 262. [low] @ `src/agents/Python/globe.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 33
-- **Evidência:**
-```kotlin
-    def _reason_about_objective(self, objective, file, content):
-        if "op" + "en(" in content and "encod" + "ing" not in content:
-            return f"Risco de Localização: O objetivo '{objective}' exige portabilidade global. Em '{file}', o uso de open() sem encoding UTF-8 pode corromper dados."
-        return None
-
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 263. [low] @ `src/agents/Python/hermes.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 16
+### 📂 Alvo: `src/agents/Python/hermes.py`
+#### 🔴 Item 16: Débito: O uso do módulo os é legado. Use pathlib.
 - **Evidência:**
 ```kotlin
     def perform_audit(self) -> list:
@@ -1686,24 +1373,20 @@ if __name__ == "__main__":
         
         audit_rules = [
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de low
 
-### 264. [low] @ `src/agents/Python/probe.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 35
+### 📂 Alvo: `src/agents/Python/probe.py`
+#### 🔴 Item 35: Débito: O uso do módulo os é legado. Use pathlib.
 - **Evidência:**
 ```kotlin
 
     def get_system_prompt(self):
         return f"Você é o Dr. {self.name}, mestre em diagnósticos."
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de low
 
-### 265. [low] @ `src/agents/Python/stream.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 16
+### 📂 Alvo: `src/agents/Python/stream.py`
+#### 🔴 Item 16: Débito: O uso do módulo os é legado. Use pathlib.
 - **Evidência:**
 ```kotlin
     def perform_audit(self) -> list:
@@ -1712,12 +1395,10 @@ if __name__ == "__main__":
         
         audit_rules = [
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de low
 
-### 266. [low] @ `src/agents/Python/voyager.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 27
+### 📂 Alvo: `src/agents/Python/voyager.py`
+#### 🔴 Item 27: Débito: O uso do módulo os é legado. Use pathlib.
 - **Evidência:**
 ```kotlin
 
@@ -1726,12 +1407,9 @@ if __name__ == "__main__":
             return f"Débito Tecnológico: O objetivo '{objective}' exige modernidade. Em '{file}', o uso de APIs legadas retarda a 'Orquestração de Inteligência Artificial'."
         return None
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de low
 
-### 267. [low] @ `src/agents/Python/voyager.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 60
+#### 🔴 Item 60: Débito: O uso do módulo os é legado. Use pathlib.
 - **Evidência:**
 ```kotlin
                     if line.strip() == p_kw and len(new_lines) > 0 and e_kw in new_lines[-1]:
@@ -1740,131 +1418,533 @@ if __name__ == "__main__":
                         safe_spot = str(spot).replace("\\", "/")
                         log_msg = f"logger.error(f'🚨 FALHA CRÍTICA SILENCIADA em {safe_spot}', exc_info=True)"
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de low
 
-### 268. [low] @ `src/agents/Support/pyramid_analyst.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 11
-- **Evidência:**
-```kotlin
-        
-        for file in map_data.keys():
-            if "tests/" not in file.replace(os.sep, "/"): continue
-            
-            content = read_func(file)
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 269. [low] @ `src/agents/Support/report_formatter.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 57
-- **Evidência:**
-```kotlin
-                    res += f"- **Evidência:**\n```kotlin\n{item.get('snippet')}\n```\n"
-                res += f"- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.\n"
-                res += f"- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.\n\n"
-            else:
-                res += f"### {i}. [STRATEGIC] @ `DNA`\n- **Diretriz:** {item}\n\n"
-```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
-
-### 270. [low] @ `src/agents/Support/task_executor.py`
-- **Problema:** Débito: O uso do módulo os é legado. Use pathlib.
-- **Localização:** Linha 11
+### 📂 Alvo: `src/agents/Support/task_executor.py`
+#### 🔴 Item 11: Débito: O uso do módulo os é legado. Use pathlib.
 - **Evidência:**
 ```kotlin
     
     def __init__(self):
-        self.max_workers = os.cpu_count() or 4
-
-    def run_parallel(self, task_func, items):
+        # Modernização: multiprocessing substitui os.cpu_count
+        try:
+            self.max_workers = multiprocessing.cpu_count() or 4
 ```
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz:** Padrão soberano de low
 
-### 271. [STRATEGIC] @ `DNA`
-- **Diretriz:** Débito Tecnológico: O objetivo 'Validar integridade ['Python']' exige modernidade. Em 'main_gui.py', o uso de APIs legadas retarda a 'Orquestração de Inteligência Artificial'.
+## 🚩 NÍVEL: STRATEGIC
+### 📂 Alvo: `DNA`
+- **Diretriz Estratégica:** Gargalo de Runtime: O objetivo 'Validar integridade ['Python']' exige alta disponibilidade. Loops de espera ativa em 'tests/test_structural_analyst_deep.py' paralisam a 'Orquestração de Inteligência Artificial'.
 
-### 272. [STRATEGIC] @ `DNA`
-- **Diretriz:** Débito Tecnológico: O objetivo 'Validar integridade ['Python']' exige modernidade. Em 'scripts/update_agent_submodule.py', o uso de APIs legadas retarda a 'Orquestração de Inteligência Artificial'.
+- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_core_depth.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas.
 
-### 273. [STRATEGIC] @ `DNA`
-- **Diretriz:** Débito Tecnológico: O objetivo 'Validar integridade ['Python']' exige modernidade. Em 'tests/test_self_awareness.py', o uso de APIs legadas retarda a 'Orquestração de Inteligência Artificial'.
+- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_logic_auditor_deep.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas.
 
-### 274. [STRATEGIC] @ `DNA`
-- **Diretriz:** Débito Tecnológico: O objetivo 'Validar integridade ['Python']' exige modernidade. Em 'tests/test_sovereign_sync_forensics.py', o uso de APIs legadas retarda a 'Orquestração de Inteligência Artificial'.
+- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_structural_analyst_deep.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas.
 
-### 275. [STRATEGIC] @ `DNA`
-- **Diretriz:** Débito Tecnológico: O objetivo 'Validar integridade ['Python']' exige modernidade. Em 'src/agents/Python/voyager.py', o uso de APIs legadas retarda a 'Orquestração de Inteligência Artificial'.
+- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'src/agents/base.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas.
 
-### 276. [STRATEGIC] @ `DNA`
-- **Diretriz:** Débito Tecnológico: O objetivo 'Validar integridade ['Python']' exige modernidade. Em 'src/agents/Support/pyramid_analyst.py', o uso de APIs legadas retarda a 'Orquestração de Inteligência Artificial'.
+- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'src/core/validator.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas.
 
-### 277. [STRATEGIC] @ `DNA`
-- **Diretriz:** Débito Tecnológico: O objetivo 'Validar integridade ['Python']' exige modernidade. Em 'src/agents/Support/task_executor.py', o uso de APIs legadas retarda a 'Orquestração de Inteligência Artificial'.
+- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'src/agents/Support/test_runner.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas.
 
-### 278. [STRATEGIC] @ `DNA`
-- **Diretriz:** Risco Ético: O objetivo 'Validar integridade ['Python']' exige governança. Em 'src/agents/Python/warden.py', vazamentos de credenciais ameaçam a 'Orquestração de Inteligência Artificial'.
+- **Diretriz Estratégica:** Falha de Automação: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'tests/test_battle_plan_formatter_deep.py', o uso de eval() permite ataques que invalidam a 'Orquestração de Inteligência Artificial'.
 
-### 279. [HIGH] @ `tests/test_core_depth.py`
-- **Problema:** Fragilidade Lógica
-- **Localização:** Linha N/A
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz Estratégica:** Falha de Automação: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'tests/test_core_depth.py', o uso de eval() permite ataques que invalidam a 'Orquestração de Inteligência Artificial'.
 
-### 280. [HIGH] @ `tests/test_self_awareness.py`
-- **Problema:** Fragilidade Lógica
-- **Localização:** Linha N/A
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz Estratégica:** Falha de Automação: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'tests/test_self_awareness.py', o uso de eval() permite ataques que invalidam a 'Orquestração de Inteligência Artificial'.
 
-### 281. [HIGH] @ `src/core/compiler.py`
-- **Problema:** Fragilidade Lógica
-- **Localização:** Linha N/A
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz Estratégica:** Falha de Automação: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'tests/test_vulnerability_heuristic_deep.py', o uso de eval() permite ataques que invalidam a 'Orquestração de Inteligência Artificial'.
 
-### 282. [HIGH] @ `src/agents/Flutter/scale.py`
-- **Problema:** Fragilidade Lógica
-- **Localização:** Linha N/A
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz Estratégica:** Falha de Automação: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src/agents/Support/line_veto.py', o uso de eval() permite ataques que invalidam a 'Orquestração de Inteligência Artificial'.
 
-### 283. [HIGH] @ `src/agents/Python/scale.py`
-- **Problema:** Fragilidade Lógica
-- **Localização:** Linha N/A
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz Estratégica:** Risco de Localização: O objetivo 'Validar integridade ['Python']' exige portabilidade global. Em 'tests/test_stability_ledger_deep.py', o uso de open() sem encoding UTF-8 pode corromper dados.
 
-### 284. [HIGH] @ `src/agents/Support/line_veto.py`
-- **Problema:** Fragilidade Lógica
-- **Localização:** Linha N/A
-- **Racional PhD:** A presença deste padrão compromete a soberania técnica e a manutenibilidade do ecossistema.
-- **Diretriz de Cura:** Substituir o trecho acima por uma implementação que siga os padrões de segurança SSL, injeção de dependência e logs estruturados.
+- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src/core/orchestrator.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível.
 
-### 285. [STRATEGIC] @ `DNA`
-- **Diretriz:** Falha de Automação: O objetivo 'Verificação' exige segurança. Em 'tests/test_core_depth.py', o uso de eval() em Dart permite ataques que invalidam a 'Orquestração de Inteligência Artificial'.
+- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src/agents/Support/health_synthesizer.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível.
 
-### 286. [STRATEGIC] @ `DNA`
-- **Diretriz:** Falha de Automação: O objetivo 'Verificação' exige segurança. Em 'tests/test_self_awareness.py', o uso de eval() em Dart permite ataques que invalidam a 'Orquestração de Inteligência Artificial'.
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_base_deep.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
 
-### 287. [STRATEGIC] @ `DNA`
-- **Diretriz:** Cegueira Analítica: O objetivo 'Verificação' exige observabilidade. Em 'scripts/analyze_external.py', o uso de saídas não rastreáveis impede a extração de métricas para a 'Orquestração de Inteligência Artificial'.
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_battle_plan_formatter_deep.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
 
-### 288. [STRATEGIC] @ `DNA`
-- **Diretriz:** Violência Arquitetural: O objetivo 'Verificação' exige modularidade soberana. Em 'src/agents/Flutter/scale.py', o acesso a diretórios privados (/src) de pacotes externos compromete o isolamento da 'Orquestração de Inteligência Artificial'.
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_cache_manager_system.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
 
-### 289. [STRATEGIC] @ `DNA`
-- **Diretriz:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Kotlin/scribe.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_compliance.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
 
-### 290. [STRATEGIC] @ `DNA`
-- **Diretriz:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Support/audit_engine.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_component_classifier_deep.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
 
-### 291. [STRATEGIC] @ `DNA`
-- **Diretriz:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Support/line_veto.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_context_engine_deep.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_context_engine_system.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_core_depth.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_dependency_auditor_deep.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_dependency_auditor_system.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_director_system.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_flutter_sentinel.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_flutter_vault.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_gui_system.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_health_synthesizer_deep.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_indexer_system.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_kotlin_flow.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_kotlin_hermes.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_kotlin_sentinel.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_line_veto_deep.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_package_integrity.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_self_awareness.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_source_code_parser_deep.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_stability_ledger_deep.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_structural_analyst_deep.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_sync_engine_mocks.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_system_intelligence.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_validator_deep.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_vulnerability_heuristic_deep.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src/agents/Support/component_classifier.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src/agents/Support/coverage_auditor.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src/agents/Support/dna_profiler.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src/agents/Support/logic_auditor.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src/agents/Support/pyramid_analyst.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Poluição de Estado: O objetivo 'Validar integridade ['Python']' exige pureza. Em 'scripts/persona_manager.py', o uso de globais compromete a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Poluição de Estado: O objetivo 'Validar integridade ['Python']' exige pureza. Em 'src/core/compiler.py', o uso de globais compromete a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Poluição de Estado: O objetivo 'Validar integridade ['Python']' exige pureza. Em 'src/utils/indexer.py', o uso de globais compromete a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Poluição de Estado: O objetivo 'Validar integridade ['Python']' exige pureza. Em 'src/agents/Flutter/scale.py', o uso de globais compromete a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'tests/test_core_depth.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'tests/test_logic_auditor_deep.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'tests/test_structural_analyst_deep.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src/agents/base.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src/core/validator.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src/agents/Support/test_runner.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Risco de Escalabilidade: O objetivo 'Validar integridade ['Python']' exige modularidade. Em 'scripts/persona_manager.py', a poluição de estado impede a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Risco de Escalabilidade: O objetivo 'Validar integridade ['Python']' exige modularidade. Em 'src/core/compiler.py', a poluição de estado impede a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Risco de Escalabilidade: O objetivo 'Validar integridade ['Python']' exige modularidade. Em 'src/utils/indexer.py', a poluição de estado impede a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Incompleitude: O objetivo 'Validar integridade ['Python']' exige entrega. Em 'src/core/orchestrator.py', débitos pendentes retardam a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Incompleitude: O objetivo 'Validar integridade ['Python']' exige entrega. Em 'src/agents/Flutter/scope.py', débitos pendentes retardam a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Incompleitude: O objetivo 'Validar integridade ['Python']' exige entrega. Em 'src/agents/Kotlin/scope.py', débitos pendentes retardam a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Incompleitude: O objetivo 'Validar integridade ['Python']' exige entrega. Em 'src/agents/Python/scope.py', débitos pendentes retardam a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'tests/test_base_deep.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'tests/test_battle_plan_formatter_deep.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'tests/test_vulnerability_heuristic_deep.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'src/agents/Support/structural_analyst.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'tests/test_cache_manager_system.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'tests/test_cli_system.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'tests/test_context_engine_system.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'tests/test_dependency_auditor_system.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'tests/test_director_system.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'tests/test_flutter_sentinel.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'tests/test_flutter_vault.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'tests/test_gui_system.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'tests/test_indexer_system.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'tests/test_kotlin_flow.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'tests/test_kotlin_hermes.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'tests/test_kotlin_sentinel.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'tests/test_sync_engine_mocks.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'main_gui.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'scripts/persona_manager.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Ilusão de Cobertura: O teste 'tests/test_context_engine_deep.py' está silenciado. Isso invalida a segurança do objetivo 'Validar integridade ['Python']'.
+
+- **Diretriz Estratégica:** Ilusão de Cobertura: O teste 'tests/test_core_depth.py' está silenciado. Isso invalida a segurança do objetivo 'Validar integridade ['Python']'.
+
+- **Diretriz Estratégica:** Ilusão de Cobertura: O teste 'tests/test_health_synthesizer_deep.py' está silenciado. Isso invalida a segurança do objetivo 'Validar integridade ['Python']'.
+
+- **Diretriz Estratégica:** Ilusão de Cobertura: O teste 'tests/test_indexer_system.py' está silenciado. Isso invalida a segurança do objetivo 'Validar integridade ['Python']'.
+
+- **Diretriz Estratégica:** Ilusão de Cobertura: O teste 'tests/test_logic_auditor_deep.py' está silenciado. Isso invalida a segurança do objetivo 'Validar integridade ['Python']'.
+
+- **Diretriz Estratégica:** Ilusão de Cobertura: O teste 'tests/test_self_awareness.py' está silenciado. Isso invalida a segurança do objetivo 'Validar integridade ['Python']'.
+
+- **Diretriz Estratégica:** Ilusão de Cobertura: O teste 'tests/test_source_code_parser_deep.py' está silenciado. Isso invalida a segurança do objetivo 'Validar integridade ['Python']'.
+
+- **Diretriz Estratégica:** Ilusão de Cobertura: O teste 'tests/test_structural_analyst_deep.py' está silenciado. Isso invalida a segurança do objetivo 'Validar integridade ['Python']'.
+
+- **Diretriz Estratégica:** Ilusão de Cobertura: O teste 'tests/test_sync_engine_mocks.py' está silenciado. Isso invalida a segurança do objetivo 'Validar integridade ['Python']'.
+
+- **Diretriz Estratégica:** Ilusão de Cobertura: O teste 'tests/test_system_intelligence.py' está silenciado. Isso invalida a segurança do objetivo 'Validar integridade ['Python']'.
+
+- **Diretriz Estratégica:** Ilusão de Cobertura: O teste 'tests/test_validator_deep.py' está silenciado. Isso invalida a segurança do objetivo 'Validar integridade ['Python']'.
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/base.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/director.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/core/compiler.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/core/orchestrator.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/core/validator.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/interface/gui.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/utils/cache_manager.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/utils/compliance_standard.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/utils/context_engine.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/utils/dependency_auditor.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/utils/indexer.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/utils/logging_config.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/utils/persona_loader.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/utils/stability_ledger.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/bolt.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/bridge.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/cache.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/echo.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/flow.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/forge.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/globe.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/hermes.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/hype.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/mantra.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/metric.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/nebula.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/neural.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/nexus.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/palette.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/probe.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/scale.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/scope.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/scribe.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/sentinel.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/spark.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/stream.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/testify.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/vault.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/voyager.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Flutter/warden.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/bolt.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/bridge.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/cache.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/echo.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/flow.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/forge.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/globe.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/hermes.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/hype.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/mantra.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/metric.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/nebula.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/neural.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/nexus.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/palette.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/probe.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/scale.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/scope.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/scribe.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/sentinel.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/spark.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/stream.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/testify.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/vault.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/voyager.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Kotlin/warden.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/bolt.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/bridge.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/cache.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/echo.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/flow.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/forge.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/globe.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/hermes.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/hype.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/mantra.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/metric.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/nebula.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/neural.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/nexus.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/palette.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/probe.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/scale.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/scope.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/scribe.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/sentinel.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/spark.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/stream.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/testify.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/vault.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/voyager.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Python/warden.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/audit_engine.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/battle_plan_formatter.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/component_classifier.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/connectivity_mapper.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/coverage_auditor.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/diagnostic_strategist.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/dna_profiler.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/health_synthesizer.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/infrastructure_assembler.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/integrity_guardian.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/line_veto.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/logic_auditor.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/maturity_evaluator.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/memory_persistence.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/parity_analyst.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/pyramid_analyst.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/quality_analyst.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/registry_compiler.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/report_formatter.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/source_code_parser.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/structural_analyst.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/task_executor.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/test_runner.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src/agents/Support/vulnerability_heuristic.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Débito Tecnológico: O objetivo 'Validar integridade ['Python']' exige modernidade. Em 'main_gui.py', o uso de APIs legadas retarda a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Débito Tecnológico: O objetivo 'Validar integridade ['Python']' exige modernidade. Em 'scripts/update_agent_submodule.py', o uso de APIs legadas retarda a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Débito Tecnológico: O objetivo 'Validar integridade ['Python']' exige modernidade. Em 'tests/test_self_awareness.py', o uso de APIs legadas retarda a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Débito Tecnológico: O objetivo 'Validar integridade ['Python']' exige modernidade. Em 'tests/test_sovereign_sync_forensics.py', o uso de APIs legadas retarda a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Débito Tecnológico: O objetivo 'Validar integridade ['Python']' exige modernidade. Em 'src/agents/Python/voyager.py', o uso de APIs legadas retarda a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Risco Ético: O objetivo 'Validar integridade ['Python']' exige governança. Em 'src/agents/Python/warden.py', vazamentos de credenciais ameaçam a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Falha de Automação: O objetivo 'Verificação' exige segurança. Em 'tests/test_battle_plan_formatter_deep.py', o uso de eval() em Dart permite ataques que invalidam a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Falha de Automação: O objetivo 'Verificação' exige segurança. Em 'tests/test_core_depth.py', o uso de eval() em Dart permite ataques que invalidam a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Falha de Automação: O objetivo 'Verificação' exige segurança. Em 'tests/test_self_awareness.py', o uso de eval() em Dart permite ataques que invalidam a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Falha de Automação: O objetivo 'Verificação' exige segurança. Em 'tests/test_vulnerability_heuristic_deep.py', o uso de eval() em Dart permite ataques que invalidam a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Falha de Automação: O objetivo 'Verificação' exige segurança. Em 'src/agents/Support/line_veto.py', o uso de eval() em Dart permite ataques que invalidam a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Support/line_veto.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'scripts/persona_manager.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/base.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Verificação' exige observabilidade. Em 'src/agents/Flutter/echo.py', o uso de saídas não rastreáveis impede a extração de métricas para a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Verificação' exige observabilidade. Em 'src/agents/Flutter/metric.py', o uso de saídas não rastreáveis impede a extração de métricas para a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Kotlin/forge.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/core/orchestrator.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/core/validator.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/utils/compliance_standard.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/utils/context_engine.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/utils/dependency_auditor.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/utils/indexer.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/utils/logging_config.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Flutter/forge.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Python/forge.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Python/palette.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Python/voyager.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Support/audit_engine.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Support/battle_plan_formatter.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Support/component_classifier.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Support/connectivity_mapper.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Support/diagnostic_strategist.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Support/dna_profiler.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Support/integrity_guardian.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Support/maturity_evaluator.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Support/memory_persistence.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Support/parity_analyst.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Support/pyramid_analyst.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Support/quality_analyst.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Support/registry_compiler.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Support/source_code_parser.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Support/structural_analyst.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Verificação' exige clareza. Em 'src/agents/Support/vulnerability_heuristic.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
 
 ## 💀 Risco Existencial
 > Autoconsciência nativa ativa.

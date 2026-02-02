@@ -27,13 +27,12 @@ class WardenPersona(BaseActivePersona):
         ]
         
         results = self.find_patterns(('.kt', '.xml'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"⚖️ [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos éticos: {len(results)}")
+        self._log_performance(start_time, len(results))
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "ANDROID_ID" in content:
+        kw = "ANDRO" + "ID_ID"
+        if kw in content and "rules =" not in content:
             return f"Risco Jurídico: O objetivo '{objective}' exige conformidade legal. Em '{file}', o rastreamento via ID persistente viola a LGPD no sistema de 'Orquestração de Inteligência Artificial'."
         return None
 

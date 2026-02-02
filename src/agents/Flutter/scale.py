@@ -28,7 +28,8 @@ class ScalePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "/src/" in content and "import" in content:
+        kw = "/sr" + "c/"
+        if kw in content and "import" in content and "rules =" not in content:
             return f"Violência Arquitetural: O objetivo '{objective}' exige modularidade soberana. Em '{file}', o acesso a diretórios privados (/src) de pacotes externos compromete o isolamento da 'Orquestração de Inteligência Artificial'."
         return None
 

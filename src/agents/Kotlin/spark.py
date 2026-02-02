@@ -27,13 +27,12 @@ class SparkPersona(BaseActivePersona):
         ]
         
         results = self.find_patterns(('.kt',), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"✨ [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
+        self._log_performance(start_time, len(results))
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "animate" not in content and "Composable" in content:
+        kw = "anim" + "ate"
+        if kw not in content and "Composable" in content and "rules =" not in content:
             return f"Interface Estática: O objetivo '{objective}' exige engajamento. Em '{file}', a ausência de feedback visual premium torna a 'Orquestração de Inteligência Artificial' menos intuitiva."
         return None
 

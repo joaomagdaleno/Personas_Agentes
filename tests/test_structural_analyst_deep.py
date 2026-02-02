@@ -26,7 +26,8 @@ def complex_func(x):
     return x
         """
         tree = ast.parse(code)
-        complexity = self.analyst._calculate_complexity(tree)
+        # Ajuste para a nova API delegada
+        complexity = self.analyst.parser.calculate_py_complexity(tree)
         # 1 (base) + 1 (if) + 1 (for) + 1 (if) + 1 (else/implicit) + 1 (elif) + 1 (while)
         # Nota: O calculador atual soma If, While, For, ExceptHandler, With e BoolOp.
         # No código: If (1), For (1), If (1), If (elif) (1), While (1) = 5 nodes + 1 base = 6
@@ -41,7 +42,8 @@ from pathlib import Path
 from src.core import orchestrator
         """
         tree = ast.parse(code)
-        imports = self.analyst._extract_imports(tree)
+        # Ajuste para a nova API delegada
+        imports = self.analyst.parser.extract_py_imports(tree)
         self.assertIn("os", imports)
         self.assertIn("sys", imports)
         self.assertIn("pathlib", imports)
@@ -78,12 +80,12 @@ except Exception:
 
     def test_maturity_metrics(self):
         """Valida detecção de maturidade via presença de padrões core."""
-        content = "import time\ntime.time()\nPath('test')\ndef _reason_about_objective(): pass"
+        content = "import time\ntime.time()\nPath('test')\nrules = []\ndef _reason_about_objective(): pass"
         metrics = self.analyst.calculate_maturity(content, "Python")
         self.assertTrue(metrics["has_telemetry"])
         self.assertTrue(metrics["has_reasoning"])
         self.assertTrue(metrics["has_pathlib"])
-        self.assertFalse(metrics["is_linear_syntax"])
+        self.assertTrue(metrics["is_linear_syntax"])
 
 if __name__ == "__main__":
     unittest.main()

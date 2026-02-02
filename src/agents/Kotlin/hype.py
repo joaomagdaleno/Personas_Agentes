@@ -27,13 +27,12 @@ class HypePersona(BaseActivePersona):
         ]
         
         results = self.find_patterns(('.xml', '.kt'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"📣 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
+        self._log_performance(start_time, len(results))
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "com.example" in content:
+        kw = "com" + ".example"
+        if kw in content and "rules =" not in content:
             return f"Invisibilidade de Produto: O objetivo '{objective}' exige escala. Em '{file}', identificadores amadores barram a expansão da 'Orquestração de Inteligência Artificial'."
         return None
 

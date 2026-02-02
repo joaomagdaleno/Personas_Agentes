@@ -1,3 +1,9 @@
+"""
+SISTEMA DE PERSONAS AGENTES - GESTÃO DE IDENTIDADES
+Módulo: Gerenciador de Personas (PersonaManager)
+Função: Validar a integridade técnica e o alinhamento das identidades PhD.
+Soberania: ACTIVE-SCRIPT.
+"""
 import logging
 import time
 from pathlib import Path
@@ -9,15 +15,18 @@ logger = logging.getLogger(__name__)
 
 class PersonaManager:
     """
-    Gerenciador Automático de Personas PhD.
-    Garante que todas as personas sejam atualizadas com o modelo de raciocínio estratégico.
-    Monitorado por Metric e Voyager.
+    Gestor de Elites: Responsável pela validação do censo global de PhDs 🏛️.
+    
+    Responsabilidades:
+    1. Sincronização de Identidade: Garante que cada Persona possua cargo e missão definidos.
+    2. Integridade de Código: Verifica a existência física dos agentes no repositório.
+    3. Monitoramento de Expansão: Cataloga novas identidades durante o ciclo de vida.
     """
     def __init__(self, project_root: Path):
-        self.project_root = project_root
+        self.project_root = Path(project_root)
         self.base_path = self.project_root / "src" / "agents" / "Python"
         
-        # Identidades Estratégicas
+        # Identidades Estratégicas (Censo Soberano)
         self.identities = {
             "Bolt": {"emoji": "⚡", "role": "PhD Performance Engineer", "mission": "Otimizar velocidade e recursos de hardware."},
             "Hermes": {"emoji": "📦", "role": "PhD DevOps Engineer", "mission": "Garantir integridade de repositório e CI/CD."},
@@ -27,26 +36,41 @@ class PersonaManager:
             "Nexus": {"emoji": "🌐", "role": "PhD Network Architect", "mission": "Auditar conexões de rede e contratos de API."},
         }
 
-    def update_templates(self):
-        """Atualiza os PhDs existentes para o padrão de raciocínio estratégico."""
+    def validate_census(self):
+        """
+        ✔️ Valida a existência e integridade técnica da junta de PhDs.
+        
+        Este processo garante que o Orquestrador tenha agentes físicos para
+        delegar as tarefas identificadas no diagnóstico.
+        """
         start_time = time.time()
-        logger.info("🏛️ Iniciando atualização de Templates PhD...")
+        logger.info("🏛️ Iniciando Validação de Censo PhD...")
         
-        if not self.base_path.exists():
-            logger.error(f"Erro: Caminho base não encontrado: {self.base_path}")
-            return
+        if not self.base_path.is_dir():
+            logger.error(f"❌ Falha de Infraestrutura: Caminho base não encontrado em {self.base_path}")
+            return 0
 
-        updated_count = 0
-        for name, data in self.identities.items():
-            file_path = self.base_path / f"{name.lower()}.py"
-            if file_path.exists():
-                logger.debug(f"Verificando integridade técnica de {name}...")
-                # Nota: A atualização real de conteúdo de agentes é feita via 'replace' atômico
-                # para evitar sobrescrever lógicas customizadas que já implementamos.
-                updated_count += 1
-        
-        duration = time.time() - start_time
-        logger.info(f"✨ Sincronização concluída: {updated_count} PhDs validados em {duration:.4f}s.")
+        validated_count = 0
+        try:
+            for name, data in self.identities.items():
+                file_path = self.base_path / f"{name.lower()}.py"
+                if file_path.is_file():
+                    logger.debug(f"🔍 Validando integridade técnica: {name} ({data['role']})")
+                    validated_count += 1
+                else:
+                    logger.warning(f"⚠️ PhD Fantasma: {name} possui identidade mas o arquivo {file_path.name} está ausente.")
+            
+            duration = time.time() - start_time
+            logger.info(f"✨ Censo concluído: {validated_count} PhDs operacionais em {duration:.4f}s.")
+            return validated_count
+        except Exception as e:
+            logger.error(f"🚨 Falha crítica durante validação de censo: {e}", exc_info=True)
+            return validated_count
+
+if __name__ == "__main__":
+    # Ponto de entrada autônomo para manutenção de identidades
+    manager = PersonaManager(Path.cwd())
+    manager.validate_census()
 
 if __name__ == "__main__":
     manager = PersonaManager(Path.cwd())

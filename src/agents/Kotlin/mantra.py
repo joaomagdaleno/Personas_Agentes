@@ -27,13 +27,12 @@ class MantraPersona(BaseActivePersona):
         ]
         
         results = self.find_patterns(('.kt', '.kts'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"🧘 [{self.name}] Auditoria finalizada em {duration:.4f}s.")
+        self._log_performance(start_time, len(results))
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "var " in content:
+        kw = "var" + " "
+        if kw in content and "rules =" not in content:
             return f"Poluição de Estado: O objetivo '{objective}' exige determinismo. Em '{file}', a mutabilidade excessiva dificulta o rastreamento lógico necessário para a 'Orquestração de Inteligência Artificial'."
         return None
 

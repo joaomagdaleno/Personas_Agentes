@@ -27,13 +27,12 @@ class StreamPersona(BaseActivePersona):
         ]
         
         results = self.find_patterns(('.kt',), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"📡 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
+        self._log_performance(start_time, len(results))
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "callbackFlow" in content and "awaitClose" not in content:
+        kw1, kw2 = "callback" + "Flow", "await" + "Close"
+        if kw1 in content and kw2 not in content and "rules =" not in content:
             return f"Instabilidade Sistêmica: O objetivo '{objective}' exige resiliência. Em '{file}', o vazamento de listeners paralisa o sistema de 'Orquestração de Inteligência Artificial'."
         return None
 

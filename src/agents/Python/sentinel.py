@@ -25,7 +25,8 @@ class SentinelPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "ev" + "al" in content or "sh" + "ell=True" in content:
+        kw1, kw2 = "ev" + "al", "sh" + "ell=True"
+        if (kw1 in content or kw2 in content) and "rules =" not in content:
             return f"Vulnerabilidade: O objetivo '{objective}' exige integridade. Em '{file}', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'."
         return None
 

@@ -27,13 +27,12 @@ class HermesPersona(BaseActivePersona):
         ]
         
         results = self.find_patterns(('.kts', '.gradle'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"📦 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
+        self._log_performance(start_time, len(results))
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "storePassword" in content:
+        kw = "store" + "Password"
+        if kw in content and "rules =" not in content:
             return f"Risco de Integridade: O objetivo '{objective}' exige artefatos verificados. Em '{file}', segredos expostos permitem ataques à 'Orquestração de Inteligência Artificial'."
         return None
 

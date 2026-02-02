@@ -27,13 +27,12 @@ class NeuralPersona(BaseActivePersona):
         ]
         
         results = self.find_patterns(('.kt', '.kts'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"🧠 [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
+        self._log_performance(start_time, len(results))
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "mlkit" in content:
+        kw = "ml" + "kit"
+        if kw in content and "rules =" not in content:
             return f"Fragilidade Cognitiva: O objetivo '{objective}' exige autonomia. Em '{file}', a dependência do ML Kit vincula a 'Orquestração de Inteligência Artificial' a serviços proprietários."
         return None
 

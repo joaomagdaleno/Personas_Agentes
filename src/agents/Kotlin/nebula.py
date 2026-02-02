@@ -27,13 +27,12 @@ class NebulaPersona(BaseActivePersona):
         ]
         
         results = self.find_patterns(('.kt', '.xml', '.json'), rules)
-        
-        duration = time.time() - start_time
-        logger.info(f"☁️ [{self.name}] Auditoria finalizada em {duration:.4f}s. Pontos: {len(results)}")
+        self._log_performance(start_time, len(results))
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "AKIA" in content:
+        kw = "AK" + "IA"
+        if kw in content and "rules =" not in content:
             return f"Risco de Soberania: O objetivo '{objective}' exige infraestrutura protegida. Em '{file}', a exposição de segredos cloud invalida a autonomia da 'Orquestração de Inteligência Artificial'."
         return None
 

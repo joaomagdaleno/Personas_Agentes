@@ -23,10 +23,13 @@ class TestOrchestrator(unittest.TestCase):
         logger.info("Limpeza de ambiente de teste concluída.")
 
     def test_init(self):
-        """Valida inicialização básica via Pathlib."""
+        """Valida inicialização básica e mobilização de recursos."""
         orchestrator = Orchestrator(self.test_dir)
         self.assertIsNotNone(orchestrator)
-        logger.info("✅ Orquestrador inicializado via Pathlib.")
+        self.assertIsNotNone(orchestrator.context_engine)
+        self.assertIsNotNone(orchestrator.synthesizer)
+        self.assertIsNotNone(orchestrator.stability_ledger)
+        self.assertTrue(len(orchestrator.personas) >= 0)
 
     def test_dna_discovery(self):
         """Valida se o orquestrador descobre o DNA do projeto alvo."""
@@ -34,7 +37,23 @@ class TestOrchestrator(unittest.TestCase):
         orchestrator = Orchestrator(self.test_dir)
         context = orchestrator.context_engine.analyze_project()
         health = orchestrator.get_system_health_360(context, {"success": True})
+        
         self.assertIn("Orquestração", str(health["objective"]))
+        self.assertEqual(health["health_score"], 100)
+        self.assertIn("map", health)
+        self.assertIn("parity", health)
+
+    def test_persona_mobilization(self):
+        """Valida a mobilização seletiva de PhDs por stack."""
+        from src.utils.persona_loader import PersonaLoader
+        orchestrator = Orchestrator(self.test_dir)
+        PersonaLoader.mobilize_all(self.test_dir, orchestrator)
+        
+        stacks = {"Python", "Kotlin"}
+        active = orchestrator._select_active_phds("Audit", stacks)
+        # Deve mobilizar ao menos um agente para as stacks informadas
+        self.assertTrue(any(p.stack in ["Python", "Kotlin"] for p in active))
+        self.assertGreater(len(active), 0)
 
 if __name__ == "__main__":
     unittest.main()

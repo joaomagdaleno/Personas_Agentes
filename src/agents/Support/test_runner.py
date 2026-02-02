@@ -13,12 +13,16 @@ class TestRunner:
         try:
             result = subprocess.run(
                 [sys.executable, "-m", "unittest", "discover", "tests"],
-                capture_output=True, text=True, cwd=project_root
+                capture_output=True, text=True, cwd=str(project_root),
+                encoding='utf-8', errors='ignore'
             )
+            if result.returncode != 0:
+                logger.debug(f"ℹ️ Resultado bruto dos testes:\n{result.stderr}")
+            
             return self._parse_output(result.stderr, result.returncode == 0)
         except Exception as e:
-            logger.error(f"Falha na execução mecânica de testes: {e}")
-            return {"success": False, "error": str(e)}
+            logger.error(f"🚨 Falha crítica na execução mecânica de testes: {e}", exc_info=True)
+            return {"success": False, "error": str(e), "total_run": 0, "failed": 1}
 
     def _parse_output(self, output: str, is_success: bool) -> dict:
         """Transforma o texto bruto do terminal em dados estruturados."""

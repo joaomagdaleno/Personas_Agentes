@@ -1,0 +1,64 @@
+"""
+SISTEMA DE PERSONAS AGENTES - SUPORTE TÉCNICO
+Módulo: Formatador de Plano de Batalha (BattlePlanFormatter)
+Função: Especialista em estruturar diretrizes de engenharia.
+"""
+import logging
+
+logger = logging.getLogger(__name__)
+
+class BattlePlanFormatter:
+    """
+    Assistente Técnico: Especialista em Roteiros de Cura 🎯
+    Extraído do ReportFormatter para reduzir entropia.
+    """
+    
+    def format(self, audit_results: list) -> str:
+        """Estrutura os resultados da auditoria em um plano de batalha hierárquico."""
+        active = [i for i in audit_results if not isinstance(i, dict) or i.get('severity') != 'HEALED']
+        if not active: return "## 🎯 PLANO DE BATALHA\n> ✅ Nenhuma intervenção necessária.\n"
+
+        res = "## 🎯 PLANO DE BATALHA: DIRETRIZES DE ENGENHARIA\n"
+        categories = self._group_by_severity(active)
+        res += self._format_impact_summary(categories)
+
+        for sev in ["CRITICAL", "HIGH", "MEDIUM", "LOW", "STRATEGIC"]:
+            if categories[sev]:
+                res += self._format_severity_group(sev, categories[sev])
+        
+        return res
+
+    def _group_by_severity(self, active_items):
+        cats = {"CRITICAL": [], "HIGH": [], "MEDIUM": [], "LOW": [], "STRATEGIC": []}
+        for item in active_items:
+            sev = item.get('severity', 'MEDIUM').upper() if isinstance(item, dict) else "STRATEGIC"
+            if sev in cats: cats[sev].append(item)
+            else: cats["MEDIUM"].append(item)
+        return cats
+
+    def _format_impact_summary(self, cats):
+        res = "### 📊 RESUMO DE INTERVENÇÕES\n| Severidade | Quantidade |\n| :--- | :---: |\n"
+        for s in ["CRITICAL", "HIGH", "MEDIUM", "LOW", "STRATEGIC"]:
+            if len(cats[s]) > 0: res += f"| {s} | {len(cats[s])} |\n"
+        return res + "\n---\n"
+
+    def _format_severity_group(self, sev, items):
+        res = f"## 🚩 NÍVEL: {sev}\n"
+        file_groups = {}
+        for item in items:
+            fname = item.get('file', 'Global') if isinstance(item, dict) else "DNA"
+            if fname not in file_groups: file_groups[fname] = []
+            file_groups[fname].append(item)
+
+        for fname, group in file_groups.items():
+            res += f"### 📂 Alvo: `{fname}`\n"
+            for item in group:
+                res += self._format_item(item, sev)
+        return res
+
+    def _format_item(self, item, sev):
+        if not isinstance(item, dict): return f"- **Diretriz Estratégica:** {item}\n\n" 
+        res = f"#### 🔴 Item {item.get('line', 'N/A')}: {item.get('issue')}\n"
+        if item.get('snippet'):
+            res += f"- **Evidência:**\n```kotlin\n{item.get('snippet')}\n```\n"
+        return res + f"- **Diretriz:** Padrão soberano de {sev.lower()}\n\n" 

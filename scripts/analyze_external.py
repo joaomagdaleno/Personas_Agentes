@@ -22,7 +22,7 @@ def main():
     
     if len(sys.argv) < 2:
         logger.error("❌ Erro: Caminho do alvo não fornecido.")
-        print("Uso: python scripts/analyze_external.py <caminho_do_projeto>")
+        logger.info("Uso: python scripts/analyze_external.py <caminho_do_projeto>")
         return
 
     target_path = Path(sys.argv[1]).absolute()
