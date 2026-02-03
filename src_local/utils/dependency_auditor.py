@@ -35,14 +35,21 @@ class DependencyAuditor:
             return False
         
         self._acquire_lock()
-        
-        # Garante que o submódulo está inicializado
         self._ensure_initialized()
         
         if not self._is_valid_repo():
             logger.error("Falha Crítica: Submódulo não é um repositório Git válido.")
             self._release_lock()
             return False
+
+        # INTELIGÊNCIA: Auto-Consolidação de Identidade Local
+        # Se houverem mudanças (benchmarks, skills novas), consolida em um commit
+        # para que a árvore fique limpa para a sincronia upstream.
+        status = self._git_out(["status", "--porcelain"], self.agent_path)
+        if status:
+            logger.info("📦 Consolidação de Identidade: Salvando alterações locais antes da sincronia...")
+            subprocess.run(["git", "add", "."], cwd=self.agent_path, capture_output=True)
+            subprocess.run(["git", "commit", "-m", "chore: Snapshot de Identidade Local PhD"], cwd=self.agent_path, capture_output=True)
 
         initial_hash = self._git_out(["rev-parse", "HEAD"], self.agent_path)
         
@@ -65,28 +72,39 @@ class DependencyAuditor:
                 return True
 
             logger.info(f"⬇️ Puxando {metrics['behind']} commits novos...")
-            # Stash transacional
             subprocess.run(["git", "stash", "push", "--include-untracked", "-m", "Auto-sync stash"], cwd=self.agent_path, capture_output=True)
             
-            # Rebase com verificação de erro real
+            # Tenta Rebase
             rebase_res = subprocess.run(["git", "rebase", f"{remote}/{topo['tracking_ref']}"], cwd=self.agent_path, capture_output=True, text=True)
+            
             if rebase_res.returncode != 0:
-                logger.warning(f"⚠️ Conflito detectado. Acionando Reset Soberano para alinhar com {remote}...")
+                logger.warning("⚠️ Conflito de Inteligência detectado. Iniciando Resolução Semântica...")
                 subprocess.run(["git", "rebase", "--abort"], cwd=self.agent_path, capture_output=True)
-                # FORÇA ALINHAMENTO: Prioriza a verdade do servidor sobre o histórico local divergente
-                reset_res = subprocess.run(["git", "reset", "--hard", f"{remote}/{topo['tracking_ref']}"], cwd=self.agent_path, capture_output=True)
-                if reset_res.returncode != 0:
-                    raise Exception("Falha catastrófica no Reset Soberano.")
+                
+                # Tenta Merge com estratégia de resolução automática
+                subprocess.run(
+                    ["git", "merge", f"{remote}/{topo['tracking_ref']}", "-m", "🧬 Sincronia de Inteligência Upstream", "-X", "theirs"],
+                    cwd=self.agent_path, capture_output=True
+                )
+                self._resolve_semantic_conflicts()
 
             self._verify_system_integrity()
 
-            # Registra a atualização no repositório pai
+            # REGRA DE OURO: Limpa o estado para o Repositório Pai
+            subprocess.run(["git", "add", "."], cwd=self.agent_path, capture_output=True)
+            subprocess.run(["git", "commit", "-m", "⚡ Auto-Sync: Alinhamento de Skills PhD"], cwd=self.agent_path, capture_output=True)
+            
+            # Registra a nova referência no repositório pai
             subprocess.run(["git", "add", ".agent/skills"], cwd=self.project_root, capture_output=True)
             
             # Tenta restaurar o stash
-            subprocess.run(["git", "stash", "pop"], cwd=self.agent_path, capture_output=True)
-            
-            logger.info(f"✨ Sincronia Soberana Concluída: {topo['active_ref']} atualizada.")
+            stash_pop = subprocess.run(["git", "stash", "pop"], cwd=self.agent_path, capture_output=True)
+            if stash_pop.returncode != 0:
+                self._resolve_semantic_conflicts()
+                subprocess.run(["git", "add", "."], cwd=self.agent_path, capture_output=True)
+                subprocess.run(["git", "commit", "--amend", "--no-edit"], cwd=self.agent_path, capture_output=True)
+
+            logger.info("✨ Sincronia Soberana Concluída e Limpa.")
             self._release_lock()
             return True
 
@@ -96,18 +114,25 @@ class DependencyAuditor:
             self._release_lock()
             return False
 
+    def _resolve_semantic_conflicts(self):
+        """🧠 Resolução de Conflitos baseada em Domínio."""
+        res = subprocess.run(["git", "diff", "--name-only", "--diff-filter=U"], cwd=self.agent_path, capture_output=True, text=True)
+        conflicts = res.stdout.splitlines()
+        for f in conflicts:
+            if "skills/" in f or "data/" in f:
+                subprocess.run(["git", "checkout", "--ours", f], cwd=self.agent_path, capture_output=True)
+            else:
+                subprocess.run(["git", "checkout", "--theirs", f], cwd=self.agent_path, capture_output=True)
+            subprocess.run(["git", "add", f], cwd=self.agent_path, capture_output=True)
+
     def _ensure_initialized(self):
-        """🔨 Garante que o submódulo está fisicamente presente e linkado."""
         if not self.agent_path.exists() or not list(self.agent_path.iterdir()):
-            logger.info("🛠️ Inicializando submódulo ausente...")
             subprocess.run(["git", "submodule", "update", "--init", "--recursive"], cwd=self.project_root, capture_output=True)
 
     def _discover_remote(self):
-        """🔍 Identifica qual remote utilizar para a sincronia."""
         remotes = self._git_out(["remote"], self.agent_path).splitlines()
         for r in ["upstream", "origin"]:
             if r in remotes:
-                # Valida saúde da rede para o remote escolhido
                 try:
                     subprocess.run(["git", "ls-remote", "--heads", r], cwd=self.agent_path, capture_output=True, timeout=5, check=True)
                     return r
@@ -115,13 +140,8 @@ class DependencyAuditor:
         return None
 
     def _is_locked(self):
-        """🔒 Verifica trava e limpa travas antigas (> 10 min)."""
         if not self.lock_file.exists(): return False
-        
-        # Proteção contra travas órfãs de processos interrompidos
-        mtime = self.lock_file.stat().st_mtime
-        if time.time() - mtime > 600:
-            logger.warning("🧹 Limpando trava de sincronia expirada.")
+        if time.time() - self.lock_file.stat().st_mtime > 600:
             self._release_lock()
             return False
         return True
@@ -134,26 +154,21 @@ class DependencyAuditor:
         if self.lock_file.exists(): self.lock_file.unlink()
 
     def _get_metrics(self, local, remote_ref):
-        """📐 Calcula o delta de commits."""
         try:
             res = subprocess.run(["git", "rev-list", "--count", f"{local}..{remote_ref}"], cwd=self.agent_path, capture_output=True, text=True).stdout.strip()
             return {'behind': int(res or 0)}
         except: return {'behind': 0}
 
     def _verify_system_integrity(self):
-        """🧬 Valida a sintaxe Python de todos os arquivos após a atualização."""
         for f in self.agent_path.rglob("*.py"):
-            if ".agent" in str(f): continue # Evita recursão infinita
+            if ".agent" in str(f) or "__pycache__" in str(f): continue
             try:
                 source = f.read_text(encoding='utf-8', errors='ignore')
                 if source.strip(): ast.parse(source)
-            except:
-                logger.error(f"⚠️ Integridade violada em {f.name}")
+            except: logger.error(f"⚠️ Integridade violada em {f.name}")
 
     def _get_topology(self, remote="upstream"):
-        """🌐 Identifica branch ativa e tracking branch."""
         active = self._git_out(["rev-parse", "--abbrev-ref", "HEAD"], self.agent_path)
-        # Tenta descobrir o tracking real
         tracking = self._git_out(["config", f"branch.{active}.merge"], self.agent_path).replace("refs/heads/", "")
         if not tracking: tracking = "main"
         return {'active_ref': active, 'tracking_ref': tracking}
@@ -162,47 +177,28 @@ class DependencyAuditor:
         subprocess.run(["git", "rebase", "--abort"], cwd=self.agent_path, capture_output=True)
 
     def _transactional_rollback(self, target_hash):
-        """🔙 Reverte para o estado seguro inicial."""
         subprocess.run(["git", "rebase", "--abort"], cwd=self.agent_path, capture_output=True)
-        if target_hash:
-            subprocess.run(["git", "reset", "--hard", target_hash], cwd=self.agent_path, capture_output=True)
+        if target_hash: subprocess.run(["git", "reset", "--hard", target_hash], cwd=self.agent_path, capture_output=True)
 
     def _git_out(self, args, path):
-        res = subprocess.run(["git"] + args, cwd=path, capture_output=True, text=True)
-        return res.stdout.strip()
+        return subprocess.run(["git"] + args, cwd=path, capture_output=True, text=True).stdout.strip()
 
     def _run_git(self, args, path):
         subprocess.run(["git"] + args, cwd=path, capture_output=True, check=True)
 
     def _is_valid_repo(self):
-        """✔️ Valida se o caminho é um repositório Git (suporta arquivo .git)."""
-        dot_git = self.agent_path / ".git"
-        return self.agent_path.exists() and dot_git.exists()
+        return self.agent_path.exists() and (self.agent_path / ".git").exists()
 
     def check_submodule_status(self):
-        """🕵️ Snapshot de status baseado na verdade do servidor."""
         if not self.is_internal: return []
-        
-        # Se não houver .git, tenta inicializar antes de checar
-        if not (self.agent_path / ".git").exists():
-            self._ensure_initialized()
-
+        if not (self.agent_path / ".git").exists(): self._ensure_initialized()
         try:
             remote = self._discover_remote()
             if not remote: return []
-            
             subprocess.run(["git", "fetch", remote], cwd=self.agent_path, capture_output=True, timeout=10)
             topo = self._get_topology(remote)
             metrics = self._get_metrics(topo['active_ref'], f"{remote}/{topo['tracking_ref']}")
-            
             if metrics['behind'] > 0:
-                return [
-                    {
-                        "file": ".agent/skills", 
-                        "issue": f"Inteligência Atrasada (Delta: {metrics['behind']} commits)", 
-                        "severity": "CRITICAL", "context": "DependencyAuditor"
-                    }
-                ]
-        except Exception as e:
-            logger.error(f'🚨 [Auditor] Falha operacional no status: {e}')
+                return [{"file": ".agent/skills", "issue": f"Inteligência Atrasada (Delta: {metrics['behind']} commits)", "severity": "CRITICAL", "context": "DependencyAuditor"}]
+        except Exception as e: logger.error(f'🚨 [Auditor] Falha operacional no status: {e}')
         return []
