@@ -2,13 +2,13 @@
 import unittest
 from unittest.mock import patch, MagicMock
 from pathlib import Path
-from src.utils.dependency_auditor import DependencyAuditor
+from src_local.utils.dependency_auditor import DependencyAuditor
 
 class TestDependencyAuditorDeep(unittest.TestCase):
     """Bateria de Testes PhD para o Auditor de Dependências 📦"""
 
     def setUp(self):
-        self.project_root = Path("temp_root")
+        self.project_root = Path("Personas_Agentes_Internal")
         self.auditor = DependencyAuditor(self.project_root)
 
     @patch('subprocess.run')

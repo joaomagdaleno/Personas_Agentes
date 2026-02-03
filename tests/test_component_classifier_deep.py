@@ -1,5 +1,5 @@
 import unittest
-from src.agents.Support.component_classifier import ComponentClassifier
+from src_local.agents.Support.component_classifier import ComponentClassifier
 
 class TestComponentClassifierDeep(unittest.TestCase):
     """Bateria de Testes PhD para o Classificador de Topologia 🗂️"""

@@ -1,7 +1,7 @@
 import unittest
 import logging
 from pathlib import Path
-from src.agents.Python.nexus import NexusPersona
+from src_local.agents.Python.nexus import NexusPersona
 
 # Telemetria PhD para Testes
 logger = logging.getLogger(__name__)

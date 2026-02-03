@@ -1,5 +1,5 @@
 import unittest
-from src.agents.Flutter.vault import VaultPersona
+from src_local.agents.Flutter.vault import VaultPersona
 
 class TestFlutterVault(unittest.TestCase):
     def setUp(self):

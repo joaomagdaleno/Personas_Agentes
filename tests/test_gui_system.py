@@ -1,13 +1,13 @@
 import unittest
 from unittest.mock import MagicMock, patch
 import tkinter as tk
-from src.interface.gui import OficinaApp
+from src_local.interface.gui import OficinaApp
 
 class TestGUISystem(unittest.TestCase):
     def setUp(self):
         self.root = tk.Tk()
         # Mock do Orquestrador para não disparar auditorias reais
-        with patch('src.interface.gui.Orchestrator'):
+        with patch('src_local.interface.gui.Orchestrator'):
             self.app = OficinaApp(self.root)
 
     def test_app_initialization(self):

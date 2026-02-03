@@ -1,5 +1,5 @@
 import unittest
-from src.agents.Kotlin.flow import FlowPersona
+from src_local.agents.Kotlin.flow import FlowPersona
 
 class TestKotlinFlow(unittest.TestCase):
     def setUp(self):

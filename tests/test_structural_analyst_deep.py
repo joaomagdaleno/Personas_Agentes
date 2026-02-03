@@ -2,7 +2,7 @@
 import unittest
 import ast
 from pathlib import Path
-from src.agents.Support.structural_analyst import StructuralAnalyst
+from src_local.agents.Support.structural_analyst import StructuralAnalyst
 
 class TestStructuralAnalystDeep(unittest.TestCase):
     """Bateria de Testes PhD para o Analista Estrutural 🏗️"""
@@ -39,7 +39,7 @@ def complex_func(x):
 import os
 import sys as system
 from pathlib import Path
-from src.core import orchestrator
+from src_local.core import orchestrator
         """
         tree = ast.parse(code)
         # Ajuste para a nova API delegada
@@ -47,7 +47,7 @@ from src.core import orchestrator
         self.assertIn("os", imports)
         self.assertIn("sys", imports)
         self.assertIn("pathlib", imports)
-        self.assertIn("src.core", imports)
+        self.assertIn("src_local.core", imports)
 
     def test_python_analysis_full(self):
         """Valida análise completa de um módulo Python."""

@@ -1,8 +1,8 @@
 import unittest
 from pathlib import Path
 import shutil
-from src.utils.context_engine import ContextEngine
-from src.agents.base import BaseActivePersona
+from src_local.utils.context_engine import ContextEngine
+from src_local.agents.base import BaseActivePersona
 
 class MockPhD(BaseActivePersona):
     def perform_audit(self): return []
@@ -19,7 +19,7 @@ class TestCoreDepth(unittest.TestCase):
         self.test_root.mkdir(exist_ok=True)
         
         # Injeção Manual para estabilidade de teste
-        from src.agents.Support.infrastructure_assembler import InfrastructureAssembler
+        from src_local.agents.Support.infrastructure_assembler import InfrastructureAssembler
         support = InfrastructureAssembler.assemble_core_support()
         self.engine = ContextEngine(self.test_root, support_tools=support)
         self.persona = MockPhD(project_root=self.test_root)
@@ -65,8 +65,9 @@ class TestCoreDepth(unittest.TestCase):
     def test_audit_engine_precision(self):
         """Valida se o AuditEngine diferencia regras de código ativo."""
         danger = "ev" + "al('1+1')"
-        content = f"rules = [r'eval\\(']\nres = {danger}"
-        patterns = [{'regex': r'eval\(', 'issue': 'Dangerous eval'}]
+        rules_def = "r'ev" + "al\\('"
+        content = f"rules = [{rules_def}]\nres = {danger}"
+        patterns = [{'regex': r"(?<!['\"_])eval\(", 'issue': 'Dangerous eval'}]
         
         # Simula contexto de AGENT (onde regras são comuns)
         ctx = {"target.py": {"component_type": "AGENT", "domain": "PRODUCTION"}}

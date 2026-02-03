@@ -1,7 +1,7 @@
 import unittest
 import logging
 from pathlib import Path
-from src.core.orchestrator import Orchestrator
+from src_local.core.orchestrator import Orchestrator
 
 # Telemetria para testes
 logger = logging.getLogger(__name__)

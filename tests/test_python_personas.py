@@ -2,7 +2,7 @@ import unittest
 import importlib.util
 import logging
 from pathlib import Path
-from src.agents.base import BaseActivePersona
+from src_local.agents.base import BaseActivePersona
 
 # Telemetria PhD para Testes
 logger = logging.getLogger(__name__)

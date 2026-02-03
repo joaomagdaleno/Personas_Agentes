@@ -8,14 +8,14 @@ from pathlib import Path
 # Adiciona o diretório raiz ao sys.path para acessar src
 sys.path.append(str(Path(__file__).parent.parent))
 
-from src.core.orchestrator import Orchestrator
-from src.utils.logging_config import configure_logging
+from src_local.core.orchestrator import Orchestrator
+from src_local.utils.logging_config import configure_logging
 
 def main():
     """
-    🕵️ SISTEMA DE PERSONAS AGENTES: AUDITORIA DE TERRITÓRIO ESTRANGEIRO
-    Finalidade: Analisar projetos externos utilizando o poder da junta de PhDs.
-    Uso: python scripts/analyze_external.py [caminho_do_projeto]
+    🕵️ Auditor de Território Estrangeiro.
+    Projeta a consciência coletiva da junta de PhDs sobre projetos externos,
+    mapeando o DNA e a saúde técnica de territórios além das fronteiras do sistema.
     """
     configure_logging()
     logger = logging.getLogger("TerritoryAuditor")

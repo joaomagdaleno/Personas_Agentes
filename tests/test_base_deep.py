@@ -2,7 +2,7 @@
 import unittest
 import time
 from pathlib import Path
-from src.agents.base import BaseActivePersona
+from src_local.agents.base import BaseActivePersona
 
 class MockPersona(BaseActivePersona):
     def perform_audit(self):

@@ -2,7 +2,7 @@ import unittest
 import os
 from pathlib import Path
 import shutil
-from src.agents.base import BaseActivePersona
+from src_local.agents.base import BaseActivePersona
 
 class MockPersona(BaseActivePersona):
     def __init__(self, project_root):
@@ -40,8 +40,8 @@ class TestSelfAwarenessFilter(unittest.TestCase):
         })
         
         patterns = [
-            {'regex': r'eval\(', 'issue': 'Dangerous eval'},
-            {'regex': r'global\s+', 'issue': 'Global variable'}
+            {'regex': r"(?<!['\"_])eval\(", 'issue': 'Dangerous eval'},
+            {'regex': r"(?<!['\"_])global\s+", 'issue': 'Global variable'}
         ]
         
         issues = self.persona._scan_content_for_patterns(file_path, content, patterns)
@@ -57,8 +57,7 @@ class TestSelfAwarenessFilter(unittest.TestCase):
             "identity": {},
             "map": {file_path: {"component_type": "LOGIC", "is_gold_standard": False}}
         })
-        
-        patterns = [{'regex': r'eval\(', 'issue': 'Dangerous eval'}]
+        patterns = [{'regex': r"(?<!['\"_])eval\(", 'issue': 'Dangerous eval'}]
         issues = self.persona._scan_content_for_patterns(file_path, content, patterns)
         self.assertEqual(len(issues), 0, "Deveria ter ignorado padrões dentro de docstrings")
 
@@ -76,7 +75,7 @@ class TestSelfAwarenessFilter(unittest.TestCase):
             "map": {file_path: {"component_type": "AGENT", "domain": "PRODUCTION", "is_gold_standard": False}}
         })
         
-        patterns = [{'regex': r'eval\(', 'issue': 'Dangerous eval'}]
+        patterns = [{'regex': r"(?<!['\"_])eval\(", 'issue': 'Dangerous eval'}]
         issues = self.persona._scan_content_for_patterns(file_path, content, patterns)
         self.assertEqual(len(issues), 1, "Deveria ter detectado eval() ativo na simulação de produção")
 
@@ -92,7 +91,7 @@ class TestSelfAwarenessFilter(unittest.TestCase):
             "map": {file_path: {"component_type": "AGENT", "domain": "PRODUCTION", "is_gold_standard": False}}
         })
         
-        patterns = [{'regex': r'eval\(', 'issue': 'Dangerous eval'}]
+        patterns = [{'regex': r"(?<!['\"_])eval\(", 'issue': 'Dangerous eval'}]
         issues = self.persona._scan_content_for_patterns(file_path, content, patterns)
         self.assertEqual(len(issues), 0, "Deveria ter ignorado o padrão pois ele é uma definição de regra")
 
@@ -110,7 +109,7 @@ class TestSelfAwarenessFilter(unittest.TestCase):
             "map": {file_path: {"component_type": "UTIL", "domain": "PRODUCTION", "is_gold_standard": True}}
         })
         
-        patterns = [{'regex': r'eval\(', 'issue': 'Dangerous eval'}]
+        patterns = [{'regex': r"(?<!['\"_])eval\(", 'issue': 'Dangerous eval'}]
         issues = self.persona._scan_content_for_patterns(file_path, content, patterns)
         self.assertEqual(len(issues), 1, "Deveria ter detectado eval() ativo mesmo em arquivo de referência em domínio de produção")
 

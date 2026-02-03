@@ -1,7 +1,7 @@
 import unittest
 import logging
 from pathlib import Path
-from src.agents.Python.testify import TestifyPersona
+from src_local.agents.Python.testify import TestifyPersona
 
 # Telemetria PhD para Testes
 logger = logging.getLogger(__name__)

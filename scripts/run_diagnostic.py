@@ -1,20 +1,30 @@
 import logging
 import sys
+import os
 from pathlib import Path
 
-# Adiciona o diretório raiz ao sys.path
-sys.path.append(str(Path(__file__).parent.parent))
+# FBI MODE: Força o Python a ler os arquivos que eu estou editando AGORA.
+current_dir = Path(__file__).parent.parent.absolute()
+sys.path.insert(0, str(current_dir))
+os.chdir(str(current_dir))
 
-from src.core.orchestrator import Orchestrator
-from src.utils.logging_config import configure_logging
+# Mata o fantasma do 'src' global
+sys.modules['src'] = None
+
+from src_local.core.orchestrator import Orchestrator
+from src_local.utils.logging_config import configure_logging
 
 def main():
     """
-    PORTAL DE CONSCIÊNCIA: Capaz de auditar este ou qualquer outro repositório.
-    Uso: python run_diagnostic.py [caminho_do_projeto]
+    🌌 Portal de Consciência Sistêmica.
+    O ponto de entrada soberano para o auto-exame e auditoria de territórios.
+    Realiza o bootstrapping do Orquestrador e consolida a visão 360º.
     """
     configure_logging()
     logger = logging.getLogger("SystemMonitor")
+    
+    import time
+    start_time = time.time()
     
     # Se um argumento for passado, usa como alvo. Senão, usa o diretório atual.
     if len(sys.argv) > 1:

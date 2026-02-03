@@ -1,6 +1,6 @@
 import unittest
 from pathlib import Path
-from src.utils.indexer import Indexer
+from src_local.utils.indexer import Indexer
 
 class TestIndexer(unittest.TestCase):
     def setUp(self):

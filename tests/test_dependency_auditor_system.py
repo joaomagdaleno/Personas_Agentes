@@ -1,7 +1,7 @@
 import unittest
 import os
 from pathlib import Path
-from src.utils.dependency_auditor import DependencyAuditor
+from src_local.utils.dependency_auditor import DependencyAuditor
 
 class TestDependencyAuditor(unittest.TestCase):
     def setUp(self):

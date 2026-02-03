@@ -1,5 +1,5 @@
 import unittest
-from src.agents.Flutter.sentinel import SentinelPersona
+from src_local.agents.Flutter.sentinel import SentinelPersona
 
 class TestFlutterSentinel(unittest.TestCase):
     def setUp(self):

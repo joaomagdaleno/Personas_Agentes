@@ -1,5 +1,5 @@
 import unittest
-from src.agents.Kotlin.hermes import HermesPersona
+from src_local.agents.Kotlin.hermes import HermesPersona
 
 class TestKotlinHermes(unittest.TestCase):
     def setUp(self):

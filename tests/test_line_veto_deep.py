@@ -1,6 +1,6 @@
 
 import unittest
-from src.agents.Support.line_veto import LineVeto
+from src_local.agents.Support.line_veto import LineVeto
 
 class TestLineVetoDeep(unittest.TestCase):
     """Bateria de Testes PhD para o Decisor de Veto de Linha 🛡️"""

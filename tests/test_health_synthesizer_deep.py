@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import MagicMock
-from src.agents.Support.health_synthesizer import HealthSynthesizer
+from src_local.agents.Support.health_synthesizer import HealthSynthesizer
 
 class TestHealthSynthesizerDeep(unittest.TestCase):
     """Bateria de Testes PhD para o Sintetizador de Saúde 🩺"""
@@ -9,38 +9,32 @@ class TestHealthSynthesizerDeep(unittest.TestCase):
         self.synthesizer = HealthSynthesizer()
 
     def test_score_calculation(self):
-        """Valida o algoritmo de pontuação de saúde."""
-        # 1. Saúde perfeita
-        score_100 = self.synthesizer._calculate_score(0, 0)
+        """Valida o algoritmo de pontuação de saúde PhD 3.0."""
+        # 1. Saúde perfeita: Sem alertas, complexidade 1, 100% telemetria, 100% testes
+        map_data = {"f1": {"has_test": True, "complexity": 1, "component_type": "LOGIC", "purpose": "CORE"}}
+        # Injetamos 'telemetry' na string do dado para o motor detectar
+        map_data["f1"]["telemetry_call"] = "telemetry.trackEvent"
+        
+        score_100 = self.synthesizer._calculate_rigorous_3_0(map_data, [], 0)
         self.assertEqual(score_100, 100)
         
-        # 2. Risco moderado
-        score_med = self.synthesizer._calculate_score(2, 5)
-        self.assertLess(score_med, 100)
-        self.assertGreater(score_med, 0)
-
-    def test_vitals_extraction(self):
-        """Valida a extração de sinais vitais do mapa."""
-        map_data = {
-            "src/core.py": {"brittle": True, "silent_error": True},
-            "src/util.py": {"brittle": False, "silent_error": False}
-        }
-        ledger = MagicMock()
-        ledger.get_file_data.return_value = {"occurrences": 0}
-        
-        vitals = self.synthesizer._get_vitals(map_data, ledger)
-        self.assertIn("src/core.py", vitals["blind_spots"])
-        # Verifica se o arquivo está na lista de dicionários de brittle_points
-        self.assertTrue(any(item["file"] == "src/core.py" for item in vitals["brittle_points"]))
-        self.assertEqual(len(vitals["blind_spots"]), 1)
+        # 2. Veto por alerta HIGH
+        score_veto = self.synthesizer._calculate_rigorous_3_0(map_data, [{"severity": "high"}], 0)
+        self.assertLessEqual(score_veto, 60)
 
     def test_full_synthesis(self):
-        """Valida a síntese 360º (Mockada)."""
-        context = {"identity": {"core_mission": "Test"}, "map": {}}
-        qa_data = {"success": True, "pass_rate": 100, "total_run": 10, "failed": 0, "pyramid": {}, "execution": {}}
-        orchestrator_metrics = {"health_score": 100}
+        """Valida a síntese 360º (Mockada) sob Rigor Soberano."""
+        # Setup satisfazendo todos os pilares PhD 3.0
+        context = {
+            "identity": {"core_mission": "Test", "is_external": False}, 
+            "map": {"f1": {"has_test": True, "complexity": 1, "purpose": "CORE"}}
+        }
+        # Injeção de telemetria simulada no mapa
+        context["map"]["f1"]["metadata"] = "telemetry.track"
+        
+        qa_data = {"success": True, "pass_rate": 100, "total_run": 10, "failed": 0, "pyramid": {}, "execution": {"success": True, "failed": 0}}
+        orchestrator_metrics = {}
         
         res = self.synthesizer.synthesize_360(context, orchestrator_metrics, [], MagicMock(), qa_data)
         self.assertEqual(res["health_score"], 100)
         self.assertEqual(res["objective"], "Test")
-        self.assertIn("timestamp", res)

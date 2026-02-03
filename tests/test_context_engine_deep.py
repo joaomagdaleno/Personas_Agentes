@@ -3,7 +3,7 @@ import unittest
 import shutil
 import time
 from pathlib import Path
-from src.utils.context_engine import ContextEngine
+from src_local.utils.context_engine import ContextEngine
 
 class TestContextEngineDeep(unittest.TestCase):
     """Bateria de Testes PhD para o Cérebro Semântico (ContextEngine) 🧠"""
@@ -18,7 +18,7 @@ class TestContextEngineDeep(unittest.TestCase):
         (self.test_root / "tests").mkdir(exist_ok=True)
         
         # Injeção Manual para estabilidade de teste
-        from src.agents.Support.infrastructure_assembler import InfrastructureAssembler
+        from src_local.agents.Support.infrastructure_assembler import InfrastructureAssembler
         support = InfrastructureAssembler.assemble_core_support()
         self.engine = ContextEngine(self.test_root, support_tools=support)
 

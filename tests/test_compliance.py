@@ -1,6 +1,6 @@
 import unittest
 from decimal import Decimal
-from src.utils.compliance_standard import ComplianceStandard
+from src_local.utils.compliance_standard import ComplianceStandard
 
 class TestComplianceStandard(unittest.TestCase):
     """Garante que o modelo de conformidade está operando conforme o DNA PhD."""

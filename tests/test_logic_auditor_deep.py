@@ -1,6 +1,6 @@
 import unittest
 import ast
-from src.agents.Support.logic_auditor import LogicAuditor
+from src_local.agents.Support.logic_auditor import LogicAuditor
 
 class TestLogicAuditorDeep(unittest.TestCase):
     """Bateria de Testes PhD para a Integridade Lógica 🧠"""

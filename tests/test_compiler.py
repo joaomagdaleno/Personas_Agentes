@@ -1,7 +1,7 @@
 import unittest
 import logging
 from pathlib import Path
-from src.core.compiler import Compiler
+from src_local.core.compiler import Compiler
 
 # Telemetria PhD para Testes
 logger = logging.getLogger(__name__)

@@ -1,17 +1,17 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from src.interface.cli import main
+from src_local.interface.cli import main
 
 class TestCLISystem(unittest.TestCase):
-    @patch('src.interface.cli.Orchestrator')
-    @patch('src.interface.cli.logger')
+    @patch('src_local.interface.cli.Orchestrator')
+    @patch('src_local.interface.cli.logger')
     @patch('sys.argv', ['cli.py'])
     def test_cli_no_args(self, mock_logger, mock_orch):
         # Apenas garante que não crasha sem argumentos
         main()
         mock_logger.info.assert_any_call("🏛️ Workshop PhD CLI: Operacional")
 
-    @patch('src.interface.cli.Orchestrator')
+    @patch('src_local.interface.cli.Orchestrator')
     @patch('sys.argv', ['cli.py', 'audit'])
     def test_cli_audit_command(self, mock_orch_class):
         mock_instance = mock_orch_class.return_value

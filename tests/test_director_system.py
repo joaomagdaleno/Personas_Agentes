@@ -1,5 +1,5 @@
 import unittest
-from src.agents.director import DirectorPersona
+from src_local.agents.director import DirectorPersona
 
 class TestDirectorPersona(unittest.TestCase):
     def setUp(self):

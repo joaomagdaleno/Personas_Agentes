@@ -1,11 +1,11 @@
 import unittest
 from unittest.mock import MagicMock, patch
 from pathlib import Path
-from src.utils.dependency_auditor import DependencyAuditor
+from src_local.utils.dependency_auditor import DependencyAuditor
 
 class TestSyncEngineMocks(unittest.TestCase):
     def setUp(self):
-        self.project_root = Path("mock_root")
+        self.project_root = Path("Personas_Agentes_Mock")
         self.auditor = DependencyAuditor(self.project_root)
         if self.auditor.lock_file.exists(): self.auditor.lock_file.unlink()
 

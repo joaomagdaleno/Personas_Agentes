@@ -2,8 +2,8 @@ import unittest
 import json
 import shutil
 from pathlib import Path
-from src.utils.stability_ledger import StabilityLedger
-from src.utils.context_engine import ContextEngine
+from src_local.utils.stability_ledger import StabilityLedger
+from src_local.utils.context_engine import ContextEngine
 
 class TestSystemIntelligence(unittest.TestCase):
     """

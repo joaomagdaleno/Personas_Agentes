@@ -4,7 +4,7 @@ import shutil
 import os
 import logging
 from pathlib import Path
-from src.utils.dependency_auditor import DependencyAuditor
+from src_local.utils.dependency_auditor import DependencyAuditor
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +15,7 @@ class TestSovereignSyncForensics(unittest.TestCase):
     """
 
     def setUp(self):
-        self.test_root = Path("forensic_env_" + str(os.getpid()))
+        self.test_root = Path("Personas_Agentes_Forensics_" + str(os.getpid()))
         self.agent_dir = self.test_root / ".agent" / "skills"
         self.upstream_dir = self.test_root / "upstream_repo"
         self.test_root.mkdir(exist_ok=True)

@@ -1,6 +1,6 @@
 import unittest
 from pathlib import Path
-from src.utils.context_engine import ContextEngine
+from src_local.utils.context_engine import ContextEngine
 
 class TestContextEngine(unittest.TestCase):
     def setUp(self):
@@ -8,7 +8,7 @@ class TestContextEngine(unittest.TestCase):
         self.test_root.mkdir(exist_ok=True)
         
         # Injeção Manual para estabilidade de teste
-        from src.agents.Support.infrastructure_assembler import InfrastructureAssembler
+        from src_local.agents.Support.infrastructure_assembler import InfrastructureAssembler
         support = InfrastructureAssembler.assemble_core_support()
         self.engine = ContextEngine(self.test_root, support_tools=support)
 

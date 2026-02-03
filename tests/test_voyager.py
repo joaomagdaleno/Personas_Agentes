@@ -1,7 +1,7 @@
 import unittest
 import logging
 from pathlib import Path
-from src.agents.Python.voyager import VoyagerPersona
+from src_local.agents.Python.voyager import VoyagerPersona
 
 # Telemetria PhD para Testes
 logger = logging.getLogger(__name__)

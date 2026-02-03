@@ -3,7 +3,7 @@ import tempfile
 import shutil
 import json
 from pathlib import Path
-from src.utils.stability_ledger import StabilityLedger
+from src_local.utils.stability_ledger import StabilityLedger
 
 class TestStabilityLedgerDeep(unittest.TestCase):
     """Bateria de Testes PhD para a Memória de Estabilidade 🏥"""

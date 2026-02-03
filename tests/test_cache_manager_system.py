@@ -1,7 +1,7 @@
 import unittest
 import json
 from pathlib import Path
-from src.utils.cache_manager import CacheManager
+from src_local.utils.cache_manager import CacheManager
 
 class TestCacheManager(unittest.TestCase):
     def setUp(self):

@@ -1,5 +1,5 @@
 import unittest
-from src.agents.Support.battle_plan_formatter import BattlePlanFormatter
+from src_local.agents.Support.battle_plan_formatter import BattlePlanFormatter
 
 class TestBattlePlanFormatterDeep(unittest.TestCase):
     """Bateria de Testes PhD para o Formatador de Missão 🎯"""

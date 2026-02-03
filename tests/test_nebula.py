@@ -1,7 +1,7 @@
 import unittest
 import logging
 from pathlib import Path
-from src.agents.Python.nebula import NebulaPersona
+from src_local.agents.Python.nebula import NebulaPersona
 
 # Telemetria PhD para Testes
 logger = logging.getLogger(__name__)

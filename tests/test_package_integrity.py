@@ -7,13 +7,13 @@ class TestPackageIntegrity(unittest.TestCase):
     def test_imports(self):
         modules = [
             'src',
-            'src.agents',
-            'src.agents.Flutter',
-            'src.agents.Kotlin',
-            'src.agents.Python',
-            'src.core',
-            'src.interface',
-            'src.utils'
+            'src_local.agents',
+            'src_local.agents.Flutter',
+            'src_local.agents.Kotlin',
+            'src_local.agents.Python',
+            'src_local.core',
+            'src_local.interface',
+            'src_local.utils'
         ]
         for mod in modules:
             with self.subTest(module=mod):

@@ -1,5 +1,5 @@
 import unittest
-from src.agents.Support.source_code_parser import SourceCodeParser
+from src_local.agents.Support.source_code_parser import SourceCodeParser
 
 class TestSourceCodeParserDeep(unittest.TestCase):
     """Bateria de Testes PhD para o Motor de Parsing 🔍"""

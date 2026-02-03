@@ -2,7 +2,7 @@ import unittest
 from pathlib import Path
 import shutil
 import tempfile
-from src.core.validator import SystemValidator
+from src_local.core.validator import SystemValidator
 
 class TestValidatorDeep(unittest.TestCase):
     """Bateria de Testes PhD para o Validador de Integridade 🛡️"""

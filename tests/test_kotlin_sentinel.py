@@ -1,5 +1,5 @@
 import unittest
-from src.agents.Kotlin.sentinel import SentinelPersona
+from src_local.agents.Kotlin.sentinel import SentinelPersona
 
 class TestKotlinSentinel(unittest.TestCase):
     def setUp(self):

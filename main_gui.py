@@ -2,8 +2,8 @@ import tkinter as tk
 from tkinter import ttk, scrolledtext, messagebox
 import logging
 from pathlib import Path
-from src.core.orchestrator import Orchestrator
-from src.utils.logging_config import configure_logging
+from src_local.core.orchestrator import Orchestrator
+from src_local.utils.logging_config import configure_logging
 
 # Injeção de Telemetria PhD (Usando Logger estruturado)
 configure_logging()

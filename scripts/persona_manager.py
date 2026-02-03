@@ -7,7 +7,7 @@ Soberania: ACTIVE-SCRIPT.
 import logging
 import time
 from pathlib import Path
-from src.utils.logging_config import configure_logging
+from src_local.utils.logging_config import configure_logging
 
 # Injeção de Telemetria PhD
 configure_logging()
@@ -68,10 +68,6 @@ class PersonaManager:
             return validated_count
 
 if __name__ == "__main__":
-    # Ponto de entrada autônomo para manutenção de identidades
+    # Ponto de entrada autônomo para manutenção de identidades soberanas
     manager = PersonaManager(Path.cwd())
     manager.validate_census()
-
-if __name__ == "__main__":
-    manager = PersonaManager(Path.cwd())
-    manager.update_templates()
