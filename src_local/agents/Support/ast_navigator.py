@@ -19,21 +19,22 @@ class ASTNavigator:
         
         # Chamada direta: eval()
         if isinstance(node.func, ast.Name):
-            return hasattr(node.func, 'id') and node.func.id in names
+            return node.func.id in names
             
         # Chamada de atributo: logger.info()
         if isinstance(node.func, ast.Attribute):
-            return hasattr(node.func, 'attr') and node.func.attr in names
+            return node.func.attr in names
             
         return False
 
-    def is_assignment_to(self, node, target_substrings):
-        """Verifica se o nó é uma atribuição para uma variável contendo substrings alvo."""
-        if not isinstance(node, ast.Assign): return False
-        
-        for target in node.targets:
-            if isinstance(target, ast.Name):
-                if any(x in target.id for x in target_substrings): return True
+    def is_in_dict_value(self, node, target_node, key_names):
+        """Verifica se target_node é valor em um dicionário cuja chave tem um dos nomes listados."""
+        if not isinstance(node, ast.Dict): return False
+        for k, v in zip(node.keys, node.values):
+            if v and self.is_descendant(target_node, v):
+                if isinstance(k, (ast.Constant, ast.Str)): 
+                    key_val = getattr(k, "value", getattr(k, "s", ""))
+                    if key_val in key_names: return True
         return False
 
     def check_safety_rules(self, node, tree):
@@ -61,7 +62,7 @@ class ASTNavigator:
     def _is_inside_assertion(self, target_node, tree):
         for node in ast.walk(tree):
             if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
-                if hasattr(node.func, 'attr') and node.func.attr.startswith("assert"):
+                if node.func.attr.startswith("assert"):
                     for arg in node.args:
                         if self.is_descendant(target_node, arg): return True
         return False

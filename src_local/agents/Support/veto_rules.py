@@ -45,13 +45,9 @@ class VetoRules:
 
     def is_rule_definition(self, line, pattern, ctx, heuristic):
         if not ctx.get("is_technical"): return False
-
-        keywords = ["rules =", "patterns =", "audit_rules =", "regex =", "diretriz:", "silent_pattern =", "brittle_pattern ="]
-        if any(kw in line.lower() for kw in keywords): return True
-
-        if heuristic.is_strategic_phrase(line): return True
-
-        regex_val = pattern.get('regex', '')
-        if regex_val and any(q + regex_val + q in line for q in ["'", '"']): return True
-
-        return heuristic.is_obfuscated_vulnerability(line)
+        
+        kw_match = any(kw in line.lower() for kw in ["rules =", "patterns =", "regex =", "diretriz:"])
+        strat_match = heuristic.is_strategic_phrase(line) or heuristic.is_obfuscated_vulnerability(line)
+        regex_match = any(q + pattern.get('regex', '___') + q in line for q in ["'", '"'])
+        
+        return kw_match or strat_match or regex_match
