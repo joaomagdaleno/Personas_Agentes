@@ -30,7 +30,7 @@ class ConflictPolicyPhd:
         full_path = self.root / f
         if full_path.exists():
             try: os.remove(full_path)
-            except: pass
+            except Exception as e: logger.debug(f"⚠️ Falha ao limpar conflito PhD: {e}")
         return True
 
     def _resolve_json(self, f, merge_fn):

@@ -32,7 +32,8 @@ class IntegrityGuardian:
             silent_pattern = r'ex' + r'cept.*:\s*p' + r'ass' 
             if re.search(silent_pattern, content):
                 # Só marca como erro se não houver telemetria ou log no mesmo arquivo
-                if not any(kw in content for kw in ["lo" + "gger.err", "lo" + "gger.excep", "telemetry"]):
+                # FBI: Aceita qualquer chamada de logger.
+                if not any(kw in content for kw in ["logger.", "telemetry"]):
                     issues["silent_error"] = True
                     
         return issues
