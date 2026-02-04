@@ -16,8 +16,9 @@ class SentinelPersona(BaseActivePersona):
         logger.info(f"[{self.name}] Analisando Segurança...")
         
         audit_rules = [
-            {'regex': r"(?<!['\"_])eval\(", 'issue': 'RCE: Execução dinâmica detectada.', 'severity': 'critical'},
-            {'regex': r"(?<!['\"_])shell=True", 'issue': 'Injeção: Shell ativo detectado.', 'severity': 'critical'}
+            {'regex': r"(?<!['\"_])eval\(", 'issue': 'RCE: Execução dinâmica detectada.', 'severity': 'critical', 'skip_in_tests': False}, # Validado via AST agora
+            {'regex': r"(?<!['\"_])shell=True", 'issue': 'Injeção: Shell ativo detectado.', 'severity': 'critical'},
+            {'regex': r"(?i)(api_key|secret|token)\s*=\s*['\"][A-Za-z0-9_\-]{20,}['\"]", 'issue': 'Segurança: Segredo hardcoded detectado.', 'severity': 'critical'}
         ]
         
         results = self.find_patterns(('.py',), audit_rules)
@@ -25,7 +26,7 @@ class SentinelPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw1, kw2 = "ev" + "al", "sh" + "ell=True"
+        kw1, kw2 = "eval", "shell=True"
         if (kw1 in content or kw2 in content) and "rules =" not in content:
             return f"Vulnerabilidade: O objetivo '{objective}' exige integridade. Em '{file}', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'."
         return None

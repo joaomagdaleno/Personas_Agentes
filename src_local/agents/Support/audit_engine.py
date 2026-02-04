@@ -39,6 +39,10 @@ class AuditEngine:
         issues = []
         ctx = self._build_scan_context(content, context_data, agent_name, file)
         
+        # Lazy load do auditor lógico para validação AST
+        from src_local.agents.Support.logic_auditor import LogicAuditor
+        logic_auditor = LogicAuditor()
+
         for p in patterns:
             ctx["in_docstring"] = False
             for i, line in enumerate(ctx["lines"]):
@@ -46,6 +50,14 @@ class AuditEngine:
                 
                 if re.search(p['regex'], line, re.IGNORECASE):
                     if not self._is_log_statement(ctx["lines"], i):
+                        
+                        # 🧠 Smart Understanding: Se for arquivo Python e Padrão Crítico (eval/exec)
+                        # delega para análise AST confirmar se é seguro (dentro de assert/teste).
+                        if file.endswith(".py") and ("eval" in p['regex'] or "shell" in p['regex'] or "global" in p['regex']):
+                             if logic_auditor.is_interaction_safe(content, i + 1, p['regex']): # Pass regex substring as risk type proxy
+                                 # logger.debug(f"🧠 [AuditEngine] Risco validado como SEGURO via AST em {file}:{i+1}")
+                                 continue
+
                         issues.append(self._create_issue_entry(file, i, p, ctx))
         
         duration = time.time() - start_scan
@@ -60,11 +72,12 @@ class AuditEngine:
         Diferencia domínios de produção, testes e ferramentas técnicas.
         """
         info = context_data.get(file, {})
+        is_test = info.get("component_type") == "TEST" or "test" in file.lower()
         return {
             "domain": info.get("domain", "PRODUCTION"),
             "is_technical": info.get("component_type") == "AGENT" or info.get("is_gold_standard"),
             "lines": content.splitlines(), "in_docstring": False, "agent_name": agent_name,
-            "file_path": file
+            "file_path": file, "is_test": is_test
         }
 
     def _is_log_statement(self, lines, index):

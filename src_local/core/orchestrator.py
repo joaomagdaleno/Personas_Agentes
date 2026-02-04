@@ -76,6 +76,10 @@ class Orchestrator:
         context_v1 = self.context_engine.analyze_project()
         initial_findings = self.run_strategic_audit(context_v1, include_history=False)
         
+        # 🕵️ Análise de Ofuscação (Novo Agente)
+        obfuscation_findings = self._run_obfuscation_scan()
+        initial_findings.extend(obfuscation_findings)
+        
         audit_map = self.strategist.plan_targeted_verification(initial_findings)
         internal_health = self.core_validator.verify_core_health(self.project_root)
         
@@ -198,3 +202,33 @@ class Orchestrator:
         if changed: res.extend(agent.perform_audit())
         res.extend(agent.perform_strategic_audit(objective))
         return res
+
+    def _run_obfuscation_scan(self):
+        """
+        🕵️ Executa a varredura do ObfuscationHunter em todo o projeto.
+        """
+        from src_local.agents.Support.obfuscation_hunter import ObfuscationHunter
+        hunter = ObfuscationHunter()
+        findings = []
+        
+        logger.info("🕵️ Iniciando caça por ofuscação de código...")
+        
+        # Varre todos os arquivos Python mapeados
+        for rel_path, data in self.context_engine.map.items():
+            if not rel_path.endswith(".py"): continue
+            
+            full_path = self.project_root / rel_path
+            content = self.context_engine.analyst.read_project_file(full_path)
+            
+            if content:
+                issues = hunter.scan_file(str(full_path), content)
+                for i in issues:
+                    findings.append({
+                        "file": rel_path,
+                        "line": i["line"],
+                        "issue": f"Ofuscação Detectada: '{i['keyword']}' oculto via concatenação.",
+                        "severity": "CRITICAL",
+                        "context": "ObfuscationHunter",
+                        "snippet": f"Reconstrução: {i['reconstruction']}"
+                    })
+        return findings
