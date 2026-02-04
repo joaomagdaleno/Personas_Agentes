@@ -48,36 +48,20 @@ class ContextEngine:
         """
         🔭 Varre o projeto delegando a inteligência para os assistentes técnicos.
         """
-        logger.info("🧠 Mapeando topologia do projeto (Soberania Isolada)...")
+        from src_local.utils.file_system_scanner import FileSystemScanner
+        scanner = FileSystemScanner(self.project_root, self.analyst)
+        
+        logger.info("🧠 Mapeando topologia...")
         self.project_identity = self._discover_identity()
         self.map = {}
-        
-        search_dirs = self._get_search_directories()
-        self.all_files_index = [p.name.lower() for p in self.project_root.rglob('*') if p.is_file()]
+        self.all_files_index = scanner.scan_all_filenames()
 
-        # Processamento sequencial de arquivos
-        for s_dir in search_dirs:
-            self._scan_directory(s_dir)
+        for path in scanner.get_analyzable_files():
+            self._register_file(path)
         
         self._build_dependency_map()
-        logger.info(f"✅ DNA Processado: {len(self.map)} componentes identificados.")
+        logger.info(f"✅ DNA Processado: {len(self.map)} componentes.")
         return {"identity": self.project_identity, "map": self.map}
-
-    def _get_search_directories(self):
-        src_dir = self.project_root / "src_local"
-        dirs = [self.project_root]
-        if src_dir.exists(): dirs.append(src_dir)
-        return dirs
-
-    def _scan_directory(self, s_dir):
-        for path in s_dir.rglob('*'):
-            if self._should_analyze(path):
-                self._register_file(path)
-
-    def _should_analyze(self, path):
-        if self.analyst.should_ignore(path) and "src_local" not in str(path): return False
-        if not self.analyst.is_analyable(path): return False
-        return True
 
     def _register_file(self, path):
         try:

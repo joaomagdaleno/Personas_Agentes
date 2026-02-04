@@ -64,83 +64,9 @@ class Orchestrator:
         return self._build_audit_report_queue(findings, include_history)
 
     def generate_full_diagnostic(self):
-        """Protocolo Soberano de Verdade Única: Reset -> Discovery -> Targeted Verification."""
-        self._reset_state()
-        
-        # 1. Discovery Phase
-        context_v1 = self._execute_discovery()
-        initial_findings = self.run_strategic_audit(context_v1, include_history=False)
-        
-        # 🕵️ Análise de Ofuscação
-        initial_findings.extend(self._run_obfuscation_scan())
-        
-        # 2. Targeted Vefification
-        audit_map = self.strategist.plan_targeted_verification(initial_findings)
-        internal_health = self.core_validator.verify_core_health(self.project_root)
-        
-        post_findings = self._run_targeted_verification(audit_map) if initial_findings else []
-        all_raw = initial_findings + post_findings
-        
-        # 3. Deduplication & Finalization
-        all_findings = self._deduplicate_findings(all_raw)
-        
-        return self._finalize_report(context_v1, internal_health, all_findings)
-
-    def _reset_state(self):
-        self.job_queue = []
-        self.metrics["all_findings"] = []
-        if not self.personas: PersonaLoader.mobilize_all(self.project_root, self)
-
-    def _execute_discovery(self):
-        return self.context_engine.analyze_project()
-
-    def _deduplicate_findings(self, all_raw):
-        """FBI MODE: Deduplicação por coordenada absoluta."""
-        import hashlib
-        coordinate_map = {}
-        severity_rank = {"CRITICAL": 5, "HIGH": 4, "MEDIUM": 3, "LOW": 2, "STRATEGIC": 1, "HEALED": 0}
-        
-        for f in all_raw:
-            if not isinstance(f, dict):
-                f_hash = hashlib.md5(str(f).encode('utf-8')).hexdigest()
-                if f_hash not in coordinate_map: coordinate_map[f_hash] = f
-                continue
-            
-            coord = self._get_finding_coordinate(f)
-            if coord not in coordinate_map:
-                coordinate_map[coord] = f
-            else:
-                existing = coordinate_map[coord]
-                if isinstance(existing, dict):
-                    f_sev = f.get('severity', 'MEDIUM').upper()
-                    e_sev = existing.get('severity', 'MEDIUM').upper()
-                    if severity_rank.get(f_sev, 3) > severity_rank.get(e_sev, 3):
-                        coordinate_map[coord] = f
-                        
-        return list(coordinate_map.values())
-
-    def _get_finding_coordinate(self, finding):
-        raw_path = finding.get('file', 'global')
-        try:
-            clean_path = str(Path(raw_path).as_posix()).replace("\\", "/")
-        except:
-            clean_path = raw_path
-        return (clean_path, finding.get('line', 0), finding.get('issue'))
-
-    def _finalize_report(self, context, internal_health, all_findings):
-        health_snapshot = self.get_system_health_360(context, internal_health, all_findings)
-        self.synthesizer.trigger_reflexes(health_snapshot, self.personas, all_findings, self.dependency_auditor)
-        
-        self.cache_manager.save()
-        report = self.director.format_360_report(health_snapshot, all_findings)
-        
-        report_file = self.project_root / "auto_healing_VERIFIED.md"
-        with open(report_file, "w", encoding="utf-8") as f:
-            f.write(report)
-            f.flush()
-            os.fsync(f.fileno())
-            
-        return report_file
+        """Delegado para DiagnosticPipeline."""
+        from src_local.core.diagnostic_pipeline import DiagnosticPipeline
+        return DiagnosticPipeline(self).execute()
 
     def get_system_health_360(self, context, internal_health, all_findings=None):
         """Sintetiza a saúde sistêmica via delegação."""
