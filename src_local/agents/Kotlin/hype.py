@@ -31,7 +31,7 @@ class HypePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw = "com" + ".example"
+        kw = "com.example"
         if kw in content and "rules =" not in content:
             return f"Invisibilidade de Produto: O objetivo '{objective}' exige escala. Em '{file}', identificadores amadores barram a expansão da 'Orquestração de Inteligência Artificial'."
         return None

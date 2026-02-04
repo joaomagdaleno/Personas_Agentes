@@ -16,7 +16,7 @@ class HermesPersona(BaseActivePersona):
         logger.info(f"[{self.name}] Analisando Cadeia de Suprimentos...")
         
         audit_rules = [
-            {'regex': r"DEB" + r"UG\s*=\s*True", 'issue': 'Ambiente: DEBUG ativo em produção.', 'severity': 'high'}
+            {'regex': 'DEBUG\\s*=\\s*True', 'issue': 'Ambiente: DEBUG ativo em produção.', 'severity': 'high'}
         ]
         
         results = self.find_patterns(('.py', '.yaml'), audit_rules)
@@ -24,7 +24,7 @@ class HermesPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "DEB" + "UG = True" in content:
+        if 'DEBUG = True' in content:
             return f"Vulnerabilidade de Ambiente: O objetivo '{objective}' exige isolamento. Em '{file}', o debug ativo expõe a 'Orquestração de Inteligência Artificial'."
         return None
 

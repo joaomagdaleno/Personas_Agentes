@@ -31,7 +31,7 @@ class PalettePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw = "content" + "Description = null"
+        kw = 'contentDescription = null'
         if kw in content and "rules =" not in content:
             return f"Fragmentação de UX: O objetivo '{objective}' exige inclusão. Em '{file}', a falha semântica impede a 'Orquestração de Inteligência Artificial' de ser universal."
         return None

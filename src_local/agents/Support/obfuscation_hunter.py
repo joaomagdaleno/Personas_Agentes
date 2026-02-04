@@ -20,7 +20,15 @@ class ObfuscationHunter:
     
     DANGEROUS_KEYWORDS = {
         "eval", "exec", "shell=True", "system", "popen", 
-        "importlib", "__import__", "subprocess"
+        "importlib", "__import__", "subprocess", "pass", "except", 
+        "global", "asyncio", "run", "api_key", "AKIA", "Untitled", 
+        "DEBUG", "open", "encoding", "execute", "storePassword", 
+        "contentDescription", "InAppPurchase", "request", 
+        "findViewById", "ANDROID_ID", "Double", "price", "dynamic", 
+        "callbackFlow", "awaitClose", "animate", "http", "debuggable", 
+        "Activity", "ViewModel", "catch", "Exception", "src", "mlkit", 
+        "logEvent", "var", "text", "AppLocalizations", "socket", 
+        "print", "logger", "telemetry"
     }
 
     def scan_file(self, file_path: str, content: str) -> list:

@@ -31,7 +31,7 @@ class StreamPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw1, kw2 = "callback" + "Flow", "await" + "Close"
+        kw1, kw2 = 'callbackFlow', 'awaitClose'
         if kw1 in content and kw2 not in content and "rules =" not in content:
             return f"Instabilidade Sistêmica: O objetivo '{objective}' exige resiliência. Em '{file}', o vazamento de listeners paralisa o sistema de 'Orquestração de Inteligência Artificial'."
         return None

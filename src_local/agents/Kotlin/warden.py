@@ -31,7 +31,7 @@ class WardenPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw = "ANDRO" + "ID_ID"
+        kw = 'ANDROID_ID'
         if kw in content and "rules =" not in content:
             return f"Risco Jurídico: O objetivo '{objective}' exige conformidade legal. Em '{file}', o rastreamento via ID persistente viola a LGPD no sistema de 'Orquestração de Inteligência Artificial'."
         return None

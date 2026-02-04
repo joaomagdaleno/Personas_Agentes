@@ -29,7 +29,7 @@ class GlobePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "op" + "en(" in content and "encod" + "ing" not in content:
+        if 'open(' in content and 'encoding' not in content:
             return f"Risco de Localização: O objetivo '{objective}' exige portabilidade global. Em '{file}', o uso de open() sem encoding UTF-8 pode corromper dados."
         return None
 

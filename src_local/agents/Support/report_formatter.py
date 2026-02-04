@@ -104,3 +104,20 @@ class ReportFormatter:
     def format_battle_plan(self, audit_results):
         """Delega a formatação densa para o BattlePlanFormatter."""
         return self.battle_plan_formatter.format(audit_results)
+
+    def format_obfuscation_zone(self, findings):
+        """
+        🕵️ Zona de Higiene de Código.
+        Destaca tentativas de ocultação de lógica.
+        """
+        res = "## 🕵️ CODEX OBSCURUS: Análise de Ofuscação\n"
+        res += "> **Política de Código Limpo:** Lógica oculta é lógica suspeita. A 'Orquestração' exige transparência.\n\n"
+        
+        for f in findings:
+            res += f"### 🎭 {f['file']}:{f['line']}\n"
+            res += f"- **Detecção:** {f['issue']}\n"
+            if 'snippet' in f:
+                res += f"- **Evidência:** `{f['snippet']}`\n\n"
+        
+        res += "---\n"
+        return res

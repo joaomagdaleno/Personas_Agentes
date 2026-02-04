@@ -24,7 +24,7 @@ class NeuralPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw = "api" + "_key"
+        kw = 'api_key'
         if kw in content.lower() and "rules =" not in content:
             return f"Risco de Autonomia: O objetivo '{objective}' exige segurança de tokens. Em '{file}', a exposição de chaves compromete a 'Orquestração de Inteligência Artificial'."
         return None

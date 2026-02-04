@@ -24,7 +24,7 @@ class ScalePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw = "glob" + "al "
+        kw = 'global '
         if kw in content and "rules =" not in content:
             return f"Risco de Escalabilidade: O objetivo '{objective}' exige modularidade. Em '{file}', a poluição de estado impede a 'Orquestração de Inteligência Artificial'."
         return None

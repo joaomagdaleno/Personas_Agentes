@@ -24,7 +24,7 @@ class StreamPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw = "asyncio" + ".run"
+        kw = 'asyncio.run'
         if kw in content and "rules =" not in content:
             return f"Conflito de Fluxo: O objetivo '{objective}' exige reatividade. Em '{file}', bloqueios no event loop paralisam a 'Orquestração de Inteligência Artificial'."
         return None

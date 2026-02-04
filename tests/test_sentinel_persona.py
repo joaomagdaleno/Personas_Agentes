@@ -10,7 +10,7 @@ class TestSentinelPersona(unittest.TestCase):
     def test_security_audit_logic(self):
         """Valida a detecção de vulnerabilidades de injeção."""
         # Ofuscação de proteção para o próprio Sentinel não se auto-detectar
-        danger_exec = "ev" + "al('1+1')"
+        danger_exec = "eval('1+1')"
         content = f"def run(): {danger_exec}"
         
         self.agent.set_context({

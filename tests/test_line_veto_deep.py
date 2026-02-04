@@ -29,7 +29,7 @@ class TestLineVetoDeep(unittest.TestCase):
         """Valida isolamento de domínio entre EXPERIMENTAÇÃO e PRODUÇÃO."""
         pattern_low = {"severity": "low"}
         pattern_crit = {"severity": "critical"}
-        danger = "ev" + "al(x)"
+        danger = 'eval(x)'
         
         # Em Experimentação, severidade baixa é vetada (ignora alerta)
         ctx_exp = {"domain": "EXPERIMENTATION"}

@@ -31,7 +31,7 @@ class VaultPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw = "InApp" + "Purchase"
+        kw = 'InAppPurchase'
         if kw in content and "rules =" not in content:
             return f"Risco de Sustentabilidade: O objetivo '{objective}' exige fluxo de caixa íntegro. Em '{file}', falhas de faturamento ameaçam a economia da 'Orquestração de Inteligência Artificial'."
         return None

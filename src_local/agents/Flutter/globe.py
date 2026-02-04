@@ -24,7 +24,7 @@ class GlobePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "te" + "xt:" in content and "AppLocaliz" + "ations" not in content:
+        if 'text:' in content and 'AppLocalizations' not in content:
             return f"Débito de i18n: O objetivo '{objective}' exige alcance global. Em '{file}', strings hardcoded impedem a localização automática."
         return None
 

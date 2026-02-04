@@ -31,7 +31,7 @@ class VoyagerPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw = "dyna" + "mic"
+        kw = 'dynamic'
         if kw in content and "rules =" not in content:
             return f"Débito Tecnológico: O objetivo '{objective}' exige agilidade. Em '{file}', a tipagem fraca retarda a evolução da 'Orquestração de Inteligência Artificial'."
         return None

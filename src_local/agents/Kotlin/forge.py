@@ -39,7 +39,7 @@ class ForgePersona(BaseActivePersona):
 
     def validate_code_safety(self, code: str) -> bool:
         """Veto Ativo: Recusa código Kotlin com fragilidades críticas."""
-        fragilities = ["ev" + "al(", "sh" + "ell=True", "ex" + "ec("]
+        fragilities = ['eval(', 'shell=True', 'exec(']
         for f in fragilities:
             if f in code:
                 logger.error(f"🚨 [Forge] VETO (Kotlin): Fragilidade '{f}' detectada. Operação abortada.")

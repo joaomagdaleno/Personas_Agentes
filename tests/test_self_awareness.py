@@ -64,7 +64,7 @@ class TestSelfAwarenessFilter(unittest.TestCase):
     def test_simulation_of_active_code_in_agent(self):
         """SIMULAÇÃO CONTROLADA: Testa se código ATIVO em agentes é auditado."""
         file_path = "src/agents/simulation_agent.py"
-        danger = "ev" + "al('1+1')"
+        danger = "eval('1+1')"
         # O eval() aqui é um 'alvo de teste' para validar a detecção
         content = f"def simulation_run():\n    # SIMULATING VULNERABILITY FOR TESTING\n    res = {danger}\n    return res"
         (self.test_root / "src/agents").mkdir(parents=True, exist_ok=True)
@@ -98,7 +98,7 @@ class TestSelfAwarenessFilter(unittest.TestCase):
     def test_simulation_of_gold_standard_active_code(self):
         """SIMULAÇÃO CONTROLADA: Testa se código ATIVO em arquivos GOLD_STANDARD é auditado."""
         file_path = "src/utils/compliance_standard.py"
-        danger = "ev" + "al('system_call()')"
+        danger = "eval('system_call()')"
         # Simulação de código que viola o próprio padrão
         content = f"def simulation_execute():\n    # DANGEROUS CODE IN REFERENCE\n    {danger}"
         (self.test_root / "src/utils").mkdir(parents=True, exist_ok=True)

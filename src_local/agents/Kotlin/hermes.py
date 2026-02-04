@@ -31,7 +31,7 @@ class HermesPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw = "store" + "Password"
+        kw = 'storePassword'
         if kw in content and "rules =" not in content:
             return f"Risco de Integridade: O objetivo '{objective}' exige artefatos verificados. Em '{file}', segredos expostos permitem ataques à 'Orquestração de Inteligência Artificial'."
         return None

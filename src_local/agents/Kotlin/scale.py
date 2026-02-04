@@ -31,7 +31,7 @@ class ScalePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw1, kw2 = "Activ" + "ity", "View" + "Model"
+        kw1, kw2 = 'Activity', 'ViewModel'
         if kw1 in content and kw2 not in content and "rules =" not in content:
             return f"Fragilidade Estrutural: O objetivo '{objective}' exige Clean Architecture. Em '{file}', o acoplamento de responsabilidades impede o teste isolado da 'Orquestração de Inteligência Artificial'."
         return None

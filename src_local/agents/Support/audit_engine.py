@@ -88,7 +88,7 @@ class AuditEngine:
         line = lines[index]
         lookahead = lines[index+1] if index + 1 < len(lines) else ""
         context_block = line + lookahead
-        return "log" + "ger.er" + "ror" in context_block or "log" + "ger.exce" + "ption" in context_block
+        return "logger.error" in context_block or "logger.exception" in context_block
 
     def _create_issue_entry(self, file, index, pattern, ctx):
         """

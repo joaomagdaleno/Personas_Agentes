@@ -21,7 +21,7 @@ class NebulaPersona(BaseActivePersona):
         logger.info(f"[{self.name}] Analisando Infraestrutura Cloud...")
         
         # Ofuscação de regra para evitar auto-detecção Sentinel
-        kw = "AK" + "IA"
+        kw = 'AKIA'
         audit_rules = [
             {
                 'regex': f"{kw}[0-9A-Z]{{16}}",
@@ -35,7 +35,7 @@ class NebulaPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw = "AK" + "IA"
+        kw = 'AKIA'
         if kw in content and "rules =" not in content:
             return f"Catástrofe de Segurança: O objetivo '{objective}' exige proteção total. Credenciais em '{file}' permitem o sequestro da 'Orquestração de Inteligência Artificial'."
         return None

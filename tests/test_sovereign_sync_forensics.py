@@ -38,7 +38,7 @@ class TestSovereignSyncForensics(unittest.TestCase):
 
     def test_sovereign_conflict_resolution(self):
         """Garante que mudanças locais em Personas/Skills são preservadas."""
-        p_kw = "pa" + "ss"
+        p_kw = 'pass'
         (self.agent_dir / "my_persona.py").write_text(f"class Local: {p_kw}")
         subprocess.run(["git", "add", "."], cwd=self.agent_dir, capture_output=True)
         subprocess.run(["git", "commit", "-m", "Local"], cwd=self.agent_dir, capture_output=True)

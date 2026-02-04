@@ -64,8 +64,8 @@ class TestCoreDepth(unittest.TestCase):
 
     def test_audit_engine_precision(self):
         """Valida se o AuditEngine diferencia regras de código ativo."""
-        danger = "ev" + "al('1+1')"
-        rules_def = "r'ev" + "al\\('"
+        danger = "eval('1+1')"
+        rules_def = "r'eval\\('"
         content = f"rules = [{rules_def}]\nres = {danger}"
         patterns = [{'regex': r"(?<!['\"_])eval\(", 'issue': 'Dangerous eval'}]
         

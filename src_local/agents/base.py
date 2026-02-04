@@ -12,7 +12,7 @@ class BaseActivePersona(ABC):
         self.project_root = project_root
         self.name, self.emoji, self.role, self.stack = "Base", "👤", "Generalist", "Universal"
         self.context_data, self.project_dna = {}, {}
-        self.ignored_files = ['auto_' + 'healing_mission.md', 'strategic_' + 'mission.txt']
+        self.ignored_files = ['auto_healing_mission.md', 'strategic_mission.txt']
         
         # Agentes de Suporte (Injeção via Core)
         from src_local.agents.Support.infrastructure_assembler import InfrastructureAssembler

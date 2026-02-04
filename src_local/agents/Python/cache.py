@@ -18,7 +18,7 @@ class CachePersona(BaseActivePersona):
         # Regex calibrado para detectar .execute real em loops, ignorando logs
         audit_rules = [
             {'regex': r"SEL" + r"ECT \* FR" + r"OM", 'issue': 'Eficiência I/O: SELECT * detectado.', 'severity': 'medium'},
-            {'regex': r"for\s+.*\s+in\s+.*:\s+.*(?<!logger)\.ex" + r"ecute\(", 'issue': 'N+1 Critical: Query em loop.', 'severity': 'critical'}
+            {'regex': 'for\\s+.*\\s+in\\s+.*:\\s+.*(?<!logger)\\.execute\\(', 'issue': 'N+1 Critical: Query em loop.', 'severity': 'critical'}
         ]
         
         results = self.find_patterns(('.py',), audit_rules)
@@ -26,7 +26,7 @@ class CachePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "exe" + "cute" in content and "f" + "or " in content:
+        if 'execute' in content and "for " in content:
             return f"Gargalo de I/O: O objetivo '{objective}' exige velocidade. Em '{file}', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real."
         return None
 

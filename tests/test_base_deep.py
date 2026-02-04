@@ -61,7 +61,7 @@ class TestBaseActivePersonaDeep(unittest.TestCase):
         self.persona.set_context({"map": {"src/test.py": {}}})
         file_path = self.project_root / "src" / "test.py"
         file_path.parent.mkdir(parents=True, exist_ok=True)
-        file_path.write_text("ev" + "al(x)")
+        file_path.write_text('eval(x)')
         
         patterns = [{'regex': r"eval\(", 'issue': 'Security Risk', 'severity': 'critical'}]
         issues = self.persona.find_patterns(extensions=(".py"), patterns=patterns)

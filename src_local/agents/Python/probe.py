@@ -17,7 +17,7 @@ class ProbePersona(BaseActivePersona):
         
         # Obfuscated regex to avoid self-detection
         audit_rules = [
-            {'regex': r"exce" + r"pt:\s+pa" + r"ss|exce" + r"pt\s+Exception:\s+pa" + r"ss", 'issue': 'Risco Crítico: Erro silenciado.', 'severity': 'critical'}
+            {'regex': 'except:\\s+pass|except\\s+Exception:\\s+pass'lenciado.', 'severity': 'critical'}
         ]
         
         results = self.find_patterns(('.py',), audit_rules)
@@ -25,8 +25,8 @@ class ProbePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        p_kw = "pa" + "ss"
-        e_kw = "exce" + "pt"
+        p_kw = 'pass'
+        e_kw = 'except'
         if p_kw in content and e_kw in content:
             return f"Instabilidade Sistêmica: O objetivo '{objective}' exige resiliência. Em '{file}', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'."
         return None

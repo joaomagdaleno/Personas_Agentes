@@ -37,8 +37,8 @@ class VoyagerPersona(BaseActivePersona):
         healed_count = 0
         
         # Obfuscated keywords
-        p_kw = "pa" + "ss"
-        e_kw = "exce" + "pt"
+        p_kw = 'pass'
+        e_kw = 'except'
         
         for spot in blind_spots:
             try:
@@ -81,8 +81,7 @@ class VoyagerPersona(BaseActivePersona):
         Auto-Cura: Sugere correções para erros silenciados.
         """
         suggestions = []
-        p_str = "exce" + "pt: pa" + "ss"
-        for spot in blind_spots:
+        p_str = 'except: pass'    for spot in blind_spots:
             suggestions.append(f"Cura sugerida para {spot}: Substituir '{p_str}' por log detalhado de erro.")
         return suggestions
 

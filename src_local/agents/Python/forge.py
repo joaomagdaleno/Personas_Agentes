@@ -25,15 +25,15 @@ class ForgePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "ev" + "al(" in content:
-            return f"Falha de Automação: O objetivo '{objective}' exige segurança. Em '{file}', o uso de ev" + "al() permite ataques que invalidam a 'Orquestração de Inteligência Artificial'."
+        if 'eval(' in content:
+            return f"Falha de Automação: O objetivo '{objective}' exige segurança. Em '{file}', o uso de eval() permite ataques que invalidam a 'Orquestração de Inteligência Artificial'."
         return None
 
     def validate_code_safety(self, code: str) -> bool:
         """
         Veto Ativo: Recusa código que contenha fragilidades críticas.
         """
-        fragilities = ["ev" + "al(", "sh" + "ell=True", "ex" + "ec("]
+        fragilities = ['eval(', 'shell=True', 'exec(']
         for f in fragilities:
             if f in code:
                 logger.error(f"🚨 [Forge] VETO: Fragilidade '{f}' detectada no código. Operação abortada por segurança.")

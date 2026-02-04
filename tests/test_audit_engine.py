@@ -10,7 +10,7 @@ class TestAuditEngine(unittest.TestCase):
     def test_scan_content_basic(self):
         """Valida a detecção básica de padrões regex."""
         file = "test.py"
-        danger_kw = "ev" + "al("
+        danger_kw = 'eval('
         content = f"def unsafe(): {danger_kw}'1+1')"
         patterns = [{'regex': r"(?<!['\"_])eval\(", 'issue': 'Security', 'severity': 'critical'}]
         ctx = {file: {"domain": "PRODUCTION", "component_type": "LOGIC"}}
@@ -23,7 +23,7 @@ class TestAuditEngine(unittest.TestCase):
         """Garante que o LineVeto está sendo respeitado."""
         file = "test.py"
         # Ofuscação de proteção para o Sentinel
-        reg_def = "r'ev" + "al\\('"
+        reg_def = "r'eval\\('"
         content = f"rules = [{{'regex': {reg_def}}}]"
         patterns = [{'regex': r"(?<!['\"_])eval\(", 'issue': 'Security', 'severity': 'critical'}]
         ctx = {file: {"domain": "PRODUCTION", "component_type": "AGENT"}}

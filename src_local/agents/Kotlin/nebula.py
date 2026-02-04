@@ -23,7 +23,7 @@ class NebulaPersona(BaseActivePersona):
         # Sintaxe linear
         rules = [
             {'regex': r"FirebaseFirestore\.getInstance", 'issue': 'Risco de Acoplamento: Firestore síncrono.', 'severity': 'medium'},
-            {'regex': r"AK" + r"IA[0-9A-Z]{16}", 'issue': 'Vazamento Crítico: Credencial AWS exposta.', 'severity': 'critical'}
+            {'regex': 'AKIA[0-9A-Z]{16}', 'issue': 'Vazamento Crítico: Credencial AWS exposta.', 'severity': 'critical'}
         ]
         
         results = self.find_patterns(('.kt', '.xml', '.json'), rules)
@@ -31,7 +31,7 @@ class NebulaPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw = "AK" + "IA"
+        kw = 'AKIA'
         if kw in content and "rules =" not in content:
             return f"Risco de Soberania: O objetivo '{objective}' exige infraestrutura protegida. Em '{file}', a exposição de segredos cloud invalida a autonomia da 'Orquestração de Inteligência Artificial'."
         return None

@@ -20,7 +20,7 @@ class ForgePersona(BaseActivePersona):
         
         audit_rules = [
             {'regex': r'Part\s+[\'"].*?\.g\.dart[\'"]', 'issue': 'Aviso: Codegen detectado. Garanta que build_runner esteja atualizado.', 'severity': 'low'},
-            {'regex': r"ev" + r"al\(", 'issue': 'Vulnerabilidade: Execução dinâmica detectada no ambiente Flutter.', 'severity': 'critical'}
+            {'regex': 'eval\\(', 'issue': 'Vulnerabilidade: Execução dinâmica detectada no ambiente Flutter.', 'severity': 'critical'}
         ]
         
         results = self.find_patterns(('.dart',), audit_rules)
@@ -28,13 +28,13 @@ class ForgePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "ev" + "al(" in content:
-            return f"Falha de Automação: O objetivo '{objective}' exige segurança. Em '{file}', o uso de ev" + "al() em Dart permite ataques que invalidam a 'Orquestração de Inteligência Artificial'."
+        if 'eval(' in content:
+            return f"Falha de Automação: O objetivo '{objective}' exige segurança. Em '{file}', o uso de eval() em Dart permite ataques que invalidam a 'Orquestração de Inteligência Artificial'."
         return None
 
     def validate_code_safety(self, code: str) -> bool:
         """Veto Ativo: Recusa código Dart com fragilidades críticas."""
-        fragilities = ["ev" + "al(", "sh" + "ell=True"]
+        fragilities = ['eval(', 'shell=True']
         for f in fragilities:
             if f in code:
                 logger.error(f"🚨 [Forge] VETO (Flutter): Fragilidade '{f}' detectada. Operação abortada.")

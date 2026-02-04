@@ -31,7 +31,7 @@ class ProbePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw1, kw2, kw3 = "cat" + "ch", "Exce" + "ption", "{}"
+        kw1, kw2, kw3 = 'catch', 'Exception', "{}"
         if kw1 in content and kw2 in content and kw3 in content and "rules =" not in content:
             return f"Instabilidade Oculta: O objetivo '{objective}' exige resiliência. Em '{file}', o silenciamento de falhas JVM impede a auto-correção da 'Orquestração de Inteligência Artificial'."
         return None

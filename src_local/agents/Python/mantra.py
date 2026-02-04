@@ -17,7 +17,7 @@ class MantraPersona(BaseActivePersona):
         
         # Obfuscated regex to avoid self-detection
         audit_rules = [
-            {'regex': r"exce" + r"pt:\s+pa" + r"ss", 'issue': 'Anti-padrão: Bare except.', 'severity': 'critical'}
+            {'regex': 'except:\\s+pass'ue': 'Anti-padrão: Bare except.', 'severity': 'critical'}
         ]
         
         results = self.find_patterns(('.py',), audit_rules)
@@ -25,7 +25,7 @@ class MantraPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "glo" + "bal " in content:
+        if 'global ' in content:
             return f"Poluição de Estado: O objetivo '{objective}' exige pureza. Em '{file}', o uso de globais compromete a 'Orquestração de Inteligência Artificial'."
         return None
 

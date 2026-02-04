@@ -31,7 +31,7 @@ class MetricPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw = "log" + "Event"
+        kw = 'logEvent'
         if kw not in content and "rules =" not in content:
             return f"Cegueira Analítica: O objetivo '{objective}' exige visibilidade. Em '{file}', a ausência de telemetria isola a 'Orquestração de Inteligência Artificial' de dados reais de campo."
         return None

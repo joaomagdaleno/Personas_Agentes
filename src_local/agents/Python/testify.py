@@ -27,7 +27,7 @@ class TestifyPersona(BaseActivePersona):
         logger.info(f"[{self.name}] Analisando Confiabilidade Estratégica...")
         
         audit_rules = [
-            {'regex': r"def test_.*:\s+p" + r"ass", 'issue': 'Vazio: Teste sem asserções.', 'severity': 'critical'},
+            {'regex': 'def test_.*:\\s+pass', 'issue': 'Vazio: Teste sem asserções.', 'severity': 'critical'},
             {'regex': r"hypothesis", 'issue': 'Avançado: Teste de Propriedade detectado.', 'severity': 'low'}
         ]
         

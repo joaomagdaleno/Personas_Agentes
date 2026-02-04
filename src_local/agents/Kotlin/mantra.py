@@ -31,7 +31,7 @@ class MantraPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw = "var" + " "
+        kw = 'var '
         if kw in content and "rules =" not in content:
             return f"Poluição de Estado: O objetivo '{objective}' exige determinismo. Em '{file}', a mutabilidade excessiva dificulta o rastreamento lógico necessário para a 'Orquestração de Inteligência Artificial'."
         return None

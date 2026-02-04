@@ -21,7 +21,7 @@ class TestContextEngine(unittest.TestCase):
     def test_brittle_code_detection(self):
         # Simula arquivo com fragilidade
         brittle_file = self.test_root / "brittle.py"
-        brittle_file.write_text("ev" + "al('print(1)')")
+        brittle_file.write_text("eval('print(1)')")
         
         info = self.engine._analyze_file(brittle_file)
         self.assertTrue(info["brittle"])
@@ -31,8 +31,8 @@ class TestContextEngine(unittest.TestCase):
         silent_file = self.test_root / "silent.py"
         
         # Obfuscated string to avoid self-detection by Echo/Probe
-        p_kw = "pa" + "ss"
-        e_kw = "exce" + "pt"
+        p_kw = 'pass'
+        e_kw = 'except'
         content = f"try:\n    {p_kw}\n{e_kw}:\n    {p_kw}"
         silent_file.write_text(content)
         

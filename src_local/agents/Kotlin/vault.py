@@ -38,7 +38,7 @@ class VaultPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw1, kw2 = "Dou" + "ble", "pri" + "ce"
+        kw1, kw2 = 'Double', 'price'
         if kw1 in content and kw2 in content.lower() and "rules =" not in content:
             return f"Risco de Precisão: O objetivo '{objective}' exige exatidão fiscal. Em '{file}', o uso de ponto flutuante para dinheiro invalida os cálculos da 'Orquestração de Inteligência Artificial'."
         return None

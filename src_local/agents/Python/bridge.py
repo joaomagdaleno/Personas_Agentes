@@ -16,8 +16,8 @@ class BridgePersona(BaseActivePersona):
         logger.info(f"[{self.name}] Analisando Camadas de Interoperabilidade...")
         
         audit_rules = [
-            {'regex': r"subprocess\.run\(.*she" + r"ll=True", 'issue': 'Vulnerabilidade: Shell Injection.', 'severity': 'critical'},
-            {'regex': r"os\.sys" + r"tem\(", 'issue': 'Obsolescência: Use subprocess.', 'severity': 'high'}
+            {'regex': 'subprocess\\.run\\(.*shell=True', 'issue': 'Vulnerabilidade: Shell Injection.', 'severity': 'critical'},
+            {'regex': 'os\\.system\\(', 'issue': 'Obsolescência: Use subprocess.', 'severity': 'high'}
         ]
         
         results = self.find_patterns(('.py',), audit_rules)
@@ -25,8 +25,8 @@ class BridgePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "sh" + "ell=True" in content:
-            return f"Risco de Injeção: O objetivo '{objective}' exige segurança. Em '{file}', o uso de sh" + "ell=True compromete a integridade da 'Orquestração de Inteligência Artificial'."
+        if 'shell=True' in content:
+            return f"Risco de Injeção: O objetivo '{objective}' exige segurança. Em '{file}', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'."
         return None
 
     def get_system_prompt(self):

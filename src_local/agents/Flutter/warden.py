@@ -31,7 +31,7 @@ class WardenPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw = "requ" + "est"
+        kw = 'request'
         if kw in content and "rules =" not in content:
             return f"Risco de Governança: O objetivo '{objective}' exige ética. Em '{file}', a falta de transparência em permissões ameaça a legitimidade da 'Orquestração de Inteligência Artificial'."
         return None

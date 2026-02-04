@@ -31,7 +31,7 @@ class VoyagerPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw = "find" + "ViewById"
+        kw = 'findViewById'
         if kw in content and "rules =" not in content:
             return f"Débito de Modernidade: O objetivo '{objective}' exige velocidade de desenvolvimento. Em '{file}', o uso de padrões imperativos limita a agilidade da 'Orquestração de Inteligência Artificial'."
         return None

@@ -16,7 +16,7 @@ class BoltPersona(BaseActivePersona):
         logger.info(f"[{self.name}] Analisando Eficiência Computacional...")
         
         audit_rules = [
-            {'regex': r"wh" + r"ile Tr" + r"ue:\s+pa" + r"ss", 'issue': 'Gargalo: Busy-waiting.', 'severity': 'critical'}
+            {'regex': 'while True:\\s+pass', 'issue': 'Gargalo: Busy-waiting.', 'severity': 'critical'}
         ]
         
         results = self.find_patterns(('.py',), audit_rules)
@@ -25,7 +25,7 @@ class BoltPersona(BaseActivePersona):
 
     def _reason_about_objective(self, objective, file, content):
         import re
-        busy_wait_pattern = r"whi" + r"le True:\s+pa" + r"ss"
+        busy_wait_pattern = 'while True:\\s+pass'
         if re.search(busy_wait_pattern, content):
             return f"Gargalo de Runtime: O objetivo '{objective}' exige alta disponibilidade. Loops de espera ativa em '{file}' paralisam a 'Orquestração de Inteligência Artificial'."
         return None

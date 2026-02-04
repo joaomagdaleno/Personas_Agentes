@@ -17,7 +17,7 @@ class EchoPersona(BaseActivePersona):
         
         # Obfuscated regex to avoid self-detection
         audit_rules = [
-            {'regex': r"exce" + r"pt Exception:\s+pa" + r"ss", 'issue': 'Cegueira: Exceção silenciada.', 'severity': 'critical'}
+            {'regex': 'except Exception:\\s+pass'ue': 'Cegueira: Exceção silenciada.', 'severity': 'critical'}
         ]
         
         results = self.find_patterns(('.py',), audit_rules)
@@ -28,8 +28,7 @@ class EchoPersona(BaseActivePersona):
         # Obfuscated keywords to prevent false positives in self-scan
         # Rigor PhD: Busca por padrão físico de silenciamento real
         import re
-        silent_pattern = r"exce" + r"pt.*:\s+pa" + r"ss"
-        
+        silent_pattern = 'except.*:\\s+pass'   
         if re.search(silent_pattern, content) and "silent_pattern =" not in content:
             return f"Cegueira Operacional: O objetivo '{objective}' exige diagnóstico. Em '{file}', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas."
         return None

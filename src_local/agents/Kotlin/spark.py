@@ -31,7 +31,7 @@ class SparkPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw = "anim" + "ate"
+        kw = 'animate'
         if kw not in content and "Composable" in content and "rules =" not in content:
             return f"Interface Estática: O objetivo '{objective}' exige engajamento. Em '{file}', a ausência de feedback visual premium torna a 'Orquestração de Inteligência Artificial' menos intuitiva."
         return None

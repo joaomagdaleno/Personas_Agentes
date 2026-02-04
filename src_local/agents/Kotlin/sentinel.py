@@ -31,7 +31,7 @@ class SentinelPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw = "htt" + "p://"
+        kw = 'http://'
         if kw in content and "rules =" not in content:
             return f"Vulnerabilidade Crítica: O objetivo '{objective}' exige segurança total. Em '{file}', o uso de HTTP expõe a 'Orquestração de Inteligência Artificial' a ataques de rede."
         return None

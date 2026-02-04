@@ -26,7 +26,7 @@ class VaultPersona(BaseActivePersona):
     def _reason_about_objective(self, objective, file, content):
         import re
         # Rigor PhD: Busca por padrão de imprecisão real em produção
-        imprecision_pattern = r"flo" + r"at\(.*pri" + r"ce"
+        imprecision_pattern = 'float\\(.*price'
         if re.search(imprecision_pattern, content) and "imprecision_pattern =" not in content:
             return f"Erro de Precisão: O objetivo '{objective}' exige exatidão. Em '{file}', floats monetários invalidam os cálculos da 'Orquestração de Inteligência Artificial'."
         return None

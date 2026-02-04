@@ -42,12 +42,21 @@ class DirectorPersona(BaseActivePersona):
                 unique_results.append(r)
                 seen.add(key)
 
+        # Separação de Achados de Ofuscação (Higiene de Código)
+        obfuscation_findings = [r for r in unique_results if isinstance(r, dict) and r.get('context') == 'ObfuscationHunter']
+        general_findings = [r for r in unique_results if not (isinstance(r, dict) and r.get('context') == 'ObfuscationHunter')]
+
         report = self.formatter.format_header(health_data)
         report += self.formatter.format_vitals(health_data)
         report += self.formatter.format_efficiency(health_data)
         report += self.formatter.format_entropy(health_data)
         report += self.formatter.format_quality_matrix(health_data)
-        report += self.formatter.format_battle_plan(unique_results)
+        
+        # Seção Dedicada a Ofuscação
+        if obfuscation_findings:
+            report += self.formatter.format_obfuscation_zone(obfuscation_findings)
+            
+        report += self.formatter.format_battle_plan(general_findings)
         return report + "## 💀 Risco Existencial\n> Autoconsciência nativa ativa.\n"
 
     def get_system_prompt(self):

@@ -31,7 +31,7 @@ class ScopePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw = "debuggable" + " true"
+        kw = 'debuggable true'
         if kw in content and "rules =" not in content:
             return f"Risco de Release: O objetivo '{objective}' exige segurança de binário. Em '{file}', a flag debuggable permite o sequestro da 'Orquestração de Inteligência Artificial' em runtime."
         return None
