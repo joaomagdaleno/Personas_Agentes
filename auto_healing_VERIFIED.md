@@ -8,20 +8,21 @@
 | Métrica | Valor | Status |
 | :--- | :--- | :--- |
 | **Índice de Saúde** | 10% | 🚨 |
-| **Total de Alertas** | 143 | Crítico |
-| **Sincronia** | 00:53:42 | Ativa |
+| **Total de Alertas** | 160 | Crítico |
+| **Sincronia** | 17:55:41 | Ativa |
 
 ## 🩺 SINAIS VITAIS DO PRODUTO
 | Métrica | Status | Impacto |
 | :--- | :--- | :--- |
-| **Pontos Cegos** | 25 Arquivos | CRÍTICO |
+| **Pontos Cegos** | 27 Arquivos | CRÍTICO |
 | **Fragilidades** | 5 Pontos | Risco de Colapso |
 | **Paridade de Stack** | Sincronizada | Nível de Maturidade |
 
 ## 🌪️ MAPA DE ENTROPIA & ACOPLAMENTO
 | Alvo | Complexidade | Instabilidade |
 | :--- | :---: | :---: |
-| `src_local/utils/dependency_auditor.py` | 36 | 0.5 |
+| `src_local/utils/dependency_auditor.py` | 36 | 0.45 |
+| `scripts/git_doctor.py` | 34 | 0.83 |
 | `src_local/agents/Support/health_synthesizer.py` | 33 | 0.6 |
 | `src_local/utils/context_engine.py` | 28 | 0.5 |
 | `src_local/core/orchestrator.py` | 24 | 0.65 |
@@ -30,12 +31,12 @@
 | `src_local/agents/base.py` | 18 | 0.08 |
 | `src_local/utils/stability_ledger.py` | 14 | 0.57 |
 | `src_local/agents/Python/voyager.py` | 14 | 0.8 |
-| `src_local/core/validator.py` | 13 | 0.71 |
 
 ## 🧪 MATRIZ DE CONFIANÇA
 | Módulo | Entropia | Asserções | Status |
 | :--- | :---: | :---: | :--- |
 | `src_local/utils/dependency_auditor.py` | 36 | 10 | 🟢 PROFUNDO |
+| `scripts/git_doctor.py` | 34 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/health_synthesizer.py` | 33 | 4 | 🔴 FRÁGIL |
 | `src_local/utils/context_engine.py` | 28 | 21 | 🟢 PROFUNDO |
 | `src_local/core/orchestrator.py` | 24 | 9 | 🟢 PROFUNDO |
@@ -60,6 +61,7 @@
 | `src_local/utils/compliance_standard.py` | 7 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/diagnostic_strategist.py` | 7 | 5 | 🟢 PROFUNDO |
 | `src_local/agents/Support/structural_analyst.py` | 7 | 4 | 🟢 PROFUNDO |
+| `scripts/autonomous_sync.py` | 6 | 0 | 🔴 FRÁGIL |
 | `scripts/persona_manager.py` | 6 | 0 | 🔴 FRÁGIL |
 | `src_local/interface/cli.py` | 6 | 0 | 🔴 FRÁGIL |
 | `src_local/utils/indexer.py` | 6 | 3 | 🟢 PROFUNDO |
@@ -166,11 +168,11 @@
 ### 📊 RESUMO DE INTERVENÇÕES
 | Severidade | Quantidade |
 | :--- | :---: |
-| CRITICAL | 8 |
+| CRITICAL | 11 |
 | HIGH | 7 |
-| MEDIUM | 4 |
-| LOW | 9 |
-| STRATEGIC | 115 |
+| MEDIUM | 6 |
+| LOW | 13 |
+| STRATEGIC | 123 |
 
 ---
 ## 🚩 NÍVEL: CRITICAL
@@ -263,6 +265,33 @@ if __name__ == "__main__":
 ```
 - **Diretriz:** Padrão soberano de critical
 
+### 📂 Alvo: `scripts/git_doctor.py`
+#### 🔴 Item 113: Anti-padrão: Bare except.
+- **Evidência:**
+```kotlin
+                    if full_path.exists():
+                        try: os.remove(full_path)
+                        except: pass
+                
+                # Merge especial para o índice
+```
+- **Diretriz:** Padrão soberano de critical
+
+#### 🔴 Item 113: Risco Crítico: Erro silenciado.
+- **Evidência:**
+```kotlin
+                    if full_path.exists():
+                        try: os.remove(full_path)
+                        except: pass
+                
+                # Merge especial para o índice
+```
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `.agent/skills`
+#### 🔴 Item N/A: Inteligência Atrasada (Delta: 38 commits)
+- **Diretriz:** Padrão soberano de critical
+
 ## 🚩 NÍVEL: HIGH
 ### 📂 Alvo: `src_local/core/compiler.py`
 #### 🔴 Item 34: Violação: Uso de estado global.
@@ -308,6 +337,29 @@ if __name__ == "__main__":
 - **Diretriz:** Padrão soberano de high
 
 ## 🚩 NÍVEL: MEDIUM
+### 📂 Alvo: `scripts/git_doctor.py`
+#### 🔴 Item 171: Saída não rastreável: Use logger em vez de print.
+- **Evidência:**
+```kotlin
+        logger.info("✅ Diagnóstico concluído.")
+        final_status = self.run_command(["status", "--short", "--branch"]).stdout
+        print("\n--- STATUS ATUAL ---")
+        print(final_status)
+
+```
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 172: Saída não rastreável: Use logger em vez de print.
+- **Evidência:**
+```kotlin
+        final_status = self.run_command(["status", "--short", "--branch"]).stdout
+        print("\n--- STATUS ATUAL ---")
+        print(final_status)
+
+if __name__ == "__main__":
+```
+- **Diretriz:** Padrão soberano de medium
+
 ### 📂 Alvo: `src_local/agents/Flutter/echo.py`
 #### 🔴 Item 32: Saída não rastreável: Use logger em vez de print.
 - **Evidência:**
@@ -424,6 +476,51 @@ print('Init')
 ```
 - **Diretriz:** Padrão soberano de low
 
+### 📂 Alvo: `scripts/git_doctor.py`
+#### 🔴 Item 171: Interface: Uso de print para interação bruta.
+- **Evidência:**
+```kotlin
+        logger.info("✅ Diagnóstico concluído.")
+        final_status = self.run_command(["status", "--short", "--branch"]).stdout
+        print("\n--- STATUS ATUAL ---")
+        print(final_status)
+
+```
+- **Diretriz:** Padrão soberano de low
+
+#### 🔴 Item 172: Interface: Uso de print para interação bruta.
+- **Evidência:**
+```kotlin
+        final_status = self.run_command(["status", "--short", "--branch"]).stdout
+        print("\n--- STATUS ATUAL ---")
+        print(final_status)
+
+if __name__ == "__main__":
+```
+- **Diretriz:** Padrão soberano de low
+
+#### 🔴 Item 39: Débito: O uso do módulo os é legado para manipulação de caminhos. Use pathlib.
+- **Evidência:**
+```kotlin
+            try:
+                logger.warning(f"🗑️ Removendo lock: {lock}")
+                os.remove(lock)
+            except Exception as e:
+                logger.error(f"❌ Não foi possível remover {lock}: {e}")
+```
+- **Diretriz:** Padrão soberano de low
+
+#### 🔴 Item 112: Débito: O uso do módulo os é legado para manipulação de caminhos. Use pathlib.
+- **Evidência:**
+```kotlin
+                    full_path = self.root / f
+                    if full_path.exists():
+                        try: os.remove(full_path)
+                        except: pass
+                
+```
+- **Diretriz:** Padrão soberano de low
+
 ### 📂 Alvo: `src_local/agents/Flutter/echo.py`
 #### 🔴 Item 41: Interface: Uso de print para interação bruta.
 - **Evidência:**
@@ -458,17 +555,21 @@ print('Init')
 
 ## 🚩 NÍVEL: STRATEGIC
 ### 📂 Alvo: `DNA`
-- **Diretriz Estratégica:** Gargalo de Runtime: O objetivo 'Validar integridade ['Python']' exige alta disponibilidade. Loops de espera ativa em 'tests/test_bolt_persona.py' paralisam a 'Orquestração de Inteligência Artificial'.
-
 - **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Python/sentinel.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'.
 
 - **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Support/integrity_guardian.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Gargalo de Runtime: O objetivo 'Validar integridade ['Python']' exige alta disponibilidade. Loops de espera ativa em 'tests/test_bolt_persona.py' paralisam a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'scripts/git_doctor.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas.
 
 - **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_core_depth.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas.
 
 - **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_logic_auditor_deep.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas.
 
 - **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_structural_analyst_deep.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas.
+
+- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'scripts/git_doctor.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível.
 
 - **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/core/orchestrator.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível.
 
@@ -592,6 +693,8 @@ print('Init')
 
 - **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'forensic_env_24840/upstream_repo/core.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
 
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'scripts/git_doctor.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'.
+
 - **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'tests/test_core_depth.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'.
 
 - **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'tests/test_logic_auditor_deep.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'.
@@ -605,6 +708,8 @@ print('Init')
 - **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/Support/integrity_guardian.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'.
 
 - **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/Support/test_runner.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'scripts/autonomous_sync.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
 
 - **Diretriz Estratégica:** Risco de Escalabilidade: O objetivo 'Validar integridade ['Python']' exige modularidade. Em 'scripts/persona_manager.py', a poluição de estado impede a 'Orquestração de Inteligência Artificial'.
 
@@ -627,6 +732,10 @@ print('Init')
 - **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'src_local/agents/Support/structural_analyst.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'.
 
 - **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'scripts/analyze_external.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'scripts/autonomous_sync.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'scripts/git_doctor.py' é Matéria Escura (Sem testes detectados).
 
 - **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'scripts/persona_manager.py' é Matéria Escura (Sem testes detectados).
 
@@ -662,6 +771,8 @@ print('Init')
 
 - **Diretriz Estratégica:** Débito Tecnológico: O objetivo 'Validar integridade ['Python']' exige modernidade. Em 'main_gui.py', o uso de APIs legadas retarda a 'Orquestração de Inteligência Artificial'.
 
+- **Diretriz Estratégica:** Débito Tecnológico: O objetivo 'Validar integridade ['Python']' exige modernidade. Em 'scripts/git_doctor.py', o uso de APIs legadas retarda a 'Orquestração de Inteligência Artificial'.
+
 - **Diretriz Estratégica:** Débito Tecnológico: O objetivo 'Validar integridade ['Python']' exige modernidade. Em 'scripts/run_diagnostic.py', o uso de APIs legadas retarda a 'Orquestração de Inteligência Artificial'.
 
 - **Diretriz Estratégica:** Débito Tecnológico: O objetivo 'Validar integridade ['Python']' exige modernidade. Em 'scripts/update_agent_submodule.py', o uso de APIs legadas retarda a 'Orquestração de Inteligência Artificial'.
@@ -681,6 +792,8 @@ print('Init')
 - **Diretriz Estratégica:** Falha de Automação: O objetivo 'Verificação' exige segurança. Em 'tests/test_core_depth.py', o uso de eval() em Dart permite ataques que invalidam a 'Orquestração de Inteligência Artificial'.
 
 - **Diretriz Estratégica:** Falha de Automação: O objetivo 'Verificação' exige segurança. Em 'tests/test_self_awareness.py', o uso de eval() em Dart permite ataques que invalidam a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Verificação' exige observabilidade. Em 'scripts/git_doctor.py', o uso de saídas não rastreáveis impede a extração de métricas para a 'Orquestração de Inteligência Artificial'.
 
 - **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Verificação' exige observabilidade. Em 'src_local/agents/Flutter/echo.py', o uso de saídas não rastreáveis impede a extração de métricas para a 'Orquestração de Inteligência Artificial'.
 
