@@ -66,7 +66,12 @@ class ObfuscationHunter:
         Ex: "a" + "b" + "c" -> "abc"
         Retorna None se houver variáveis no meio (não determinístico estaticamente).
         """
-        if isinstance(node, (ast.Str, ast.Constant)):
+        # Compatibilidade Python 3.14 (ast.Str removido)
+        str_types = (ast.Constant,)
+        if hasattr(ast, "Str"):
+            str_types += (getattr(ast, "Str"),)
+
+        if isinstance(node, str_types):
             val = getattr(node, "value", getattr(node, "s", ""))
             return val if isinstance(val, str) else None
             
