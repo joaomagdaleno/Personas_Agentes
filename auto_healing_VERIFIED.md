@@ -9,40 +9,40 @@
 | :--- | :--- | :--- |
 | **Índice de Saúde** | 10% | 🚨 |
 | **Total de Alertas** | 159 | Crítico |
-| **Sincronia** | 18:13:30 | Ativa |
+| **Sincronia** | 18:23:01 | Ativa |
 
 ## 🩺 SINAIS VITAIS DO PRODUTO
 | Métrica | Status | Impacto |
 | :--- | :--- | :--- |
-| **Pontos Cegos** | 26 Arquivos | CRÍTICO |
+| **Pontos Cegos** | 27 Arquivos | CRÍTICO |
 | **Fragilidades** | 5 Pontos | Risco de Colapso |
 | **Paridade de Stack** | Sincronizada | Nível de Maturidade |
 
 ## 🌪️ MAPA DE ENTROPIA & ACOPLAMENTO
 | Alvo | Complexidade | Instabilidade |
 | :--- | :---: | :---: |
-| `src_local/utils/dependency_auditor.py` | 36 | 0.45 |
+| `src_local/utils/dependency_auditor.py` | 39 | 0.45 |
 | `scripts/git_doctor.py` | 34 | 0.71 |
-| `src_local/agents/Support/health_synthesizer.py` | 33 | 0.6 |
+| `src_local/agents/Support/health_synthesizer.py` | 34 | 0.6 |
 | `src_local/utils/context_engine.py` | 28 | 0.5 |
-| `src_local/core/orchestrator.py` | 24 | 0.65 |
-| `src_local/agents/Support/line_veto.py` | 24 | 0.4 |
+| `src_local/agents/Support/line_veto.py` | 26 | 0.4 |
 | `src_local/agents/Support/battle_plan_formatter.py` | 19 | 0.33 |
 | `src_local/agents/base.py` | 18 | 0.08 |
+| `src_local/core/orchestrator.py` | 17 | 0.67 |
 | `src_local/utils/stability_ledger.py` | 14 | 0.57 |
 | `src_local/agents/Python/voyager.py` | 14 | 0.8 |
 
 ## 🧪 MATRIZ DE CONFIANÇA
 | Módulo | Entropia | Asserções | Status |
 | :--- | :---: | :---: | :--- |
-| `src_local/utils/dependency_auditor.py` | 36 | 10 | 🟢 PROFUNDO |
+| `src_local/utils/dependency_auditor.py` | 39 | 10 | 🟢 PROFUNDO |
 | `scripts/git_doctor.py` | 34 | 4 | 🔴 FRÁGIL |
-| `src_local/agents/Support/health_synthesizer.py` | 33 | 4 | 🔴 FRÁGIL |
+| `src_local/agents/Support/health_synthesizer.py` | 34 | 4 | 🔴 FRÁGIL |
 | `src_local/utils/context_engine.py` | 28 | 21 | 🟢 PROFUNDO |
-| `src_local/core/orchestrator.py` | 24 | 9 | 🟢 PROFUNDO |
-| `src_local/agents/Support/line_veto.py` | 24 | 10 | 🟢 PROFUNDO |
+| `src_local/agents/Support/line_veto.py` | 26 | 10 | 🟢 PROFUNDO |
 | `src_local/agents/Support/battle_plan_formatter.py` | 19 | 9 | 🟢 PROFUNDO |
 | `src_local/agents/base.py` | 18 | 11 | 🟢 PROFUNDO |
+| `src_local/core/orchestrator.py` | 17 | 9 | 🟢 PROFUNDO |
 | `src_local/utils/stability_ledger.py` | 14 | 8 | 🟢 PROFUNDO |
 | `src_local/agents/Python/voyager.py` | 14 | 2 | 🔴 FRÁGIL |
 | `src_local/core/validator.py` | 13 | 11 | 🟢 PROFUNDO |
@@ -55,6 +55,7 @@
 | `src_local/agents/Support/report_formatter.py` | 10 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/audit_engine.py` | 9 | 3 | 🟢 PROFUNDO |
 | `src_local/utils/cache_manager.py` | 8 | 3 | 🟢 PROFUNDO |
+| `src_local/utils/finding_deduplicator.py` | 8 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/parity_analyst.py` | 8 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/pyramid_analyst.py` | 8 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/task_executor.py` | 8 | 0 | 🔴 FRÁGIL |
@@ -170,9 +171,9 @@
 | :--- | :---: |
 | CRITICAL | 10 |
 | HIGH | 7 |
-| MEDIUM | 6 |
-| LOW | 13 |
-| STRATEGIC | 123 |
+| MEDIUM | 5 |
+| LOW | 12 |
+| STRATEGIC | 125 |
 
 ---
 ## 🚩 NÍVEL: CRITICAL
@@ -266,25 +267,25 @@ if __name__ == "__main__":
 - **Diretriz:** Padrão soberano de critical
 
 ### 📂 Alvo: `scripts/git_doctor.py`
-#### 🔴 Item 113: Anti-padrão: Bare except.
+#### 🔴 Item 116: Anti-padrão: Bare except.
 - **Evidência:**
 ```kotlin
-                    if full_path.exists():
-                        try: os.remove(full_path)
-                        except: pass
-                
-                # Merge especial para o índice
+        if full_path.exists():
+            try: os.remove(full_path)
+            except: pass
+        return True
+
 ```
 - **Diretriz:** Padrão soberano de critical
 
-#### 🔴 Item 113: Risco Crítico: Erro silenciado.
+#### 🔴 Item 116: Risco Crítico: Erro silenciado.
 - **Evidência:**
 ```kotlin
-                    if full_path.exists():
-                        try: os.remove(full_path)
-                        except: pass
-                
-                # Merge especial para o índice
+        if full_path.exists():
+            try: os.remove(full_path)
+            except: pass
+        return True
+
 ```
 - **Diretriz:** Padrão soberano de critical
 
@@ -334,25 +335,14 @@ if __name__ == "__main__":
 
 ## 🚩 NÍVEL: MEDIUM
 ### 📂 Alvo: `scripts/git_doctor.py`
-#### 🔴 Item 171: Saída não rastreável: Use logger em vez de print.
+#### 🔴 Item 163: Saída não rastreável: Use logger em vez de print.
 - **Evidência:**
 ```kotlin
+        
         logger.info("✅ Diagnóstico concluído.")
-        final_status = self.run_command(["status", "--short", "--branch"]).stdout
-        print("\n--- STATUS ATUAL ---")
-        print(final_status)
+        print(f"\n--- STATUS ATUAL ---\n{self.run_command(['status', '--short', '--branch']).stdout}")
 
-```
-- **Diretriz:** Padrão soberano de medium
-
-#### 🔴 Item 172: Saída não rastreável: Use logger em vez de print.
-- **Evidência:**
-```kotlin
-        final_status = self.run_command(["status", "--short", "--branch"]).stdout
-        print("\n--- STATUS ATUAL ---")
-        print(final_status)
-
-if __name__ == "__main__":
+    def _handle_active_conflicts(self):
 ```
 - **Diretriz:** Padrão soberano de medium
 
@@ -473,25 +463,14 @@ print('Init')
 - **Diretriz:** Padrão soberano de low
 
 ### 📂 Alvo: `scripts/git_doctor.py`
-#### 🔴 Item 171: Interface: Uso de print para interação bruta.
+#### 🔴 Item 163: Interface: Uso de print para interação bruta.
 - **Evidência:**
 ```kotlin
+        
         logger.info("✅ Diagnóstico concluído.")
-        final_status = self.run_command(["status", "--short", "--branch"]).stdout
-        print("\n--- STATUS ATUAL ---")
-        print(final_status)
+        print(f"\n--- STATUS ATUAL ---\n{self.run_command(['status', '--short', '--branch']).stdout}")
 
-```
-- **Diretriz:** Padrão soberano de low
-
-#### 🔴 Item 172: Interface: Uso de print para interação bruta.
-- **Evidência:**
-```kotlin
-        final_status = self.run_command(["status", "--short", "--branch"]).stdout
-        print("\n--- STATUS ATUAL ---")
-        print(final_status)
-
-if __name__ == "__main__":
+    def _handle_active_conflicts(self):
 ```
 - **Diretriz:** Padrão soberano de low
 
@@ -506,14 +485,14 @@ if __name__ == "__main__":
 ```
 - **Diretriz:** Padrão soberano de low
 
-#### 🔴 Item 112: Débito: O uso do módulo os é legado para manipulação de caminhos. Use pathlib.
+#### 🔴 Item 115: Débito: O uso do módulo os é legado para manipulação de caminhos. Use pathlib.
 - **Evidência:**
 ```kotlin
-                    full_path = self.root / f
-                    if full_path.exists():
-                        try: os.remove(full_path)
-                        except: pass
-                
+        full_path = self.root / f
+        if full_path.exists():
+            try: os.remove(full_path)
+            except: pass
+        return True
 ```
 - **Diretriz:** Padrão soberano de low
 
@@ -551,6 +530,8 @@ print('Init')
 
 ## 🚩 NÍVEL: STRATEGIC
 ### 📂 Alvo: `DNA`
+- **Diretriz Estratégica:** Gargalo de I/O: O objetivo 'Validar integridade ['Python']' exige velocidade. Em 'src_local/utils/dependency_auditor.py', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real.
+
 - **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Python/sentinel.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'.
 
 - **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Support/integrity_guardian.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'.
@@ -564,8 +545,6 @@ print('Init')
 - **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_structural_analyst_deep.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas.
 
 - **Diretriz Estratégica:** Gargalo de Runtime: O objetivo 'Validar integridade ['Python']' exige alta disponibilidade. Loops de espera ativa em 'tests/test_bolt_persona.py' paralisam a 'Orquestração de Inteligência Artificial'.
-
-- **Diretriz Estratégica:** Risco de Localização: O objetivo 'Validar integridade ['Python']' exige portabilidade global. Em 'tests/test_stability_ledger_deep.py', o uso de open() sem encoding UTF-8 pode corromper dados.
 
 - **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'scripts/git_doctor.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível.
 
@@ -582,6 +561,8 @@ print('Init')
 - **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Support/line_veto.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível.
 
 - **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Support/source_code_parser.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível.
+
+- **Diretriz Estratégica:** Risco de Localização: O objetivo 'Validar integridade ['Python']' exige portabilidade global. Em 'tests/test_stability_ledger_deep.py', o uso de open() sem encoding UTF-8 pode corromper dados.
 
 - **Diretriz Estratégica:** Falha de Automação: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'tests/test_battle_plan_formatter_deep.py', o uso de eval() permite ataques que invalidam a 'Orquestração de Inteligência Artificial'.
 
@@ -709,17 +690,17 @@ print('Init')
 
 - **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'scripts/autonomous_sync.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
 
-- **Diretriz Estratégica:** Incompleitude: O objetivo 'Validar integridade ['Python']' exige entrega. Em 'src_local/agents/Flutter/scope.py', débitos pendentes retardam a 'Orquestração de Inteligência Artificial'.
-
-- **Diretriz Estratégica:** Incompleitude: O objetivo 'Validar integridade ['Python']' exige entrega. Em 'src_local/agents/Kotlin/scope.py', débitos pendentes retardam a 'Orquestração de Inteligência Artificial'.
-
-- **Diretriz Estratégica:** Incompleitude: O objetivo 'Validar integridade ['Python']' exige entrega. Em 'src_local/agents/Python/scope.py', débitos pendentes retardam a 'Orquestração de Inteligência Artificial'.
-
 - **Diretriz Estratégica:** Risco de Escalabilidade: O objetivo 'Validar integridade ['Python']' exige modularidade. Em 'scripts/persona_manager.py', a poluição de estado impede a 'Orquestração de Inteligência Artificial'.
 
 - **Diretriz Estratégica:** Risco de Escalabilidade: O objetivo 'Validar integridade ['Python']' exige modularidade. Em 'src_local/core/compiler.py', a poluição de estado impede a 'Orquestração de Inteligência Artificial'.
 
 - **Diretriz Estratégica:** Risco de Escalabilidade: O objetivo 'Validar integridade ['Python']' exige modularidade. Em 'src_local/utils/indexer.py', a poluição de estado impede a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Incompleitude: O objetivo 'Validar integridade ['Python']' exige entrega. Em 'src_local/agents/Flutter/scope.py', débitos pendentes retardam a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Incompleitude: O objetivo 'Validar integridade ['Python']' exige entrega. Em 'src_local/agents/Kotlin/scope.py', débitos pendentes retardam a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Incompleitude: O objetivo 'Validar integridade ['Python']' exige entrega. Em 'src_local/agents/Python/scope.py', débitos pendentes retardam a 'Orquestração de Inteligência Artificial'.
 
 - **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'tests/test_base_deep.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'.
 
@@ -740,6 +721,8 @@ print('Init')
 - **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'scripts/update_agent_submodule.py' é Matéria Escura (Sem testes detectados).
 
 - **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src_local/utils/compliance_standard.py' é Matéria Escura (Sem testes detectados).
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src_local/utils/finding_deduplicator.py' é Matéria Escura (Sem testes detectados).
 
 - **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src_local/agents/Support/coverage_auditor.py' é Matéria Escura (Sem testes detectados).
 

@@ -94,82 +94,101 @@ class GitDoctor:
             logger.error(f"❌ Falha no merge JSON: {e}")
             return False
 
+    def _resolve_file_conflict(self, f):
+        """🧬 Resolve um conflito em um arquivo específico."""
+        if "__pycache__" in f or f.endswith(".pyc"):
+            return self._resolve_cache_conflict(f)
+        
+        if f == "skills_index.json":
+            return self._resolve_json_conflict(f)
+
+        if self._is_protected(f):
+            return self._resolve_protected_conflict(f)
+        
+        return self._resolve_priority_conflict(f)
+
+    def _resolve_cache_conflict(self, f):
+        logger.info(f"🗑️ Removendo cache conflitante: {f}")
+        self.run_command(["rm", "--cached", f])
+        full_path = self.root / f
+        if full_path.exists():
+            try: os.remove(full_path)
+            except: pass
+        return True
+
+    def _resolve_json_conflict(self, f):
+        if self._merge_skills_index(f):
+            self.run_command(["add", f])
+            return True
+        logger.warning(f"⚠️ Falha no merge inteligente de {f}. Usando 'ours'.")
+        self.run_command(["checkout", "--ours", f])
+        self.run_command(["add", f])
+        return True
+
+    def _resolve_protected_conflict(self, f):
+        logger.info(f"🛡️ Protegendo arquivo local: {f}")
+        self.run_command(["checkout", "--ours", f])
+        self.run_command(["add", f])
+        return True
+
+    def _resolve_priority_conflict(self, f):
+        logger.info(f"📡 Priorizando upstream: {f}")
+        self.run_command(["checkout", "--theirs", f])
+        self.run_command(["add", f])
+        return True
+
     def _resolve_unmerged(self):
+        """Varre e resolve todos os arquivos em estado unmerged."""
         status = self.run_command(["status", "--porcelain"]).stdout
         lines = status.splitlines()
         has_conflicts = False
         for line in lines:
             if line.startswith(("UU", "AA", "AU", "UA", "UD", "DU")):
                 has_conflicts = True
-                f = line[3:].strip()
-                
-                # Caches e lixo
-                if "__pycache__" in f or f.endswith(".pyc"):
-                    logger.info(f"🗑️ Removendo cache conflitante: {f}")
-                    self.run_command(["rm", "--cached", f])
-                    full_path = self.root / f
-                    if full_path.exists():
-                        try: os.remove(full_path)
-                        except: pass
-                
-                # Merge especial para o índice
-                elif f == "skills_index.json":
-                    if self._merge_skills_index(f):
-                        self.run_command(["add", f])
-                    else:
-                        logger.warning("⚠️ Falha no merge inteligente. Usando 'ours' por segurança.")
-                        self.run_command(["checkout", "--ours", f])
-                        self.run_command(["add", f])
-
-                # Estratégia de Proteção x Upstream Priority
-                elif self._is_protected(f):
-                    logger.info(f"🛡️ Protegendo arquivo local: {f} (estratégia 'ours')")
-                    self.run_command(["checkout", "--ours", f])
-                    self.run_command(["add", f])
-                else:
-                    logger.info(f"📡 Priorizando upstream: {f} (estratégia 'theirs')")
-                    self.run_command(["checkout", "--theirs", f])
-                    self.run_command(["add", f])
-                
+                self._resolve_file_conflict(line[3:].strip())
         return has_conflicts
 
-    def diagnose_and_fix(self):
-        logger.info("🩺 Iniciando diagnóstico Git PhD Autônomo...")
-        
-        if not (self.root / ".git").exists():
-            logger.error("❌ Não é um repositório Git!")
-            return
-
-        # 1. Limpar Locks
-        self._clear_locks()
-
-        # 2. Resolver conflitos se estiver em rebase ou merge
+    def _handle_active_conflicts(self):
+        """🩹 Gerencia loops de resolução para rebase ou merge."""
         is_rebase = (self.root / ".git" / "rebase-merge").exists() or (self.root / ".git" / "rebase-apply").exists()
         is_merge = (self.root / ".git" / "MERGE_HEAD").exists()
+        if not (is_rebase or is_merge): return
 
-        if is_rebase or is_merge:
-            logger.warning("🩹 Conflito detectado. Aplicando política de proteção e merge inteligente...")
-            try:
-                while self._resolve_unmerged():
-                    if is_rebase:
-                        res = subprocess.run(["git", "rebase", "--continue"], env={**os.environ, "GIT_EDITOR": "true"}, cwd=str(self.root), capture_output=True, text=True)
-                        if res.returncode == 0: break
-                    elif is_merge:
-                        self.run_command(["commit", "-m", "chore(git): auto-resolve with intelligent merge policy"], cwd=self.root)
-                        break
-            except Exception as e:
-                logger.error(f"🚨 Falha crítica: {e}")
-                self.run_command(["rebase", "--abort"])
+        from src_local.utils.conflict_policy_phd import ConflictPolicyPhd
+        policy = ConflictPolicyPhd(self.root, self.run_command)
+        
+        logger.warning("🩹 Fluxo de conflito detectado...")
+        try:
+            while self._resolve_with_policy(policy):
+                if is_rebase:
+                    if subprocess.run(["git", "rebase", "--continue"], env={**os.environ, "GIT_EDITOR": "true"}, cwd=str(self.root), capture_output=True).returncode == 0: break
+                elif is_merge:
+                    self.run_command(["commit", "-m", "chore: PhD auto-resolve"])
+                    break
+        except Exception as e:
+            logger.error(f"🚨 Falha: {e}")
+            self.run_command(["rebase", "--abort"])
 
-        # 3. Limpeza de índice e submódulos
+    def _resolve_with_policy(self, policy):
+        """Usa a política externa para resolver arquivos unmerged."""
+        status = self.run_command(["status", "--porcelain"]).stdout
+        lines = [l for l in status.splitlines() if l.startswith(("UU", "AA", "AU", "UA", "UD", "DU"))]
+        for line in lines:
+            policy.resolve_file(line[3:].strip(), self._merge_skills_index, self._is_protected)
+        return len(lines) > 0
+
+    def diagnose_and_fix(self):
+        """🩺 Protocolo de auto-cura do repositório Git."""
+        logger.info("🩺 Iniciando diagnóstico Git PhD Autônomo...")
+        if not (self.root / ".git").exists(): return logger.error("❌ Não é um repositório Git!")
+
+        self._clear_locks()
+        self._handle_active_conflicts()
         self.run_command(["rm", "-r", "--cached", "**/__pycache__/*"])
         self._clean_submodules()
-
-        # 4. Status Final
+        
         logger.info("✅ Diagnóstico concluído.")
-        final_status = self.run_command(["status", "--short", "--branch"]).stdout
-        print("\n--- STATUS ATUAL ---")
-        print(final_status)
+        print(f"\n--- STATUS ---\n{self.run_command(['status', '--short', '--branch']).stdout}")
 
 if __name__ == "__main__":
     doctor = GitDoctor(os.getcwd())

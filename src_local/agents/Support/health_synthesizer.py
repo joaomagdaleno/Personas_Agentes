@@ -10,53 +10,9 @@ class HealthSynthesizer:
     """
     
     def _calculate_rigorous_3_0(self, map_data, all_alerts, parity_gaps):
-        """
-        🧬 Algoritmo de Saúde PhD 3.0 (Rigor Soberano).
-        Cálculo honesto baseado na lista consolidada de alertas.
-        """
-        total_files = len(map_data)
-        if total_files == 0: return 0
-
-        # 1. ESTABILIDADE (40 pts): Baseado em cobertura real
-        test_files = [f for f, i in map_data.items() if i.get("has_test")]
-        stability_score = (len(test_files) / total_files) * 40
-
-        # 2. PUREZA (20 pts): Inversa da complexidade média
-        avg_complexity = sum(i.get("complexity", 1) for i in map_data.values()) / total_files
-        complexity_score = max(0, 20 - (avg_complexity * 1.5))
-
-        # 3. OBSERVABILIDADE (15 pts): Telemetria injetada
-        # Busca por termos de telemetria nos metadados ou no conteúdo mapeado
-        files_with_telemetry = sum(1 for f, i in map_data.items() if i.get("component_type") != "TEST" and (i.get("telemetry") or "telemetry" in str(i)))
-        obs_score = (files_with_telemetry / max(1, total_files)) * 15
-
-        # 4. SEGURANÇA (15 pts): Ausência de riscos reais
-        # Extrai alertas HIGH/CRITICAL da lista única consolidada (Visão Holística)
-        high_alerts = [r for r in all_alerts if isinstance(r, dict) and r.get('severity') in ['critical', 'high']]
-        security_score = max(0, 15 - (len(high_alerts) * 5))
-
-        # 5. EXCELÊNCIA (10 pts): KDoc e Padronização
-        kdoc_files = sum(1 for f, i in map_data.items() if i.get("purpose") != "UNKNOWN")
-        doc_score = (kdoc_files / total_files) * 10
-
-        # Score Bruto
-        raw_score = stability_score + complexity_score + obs_score + security_score + doc_score
-        
-        # --- SISTEMA DE VETOS E TETOS ---
-        medium_alerts = [r for r in all_alerts if isinstance(r, dict) and r.get('severity') == 'medium']
-        low_alerts = [r for r in all_alerts if isinstance(r, dict) and r.get('severity') in ['low', 'strategic']]
-        strategic_count = sum(1 for r in all_alerts if isinstance(r, str))
-
-        ceiling = 100
-        if high_alerts: ceiling = 60
-        elif medium_alerts: ceiling = 85
-        elif low_alerts or strategic_count > 0 or len(test_files) < total_files: ceiling = 99
-
-        # Penalidade incremental (Drenagem de Score)
-        drain = (len(high_alerts) * 15) + (len(medium_alerts) * 5) + (len(low_alerts) * 1) + (strategic_count * 0.5)
-        final_score = max(0, int(min(raw_score, ceiling) - (drain * 0.2)))
-        
-        return final_score
+        """🧬 Algoritmo de Saúde PhD 3.0: Delegação Total."""
+        from src_local.utils.scoring_engine_phd import ScoringEnginePhd
+        return ScoringEnginePhd.calculate(map_data, all_alerts, len(map_data))
 
     def synthesize_360(self, context, orchestrator_metrics, orchestrator_personas, stability_ledger, qa_data) -> dict:
         """Consolida todos os sinais vitais do sistema em um diagnóstico único."""
@@ -157,20 +113,9 @@ class HealthSynthesizer:
         return testify.analyze_test_quality_matrix(map_data) if testify else []
 
     def trigger_reflexes(self, health, personas, job_queue, auditor):
-        """
-        ⚡ Ativa respostas sistêmicas automáticas baseadas no estado de saúde.
-        Coordena auto-cura via Voyager e sincronização via DependencyAuditor.
-        """
-        if health['blind_spots']:
-            v = next((p for p in personas if p.name == "Voyager"), None)
-            if v: v.perform_active_healing(health['blind_spots'])
-        
-        if any(isinstance(i, dict) and i.get('context') == 'DependencyAuditor' for i in job_queue):
-            auditor.sync_submodule()
-            
-        if health['brittle_points']:
-            f = next((p for p in personas if p.name == "Forge"), None)
-            if f: logger.warning("⚒️ [Forge] Fragilidade detectada!")
+        """⚡ Ativa respostas sistêmicas automáticas via delegação técnica."""
+        from src_local.utils.reflex_engine_phd import ReflexEnginePhd
+        ReflexEnginePhd.trigger(health, personas, job_queue, auditor)
 
     def get_topology_issues(self, context):
         """🌐 Identifica anomalias estruturais e falhas de acoplamento na topologia."""

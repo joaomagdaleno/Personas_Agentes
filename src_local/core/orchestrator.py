@@ -65,9 +65,7 @@ class Orchestrator:
 
     def generate_full_diagnostic(self):
         """Protocolo Soberano de Verdade Única: Reset -> Discovery -> Targeted Verification."""
-        import hashlib
-        
-        # RESET ABSOLUTO: Limpa o estado de execuções anteriores para evitar inflação
+        # RESET ABSOLUTO
         self.job_queue = []
         self.metrics["all_findings"] = []
         
@@ -76,69 +74,33 @@ class Orchestrator:
         context_v1 = self.context_engine.analyze_project()
         initial_findings = self.run_strategic_audit(context_v1, include_history=False)
         
+        # Phase 2: Verificação Alvo
         audit_map = self.strategist.plan_targeted_verification(initial_findings)
         internal_health = self.core_validator.verify_core_health(self.project_root)
-        
-        # Phase 2: Verificação Alvo
         post_findings = self._run_targeted_verification(audit_map) if initial_findings else []
         
-        # DEDUPLICAÇÃO POR COORDENADA ABSOLUTA (FBI MODE - NÍVEL 10)
-        # Força o uso apenas do NOME do arquivo para evitar duplicatas por caminhos diferentes
-        all_raw = initial_findings + post_findings
-        all_findings = []
-        severity_rank = {"CRITICAL": 5, "HIGH": 4, "MEDIUM": 3, "LOW": 2, "STRATEGIC": 1, "HEALED": 0}
+        # DEDUPLICAÇÃO DELEGADA
+        from src_local.utils.finding_deduplicator import FindingDeduplicator
+        deduplicator = FindingDeduplicator()
+        all_findings = deduplicator.deduplicate(initial_findings + post_findings)
         
-        # Mapa de Coordenada: (nome_arquivo, linha) -> melhor_achado
-        coordinate_map = {}
-        
-        for f in all_raw:
-            if not isinstance(f, dict):
-                # Hash para alertas de texto puro
-                f_hash = hashlib.md5(str(f).encode('utf-8')).hexdigest()
-                if f_hash not in coordinate_map:
-                    coordinate_map[f_hash] = f
-                continue
-            
-            # Normalização Forense de Caminho
-            raw_path = f.get('file', 'global')
-            # FBI MODE: Usa o caminho relativo completo para evitar colisões entre __init__.py de pastas diferentes
-            try:
-                clean_path = str(Path(raw_path).as_posix()).replace("\\", "/")
-            except:
-                clean_path = raw_path
-            
-            f_line = f.get('line', 0)
-            f_sev = f.get('severity', 'MEDIUM').upper()
-            
-            coord = (clean_path, f_line, f.get('issue')) # Inclui o issue na coordenada para permitir múltiplos problemas no mesmo local
-            
-            if coord not in coordinate_map:
-                coordinate_map[coord] = f
-            else:
-                existing = coordinate_map[coord]
-                if isinstance(existing, dict):
-                    existing_sev = existing.get('severity', 'MEDIUM').upper()
-                    if severity_rank.get(f_sev, 3) > severity_rank.get(existing_sev, 3):
-                        coordinate_map[coord] = f
-        
-        all_findings = list(coordinate_map.values())
-        
-        # Sincronização Final
-        health_snapshot = self.get_system_health_360(context_v1, internal_health, all_findings)
-        self.synthesizer.trigger_reflexes(
-            health_snapshot,
-            self.personas, all_findings, self.dependency_auditor
-        )
+        # Sincronização e Relatório
+        return self._finalize_diagnostic(context_v1, internal_health, all_findings)
+
+    def _finalize_diagnostic(self, context, internal_health, all_findings):
+        """Finaliza a geração do diagnóstico e persiste o relatório."""
+        health_snapshot = self.get_system_health_360(context, internal_health, all_findings)
+        self.synthesizer.trigger_reflexes(health_snapshot, self.personas, all_findings, self.dependency_auditor)
         
         self.cache_manager.save()
         report = self.director.format_360_report(health_snapshot, all_findings)
         
-        # FBI MODE: Novo nome para evitar cache de arquivo do Windows
         report_file = self.project_root / "auto_healing_VERIFIED.md"
         with open(report_file, "w", encoding="utf-8") as f:
             f.write(report)
             f.flush()
-            os.fsync(f.fileno()) # Força escrita física no disco
+            import os
+            os.fsync(f.fileno())
             
         return report_file
 
