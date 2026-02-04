@@ -35,3 +35,41 @@ class ASTNavigator:
             if isinstance(target, ast.Name):
                 if any(x in target.id for x in target_substrings): return True
         return False
+
+    def check_safety_rules(self, node, tree):
+        """Aggregate check for all safety rules."""
+        if self._is_inside_assertion(node, tree): return True
+        if self._is_inside_log_call(node, tree): return True
+        if self._is_inside_rule_definition(node, tree): return True
+        return not self._is_being_executed(node, tree)
+
+    def _is_inside_log_call(self, target_node, tree):
+        safe_methods = ['info', 'warning', 'error', 'debug', 'exception']
+        for node in ast.walk(tree):
+            if self.is_call_to(node, safe_methods):
+                 for arg in node.args:
+                    if self.is_descendant(target_node, arg): return True
+        return False
+
+    def _is_inside_rule_definition(self, target_node, tree):
+        for node in ast.walk(tree):
+            if self.is_assignment_to(node, ['rule', 'pattern', 'issue', 'regex']):
+                 if self.is_descendant(target_node, node.value): return True
+            if self.is_in_dict_value(node, target_node, ['regex', 'issue', 'pattern']): return True
+        return False
+
+    def _is_inside_assertion(self, target_node, tree):
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
+                if hasattr(node.func, 'attr') and node.func.attr.startswith("assert"):
+                    for arg in node.args:
+                        if self.is_descendant(target_node, arg): return True
+        return False
+
+    def _is_being_executed(self, target_node, tree):
+        dangerous = ["eval", "exec", "os.system"]
+        for node in ast.walk(tree):
+            if self.is_call_to(node, dangerous):
+                for arg in node.args:
+                    if self.is_descendant(target_node, arg): return True
+        return False

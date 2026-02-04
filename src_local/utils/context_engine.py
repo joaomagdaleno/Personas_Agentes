@@ -66,70 +66,32 @@ class ContextEngine:
     def _register_file(self, path):
         try:
             rel_path = path.relative_to(self.project_root).as_posix()
-            if rel_path not in self.map:
-                self.map[rel_path] = self._analyze_file(path)
-        except Exception:
-            pass
-
-    def _analyze_file(self, path: Path):
-        """
-        🧬 Decompõe um arquivo individual em metadados PhD.
-        """
-        try:
-            content = path.read_text(encoding='utf-8', errors='ignore')
-            info = self._get_initial_info(path)
+            if rel_path in self.map: return
             
-            # Delegações técnicas estruturais
+            content = path.read_text(encoding='utf-8', errors='ignore')
+            info = self._get_initial_info(path, rel_path)
+            
             if path.suffix == '.py':
                 info.update(self.analyst.analyze_python(content, path.name))
-            elif path.suffix in ['.kt', '.kts']:
-                info.update(self.analyst.analyze_python(content, path.name)) # StructuralAnalyst handles both extensions
             
-            # Normalização de nome para o auditor de cobertura
-            file_name_clean = path.name.lower()
-            
-            # Delegações especializadas
             info.update(self.guardian.detect_vulnerabilities(content, info["component_type"]))
             info["has_test"] = self.coverage_auditor.detect_test(path, info["component_type"], self.all_files_index)
             
-            # FBI MODE: Apenas arquivos na pasta /tests/ são considerados fontes de verdade de teste
-            is_real_test_file = "/tests/" in str(path).replace("\\", "/") or "\\tests\\" in str(path)
-            
-            if info["component_type"] == "TEST" and is_real_test_file:
+            if info["component_type"] == "TEST" and "/tests/" in rel_path:
                 self._analyze_test_quality(content, info)
-            else:
-                # FBI MODE: Se não é um arquivo físico de teste, não tem profundidade de teste
-                info["test_depth"] = {"assertion_count": 0, "quality_level": "NONE"}
-                # Se não é arquivo de teste, a cobertura depende do auditor
-                if not is_real_test_file:
-                    info["has_test"] = self.coverage_auditor.detect_test(path, info["component_type"], self.all_files_index)
                 
-            return info
+            self.map[rel_path] = info
         except Exception as e:
-            logger.error(f"❌ Erro ao analisar metadados de {path}: {e}", exc_info=True)
-            return {"error": str(e), "component_type": "UNKNOWN"}
+            logger.error(f"❌ Erro ao analisar {path}: {e}")
 
-    def _get_initial_info(self, path: Path):
-        """
-        📝 Gera o snapshot inicial de informações do componente.
-        Define o domínio operacional e o tipo de componente baseado no caminho.
-        """
-        try:
-            rel_path = path.relative_to(self.project_root).as_posix().lower()
-        except ValueError:
-            # Caso o caminho seja absoluto ou fora da raiz (comum em testes)
-            rel_path = path.name.lower()
-            
+    def _get_initial_info(self, path: Path, rel_path):
         comp_type = self.analyst.map_component_type(rel_path)
-        is_gold = "compliance_standard.py" in rel_path or "standard" in rel_path
-        
-        # Rigor PhD: Todo arquivo é Ponto Cego até que se prove o contrário (has_test = False)
         return {
             "purpose": "Logic", "functions": [], "classes": [],
             "brittle": False, "silent_error": False, "has_test": False,
             "component_type": comp_type, 
-            "domain": "EXPERIMENTATION" if comp_type == "TEST" else ("KNOWLEDGE_BASE" if is_gold else "PRODUCTION"), 
-            "is_gold_standard": is_gold, "path": str(path)
+            "domain": "EXPERIMENTATION" if comp_type == "TEST" else "PRODUCTION", 
+            "path": str(path)
         }
 
     def _analyze_test_quality(self, content, info):

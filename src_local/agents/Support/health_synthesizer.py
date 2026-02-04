@@ -22,25 +22,20 @@ class HealthSynthesizer:
         map_data = context.get("map", {})
         all_alerts = orchestrator_metrics.get("all_findings", [])
         
-        # FBI MODE: Força detecção de Pontos Cegos (Despreza cache)
-        dark_matter = []
-        for f, i in map_data.items():
-            c_type = i.get("component_type", "UNKNOWN")
-            # Agentes e Core SEMPRE precisam de teste físico
-            if c_type in ["AGENT", "CORE", "LOGIC", "UTIL"]:
-                if not i.get("has_test"):
-                    dark_matter.append(f)
+        # FBI MODE: Pontos Cegos (Arquivos CORE sem teste)
+        dark_matter = [
+            f for f, i in map_data.items() 
+            if i.get("component_type") in ["AGENT", "CORE", "LOGIC", "UTIL"] and not i.get("has_test")
+        ]
         
-        parity_gaps = len(context.get("parity", {}).get("gaps", []))
-        score = self._calculate_rigorous_3_0(map_data, all_alerts, parity_gaps)
+        score = self.calculator.calculate_final_score(map_data, all_alerts)
         
-        # FBI MODE: CURA DE SCORE - Nunca zero se houver estrutura operacional
-        # Se existem arquivos mapeados e a maioria está saudável, score base é 30%
+        # FBI MODE: CURA DE SCORE
         if score < 15 and len(map_data) > 50:
             has_major = any(r.get('severity') in ['critical', 'high'] for r in all_alerts if isinstance(r, dict))
             score = 10 if has_major else 30 
         
-        health_data = {
+        return {
             "objective": context["identity"].get("core_mission"),
             "health_score": score,
             "timestamp": time.strftime('%Y-%m-%d %H:%M:%S'),
@@ -58,7 +53,6 @@ class HealthSynthesizer:
             "brittle_points": self._analyze_brittle_risk(map_data, stability_ledger),
             "blind_spots": [f for f, i in map_data.items() if i.get("silent_error")]
         }
-        return health_data
 
     def _get_vitals(self, map_data, stability_ledger):
         """
