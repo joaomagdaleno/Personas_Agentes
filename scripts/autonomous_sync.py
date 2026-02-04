@@ -9,6 +9,7 @@ project_root = Path(__file__).parent.parent.absolute()
 sys.path.append(str(project_root))
 
 from src_local.utils.dependency_auditor import DependencyAuditor
+from scripts.git_doctor import GitDoctor
 
 def check_internet():
     try:
@@ -28,6 +29,11 @@ def main():
 
     logger.info("📡 Internet detectada. Iniciando sincronia autônoma...")
     
+    # 1. Limpeza e Diagnóstico de Git
+    doctor = GitDoctor(project_root)
+    doctor.diagnose_and_fix()
+
+    # 2. Sincronia de Submódulo
     auditor = DependencyAuditor(project_root)
     success = auditor.sync_submodule()
     

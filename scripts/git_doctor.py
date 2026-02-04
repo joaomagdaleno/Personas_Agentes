@@ -12,46 +12,64 @@ class GitDoctor:
 
     def run_command(self, args, cwd=None):
         if cwd is None: cwd = self.root
-        result = subprocess.run(["git"] + args, cwd=cwd, capture_output=True, text=True)
+        result = subprocess.run(["git"] + args, cwd=str(cwd), capture_output=True, text=True)
         return result
+
+    def _resolve_unmerged(self):
+        status = self.run_command(["status", "--porcelain"]).stdout
+        lines = status.splitlines()
+        has_conflicts = False
+        for line in lines:
+            if line.startswith(("UU", "AA", "AU", "UA", "UD", "DU")):
+                has_conflicts = True
+                f = line[3:].strip()
+                if "__pycache__" in f or f.endswith(".pyc"):
+                    logger.info(f"🗑️ Removendo cache conflitante: {f}")
+                    self.run_command(["rm", "--cached", f])
+                    full_path = self.root / f
+                    if full_path.exists():
+                        try: os.remove(full_path)
+                        except: pass
+                else:
+                    logger.info(f"👉 Resolvendo {f} com 'ours' (estratégia conservadora)")
+                    self.run_command(["checkout", "--ours", f])
+                    self.run_command(["add", f])
+        return has_conflicts
 
     def diagnose_and_fix(self):
         logger.info("🩺 Iniciando diagnóstico Git...")
         
-        # 1. Verificar se estamos em um repositório
         if not (self.root / ".git").exists():
             logger.error("❌ Não é um repositório Git!")
             return
 
-        # 2. Limpar arquivos que deveriam ser ignorados mas foram rastreados
-        logger.info("🧹 Limpando cache de arquivos ignorados...")
-        self.run_command(["rm", "-r", "--cached", "."], cwd=self.root)
-        self.run_command(["add", "."], cwd=self.root)
-        
-        # 3. Resolver conflitos automáticos se houver
-        status = self.run_command(["status", "--porcelain"]).stdout
-        if "UU" in status:
-            logger.warning("⚠️ Conflitos detectados. Tentando resolução estratégica...")
-            unmerged = [line[3:] for line in status.splitlines() if line.startswith("UU")]
-            for f in unmerged:
-                if f.endswith((".json", ".pyc", ".db")):
-                    logger.info(f"👉 Resolvendo {f} com 'theirs' (binário/cache)")
-                    self.run_command(["checkout", "--theirs", f])
-                else:
-                    logger.info(f"👉 Resolvendo {f} com 'ours' (código)")
-                    self.run_command(["checkout", "--ours", f])
-                self.run_command(["add", f])
+        # 1. Resolver conflitos se estiver em rebase ou merge
+        is_rebase = (self.root / ".git" / "rebase-merge").exists() or (self.root / ".git" / "rebase-apply").exists()
+        is_merge = (self.root / ".git" / "MERGE_HEAD").exists()
 
-        # 4. Sincronizar com remote
-        logger.info("📡 Sincronizando com o upstream...")
-        self.run_command(["fetch", "--all"])
+        if is_rebase or is_merge:
+            logger.warning("🩹 Rebase/Merge detectado. Limpando...")
+            while self._resolve_unmerged():
+                if is_rebase:
+                    logger.info("⏩ Continuando rebase...")
+                    res = subprocess.run(["git", "rebase", "--continue"], env={**os.environ, "GIT_EDITOR": "true"}, cwd=str(self.root), capture_output=True, text=True)
+                    if res.returncode == 0: break
+                elif is_merge:
+                    logger.info("⏩ Finalizando merge...")
+                    self.run_command(["commit", "-m", "chore(git): auto-resolve merge conflicts"], cwd=self.root)
+                    break
+
+        # 2. Limpar rastreamento de lixo
+        logger.info("🧹 Excluindo arquivos de cache do índice...")
+        self.run_command(["rm", "-r", "--cached", "**/__pycache__/*"])
+        self.run_command(["rm", "--cached", "*.pyc"])
         
-        # 5. Verificar Submódulos
+        # 3. Sincronizar Submódulos
         if (self.root / ".gitmodules").exists():
-            logger.info("📦 Validando submódulos...")
+            logger.info("📦 Sincronizando submódulos...")
             self.run_command(["submodule", "update", "--init", "--recursive"])
 
-        # 6. Status Final
+        # 4. Status Final
         logger.info("✅ Diagnóstico concluído.")
         final_status = self.run_command(["status", "--short", "--branch"]).stdout
         print("\n--- STATUS ATUAL ---")
