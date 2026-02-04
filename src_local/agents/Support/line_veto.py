@@ -33,6 +33,14 @@ class LineVeto:
 
         file_path = ctx.get("file_path", "").replace("\\", "/")
         
+        if self._check_test_permissions(line, pattern, file_path): return True
+        if self._is_docstring(line, ctx): return True
+        if self._is_domain_excluded(line, pattern, ctx): return True
+        if self._is_technical_math_context(line, pattern): return True
+        
+        return self._is_rule_definition(line, pattern, ctx)
+
+    def _check_test_permissions(self, line, pattern, file_path):
         # Rigor PhD: Em arquivos de teste, permitimos padrões perigosos para validação
         if "/tests/" in file_path or "test_" in file_path:
             # Se a linha contém o próprio padrão sendo buscado como string, veta
@@ -42,14 +50,7 @@ class LineVeto:
             # Veto de criticidade em testes (permitir experimentos)
             if pattern.get("severity") == "critical" and "pass" in line:
                 return True
-
-        if self._is_docstring(line, ctx): return True
-        if self._is_domain_excluded(line, pattern, ctx): return True
-        
-        # Inteligência Contextual: Distingue Matemática Técnica de Finanças
-        if self._is_technical_math_context(line, pattern): return True
-        
-        return self._is_rule_definition(line, pattern, ctx)
+        return False
 
     def _is_technical_math_context(self, line: str, pattern: dict) -> bool:
         """

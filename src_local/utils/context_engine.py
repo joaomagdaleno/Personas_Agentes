@@ -52,36 +52,40 @@ class ContextEngine:
         self.project_identity = self._discover_identity()
         self.map = {}
         
-        # FBI MODE: Varredura absoluta ignorando caches do sistema de arquivos
-        self.all_files_index = []
-        for p in self.project_root.rglob('*'):
-            if p.is_file():
-                self.all_files_index.append(p.name.lower())
+        search_dirs = self._get_search_directories()
+        self.all_files_index = [p.name.lower() for p in self.project_root.rglob('*') if p.is_file()]
 
-        # Força a inclusão de src_local explicitamente
-        src_dir = self.project_root / "src_local"
-        search_dirs = [self.project_root]
-        if src_dir.exists():
-            search_dirs.append(src_dir)
-
+        # Processamento sequencial de arquivos
         for s_dir in search_dirs:
-            for path in s_dir.rglob('*'):
-                if self.analyst.should_ignore(path) and "src_local" not in str(path):
-                    continue
-                if not self.analyst.is_analyable(path):
-                    continue
-                
-                # Normalização de caminho relativo soberano
-                try:
-                    rel_path = path.relative_to(self.project_root).as_posix()
-                    if rel_path not in self.map:
-                        self.map[rel_path] = self._analyze_file(path)
-                except Exception:
-                    continue
+            self._scan_directory(s_dir)
         
         self._build_dependency_map()
         logger.info(f"✅ DNA Processado: {len(self.map)} componentes identificados.")
         return {"identity": self.project_identity, "map": self.map}
+
+    def _get_search_directories(self):
+        src_dir = self.project_root / "src_local"
+        dirs = [self.project_root]
+        if src_dir.exists(): dirs.append(src_dir)
+        return dirs
+
+    def _scan_directory(self, s_dir):
+        for path in s_dir.rglob('*'):
+            if self._should_analyze(path):
+                self._register_file(path)
+
+    def _should_analyze(self, path):
+        if self.analyst.should_ignore(path) and "src_local" not in str(path): return False
+        if not self.analyst.is_analyable(path): return False
+        return True
+
+    def _register_file(self, path):
+        try:
+            rel_path = path.relative_to(self.project_root).as_posix()
+            if rel_path not in self.map:
+                self.map[rel_path] = self._analyze_file(path)
+        except Exception:
+            pass
 
     def _analyze_file(self, path: Path):
         """

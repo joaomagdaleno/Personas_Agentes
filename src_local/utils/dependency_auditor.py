@@ -24,32 +24,36 @@ class DependencyAuditor:
     def sync_submodule(self):
         """
         🚀 Executa a sincronização atômica com segurança absoluta.
-        Realiza fetch, stash, rebase e validação de integridade antes de confirmar.
+        Orquestra: Validação -> Boot -> Lock -> Sync -> Verify.
         """
+        if not self._validate_pre_conditions(): return False
+        
+        self._acquire_lock()
+        try:
+            self._ensure_initialized()
+            if not self._is_valid_repo():
+                logger.error("Falha Crítica: Submódulo não é um repositório Git válido.")
+                return False
+
+            initial_hash = self._git_out(["rev-parse", "HEAD"], self.agent_path)
+            
+            return self._execute_git_transaction(initial_hash)
+        finally:
+            self._release_lock()
+
+    def _validate_pre_conditions(self):
         if not self.is_internal:
             logger.debug("Sincronia ignorada: Projeto externo.")
             return False
-            
         if self._is_locked():
             logger.warning("Sincronia em andamento ou trava órfã detectada.")
             return False
-        
-        self._acquire_lock()
-        
-        # Garante que o submódulo está inicializado
-        self._ensure_initialized()
-        
-        if not self._is_valid_repo():
-            logger.error("Falha Crítica: Submódulo não é um repositório Git válido.")
-            self._release_lock()
-            return False
+        return True
 
-        initial_hash = self._git_out(["rev-parse", "HEAD"], self.agent_path)
-        
+    def _execute_git_transaction(self, initial_hash):
         try:
             remote = self._discover_remote()
-            if not remote:
-                raise Exception("Nenhum remote (upstream/origin) acessível.")
+            if not remote: raise Exception("Nenhum remote (upstream/origin) acessível.")
 
             self._pre_flight_cleanup()
             topo = self._get_topology(remote)
@@ -58,43 +62,44 @@ class DependencyAuditor:
             self._run_git(["fetch", remote, "--prune"], self.agent_path)
             
             metrics = self._get_metrics(topo['active_ref'], f"{remote}/{topo['tracking_ref']}")
-            
             if metrics['behind'] == 0:
                 logger.info("✅ Submódulo já está na versão mais recente.")
-                self._release_lock()
                 return True
 
-            logger.info(f"⬇️ Puxando {metrics['behind']} commits novos...")
-            # Stash transacional
-            subprocess.run(["git", "stash", "push", "--include-untracked", "-m", "Auto-sync stash"], cwd=self.agent_path, capture_output=True)
-            
-            # Rebase com verificação de erro real
-            rebase_res = subprocess.run(["git", "rebase", f"{remote}/{topo['tracking_ref']}"], cwd=self.agent_path, capture_output=True, text=True)
-            if rebase_res.returncode != 0:
-                logger.warning(f"⚠️ Conflito detectado. Acionando Reset Soberano para alinhar com {remote}...")
-                subprocess.run(["git", "rebase", "--abort"], cwd=self.agent_path, capture_output=True)
-                # FORÇA ALINHAMENTO: Prioriza a verdade do servidor sobre o histórico local divergente
-                reset_res = subprocess.run(["git", "reset", "--hard", f"{remote}/{topo['tracking_ref']}"], cwd=self.agent_path, capture_output=True)
-                if reset_res.returncode != 0:
-                    raise Exception("Falha catastrófica no Reset Soberano.")
-
-            self._verify_system_integrity()
-
-            # Registra a atualização no repositório pai
-            subprocess.run(["git", "add", ".agent/skills"], cwd=self.project_root, capture_output=True)
-            
-            # Tenta restaurar o stash
-            subprocess.run(["git", "stash", "pop"], cwd=self.agent_path, capture_output=True)
-            
-            logger.info(f"✨ Sincronia Soberana Concluída: {topo['active_ref']} atualizada.")
-            self._release_lock()
-            return True
-
+            return self._perform_update(remote, topo, metrics)
         except Exception as e:
             logger.critical(f"🚨 [Auditor] Erro na sincronia: {e}")
             self._transactional_rollback(initial_hash)
-            self._release_lock()
             return False
+
+    def _perform_update(self, remote, topo, metrics):
+        logger.info(f"⬇️ Puxando {metrics['behind']} commits novos...")
+        # Stash transacional
+        subprocess.run(["git", "stash", "push", "--include-untracked", "-m", "Auto-sync stash"], cwd=self.agent_path, capture_output=True)
+        
+        # Rebase com verificação de erro real
+        target = f"{remote}/{topo['tracking_ref']}"
+        rebase_res = subprocess.run(["git", "rebase", target], cwd=self.agent_path, capture_output=True, text=True)
+        
+        if rebase_res.returncode != 0:
+            self._handle_conflict(remote, topo, target)
+
+        self._verify_system_integrity()
+        # Registra a atualização no repositório pai
+        subprocess.run(["git", "add", ".agent/skills"], cwd=self.project_root, capture_output=True)
+        # Tenta restaurar o stash
+        subprocess.run(["git", "stash", "pop"], cwd=self.agent_path, capture_output=True)
+        
+        logger.info(f"✨ Sincronia Soberana Concluída: {topo['active_ref']} atualizada.")
+        return True
+
+    def _handle_conflict(self, remote, topo, target):
+        logger.warning(f"⚠️ Conflito detectado. Acionando Reset Soberano para alinhar com {remote}...")
+        subprocess.run(["git", "rebase", "--abort"], cwd=self.agent_path, capture_output=True)
+        # FORÇA ALINHAMENTO Soberano
+        reset_res = subprocess.run(["git", "reset", "--hard", target], cwd=self.agent_path, capture_output=True)
+        if reset_res.returncode != 0:
+            raise Exception("Falha catastrófica no Reset Soberano.")
 
     def _ensure_initialized(self):
         """🔨 Garante que o submódulo está fisicamente presente e linkado."""

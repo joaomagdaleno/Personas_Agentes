@@ -17,46 +17,59 @@ class HealthSynthesizer:
         total_files = len(map_data)
         if total_files == 0: return 0
 
-        # 1. ESTABILIDADE (40 pts): Baseado em cobertura real
-        test_files = [f for f, i in map_data.items() if i.get("has_test")]
-        stability_score = (len(test_files) / total_files) * 40
+        # Score Bruto
+        raw_score = (
+            self._calc_stability(map_data, total_files) +
+            self._calc_purity(map_data, total_files) +
+            self._calc_observability(map_data, total_files) +
+            self._calc_security(all_alerts) +
+            self._calc_excellence(map_data, total_files)
+        )
+        
+        return self._apply_penalties(raw_score, all_alerts, map_data)
 
+    def _calc_stability(self, map_data, total_files):
+        # 1. ESTABILIDADE (40 pts): Baseado em cobertura real
+        test_files = sum(1 for f, i in map_data.items() if i.get("has_test"))
+        return (test_files / total_files) * 40
+
+    def _calc_purity(self, map_data, total_files):
         # 2. PUREZA (20 pts): Inversa da complexidade média
         avg_complexity = sum(i.get("complexity", 1) for i in map_data.values()) / total_files
-        complexity_score = max(0, 20 - (avg_complexity * 1.5))
+        return max(0, 20 - (avg_complexity * 1.5))
 
+    def _calc_observability(self, map_data, total_files):
         # 3. OBSERVABILIDADE (15 pts): Telemetria injetada
-        # Busca por termos de telemetria nos metadados ou no conteúdo mapeado
         files_with_telemetry = sum(1 for f, i in map_data.items() if i.get("component_type") != "TEST" and (i.get("telemetry") or "telemetry" in str(i)))
-        obs_score = (files_with_telemetry / max(1, total_files)) * 15
+        return (files_with_telemetry / max(1, total_files)) * 15
 
+    def _calc_security(self, all_alerts):
         # 4. SEGURANÇA (15 pts): Ausência de riscos reais
-        # Extrai alertas HIGH/CRITICAL da lista única consolidada (Visão Holística)
         high_alerts = [r for r in all_alerts if isinstance(r, dict) and r.get('severity') in ['critical', 'high']]
-        security_score = max(0, 15 - (len(high_alerts) * 5))
+        return max(0, 15 - (len(high_alerts) * 5))
 
+    def _calc_excellence(self, map_data, total_files):
         # 5. EXCELÊNCIA (10 pts): KDoc e Padronização
         kdoc_files = sum(1 for f, i in map_data.items() if i.get("purpose") != "UNKNOWN")
-        doc_score = (kdoc_files / total_files) * 10
+        return (kdoc_files / total_files) * 10
 
-        # Score Bruto
-        raw_score = stability_score + complexity_score + obs_score + security_score + doc_score
-        
+    def _apply_penalties(self, raw_score, all_alerts, map_data):
         # --- SISTEMA DE VETOS E TETOS ---
+        high_alerts = [r for r in all_alerts if isinstance(r, dict) and r.get('severity') in ['critical', 'high']]
         medium_alerts = [r for r in all_alerts if isinstance(r, dict) and r.get('severity') == 'medium']
         low_alerts = [r for r in all_alerts if isinstance(r, dict) and r.get('severity') in ['low', 'strategic']]
         strategic_count = sum(1 for r in all_alerts if isinstance(r, str))
+        
+        test_loss = sum(1 for f, i in map_data.items() if not i.get("has_test"))
 
         ceiling = 100
         if high_alerts: ceiling = 60
         elif medium_alerts: ceiling = 85
-        elif low_alerts or strategic_count > 0 or len(test_files) < total_files: ceiling = 99
+        elif low_alerts or strategic_count > 0 or test_loss > 0: ceiling = 99
 
         # Penalidade incremental (Drenagem de Score)
         drain = (len(high_alerts) * 15) + (len(medium_alerts) * 5) + (len(low_alerts) * 1) + (strategic_count * 0.5)
-        final_score = max(0, int(min(raw_score, ceiling) - (drain * 0.2)))
-        
-        return final_score
+        return max(0, int(min(raw_score, ceiling) - (drain * 0.2)))
 
     def synthesize_360(self, context, orchestrator_metrics, orchestrator_personas, stability_ledger, qa_data) -> dict:
         """Consolida todos os sinais vitais do sistema em um diagnóstico único."""
