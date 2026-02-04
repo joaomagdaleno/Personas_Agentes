@@ -1,10 +1,21 @@
 import subprocess
 import os
 import logging
+import json
 from pathlib import Path
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger("GitDoctor")
+
+# Configuração de caminhos que devem ser protegidos (mantêm versão local)
+PROTECTED_PATHS = [
+    "skills/fast-android-build"
+]
+
+# IDs de skills que devem ser preservadas no skills_index.json
+PROTECTED_SKILL_IDS = [
+    "fast-android-build"
+]
 
 class GitDoctor:
     def __init__(self, root_path):
@@ -34,7 +45,6 @@ class GitDoctor:
         if not (self.root / ".gitmodules").exists(): return
 
         logger.info("🧹 Iniciando limpeza profunda de submódulos...")
-        # Obter caminhos dos submódulos
         res = self.run_command(["submodule", "foreach", "--quiet", "echo $displaypath"])
         if res.returncode == 0:
             sub_paths = res.stdout.splitlines()
@@ -42,10 +52,47 @@ class GitDoctor:
                 sub_dir = self.root / sub.strip()
                 if sub_dir.exists():
                     logger.info(f"👉 Limpando submódulo: {sub}")
-                    # Remove arquivos não rastreados no submódulo
                     subprocess.run(["git", "clean", "-fd"], cwd=str(sub_dir), capture_output=True)
-                    # Força reset se houver mudanças no index do submódulo (estratégia agressiva para resolver o alerta)
-                    subprocess.run(["git", "reset", "--hard"], cwd=str(sub_dir), capture_output=True)
+
+    def _is_protected(self, file_path):
+        """Verifica se um arquivo está na lista de protegidos."""
+        for p in PROTECTED_PATHS:
+            if p in file_path:
+                return True
+        return False
+
+    def _merge_skills_index(self, file_path):
+        """Realiza um merge inteligente do skills_index.json."""
+        logger.info(f"🧠 Realizando merge inteligente: {file_path}")
+        
+        # Obter versões "ours" e "theirs" do índice de conflito
+        ours_raw = self.run_command(["show", f":2:{file_path}"]).stdout
+        theirs_raw = self.run_command(["show", f":3:{file_path}"]).stdout
+        
+        try:
+            ours = json.loads(ours_raw) if ours_raw else []
+            theirs = json.loads(theirs_raw) if theirs_raw else []
+            
+            # Indexar by ID
+            merged_dict = {item['id']: item for item in theirs}
+            
+            # Adicionar ou sobrescrever com os protegidos de "ours"
+            for item in ours:
+                if item['id'] in PROTECTED_SKILL_IDS:
+                    logger.info(f"🛡️ Mantendo skill protegida no índice: {item['id']}")
+                    merged_dict[item['id']] = item
+            
+            # Converter de volta para lista e ordenar
+            merged_list = sorted(merged_dict.values(), key=lambda x: x['id'])
+            
+            # Salvar no disco
+            with open(self.root / file_path, "w", encoding="utf-8") as f:
+                json.dump(merged_list, f, indent=2, ensure_ascii=False)
+            
+            return True
+        except Exception as e:
+            logger.error(f"❌ Falha no merge JSON: {e}")
+            return False
 
     def _resolve_unmerged(self):
         status = self.run_command(["status", "--porcelain"]).stdout
@@ -55,6 +102,8 @@ class GitDoctor:
             if line.startswith(("UU", "AA", "AU", "UA", "UD", "DU")):
                 has_conflicts = True
                 f = line[3:].strip()
+                
+                # Caches e lixo
                 if "__pycache__" in f or f.endswith(".pyc"):
                     logger.info(f"🗑️ Removendo cache conflitante: {f}")
                     self.run_command(["rm", "--cached", f])
@@ -62,14 +111,30 @@ class GitDoctor:
                     if full_path.exists():
                         try: os.remove(full_path)
                         except: pass
-                else:
-                    logger.info(f"👉 Resolvendo {f} com 'ours' (estratégia conservadora)")
+                
+                # Merge especial para o índice
+                elif f == "skills_index.json":
+                    if self._merge_skills_index(f):
+                        self.run_command(["add", f])
+                    else:
+                        logger.warning("⚠️ Falha no merge inteligente. Usando 'ours' por segurança.")
+                        self.run_command(["checkout", "--ours", f])
+                        self.run_command(["add", f])
+
+                # Estratégia de Proteção x Upstream Priority
+                elif self._is_protected(f):
+                    logger.info(f"🛡️ Protegendo arquivo local: {f} (estratégia 'ours')")
                     self.run_command(["checkout", "--ours", f])
                     self.run_command(["add", f])
+                else:
+                    logger.info(f"📡 Priorizando upstream: {f} (estratégia 'theirs')")
+                    self.run_command(["checkout", "--theirs", f])
+                    self.run_command(["add", f])
+                
         return has_conflicts
 
     def diagnose_and_fix(self):
-        logger.info("🩺 Iniciando diagnóstico Git PhD...")
+        logger.info("🩺 Iniciando diagnóstico Git PhD Autônomo...")
         
         if not (self.root / ".git").exists():
             logger.error("❌ Não é um repositório Git!")
@@ -83,38 +148,24 @@ class GitDoctor:
         is_merge = (self.root / ".git" / "MERGE_HEAD").exists()
 
         if is_rebase or is_merge:
-            logger.warning("🩹 Rebase/Merge detectado. Limpando...")
+            logger.warning("🩹 Conflito detectado. Aplicando política de proteção e merge inteligente...")
             try:
                 while self._resolve_unmerged():
                     if is_rebase:
-                        logger.info("⏩ Continuando rebase...")
                         res = subprocess.run(["git", "rebase", "--continue"], env={**os.environ, "GIT_EDITOR": "true"}, cwd=str(self.root), capture_output=True, text=True)
                         if res.returncode == 0: break
-                        if "cannot lock ref" in res.stderr:
-                             logger.warning("🔒 Erro de trava detectado durante rebase. Limpando novamente...")
-                             self._clear_locks()
                     elif is_merge:
-                        logger.info("⏩ Finalizando merge...")
-                        self.run_command(["commit", "-m", "chore(git): auto-resolve merge conflicts"], cwd=self.root)
+                        self.run_command(["commit", "-m", "chore(git): auto-resolve with intelligent merge policy"], cwd=self.root)
                         break
             except Exception as e:
-                logger.error(f"🚨 Falha crítica no rebase: {e}. Abortando para segurança.")
+                logger.error(f"🚨 Falha crítica: {e}")
                 self.run_command(["rebase", "--abort"])
 
-        # 3. Limpar rastreamento de lixo no repo pai
-        logger.info("🧹 Excluindo arquivos de cache do índice pai...")
+        # 3. Limpeza de índice e submódulos
         self.run_command(["rm", "-r", "--cached", "**/__pycache__/*"])
-        self.run_command(["rm", "--cached", "*.pyc"])
-        
-        # 4. Limpeza de Submódulos (Resolve o "untracked changes" do usuário)
         self._clean_submodules()
 
-        # 5. Sincronizar Submódulos
-        if (self.root / ".gitmodules").exists():
-            logger.info("📦 Sincronizando submódulos...")
-            self.run_command(["submodule", "update", "--init", "--recursive"])
-
-        # 6. Status Final
+        # 4. Status Final
         logger.info("✅ Diagnóstico concluído.")
         final_status = self.run_command(["status", "--short", "--branch"]).stdout
         print("\n--- STATUS ATUAL ---")
