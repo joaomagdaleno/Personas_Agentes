@@ -1,5 +1,8 @@
-from pathlib import Path
-
+"""
+SISTEMA DE PERSONAS AGENTES - SUPORTE TÉCNICO
+Módulo: Auditor de Cobertura (CoverageAuditor)
+Função: Especialista em correlacionar arquivos de produção com seus testes.
+"""
 class CoverageAuditor:
     """
     📐 Auditor de Cobertura PhD.
@@ -14,7 +17,6 @@ class CoverageAuditor:
         """
         # Apenas arquivos que são inerentemente de teste ou config estão isentos
         if comp_type in ["TEST", "CONFIG", "DOC"]: return True
-        if file_path.name == "__init__.py": return True
         
         name_stem = file_path.stem.lower()
         
