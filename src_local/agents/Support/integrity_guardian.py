@@ -21,10 +21,12 @@ class IntegrityGuardian:
         if "brittle_pattern =" in content or "silent_pattern =" in content or "rules =" in content:
             return issues
 
-        # 1. Fragilidade Lógica (Detecta apenas se não for uma definição de regra)
-        brittle_pattern = r"(?<!['\"_])(eval\(|global\s+|shell=True)"
-        if re.search(brittle_pattern, content, re.MULTILINE):
-            issues["brittle"] = True
+        # 1. Fragilidade Lógica
+        # Em arquivos de TESTE, permitimos experiments. Em PRODUCTION, somos rigorosos.
+        if component_type != "TEST":
+            brittle_pattern = r"(?<!['\"_])(eval\(|global\s+|shell=True)"
+            if re.search(brittle_pattern, content, re.MULTILINE):
+                issues["brittle"] = True
         
         # 2. Silenciamento de Erros
         if component_type != "TEST":

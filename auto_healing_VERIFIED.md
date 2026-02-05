@@ -1,30 +1,30 @@
 # 🏛️ MAPA DE CONSCIÊNCIA SISTÊMICA: Orquestração de Inteligência Artificial
 > **Visão Holística do Arquiteto PhD (Token: FBI_SINC_FINAL)**
 
-💀 COLAPSO DE INTEGRIDADE
+🚨 EMERGÊNCIA ESTRUTURAL
 
 --- 
 ## 🧬 SINCRONIA DE IDENTIDADE
 | Métrica | Valor | Status |
 | :--- | :--- | :--- |
-| **Índice de Saúde** | 0% | 💀 |
-| **Total de Alertas** | 269 | Crítico |
-| **Sincronia** | 10:13:57 | Ativa |
+| **Índice de Saúde** | 14% | 🚨 |
+| **Total de Alertas** | 211 | Crítico |
+| **Sincronia** | 11:25:37 | Ativa |
 
 ## 🩺 SINAIS VITAIS DO PRODUTO
 | Métrica | Status | Impacto |
 | :--- | :--- | :--- |
-| **Pontos Cegos** | 18 Arquivos | CRÍTICO |
-| **Fragilidades** | 39 Pontos | Risco de Colapso |
+| **Pontos Cegos** | 19 Arquivos | CRÍTICO |
+| **Fragilidades** | 38 Pontos | Risco de Colapso |
 | **Paridade de Stack** | Sincronizada | Nível de Maturidade |
 
 ## 🌪️ MAPA DE ENTROPIA & ACOPLAMENTO
 | Alvo | Complexidade | Instabilidade |
 | :--- | :---: | :---: |
-| `src_local/agents/Support/ast_navigator.py` | 33 | 0.5 |
 | `src_local/core/orchestrator.py` | 19 | 0.68 |
 | `src_local/agents/Support/battle_plan_formatter.py` | 19 | 0.33 |
 | `src_local/agents/Support/obfuscation_hunter.py` | 19 | 0.4 |
+| `src_local/agents/Support/safety_navigator.py` | 19 | 0.5 |
 | `src_local/agents/Support/veto_rules.py` | 19 | 0.0 |
 | `src_local/agents/base.py` | 18 | 0.08 |
 | `src_local/utils/dependency_auditor.py` | 18 | 0.54 |
@@ -269,7 +269,7 @@
 | `src_local/agents/Python/vault.py` | 3 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Python/voyager.py` | 1 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Python/warden.py` | 2 | 0 | 🔴 FRÁGIL |
-| `src_local/agents/Support/ast_navigator.py` | 33 | 0 | 🔴 FRÁGIL |
+| `src_local/agents/Support/ast_navigator.py` | 14 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/audit_engine.py` | 15 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/battle_plan_formatter.py` | 19 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/component_classifier.py` | 12 | 0 | 🔴 FRÁGIL |
@@ -279,8 +279,8 @@
 | `src_local/agents/Support/dna_profiler.py` | 5 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/health_synthesizer.py` | 9 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/infrastructure_assembler.py` | 1 | 0 | 🔴 FRÁGIL |
-| `src_local/agents/Support/integrity_guardian.py` | 11 | 0 | 🔴 FRÁGIL |
-| `src_local/agents/Support/line_veto.py` | 12 | 0 | 🔴 FRÁGIL |
+| `src_local/agents/Support/integrity_guardian.py` | 12 | 0 | 🔴 FRÁGIL |
+| `src_local/agents/Support/line_veto.py` | 15 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/logic_auditor.py` | 14 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/maturity_evaluator.py` | 4 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/memory_persistence.py` | 4 | 0 | 🔴 FRÁGIL |
@@ -290,11 +290,13 @@
 | `src_local/agents/Support/quality_analyst.py` | 11 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/registry_compiler.py` | 6 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/report_formatter.py` | 12 | 0 | 🔴 FRÁGIL |
+| `src_local/agents/Support/safety_navigator.py` | 19 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/safe_context_judge.py` | 1 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/score_calculator.py` | 13 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/source_code_parser.py` | 12 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/structural_analyst.py` | 7 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/task_executor.py` | 8 | 0 | 🔴 FRÁGIL |
+| `src_local/agents/Support/test_navigator.py` | 13 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/test_runner.py` | 8 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/veto_rules.py` | 19 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/vulnerability_heuristic.py` | 2 | 0 | 🔴 FRÁGIL |
@@ -303,195 +305,14 @@
 ### 📊 RESUMO DE INTERVENÇÕES
 | Severidade | Quantidade |
 | :--- | :---: |
-| CRITICAL | 20 |
-| HIGH | 5 |
-| MEDIUM | 28 |
-| LOW | 38 |
-| STRATEGIC | 178 |
+| CRITICAL | 1 |
+| HIGH | 2 |
+| MEDIUM | 15 |
+| LOW | 21 |
+| STRATEGIC | 172 |
 
 ---
 ## 🚩 NÍVEL: CRITICAL
-### 📂 Alvo: `tests/test_bolt_persona.py`
-#### 🔴 Item 12: Gargalo: Busy-waiting.
-- **Evidência:**
-```kotlin
-    def test_performance_audit_logic(self):
-        """Valida a detecção de gargalos de performance."""
-        content = "while True: pass"
-        
-        self.agent.set_context({
-```
-- **Diretriz:** Padrão soberano de critical
-
-### 📂 Alvo: `src_local/agents/Python/neural.py`
-#### 🔴 Item 19: Vulnerabilidade: Chave de IA exposta.
-- **Evidência:**
-```kotlin
-        
-        audit_rules = [
-            {'regex': r"openai\.api_key|GOOGLE_API_KEY", 'issue': 'Vulnerabilidade: Chave de IA exposta.', 'severity': 'critical'}
-        ]
-        
-```
-- **Diretriz:** Padrão soberano de critical
-
-### 📂 Alvo: `tests/test_battle_plan_formatter_deep.py`
-#### 🔴 Item 35: Vulnerabilidade: Execução dinâmica detectada.
-- **Evidência:**
-```kotlin
-        res = self.formatter._format_item(item, "HIGH")
-        self.assertIn("#### 🔴 Item 5: Logic flaw", res)
-        self.assertIn("```kotlin\neval(x)\n```", res)
-        self.assertIn("Padrão soberano de high", res)
-```
-- **Diretriz:** Padrão soberano de critical
-
-#### 🔴 Item 35: RCE: Execução dinâmica detectada.
-- **Evidência:**
-```kotlin
-        res = self.formatter._format_item(item, "HIGH")
-        self.assertIn("#### 🔴 Item 5: Logic flaw", res)
-        self.assertIn("```kotlin\neval(x)\n```", res)
-        self.assertIn("Padrão soberano de high", res)
-```
-- **Diretriz:** Padrão soberano de critical
-
-### 📂 Alvo: `tests/test_core_depth.py`
-#### 🔴 Item 36: Vulnerabilidade: Execução dinâmica detectada.
-- **Evidência:**
-```kotlin
-        file = self.test_root / "logic.py"
-        # Usamos eval direto aqui para garantir que o motor REALMENTE detecta
-        file.write_text("import os\ndef complex():\n    if True: pass\n    try: eval('1')\n    except: pass")
-        
-        info = self.engine._analyze_file(file)
-```
-- **Diretriz:** Padrão soberano de critical
-
-#### 🔴 Item 42: Vulnerabilidade: Execução dinâmica detectada.
-- **Evidência:**
-```kotlin
-        # Múltiplas asserções para garantir nível DEEP
-        self.assertEqual(info["component_type"], "LOGIC")
-        self.assertTrue(info["brittle"], "Deveria detectar eval()")
-        self.assertTrue(info["silent_error"], "Deveria detectar except pass")
-        self.assertGreater(info["complexity"], 1, "Deveria calcular complexidade real")
-```
-- **Diretriz:** Padrão soberano de critical
-
-#### 🔴 Item 36: RCE: Execução dinâmica detectada.
-- **Evidência:**
-```kotlin
-        file = self.test_root / "logic.py"
-        # Usamos eval direto aqui para garantir que o motor REALMENTE detecta
-        file.write_text("import os\ndef complex():\n    if True: pass\n    try: eval('1')\n    except: pass")
-        
-        info = self.engine._analyze_file(file)
-```
-- **Diretriz:** Padrão soberano de critical
-
-#### 🔴 Item 42: RCE: Execução dinâmica detectada.
-- **Evidência:**
-```kotlin
-        # Múltiplas asserções para garantir nível DEEP
-        self.assertEqual(info["component_type"], "LOGIC")
-        self.assertTrue(info["brittle"], "Deveria detectar eval()")
-        self.assertTrue(info["silent_error"], "Deveria detectar except pass")
-        self.assertGreater(info["complexity"], 1, "Deveria calcular complexidade real")
-```
-- **Diretriz:** Padrão soberano de critical
-
-### 📂 Alvo: `tests/test_self_awareness.py`
-#### 🔴 Item 80: Vulnerabilidade: Execução dinâmica detectada.
-- **Evidência:**
-```kotlin
-        patterns = [{'regex': r"(?<!['\"_])eval\(", 'issue': 'Dangerous eval'}]
-        issues = self.persona._scan_content_for_patterns(file_path, content, patterns)
-        self.assertEqual(len(issues), 1, "Deveria ter detectado eval() ativo na simulação de produção")
-
-    def test_simulation_of_rule_definition_ignored(self):
-```
-- **Diretriz:** Padrão soberano de critical
-
-#### 🔴 Item 114: Vulnerabilidade: Execução dinâmica detectada.
-- **Evidência:**
-```kotlin
-        patterns = [{'regex': r"(?<!['\"_])eval\(", 'issue': 'Dangerous eval'}]
-        issues = self.persona._scan_content_for_patterns(file_path, content, patterns)
-        self.assertEqual(len(issues), 1, "Deveria ter detectado eval() ativo mesmo em arquivo de referência em domínio de produção")
-
-if __name__ == "__main__":
-```
-- **Diretriz:** Padrão soberano de critical
-
-#### 🔴 Item 80: RCE: Execução dinâmica detectada.
-- **Evidência:**
-```kotlin
-        patterns = [{'regex': r"(?<!['\"_])eval\(", 'issue': 'Dangerous eval'}]
-        issues = self.persona._scan_content_for_patterns(file_path, content, patterns)
-        self.assertEqual(len(issues), 1, "Deveria ter detectado eval() ativo na simulação de produção")
-
-    def test_simulation_of_rule_definition_ignored(self):
-```
-- **Diretriz:** Padrão soberano de critical
-
-#### 🔴 Item 114: RCE: Execução dinâmica detectada.
-- **Evidência:**
-```kotlin
-        patterns = [{'regex': r"(?<!['\"_])eval\(", 'issue': 'Dangerous eval'}]
-        issues = self.persona._scan_content_for_patterns(file_path, content, patterns)
-        self.assertEqual(len(issues), 1, "Deveria ter detectado eval() ativo mesmo em arquivo de referência em domínio de produção")
-
-if __name__ == "__main__":
-```
-- **Diretriz:** Padrão soberano de critical
-
-### 📂 Alvo: `src_local/agents/Flutter/forge.py`
-#### 🔴 Item 32: Vulnerabilidade: Execução dinâmica detectada.
-- **Evidência:**
-```kotlin
-    def _reason_about_objective(self, objective, file, content):
-        if 'eval(' in content:
-            return f"Falha de Automação: O objetivo '{objective}' exige segurança. Em '{file}', o uso de eval() em Dart permite ataques que invalidam a 'Orquestração de Inteligência Artificial'."
-        return None
-
-```
-- **Diretriz:** Padrão soberano de critical
-
-#### 🔴 Item 32: RCE: Execução dinâmica detectada.
-- **Evidência:**
-```kotlin
-    def _reason_about_objective(self, objective, file, content):
-        if 'eval(' in content:
-            return f"Falha de Automação: O objetivo '{objective}' exige segurança. Em '{file}', o uso de eval() em Dart permite ataques que invalidam a 'Orquestração de Inteligência Artificial'."
-        return None
-
-```
-- **Diretriz:** Padrão soberano de critical
-
-### 📂 Alvo: `src_local/agents/Python/forge.py`
-#### 🔴 Item 29: Vulnerabilidade: Execução dinâmica detectada.
-- **Evidência:**
-```kotlin
-    def _reason_about_objective(self, objective, file, content):
-        if 'eval(' in content:
-            return f"Falha de Automação: O objetivo '{objective}' exige segurança. Em '{file}', o uso de eval() permite ataques que invalidam a 'Orquestração de Inteligência Artificial'."
-        return None
-
-```
-- **Diretriz:** Padrão soberano de critical
-
-#### 🔴 Item 29: RCE: Execução dinâmica detectada.
-- **Evidência:**
-```kotlin
-    def _reason_about_objective(self, objective, file, content):
-        if 'eval(' in content:
-            return f"Falha de Automação: O objetivo '{objective}' exige segurança. Em '{file}', o uso de eval() permite ataques que invalidam a 'Orquestração de Inteligência Artificial'."
-        return None
-
-```
-- **Diretriz:** Padrão soberano de critical
-
 ### 📂 Alvo: `src_local/agents/Python/bridge.py`
 #### 🔴 Item 19: Injeção: Shell ativo detectado.
 - **Evidência:**
@@ -504,66 +325,7 @@ if __name__ == "__main__":
 ```
 - **Diretriz:** Padrão soberano de critical
 
-#### 🔴 Item 29: Injeção: Shell ativo detectado.
-- **Evidência:**
-```kotlin
-    def _reason_about_objective(self, objective, file, content):
-        if 'shell=True' in content:
-            return f"Risco de Injeção: O objetivo '{objective}' exige segurança. Em '{file}', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'."
-        return None
-
-```
-- **Diretriz:** Padrão soberano de critical
-
-### 📂 Alvo: `src_local/agents/Python/sentinel.py`
-#### 🔴 Item 20: Injeção: Shell ativo detectado.
-- **Evidência:**
-```kotlin
-        audit_rules = [
-            {'regex': r"(?<!['\"_])eval\(", 'issue': 'RCE: Execução dinâmica detectada.', 'severity': 'critical', 'skip_in_tests': False}, # Validado via AST agora
-            {'regex': r"(?<!['\"_])shell=True", 'issue': 'Injeção: Shell ativo detectado.', 'severity': 'critical'},
-            {'regex': r"(?i)(api_key|secret|token)\s*=\s*['\"][A-Za-z0-9_\-]{20,}['\"]", 'issue': 'Segurança: Segredo hardcoded detectado.', 'severity': 'critical'}
-        ]
-```
-- **Diretriz:** Padrão soberano de critical
-
-### 📂 Alvo: `src_local/agents/Support/integrity_guardian.py`
-#### 🔴 Item 25: Injeção: Shell ativo detectado.
-- **Evidência:**
-```kotlin
-
-        # 1. Fragilidade Lógica (Detecta apenas se não for uma definição de regra)
-        brittle_pattern = r"(?<!['\"_])(eval\(|global\s+|shell=True)"
-        if re.search(brittle_pattern, content, re.MULTILINE):
-            issues["brittle"] = True
-```
-- **Diretriz:** Padrão soberano de critical
-
 ## 🚩 NÍVEL: HIGH
-### 📂 Alvo: `tests/test_self_awareness.py`
-#### 🔴 Item 44: Violação: Uso de estado global.
-- **Evidência:**
-```kotlin
-        patterns = [
-            {'regex': r"(?<!['\"_])eval\(", 'issue': 'Dangerous eval'},
-            {'regex': r"(?<!['\"_])global\s+", 'issue': 'Global variable'}
-        ]
-        
-```
-- **Diretriz:** Padrão soberano de high
-
-### 📂 Alvo: `src_local/core/compiler.py`
-#### 🔴 Item 34: Violação: Uso de estado global.
-- **Evidência:**
-```kotlin
-        a prontidão técnica de cada agente.
-        """
-        logger.info("🚀 Sincronizando censo global de PhDs...")
-        
-        try:
-```
-- **Diretriz:** Padrão soberano de high
-
 ### 📂 Alvo: `src_local/agents/Flutter/scale.py`
 #### 🔴 Item 23: Violação: Uso de estado global.
 - **Evidência:**
@@ -585,18 +347,6 @@ if __name__ == "__main__":
         if 'DEBUG = True' in content:
             return f"Vulnerabilidade de Ambiente: O objetivo '{objective}' exige isolamento. Em '{file}', o debug ativo expõe a 'Orquestração de Inteligência Artificial'."
         return None
-```
-- **Diretriz:** Padrão soberano de high
-
-### 📂 Alvo: `src_local/agents/Python/palette.py`
-#### 🔴 Item 16: UX
-- **Evidência:**
-```kotlin
-        s = time.time()
-        logger.info(f"[{self.name}] Analisando...")
-        r = self.find_patterns(('.py',), [{'regex': r"aria-label", 'issue': 'UX', 'severity': 'high'}])
-        self._log_performance(s, len(r))
-        return r
 ```
 - **Diretriz:** Padrão soberano de high
 
@@ -722,62 +472,6 @@ if __name__ == "__main__":
 ```
 - **Diretriz:** Padrão soberano de medium
 
-### 📂 Alvo: `scripts/generate_tests.py`
-#### 🔴 Item 15: Saída não rastreável: Use logger em vez de print.
-- **Evidência:**
-```kotlin
-    context_engine = ContextEngine(project_root, support)
-    
-    print("🔍 Scanning for Dark Matter...")
-    context = context_engine.analyze_project()
-    map_data = context.get("map", {})
-```
-- **Diretriz:** Padrão soberano de medium
-
-#### 🔴 Item 28: Saída não rastreável: Use logger em vez de print.
-- **Evidência:**
-```kotlin
-                dark_matter.append(f)
-    
-    print(f"🌌 Found {len(dark_matter)} files without tests.")
-    
-    tests_dir = project_root / "tests"
-```
-- **Diretriz:** Padrão soberano de medium
-
-#### 🔴 Item 42: Saída não rastreável: Use logger em vez de print.
-- **Evidência:**
-```kotlin
-        
-        if test_file.exists():
-            print(f"⚠️ Test file exists but not detected: {test_file}")
-            continue
-            
-```
-- **Diretriz:** Padrão soberano de medium
-
-#### 🔴 Item 45: Saída não rastreável: Use logger em vez de print.
-- **Evidência:**
-```kotlin
-            continue
-            
-        print(f"✨ Generating {test_name} for {rel_path_str}...")
-        
-        # Determine import path
-```
-- **Diretriz:** Padrão soberano de medium
-
-#### 🔴 Item 65: Saída não rastreável: Use logger em vez de print.
-- **Evidência:**
-```kotlin
-            f.write(content)
-            
-    print("✅ Generation complete.")
-
-if __name__ == "__main__":
-```
-- **Diretriz:** Padrão soberano de medium
-
 ### 📂 Alvo: `scripts/git_doctor.py`
 #### 🔴 Item 46: Saída não rastreável: Use logger em vez de print.
 - **Evidência:**
@@ -787,88 +481,6 @@ if __name__ == "__main__":
         print(f"--- STATUS ---\n{self.run_command(['status', '--short', '--branch']).stdout}")
 
 if __name__ == "__main__": GitDoctor(os.getcwd()).diagnose_and_fix()
-```
-- **Diretriz:** Padrão soberano de medium
-
-### 📂 Alvo: `tests/test_cache_manager.py`
-#### 🔴 Item 21: Saída não rastreável: Use logger em vez de print.
-- **Evidência:**
-```kotlin
-        """Valida a geração de hash e detecção de mudanças atômicas."""
-        test_file = self.test_dir / "app.py"
-        test_file.write_text("print('hello')")
-        
-        h1 = self.cache.get_file_hash(test_file)
-```
-- **Diretriz:** Padrão soberano de medium
-
-#### 🔴 Item 27: Saída não rastreável: Use logger em vez de print.
-- **Evidência:**
-```kotlin
-        
-        # Simula mudança
-        test_file.write_text("print('world')")
-        h2 = self.cache.get_file_hash(test_file)
-        self.assertNotEqual(h1, h2)
-```
-- **Diretriz:** Padrão soberano de medium
-
-### 📂 Alvo: `tests/test_context_engine_deep.py`
-#### 🔴 Item 32: Saída não rastreável: Use logger em vez de print.
-- **Evidência:**
-```kotlin
-        """Valida o mapeamento completo da topologia e DNA do projeto."""
-        (self.test_root / "requirements.txt").write_text("numpy")
-        (self.test_root / "src" / "main.py").write_text("print('hello')")
-        (self.test_root / "tests" / "test_main.py").write_text("assert True")
-        
-```
-- **Diretriz:** Padrão soberano de medium
-
-### 📂 Alvo: `tests/test_context_engine_system.py`
-#### 🔴 Item 24: Saída não rastreável: Use logger em vez de print.
-- **Evidência:**
-```kotlin
-        # Simula arquivo com fragilidade
-        brittle_file = self.test_root / "brittle.py"
-        brittle_file.write_text("eval('print(1)')")
-        
-        info = self.engine._analyze_file(brittle_file)
-```
-- **Diretriz:** Padrão soberano de medium
-
-### 📂 Alvo: `tests/test_orchestrator.py`
-#### 🔴 Item 40: Saída não rastreável: Use logger em vez de print.
-- **Evidência:**
-```kotlin
-        target_dir.mkdir()
-        (target_dir / "requirements.txt").write_text("") 
-        (target_dir / "app.py").write_text("print('hello')")
-        
-        orchestrator = Orchestrator(target_dir)
-```
-- **Diretriz:** Padrão soberano de medium
-
-### 📂 Alvo: `tests/test_sovereign_sync_forensics.py`
-#### 🔴 Item 26: Saída não rastreável: Use logger em vez de print.
-- **Evidência:**
-```kotlin
-
-        subprocess.run(["git", "init"], cwd=self.upstream_dir, capture_output=True)
-        (self.upstream_dir / "core.py").write_text("print('Init')")
-        subprocess.run(["git", "add", "."], cwd=self.upstream_dir, capture_output=True)
-        subprocess.run(["git", "commit", "-m", "Init"], cwd=self.upstream_dir, capture_output=True)
-```
-- **Diretriz:** Padrão soberano de medium
-
-#### 🔴 Item 32: Saída não rastreável: Use logger em vez de print.
-- **Evidência:**
-```kotlin
-        subprocess.run(["git", "init"], cwd=self.agent_dir, capture_output=True)
-        subprocess.run(["git", "remote", "add", "upstream", str(self.upstream_dir.absolute())], cwd=self.agent_dir, capture_output=True)
-        (self.agent_dir / "core.py").write_text("print('Local')")
-        subprocess.run(["git", "add", "."], cwd=self.agent_dir, capture_output=True)
-        subprocess.run(["git", "commit", "-m", "Local"], cwd=self.agent_dir, capture_output=True)
 ```
 - **Diretriz:** Padrão soberano de medium
 
@@ -907,28 +519,78 @@ if __name__ == "__main__": GitDoctor(os.getcwd()).diagnose_and_fix()
 ```
 - **Diretriz:** Padrão soberano de medium
 
-### 📂 Alvo: `tests/test_stability_ledger_deep.py`
-#### 🔴 Item 29: Encoding: open() sem encoding explícito.
-- **Evidência:**
-```kotlin
-        
-        # Verifica conteúdo
-        with open(storage, 'r') as f:
-            data = json.load(f)
-            self.assertIn("src/danger.py", data)
-```
-- **Diretriz:** Padrão soberano de medium
-
 ## 🚩 NÍVEL: LOW
-### 📂 Alvo: `src_local/agents/Python/hype.py`
-#### 🔴 Item 19: SEO: Tag de título detectada.
+### 📂 Alvo: `scripts/cleanup_obfuscation.py`
+#### 🔴 Item 118: L10n: String hardcoded com caracteres locais.
 - **Evidência:**
 ```kotlin
-        
-        audit_rules = [
-            {'regex': r"<title>.*</title>", 'issue': 'SEO: Tag de título detectada.', 'severity': 'low'}
-        ]
-        
+            count += 1
+            
+    print(f"✅ Processamento concluído. {count} arquivos limpos.")
+```
+- **Diretriz:** Padrão soberano de low
+
+#### 🔴 Item 25: Interface: Uso de print para interação bruta.
+- **Evidência:**
+```kotlin
+                tree = ast.parse(content)
+            except SyntaxError:
+                print(f"❌ Erro de sintaxe em {file_path}, ignorando.")
+                return False
+
+```
+- **Diretriz:** Padrão soberano de low
+
+#### 🔴 Item 35: Interface: Uso de print para interação bruta.
+- **Evidência:**
+```kotlin
+            if not replacements: return False
+            
+            print(f"🧹 Cleaning {file_path.name} ({len(replacements)} obfuscations detected)...")
+            
+            # Apply replacements in reverse order to keep offsets valid
+```
+- **Diretriz:** Padrão soberano de low
+
+#### 🔴 Item 62: Interface: Uso de print para interação bruta.
+- **Evidência:**
+```kotlin
+                
+                if start == -1 or end == -1: 
+                    print(f"⚠️ Erro de offset em {file_path}:{node.lineno}")
+                    continue
+                    
+```
+- **Diretriz:** Padrão soberano de low
+
+#### 🔴 Item 81: Interface: Uso de print para interação bruta.
+- **Evidência:**
+```kotlin
+
+        except Exception as e:
+            print(f"Error processing {file_path}: {e}")
+            return False
+
+```
+- **Diretriz:** Padrão soberano de low
+
+#### 🔴 Item 111: Interface: Uso de print para interação bruta.
+- **Evidência:**
+```kotlin
+    deobfuscator = AutoDeobfuscator(project_root)
+    
+    print(f"🚀 Iniciando Auto-Deobfuscator em: {project_root}")
+    count = 0
+    # Scan recursive
+```
+- **Diretriz:** Padrão soberano de low
+
+#### 🔴 Item 118: Interface: Uso de print para interação bruta.
+- **Evidência:**
+```kotlin
+            count += 1
+            
+    print(f"✅ Processamento concluído. {count} arquivos limpos.")
 ```
 - **Diretriz:** Padrão soberano de low
 
@@ -1004,104 +666,6 @@ if __name__ == "__main__": GitDoctor(os.getcwd()).diagnose_and_fix()
 ```
 - **Diretriz:** Padrão soberano de low
 
-### 📂 Alvo: `src_local/agents/Python/forge.py`
-#### 🔴 Item 19: Aviso: Instalação dinâmica detectada.
-- **Evidência:**
-```kotlin
-        
-        audit_rules = [
-            {'regex': r"pip install", 'issue': 'Aviso: Instalação dinâmica detectada.', 'severity': 'low'},
-            {'regex': r"(?<!['\"_])eval\(", 'issue': 'Vulnerabilidade: Execução dinâmica detectada.', 'severity': 'critical'}
-        ]
-```
-- **Diretriz:** Padrão soberano de low
-
-### 📂 Alvo: `scripts/cleanup_obfuscation.py`
-#### 🔴 Item 118: L10n: String hardcoded com caracteres locais.
-- **Evidência:**
-```kotlin
-            count += 1
-            
-    print(f"✅ Processamento concluído. {count} arquivos limpos.")
-```
-- **Diretriz:** Padrão soberano de low
-
-#### 🔴 Item 25: Interface: Uso de print para interação bruta.
-- **Evidência:**
-```kotlin
-                tree = ast.parse(content)
-            except SyntaxError:
-                print(f"❌ Erro de sintaxe em {file_path}, ignorando.")
-                return False
-
-```
-- **Diretriz:** Padrão soberano de low
-
-#### 🔴 Item 35: Interface: Uso de print para interação bruta.
-- **Evidência:**
-```kotlin
-            if not replacements: return False
-            
-            print(f"🧹 Cleaning {file_path.name} ({len(replacements)} obfuscations detected)...")
-            
-            # Apply replacements in reverse order to keep offsets valid
-```
-- **Diretriz:** Padrão soberano de low
-
-#### 🔴 Item 62: Interface: Uso de print para interação bruta.
-- **Evidência:**
-```kotlin
-                
-                if start == -1 or end == -1: 
-                    print(f"⚠️ Erro de offset em {file_path}:{node.lineno}")
-                    continue
-                    
-```
-- **Diretriz:** Padrão soberano de low
-
-#### 🔴 Item 81: Interface: Uso de print para interação bruta.
-- **Evidência:**
-```kotlin
-
-        except Exception as e:
-            print(f"Error processing {file_path}: {e}")
-            return False
-
-```
-- **Diretriz:** Padrão soberano de low
-
-#### 🔴 Item 111: Interface: Uso de print para interação bruta.
-- **Evidência:**
-```kotlin
-    deobfuscator = AutoDeobfuscator(project_root)
-    
-    print(f"🚀 Iniciando Auto-Deobfuscator em: {project_root}")
-    count = 0
-    # Scan recursive
-```
-- **Diretriz:** Padrão soberano de low
-
-#### 🔴 Item 118: Interface: Uso de print para interação bruta.
-- **Evidência:**
-```kotlin
-            count += 1
-            
-    print(f"✅ Processamento concluído. {count} arquivos limpos.")
-```
-- **Diretriz:** Padrão soberano de low
-
-### 📂 Alvo: `src_local/agents/Python/scope.py`
-#### 🔴 Item 19: Débito: Pendência detectada.
-- **Evidência:**
-```kotlin
-        
-        audit_rules = [
-            {'regex': r"TODO:|FIXME:", 'issue': 'Débito: Pendência detectada.', 'severity': 'low'}
-        ]
-        
-```
-- **Diretriz:** Padrão soberano de low
-
 ### 📂 Alvo: `scripts/diagnose_blind_spots.py`
 #### 🔴 Item 16: Interface: Uso de print para interação bruta.
 - **Evidência:**
@@ -1158,62 +722,6 @@ if __name__ == "__main__":
 ```
 - **Diretriz:** Padrão soberano de low
 
-### 📂 Alvo: `scripts/generate_tests.py`
-#### 🔴 Item 15: Interface: Uso de print para interação bruta.
-- **Evidência:**
-```kotlin
-    context_engine = ContextEngine(project_root, support)
-    
-    print("🔍 Scanning for Dark Matter...")
-    context = context_engine.analyze_project()
-    map_data = context.get("map", {})
-```
-- **Diretriz:** Padrão soberano de low
-
-#### 🔴 Item 28: Interface: Uso de print para interação bruta.
-- **Evidência:**
-```kotlin
-                dark_matter.append(f)
-    
-    print(f"🌌 Found {len(dark_matter)} files without tests.")
-    
-    tests_dir = project_root / "tests"
-```
-- **Diretriz:** Padrão soberano de low
-
-#### 🔴 Item 42: Interface: Uso de print para interação bruta.
-- **Evidência:**
-```kotlin
-        
-        if test_file.exists():
-            print(f"⚠️ Test file exists but not detected: {test_file}")
-            continue
-            
-```
-- **Diretriz:** Padrão soberano de low
-
-#### 🔴 Item 45: Interface: Uso de print para interação bruta.
-- **Evidência:**
-```kotlin
-            continue
-            
-        print(f"✨ Generating {test_name} for {rel_path_str}...")
-        
-        # Determine import path
-```
-- **Diretriz:** Padrão soberano de low
-
-#### 🔴 Item 65: Interface: Uso de print para interação bruta.
-- **Evidência:**
-```kotlin
-            f.write(content)
-            
-    print("✅ Generation complete.")
-
-if __name__ == "__main__":
-```
-- **Diretriz:** Padrão soberano de low
-
 ### 📂 Alvo: `scripts/git_doctor.py`
 #### 🔴 Item 46: Interface: Uso de print para interação bruta.
 - **Evidência:**
@@ -1226,100 +734,7 @@ if __name__ == "__main__": GitDoctor(os.getcwd()).diagnose_and_fix()
 ```
 - **Diretriz:** Padrão soberano de low
 
-### 📂 Alvo: `tests/test_cache_manager.py`
-#### 🔴 Item 21: Interface: Uso de print para interação bruta.
-- **Evidência:**
-```kotlin
-        """Valida a geração de hash e detecção de mudanças atômicas."""
-        test_file = self.test_dir / "app.py"
-        test_file.write_text("print('hello')")
-        
-        h1 = self.cache.get_file_hash(test_file)
-```
-- **Diretriz:** Padrão soberano de low
-
-#### 🔴 Item 27: Interface: Uso de print para interação bruta.
-- **Evidência:**
-```kotlin
-        
-        # Simula mudança
-        test_file.write_text("print('world')")
-        h2 = self.cache.get_file_hash(test_file)
-        self.assertNotEqual(h1, h2)
-```
-- **Diretriz:** Padrão soberano de low
-
-### 📂 Alvo: `tests/test_context_engine_deep.py`
-#### 🔴 Item 32: Interface: Uso de print para interação bruta.
-- **Evidência:**
-```kotlin
-        """Valida o mapeamento completo da topologia e DNA do projeto."""
-        (self.test_root / "requirements.txt").write_text("numpy")
-        (self.test_root / "src" / "main.py").write_text("print('hello')")
-        (self.test_root / "tests" / "test_main.py").write_text("assert True")
-        
-```
-- **Diretriz:** Padrão soberano de low
-
-### 📂 Alvo: `tests/test_context_engine_system.py`
-#### 🔴 Item 24: Interface: Uso de print para interação bruta.
-- **Evidência:**
-```kotlin
-        # Simula arquivo com fragilidade
-        brittle_file = self.test_root / "brittle.py"
-        brittle_file.write_text("eval('print(1)')")
-        
-        info = self.engine._analyze_file(brittle_file)
-```
-- **Diretriz:** Padrão soberano de low
-
-### 📂 Alvo: `tests/test_orchestrator.py`
-#### 🔴 Item 40: Interface: Uso de print para interação bruta.
-- **Evidência:**
-```kotlin
-        target_dir.mkdir()
-        (target_dir / "requirements.txt").write_text("") 
-        (target_dir / "app.py").write_text("print('hello')")
-        
-        orchestrator = Orchestrator(target_dir)
-```
-- **Diretriz:** Padrão soberano de low
-
-### 📂 Alvo: `tests/test_sovereign_sync_forensics.py`
-#### 🔴 Item 26: Interface: Uso de print para interação bruta.
-- **Evidência:**
-```kotlin
-
-        subprocess.run(["git", "init"], cwd=self.upstream_dir, capture_output=True)
-        (self.upstream_dir / "core.py").write_text("print('Init')")
-        subprocess.run(["git", "add", "."], cwd=self.upstream_dir, capture_output=True)
-        subprocess.run(["git", "commit", "-m", "Init"], cwd=self.upstream_dir, capture_output=True)
-```
-- **Diretriz:** Padrão soberano de low
-
-#### 🔴 Item 32: Interface: Uso de print para interação bruta.
-- **Evidência:**
-```kotlin
-        subprocess.run(["git", "init"], cwd=self.agent_dir, capture_output=True)
-        subprocess.run(["git", "remote", "add", "upstream", str(self.upstream_dir.absolute())], cwd=self.agent_dir, capture_output=True)
-        (self.agent_dir / "core.py").write_text("print('Local')")
-        subprocess.run(["git", "add", "."], cwd=self.agent_dir, capture_output=True)
-        subprocess.run(["git", "commit", "-m", "Local"], cwd=self.agent_dir, capture_output=True)
-```
-- **Diretriz:** Padrão soberano de low
-
 ### 📂 Alvo: `src_local/agents/Flutter/echo.py`
-#### 🔴 Item 32: Interface: Uso de print para interação bruta.
-- **Evidência:**
-```kotlin
-        
-        audit_rules = [
-            {'regex': r"print\(", 'issue': 'Aviso: Uso de print() em vez de log() do developer ou logger.', 'severity': 'medium'},
-            {'regex': r"catch\s*\(\w+\)\s*\{\s*\}", 'issue': 'Cegueira: Ponto Cego detectado em Dart (except empty).', 'severity': 'critical'}
-        ]
-```
-- **Diretriz:** Padrão soberano de low
-
 #### 🔴 Item 41: Interface: Uso de print para interação bruta.
 - **Evidência:**
 ```kotlin
@@ -1343,18 +758,6 @@ if __name__ == "__main__": GitDoctor(os.getcwd()).diagnose_and_fix()
 ```
 - **Diretriz:** Padrão soberano de low
 
-### 📂 Alvo: `src_local/agents/Python/testify.py`
-#### 🔴 Item 31: Avançado: Teste de Propriedade detectado.
-- **Evidência:**
-```kotlin
-        audit_rules = [
-            {'regex': 'def test_.*:\\s+pass', 'issue': 'Vazio: Teste sem asserções.', 'severity': 'critical'},
-            {'regex': r"hypothesis", 'issue': 'Avançado: Teste de Propriedade detectado.', 'severity': 'low'}
-        ]
-        
-```
-- **Diretriz:** Padrão soberano de low
-
 ## 🚩 NÍVEL: STRATEGIC
 ### 📂 Alvo: `DNA`
 - **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'scripts/autonomous_sync.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
@@ -1364,6 +767,20 @@ if __name__ == "__main__": GitDoctor(os.getcwd()).diagnose_and_fix()
 - **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'scripts/diagnose_blind_spots.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
 
 - **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'scripts/git_doctor.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.
+
+- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/core/orchestrator.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível.
+
+- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Python/testify.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível.
+
+- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Support/safety_navigator.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível.
+
+- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Support/source_code_parser.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível.
+
+- **Diretriz Estratégica:** Catástrofe de Segurança: O objetivo 'Validar integridade ['Python']' exige proteção total. Credenciais em 'src_local/agents/Support/obfuscation_hunter.py' permitem o sequestro da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Invisibilidade: O objetivo 'Validar integridade ['Python']' exige tração. Em 'src_local/agents/Python/hype.py', a falta de metadados prejudica a descoberta do valor do projeto.
+
+- **Diretriz Estratégica:** Invisibilidade: O objetivo 'Validar integridade ['Python']' exige tração. Em 'src_local/agents/Support/obfuscation_hunter.py', a falta de metadados prejudica a descoberta do valor do projeto.
 
 - **Diretriz Estratégica:** Gargalo de I/O: O objetivo 'Validar integridade ['Python']' exige velocidade. Em 'src_local/core/diagnostic_pipeline.py', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real.
 
@@ -1379,43 +796,25 @@ if __name__ == "__main__": GitDoctor(os.getcwd()).diagnose_and_fix()
 
 - **Diretriz Estratégica:** Gargalo de I/O: O objetivo 'Validar integridade ['Python']' exige velocidade. Em 'src_local/agents/Support/obfuscation_hunter.py', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real.
 
-- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/core/orchestrator.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível.
-
-- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Python/testify.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível.
-
-- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Support/ast_navigator.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível.
-
-- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Support/source_code_parser.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível.
-
-- **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'tests/test_obfuscation_hunter.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'.
-
-- **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Flutter/forge.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'.
-
-- **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Kotlin/forge.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'.
-
-- **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Python/bridge.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'.
-
-- **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Python/forge.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'.
-
-- **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Python/sentinel.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'.
-
-- **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Support/integrity_guardian.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'.
-
-- **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Support/obfuscation_hunter.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'.
+- **Diretriz Estratégica:** Gargalo de I/O: O objetivo 'Validar integridade ['Python']' exige velocidade. Em 'src_local/agents/Support/safety_navigator.py', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real.
 
 - **Diretriz Estratégica:** Gargalo de Runtime: O objetivo 'Validar integridade ['Python']' exige alta disponibilidade. Loops de espera ativa em 'tests/test_bolt_persona.py' paralisam a 'Orquestração de Inteligência Artificial'.
 
-- **Diretriz Estratégica:** Invisibilidade: O objetivo 'Validar integridade ['Python']' exige tração. Em 'src_local/agents/Python/hype.py', a falta de metadados prejudica a descoberta do valor do projeto.
-
-- **Diretriz Estratégica:** Invisibilidade: O objetivo 'Validar integridade ['Python']' exige tração. Em 'src_local/agents/Support/obfuscation_hunter.py', a falta de metadados prejudica a descoberta do valor do projeto.
-
 - **Diretriz Estratégica:** Risco de Autonomia: O objetivo 'Validar integridade ['Python']' exige segurança de tokens. Em 'src_local/agents/Support/obfuscation_hunter.py', a exposição de chaves compromete a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Risco de Localização: O objetivo 'Validar integridade ['Python']' exige portabilidade global. Em 'tests/test_stability_ledger_deep.py', o uso de open() sem encoding UTF-8 pode corromper dados.
 
 - **Diretriz Estratégica:** Risco de Escalabilidade: O objetivo 'Validar integridade ['Python']' exige modularidade. Em 'scripts/persona_manager.py', a poluição de estado impede a 'Orquestração de Inteligência Artificial'.
 
 - **Diretriz Estratégica:** Risco de Escalabilidade: O objetivo 'Validar integridade ['Python']' exige modularidade. Em 'src_local/core/compiler.py', a poluição de estado impede a 'Orquestração de Inteligência Artificial'.
 
 - **Diretriz Estratégica:** Risco de Escalabilidade: O objetivo 'Validar integridade ['Python']' exige modularidade. Em 'src_local/utils/indexer.py', a poluição de estado impede a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Incompleitude: O objetivo 'Validar integridade ['Python']' exige entrega. Em 'src_local/agents/Flutter/scope.py', débitos pendentes retardam a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Incompleitude: O objetivo 'Validar integridade ['Python']' exige entrega. Em 'src_local/agents/Kotlin/scope.py', débitos pendentes retardam a 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Incompleitude: O objetivo 'Validar integridade ['Python']' exige entrega. Em 'src_local/agents/Python/scope.py', débitos pendentes retardam a 'Orquestração de Inteligência Artificial'.
 
 - **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'scripts/cleanup_obfuscation.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
 
@@ -1585,11 +984,31 @@ if __name__ == "__main__": GitDoctor(os.getcwd()).diagnose_and_fix()
 
 - **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/pyramid_analyst.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
 
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/safety_navigator.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
 - **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/safe_context_judge.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
 
 - **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/score_calculator.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
 
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/test_navigator.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
 - **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/veto_rules.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'tests/test_obfuscation_hunter.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Flutter/forge.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Kotlin/forge.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Python/bridge.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Python/forge.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Python/sentinel.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Support/integrity_guardian.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'.
+
+- **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Support/obfuscation_hunter.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'.
 
 - **Diretriz Estratégica:** Vulnerabilidade de Ambiente: O objetivo 'Validar integridade ['Python']' exige isolamento. Em 'src_local/agents/Python/hermes.py', o debug ativo expõe a 'Orquestração de Inteligência Artificial'.
 
@@ -1621,16 +1040,6 @@ if __name__ == "__main__": GitDoctor(os.getcwd()).diagnose_and_fix()
 
 - **Diretriz Estratégica:** Falha de Automação: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Support/ast_navigator.py', o uso de eval() permite ataques que invalidam a 'Orquestração de Inteligência Artificial'.
 
-- **Diretriz Estratégica:** Catástrofe de Segurança: O objetivo 'Validar integridade ['Python']' exige proteção total. Credenciais em 'src_local/agents/Support/obfuscation_hunter.py' permitem o sequestro da 'Orquestração de Inteligência Artificial'.
-
-- **Diretriz Estratégica:** Risco de Localização: O objetivo 'Validar integridade ['Python']' exige portabilidade global. Em 'tests/test_stability_ledger_deep.py', o uso de open() sem encoding UTF-8 pode corromper dados.
-
-- **Diretriz Estratégica:** Incompleitude: O objetivo 'Validar integridade ['Python']' exige entrega. Em 'src_local/agents/Flutter/scope.py', débitos pendentes retardam a 'Orquestração de Inteligência Artificial'.
-
-- **Diretriz Estratégica:** Incompleitude: O objetivo 'Validar integridade ['Python']' exige entrega. Em 'src_local/agents/Kotlin/scope.py', débitos pendentes retardam a 'Orquestração de Inteligência Artificial'.
-
-- **Diretriz Estratégica:** Incompleitude: O objetivo 'Validar integridade ['Python']' exige entrega. Em 'src_local/agents/Python/scope.py', débitos pendentes retardam a 'Orquestração de Inteligência Artificial'.
-
 - **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'scripts/cleanup_obfuscation.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'.
 
 - **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'tests/test_base_deep.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'.
@@ -1655,6 +1064,8 @@ if __name__ == "__main__": GitDoctor(os.getcwd()).diagnose_and_fix()
 
 - **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'src_local/agents/Support/obfuscation_hunter.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'.
 
+- **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'src_local/agents/Support/safety_navigator.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'.
+
 - **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'src_local/agents/Support/structural_analyst.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'.
 
 - **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'src_local/agents/Support/vulnerability_heuristic.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'.
@@ -1677,41 +1088,21 @@ if __name__ == "__main__": GitDoctor(os.getcwd()).diagnose_and_fix()
 
 - **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src_local/agents/Support/ast_navigator.py' é Matéria Escura (Sem testes detectados).
 
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src_local/agents/Support/safety_navigator.py' é Matéria Escura (Sem testes detectados).
+
 - **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src_local/agents/Support/safe_context_judge.py' é Matéria Escura (Sem testes detectados).
 
 - **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src_local/agents/Support/score_calculator.py' é Matéria Escura (Sem testes detectados).
-
-- **Diretriz Estratégica:** Falha de Automação: O objetivo 'Verificação' exige segurança. Em 'tests/test_self_awareness.py', o uso de eval() em Dart permite ataques que invalidam a 'Orquestração de Inteligência Artificial'.
 
 - **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Verificação' exige observabilidade. Em 'scripts/cleanup_obfuscation.py', o uso de saídas não rastreáveis impede a extração de métricas para a 'Orquestração de Inteligência Artificial'.
 
 - **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Verificação' exige observabilidade. Em 'scripts/diagnose_blind_spots.py', o uso de saídas não rastreáveis impede a extração de métricas para a 'Orquestração de Inteligência Artificial'.
 
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Verificação' exige observabilidade. Em 'scripts/generate_tests.py', o uso de saídas não rastreáveis impede a extração de métricas para a 'Orquestração de Inteligência Artificial'.
-
 - **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Verificação' exige observabilidade. Em 'scripts/git_doctor.py', o uso de saídas não rastreáveis impede a extração de métricas para a 'Orquestração de Inteligência Artificial'.
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Verificação' exige observabilidade. Em 'tests/test_cache_manager.py', o uso de saídas não rastreáveis impede a extração de métricas para a 'Orquestração de Inteligência Artificial'.
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Verificação' exige observabilidade. Em 'tests/test_context_engine_deep.py', o uso de saídas não rastreáveis impede a extração de métricas para a 'Orquestração de Inteligência Artificial'.
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Verificação' exige observabilidade. Em 'tests/test_context_engine_system.py', o uso de saídas não rastreáveis impede a extração de métricas para a 'Orquestração de Inteligência Artificial'.
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Verificação' exige observabilidade. Em 'tests/test_orchestrator.py', o uso de saídas não rastreáveis impede a extração de métricas para a 'Orquestração de Inteligência Artificial'.
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Verificação' exige observabilidade. Em 'tests/test_sovereign_sync_forensics.py', o uso de saídas não rastreáveis impede a extração de métricas para a 'Orquestração de Inteligência Artificial'.
 
 - **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Verificação' exige observabilidade. Em 'src_local/agents/Flutter/echo.py', o uso de saídas não rastreáveis impede a extração de métricas para a 'Orquestração de Inteligência Artificial'.
 
 - **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Verificação' exige observabilidade. Em 'src_local/agents/Flutter/metric.py', o uso de saídas não rastreáveis impede a extração de métricas para a 'Orquestração de Inteligência Artificial'.
-
-- **Diretriz Estratégica:** Falha de Automação: O objetivo 'Verificação' exige segurança. Em 'tests/test_battle_plan_formatter_deep.py', o uso de eval() em Dart permite ataques que invalidam a 'Orquestração de Inteligência Artificial'.
-
-- **Diretriz Estratégica:** Falha de Automação: O objetivo 'Verificação' exige segurança. Em 'tests/test_core_depth.py', o uso de eval() em Dart permite ataques que invalidam a 'Orquestração de Inteligência Artificial'.
-
-- **Diretriz Estratégica:** Falha de Automação: O objetivo 'Verificação' exige segurança. Em 'src_local/agents/Flutter/forge.py', o uso de eval() em Dart permite ataques que invalidam a 'Orquestração de Inteligência Artificial'.
-
-- **Diretriz Estratégica:** Falha de Automação: O objetivo 'Verificação' exige segurança. Em 'src_local/agents/Python/forge.py', o uso de eval() em Dart permite ataques que invalidam a 'Orquestração de Inteligência Artificial'.
 
 ## 💀 Risco Existencial
 > Autoconsciência nativa ativa.

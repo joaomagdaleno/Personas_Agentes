@@ -3,9 +3,24 @@ import ast
 class ASTNavigator:
     """
     🧭 Navegador de AST.
-    Encapsula a lógica de travessia e verificação de nós para aliviar o SafeContextJudge.
+    Atua como coordenador de travessia, delegando inteligência para 
+    navegadores especializados (TestNavigator, SafetyNavigator).
     """
     
+    def __init__(self):
+        from src_local.agents.Support.test_navigator import TestNavigator
+        from src_local.agents.Support.safety_navigator import SafetyNavigator
+        self.test_nav = TestNavigator(self)
+        self.safety_nav = SafetyNavigator(self)
+
+    def check_safety_rules(self, node, tree):
+        """Coordenador: Executa verificação em cascata via delegados."""
+        if self.test_nav.is_inside_test_context(node, tree): return True
+        if self.safety_nav.is_safe_context(node, tree): return True
+        return not self.safety_nav.is_being_executed(node, tree)
+
+    # --- Utilitários Compartilhados (Low Complexity) ---
+
     def is_descendant(self, target, parent):
         """Verifica se target é filho de parent na AST."""
         for child in ast.walk(parent):
@@ -35,42 +50,4 @@ class ASTNavigator:
                 if isinstance(k, (ast.Constant, ast.Str)): 
                     key_val = getattr(k, "value", getattr(k, "s", ""))
                     if key_val in key_names: return True
-        return False
-
-    def check_safety_rules(self, node, tree):
-        """Aggregate check for all safety rules."""
-        if self._is_inside_assertion(node, tree): return True
-        if self._is_inside_log_call(node, tree): return True
-        if self._is_inside_rule_definition(node, tree): return True
-        return not self._is_being_executed(node, tree)
-
-    def _is_inside_log_call(self, target_node, tree):
-        safe_methods = ['info', 'warning', 'error', 'debug', 'exception']
-        for node in ast.walk(tree):
-            if self.is_call_to(node, safe_methods):
-                 for arg in node.args:
-                    if self.is_descendant(target_node, arg): return True
-        return False
-
-    def _is_inside_rule_definition(self, target_node, tree):
-        for node in ast.walk(tree):
-            if self.is_assignment_to(node, ['rule', 'pattern', 'issue', 'regex']):
-                 if self.is_descendant(target_node, node.value): return True
-            if self.is_in_dict_value(node, target_node, ['regex', 'issue', 'pattern']): return True
-        return False
-
-    def _is_inside_assertion(self, target_node, tree):
-        for node in ast.walk(tree):
-            if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
-                if node.func.attr.startswith("assert"):
-                    for arg in node.args:
-                        if self.is_descendant(target_node, arg): return True
-        return False
-
-    def _is_being_executed(self, target_node, tree):
-        dangerous = ["eval", "exec", "os.system"]
-        for node in ast.walk(tree):
-            if self.is_call_to(node, dangerous):
-                for arg in node.args:
-                    if self.is_descendant(target_node, arg): return True
         return False

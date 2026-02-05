@@ -54,7 +54,9 @@ class AuditEngine:
                         # 🧠 Smart Understanding: Se for arquivo Python e Padrão Crítico (eval/exec)
                         # delega para análise AST confirmar se é seguro (dentro de assert/teste).
                         if file.endswith(".py") and ("eval" in p['regex'] or "shell" in p['regex'] or "global" in p['regex']):
-                             if logic_auditor.is_interaction_safe(content, i + 1, p['regex']): # Pass regex substring as risk type proxy
+                             # Extract simplified risk type for the AST judge
+                             risk_type = "eval" if "eval" in p['regex'] else "shell" if "shell" in p['regex'] else "global"
+                             if logic_auditor.is_interaction_safe(content, i + 1, risk_type): 
                                  # logger.debug(f"🧠 [AuditEngine] Risco validado como SEGURO via AST em {file}:{i+1}")
                                  continue
 
