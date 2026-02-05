@@ -20,26 +20,31 @@ class BattlePlanFormatter:
         seen = set()
         for i in audit_results:
             if isinstance(i, dict):
-                key = f"{i.get('file')}:{i.get('line')}:{i.get('issue')}"
+                # Normalização para evitar MD024
+                c_issue = str(i.get('issue', '')).rstrip('.')
+                key = f"{i.get('file')}:{i.get('line')}:{c_issue}"
                 if key not in seen:
                     dedup.append(i)
                     seen.add(key)
             elif i not in seen:
-                dedup.append(i)
-                seen.add(i)
+                key = str(i).rstrip('.')
+                if key not in seen:
+                    dedup.append(i)
+                    seen.add(key)
 
         active = [i for i in dedup if not isinstance(i, dict) or i.get('severity') != 'HEALED']
-        if not active: return "## 🎯 PLANO DE BATALHA\n> ✅ Nenhuma intervenção necessária.\n"
+        if not active: return "## 🎯 PLANO DE BATALHA\n\n> ✅ Nenhuma intervenção necessária."
 
-        res = "## 🎯 PLANO DE BATALHA: DIRETRIZES DE ENGENHARIA\n"
+        sections = ["## 🎯 PLANO DE BATALHA: DIRETRIZES DE ENGENHARIA"]
         categories = self._group_by_severity(active)
-        res += self._format_impact_summary(categories)
+        sections.append(self._format_impact_summary(categories))
+        sections.append("---") # Separador isolado para garantir MD012/MD022
 
         for sev in ["CRITICAL", "HIGH", "MEDIUM", "LOW", "STRATEGIC"]:
             if categories[sev]:
-                res += self._format_severity_group(sev, categories[sev])
+                sections.append(self._format_severity_group(sev, categories[sev]))
         
-        return res
+        return "\n\n".join(s.strip() for s in sections if s).strip()
 
     def _group_by_severity(self, active_items):
         cats = {"CRITICAL": [], "HIGH": [], "MEDIUM": [], "LOW": [], "STRATEGIC": []}
@@ -50,13 +55,13 @@ class BattlePlanFormatter:
         return cats
 
     def _format_impact_summary(self, cats):
-        res = "### 📊 RESUMO DE INTERVENÇÕES\n| Severidade | Quantidade |\n| :--- | :---: |\n"
+        res = "### 📊 RESUMO DE INTERVENÇÕES\n\n| Severidade | Quantidade |\n| :--- | :---: |\n"
         for s in ["CRITICAL", "HIGH", "MEDIUM", "LOW", "STRATEGIC"]:
             if len(cats[s]) > 0: res += f"| {s} | {len(cats[s])} |\n"
-        return res + "\n---\n"
+        return res.strip()
 
     def _format_severity_group(self, sev, items):
-        res = f"## 🚩 NÍVEL: {sev}\n"
+        res = f"## 🚩 NÍVEL: {sev}\n\n"
         file_groups = {}
         for item in items:
             fname = item.get('file', 'Global') if isinstance(item, dict) else "DNA"
@@ -64,14 +69,25 @@ class BattlePlanFormatter:
             file_groups[fname].append(item)
 
         for fname, group in file_groups.items():
-            res += f"### 📂 Alvo: `{fname}`\n"
+            # Título único para MD024: Inclui severidade no nível do arquivo
+            res += f"### 📂 Alvo: `{fname}` [{sev}]\n\n"
             for item in group:
                 res += self._format_item(item, sev)
-        return res
+        return res.strip()
 
     def _format_item(self, item, sev):
-        if not isinstance(item, dict): return f"- **Diretriz Estratégica:** {item}\n\n" 
-        res = f"#### 🔴 Item {item.get('line', 'N/A')}: {item.get('issue')}\n"
+        if not isinstance(item, dict):
+            clean_guideline = str(item).rstrip('.').strip()
+            return f"- **Diretriz Estratégica:** {clean_guideline}\n\n"
+        
+        # Sanitização Rigorosa PhD: Remove pontos finais para MD026
+        issue_clean = str(item.get('issue', '')).rstrip('.').strip()
+        line = item.get('line', 'N/A')
+        # UID sem dots nos identificadores técnicos
+        file_id = str(item.get('file', '')).replace('.', '_').replace('\\', '/')
+        uid = f"{file_id}_{line}"
+        
+        res = f"#### 🔴 Item {line}: {issue_clean} [ID: {uid}]\n\n"
         if item.get('snippet'):
-            res += f"- **Evidência:**\n```kotlin\n{item.get('snippet')}\n```\n"
-        return res + f"- **Diretriz:** Padrão soberano de {sev.lower()}\n\n" 
+            res += f"- **Evidência:**\n\n```kotlin\n{item.get('snippet').strip()}\n```\n\n"
+        return res + f"- **Diretriz:** Padrão soberano de {sev.lower()}\n\n"

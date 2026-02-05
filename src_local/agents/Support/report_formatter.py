@@ -35,11 +35,12 @@ class ReportFormatter:
         op_status += f"| **Total de Alertas** | {health_data.get('total_issues', 0)} | {'Crítico' if health_data.get('total_issues', 0) > 50 else 'Monitorado'} |\n"
         op_status += f"| **Sincronia** | {time.strftime('%H:%M:%S')} | Ativa |\n\n"
 
-        return f"# 🏛️ MAPA DE CONSCIÊNCIA SISTÊMICA: {health_data['objective']}\n" \
-               f"> **Visão Holística do Arquiteto PhD (Token: FBI_SINC_FINAL)**\n\n" \
-               f"{status}\n\n" \
-               f"--- \n" \
-               f"## 🧬 SINCRONIA DE IDENTIDADE\n{op_status}"
+        objective_clean = health_data['objective'].rstrip('.')
+        return (f"# 🏛️ MAPA DE CONSCIÊNCIA SISTÊMICA: {objective_clean}\n\n"
+                f"> **Visão Holística do Arquiteto PhD (Token: FBI_SINC_FINAL)**\n\n"
+                f"{status}\n\n"
+                f"---\n\n"
+                f"## 🧬 SINCRONIA DE IDENTIDADE\n\n{op_status.strip()}").strip()
 
     def format_vitals(self, health_data):
         """
@@ -64,11 +65,11 @@ class ReportFormatter:
             infra_label = "**Paridade de Stack**"
             infra_status = "Sincronizada" if parity_gaps == 0 else f"{parity_gaps} Gaps"
 
-        return f"## 🩺 SINAIS VITAIS DO PRODUTO\n" \
-               f"| Métrica | Status | Impacto |\n| :--- | :--- | :--- |\n" \
-               f"| **Pontos Cegos** | {blind_count} Arquivos | {'Seguro' if blind_count == 0 else ('Alerta' if blind_count < 10 else 'CRÍTICO')} |\n" \
-               f"| **Fragilidades** | {brittle_count} Pontos | {'Seguro' if brittle_count == 0 else 'Risco de Colapso'} |\n" \
-               f"| {infra_label} | {infra_status} | Nível de Maturidade |\n\n"
+        return (f"## 🩺 SINAIS VITAIS DO PRODUTO\n\n"
+                f"| Métrica | Status | Impacto |\n| :--- | :--- | :--- |\n"
+                f"| **Pontos Cegos** | {blind_count} Arquivos | {'Seguro' if blind_count == 0 else ('Alerta' if blind_count < 10 else 'CRÍTICO')} |\n"
+                f"| **Fragilidades** | {brittle_count} Pontos | {'Seguro' if brittle_count == 0 else 'Risco de Colapso'} |\n"
+                f"| {infra_label} | {infra_status} | Nível de Maturidade |").strip()
 
     def format_entropy(self, health_data):
         logger.debug("🌪️ [Formatter] Mapeando mapa de entropia...")
@@ -83,23 +84,24 @@ class ReportFormatter:
             
         top = sorted(top, key=lambda x: x["c"], reverse=True)[:10]
         
-        res = "## 🌪️ MAPA DE ENTROPIA & ACOPLAMENTO\n| Alvo | Complexidade | Instabilidade |\n| :--- | :---: | :---: |\n"
+        res = "## 🌪️ MAPA DE ENTROPIA & ACOPLAMENTO\n\n| Alvo | Complexidade | Instabilidade |\n| :--- | :---: | :---: |\n"
         for item in top: res += f"| `{item['f']}` | {item['c']} | {round(item['cp'], 2)} |\n"
-        return res + "\n"
+        return res.strip()
 
     def format_efficiency(self, health_data):
         eff = health_data.get("efficiency", {})
         if not eff: return ""
-        return f"## ⚡ EFICIÊNCIA OPERACIONAL\n| Indicador | Valor | Impacto |\n| :--- | :--- | :--- |\n" \
-               f"| **Economia de I/O** | {eff.get('saved_io', 0)}% | **{eff.get('efficiency_label', 'ALTA')}** |\n\n"
+        return (f"## ⚡ EFICIÊNCIA OPERACIONAL\n\n"
+                f"| Indicador | Valor | Impacto |\n| :--- | :--- | :--- |\n"
+                f"| **Economia de I/O** | {eff.get('saved_io', 0)}% | **{eff.get('efficiency_label', 'ALTA')}** |").strip()
 
     def format_quality_matrix(self, health_data):
         matrix = health_data.get("test_quality_matrix", [])
-        res = "## 🧪 MATRIZ DE CONFIANÇA\n| Módulo | Entropia | Asserções | Status |\n| :--- | :---: | :---: | :--- |\n"
+        res = "## 🧪 MATRIZ DE CONFIANÇA\n\n| Módulo | Entropia | Asserções | Status |\n| :--- | :---: | :---: | :--- |\n"
         for item in matrix:
             icon = "🟢 PROFUNDO" if item["test_status"] == "DEEP" else "🔴 FRÁGIL"
             res += f"| `{item['file']}` | {item['complexity']} | {item.get('assertions', 0)} | {icon} |\n"
-        return res + "\n"
+        return res.strip()
 
     def format_battle_plan(self, audit_results):
         """Delega a formatação densa para o BattlePlanFormatter."""
@@ -110,14 +112,16 @@ class ReportFormatter:
         🕵️ Zona de Higiene de Código.
         Destaca tentativas de ocultação de lógica.
         """
-        res = "## 🕵️ CODEX OBSCURUS: Análise de Ofuscação\n"
+        res = "## 🕵️ CODEX OBSCURUS: Análise de Ofuscação\n\n"
         res += "> **Política de Código Limpo:** Lógica oculta é lógica suspeita. A 'Orquestração' exige transparência.\n\n"
         
         for f in findings:
-            res += f"### 🎭 {f['file']}:{f['line']}\n"
-            res += f"- **Detecção:** {f['issue']}\n"
+            # Títulos sanitizados para MD024/MD026
+            file_clean = str(f['file']).replace('.', '_').replace('\\', '/')
+            res += f"### 🎭 {f['file']}:{f['line']} [ID: obf_{file_clean}_{f['line']}]\n\n"
+            res += f"- **Detecção:** {f['issue'].rstrip('.')}\n"
             if 'snippet' in f:
-                res += f"- **Evidência:** `{f['snippet']}`\n\n"
+                res += f"- **Evidência:** `{f['snippet'].strip()}`\n\n"
         
         res += "---\n"
-        return res
+        return res.strip()
