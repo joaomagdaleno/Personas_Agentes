@@ -1,11 +1,11 @@
 import unittest
-from src_local.agents.Support.integrity_guardian import *
+from src_local.agents.Support.integrity_guardian import IntegrityGuardian
 
-class TestIntegrityguardian(unittest.TestCase):
-    def test_smoke(self):
-        """Smoke test for integrity_guardian.py"""
-        # This test ensures the module can be imported and examined.
-        self.assertTrue(True)
+class TestIntegrityGuardian(unittest.TestCase):
+    def test_vulnerabilities(self):
+        guardian = IntegrityGuardian()
+        issues = guardian.detect_vulnerabilities("eval(x)", "PRODUCTION")
+        self.assertTrue(issues['brittle'])
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()

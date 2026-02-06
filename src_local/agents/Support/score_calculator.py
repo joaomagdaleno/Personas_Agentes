@@ -36,10 +36,13 @@ class ScoreCalculator:
         return (kdoc / total) * 10
 
     def _apply_penalties(self, raw, all_alerts, map_data, total):
-        high = [r for r in all_alerts if isinstance(r, dict) and r.get('severity') in ['critical', 'high']]
-        medium = [r for r in all_alerts if isinstance(r, dict) and r.get('severity') == 'medium']
-        low = [r for r in all_alerts if isinstance(r, dict) and r.get('severity') in ['low', 'strategic']]
-        strat = sum(1 for r in all_alerts if isinstance(r, str))
+        # Filtro de Integridade: Achados validados não drenam a saúde
+        real_finds = [a for a in all_alerts if isinstance(a, dict) and "[INTEGRIDADE VALIDADA]" not in str(a.get('issue', ''))]
+        
+        high = [r for r in real_finds if r.get('severity') in ['critical', 'high']]
+        medium = [r for r in real_finds if r.get('severity') == 'medium']
+        low = [r for r in real_finds if r.get('severity') in ['low', 'strategic']]
+        strat = sum(1 for r in all_alerts if isinstance(r, str)) # Notas globais permanecem
         loss = sum(1 for f, i in map_data.items() if not i.get("has_test"))
 
         ceiling = 100

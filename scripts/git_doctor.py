@@ -43,6 +43,6 @@ class GitDoctor:
 
         self.run_command(["rm", "-r", "--cached", "**/__pycache__/*"])
         MaintenanceEnginePhd.clean_submodules(self.root, self.run_command)
-        print(f"--- STATUS ---\n{self.run_command(['status', '--short', '--branch']).stdout}")
+        logger.info(f"--- STATUS ---\n{self.run_command(['status', '--short', '--branch']).stdout}")
 
 if __name__ == "__main__": GitDoctor(os.getcwd()).diagnose_and_fix()

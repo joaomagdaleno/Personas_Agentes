@@ -50,14 +50,20 @@ class AuditEngine:
                 
                 if re.search(p['regex'], line, re.IGNORECASE):
                     if not self._is_log_statement(ctx["lines"], i):
-                        
-                        # 🧠 Smart Understanding: Se for arquivo Python e Padrão Crítico (eval/exec)
-                        # delega para análise AST confirmar se é seguro (dentro de assert/teste).
-                        if file.endswith(".py") and ("eval" in p['regex'] or "shell" in p['regex'] or "global" in p['regex']):
-                             # Extract simplified risk type for the AST judge
-                             risk_type = "eval" if "eval" in p['regex'] else "shell" if "shell" in p['regex'] else "global"
-                             if logic_auditor.is_interaction_safe(content, i + 1, risk_type): 
-                                 # logger.debug(f"🧠 [AuditEngine] Risco validado como SEGURO via AST em {file}:{i+1}")
+                        # 🧠 Deep Understanding: Se for arquivo Python e Padrão Crítico/Qualidade
+                        if file.endswith(".py") and any(k in p['regex'].lower() for k in ["eval", "shell", "global", "debug", "print"]):
+                             risk_type = "eval" if "eval" in p['regex'].lower() else \
+                                         "shell" if "shell" in p['regex'].lower() else \
+                                         "global" if "global" in p['regex'].lower() else \
+                                         "debug" if "debug" in p['regex'].lower() else "print"
+                             
+                             is_safe, reason = logic_auditor.is_interaction_safe(content, i + 1, risk_type)
+                             
+                             if is_safe:
+                                 entry = self._create_issue_entry(file, i, p, ctx)
+                                 entry['issue'] = f"✅ [INTEGRIDADE VALIDADA] {p['issue']} - Razão: {reason}"
+                                 entry['severity'] = 'strategic'
+                                 issues.append(entry)
                                  continue
 
                         issues.append(self._create_issue_entry(file, i, p, ctx))

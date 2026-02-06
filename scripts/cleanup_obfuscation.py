@@ -7,6 +7,11 @@ import ast
 sys.path.insert(0, str(Path(__file__).parent.parent.absolute()))
 
 from src_local.agents.Support.obfuscation_hunter import ObfuscationHunter
+from src_local.utils.logging_config import configure_logging
+import logging
+
+configure_logging()
+logger = logging.getLogger(__name__)
 
 class AutoDeobfuscator:
     def __init__(self, project_root):
@@ -22,7 +27,7 @@ class AutoDeobfuscator:
             try:
                 tree = ast.parse(content)
             except SyntaxError:
-                print(f"❌ Erro de sintaxe em {file_path}, ignorando.")
+                logger.error(f"❌ Erro de sintaxe em {file_path}, ignorando.")
                 return False
 
             # Collect replacements
@@ -32,7 +37,7 @@ class AutoDeobfuscator:
             replacements = collector.replacements
             if not replacements: return False
             
-            print(f"🧹 Cleaning {file_path.name} ({len(replacements)} obfuscations detected)...")
+            logger.info(f"🧹 Cleaning {file_path.name} ({len(replacements)} obfuscations detected)...")
             
             # Apply replacements in reverse order to keep offsets valid
             replacements.sort(key=lambda x: x['start_offset'], reverse=True)
@@ -59,7 +64,7 @@ class AutoDeobfuscator:
                 text = r['new_text']
                 
                 if start == -1 or end == -1: 
-                    print(f"⚠️ Erro de offset em {file_path}:{node.lineno}")
+                    logger.warning(f"⚠️ Erro de offset em {file_path}:{node.lineno}")
                     continue
                     
                 # Python 3.8+ AST ensures exact ranges. 
@@ -78,7 +83,7 @@ class AutoDeobfuscator:
             return True
 
         except Exception as e:
-            print(f"Error processing {file_path}: {e}")
+            logger.error(f"Error processing {file_path}: {e}")
             return False
 
 class ReplacementCollector(ast.NodeVisitor):
@@ -108,11 +113,11 @@ if __name__ == "__main__":
     
     deobfuscator = AutoDeobfuscator(project_root)
     
-    print(f"🚀 Iniciando Auto-Deobfuscator em: {project_root}")
+    logger.info(f"🚀 Iniciando Auto-Deobfuscator em: {project_root}")
     count = 0
     # Scan recursive
     for p in project_root.rglob("*.py"):
         if deobfuscator.process_file(p):
             count += 1
             
-    print(f"✅ Processamento concluído. {count} arquivos limpos.")
+    logger.info(f"✅ Processamento concluído. {count} arquivos limpos.")

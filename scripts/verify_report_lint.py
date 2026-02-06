@@ -1,87 +1,54 @@
-import os
-import re
+import os, re, logging
+
+# ✍️ Auditor de Markdown PhD
+logger = logging.getLogger(__name__)
 
 def verify_markdown_compliance(path):
-    if not os.path.exists(path):
-        return f"File not found: {path}"
+    """Garante que o relatório auto_healing segue as normas PhD para Markdown."""
+    if not os.path.exists(path): 
+        logger.error(f"Arquivo não encontrado: {path}")
+        return [f"File not found: {path}"]
     
-    with open(path, 'r', encoding='utf-8') as f:
-        content = f.read()
-        lines = content.split('\n')
-        
-    errors = []
-    in_code_block = False
+    with open(path, 'r', encoding='utf-8') as f: 
+        lines = f.read().split('\n')
     
-    # MD012: Multiple blanks (except in code blocks)
-    for i in range(2, len(lines)):
-        line = lines[i]
-        if line.strip().startswith('```'):
-            in_code_block = not in_code_block
-        
-        if not in_code_block:
-            if not lines[i].strip() and not lines[i-1].strip() and not lines[i-2].strip():
-                # Note: content.split('\n') on A\n\n\nB gives ['', '', '']
-                pass
+    errors, headings, in_cb = [], {}, False
     
-    if not in_code_block and '\n\n\n' in content:
-        # Simple check for triple newline. 
-        # But we must be careful if it's inside a code block.
-        # Let's use the line-by-line check.
-        pass
-
-    in_code_block = False
-    headings = {}
     for i, line in enumerate(lines):
-        if line.strip().startswith('```'):
-            in_code_block = not in_code_block
+        stripped = line.strip()
+        if stripped.startswith('```'):
+            in_cb = not in_cb
             continue
+        
+        if in_cb: continue
+        
+        # MD012 (Blanks)
+        if not stripped and i > 0 and not lines[i-1].strip():
+            errors.append(f"MD012 at {i+1}")
             
-        if in_code_block:
-            continue
+        # Headings (MD022, 024, 026)
+        if stripped.startswith('#'):
+            # Padding
+            if i > 0 and lines[i-1].strip(): 
+                errors.append(f"MD022 Above at {i+1}")
+            if i < len(lines)-1 and lines[i+1].strip(): 
+                errors.append(f"MD022 Below at {i+1}")
+            # Punctuation
+            if re.search(r'[\.\!\?\:]$', stripped): 
+                errors.append(f"MD026 at {i+1}")
+            # Duplicate
+            if stripped in headings: 
+                errors.append(f"MD024 Duplicate \"{stripped}\"")
+            headings[stripped] = i
             
-        # Real heading: starts with # (max 3 spaces indent)
-        if re.match(r'^[ ]{0,3}\#+\s+', line):
-            h = line.strip()
-            
-            # MD026: Trailing punctuation
-            if re.search(r'[\.\!\?\:]$', h):
-                errors.append(f"MD026 Error at line {i+1}: {h}")
-            
-            # MD024: Duplicate heading
-            if h in headings:
-                errors.append(f"MD024 Error: Duplicate heading \"{h}\" at lines {headings[h]+1} and {i+1}")
-            headings[h] = i
-            
-            # MD022: Blanks around headings
-            if i > 0 and lines[i-1].strip() != '':
-                errors.append(f"MD022 Error (Above) at line {i+1}: {line}")
-            if i < len(lines) - 1 and lines[i+1].strip() != '':
-                errors.append(f"MD022 Error (Below) at line {i+1}: {line}")
-
-    # MD012: More precise check
-    in_code_block = False
-    blank_count = 0
-    for i, line in enumerate(lines):
-        if line.strip().startswith('```'):
-            in_code_block = not in_code_block
-            blank_count = 0
-            continue
-        if in_code_block:
-            continue
-            
-        if not line.strip():
-            blank_count += 1
-            if blank_count > 1:
-                errors.append(f"MD012 Error: Multiple blanks at line {i+1}")
-        else:
-            blank_count = 0
-
     return errors
 
 if __name__ == "__main__":
-    results = verify_markdown_compliance('auto_healing_VERIFIED.md')
-    if not results:
-        print("VERIFICATION SUCCESS: 100% Markdown Compliance.")
+    logging.basicConfig(level=logging.INFO)
+    res = verify_markdown_compliance('auto_healing_VERIFIED.md')
+    if not res:
+        logger.info("SUCCESS: Relatório em conformidade com as normas PhD.")
     else:
-        print(f"Detected {len(results)} errors:")
-        for r in results: print(f" - {r}")
+        logger.warning(f"ERRORS Detetados: {len(res)}")
+        for r in res: 
+            logger.error(r)

@@ -18,10 +18,9 @@ class GlobePersona(BaseActivePersona):
         start_time = time.time()
         logger.info(f"[{self.name}] Analisando Globalização...")
         
-        # Regex simplificados para evitar erro de sintaxe Python
         audit_rules = [
             {'regex': r"print\(.*?[áéíóúãõç].*?\)", 'issue': 'L10n: String hardcoded com caracteres locais.', 'severity': 'low'},
-            {'regex': r"open\(.*?,.*?'r'.*?\)", 'issue': 'Encoding: open() sem encoding explícito.', 'severity': 'medium'}
+            {'regex': r"open\((?![^)]*['\"](\w*b\w*)['\"])(?![^)]*encoding\s*=).*?\)", 'issue': 'Encoding: open() sem encoding explícito.', 'severity': 'medium'}
         ]
         
         results = self.find_patterns(('.py',), audit_rules)

@@ -77,7 +77,7 @@ class ContextEngine:
             info.update(self.guardian.detect_vulnerabilities(content, info["component_type"]))
             info["has_test"] = self.coverage_auditor.detect_test(path, info["component_type"], self.all_files_index)
             
-            if info["component_type"] == "TEST" and "/tests/" in rel_path:
+            if info["component_type"] == "TEST" and ("tests/" in rel_path or "test/" in rel_path):
                 self._analyze_test_quality(content, info)
                 
             self.map[rel_path] = info

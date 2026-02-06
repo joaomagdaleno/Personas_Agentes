@@ -30,8 +30,16 @@ class FileSystemScanner:
 
     def _should_skip(self, path):
         if not path.is_file(): return True
+        # Pruning Sistêmico: Ignora territórios de experimento, backups e infra de IA
+        forbidden = [".git", ".gemini", "restore", "Forensics", "__pycache__"]
+        path_parts = [p.lower() for p in path.parts]
+        
+        if any(f.lower() in p for p in path_parts for f in forbidden):
+            return True
+            
+        path_str = str(path).replace("\\", "/").lower()
         # Se for ignorado pelo analista e não estiver em src_local, pula
-        is_src = "src_local" in str(path)
+        is_src = "src_local" in path_str
         if self.analyst.should_ignore(path) and not is_src: return True
         if not self.analyst.is_analyable(path): return True
         return False

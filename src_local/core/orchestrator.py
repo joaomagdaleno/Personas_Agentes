@@ -72,7 +72,11 @@ class Orchestrator:
         """Sintetiza a saúde sistêmica via delegação."""
         map_data = context.get("map", {})
         context["parity"] = self.context_engine.analyze_stack_parity(self.personas)
-        qa_data = {"pyramid": self._get_target_test_pyramid(map_data), "execution": internal_health}
+        qa_data = {
+            "pyramid": self._get_target_test_pyramid(map_data), 
+            "execution": internal_health,
+            "matrix": self._get_test_quality_matrix(map_data)
+        }
         context["efficiency"] = self.metrics.get("efficiency", {})
         
         # Injeção da verdade consolidada para o sintetizador
@@ -84,6 +88,10 @@ class Orchestrator:
     def _get_target_test_pyramid(self, map_data):
         testify = next((p for p in self.personas if p.name == "Testify"), None)
         return testify.analyze_test_pyramid(map_data) if testify else {}
+
+    def _get_test_quality_matrix(self, map_data):
+        testify = next((p for p in self.personas if p.name == "Testify"), None)
+        return testify.analyze_test_quality_matrix(map_data) if testify else []
 
     def _detect_changed_files(self, map_files):
         def check_file(p):

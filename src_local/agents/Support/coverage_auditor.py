@@ -17,13 +17,14 @@ class CoverageAuditor:
         """
         # Apenas arquivos que são inerentemente de teste ou config estão isentos
         if comp_type in ["TEST", "CONFIG", "DOC"]: return True
+        if "__init__.py" in file_path.name: return True
         
         name_stem = file_path.stem.lower()
         
         # Rigor PhD: Busca Semântica
         # Verifica se o radical do arquivo existe em qualquer arquivo que comece com 'test_'
         for f_name in all_files:
-            if f_name.startswith("test_") and name_stem in f_name:
+            if f_name.lower().startswith("test_") and name_stem in f_name.lower():
                 return True
                 
         return False

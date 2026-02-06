@@ -52,7 +52,9 @@ def test_complex():
         test_file = self.test_root / "tests" / "test_deep.py"
         test_file.write_text(test_content)
         
-        info = self.engine._analyze_file(test_file)
+        self.engine._register_file(test_file)
+        rel_path = test_file.relative_to(self.test_root).as_posix()
+        info = self.engine.map[rel_path]
         self.assertEqual(info["component_type"], "TEST")
         # Assertions detectadas pelo regex r"assert[A-Z]\w*\(|self\.assert"
         # No conteúdo: assert (não casa), self.assertEqual (casa), self.assertTrue (casa), self.assertIn (casa)

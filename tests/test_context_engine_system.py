@@ -36,7 +36,9 @@ class TestContextEngine(unittest.TestCase):
         content = f"try:\n    {p_kw}\n{e_kw}:\n    {p_kw}"
         silent_file.write_text(content)
         
-        info = self.engine._analyze_file(silent_file)
+        self.engine._register_file(silent_file)
+        rel_path = silent_file.relative_to(self.test_root).as_posix()
+        info = self.engine.map[rel_path]
         self.assertTrue(info["silent_error"])
 
     def tearDown(self):

@@ -27,12 +27,12 @@ class LogicAuditor:
                     })
         return issues
 
-    def is_interaction_safe(self, content: str, line_number: int, risk_type: str) -> bool:
+    def is_interaction_safe(self, content: str, line_number: int, risk_type: str) -> tuple:
+        """⚖️ Validação profunda: Retorna (is_safe, reason) para transparência total."""
         try:
             tree = ast.parse(content)
             for node in ast.walk(tree):
                 if hasattr(node, 'lineno') and node.lineno == line_number:
-                    
                     # Compatibilidade Python 3.14 (ast.Str removido) vs antigo
                     str_types = (ast.Constant,)
                     if hasattr(ast, "Str"):
@@ -40,8 +40,10 @@ class LogicAuditor:
 
                     if isinstance(node, str_types):
                         val = getattr(node, "value", getattr(node, "s", ""))
-                        if isinstance(val, str) and risk_type in val:
-                            return self.judge.is_node_safe(node, tree)
-            return False
-        except Exception:
-            return False
+                        if isinstance(val, str) and risk_type.lower() in val.lower():
+                            if self.judge.is_node_safe(node, tree):
+                                return True, "Padrão identificado em contexto técnico seguro (Regra de Auditoria ou Teste)."
+                            return False, "Padrão de risco em contexto de execução potencial."
+            return False, "Não foi possível validar o contexto do nó na AST."
+        except Exception as e:
+            return False, f"Falha na análise AST: {e}"

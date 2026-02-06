@@ -28,15 +28,7 @@ class HealthSynthesizer:
             "timestamp": time.strftime('%Y-%m-%d %H:%M:%S'), "persona_maturity": maturity,
             "parity": context.get("parity", {}), "ledger": stability_ledger.ledger,
             "pyramid": qa_data["pyramid"], "test_execution": qa_data["execution"],
-            "test_quality_matrix": [
-                {
-                    "file": f,
-                    "complexity": d.get("complexity", 1),
-                    "assertions": d.get("assertions", 0),
-                    "test_status": "DEEP" if d.get("has_test") and d.get("assertions", 0) > 0 else "FRAGILE"
-                }
-                for f, d in map_data.items()
-            ],
+            "test_quality_matrix": qa_data.get("matrix", []),
             "efficiency": context.get("efficiency", {}), "map": map_data, "total_issues": len(all_alerts),
             "is_external": context["identity"].get("is_external", False), "dark_matter": dark_matter,
             "brittle_points": [f for f, i in map_data.items() if i.get("brittle") or f in stability_ledger.ledger],

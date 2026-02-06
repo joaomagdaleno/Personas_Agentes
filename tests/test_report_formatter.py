@@ -1,11 +1,11 @@
 import unittest
-from src_local.agents.Support.report_formatter import *
+from src_local.agents.Support.report_formatter import ReportFormatter
 
-class TestReportformatter(unittest.TestCase):
-    def test_smoke(self):
-        """Smoke test for report_formatter.py"""
-        # This test ensures the module can be imported and examined.
-        self.assertTrue(True)
+class TestReportFormatter(unittest.TestCase):
+    def test_format_header(self):
+        fmt = ReportFormatter()
+        res = fmt.format_header({'objective': 'Obs', 'health_score': 10, 'total_issues': 1})
+        self.assertIn("Obs", res)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()
