@@ -12,7 +12,7 @@ class QualityAnalyst:
         for file, info in map_data.items():
             # Aceita src/ ou src_local/ ou arquivos na raiz que sejam LOGIC/CORE/AGENT
             is_source = "src/" in file or "src_local/" in file or info.get("component_type") in ["AGENT", "CORE", "LOGIC"]
-            if not is_source or info.get("component_type") == "TEST":
+            if not is_source or info.get("component_type") == "TEST" or file.endswith("__init__.py"):
                 continue
             
             # Busca Flexível: Procura qualquer teste que contenha o nome do módulo

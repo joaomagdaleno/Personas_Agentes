@@ -23,7 +23,7 @@ class IntegrityGuardian:
             "brittle_pattern =", "silent_pattern =", "rules =", "audit_rules =", 
             "risk_type =", "audit_rules", "regex':", 'regex":', "navigator", 
             "persona", "auditengine", "integrityguardian", "logicauditor", 
-            "ast.call", "[integridade validada]"
+            "ast.call", "[integridade validada]", "diagnostic", "script"
         ]
         if any(p in content_lower for p in veto_patterns):
             return issues
