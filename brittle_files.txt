@@ -1,0 +1,16 @@
+scripts/analyze_external.py
+scripts/persona_manager.py
+scripts/run_diagnostic.py
+tests/test_battle_plan_formatter_deep.py
+tests/test_core_depth.py
+tests/test_safe_context_judge.py
+tests/test_self_awareness.py
+src_local/agents/base.py
+src_local/core/compiler.py
+src_local/utils/indexer.py
+src_local/agents/Flutter/echo.py
+src_local/agents/Flutter/metric.py
+src_local/agents/Flutter/scale.py
+src_local/agents/Python/bridge.py
+src_local/agents/Python/hermes.py
+src_local/agents/Support/ast_navigator.py

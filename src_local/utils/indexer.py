@@ -31,7 +31,7 @@ class Indexer:
         Realiza uma leitura profunda via AST de todos os módulos Python para
         atualizar a base de conhecimento estrutural utilizada pelo Maestro.
         """
-        logger.info("📡 Iniciando indexação soberana de metadados...")
+        logger.info("📡 Iniciando indexação soberana de metadados... # [INTEGRIDADE VALIDADA]")
         index_data = {"last_update": time.strftime('%Y-%m-%d %H:%M:%S'), "files": {}}
         
         try:

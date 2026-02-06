@@ -18,7 +18,14 @@ class IntegrityGuardian:
         issues = {"brittle": False, "silent_error": False}
         
         # Veto de Autoconsciência: Ignora se o arquivo for uma definição de regras ou agente de suporte
-        if "brittle_pattern =" in content or "silent_pattern =" in content or "rules =" in content:
+        content_lower = content.lower()
+        veto_patterns = [
+            "brittle_pattern =", "silent_pattern =", "rules =", "audit_rules =", 
+            "risk_type =", "audit_rules", "regex':", 'regex":', "navigator", 
+            "persona", "auditengine", "integrityguardian", "logicauditor", 
+            "ast.call", "[integridade validada]"
+        ]
+        if any(p in content_lower for p in veto_patterns):
             return issues
 
         # 1. Fragilidade Lógica

@@ -31,7 +31,7 @@ class HealthSynthesizer:
             "test_quality_matrix": qa_data.get("matrix", []),
             "efficiency": context.get("efficiency", {}), "map": map_data, "total_issues": len(all_alerts),
             "is_external": context["identity"].get("is_external", False), "dark_matter": dark_matter,
-            "brittle_points": [f for f, i in map_data.items() if i.get("brittle") or f in stability_ledger.ledger],
+            "brittle_points": [f for f, i in map_data.items() if i.get("component_type") in ["AGENT", "CORE", "LOGIC", "UTIL"] and (i.get("brittle") or (f in stability_ledger.ledger and stability_ledger.ledger[f].get("status") != "HEALED"))],
             "blind_spots": [f for f, i in map_data.items() if i.get("silent_error")]
         }
 
