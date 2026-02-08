@@ -1,5 +1,5 @@
 import unittest
-from src_local.agents.Supportramid_analyst import *
+from src_local.agents.Support.pyramid_analyst import *
 
 class TestPyramidanalyst(unittest.TestCase):
     def test_smoke(self):

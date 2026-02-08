@@ -10,6 +10,10 @@ class HealthSynthesizer:
         from src_local.agents.Support.score_calculator import ScoreCalculator
         self.calculator = ScoreCalculator()
 
+    def _calculate_rigorous_3_0(self, map_data, all_alerts, bonus=0):
+        """🩺 [RECONSTRUCTED] Interface legada para o algoritmo de saúde Rigoroso 3.0."""
+        return self.calculator.calculate_final_score(map_data, all_alerts)
+
     def synthesize_360(self, context, orchestrator_metrics, orchestrator_personas, stability_ledger, qa_data) -> dict:
         """Consolida sinais vitais em um diagnóstico único."""
         map_data = context.get("map", {})

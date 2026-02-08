@@ -67,7 +67,8 @@ except Exception:
         """
         tree = ast.parse(code)
         lines = code.splitlines()
-        issues = self.analyst.analyze_logic_flaws(tree, "dummy.py", lines, "TestAgent")
+        # Forçamos ignore_test_context=True
+        issues = self.analyst.analyze_logic_flaws(tree, "dummy.py", lines, "TestAgent", ignore_test_context=True)
         self.assertEqual(len(issues), 1)
         self.assertIn("Captura de erro silenciosa", issues[0]["issue"])
 

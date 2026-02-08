@@ -74,8 +74,26 @@ class DependencyAuditor:
             
             if delta > 0:
                 return [{"file": ".agent/skills", "issue": f"Delta: {delta} commits", "severity": "CRITICAL", "context": "DependencyAuditor"}]
-        except: pass
+        except Exception as e:
+            logger.error(f"⚠️ Erro ao verificar status do submódulo: {e}")
         return []
+
+    def _verify_network_health(self):
+        """🌐 Verifica se o repositório remoto está acessível."""
+        return self.git.discover_remote() is not None
+
+    def _get_topology(self, remote):
+        """🧬 Mapeia a topologia de branches local vs remoto."""
+        active = self.git.get_current_branch()
+        tracking = self.git.get_tracking_branch(active)
+        return {'active_ref': active, 'tracking_ref': tracking}
+
+    def _validate_pre_conditions(self):
+        """🛡️ Valida se o ambiente está pronto para sincronização."""
+        if not self.agent_path.exists(): 
+            logger.warning("Agent path does not exist.")
+            return False
+        return True
 
     def _verify_system_integrity(self):
         """🧬 Valida a sintaxe Python de todos os arquivos após a atualização."""

@@ -24,7 +24,7 @@ class PersonaManager:
     """
     def __init__(self, project_root: Path):
         self.project_root = Path(project_root)
-        self.base_path = self.project_root / "src" / "agents" / "Python"
+        self.base_path = self.project_root / "src_local" / "agents" / "Python"
         
         # Identidades Estratégicas (Censo Soberano)
         self.identities = {

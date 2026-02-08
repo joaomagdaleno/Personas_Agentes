@@ -63,7 +63,7 @@ class ContextEngine:
         logger.info(f"✅ DNA Processado: {len(self.map)} componentes.")
         return {"identity": self.project_identity, "map": self.map}
 
-    def _register_file(self, path):
+    def _register_file(self, path, ignore_test_context=False):
         try:
             rel_path = path.relative_to(self.project_root).as_posix()
             if rel_path in self.map: return
@@ -74,7 +74,7 @@ class ContextEngine:
             if path.suffix == '.py':
                 info.update(self.analyst.analyze_python(content, path.name))
             
-            info.update(self.guardian.detect_vulnerabilities(content, info["component_type"]))
+            info.update(self.guardian.detect_vulnerabilities(content, info["component_type"], ignore_test_context=ignore_test_context))
             info["has_test"] = self.coverage_auditor.detect_test(path, info["component_type"], self.all_files_index)
             
             if info["component_type"] == "TEST" and ("tests/" in rel_path or "test/" in rel_path):

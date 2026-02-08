@@ -12,7 +12,7 @@ class MaintenanceEnginePhd:
     def clean_submodules(root, run_git):
         if not (root / ".gitmodules").exists(): return
         res = run_git(["submodule", "foreach", "--quiet", "echo $displaypath"])
-        if res.returncode == 0:
+        if res and res.returncode == 0:
             for sub in res.stdout.splitlines():
                 sub_dir = root / sub.strip()
                 if sub_dir.exists(): subprocess.run(["git", "clean", "-fd"], cwd=str(sub_dir), capture_output=True)

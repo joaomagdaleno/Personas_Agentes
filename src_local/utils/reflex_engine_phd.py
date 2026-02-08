@@ -8,6 +8,8 @@ class ReflexEnginePhd:
     @staticmethod
     def trigger(health, personas, job_queue, auditor):
         """Coordena respostas baseadas no estado de saúde."""
+        if job_queue is None: job_queue = []
+        
         # 1. Cura Ativa (Voyager)
         if health.get('blind_spots'):
             voyager = next((p for p in personas if p.name == "Voyager"), None)

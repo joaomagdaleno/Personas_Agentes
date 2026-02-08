@@ -2,14 +2,14 @@ import unittest
 from pathlib import Path
 import shutil
 import tempfile
-from src_local.core.validator import SystemValidator
+from src_local.core.validator import CoreValidator
 
 class TestValidatorDeep(unittest.TestCase):
     """Bateria de Testes PhD para o Validador de Integridade 🛡️"""
     
     def setUp(self):
         self.test_dir = Path(tempfile.mkdtemp())
-        self.validator = SystemValidator()
+        self.validator = CoreValidator()
 
     def tearDown(self):
         if self.test_dir.exists():

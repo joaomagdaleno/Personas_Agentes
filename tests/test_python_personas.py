@@ -16,7 +16,7 @@ class TestPythonPersonas(unittest.TestCase):
     def test_personas_load_and_contract(self):
         """Verifica se cada PhD Python segue o contrato da BaseActivePersona."""
         logger.info("Auditando integridade contratual da junta de PhDs Python...")
-        python_dir = Path.cwd() / "src" / "agents" / "Python"
+        python_dir = Path.cwd() / "src_local" / "agents" / "Python"
         self.assertTrue(python_dir.exists())
 
         loaded_count = 0

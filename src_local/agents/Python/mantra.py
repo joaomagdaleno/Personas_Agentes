@@ -17,7 +17,7 @@ class MantraPersona(BaseActivePersona):
         
         # Obfuscated regex to avoid self-detection
         audit_rules = [
-            {'regex': 'except:\\s+pass'ue': 'Anti-padrão: Bare except.', 'severity': 'critical'}
+            {'regex': 'except:\\s+pass', 'issue': 'Anti-padrão: Bare except.', 'severity': 'critical'}
         ]
         
         results = self.find_patterns(('.py',), audit_rules)

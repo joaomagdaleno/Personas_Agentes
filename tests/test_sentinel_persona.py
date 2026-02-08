@@ -18,9 +18,17 @@ class TestSentinelPersona(unittest.TestCase):
             "map": {"app.py": {"component_type": "LOGIC", "domain": "PRODUCTION"}}
         })
         
-        res = self.agent.perform_strategic_audit(file_target="app.py", content_target=content)
+        # O Sentinel agora delega para o AuditEngine via find_patterns
+        # Precisamos simular a leitura do arquivo no mock
+        import logging
+        logging.getLogger("src_local.agents.base").setLevel(logging.CRITICAL)
+        
+        # Mockando a leitura do arquivo
+        self.agent.read_project_file = lambda x: content
+        
+        res = self.agent.perform_audit()
         self.assertEqual(len(res), 1)
-        self.assertIn("Vulnerabilidade", res[0])
+        self.assertIn("RCE", res[0]['issue'])
 
 if __name__ == "__main__":
     unittest.main()

@@ -25,8 +25,7 @@ class BridgePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if 'shell=True' in content:
-            return f"Risco de Injeção: O objetivo '{objective}' exige segurança. Em '{file}', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'."
+        # O Bridge delega a detecção de risco para o AuditEngine via perform_audit
         return None
 
     def get_system_prompt(self):

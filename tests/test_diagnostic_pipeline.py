@@ -8,6 +8,7 @@ class TestDiagnosticPipeline(unittest.TestCase):
     def setUp(self):
         self.orchestrator = MagicMock()
         self.orchestrator.project_root = Path(".")
+        self.orchestrator.director.format_360_report.return_value = "Mock Report Content"
         self.pipeline = DiagnosticPipeline(self.orchestrator)
 
     def test_pipeline_reset(self):

@@ -10,12 +10,12 @@ class TestSupportAgents(unittest.TestCase):
 
     def test_integrity_guardian_silent_error(self):
         content = "try:\n    do_something()\nexcept:\n    pass"
-        res = self.guardian.detect_vulnerabilities(content, "LOGIC")
+        res = self.guardian.detect_vulnerabilities(content, "LOGIC", ignore_test_context=True)
         self.assertTrue(res["silent_error"])
 
     def test_integrity_guardian_injection(self):
         content = "eval('dangerous')"
-        res = self.guardian.detect_vulnerabilities(content, "LOGIC")
+        res = self.guardian.detect_vulnerabilities(content, "LOGIC", ignore_test_context=True)
         self.assertTrue(res["brittle"])
 
     def test_dna_profiler_identity(self):

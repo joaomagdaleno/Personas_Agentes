@@ -21,7 +21,7 @@ class ScoreCalculator:
 
     def _calc_purity(self, map_data, total):
         avg_complexity = sum(i.get("complexity", 1) for i in map_data.values()) / total
-        return max(0, 20 - (avg_complexity * 1.5))
+        return max(0, 20 - ((avg_complexity - 1) * 1.5))
 
     def _calc_observability(self, map_data, total):
         tel_count = sum(1 for f, i in map_data.items() if i.get("component_type") != "TEST" and (i.get("telemetry") or "telemetry" in str(i)))

@@ -17,8 +17,18 @@ class GitDoctor:
         git_dir = self.root / ".git"
         if git_dir.exists():
             for lock in git_dir.rglob("*.lock"):
-                try: os.remove(lock)
+                try: 
+                    lock.unlink()
                 except Exception as e: logger.debug(f"⚠️ Falha ao remover trava Git: {e}")
+
+    def _is_protected(self, path):
+        """🛡️ Verifica se o caminho está na lista de proteção PhD."""
+        return any(p in str(path).replace("\\", "/") for p in PROTECTED_PATHS)
+
+    def _merge_skills_index(self, file_path):
+        """🛠️ Delega a fusão de índices para o MaintenanceEnginePhd."""
+        from src_local.utils.maintenance_engine_phd import MaintenanceEnginePhd
+        return MaintenanceEnginePhd.merge_skills_index(self.root, file_path, self.run_command, PROTECTED_SKILL_IDS)
 
     def diagnose_and_fix(self):
         logger.info("🩺 Diagnóstico Git PhD...")

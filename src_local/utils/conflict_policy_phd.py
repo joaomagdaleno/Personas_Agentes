@@ -29,7 +29,8 @@ class ConflictPolicyPhd:
         self.git_runner(["rm", "--cached", f])
         full_path = self.root / f
         if full_path.exists():
-            try: os.remove(full_path)
+            try: 
+                full_path.unlink()
             except Exception as e: logger.debug(f"⚠️ Falha ao limpar conflito PhD: {e}")
         return True
 

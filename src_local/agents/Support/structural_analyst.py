@@ -57,12 +57,12 @@ class StructuralAnalyst:
         """
         return self.classifier.map_type(rel_path)
 
-    def analyze_logic_flaws(self, tree, rel_path, lines, agent_name):
+    def analyze_logic_flaws(self, tree, rel_path, lines, agent_name, ignore_test_context=False):
         """
         🕵️ Varredura profunda de fragilidades lógicas via AST.
         Detecta silenciamentos de erro e padrões estruturais perigosos.
         """
-        return self.logic_auditor.scan_flaws(tree, rel_path, lines, agent_name)
+        return self.logic_auditor.scan_flaws(tree, rel_path, lines, agent_name, ignore_test_context=ignore_test_context)
 
     def calculate_maturity(self, content: str, stack: str) -> dict:
         """

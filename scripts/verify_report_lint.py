@@ -43,12 +43,17 @@ def verify_markdown_compliance(path):
             
     return errors
 
-if __name__ == "__main__":
+def main():
     logging.basicConfig(level=logging.INFO)
     res = verify_markdown_compliance('auto_healing_VERIFIED.md')
     if not res:
         logger.info("SUCCESS: Relatório em conformidade com as normas PhD.")
+        return 0
     else:
         logger.warning(f"ERRORS Detetados: {len(res)}")
         for r in res: 
             logger.error(r)
+        return 1
+
+if __name__ == "__main__":
+    exit(main())

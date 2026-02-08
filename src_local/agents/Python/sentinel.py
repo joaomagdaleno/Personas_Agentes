@@ -26,9 +26,7 @@ class SentinelPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw1, kw2 = "eval", "shell=True"
-        if (kw1 in content or kw2 in content) and "rules =" not in content:
-            return f"Vulnerabilidade: O objetivo '{objective}' exige integridade. Em '{file}', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'."
+        # O Sentinel delega a detecção de segurança para o AuditEngine via perform_audit
         return None
 
     def get_system_prompt(self):

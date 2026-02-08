@@ -1,6 +1,7 @@
 from src_local.agents.base import BaseActivePersona
 import logging
 import time
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
@@ -24,9 +25,7 @@ class VoyagerPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        import re
-        if "os." in content and "import os" in content:
-            return f"Débito Tecnológico: O objetivo '{objective}' exige modernidade. Em '{file}', o uso de APIs legadas retarda a 'Orquestração de Inteligência Artificial'."
+        # O Voyager delega a detecção de débito técnico para o AuditEngine via perform_audit
         return None
 
     def perform_active_healing(self, blind_spots: list):
@@ -81,7 +80,8 @@ class VoyagerPersona(BaseActivePersona):
         Auto-Cura: Sugere correções para erros silenciados.
         """
         suggestions = []
-        p_str = 'except: pass'    for spot in blind_spots:
+        p_str = 'except: pass'
+        for spot in blind_spots:
             suggestions.append(f"Cura sugerida para {spot}: Substituir '{p_str}' por log detalhado de erro.")
         return suggestions
 

@@ -16,7 +16,7 @@ class VaultPersona(BaseActivePersona):
         logger.info(f"[{self.name}] Analisando Integridade Financeira...")
         
         audit_rules = [
-            {'regex': r"float\(.*price", 'issue': 'Imprecisão: Uso de float para dinheiro.', 'severity': 'critical'}
+            {'regex': r"(price|amount|balance|money).*float\(|float\(.*(price|amount|balance|money)", 'issue': 'Imprecisão: Uso de float para dinheiro.', 'severity': 'critical'}
         ]
         
         results = self.find_patterns(('.py',), audit_rules)
@@ -26,7 +26,7 @@ class VaultPersona(BaseActivePersona):
     def _reason_about_objective(self, objective, file, content):
         import re
         # Rigor PhD: Busca por padrão de imprecisão real em produção
-        imprecision_pattern = 'float\\(.*price'
+        imprecision_pattern = r"(price|amount|balance|money).*float\(|float\(.*(price|amount|balance|money)"
         if re.search(imprecision_pattern, content) and "imprecision_pattern =" not in content:
             return f"Erro de Precisão: O objetivo '{objective}' exige exatidão. Em '{file}', floats monetários invalidam os cálculos da 'Orquestração de Inteligência Artificial'."
         return None

@@ -10,7 +10,7 @@ class IntegrityGuardian:
     e silenciamento de erros que comprometem a soberania do sistema.
     """
     
-    def detect_vulnerabilities(self, content: str, component_type: str) -> dict:
+    def detect_vulnerabilities(self, content: str, component_type: str, ignore_test_context=False) -> dict:
         """
         🕵️ Analisa o conteúdo em busca de vulnerabilidades e antipadrões.
         Diferencia comportamentos aceitáveis em testes de falhas em produção.
@@ -28,21 +28,36 @@ class IntegrityGuardian:
         if any(p in content_lower for p in veto_patterns):
             return issues
 
+        from src_local.agents.Support.logic_auditor import LogicAuditor
+        logic_auditor = LogicAuditor()
+
         # 1. Fragilidade Lógica
         # Em arquivos de TESTE, permitimos experiments. Em PRODUCTION, somos rigorosos.
-        if component_type != "TEST":
+        if component_type != "TEST" or ignore_test_context:
             brittle_pattern = r"(?<!['\"_])(eval\(|global\s+|shell=True)"
-            if re.search(brittle_pattern, content, re.MULTILINE):
-                issues["brittle"] = True
+            match = re.search(brittle_pattern, content, re.MULTILINE)
+            if match:
+                # Descobre a linha do match de forma mais precisa
+                line_no = content[:match.start()].count('\n') + 1
+                risk_type = "shell" if "shell=True" in match.group(0) else \
+                            "global" if "global" in match.group(0) else "eval"
+                
+                is_safe, _ = logic_auditor.is_interaction_safe(content, line_no, risk_type, ignore_test_context=ignore_test_context)
+                if not is_safe:
+                    issues["brittle"] = True
         
         # 2. Silenciamento de Erros
-        if component_type != "TEST":
+        if component_type != "TEST" or ignore_test_context:
             # Detecta except: pass ou except Exception: pass
             silent_pattern = 'except.*:\\s*pass'
-            if re.search(silent_pattern, content):
-                # Só marca como erro se não houver telemetria ou log no mesmo arquivo
-                if not any(kw in content for kw in ['logger.err', 'logger.excep', "telemetry"]):
-                    issues["silent_error"] = True
+            match = re.search(silent_pattern, content)
+            if match:
+                line_no = content[:match.start()].count('\n') + 1
+                is_safe, _ = logic_auditor.is_interaction_safe(content, line_no, "except", ignore_test_context=ignore_test_context)
+                if not is_safe:
+                    # Só marca como erro se não houver telemetria ou log no mesmo arquivo
+                    if not any(kw in content for kw in ['logger.err', 'logger.excep', "telemetry"]):
+                        issues["silent_error"] = True
                     
         return issues
 

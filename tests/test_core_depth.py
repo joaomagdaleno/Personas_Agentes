@@ -35,9 +35,9 @@ class TestCoreDepth(unittest.TestCase):
         # Usamos eval direto aqui para garantir que o motor REALMENTE detecta
         file.write_text("import os\ndef complex():\n    if True: pass\n    try: eval('1')\n    except: pass")
         
-        self.engine._register_file(file)
-        rel_path = file.relative_to(self.test_root).as_posix()
-        info = self.engine.map[rel_path]
+        self.engine._register_file(file, ignore_test_context=True)
+        info = self.engine.map.get("logic.py")
+        self.assertIsNotNone(info)
         
         # Múltiplas asserções para garantir nível DEEP
         self.assertEqual(info["component_type"], "LOGIC")

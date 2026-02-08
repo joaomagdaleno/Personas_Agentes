@@ -9,7 +9,7 @@ from src_local.agents.Support.line_veto import LineVeto
 from src_local.agents.Support.health_synthesizer import HealthSynthesizer
 from src_local.agents.Support.diagnostic_strategist import DiagnosticStrategist
 from src_local.agents.Support.task_executor import TaskExecutor
-from src_local.core.validator import SystemValidator
+from src_local.core.validator import CoreValidator
 
 logger = logging.getLogger(__name__)
 
@@ -51,5 +51,5 @@ class InfrastructureAssembler:
             "synthesizer": HealthSynthesizer(),
             "strategist": DiagnosticStrategist(),
             "executor": TaskExecutor(),
-            "validator": SystemValidator()
+            "validator": CoreValidator()
         }

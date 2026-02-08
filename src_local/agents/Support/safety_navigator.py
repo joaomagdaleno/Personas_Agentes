@@ -16,9 +16,17 @@ class SafetyNavigator:
 
     def is_being_executed(self, node, tree):
         """Verifica se o nó é um argumento de uma função de execução perigosa."""
-        dangerous = ["eval", "exec", "os.system"]
+        dangerous = ["eval", "exec", "os.system", "system"]
         for n in ast.walk(tree):
             if self.utils.is_call_to(n, dangerous):
+                # Se for atributo, verifica se é 'os.system'
+                if isinstance(n.func, ast.Attribute):
+                    # Se for 'os.system', id de value é 'os' e attr é 'system'
+                    # Se for 'Path.unlink', id de value é 'Path' e attr é 'unlink'
+                    val = n.func.value
+                    if isinstance(val, ast.Name) and val.id != 'os':
+                        continue # Não é os.system (ex: Path.unlink)
+
                 for arg in n.args:
                     if self.utils.is_descendant(node, arg): return True
         return False
@@ -34,10 +42,11 @@ class SafetyNavigator:
 
     def _is_inside_rule_definition(self, target_node, tree):
         """Verifica se o nó faz parte de uma definição de regra ou padrão de auditoria."""
+        safe_vars = ['rule', 'pattern', 'issue', 'regex', 'p_str', 'keyword', 'audit_rules', 'patterns', 'dangerous', 'veto_patterns']
         for node in ast.walk(tree):
-            if self._is_assignment_to(node, ['rule', 'pattern', 'issue', 'regex']):
+            if self._is_assignment_to(node, safe_vars):
                  if self.utils.is_descendant(target_node, node.value): return True
-            if self.utils.is_in_dict_value(node, target_node, ['regex', 'issue', 'pattern']): return True
+            if self.utils.is_in_dict_value(node, target_node, safe_vars): return True
         return False
 
     def _is_assignment_to(self, node, names):

@@ -4,6 +4,13 @@ class VetoRulesPhd:
     """⚖️ Regras de Vento PhD: Central de Heurísticas."""
     
     @staticmethod
+    def should_veto(rel_path):
+        """🛡️ Determina se um caminho deve ser ignorado na auditoria."""
+        ignored = {'.git', '__pycache__', 'build', 'node_modules', '.venv', '.agent', '.gemini', 'submodules'}
+        from pathlib import Path
+        return any(part in ignored for part in Path(rel_path).parts)
+
+    @staticmethod
     def apply_test_veto(line, pattern):
         regex_val = pattern.get('regex', '')
         if regex_val and (f"'{regex_val}'" in line or f'"{regex_val}"' in line):

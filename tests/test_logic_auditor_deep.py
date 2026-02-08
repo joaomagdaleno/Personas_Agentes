@@ -15,7 +15,8 @@ class TestLogicAuditorDeep(unittest.TestCase):
 except:
     pass"""
         tree = ast.parse(code)
-        issues = self.auditor.scan_flaws(tree, "test.py", code.splitlines(), "TestAgent")
+        # Forçamos o ignore_test_context=True para que o auditor detecte o erro mesmo rodando em ambiente de teste
+        issues = self.auditor.scan_flaws(tree, "test.py", code.splitlines(), "TestAgent", ignore_test_context=True)
         
         self.assertEqual(len(issues), 1)
         self.assertEqual(issues[0]["issue"], "Captura de erro silenciosa detectada.")

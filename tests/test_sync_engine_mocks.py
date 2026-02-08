@@ -13,9 +13,10 @@ class TestSyncEngineMocks(unittest.TestCase):
     def test_logic_success_no_diff(self, mock_run):
         mock_run.return_value = MagicMock(stdout="0", returncode=0)
         with patch.object(DependencyAuditor, '_is_valid_repo', return_value=True):
-            with patch.object(DependencyAuditor, '_verify_network_health', return_value=True):
-                success = self.auditor.sync_submodule()
-                self.assertTrue(success)
+            with patch.object(DependencyAuditor, '_validate_pre_conditions', return_value=True):
+                with patch.object(self.auditor.git, 'discover_remote', return_value='origin'):
+                    success = self.auditor.sync_submodule()
+                    self.assertTrue(success)
 
     @patch('subprocess.run')
     @patch('pathlib.Path.rglob')
@@ -26,13 +27,15 @@ class TestSyncEngineMocks(unittest.TestCase):
         # Simula arquivo encontrado pelo rglob
         broken_file = MagicMock(spec=Path)
         broken_file.name = "broken.py"
+        broken_file.suffix = ".py" # Importante para rglob match se for o caso, mas aqui estamos injetando a lista
         broken_file.read_text.return_value = "if True: pass else: fail"
         mock_rglob.return_value = [broken_file]
         
         with patch.object(DependencyAuditor, '_is_valid_repo', return_value=True):
-            with patch.object(DependencyAuditor, '_verify_network_health', return_value=True):
-                success = self.auditor.sync_submodule()
-                self.assertFalse(success, "Deveria falhar por erro de sintaxe.")
+            with patch.object(DependencyAuditor, '_validate_pre_conditions', return_value=True):
+                with patch.object(self.auditor.git, 'discover_remote', return_value='origin'):
+                    success = self.auditor.sync_submodule()
+                    self.assertFalse(success, "Deveria falhar por erro de sintaxe.")
 
     def tearDown(self):
         if self.auditor.lock_file.exists(): self.auditor.lock_file.unlink()

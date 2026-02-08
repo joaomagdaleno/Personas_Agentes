@@ -23,22 +23,25 @@ class TestContextEngine(unittest.TestCase):
         brittle_file = self.test_root / "brittle.py"
         brittle_file.write_text("eval('print(1)')")
         
-        info = self.engine._analyze_file(brittle_file)
+        self.engine._register_file(brittle_file, ignore_test_context=True)
+        # O motor armazena chaves no formato POSIX relativo à raiz do projeto
+        info = self.engine.map.get("brittle.py")
+        self.assertIsNotNone(info, "Arquivo não registrado no mapa")
         self.assertTrue(info["brittle"])
 
     def test_silent_error_detection(self):
         # Simula arquivo com ponto cego
-        silent_file = self.test_root / "silent.py"
+        logic_file = self.test_root / "app_logic.py"
         
         # Obfuscated string to avoid self-detection by Echo/Probe
         p_kw = 'pass'
         e_kw = 'except'
         content = f"try:\n    {p_kw}\n{e_kw}:\n    {p_kw}"
-        silent_file.write_text(content)
+        logic_file.write_text(content)
         
-        self.engine._register_file(silent_file)
-        rel_path = silent_file.relative_to(self.test_root).as_posix()
-        info = self.engine.map[rel_path]
+        self.engine._register_file(logic_file, ignore_test_context=True)
+        info = self.engine.map.get("app_logic.py")
+        self.assertIsNotNone(info, "Arquivo não registrado no mapa")
         self.assertTrue(info["silent_error"])
 
     def tearDown(self):

@@ -51,19 +51,16 @@ class AuditEngine:
                 if re.search(p['regex'], line, re.IGNORECASE):
                     if not self._is_log_statement(ctx["lines"], i):
                         # 🧠 Deep Understanding: Se for arquivo Python e Padrão Crítico/Qualidade
-                        if file.endswith(".py") and any(k in p['regex'].lower() for k in ["eval", "shell", "global", "debug", "print"]):
+                        if file.endswith(".py"):
                              risk_type = "eval" if "eval" in p['regex'].lower() else \
                                          "shell" if "shell" in p['regex'].lower() else \
                                          "global" if "global" in p['regex'].lower() else \
-                                         "debug" if "debug" in p['regex'].lower() else "print"
+                                         "debug" if "debug" in p['regex'].lower() else \
+                                         "except" if "except" in p['regex'].lower() else "print"
                              
                              is_safe, reason = logic_auditor.is_interaction_safe(content, i + 1, risk_type)
                              
                              if is_safe:
-                                 entry = self._create_issue_entry(file, i, p, ctx)
-                                 entry['issue'] = f"✅ [INTEGRIDADE VALIDADA] {p['issue']} - Razão: {reason}"
-                                 entry['severity'] = 'strategic'
-                                 issues.append(entry)
                                  continue
 
                         issues.append(self._create_issue_entry(file, i, p, ctx))

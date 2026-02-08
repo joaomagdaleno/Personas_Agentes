@@ -6,7 +6,6 @@ class TestPackageIntegrity(unittest.TestCase):
 
     def test_imports(self):
         modules = [
-            'src',
             'src_local.agents',
             'src_local.agents.Flutter',
             'src_local.agents.Kotlin',

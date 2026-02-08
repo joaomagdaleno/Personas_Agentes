@@ -10,57 +10,59 @@
 
 | Métrica | Valor | Status |
 | :--- | :--- | :--- |
-| **Índice de Saúde** | 59% | 🚨 |
-| **Total de Alertas** | 207 | Crítico |
-| **Sincronia** | 12:25:36 | Ativa |
+| **Índice de Saúde** | 60% | 🚨 |
+| **Total de Alertas** | 186 | Crítico |
+| **Sincronia** | 17:28:26 | Ativa |
 
 ## 🩺 SINAIS VITAIS DO PRODUTO
 
 | Métrica | Status | Impacto |
 | :--- | :--- | :--- |
-| **Pontos Cegos** | 0 Arquivos | Seguro |
-| **Fragilidades** | 3 Pontos | Risco de Colapso |
+| **Pontos Cegos** | 2 Arquivos | Alerta |
+| **Fragilidades** | 1 Pontos | Risco de Colapso |
 | **Paridade de Stack** | Sincronizada | Nível de Maturidade |
 
 ## 🌪️ MAPA DE ENTROPIA & ACOPLAMENTO
 
 | Alvo | Complexidade | Instabilidade |
 | :--- | :---: | :---: |
+| `src_local/agents/Support/line_veto.py` | 23 | 0.5 |
+| `src_local/agents/Support/safety_navigator.py` | 22 | 0.25 |
 | `src_local/agents/Support/battle_plan_formatter.py` | 20 | 0.33 |
+| `src_local/agents/Support/logic_auditor.py` | 20 | 0.43 |
 | `scripts/verify_report_lint.py` | 19 | 0.75 |
-| `src_local/core/orchestrator.py` | 19 | 0.68 |
+| `src_local/core/orchestrator.py` | 19 | 0.65 |
+| `src_local/utils/dependency_auditor.py` | 19 | 0.58 |
 | `src_local/agents/Support/obfuscation_hunter.py` | 19 | 0.4 |
-| `src_local/agents/Support/safety_navigator.py` | 19 | 0.25 |
 | `src_local/agents/Support/veto_rules.py` | 19 | 0.0 |
 | `src_local/agents/base.py` | 18 | 0.08 |
-| `src_local/utils/dependency_auditor.py` | 18 | 0.58 |
-| `scripts/cleanup_obfuscation.py` | 16 | 0.78 |
-| `src_local/utils/context_engine.py` | 16 | 0.47 |
 
 ## 🧪 MATRIZ DE CONFIANÇA
 
 | Módulo | Entropia | Asserções | Status |
 | :--- | :---: | :---: | :--- |
+| `src_local/agents/Support/line_veto.py` | 23 | 10 | 🟢 PROFUNDO |
+| `src_local/agents/Support/safety_navigator.py` | 22 | 1 | 🔴 FRÁGIL |
 | `src_local/agents/Support/battle_plan_formatter.py` | 20 | 9 | 🟢 PROFUNDO |
+| `src_local/agents/Support/logic_auditor.py` | 20 | 4 | 🟢 PROFUNDO |
 | `scripts/verify_report_lint.py` | 19 | 1 | 🔴 FRÁGIL |
 | `src_local/core/orchestrator.py` | 19 | 9 | 🟢 PROFUNDO |
+| `src_local/utils/dependency_auditor.py` | 19 | 10 | 🟢 PROFUNDO |
 | `src_local/agents/Support/obfuscation_hunter.py` | 19 | 6 | 🟢 PROFUNDO |
-| `src_local/agents/Support/safety_navigator.py` | 19 | 1 | 🔴 FRÁGIL |
 | `src_local/agents/Support/veto_rules.py` | 19 | 1 | 🔴 FRÁGIL |
 | `src_local/agents/base.py` | 18 | 11 | 🟢 PROFUNDO |
-| `src_local/utils/dependency_auditor.py` | 18 | 10 | 🟢 PROFUNDO |
 | `scripts/cleanup_obfuscation.py` | 16 | 1 | 🔴 FRÁGIL |
+| `src_local/core/validator.py` | 16 | 3 | 🔴 FRÁGIL |
 | `src_local/utils/context_engine.py` | 16 | 21 | 🟢 PROFUNDO |
 | `src_local/agents/Support/ast_navigator.py` | 15 | 2 | 🔴 FRÁGIL |
-| `src_local/agents/Support/line_veto.py` | 15 | 10 | 🟢 PROFUNDO |
-| `src_local/agents/Support/logic_auditor.py` | 15 | 4 | 🟢 PROFUNDO |
 | `src_local/utils/stability_ledger.py` | 14 | 8 | 🟢 PROFUNDO |
+| `src_local/agents/Support/integrity_guardian.py` | 14 | 1 | 🔴 FRÁGIL |
 | `src_local/agents/Support/markdown_sanitizer.py` | 14 | 7 | 🟢 PROFUNDO |
 | `scripts/git_doctor.py` | 13 | 4 | 🟢 PROFUNDO |
-| `src_local/core/validator.py` | 13 | 3 | 🟢 PROFUNDO |
 | `src_local/utils/scoring_engine_phd.py` | 13 | 1 | 🔴 FRÁGIL |
 | `src_local/utils/veto_rules_phd.py` | 13 | 1 | 🔴 FRÁGIL |
-| `src_local/agents/Support/audit_engine.py` | 13 | 3 | 🟢 PROFUNDO |
+| `src_local/agents/Python/voyager.py` | 12 | 2 | 🔴 FRÁGIL |
+| `src_local/agents/Support/audit_engine.py` | 12 | 3 | 🟢 PROFUNDO |
 | `src_local/agents/Support/component_classifier.py` | 12 | 7 | 🟢 PROFUNDO |
 | `src_local/agents/Support/health_synthesizer.py` | 12 | 4 | 🟢 PROFUNDO |
 | `src_local/agents/Support/quality_analyst.py` | 12 | 1 | 🔴 FRÁGIL |
@@ -71,15 +73,14 @@
 | `src_local/utils/update_transaction.py` | 11 | 1 | 🔴 FRÁGIL |
 | `src_local/agents/Support/score_calculator.py` | 11 | 2 | 🔴 FRÁGIL |
 | `src_local/utils/analysis_engine_phd.py` | 10 | 1 | 🔴 FRÁGIL |
+| `src_local/utils/maintenance_engine_phd.py` | 10 | 1 | 🔴 FRÁGIL |
 | `src_local/utils/persona_loader.py` | 10 | 2 | 🟢 PROFUNDO |
-| `src_local/agents/Support/integrity_guardian.py` | 10 | 1 | 🔴 FRÁGIL |
 | `src_local/core/diagnostic_pipeline.py` | 9 | 2 | 🟢 PROFUNDO |
 | `src_local/utils/git_operations_phd.py` | 9 | 1 | 🔴 FRÁGIL |
-| `src_local/utils/maintenance_engine_phd.py` | 9 | 1 | 🔴 FRÁGIL |
+| `src_local/utils/reflex_engine_phd.py` | 9 | 1 | 🔴 FRÁGIL |
 | `src_local/utils/cache_manager.py` | 8 | 3 | 🟢 PROFUNDO |
 | `src_local/utils/conflict_policy_phd.py` | 8 | 1 | 🔴 FRÁGIL |
 | `src_local/utils/finding_deduplicator.py` | 8 | 1 | 🔴 FRÁGIL |
-| `src_local/utils/reflex_engine_phd.py` | 8 | 1 | 🔴 FRÁGIL |
 | `src_local/utils/topology_engine_phd.py` | 8 | 1 | 🔴 FRÁGIL |
 | `src_local/agents/Support/parity_analyst.py` | 8 | 1 | 🔴 FRÁGIL |
 | `src_local/agents/Support/pyramid_analyst.py` | 8 | 1 | 🔴 FRÁGIL |
@@ -95,13 +96,13 @@
 | `src_local/utils/indexer.py` | 6 | 3 | 🟢 PROFUNDO |
 | `src_local/agents/Python/scribe.py` | 6 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Support/coverage_auditor.py` | 6 | 1 | 🔴 FRÁGIL |
+| `src_local/agents/Support/dna_profiler.py` | 6 | 1 | 🔴 FRÁGIL |
 | `src_local/agents/Support/registry_compiler.py` | 6 | 1 | 🔴 FRÁGIL |
 | `scripts/analyze_external.py` | 5 | 1 | 🟢 PROFUNDO |
 | `src_local/utils/git_client.py` | 5 | 1 | 🟢 PROFUNDO |
 | `src_local/utils/logging_config.py` | 5 | 1 | 🟢 PROFUNDO |
 | `src_local/agents/Kotlin/probe.py` | 5 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Support/connectivity_mapper.py` | 5 | 3 | 🟢 PROFUNDO |
-| `src_local/agents/Support/dna_profiler.py` | 5 | 1 | 🟢 PROFUNDO |
 | `scripts/run_diagnostic.py` | 4 | 1 | 🟢 PROFUNDO |
 | `scripts/update_agent_submodule.py` | 4 | 1 | 🟢 PROFUNDO |
 | `src_local/core/compiler.py` | 4 | 1 | 🟢 PROFUNDO |
@@ -114,9 +115,11 @@
 | `src_local/agents/Kotlin/stream.py` | 4 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Kotlin/vault.py` | 4 | 3 | 🟢 PROFUNDO |
 | `src_local/agents/Python/forge.py` | 4 | 2 | 🟢 PROFUNDO |
-| `src_local/agents/Python/sentinel.py` | 4 | 3 | 🟢 PROFUNDO |
 | `src_local/agents/Support/maturity_evaluator.py` | 4 | 1 | 🟢 PROFUNDO |
 | `src_local/agents/Support/memory_persistence.py` | 4 | 1 | 🟢 PROFUNDO |
+| `src_local/agents/Support/safe_context_judge.py` | 4 | 2 | 🟢 PROFUNDO |
+| `debug_relevance.py` | 3 | 0 | 🔴 FRÁGIL |
+| `final_check.py` | 3 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Flutter/globe.py` | 3 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Flutter/nebula.py` | 3 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Flutter/probe.py` | 3 | 2 | 🟢 PROFUNDO |
@@ -138,10 +141,12 @@
 | `src_local/agents/Kotlin/voyager.py` | 3 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Kotlin/warden.py` | 3 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Python/cache.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src_local/agents/Python/echo.py` | 3 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Python/globe.py` | 3 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Python/nebula.py` | 3 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Python/neural.py` | 3 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Python/nexus.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src_local/agents/Python/probe.py` | 3 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Python/scale.py` | 3 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Python/stream.py` | 3 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Python/vault.py` | 3 | 3 | 🟢 PROFUNDO |
@@ -167,22 +172,20 @@
 | `src_local/agents/Kotlin/globe.py` | 2 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Kotlin/nexus.py` | 2 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Python/bolt.py` | 2 | 2 | 🟢 PROFUNDO |
-| `src_local/agents/Python/bridge.py` | 2 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Python/flow.py` | 2 | 2 | 🟢 PROFUNDO |
-| `src_local/agents/Python/hermes.py` | 2 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Python/hype.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src_local/agents/Python/mantra.py` | 2 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Python/metric.py` | 2 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Python/scope.py` | 2 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Python/warden.py` | 2 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Support/vulnerability_heuristic.py` | 2 | 7 | 🟢 PROFUNDO |
-| `src_local/agents/Python/echo.py` | 1 | 2 | 🟢 PROFUNDO |
-| `src_local/agents/Python/mantra.py` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local/agents/Python/bridge.py` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local/agents/Python/hermes.py` | 1 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Python/palette.py` | 1 | 2 | 🟢 PROFUNDO |
-| `src_local/agents/Python/probe.py` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local/agents/Python/sentinel.py` | 1 | 3 | 🟢 PROFUNDO |
 | `src_local/agents/Python/spark.py` | 1 | 2 | 🟢 PROFUNDO |
-| `src_local/agents/Python/voyager.py` | 1 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Support/infrastructure_assembler.py` | 1 | 1 | 🟢 PROFUNDO |
-| `src_local/agents/Support/safe_context_judge.py` | 1 | 2 | 🟢 PROFUNDO |
+| `forensic_env_24840/upstream_repo/core.py` | 1 | 12 | 🟢 PROFUNDO |
 
 ## 🎯 PLANO DE BATALHA: DIRETRIZES DE ENGENHARIA
 
@@ -190,28 +193,12 @@
 
 | Severidade | Quantidade |
 | :--- | :---: |
-| LOW | 3 |
-| STRATEGIC | 204 |
+| LOW | 2 |
+| STRATEGIC | 184 |
 
 ---
 
 ## 🚩 NÍVEL: LOW
-
-### 📂 Alvo: `scripts/analyze_external.py` [LOW]
-
-#### 🔴 Item 52: Telemetria Manual: Use o utilitário _log_performance da Base [ID: scripts/analyze_external_py_52]
-
-- **Evidência:**
-
-```kotlin
-try:
-        shutil.copy(report_path, local_report_path)
-        logger.info(f"✅ Auditoria de Território concluída em {time.time() - start_time:.2f}s.")
-        logger.info(f"📄 Relatório Soberano consolidado em: {local_report_name}")
-    except Exception as e:
-```
-
-- **Diretriz:** Padrão soberano de low
 
 ### 📂 Alvo: `scripts/persona_manager.py` [LOW]
 
@@ -229,18 +216,18 @@ logger.warning(f"⚠️ PhD Fantasma: {name} possui identidade mas o arquivo {fi
 
 - **Diretriz:** Padrão soberano de low
 
-### 📂 Alvo: `src_local/agents/base.py` [LOW]
+### 📂 Alvo: `src_local/agents/Support/safety_navigator.py` [LOW]
 
-#### 🔴 Item 99: Telemetria Manual: Use o utilitário _log_performance da Base [ID: src_local/agents/base_py_99]
+#### 🔴 Item 28: Débito: O uso do módulo os é legado para manipulação de caminhos. Use pathlib [ID: src_local/agents/Support/safety_navigator_py_28]
 
 - **Evidência:**
 
 ```kotlin
-"""🛰️ Utilitário soberano para telemetria de performance e volume de achados."""
-        import time
-        logger.info(f"{self.emoji} [{self.name}] Auditoria: {count} pontos em {time.time() - start_time:.4f}s.")
+val = n.func.value
+                    if isinstance(val, ast.Name) and val.id != 'os':
+                        continue # Não é os.system (ex: Path.unlink)
 
-    def read_project_file(self, rel_path):
+                for arg in n.args:
 ```
 
 - **Diretriz:** Padrão soberano de low
@@ -249,15 +236,49 @@ logger.warning(f"⚠️ PhD Fantasma: {name} possui identidade mas o arquivo {fi
 
 ### 📂 Alvo: `DNA` [STRATEGIC]
 
-- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'scripts/autonomous_sync.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta
+- **Diretriz Estratégica:** Gargalo de I/O: O objetivo 'Validar integridade ['Python']' exige velocidade. Em 'tests/test_support_extended.py', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real
 
-- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'scripts/cleanup_obfuscation.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta
+- **Diretriz Estratégica:** Gargalo de I/O: O objetivo 'Validar integridade ['Python']' exige velocidade. Em 'src_local/core/diagnostic_pipeline.py', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real
 
-- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'scripts/diagnose_blind_spots.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta
+- **Diretriz Estratégica:** Gargalo de I/O: O objetivo 'Validar integridade ['Python']' exige velocidade. Em 'src_local/core/orchestrator.py', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real
 
-- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'scripts/git_doctor.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta
+- **Diretriz Estratégica:** Gargalo de I/O: O objetivo 'Validar integridade ['Python']' exige velocidade. Em 'src_local/utils/dependency_auditor.py', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real
 
-- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Support/markdown_sanitizer.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta
+- **Diretriz Estratégica:** Gargalo de I/O: O objetivo 'Validar integridade ['Python']' exige velocidade. Em 'src_local/utils/update_transaction.py', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real
+
+- **Diretriz Estratégica:** Gargalo de I/O: O objetivo 'Validar integridade ['Python']' exige velocidade. Em 'src_local/agents/Python/cache.py', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real
+
+- **Diretriz Estratégica:** Gargalo de I/O: O objetivo 'Validar integridade ['Python']' exige velocidade. Em 'src_local/agents/Support/ast_navigator.py', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real
+
+- **Diretriz Estratégica:** Gargalo de I/O: O objetivo 'Validar integridade ['Python']' exige velocidade. Em 'src_local/agents/Support/logic_auditor.py', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real
+
+- **Diretriz Estratégica:** Gargalo de I/O: O objetivo 'Validar integridade ['Python']' exige velocidade. Em 'src_local/agents/Support/obfuscation_hunter.py', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real
+
+- **Diretriz Estratégica:** Gargalo de I/O: O objetivo 'Validar integridade ['Python']' exige velocidade. Em 'src_local/agents/Support/safety_navigator.py', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real
+
+- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_core_depth.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
+
+- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_logic_auditor_deep.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
+
+- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_structural_analyst_deep.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
+
+- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'src_local/agents/Python/voyager.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
+
+- **Diretriz Estratégica:** Gargalo de Runtime: O objetivo 'Validar integridade ['Python']' exige alta disponibilidade. Loops de espera ativa em 'tests/test_bolt_persona.py' paralisam a 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/core/orchestrator.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível
+
+- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/utils/dependency_auditor.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível
+
+- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Python/testify.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível
+
+- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Support/battle_plan_formatter.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível
+
+- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Support/safety_navigator.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível
+
+- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Support/source_code_parser.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível
+
+- **Diretriz Estratégica:** Risco de Localização: O objetivo 'Validar integridade ['Python']' exige portabilidade global. Em 'tests/test_stability_ledger_deep.py', o uso de open() sem encoding UTF-8 pode corromper dados
 
 - **Diretriz Estratégica:** Falha de Automação: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'tests/test_ast_navigator.py', o uso de eval() permite ataques que invalidam a 'Orquestração de Inteligência Artificial'
 
@@ -295,53 +316,25 @@ logger.warning(f"⚠️ PhD Fantasma: {name} possui identidade mas o arquivo {fi
 
 - **Diretriz Estratégica:** Falha de Automação: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Support/ast_navigator.py', o uso de eval() permite ataques que invalidam a 'Orquestração de Inteligência Artificial'
 
-- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/core/orchestrator.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível
-
-- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Python/testify.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível
-
-- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Support/battle_plan_formatter.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível
-
-- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Support/safety_navigator.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível
-
-- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Support/source_code_parser.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível
-
-- **Diretriz Estratégica:** Gargalo de I/O: O objetivo 'Validar integridade ['Python']' exige velocidade. Em 'tests/test_support_extended.py', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real
-
-- **Diretriz Estratégica:** Gargalo de I/O: O objetivo 'Validar integridade ['Python']' exige velocidade. Em 'src_local/core/diagnostic_pipeline.py', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real
-
-- **Diretriz Estratégica:** Gargalo de I/O: O objetivo 'Validar integridade ['Python']' exige velocidade. Em 'src_local/core/orchestrator.py', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real
-
-- **Diretriz Estratégica:** Gargalo de I/O: O objetivo 'Validar integridade ['Python']' exige velocidade. Em 'src_local/utils/dependency_auditor.py', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real
-
-- **Diretriz Estratégica:** Gargalo de I/O: O objetivo 'Validar integridade ['Python']' exige velocidade. Em 'src_local/utils/update_transaction.py', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real
-
-- **Diretriz Estratégica:** Gargalo de I/O: O objetivo 'Validar integridade ['Python']' exige velocidade. Em 'src_local/agents/Python/cache.py', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real
-
-- **Diretriz Estratégica:** Gargalo de I/O: O objetivo 'Validar integridade ['Python']' exige velocidade. Em 'src_local/agents/Support/ast_navigator.py', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real
-
-- **Diretriz Estratégica:** Gargalo de I/O: O objetivo 'Validar integridade ['Python']' exige velocidade. Em 'src_local/agents/Support/obfuscation_hunter.py', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real
-
-- **Diretriz Estratégica:** Gargalo de I/O: O objetivo 'Validar integridade ['Python']' exige velocidade. Em 'src_local/agents/Support/safety_navigator.py', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real
-
-- **Diretriz Estratégica:** Risco de Localização: O objetivo 'Validar integridade ['Python']' exige portabilidade global. Em 'tests/test_stability_ledger_deep.py', o uso de open() sem encoding UTF-8 pode corromper dados
-
-- **Diretriz Estratégica:** Gargalo de Runtime: O objetivo 'Validar integridade ['Python']' exige alta disponibilidade. Loops de espera ativa em 'tests/test_bolt_persona.py' paralisam a 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Vulnerabilidade de Ambiente: O objetivo 'Validar integridade ['Python']' exige isolamento. Em 'src_local/agents/Python/hermes.py', o debug ativo expõe a 'Orquestração de Inteligência Artificial'
+- **Diretriz Estratégica:** Falha de Automação: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Support/logic_auditor.py', o uso de eval() permite ataques que invalidam a 'Orquestração de Inteligência Artificial'
 
 - **Diretriz Estratégica:** Invisibilidade: O objetivo 'Validar integridade ['Python']' exige tração. Em 'src_local/agents/Python/hype.py', a falta de metadados prejudica a descoberta do valor do projeto
 
 - **Diretriz Estratégica:** Invisibilidade: O objetivo 'Validar integridade ['Python']' exige tração. Em 'src_local/agents/Support/obfuscation_hunter.py', a falta de metadados prejudica a descoberta do valor do projeto
 
-- **Diretriz Estratégica:** Risco de Escalabilidade: O objetivo 'Validar integridade ['Python']' exige modularidade. Em 'scripts/persona_manager.py', a poluição de estado impede a 'Orquestração de Inteligência Artificial'
+- **Diretriz Estratégica:** Poluição de Estado: O objetivo 'Validar integridade ['Python']' exige pureza. Em 'scripts/persona_manager.py', o uso de globais compromete a 'Orquestração de Inteligência Artificial'
 
-- **Diretriz Estratégica:** Risco de Escalabilidade: O objetivo 'Validar integridade ['Python']' exige modularidade. Em 'src_local/core/compiler.py', a poluição de estado impede a 'Orquestração de Inteligência Artificial'
+- **Diretriz Estratégica:** Poluição de Estado: O objetivo 'Validar integridade ['Python']' exige pureza. Em 'src_local/core/compiler.py', o uso de globais compromete a 'Orquestração de Inteligência Artificial'
 
-- **Diretriz Estratégica:** Risco de Escalabilidade: O objetivo 'Validar integridade ['Python']' exige modularidade. Em 'src_local/utils/indexer.py', a poluição de estado impede a 'Orquestração de Inteligência Artificial'
+- **Diretriz Estratégica:** Poluição de Estado: O objetivo 'Validar integridade ['Python']' exige pureza. Em 'src_local/utils/indexer.py', o uso de globais compromete a 'Orquestração de Inteligência Artificial'
 
-- **Diretriz Estratégica:** Risco de Autonomia: O objetivo 'Validar integridade ['Python']' exige segurança de tokens. Em 'src_local/agents/Support/obfuscation_hunter.py', a exposição de chaves compromete a 'Orquestração de Inteligência Artificial'
+- **Diretriz Estratégica:** Poluição de Estado: O objetivo 'Validar integridade ['Python']' exige pureza. Em 'src_local/agents/Flutter/scale.py', o uso de globais compromete a 'Orquestração de Inteligência Artificial'
 
-- **Diretriz Estratégica:** Catástrofe de Segurança: O objetivo 'Validar integridade ['Python']' exige proteção total. Credenciais em 'src_local/agents/Support/obfuscation_hunter.py' permitem o sequestro da 'Orquestração de Inteligência Artificial'
+- **Diretriz Estratégica:** Poluição de Estado: O objetivo 'Validar integridade ['Python']' exige pureza. Em 'src_local/agents/Python/mantra.py', o uso de globais compromete a 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Poluição de Estado: O objetivo 'Validar integridade ['Python']' exige pureza. Em 'src_local/agents/Python/scale.py', o uso de globais compromete a 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'debug_relevance.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
 
 - **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'scripts/generate_tests.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
 
@@ -477,8 +470,6 @@ logger.warning(f"⚠️ PhD Fantasma: {name} possui identidade mas o arquivo {fi
 
 - **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_self_awareness.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
 
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_sentinel_persona.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
-
 - **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_source_code_parser.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
 
 - **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_source_code_parser_deep.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
@@ -549,21 +540,55 @@ logger.warning(f"⚠️ PhD Fantasma: {name} possui identidade mas o arquivo {fi
 
 - **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/veto_rules.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
 
-- **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'tests/test_obfuscation_hunter.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'
+- **Diretriz Estratégica:** Catástrofe de Segurança: O objetivo 'Validar integridade ['Python']' exige proteção total. Credenciais em 'src_local/agents/Support/obfuscation_hunter.py' permitem o sequestro da 'Orquestração de Inteligência Artificial'
 
-- **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Flutter/forge.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'
+- **Diretriz Estratégica:** Risco de Autonomia: O objetivo 'Validar integridade ['Python']' exige segurança de tokens. Em 'src_local/agents/Support/obfuscation_hunter.py', a exposição de chaves compromete a 'Orquestração de Inteligência Artificial'
 
-- **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Kotlin/forge.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'tests/test_context_engine_system.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
 
-- **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Python/bridge.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'tests/test_core_depth.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
 
-- **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Python/forge.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'tests/test_logic_auditor_deep.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
 
-- **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Python/sentinel.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'tests/test_structural_analyst_deep.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
 
-- **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Support/integrity_guardian.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'tests/test_support_agents.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
 
-- **Diretriz Estratégica:** Risco de Injeção: O objetivo 'Validar integridade ['Python']' exige segurança. Em 'src_local/agents/Support/obfuscation_hunter.py', o uso de shell=True compromete a integridade da 'Orquestração de Inteligência Artificial'
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/base.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/core/validator.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/Python/echo.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/Python/mantra.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/Python/probe.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/Python/voyager.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/Support/integrity_guardian.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/Support/obfuscation_hunter.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/Support/safety_navigator.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/Support/test_runner.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'final_check.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'scripts/autonomous_sync.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'scripts/cleanup_obfuscation.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'scripts/diagnose_blind_spots.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Support/markdown_sanitizer.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta
+
+- **Diretriz Estratégica:** Risco de Escalabilidade: O objetivo 'Validar integridade ['Python']' exige modularidade. Em 'scripts/persona_manager.py', a poluição de estado impede a 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Risco de Escalabilidade: O objetivo 'Validar integridade ['Python']' exige modularidade. Em 'src_local/core/compiler.py', a poluição de estado impede a 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Risco de Escalabilidade: O objetivo 'Validar integridade ['Python']' exige modularidade. Em 'src_local/utils/indexer.py', a poluição de estado impede a 'Orquestração de Inteligência Artificial'
 
 - **Diretriz Estratégica:** Incompleitude: O objetivo 'Validar integridade ['Python']' exige entrega. Em 'src_local/agents/Flutter/scope.py', débitos pendentes retardam a 'Orquestração de Inteligência Artificial'
 
@@ -571,327 +596,13 @@ logger.warning(f"⚠️ PhD Fantasma: {name} possui identidade mas o arquivo {fi
 
 - **Diretriz Estratégica:** Incompleitude: O objetivo 'Validar integridade ['Python']' exige entrega. Em 'src_local/agents/Python/scope.py', débitos pendentes retardam a 'Orquestração de Inteligência Artificial'
 
-- **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'scripts/cleanup_obfuscation.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'debug_relevance.py' é Matéria Escura (Sem testes detectados)
 
-- **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'tests/test_ast_navigator.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'final_check.py' é Matéria Escura (Sem testes detectados)
 
-- **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'tests/test_base_deep.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'tests/test_battle_plan_formatter_deep.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'tests/test_context_engine_system.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'tests/test_integrity_guardian.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'tests/test_maturity_evaluator.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'tests/test_obfuscation_hunter.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'tests/test_sentinel_persona.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'tests/test_support_agents.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'tests/test_vulnerability_heuristic_deep.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'src_local/agents/Support/ast_navigator.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'src_local/agents/Support/audit_engine.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'src_local/agents/Support/obfuscation_hunter.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'src_local/agents/Support/safety_navigator.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'src_local/agents/Support/structural_analyst.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Vulnerabilidade: O objetivo 'Validar integridade ['Python']' exige integridade. Em 'src_local/agents/Support/vulnerability_heuristic.py', falhas de injeção comprometem a soberania da 'Orquestração de Inteligência Artificial'
+- **Diretriz Estratégica:** Erro de Precisão: O objetivo 'Validar integridade ['Python']' exige exatidão. Em 'tests/test_vault_persona.py', floats monetários invalidam os cálculos da 'Orquestração de Inteligência Artificial'
 
 - **Diretriz Estratégica:** Risco Ético: O objetivo 'Validar integridade ['Python']' exige governança. Em 'src_local/agents/Python/warden.py', vazamentos de credenciais ameaçam a 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Falha de Automação: O objetivo 'Verificação' exige segurança. Em 'tests/test_battle_plan_formatter_deep.py', o uso de eval() em Dart permite ataques que invalidam a 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Falha de Automação: O objetivo 'Verificação' exige segurança. Em 'tests/test_core_depth.py', o uso de eval() em Dart permite ataques que invalidam a 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Falha de Automação: O objetivo 'Verificação' exige segurança. Em 'tests/test_safe_context_judge.py', o uso de eval() em Dart permite ataques que invalidam a 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Falha de Automação: O objetivo 'Verificação' exige segurança. Em 'tests/test_self_awareness.py', o uso de eval() em Dart permite ataques que invalidam a 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Verificação' exige observabilidade. Em 'src_local/agents/Flutter/echo.py', o uso de saídas não rastreáveis impede a extração de métricas para a 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Verificação' exige observabilidade. Em 'src_local/agents/Flutter/metric.py', o uso de saídas não rastreáveis impede a extração de métricas para a 'Orquestração de Inteligência Artificial'
-
-### 📂 Alvo: `tests/test_battle_plan_formatter_deep.py` [STRATEGIC]
-
-#### 🔴 Item 35: ✅ [INTEGRIDADE VALIDADA] Vulnerabilidade: Execução dinâmica detectada. - Razão: Padrão identificado em contexto técnico seguro (Regra de Auditoria ou Teste) [ID: tests/test_battle_plan_formatter_deep_py_35]
-
-- **Evidência:**
-
-```kotlin
-res = self.formatter._format_item(item, "HIGH")
-        self.assertIn("#### 🔴 Item 5: Logic flaw", res)
-        self.assertIn("```kotlin\neval(x)\n```", res)
-        self.assertIn("Padrão soberano de high", res)
-```
-
-- **Diretriz:** Padrão soberano de strategic
-
-#### 🔴 Item 35: ✅ [INTEGRIDADE VALIDADA] RCE: Execução dinâmica detectada. - Razão: Padrão identificado em contexto técnico seguro (Regra de Auditoria ou Teste) [ID: tests/test_battle_plan_formatter_deep_py_35]
-
-- **Evidência:**
-
-```kotlin
-res = self.formatter._format_item(item, "HIGH")
-        self.assertIn("#### 🔴 Item 5: Logic flaw", res)
-        self.assertIn("```kotlin\neval(x)\n```", res)
-        self.assertIn("Padrão soberano de high", res)
-```
-
-- **Diretriz:** Padrão soberano de strategic
-
-### 📂 Alvo: `tests/test_core_depth.py` [STRATEGIC]
-
-#### 🔴 Item 44: ✅ [INTEGRIDADE VALIDADA] Vulnerabilidade: Execução dinâmica detectada. - Razão: Padrão identificado em contexto técnico seguro (Regra de Auditoria ou Teste) [ID: tests/test_core_depth_py_44]
-
-- **Evidência:**
-
-```kotlin
-# Múltiplas asserções para garantir nível DEEP
-        self.assertEqual(info["component_type"], "LOGIC")
-        self.assertTrue(info["brittle"], "Deveria detectar eval()")
-        self.assertTrue(info["silent_error"], "Deveria detectar except pass")
-        self.assertGreater(info["complexity"], 1, "Deveria calcular complexidade real")
-```
-
-- **Diretriz:** Padrão soberano de strategic
-
-#### 🔴 Item 44: ✅ [INTEGRIDADE VALIDADA] RCE: Execução dinâmica detectada. - Razão: Padrão identificado em contexto técnico seguro (Regra de Auditoria ou Teste) [ID: tests/test_core_depth_py_44]
-
-- **Evidência:**
-
-```kotlin
-# Múltiplas asserções para garantir nível DEEP
-        self.assertEqual(info["component_type"], "LOGIC")
-        self.assertTrue(info["brittle"], "Deveria detectar eval()")
-        self.assertTrue(info["silent_error"], "Deveria detectar except pass")
-        self.assertGreater(info["complexity"], 1, "Deveria calcular complexidade real")
-```
-
-- **Diretriz:** Padrão soberano de strategic
-
-### 📂 Alvo: `tests/test_safe_context_judge.py` [STRATEGIC]
-
-#### 🔴 Item 17: ✅ [INTEGRIDADE VALIDADA] Vulnerabilidade: Execução dinâmica detectada. - Razão: Padrão identificado em contexto técnico seguro (Regra de Auditoria ou Teste) [ID: tests/test_safe_context_judge_py_17]
-
-- **Evidência:**
-
-```kotlin
-def test_is_node_safe_in_test_function(self):
-        content = "def test_eval(): eval('1+1')"
-        tree = ast.parse(content)
-        for node in ast.walk(tree):
-```
-
-- **Diretriz:** Padrão soberano de strategic
-
-#### 🔴 Item 17: ✅ [INTEGRIDADE VALIDADA] RCE: Execução dinâmica detectada. - Razão: Padrão identificado em contexto técnico seguro (Regra de Auditoria ou Teste) [ID: tests/test_safe_context_judge_py_17]
-
-- **Evidência:**
-
-```kotlin
-def test_is_node_safe_in_test_function(self):
-        content = "def test_eval(): eval('1+1')"
-        tree = ast.parse(content)
-        for node in ast.walk(tree):
-```
-
-- **Diretriz:** Padrão soberano de strategic
-
-### 📂 Alvo: `tests/test_self_awareness.py` [STRATEGIC]
-
-#### 🔴 Item 80: ✅ [INTEGRIDADE VALIDADA] Vulnerabilidade: Execução dinâmica detectada. - Razão: Padrão identificado em contexto técnico seguro (Regra de Auditoria ou Teste) [ID: tests/test_self_awareness_py_80]
-
-- **Evidência:**
-
-```kotlin
-patterns = [{'regex': r"(?<!['\"_])eval\(", 'issue': 'Dangerous eval'}]
-        issues = self.persona._scan_content_for_patterns(file_path, content, patterns)
-        self.assertEqual(len(issues), 1, "Deveria ter detectado eval() ativo na simulação de produção")
-
-    def test_simulation_of_rule_definition_ignored(self):
-```
-
-- **Diretriz:** Padrão soberano de strategic
-
-#### 🔴 Item 114: ✅ [INTEGRIDADE VALIDADA] Vulnerabilidade: Execução dinâmica detectada. - Razão: Padrão identificado em contexto técnico seguro (Regra de Auditoria ou Teste) [ID: tests/test_self_awareness_py_114]
-
-- **Evidência:**
-
-```kotlin
-patterns = [{'regex': r"(?<!['\"_])eval\(", 'issue': 'Dangerous eval'}]
-        issues = self.persona._scan_content_for_patterns(file_path, content, patterns)
-        self.assertEqual(len(issues), 1, "Deveria ter detectado eval() ativo mesmo em arquivo de referência em domínio de produção")
-
-if __name__ == "__main__":
-```
-
-- **Diretriz:** Padrão soberano de strategic
-
-#### 🔴 Item 80: ✅ [INTEGRIDADE VALIDADA] RCE: Execução dinâmica detectada. - Razão: Padrão identificado em contexto técnico seguro (Regra de Auditoria ou Teste) [ID: tests/test_self_awareness_py_80]
-
-- **Evidência:**
-
-```kotlin
-patterns = [{'regex': r"(?<!['\"_])eval\(", 'issue': 'Dangerous eval'}]
-        issues = self.persona._scan_content_for_patterns(file_path, content, patterns)
-        self.assertEqual(len(issues), 1, "Deveria ter detectado eval() ativo na simulação de produção")
-
-    def test_simulation_of_rule_definition_ignored(self):
-```
-
-- **Diretriz:** Padrão soberano de strategic
-
-#### 🔴 Item 114: ✅ [INTEGRIDADE VALIDADA] RCE: Execução dinâmica detectada. - Razão: Padrão identificado em contexto técnico seguro (Regra de Auditoria ou Teste) [ID: tests/test_self_awareness_py_114]
-
-- **Evidência:**
-
-```kotlin
-patterns = [{'regex': r"(?<!['\"_])eval\(", 'issue': 'Dangerous eval'}]
-        issues = self.persona._scan_content_for_patterns(file_path, content, patterns)
-        self.assertEqual(len(issues), 1, "Deveria ter detectado eval() ativo mesmo em arquivo de referência em domínio de produção")
-
-if __name__ == "__main__":
-```
-
-- **Diretriz:** Padrão soberano de strategic
-
-### 📂 Alvo: `src_local/agents/Python/hermes.py` [STRATEGIC]
-
-#### 🔴 Item 27: ✅ [INTEGRIDADE VALIDADA] Ambiente: DEBUG ativo em produção. - Razão: Padrão identificado em contexto técnico seguro (Regra de Auditoria ou Teste) [ID: src_local/agents/Python/hermes_py_27]
-
-- **Evidência:**
-
-```kotlin
-def _reason_about_objective(self, objective, file, content):
-        if 'DEBUG = True' in content:
-            return f"Vulnerabilidade de Ambiente: O objetivo '{objective}' exige isolamento. Em '{file}', o debug ativo expõe a 'Orquestração de Inteligência Artificial'."
-        return None
-```
-
-- **Diretriz:** Padrão soberano de strategic
-
-### 📂 Alvo: `src_local/core/compiler.py` [STRATEGIC]
-
-#### 🔴 Item 34: ✅ [INTEGRIDADE VALIDADA] Violação: Uso de estado global. - Razão: Padrão identificado em contexto técnico seguro (Regra de Auditoria ou Teste) [ID: src_local/core/compiler_py_34]
-
-- **Evidência:**
-
-```kotlin
-a prontidão técnica de cada agente.
-        """
-        logger.info("🚀 Sincronizando censo global de PhDs... # [INTEGRIDADE VALIDADA]")
-
-        try:
-```
-
-- **Diretriz:** Padrão soberano de strategic
-
-### 📂 Alvo: `src_local/agents/Flutter/scale.py` [STRATEGIC]
-
-#### 🔴 Item 23: ✅ [INTEGRIDADE VALIDADA] Violação: Uso de estado global. - Razão: Padrão identificado em contexto técnico seguro (Regra de Auditoria ou Teste) [ID: src_local/agents/Flutter/scale_py_23]
-
-- **Evidência:**
-
-```kotlin
-audit_rules = [
-            {'regex': r'import\s+[\'"]package:.*?/src/.*?[\'"]', 'issue': 'Acoplamento: Importação de pastas internas (/src/) de outros pacotes detectada.', 'severity': 'high'},
-            {'regex': r"global\s+", 'issue': 'Risco de Escalabilidade: Uso de estado global detectado.', 'severity': 'critical'}
-        ]
-```
-
-- **Diretriz:** Padrão soberano de strategic
-
-### 📂 Alvo: `src_local/agents/Flutter/echo.py` [STRATEGIC]
-
-#### 🔴 Item 32: ✅ [INTEGRIDADE VALIDADA] Saída não rastreável: Use logger em vez de print. - Razão: Padrão identificado em contexto técnico seguro (Regra de Auditoria ou Teste) [ID: src_local/agents/Flutter/echo_py_32]
-
-- **Evidência:**
-
-```kotlin
-audit_rules = [
-            {'regex': r"print\(", 'issue': 'Aviso: Uso de print() em vez de log() do developer ou logger.', 'severity': 'medium'},
-            {'regex': r"catch\s*\(\w+\)\s*\{\s*\}", 'issue': 'Cegueira: Ponto Cego detectado em Dart (except empty).', 'severity': 'critical'}
-        ]
-```
-
-- **Diretriz:** Padrão soberano de strategic
-
-#### 🔴 Item 41: ✅ [INTEGRIDADE VALIDADA] Saída não rastreável: Use logger em vez de print. - Razão: Padrão identificado em contexto técnico seguro (Regra de Auditoria ou Teste) [ID: src_local/agents/Flutter/echo_py_41]
-
-- **Evidência:**
-
-```kotlin
-def _reason_about_objective(self, objective, file, content):
-        if "print(" in content:
-            return f"Cegueira Operacional: O objetivo '{objective}' exige diagnóstico estruturado. Em '{file}', o uso de saídas não-estruturadas (print) impede a rastreabilidade pela 'Orquestração de Inteligência Artificial'."
-        return None
-```
-
-- **Diretriz:** Padrão soberano de strategic
-
-#### 🔴 Item 41: ✅ [INTEGRIDADE VALIDADA] Interface: Uso de print para interação bruta. - Razão: Padrão identificado em contexto técnico seguro (Regra de Auditoria ou Teste) [ID: src_local/agents/Flutter/echo_py_41]
-
-- **Evidência:**
-
-```kotlin
-def _reason_about_objective(self, objective, file, content):
-        if "print(" in content:
-            return f"Cegueira Operacional: O objetivo '{objective}' exige diagnóstico estruturado. Em '{file}', o uso de saídas não-estruturadas (print) impede a rastreabilidade pela 'Orquestração de Inteligência Artificial'."
-        return None
-```
-
-- **Diretriz:** Padrão soberano de strategic
-
-### 📂 Alvo: `src_local/agents/Flutter/metric.py` [STRATEGIC]
-
-#### 🔴 Item 41: ✅ [INTEGRIDADE VALIDADA] Saída não rastreável: Use logger em vez de print. - Razão: Padrão identificado em contexto técnico seguro (Regra de Auditoria ou Teste) [ID: src_local/agents/Flutter/metric_py_41]
-
-- **Evidência:**
-
-```kotlin
-def _reason_about_objective(self, objective, file, content):
-        if "print(" in content:
-            return f"Cegueira Analítica: O objetivo '{objective}' exige observabilidade. Em '{file}', o uso de saídas não rastreáveis impede a extração de métricas para a 'Orquestração de Inteligência Artificial'."
-        return None
-```
-
-- **Diretriz:** Padrão soberano de strategic
-
-#### 🔴 Item 41: ✅ [INTEGRIDADE VALIDADA] Interface: Uso de print para interação bruta. - Razão: Padrão identificado em contexto técnico seguro (Regra de Auditoria ou Teste) [ID: src_local/agents/Flutter/metric_py_41]
-
-- **Evidência:**
-
-```kotlin
-def _reason_about_objective(self, objective, file, content):
-        if "print(" in content:
-            return f"Cegueira Analítica: O objetivo '{objective}' exige observabilidade. Em '{file}', o uso de saídas não rastreáveis impede a extração de métricas para a 'Orquestração de Inteligência Artificial'."
-        return None
-```
-
-- **Diretriz:** Padrão soberano de strategic
-
-### 📂 Alvo: `src_local/agents/Python/bridge.py` [STRATEGIC]
-
-#### 🔴 Item 19: ✅ [INTEGRIDADE VALIDADA] Injeção: Shell ativo detectado. - Razão: Padrão identificado em contexto técnico seguro (Regra de Auditoria ou Teste) [ID: src_local/agents/Python/bridge_py_19]
-
-- **Evidência:**
-
-```kotlin
-audit_rules = [
-            {'regex': 'subprocess\\.run\\(.*shell=True', 'issue': 'Vulnerabilidade: Shell Injection.', 'severity': 'critical'},
-            {'regex': 'os\\.system\\(', 'issue': 'Obsolescência: Use subprocess.', 'severity': 'high'}
-        ]
-```
-
-- **Diretriz:** Padrão soberano de strategic
 
 ## 💀 Risco Existencial
 

@@ -67,3 +67,4 @@ class UpdateTransaction:
                 if source.strip(): ast.parse(source)
             except:
                 logger.error(f"⚠️ Integridade violada em {f.name}")
+                raise Exception(f"Integridade violada em {f.name}")

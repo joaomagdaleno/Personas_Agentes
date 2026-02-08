@@ -52,6 +52,19 @@ class LineVeto:
 
 
 
+    def _is_docstring(self, line, ctx):
+        """📝 Detecta se a linha está dentro de uma docstring Python."""
+        clean = line.strip()
+        if '"""' in clean or "'''" in clean:
+            # Se for uma docstring de linha única, não altera o estado global
+            if (clean.count('"""') >= 2 and clean.startswith('"""') and clean.endswith('"""')) or \
+               (clean.count("'''") >= 2 and clean.startswith("'''") and clean.endswith("'''")):
+                return True
+            
+            ctx["in_docstring"] = not ctx.get("in_docstring", False)
+            return True
+        return ctx.get("in_docstring", False)
+
     def _is_domain_excluded(self, line, pattern, ctx):
 
         """🛡️ Filtro de Domínio Estratégico."""

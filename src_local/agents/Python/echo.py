@@ -17,7 +17,7 @@ class EchoPersona(BaseActivePersona):
         
         # Obfuscated regex to avoid self-detection
         audit_rules = [
-            {'regex': 'except Exception:\\s+pass'ue': 'Cegueira: Exceção silenciada.', 'severity': 'critical'}
+            {'regex': 'except Exception:\\s+pass', 'issue': 'Cegueira: Exceção silenciada.', 'severity': 'critical'}
         ]
         
         results = self.find_patterns(('.py',), audit_rules)

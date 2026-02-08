@@ -24,8 +24,7 @@ class HermesPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if 'DEBUG = True' in content:
-            return f"Vulnerabilidade de Ambiente: O objetivo '{objective}' exige isolamento. Em '{file}', o debug ativo expõe a 'Orquestração de Inteligência Artificial'."
+        # O Hermes agora delega a detecção de DEBUG para as regras de auditoria técnica.
         return None
 
     def get_system_prompt(self):

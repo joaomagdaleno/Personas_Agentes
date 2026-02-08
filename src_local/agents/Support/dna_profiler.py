@@ -17,6 +17,10 @@ class DNAProfiler:
         🔭 Mapeia o DNA técnico e estratégico do projeto alvo.
         Identifica a simbiose entre as stacks Flutter, Kotlin e Python.
         """
+        if project_root is None:
+            return {"stacks": set(), "type": "Unknown", "core_mission": "Software Proposital", "is_external": False}
+        
+        project_root = Path(project_root)
         import time
         start_dna = time.time()
         dna = {
