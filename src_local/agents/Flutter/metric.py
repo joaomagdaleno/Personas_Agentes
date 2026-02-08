@@ -38,8 +38,7 @@ class MetricPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "print(" in content:
-            return f"Cegueira Analítica: O objetivo '{objective}' exige observabilidade. Em '{file}', o uso de saídas não rastreáveis (print) deve ser substituído pelo sistema de logs estruturado."
+        # O Metric agora delega a auditoria de observabilidade para o AuditEngine via perform_audit
         return None
 
     def get_system_prompt(self):

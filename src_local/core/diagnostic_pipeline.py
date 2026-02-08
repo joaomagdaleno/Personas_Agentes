@@ -1,6 +1,10 @@
+import logging
+import time
 from pathlib import Path
 import hashlib
 import os
+
+logger = logging.getLogger(__name__)
 
 class DiagnosticPipeline:
     """Orquestra o fluxo de diagnóstico completo."""
@@ -10,6 +14,8 @@ class DiagnosticPipeline:
 
     def execute(self):
         """Protocolo Soberano: Reset -> Discovery -> Verify -> Report."""
+        start_time = time.time()
+        logger.info("🎬 Iniciando Pipeline de Diagnóstico Soberano...")
         self._reset()
         
         # 1. Discovery
@@ -28,7 +34,11 @@ class DiagnosticPipeline:
             
         # 3. Dedupe & Report
         final_findings = self._deduplicate(findings)
-        return self._finalize(ctx, internal_health, final_findings)
+        res = self._finalize(ctx, internal_health, final_findings)
+        
+        duration = time.time() - start_time
+        logger.info(f"✅ Pipeline concluído em {duration:.2f}s.")
+        return res
 
     def _reset(self):
         self.orc.job_queue = []

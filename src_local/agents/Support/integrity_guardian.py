@@ -42,14 +42,13 @@ class IntegrityGuardian:
             "brittle_pattern =", "silent_pattern =", "rules =", "audit_rules =", 
             "risk_type =", "audit_rules", "regex':", 'regex":', "navigator", 
             "persona", "auditengine", "integrityguardian", "logicauditor", 
-            "ast.call", "[integridade validada]", "diagnostic", "script",
-            "target_pattern =", "suggestions.append"
+            "ast.call", "diagnostic", "script",
+            "target_pattern =", "suggestions.append", "imprecision_pattern ="
         ]
         return any(p in content_lower for p in veto_patterns)
 
     def _scan_for_brittle_code(self, content, issues, logic_auditor, ignore_test_context):
-        # Padrão mais restrito: evita keywords se precedidas por aspas ou se parte de uma string maior
-        brittle_pattern = r"(?<!['\"_])\b(eval\(|global\s+|shell=True)\b"
+        brittle_pattern = r"(?<!['\"_])\b(eval|exec|global|shell=True)\b"
         match = re.search(brittle_pattern, content, re.MULTILINE)
         if match:
             line_no = content[:match.start()].count('\n') + 1

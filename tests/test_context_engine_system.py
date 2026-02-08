@@ -8,6 +8,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("TestContextEngineSystem")
 
 class TestContextEngine(unittest.TestCase):
+    """Testes de Integração para o ContextEngine 🧠"""
     def setUp(self):
         self.test_root = Path("temp_context_test")
         self.test_root.mkdir(exist_ok=True)

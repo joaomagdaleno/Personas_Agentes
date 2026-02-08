@@ -31,8 +31,8 @@ class Compiler:
         Varre as diretrizes das stacks Python, Flutter e Kotlin para mapear
         a prontidão técnica de cada agente.
         """
-        logger.info("🚀 Sincronizando censo global de PhDs... # [INTEGRIDADE VALIDADA]")
-        
+        logger.info("🚀 Sincronizando censo global de PhDs...")
+
         try:
             # Delegação para Agente de Suporte ao Registro
             from src_local.agents.Support.registry_compiler import RegistryCompiler

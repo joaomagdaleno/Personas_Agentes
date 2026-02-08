@@ -5,10 +5,16 @@ com padrões de formatação (cabeçalhos únicos, padding correto, colapso de l
 sem corromper blocos de código técnicos.
 """
 import re
+import logging
+import time
+
+logger = logging.getLogger(__name__)
 
 class MarkdownSanitizer:
     def sanitize(self, content: str) -> str:
+        """Soberania: Limpeza e normalização estratégica de Markdown."""
         if not content: return ""
+        start_time = time.time()
         res, seen, in_cb = [], {}, False
         raw_lines = [line.rstrip() for line in content.split('\n')]
         
@@ -37,5 +43,8 @@ class MarkdownSanitizer:
                 if i < len(raw_lines)-1 and raw_lines[i+1].strip(): res.append('')
             elif stripped or (res and res[-1]):
                 res.append(line)
-                
-        return '\n'.join(res).strip() + '\n'
+        
+        sanitized = '\n'.join(res).strip() + '\n'
+        duration = time.time() - start_time
+        logger.debug(f"📝 Markdown Sanitized in {duration:.4f}s.")
+        return sanitized

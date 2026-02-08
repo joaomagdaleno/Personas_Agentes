@@ -57,3 +57,13 @@ class ASTNavigator:
             if isinstance(k, str_types): 
                 if getattr(k, "value", getattr(k, "s", "")) in key_names: return True
         return False
+
+    def get_parent_chain(self, target_node, tree):
+        """Reconstrói a linhagem do nó de baixo para cima."""
+        parent_map = {child: node for node in ast.walk(tree) for child in ast.iter_child_nodes(node)}
+        chain = []
+        curr = target_node
+        while curr in parent_map:
+            curr = parent_map[curr]
+            chain.append(curr)
+        return chain

@@ -16,6 +16,11 @@ class RuleDefinitionJudge:
 
         from src_local.agents.Support.ast_navigator import ASTNavigator
         nav = ASTNavigator()
+        
+        # Se estiver dentro de uma definição de regra ou log, é seguro
+        if nav.safety_nav.is_safe_context(node, tree):
+            return True, "Literal em contexto seguro (Regra/Log)."
+
         if nav.safety_nav.is_being_executed(node, tree):
              return False, "String sendo executada dinamicamente!"
         
