@@ -1,11 +1,15 @@
 import subprocess
+import logging
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 class GitClient:
     """Invólucro para operações Git de baixo nível."""
     
     def __init__(self, repo_path: Path):
         self.cwd = repo_path
+        logger.debug(f"GitClient linked to: {self.cwd}")
 
     def run(self, args, check=True, capture=True):
         return subprocess.run(["git"] + args, cwd=self.cwd, capture_output=capture, check=check, text=True)

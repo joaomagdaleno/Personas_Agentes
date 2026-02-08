@@ -62,28 +62,28 @@ class CoreValidator:
         tests_run = 0
         failures = 0
         
-        # Captura total de testes
+        # 1. Total tests
         m_total = re.search(r"Ran (\d+) tests", output)
         if m_total: tests_run = int(m_total.group(1))
         
-        # Captura falhas e erros separadamente e soma
+        # 2. Extract failures and errors
         m_fail = re.search(r"failures=(\d+)", output)
         m_err = re.search(r"errors=(\d+)", output)
         
-        if m_fail: failures += int(m_fail.group(1))
-        if m_err: failures += int(m_err.group(1))
+        failures += int(m_fail.group(1)) if m_fail else 0
+        failures += int(m_err.group(1)) if m_err else 0
         
-        # Caso especial para falha única (ex: FAILED (failures=1))
-        if not m_fail and not m_err:
+        # 3. Fallback for single failure format
+        if failures == 0 and not is_success:
             m_single = re.search(r"FAILED \((?:failures|errors)=(\d+)\)", output)
             if m_single: failures = int(m_single.group(1))
 
-        if is_success and tests_run > 0:
-            return {"success": True, "pass_rate": 100, "total_run": tests_run, "failed": 0}
-        
+        # 4. Result synthesis
         pass_rate = round(((tests_run - failures) / tests_run) * 100, 2) if tests_run > 0 else 0
+        
         return {
-            "success": is_success and failures == 0,
-            "pass_rate": pass_rate,
-            "total_run": tests_run, "failed": failures
+            "success": is_success and failures == 0 and tests_run > 0,
+            "pass_rate": 100 if (is_success and failures == 0 and tests_run > 0) else pass_rate,
+            "total_run": tests_run, 
+            "failed": failures
         }

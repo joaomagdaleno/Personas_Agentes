@@ -21,10 +21,9 @@ class ScopePersona(BaseActivePersona):
         logger.info(f"[{self.name}] Analisando Backlog Técnico...")
         
         # Sintaxe linear
-        kw_debug = 'debuggable' + ' true'
         rules = [
             {'regex': r"//\s*TODO", 'issue': 'Débito Técnico: Marcador detectado.', 'severity': 'medium'},
-            {'regex': rf"{kw_debug}", 'issue': 'Risco Crítico: App debuggable em produção.', 'severity': 'high'}
+            {'regex': r"debuggable\s+true", 'issue': 'Risco Crítico: App debuggable em produção.', 'severity': 'high'}
         ]
         
         results = self.find_patterns(('.kt', '.gradle', '.kts'), rules)

@@ -18,11 +18,9 @@ class ScalePersona(BaseActivePersona):
         start_time = time.time()
         logger.info(f"[{self.name}] Analisando Escalabilidade Flutter...")
         
-        kw_src = '/' + 'sr' + 'c' + '/'
-        kw_global = 'gl' + 'obal'
         audit_rules = [
-            {'regex': rf'import\s+[\'"]package:.*?{kw_src}.*?[\'"]', 'issue': 'Acoplamento: Importação de pastas internas (/src/) de outros pacotes detectada.', 'severity': 'high'},
-            {'regex': rf"{kw_global}\s+", 'issue': 'Risco de Escalabilidade: Uso de estado global detectado.', 'severity': 'critical'}
+            {'regex': r'import\s+[\'"]package:.*?/src/.*?[\'"]', 'issue': 'Acoplamento: Importação de pastas internas (/src/) de outros pacotes detectada.', 'severity': 'high'},
+            {'regex': r"global\s+", 'issue': 'Risco de Escalabilidade: Uso de estado global detectado.', 'severity': 'critical'}
         ]
         
         results = self.find_patterns(('.dart',), audit_rules)

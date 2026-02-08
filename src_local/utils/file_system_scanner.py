@@ -1,4 +1,7 @@
+import logging
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 class FileSystemScanner:
     """Gerenciador de descoberta de arquivos no sistema."""
@@ -6,6 +9,7 @@ class FileSystemScanner:
     def __init__(self, root, analyst):
         self.root = Path(root)
         self.analyst = analyst
+        logger.debug(f"FileSystemScanner initialized for root: {self.root}")
 
     def scan_all_filenames(self):
         """Retorna lista plana de todos arquivos (para detecção de testes)."""

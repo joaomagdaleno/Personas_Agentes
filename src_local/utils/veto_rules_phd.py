@@ -1,4 +1,8 @@
 import re
+import logging
+from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 class VetoRulesPhd:
     """⚖️ Regras de Vento PhD: Central de Heurísticas."""
@@ -6,9 +10,11 @@ class VetoRulesPhd:
     @staticmethod
     def should_veto(rel_path):
         """🛡️ Determina se um caminho deve ser ignorado na auditoria."""
+        logger.debug(f"Veto check: {rel_path}")
         ignored = {'.git', '__pycache__', 'build', 'node_modules', '.venv', '.agent', '.gemini', 'submodules'}
-        from pathlib import Path
-        return any(part in ignored for part in Path(rel_path).parts)
+        res = any(part in ignored for part in Path(rel_path).parts)
+        if res: logger.debug(f"Vetoed: {rel_path}")
+        return res
 
     @staticmethod
     def apply_test_veto(line, pattern):

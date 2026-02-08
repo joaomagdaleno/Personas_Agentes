@@ -1,10 +1,14 @@
+import logging
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 class PyramidAnalyst:
     """Assistente Técnico: Auditor de Distribuição de Testes (Pirâmide) 📐"""
     
     def analyze(self, map_data: dict, read_func) -> dict:
         """Classifica os testes entre Unit, Integration e E2E."""
+        logger.debug("Analysing test pyramid distribution...")
         pyramid = {"unit": 0, "integration": 0, "e2e": 0, "total": 0}
         
         for file in map_data.keys():
@@ -20,4 +24,5 @@ class PyramidAnalyst:
             elif "selenium" in content or "integration_test" in content: pyramid["e2e"] += 1
             else: pyramid["unit"] += 1
         
+        logger.debug(f"Pyramid distribution: {pyramid}")
         return pyramid

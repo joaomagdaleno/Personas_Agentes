@@ -68,10 +68,10 @@ class SourceCodeParser:
         start_imp = time.time()
         imports = []
         for node in ast.walk(tree):
-            if isinstance(node, (ast.Import, ast.ImportFrom)):
-                if isinstance(node, ast.Import):
-                    for alias in node.names: imports.append(alias.name)
-                elif node.module: imports.append(node.module)
+            if isinstance(node, ast.Import):
+                imports.extend(alias.name for alias in node.names)
+            elif isinstance(node, ast.ImportFrom) and node.module:
+                imports.append(node.module)
         
         duration = time.time() - start_imp
         if duration > 0.05:

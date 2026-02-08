@@ -1,15 +1,20 @@
 import subprocess
+import logging
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 class GitOperationsPhd:
     """🛠️ Operações Git PhD: Camada de Abstração de Baixo Nível."""
     
     @staticmethod
     def run_git_out(args, cwd):
+        logger.debug(f"Executing git command: {args} in {cwd}")
         return subprocess.run(["git"] + args, cwd=cwd, capture_output=True, text=True).stdout.strip()
 
     @staticmethod
     def run_git(args, cwd, check=True):
+        logger.debug(f"Executing git (check={check}): {args} in {cwd}")
         subprocess.run(["git"] + args, cwd=cwd, capture_output=True, check=check)
 
     @staticmethod

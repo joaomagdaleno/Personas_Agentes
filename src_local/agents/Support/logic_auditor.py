@@ -4,77 +4,52 @@ Módulo: Auditor de Lógica (LogicAuditor)
 Função: Detectar anti-padrões lógicos via AST.
 """
 import ast
+import logging
+
+logger = logging.getLogger(__name__)
 
 class LogicAuditor:
     """Assistente Técnico: Especialista em Integridade Lógica 🧠"""
 
     def __init__(self):
         from src_local.agents.Support.safe_context_judge import SafeContextJudge
+        from src_local.agents.Support.silent_error_detector import SilentErrorDetector
+        from src_local.agents.Support.call_safety_judge import CallSafetyJudge
+        from src_local.agents.Support.rule_definition_judge import RuleDefinitionJudge
+        
         self.judge = SafeContextJudge()
+        self.silent_detector = SilentErrorDetector(self.judge)
+        self.call_judge = CallSafetyJudge(self.judge)
+        self.rule_judge = RuleDefinitionJudge()
 
     def scan_flaws(self, tree, rel_path, lines, agent_name, ignore_test_context=False):
-        """Identifica padrões de falha lógica via AST."""
-        issues = []
-        for node in ast.walk(tree):
-            if isinstance(node, ast.ExceptHandler):
-                if not node.type or (len(node.body) == 1 and isinstance(node.body[0], (ast.Pass, ast.Continue))):
-                    if self.judge.is_node_safe(node, tree, ignore_test_context=ignore_test_context):
-                        continue
-                    
-                    i = node.lineno - 1
-                    issues.append({
-                        'file': rel_path, 'line': node.lineno, 
-                        'issue': 'Captura de erro silenciosa detectada.',
-                        'severity': 'high', 'context': agent_name,
-                        'snippet': "\n".join(lines[max(0, i-2):min(len(lines), i+3)])
-                    })
-        return issues
+        """Delegado: Identifica padrões de falha lógica (try-except-pass) via AST."""
+        return self.silent_detector.detect(tree, rel_path, lines, agent_name, ignore_test_context)
 
     def is_interaction_safe(self, content: str, line_number: int, risk_type: str, ignore_test_context=False) -> tuple:
         """⚖️ Validação profunda: Retorna (is_safe, reason) para transparência total."""
         try:
             tree = ast.parse(content)
             for node in ast.walk(tree):
-                if hasattr(node, 'lineno') and node.lineno == line_number:
-                    # Risco Estrutural (except)
-                    if risk_type == "except" and isinstance(node, ast.ExceptHandler):
-                        if self.judge.is_node_safe(node, tree, ignore_test_context=ignore_test_context):
-                            return True, "Captura segura."
-                    
-                    # Risco de Execução Dinâmica (Call)
-                    # Note: We check risk_type specifically for eval/shell/os.system
-                    if isinstance(node, ast.Call):
-                        is_dangerous_call = False
-                        if isinstance(node.func, ast.Name) and node.func.id in ["eval", "exec"]:
-                            is_dangerous_call = True
-                        elif isinstance(node.func, ast.Attribute) and node.func.attr == "system":
-                            if isinstance(node.func.value, ast.Name) and node.func.value.id == "os":
-                                is_dangerous_call = True
-                        
-                        if is_dangerous_call:
-                            if self.judge.is_node_safe(node, tree, ignore_test_context=ignore_test_context):
-                                return True, "Execução dinâmica em contexto seguro (Teste/Log)."
-                            return False, "Padrão de risco em contexto de execução potencial."
-                        else:
-                            # Se o nó é uma chamada mas não é de um tipo perigoso conhecido
-                            return True, "Chamada validada como segura via AST."
-
-                    # Risco de Definição (Strings em regras)
-                    str_types = (ast.Constant,)
-                    if hasattr(ast, "Str"): str_types += (getattr(ast, "Str"),)
-                    if isinstance(node, str_types):
-                        # Strings são seguras a menos que sejam executadas (ex: eval("os.system"))
-                        from src_local.agents.Support.ast_navigator import ASTNavigator
-                        nav = ASTNavigator()
-                        if nav.safety_nav.is_being_executed(node, tree):
-                             return False, "String sendo executada dinamicamente!"
-                        
-                        return True, "Literal de string não executado (Seguro)."
-                    
-                    # 3. Fallback para outros tipos de nó
-                    if self.judge.is_node_safe(node, tree, ignore_test_context=ignore_test_context):
-                        return True, "Contexto técnico validado via AST."
+                if getattr(node, 'lineno', -1) == line_number:
+                    return self._dispatch_judge(node, tree, risk_type, ignore_test_context)
             
             return False, "Padrão de risco em contexto de execução potencial."
         except Exception as e:
             return False, f"Falha na análise AST: {e}"
+
+    def _dispatch_judge(self, node, tree, risk_type, ignore_test_context):
+        """Distribui o julgamento baseado no tipo de nó."""
+        # 1. Chamadas perigosas
+        if isinstance(node, ast.Call):
+            return self.call_judge.validate(node, tree, ignore_test_context)
+
+        # 2. Literais de string (Definição de regras)
+        if isinstance(node, (ast.Constant, getattr(ast, "Str", ast.Constant))):
+            return self.rule_judge.validate(node, tree)
+        
+        # 3. Fallback via Juiz AST
+        if self.judge.is_node_safe(node, tree, ignore_test_context=ignore_test_context):
+            return True, "Contexto técnico validado via AST."
+            
+        return False, "Padrão de risco em contexto de execução potencial."

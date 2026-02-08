@@ -38,8 +38,7 @@ class EchoPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "print(" in content:
-            return f"Cegueira Operacional: O objetivo '{objective}' exige diagnóstico estruturado. Em '{file}', o uso de saídas não-estruturadas (print) deve ser substituído por log() do developer ou logger."
+        # O Echo agora delega a auditoria de observabilidade para o AuditEngine via perform_audit
         return None
 
     def get_system_prompt(self):

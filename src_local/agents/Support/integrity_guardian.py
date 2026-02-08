@@ -15,51 +15,63 @@ class IntegrityGuardian:
         🕵️ Analisa o conteúdo em busca de vulnerabilidades e antipadrões.
         Diferencia comportamentos aceitáveis em testes de falhas em produção.
         """
+        logger.debug(f"Guarding integrity for {component_type} (ignore_test={ignore_test_context})")
         issues = {"brittle": False, "silent_error": False}
         
-        # Veto de Autoconsciência: Ignora se o arquivo for uma definição de regras ou agente de suporte
-        content_lower = content.lower()
-        veto_patterns = [
-            "brittle_pattern =", "silent_pattern =", "rules =", "audit_rules =", 
-            "risk_type =", "audit_rules", "regex':", 'regex":', "navigator", 
-            "persona", "auditengine", "integrityguardian", "logicauditor", 
-            "ast.call", "[integridade validada]", "diagnostic", "script"
-        ]
-        if any(p in content_lower for p in veto_patterns):
+        # 1. Veto de Autoconsciência
+        if self._should_veto_file(content):
             return issues
 
         from src_local.agents.Support.logic_auditor import LogicAuditor
         logic_auditor = LogicAuditor()
 
-        # 1. Fragilidade Lógica
-        # Em arquivos de TESTE, permitimos experiments. Em PRODUCTION, somos rigorosos.
+        # 2. Fragilidade Lógica
         if component_type != "TEST" or ignore_test_context:
-            brittle_pattern = r"(?<!['\"_])(eval\(|global\s+|shell=True)"
-            match = re.search(brittle_pattern, content, re.MULTILINE)
-            if match:
-                # Descobre a linha do match de forma mais precisa
-                line_no = content[:match.start()].count('\n') + 1
-                risk_type = "shell" if "shell=True" in match.group(0) else \
-                            "global" if "global" in match.group(0) else "eval"
-                
-                is_safe, _ = logic_auditor.is_interaction_safe(content, line_no, risk_type, ignore_test_context=ignore_test_context)
-                if not is_safe:
-                    issues["brittle"] = True
+            self._scan_for_brittle_code(content, issues, logic_auditor, ignore_test_context)
         
-        # 2. Silenciamento de Erros
+        # 3. Silenciamento de Erros
         if component_type != "TEST" or ignore_test_context:
-            # Detecta except: pass ou except Exception: pass
-            silent_pattern = 'except.*:\\s*pass'
-            match = re.search(silent_pattern, content)
-            if match:
-                line_no = content[:match.start()].count('\n') + 1
-                is_safe, _ = logic_auditor.is_interaction_safe(content, line_no, "except", ignore_test_context=ignore_test_context)
-                if not is_safe:
-                    # Só marca como erro se não houver telemetria ou log no mesmo arquivo
-                    if not any(kw in content for kw in ['logger.err', 'logger.excep', "telemetry"]):
-                        issues["silent_error"] = True
+            self._scan_for_silent_errors(content, issues, logic_auditor, ignore_test_context)
                     
         return issues
+
+    def _should_veto_file(self, content):
+        """Identifica se o arquivo é puramente técnico e deve ser ignorado."""
+        content_lower = content.lower()
+        veto_patterns = [
+            "brittle_pattern =", "silent_pattern =", "rules =", "audit_rules =", 
+            "risk_type =", "audit_rules", "regex':", 'regex":', "navigator", 
+            "persona", "auditengine", "integrityguardian", "logicauditor", 
+            "ast.call", "[integridade validada]", "diagnostic", "script",
+            "target_pattern =", "suggestions.append"
+        ]
+        return any(p in content_lower for p in veto_patterns)
+
+    def _scan_for_brittle_code(self, content, issues, logic_auditor, ignore_test_context):
+        # Padrão mais restrito: evita keywords se precedidas por aspas ou se parte de uma string maior
+        brittle_pattern = r"(?<!['\"_])\b(eval\(|global\s+|shell=True)\b"
+        match = re.search(brittle_pattern, content, re.MULTILINE)
+        if match:
+            line_no = content[:match.start()].count('\n') + 1
+            risk_type = "shell" if "shell=True" in match.group(0) else \
+                        "global" if "global" in match.group(0) else "eval"
+            
+            is_safe, reason = logic_auditor.is_interaction_safe(content, line_no, risk_type, ignore_test_context=ignore_test_context)
+            if not is_safe:
+                logger.warning(f"Brittle code detected (Type: {risk_type}) at line {line_no}")
+                issues["brittle"] = True
+
+    def _scan_for_silent_errors(self, content, issues, logic_auditor, ignore_test_context):
+        silent_pattern = 'except.*:\\s*pass'
+        match = re.search(silent_pattern, content)
+        if match:
+            line_no = content[:match.start()].count('\n') + 1
+            is_safe, reason = logic_auditor.is_interaction_safe(content, line_no, "except", ignore_test_context=ignore_test_context)
+            if not is_safe:
+                # Só marca como erro se não houver telemetria ou log no mesmo arquivo
+                if not any(kw in content for kw in ['logger.err', 'logger.excep', "telemetry"]):
+                    logger.warning(f"Silent error detected at line {line_no}")
+                    issues["silent_error"] = True
 
     def is_relevant_file(self, file: str, stack: str) -> bool:
         """Determina se o arquivo pertence à stack ou é config global."""

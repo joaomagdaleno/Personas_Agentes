@@ -27,16 +27,9 @@ class AuditEngine:
         self.veto = LineVeto()
 
     def scan_content(self, file: str, content: str, patterns: list, context_data: dict, agent_name: str) -> list:
-        """
-        🚀 Executa a Varredura Estratégica.
-        
-        Coordena o processo de leitura, aplicação de vetos de linha e detecção 
-        de padrões regex. Garante que o contexto (domínio, stack) seja 
-        respeitado para evitar falsos positivos.
-        """
+        """🚀 Executa a Varredura Estratégica."""
         import time
-        start_scan = time.time()
-        issues = []
+        start_scan, issues = time.time(), []
         ctx = self._build_scan_context(content, context_data, agent_name, file)
         
         # Lazy load do auditor lógico para validação AST
@@ -47,29 +40,32 @@ class AuditEngine:
             ctx["in_docstring"] = False
             for i, line in enumerate(ctx["lines"]):
                 if self.veto.should_skip(line, p, ctx): continue
+                if not re.search(p['regex'], line, re.IGNORECASE): continue
+                if self._is_log_statement(ctx["lines"], i): continue
                 
-                if re.search(p['regex'], line, re.IGNORECASE):
-                    if not self._is_log_statement(ctx["lines"], i):
-                        # 🧠 Deep Understanding: Se for arquivo Python e Padrão Crítico/Qualidade
-                        if file.endswith(".py"):
-                             risk_type = "eval" if "eval" in p['regex'].lower() else \
-                                         "shell" if "shell" in p['regex'].lower() else \
-                                         "global" if "global" in p['regex'].lower() else \
-                                         "debug" if "debug" in p['regex'].lower() else \
-                                         "except" if "except" in p['regex'].lower() else "print"
-                             
-                             is_safe, reason = logic_auditor.is_interaction_safe(content, i + 1, risk_type)
-                             
-                             if is_safe:
-                                 continue
+                # 🧠 Deep Understanding: Se for arquivo Python e Padrão Crítico/Qualidade
+                if file.endswith(".py") and self._is_risk_validated_safe(content, i, p, logic_auditor):
+                    continue
 
-                        issues.append(self._create_issue_entry(file, i, p, ctx))
+                issues.append(self._create_issue_entry(file, i, p, ctx))
         
-        duration = time.time() - start_scan
-        if duration > 0.1: # Telemetria de performance para arquivos lentos
-            logger.debug(f"⏱️ [AuditEngine] Varredura lenta em {file}: {duration:.4f}s")
-            
+        self._log_perf(file, time.time() - start_scan)
         return issues
+
+    def _is_risk_validated_safe(self, content, index, pattern, auditor):
+        """Diferencia entre padrão detectado e risco real via AST."""
+        risk_type = "eval" if "eval" in pattern['regex'].lower() else \
+                    "shell" if "shell" in pattern['regex'].lower() else \
+                    "global" if "global" in pattern['regex'].lower() else \
+                    "debug" if "debug" in pattern['regex'].lower() else \
+                    "except" if "except" in pattern['regex'].lower() else "print"
+        
+        is_safe, _ = auditor.is_interaction_safe(content, index + 1, risk_type)
+        return is_safe
+
+    def _log_perf(self, file, duration):
+        if duration > 0.1:
+            logger.debug(f"⏱️ [AuditEngine] Varredura lenta em {file}: {duration:.4f}s")
 
     def _build_scan_context(self, content, context_data, agent_name, file):
         """

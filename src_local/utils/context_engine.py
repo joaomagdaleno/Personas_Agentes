@@ -45,66 +45,67 @@ class ContextEngine:
         self.parity_analyst = support["parity"]
 
     def analyze_project(self):
-        """
-        🔭 Varre o projeto delegando a inteligência para os assistentes técnicos.
-        """
+        """🔭 Varre o projeto delegando a inteligência para os assistentes técnicos."""
         from src_local.utils.file_system_scanner import FileSystemScanner
         scanner = FileSystemScanner(self.project_root, self.analyst)
         
         logger.info("🧠 Mapeando topologia...")
         self.project_identity = self._discover_identity()
-        self.map = {}
-        self.all_files_index = scanner.scan_all_filenames()
+        self.map, self.all_files_index = {}, scanner.scan_all_filenames()
 
-        # Otimização de I/O: Pré-carregamento em lote
-        files_to_scan = list(scanner.get_analyzable_files())
-        self._content_cache = {}
-        for path in files_to_scan:
-            try:
-                rel_path = path.relative_to(self.project_root).as_posix()
-                self._content_cache[rel_path] = path.read_text(encoding='utf-8', errors='ignore')
-            except: continue
+        # 1. Batch I/O Optimization
+        self._content_cache = self._pre_read_files(scanner.get_analyzable_files())
 
-        for path in files_to_scan:
-            self._register_file(path)
+        # 2. Sequential Analysis
+        for path in self._content_cache.keys():
+            self._register_file(Path(self.project_root / path))
         
-        # Limpeza do cache efêmero e do conteúdo do mapa para economizar memória RAM
-        self._content_cache = {}
-        # NOTA: Não limpamos info["content"] aqui se o Orchestrator for precisar.
-        # Mas o Orchestrator chama obfuscation_scan DEPOIS do analyze_project.
-        # Vamos manter o conteúdo até que o pipeline complete ou delegar a limpeza ao Orchestrator.
-        
+        # 3. Finalization
+        self._content_cache = {} # Free RAM
         self._build_dependency_map()
         logger.info(f"✅ DNA Processado: {len(self.map)} componentes.")
         return {"identity": self.project_identity, "map": self.map}
+
+    def _pre_read_files(self, files_iterator):
+        """Helper para otimização de I/O em lote."""
+        cache = {}
+        for path in files_iterator:
+            try:
+                rel_path = path.relative_to(self.project_root).as_posix()
+                cache[rel_path] = path.read_text(encoding='utf-8', errors='ignore')
+            except: continue
+        return cache
 
     def _register_file(self, path, ignore_test_context=False):
         try:
             rel_path = path.relative_to(self.project_root).as_posix()
             if rel_path in self.map: return
             
-            # Recupera do cache de lote ou lê se necessário
-            if not hasattr(self, '_content_cache'): self._content_cache = {}
-            content = self._content_cache.get(rel_path)
-            if content is None:
-                content = path.read_text(encoding='utf-8', errors='ignore')
-            
+            content = self._get_cached_content(path, rel_path)
             info = self._get_initial_info(path, rel_path)
-            # Armazena conteúdo temporariamente para processos subsequentes (ex: ObfuscationHunter)
             info["content"] = content
             
-            if path.suffix == '.py':
-                info.update(self.analyst.analyze_python(content, path.name))
-            
-            info.update(self.guardian.detect_vulnerabilities(content, info["component_type"], ignore_test_context=ignore_test_context))
-            info["has_test"] = self.coverage_auditor.detect_test(path, info["component_type"], self.all_files_index)
-            
-            if info["component_type"] == "TEST" and ("tests/" in rel_path or "test/" in rel_path):
-                self._analyze_test_quality(content, info)
-                
+            self._perform_deep_analysis(path, content, info, ignore_test_context)
             self.map[rel_path] = info
         except Exception as e:
             logger.error(f"❌ Erro ao analisar {path}: {e}")
+
+    def _get_cached_content(self, path, rel_path):
+        if not hasattr(self, '_content_cache'): self._content_cache = {}
+        content = self._content_cache.get(rel_path)
+        return content if content is not None else path.read_text(encoding='utf-8', errors='ignore')
+
+    def _perform_deep_analysis(self, path, content, info, ignore_test_context):
+        """Executa as auditorias especializadas no conteúdo."""
+        rel_path = info["rel_path"]
+        if path.suffix == '.py':
+            info.update(self.analyst.analyze_python(content, path.name))
+        
+        info.update(self.guardian.detect_vulnerabilities(content, info["component_type"], ignore_test_context=ignore_test_context))
+        info["has_test"] = self.coverage_auditor.detect_test(path, info["component_type"], self.all_files_index)
+        
+        if info["component_type"] == "TEST" and ("tests/" in rel_path or "test/" in rel_path):
+            self._analyze_test_quality(content, info)
 
     def _get_initial_info(self, path: Path, rel_path):
         comp_type = self.analyst.map_component_type(rel_path)
@@ -113,7 +114,7 @@ class ContextEngine:
             "brittle": False, "silent_error": False, "has_test": False,
             "component_type": comp_type, 
             "domain": "EXPERIMENTATION" if comp_type == "TEST" else "PRODUCTION", 
-            "path": str(path)
+            "path": str(path), "rel_path": rel_path
         }
 
     def _analyze_test_quality(self, content, info):

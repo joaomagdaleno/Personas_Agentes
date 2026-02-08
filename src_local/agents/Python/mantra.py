@@ -15,11 +15,9 @@ class MantraPersona(BaseActivePersona):
         start_time = time.time()
         logger.info(f"[{self.name}] Analisando Pureza do Código...")
         
-        kw_global = 'gl' + 'obal'
-        # Obfuscated regex to avoid self-detection
         audit_rules = [
-            {'regex': 'except:\\s+pass', 'issue': 'Anti-padrão: Bare except.', 'severity': 'critical'},
-            {'regex': rf"\b{kw_global}\s+\w+", 'issue': 'Violação: Uso de estado global detectado.', 'severity': 'high'}
+            {'regex': r"except:\s+pass", 'issue': 'Anti-padrão: Bare except.', 'severity': 'critical'},
+            {'regex': r"\bglobal\s+\w+", 'issue': 'Violação: Uso de estado global detectado.', 'severity': 'high'}
         ]
         
         results = self.find_patterns(('.py',), audit_rules)

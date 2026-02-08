@@ -16,21 +16,12 @@ class BattlePlanFormatter:
     def format(self, audit_results: list) -> str:
         """Estrutura os resultados da auditoria em um plano de batalha hierárquico."""
         # Rigorosa deduplicação PhD
-        dedup = []
-        seen = set()
+        dedup, seen = [], set()
         for i in audit_results:
-            if isinstance(i, dict):
-                # Normalização para evitar MD024
-                c_issue = str(i.get('issue', '')).rstrip('.')
-                key = f"{i.get('file')}:{i.get('line')}:{c_issue}"
-                if key not in seen:
-                    dedup.append(i)
-                    seen.add(key)
-            elif i not in seen:
-                key = str(i).rstrip('.')
-                if key not in seen:
-                    dedup.append(i)
-                    seen.add(key)
+            key = self._get_item_key(i)
+            if key not in seen:
+                dedup.append(i)
+                seen.add(key)
 
         active = [i for i in dedup if not isinstance(i, dict) or i.get('severity') != 'HEALED']
         if not active: return "## 🎯 PLANO DE BATALHA\n\n> ✅ Nenhuma intervenção necessária."
@@ -38,13 +29,19 @@ class BattlePlanFormatter:
         sections = ["## 🎯 PLANO DE BATALHA: DIRETRIZES DE ENGENHARIA"]
         categories = self._group_by_severity(active)
         sections.append(self._format_impact_summary(categories))
-        sections.append("---") # Separador isolado para garantir MD012/MD022
+        sections.append("---")
 
         for sev in ["CRITICAL", "HIGH", "MEDIUM", "LOW", "STRATEGIC"]:
             if categories[sev]:
                 sections.append(self._format_severity_group(sev, categories[sev]))
         
         return "\n\n".join(s.strip() for s in sections if s).strip()
+
+    def _get_item_key(self, item):
+        if isinstance(item, dict):
+            c_issue = str(item.get('issue', '')).rstrip('.')
+            return f"{item.get('file')}:{item.get('line')}:{c_issue}"
+        return str(item).rstrip('.')
 
     def _group_by_severity(self, active_items):
         cats = {"CRITICAL": [], "HIGH": [], "MEDIUM": [], "LOW": [], "STRATEGIC": []}

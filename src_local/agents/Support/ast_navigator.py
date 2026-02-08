@@ -46,13 +46,14 @@ class ASTNavigator:
     def is_in_dict_value(self, node, target_node, key_names):
         """Verifica se target_node é valor em um dicionário cuja chave tem um dos nomes listados."""
         if not isinstance(node, ast.Dict): return False
-        for k, v in zip(node.keys, node.values):
-            if v and self.is_descendant(target_node, v):
-                # Compatibilidade Python modern (Constant) vs antigo (Str)
-                str_types = (ast.Constant,)
-                if hasattr(ast, "Str"): str_types += (getattr(ast, "Str"),)
+        
+        # Compatibilidade Python modern (Constant) vs antigo (Str)
+        str_types = (ast.Constant,)
+        if hasattr(ast, "Str"): str_types += (getattr(ast, "Str"),)
 
-                if isinstance(k, str_types): 
-                    key_val = getattr(k, "value", getattr(k, "s", ""))
-                    if key_val in key_names: return True
+        for k, v in zip(node.keys, node.values):
+            if not v or not self.is_descendant(target_node, v): continue
+            
+            if isinstance(k, str_types): 
+                if getattr(k, "value", getattr(k, "s", "")) in key_names: return True
         return False

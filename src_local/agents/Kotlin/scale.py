@@ -21,9 +21,8 @@ class ScalePersona(BaseActivePersona):
         logger.info(f"[{self.name}] Analisando Arquitetura Android...")
         
         # Sintaxe linear
-        kw_act = 'Acti' + 'vity'
         rules = [
-            {'regex': rf"class\s+\w+{kw_act}", 'issue': 'Acoplamento: Lógica de negócio na UI.', 'severity': 'high'},
+            {'regex': r"class\s+\w+Activity", 'issue': 'Acoplamento: Lógica de negócio na UI.', 'severity': 'high'},
             {'regex': r"\.internal\.", 'issue': 'Encapsulamento: Dependência interna exposta.', 'severity': 'medium'}
         ]
         

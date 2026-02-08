@@ -3,11 +3,16 @@ SISTEMA DE PERSONAS AGENTES - SUPORTE TÉCNICO
 Módulo: Classificador de Componentes (ComponentClassifier)
 Função: Identificar semanticamente o papel de um arquivo no projeto.
 """
+import logging
+
+logger = logging.getLogger(__name__)
+
 class ComponentClassifier:
     """Assistente Técnico: Especialista em Topologia de Arquivos 🗂️"""
 
     def map_type(self, rel_path: str) -> str:
         """Mapeamento semântico universal."""
+        logger.debug(f"Classifying component: {rel_path}")
         p = rel_path.lower()
         if "test" in p: return "TEST"
         if "core" in p or "domain" in p: return "CORE"

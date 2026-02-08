@@ -1,4 +1,7 @@
 import ast
+import logging
+
+logger = logging.getLogger(__name__)
 
 class TestNavigator:
     """
@@ -10,8 +13,9 @@ class TestNavigator:
 
     def is_inside_test_context(self, node, tree):
         """Verifica se o nó está em qualquer contexto relacionado a testes."""
-        # Se estiver dentro de uma asserção ou método de teste, é contexto de teste.
-        return self._is_inside_assertion(node, tree) or self._is_inside_test_method(node, tree)
+        res = self._is_inside_assertion(node, tree) or self._is_inside_test_method(node, tree)
+        if res: logger.debug(f"Node detected inside test context (Line {getattr(node, 'lineno', 'N/A')})")
+        return res
 
     def _is_inside_test_method(self, target_node, tree):
         """Verifica se o nó está dentro de um método de teste (test_, setUp, tearDown)."""

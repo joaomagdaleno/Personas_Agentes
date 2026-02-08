@@ -15,11 +15,8 @@ class ScalePersona(BaseActivePersona):
         start_time = time.time()
         logger.info(f"[{self.name}] Analisando Acoplamento...")
         
-        # Uso de concatenação para evitar que o próprio motor filtre o padrão como seguro
-        # Ou use escape para o regex
-        kw_global = 'gl' + 'obal'
         audit_rules = [
-            {'regex': rf"\b{kw_global}\s+\w+", 'issue': 'Violação: Uso de estado global.', 'severity': 'high'}
+            {'regex': r"\bglobal\s+\w+", 'issue': 'Violação: Uso de estado global.', 'severity': 'high'}
         ]
         
         results = self.find_patterns(('.py',), audit_rules)
