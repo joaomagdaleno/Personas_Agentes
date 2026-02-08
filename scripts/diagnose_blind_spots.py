@@ -1,3 +1,9 @@
+"""
+🕵️ Diagnóstico de Pontos Cegos e Matéria Escura.
+Mapeia componentes com tratamento de erro silencioso (silent_error) e 
+módulos críticos sem cobertura de testes (dark_matter), fornecendo uma 
+visão clara das lacunas de observabilidade e confiabilidade.
+"""
 import os
 import sys
 from pathlib import Path

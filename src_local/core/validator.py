@@ -1,3 +1,8 @@
+"""
+🛡️ Validador de Integridade do Core (CoreValidator).
+Executa o Protocolo de Auto-Exame Vital, verificando a saúde dos componentes
+críticos e a conformidade técnica conforme definido no DNA soberano do projeto.
+"""
 import subprocess
 import sys
 import re

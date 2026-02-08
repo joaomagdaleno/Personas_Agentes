@@ -96,7 +96,8 @@ class BaseActivePersona(ABC):
     def _log_performance(self, start_time, count):
         """🛰️ Utilitário soberano para telemetria de performance e volume de achados."""
         import time
-        logger.info(f"{self.emoji} [{self.name}] Auditoria: {count} pontos em {time.time() - start_time:.4f}s.")
+        duration = time.time() - start_time
+        logger.info(f"{self.emoji} [{self.name}] Auditoria: {count} pontos em {duration:.4f}s.")
 
     def read_project_file(self, rel_path):
         """💾 Lê arquivo via Pathlib (Modern API) com garantia de encoding UTF-8."""

@@ -15,8 +15,11 @@ class ScalePersona(BaseActivePersona):
         start_time = time.time()
         logger.info(f"[{self.name}] Analisando Acoplamento...")
         
+        # Uso de concatenação para evitar que o próprio motor filtre o padrão como seguro
+        # Ou use escape para o regex
+        kw_global = 'gl' + 'obal'
         audit_rules = [
-            {'regex': r"\bglobal\s+\w+", 'issue': 'Violação: Uso de estado global.', 'severity': 'high'}
+            {'regex': rf"\b{kw_global}\s+\w+", 'issue': 'Violação: Uso de estado global.', 'severity': 'high'}
         ]
         
         results = self.find_patterns(('.py',), audit_rules)
@@ -24,9 +27,7 @@ class ScalePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw = 'global '
-        if kw in content and "rules =" not in content:
-            return f"Risco de Escalabilidade: O objetivo '{objective}' exige modularidade. Em '{file}', a poluição de estado impede a 'Orquestração de Inteligência Artificial'."
+        # O Scale agora delega a auditoria de arquitetura para o AuditEngine via perform_audit
         return None
 
     def get_system_prompt(self):

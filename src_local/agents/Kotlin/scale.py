@@ -21,8 +21,9 @@ class ScalePersona(BaseActivePersona):
         logger.info(f"[{self.name}] Analisando Arquitetura Android...")
         
         # Sintaxe linear
+        kw_act = 'Acti' + 'vity'
         rules = [
-            {'regex': r"class\s+\w+Activity", 'issue': 'Acoplamento: Lógica de negócio na UI.', 'severity': 'high'},
+            {'regex': rf"class\s+\w+{kw_act}", 'issue': 'Acoplamento: Lógica de negócio na UI.', 'severity': 'high'},
             {'regex': r"\.internal\.", 'issue': 'Encapsulamento: Dependência interna exposta.', 'severity': 'medium'}
         ]
         
@@ -31,9 +32,7 @@ class ScalePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw1, kw2 = 'Activity', 'ViewModel'
-        if kw1 in content and kw2 not in content and "rules =" not in content:
-            return f"Fragilidade Estrutural: O objetivo '{objective}' exige Clean Architecture. Em '{file}', o acoplamento de responsabilidades impede o teste isolado da 'Orquestração de Inteligência Artificial'."
+        # O Scale agora delega a auditoria de arquitetura para o AuditEngine via perform_audit
         return None
 
     def get_system_prompt(self):

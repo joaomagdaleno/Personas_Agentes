@@ -1,9 +1,13 @@
-
 import unittest
 import shutil
 import time
+import logging
 from pathlib import Path
 from src_local.utils.context_engine import ContextEngine
+
+# Configuração de telemetria de teste
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("TestContextEngineDeep")
 
 class TestContextEngineDeep(unittest.TestCase):
     """Bateria de Testes PhD para o Cérebro Semântico (ContextEngine) 🧠"""
@@ -28,6 +32,7 @@ class TestContextEngineDeep(unittest.TestCase):
 
     def test_full_project_mapping(self):
         """Valida o mapeamento completo da topologia e DNA do projeto."""
+        logger.info("⚡ Testando mapeamento completo do projeto...")
         (self.test_root / "requirements.txt").write_text("numpy")
         (self.test_root / "src" / "main.py").write_text("print('hello')")
         (self.test_root / "tests" / "test_main.py").write_text("assert True")
@@ -37,9 +42,11 @@ class TestContextEngineDeep(unittest.TestCase):
         self.assertIn("src/main.py", result["map"])
         self.assertIn("tests/test_main.py", result["map"])
         self.assertEqual(result["map"]["tests/test_main.py"]["component_type"], "TEST")
+        logger.info("✅ Mapeamento completo validado.")
 
     def test_test_quality_metrics(self):
         """Valida a extração de métricas de profundidade de testes."""
+        logger.info("⚡ Testando métricas de qualidade de teste...")
         test_content = """
 def test_complex():
     assert x == 1
@@ -61,9 +68,11 @@ def test_complex():
         # Mais o regex simples re.findall(r"assert[A-Z]\w*\(|self\.assert", content)
         # No ContextEngine._analyze_test_quality ele conta: assert[A-Z]\w*\( (ex: assertEqual() ou self.assert...)
         self.assertGreaterEqual(info["test_depth"]["assertion_count"], 3)
+        logger.info("✅ Métricas de teste validadas.")
 
     def test_stack_parity_integration(self):
         """Valida integração com o ParityAnalyst e detecção de stacks."""
+        logger.info("⚡ Testando integração de paridade de stack...")
         # Cria um arquivo que indica necessidade de uma stack
         (self.test_root / "pubspec.yaml").write_text("name: my_app")
         # Força o motor a re-analisar a identidade para popular o 'detected'
@@ -71,9 +80,11 @@ def test_complex():
         
         # O teste foca na capacidade do motor em identificar a stack Flutter
         self.assertIn("Flutter", self.engine.project_identity["stacks"])
+        logger.info("✅ Paridade de stack validada.")
 
     def test_criticality_scoring(self):
         """Valida o cálculo de pontuação de criticidade sistêmica."""
+        logger.info("⚡ Testando pontuação de criticidade...")
         core_file = self.test_root / "src" / "core" / "essential.py"
         core_file.parent.mkdir(parents=True, exist_ok=True)
         core_file.write_text("class Essential: pass")
@@ -81,6 +92,7 @@ def test_complex():
         # O score deve ser alto para arquivos no diretório 'core'
         score = self.engine.get_criticality_score(core_file)
         self.assertGreaterEqual(score, 10)
+        logger.info("✅ Pontuação de criticidade validada.")
 
 if __name__ == "__main__":
     unittest.main()

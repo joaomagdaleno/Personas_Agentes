@@ -56,8 +56,23 @@ class ContextEngine:
         self.map = {}
         self.all_files_index = scanner.scan_all_filenames()
 
-        for path in scanner.get_analyzable_files():
+        # Otimização de I/O: Pré-carregamento em lote
+        files_to_scan = list(scanner.get_analyzable_files())
+        self._content_cache = {}
+        for path in files_to_scan:
+            try:
+                rel_path = path.relative_to(self.project_root).as_posix()
+                self._content_cache[rel_path] = path.read_text(encoding='utf-8', errors='ignore')
+            except: continue
+
+        for path in files_to_scan:
             self._register_file(path)
+        
+        # Limpeza do cache efêmero e do conteúdo do mapa para economizar memória RAM
+        self._content_cache = {}
+        # NOTA: Não limpamos info["content"] aqui se o Orchestrator for precisar.
+        # Mas o Orchestrator chama obfuscation_scan DEPOIS do analyze_project.
+        # Vamos manter o conteúdo até que o pipeline complete ou delegar a limpeza ao Orchestrator.
         
         self._build_dependency_map()
         logger.info(f"✅ DNA Processado: {len(self.map)} componentes.")
@@ -68,8 +83,15 @@ class ContextEngine:
             rel_path = path.relative_to(self.project_root).as_posix()
             if rel_path in self.map: return
             
-            content = path.read_text(encoding='utf-8', errors='ignore')
+            # Recupera do cache de lote ou lê se necessário
+            if not hasattr(self, '_content_cache'): self._content_cache = {}
+            content = self._content_cache.get(rel_path)
+            if content is None:
+                content = path.read_text(encoding='utf-8', errors='ignore')
+            
             info = self._get_initial_info(path, rel_path)
+            # Armazena conteúdo temporariamente para processos subsequentes (ex: ObfuscationHunter)
+            info["content"] = content
             
             if path.suffix == '.py':
                 info.update(self.analyst.analyze_python(content, path.name))

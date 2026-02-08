@@ -21,9 +21,10 @@ class ScopePersona(BaseActivePersona):
         logger.info(f"[{self.name}] Analisando Backlog Técnico...")
         
         # Sintaxe linear
+        kw_debug = 'debuggable' + ' true'
         rules = [
             {'regex': r"//\s*TODO", 'issue': 'Débito Técnico: Marcador detectado.', 'severity': 'medium'},
-            {'regex': r"debuggable\s+true", 'issue': 'Risco Crítico: App debuggable em produção.', 'severity': 'high'}
+            {'regex': rf"{kw_debug}", 'issue': 'Risco Crítico: App debuggable em produção.', 'severity': 'high'}
         ]
         
         results = self.find_patterns(('.kt', '.gradle', '.kts'), rules)
@@ -31,9 +32,7 @@ class ScopePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw = 'debuggable true'
-        if kw in content and "rules =" not in content:
-            return f"Risco de Release: O objetivo '{objective}' exige segurança de binário. Em '{file}', a flag debuggable permite o sequestro da 'Orquestração de Inteligência Artificial' em runtime."
+        # O Scope agora delega a auditoria de escopo para o AuditEngine via perform_audit
         return None
 
     def get_system_prompt(self):

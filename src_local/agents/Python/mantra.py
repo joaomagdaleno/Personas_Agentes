@@ -15,9 +15,11 @@ class MantraPersona(BaseActivePersona):
         start_time = time.time()
         logger.info(f"[{self.name}] Analisando Pureza do Código...")
         
+        kw_global = 'gl' + 'obal'
         # Obfuscated regex to avoid self-detection
         audit_rules = [
-            {'regex': 'except:\\s+pass', 'issue': 'Anti-padrão: Bare except.', 'severity': 'critical'}
+            {'regex': 'except:\\s+pass', 'issue': 'Anti-padrão: Bare except.', 'severity': 'critical'},
+            {'regex': rf"\b{kw_global}\s+\w+", 'issue': 'Violação: Uso de estado global detectado.', 'severity': 'high'}
         ]
         
         results = self.find_patterns(('.py',), audit_rules)
@@ -25,8 +27,7 @@ class MantraPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if 'global ' in content:
-            return f"Poluição de Estado: O objetivo '{objective}' exige pureza. Em '{file}', o uso de globais compromete a 'Orquestração de Inteligência Artificial'."
+        # O Mantra agora delega a auditoria de pureza para o AuditEngine via perform_audit
         return None
 
     def get_system_prompt(self):

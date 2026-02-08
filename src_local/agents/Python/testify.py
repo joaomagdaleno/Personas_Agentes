@@ -69,13 +69,7 @@ class TestifyPersona(BaseActivePersona):
             if not info.get("has_test", False):
                 return f"Exposição de Risco: O objetivo '{objective}' exige confiança. O módulo '{file}' é Matéria Escura (Sem testes detectados)."
         
-        if "test_" in file and "def test_" in content:
-            # Verifica se o teste está vazio (apenas pass ou docstring + pass)
-            lines = [l.strip() for l in content.splitlines() if l.strip()]
-            for i, line in enumerate(lines):
-                if line.startswith("def test_") and i+1 < len(lines) and lines[i+1] == "pass":
-                    return f"Ilusão de Cobertura: O teste '{file}' possui métodos vazios (pass). Isso invalida a segurança do objetivo '{objective}'."
-            
+        # Detecção de testes vazios agora delegada ao AuditEngine via perform_audit
         return None
 
     def get_system_prompt(self):

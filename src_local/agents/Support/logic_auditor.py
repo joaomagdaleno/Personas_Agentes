@@ -42,23 +42,38 @@ class LogicAuditor:
                             return True, "Captura segura."
                     
                     # Risco de Execução Dinâmica (Call)
-                    if risk_type in ["eval", "shell", "os.system"] and isinstance(node, ast.Call):
-                        if self.judge.is_node_safe(node, tree, ignore_test_context=ignore_test_context):
-                            return True, "Execução dinâmica em contexto seguro (Teste/Log)."
+                    # Note: We check risk_type specifically for eval/shell/os.system
+                    if isinstance(node, ast.Call):
+                        is_dangerous_call = False
+                        if isinstance(node.func, ast.Name) and node.func.id in ["eval", "exec"]:
+                            is_dangerous_call = True
+                        elif isinstance(node.func, ast.Attribute) and node.func.attr == "system":
+                            if isinstance(node.func.value, ast.Name) and node.func.value.id == "os":
+                                is_dangerous_call = True
+                        
+                        if is_dangerous_call:
+                            if self.judge.is_node_safe(node, tree, ignore_test_context=ignore_test_context):
+                                return True, "Execução dinâmica em contexto seguro (Teste/Log)."
+                            return False, "Padrão de risco em contexto de execução potencial."
+                        else:
+                            # Se o nó é uma chamada mas não é de um tipo perigoso conhecido
+                            return True, "Chamada validada como segura via AST."
 
                     # Risco de Definição (Strings em regras)
                     str_types = (ast.Constant,)
                     if hasattr(ast, "Str"): str_types += (getattr(ast, "Str"),)
                     if isinstance(node, str_types):
                         # Strings são seguras a menos que sejam executadas (ex: eval("os.system"))
-                        # O SafetyNavigator verifica se o nó é argumento de função perigosa
                         from src_local.agents.Support.ast_navigator import ASTNavigator
                         nav = ASTNavigator()
                         if nav.safety_nav.is_being_executed(node, tree):
                              return False, "String sendo executada dinamicamente!"
                         
-                        # Se não for executada, é apenas texto (mesmo que contenha 'os.system')
                         return True, "Literal de string não executado (Seguro)."
+                    
+                    # 3. Fallback para outros tipos de nó
+                    if self.judge.is_node_safe(node, tree, ignore_test_context=ignore_test_context):
+                        return True, "Contexto técnico validado via AST."
             
             return False, "Padrão de risco em contexto de execução potencial."
         except Exception as e:

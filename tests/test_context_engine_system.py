@@ -1,6 +1,11 @@
 import unittest
+import logging
 from pathlib import Path
 from src_local.utils.context_engine import ContextEngine
+
+# Configuração de telemetria de teste
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("TestContextEngineSystem")
 
 class TestContextEngine(unittest.TestCase):
     def setUp(self):
@@ -13,12 +18,15 @@ class TestContextEngine(unittest.TestCase):
         self.engine = ContextEngine(self.test_root, support_tools=support)
 
     def test_identity_discovery(self):
+        logger.info("⚡ Testando descoberta de identidade...")
         # Simula um projeto Python
         (self.test_root / "requirements.txt").write_text("")
         dna = self.engine._discover_identity()
         self.assertIn("Python", dna["stacks"])
+        logger.info("✅ Identidade validada.")
 
     def test_brittle_code_detection(self):
+        logger.info("⚡ Testando detecção de código frágil...")
         # Simula arquivo com fragilidade
         brittle_file = self.test_root / "brittle.py"
         brittle_file.write_text("eval('print(1)')")
@@ -28,8 +36,10 @@ class TestContextEngine(unittest.TestCase):
         info = self.engine.map.get("brittle.py")
         self.assertIsNotNone(info, "Arquivo não registrado no mapa")
         self.assertTrue(info["brittle"])
+        logger.info("✅ Código frágil detectado.")
 
     def test_silent_error_detection(self):
+        logger.info("⚡ Testando detecção de erro silenciado...")
         # Simula arquivo com ponto cego
         logic_file = self.test_root / "app_logic.py"
         
@@ -43,6 +53,7 @@ class TestContextEngine(unittest.TestCase):
         info = self.engine.map.get("app_logic.py")
         self.assertIsNotNone(info, "Arquivo não registrado no mapa")
         self.assertTrue(info["silent_error"])
+        logger.info("✅ Erro silenciado detectado.")
 
     def tearDown(self):
         import shutil

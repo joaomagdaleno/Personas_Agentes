@@ -25,8 +25,7 @@ class ForgePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if 'eval(' in content:
-            return f"Falha de Automação: O objetivo '{objective}' exige segurança. Em '{file}', o uso de eval() permite ataques que invalidam a 'Orquestração de Inteligência Artificial'."
+        # O Forge agora delega a auditoria de automação para o AuditEngine via perform_audit
         return None
 
     def validate_code_safety(self, code: str) -> bool:

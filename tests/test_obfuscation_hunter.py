@@ -1,12 +1,17 @@
-
 import unittest
 import sys
+import logging
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent.absolute()))
 from src_local.agents.Support.obfuscation_hunter import ObfuscationHunter
 
+# Configuração de telemetria de teste
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("TestObfuscationHunter")
+
 class TestObfuscationHunter(unittest.TestCase):
     def test_concatenation_detection(self):
+        logger.info("⚡ Testando detecção de ofuscação por concatenação...")
         hunter = ObfuscationHunter()
         
         # Test Case 1: Simple Concatenation
@@ -26,16 +31,11 @@ class TestObfuscationHunter(unittest.TestCase):
         findings3 = hunter.scan_file("test3.py", code3)
         self.assertEqual(len(findings3), 0)
 
-        # Test Case 4: Broken Keyword (Should not be detected if parts have it? No, if hidden)
-        # "shell" + "=True" -> "shell=True". "shell" is risky? Yes.
-        # Logic: if keyword in left OR right, it's NOT hidden.
+        # Test Case 4: Broken Keyword
         code4 = 'x = "shell=" + "True"' 
-        # Here "shell" is not strictly in DANGEROUS_KEYWORDS? "shell=True" is.
-        # "shell" is not in {eval, exec, shell=True...}
-        # So "shell=" doesn't trigger. Combined "shell=True" triggers. 
-        # Hidden? Yes.
         findings4 = hunter.scan_file("test4.py", code4)
         self.assertEqual(len(findings4), 1)
+        logger.info("✅ Detecção de ofuscação validada.")
 
 if __name__ == '__main__':
     unittest.main()

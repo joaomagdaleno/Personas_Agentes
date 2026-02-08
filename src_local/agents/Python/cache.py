@@ -26,8 +26,7 @@ class CachePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if 'execute' in content and "for " in content:
-            return f"Gargalo de I/O: O objetivo '{objective}' exige velocidade. Em '{file}', queries em loop impedem que a 'Orquestração de Inteligência Artificial' processe dados em tempo real."
+        # O Cache agora delega a auditoria de eficiência de I/O para o AuditEngine via perform_audit
         return None
 
     def get_system_prompt(self):

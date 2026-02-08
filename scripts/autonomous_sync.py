@@ -1,3 +1,9 @@
+"""
+🔄 Sincronia Autônoma de Dependências e Conhecimento.
+Este script orquestra o processo de atualização do ecossistema, incluindo
+diagnóstico de saúde do Git, sincronização de submódulos de skills e 
+consolidação de mudanças no repositório soberano.
+"""
 import os
 import sys
 import logging

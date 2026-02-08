@@ -23,8 +23,9 @@ class ASTNavigator:
 
     def is_descendant(self, target, parent):
         """Verifica se target é filho de parent na AST."""
-        for child in ast.walk(parent):
-            if child is target:
+        if target is parent: return True
+        for child in ast.iter_child_nodes(parent):
+            if self.is_descendant(target, child):
                 return True
         return False
 

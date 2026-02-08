@@ -15,8 +15,10 @@ class WardenPersona(BaseActivePersona):
         start_time = time.time()
         logger.info(f"[{self.name}] Analisando Privacidade...")
         
+        # Regex calibrado para detectar prints ou logs de senhas/tokens
         audit_rules = [
-            {'regex': r"print\(.*password.*=.*\)", 'issue': 'Leak: Senha em stdout.', 'severity': 'critical'}
+            {'regex': r"(?:print|logger\.\w+)\(.*?password.*?=.*?\)", 'issue': 'Leak: Senha em stdout/log.', 'severity': 'critical'},
+            {'regex': r"AKIA[0-9A-Z]{16}", 'issue': 'Vazamento: AWS Access Key ID detectada.', 'severity': 'critical'}
         ]
         
         results = self.find_patterns(('.py',), audit_rules)
@@ -24,8 +26,7 @@ class WardenPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "password" in content:
-            return f"Risco Ético: O objetivo '{objective}' exige governança. Em '{file}', vazamentos de credenciais ameaçam a 'Orquestração de Inteligência Artificial'."
+        # O Warden agora delega a auditoria de ética para o AuditEngine via perform_audit
         return None
 
     def get_system_prompt(self):

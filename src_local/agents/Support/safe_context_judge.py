@@ -20,7 +20,18 @@ class SafeContextJudge:
         if self.nav.safety_nav.is_safe_context(node, tree):
             return True
 
-        # 2. Se for uma falha estrutural (ExceptHandler) ou Chamada em teste -> SEGURO
+        # 2. Se for uma falha estrutural (ExceptHandler)
+        if isinstance(node, ast.ExceptHandler):
+            # Se estiver em teste, é seguro por design de experimento
+            if not ignore_test_context and self.nav.test_nav.is_inside_test_context(node, tree):
+                return True
+            
+            # Se tiver telemetria ou log no corpo, é seguro
+            content_block = ast.dump(node)
+            if any(kw in content_block for kw in ['logger', 'log', 'telemetry', 'print']):
+                return True
+
+        # 3. Se for uma Chamada em teste -> SEGURO
         if not ignore_test_context and self.nav.test_nav.is_inside_test_context(node, tree):
             return True
 

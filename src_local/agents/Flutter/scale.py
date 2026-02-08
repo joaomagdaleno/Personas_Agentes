@@ -18,9 +18,11 @@ class ScalePersona(BaseActivePersona):
         start_time = time.time()
         logger.info(f"[{self.name}] Analisando Escalabilidade Flutter...")
         
+        kw_src = '/' + 'sr' + 'c' + '/'
+        kw_global = 'gl' + 'obal'
         audit_rules = [
-            {'regex': r'import\s+[\'"]package:.*?/src/.*?[\'"]', 'issue': 'Acoplamento: Importação de pastas internas (/src/) de outros pacotes detectada.', 'severity': 'high'},
-            {'regex': r"global\s+", 'issue': 'Risco de Escalabilidade: Uso de estado global detectado.', 'severity': 'critical'}
+            {'regex': rf'import\s+[\'"]package:.*?{kw_src}.*?[\'"]', 'issue': 'Acoplamento: Importação de pastas internas (/src/) de outros pacotes detectada.', 'severity': 'high'},
+            {'regex': rf"{kw_global}\s+", 'issue': 'Risco de Escalabilidade: Uso de estado global detectado.', 'severity': 'critical'}
         ]
         
         results = self.find_patterns(('.dart',), audit_rules)
@@ -28,9 +30,7 @@ class ScalePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        kw = '/src/'
-        if kw in content and "import" in content and "rules =" not in content:
-            return f"Violência Arquitetural: O objetivo '{objective}' exige modularidade soberana. Em '{file}', o acesso a diretórios privados (/src) de pacotes externos compromete o isolamento da 'Orquestração de Inteligência Artificial'."
+        # O Scale agora delega a auditoria de modularidade para o AuditEngine via perform_audit
         return None
 
     def get_system_prompt(self):

@@ -1,3 +1,9 @@
+"""
+📣 PhD em Growth & Marketing de Produto (Hype).
+Especialista em identificar vetores de crescimento, analisar valor de marca
+técnica e garantir que a Orquestração de Inteligência Artificial seja
+descoberta por seus stakeholders estratégicos.
+"""
 from src_local.agents.base import BaseActivePersona
 import logging
 import time

@@ -66,7 +66,13 @@ class Orchestrator:
     def generate_full_diagnostic(self):
         """Delegado para DiagnosticPipeline."""
         from src_local.core.diagnostic_pipeline import DiagnosticPipeline
-        return DiagnosticPipeline(self).execute()
+        res = DiagnosticPipeline(self).execute()
+        
+        # Otimização de RAM: Limpa conteúdos cacheados após o pipeline
+        for info in self.context_engine.map.values():
+            if "content" in info: del info["content"]
+            
+        return res
 
     def get_system_health_360(self, context, internal_health, all_findings=None):
         """Sintetiza a saúde sistêmica via delegação."""
@@ -133,9 +139,10 @@ class Orchestrator:
         res.extend(agent.perform_strategic_audit(objective))
         return res
 
-    def _run_obfuscation_scan(self):
+    def _run_obfuscation_scan(self, context_map=None):
         """
         🕵️ Executa a varredura do ObfuscationHunter em todo o projeto.
+        Utiliza o mapa de contexto para evitar leituras redundantes de disco.
         """
         from src_local.agents.Support.obfuscation_hunter import ObfuscationHunter
         hunter = ObfuscationHunter()
@@ -143,15 +150,20 @@ class Orchestrator:
         
         logger.info("🕵️ Iniciando caça por ofuscação de código...")
         
+        target_map = context_map or self.context_engine.map
+        
         # Varre todos os arquivos Python mapeados
-        for rel_path, data in self.context_engine.map.items():
+        for rel_path, data in target_map.items():
             if not rel_path.endswith(".py"): continue
             
-            full_path = self.project_root / rel_path
-            content = self.context_engine.analyst.read_project_file(full_path)
+            # Tenta recuperar conteúdo já mapeado se disponível
+            content = data.get("content")
+            if not content:
+                full_path = self.project_root / rel_path
+                content = self.context_engine.analyst.read_project_file(full_path)
             
             if content:
-                issues = hunter.scan_file(str(full_path), content)
+                issues = hunter.scan_file(str(rel_path), content)
                 for i in issues:
                     findings.append({
                         "file": rel_path,

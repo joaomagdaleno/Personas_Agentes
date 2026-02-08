@@ -27,12 +27,13 @@ class ScoringEnginePhd:
     @staticmethod
     def _purity(map_data, total):
         avg = sum(i.get("complexity", 1) for i in map_data.values()) / total
-        return max(0, 20 - (avg * 1.5))
+        return max(0, 20 - ((avg - 1) * 1.5))
 
     @staticmethod
     def _obs(map_data, total):
+        # Diferencia entre ter telemetria real e apenas mencionar a palavra em strings
         with_tel = sum(1 for f, i in map_data.items() 
-            if i.get("component_type") != "TEST" and (i.get("telemetry") or "telemetry" in str(i)))
+            if i.get("component_type") != "TEST" and i.get("telemetry"))
         return (with_tel / max(1, total)) * 15
 
     @staticmethod

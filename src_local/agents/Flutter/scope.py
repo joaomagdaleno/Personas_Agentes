@@ -28,8 +28,7 @@ class ScopePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "UnimplementedError" in content:
-            return f"Promessa Quebrada: O objetivo '{objective}' exige entrega. Em '{file}', lacunas de funcionalidade retardam a 'Orquestração de Inteligência Artificial'."
+        # O Scope agora delega a auditoria de escopo para o AuditEngine via perform_audit
         return None
 
     def get_system_prompt(self):

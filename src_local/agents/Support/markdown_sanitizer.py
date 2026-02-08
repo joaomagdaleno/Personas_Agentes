@@ -1,3 +1,9 @@
+"""
+📝 Sanitizador de Markdown (MarkdownSanitizer).
+Realiza a limpeza e normalização de relatórios em Markdown, garantindo conformidade
+com padrões de formatação (cabeçalhos únicos, padding correto, colapso de linhas)
+sem corromper blocos de código técnicos.
+"""
 import re
 
 class MarkdownSanitizer:

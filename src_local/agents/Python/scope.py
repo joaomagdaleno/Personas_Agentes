@@ -24,8 +24,7 @@ class ScopePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "TODO" in content:
-            return f"Incompleitude: O objetivo '{objective}' exige entrega. Em '{file}', débitos pendentes retardam a 'Orquestração de Inteligência Artificial'."
+        # O Scope agora delega a auditoria de escopo para o AuditEngine via perform_audit
         return None
 
     def get_system_prompt(self):

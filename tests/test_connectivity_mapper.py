@@ -1,5 +1,10 @@
 import unittest
+import logging
 from src_local.agents.Support.connectivity_mapper import ConnectivityMapper
+
+# Configuração de telemetria de teste
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("TestConnectivityMapper")
 
 class TestConnectivityMapper(unittest.TestCase):
     """🧪 Testes Unitários Soberanos para o ConnectivityMapper."""
@@ -9,6 +14,7 @@ class TestConnectivityMapper(unittest.TestCase):
 
     def test_instability_calculation(self):
         """Valida o cálculo do índice de instabilidade."""
+        logger.info("⚡ Testando cálculo de instabilidade...")
         file = "core.py"
         data = {"dependencies": ["os", "sys"]} # Eferente = 2
         all_map = {
@@ -21,6 +27,7 @@ class TestConnectivityMapper(unittest.TestCase):
         self.assertAlmostEqual(res["instability"], 0.67, places=2)
         self.assertEqual(res["in"], 1)
         self.assertEqual(res["out"], 2)
+        logger.info("✅ Cálculo de instabilidade validado.")
 
 if __name__ == "__main__":
     unittest.main()

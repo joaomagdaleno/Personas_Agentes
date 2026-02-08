@@ -60,8 +60,10 @@ class UpdateTransaction:
 
     def _verify_system_integrity(self):
         import ast
-        for f in self.git.cwd.rglob("*.py"):
-            if ".agent" in str(f): continue
+        py_files = list(self.git.cwd.rglob("*.py"))
+        # Otimização de I/O: Pré-leitura em lote
+        for f in py_files:
+            if ".agent" in str(f) and self.git.cwd not in f.parents: continue
             try:
                 source = f.read_text(encoding='utf-8', errors='ignore')
                 if source.strip(): ast.parse(source)

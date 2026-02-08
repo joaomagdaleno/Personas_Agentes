@@ -1,4 +1,9 @@
-
+"""
+🧹 Limpeza Automática de Ofuscação Técnica.
+Este utilitário identifica e reconstrói strings ofuscadas via concatenação 
+(ex: "ev" + "al"), substituindo-as por literais claros. Garante a 
+transparência exigida pela Orquestração de Inteligência Artificial.
+"""
 import sys
 from pathlib import Path
 import ast

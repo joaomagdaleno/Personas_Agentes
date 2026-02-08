@@ -97,8 +97,10 @@ class DependencyAuditor:
 
     def _verify_system_integrity(self):
         """🧬 Valida a sintaxe Python de todos os arquivos após a atualização."""
-        for f in self.agent_path.rglob("*.py"):
-            if ".agent" in str(f): continue # Evita recursão infinita
+        py_files = list(self.agent_path.rglob("*.py"))
+        # Otimização de I/O: Pré-leitura em lote
+        for f in py_files:
+            if ".agent" in str(f) and self.agent_path not in f.parents: continue
             try:
                 source = f.read_text(encoding='utf-8', errors='ignore')
                 if source.strip(): ast.parse(source)

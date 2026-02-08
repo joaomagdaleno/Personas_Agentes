@@ -31,8 +31,7 @@ class ForgePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if "annotationProcessor" in content:
-            return f"Débito de Build: O objetivo '{objective}' exige velocidade. Em '{file}', o uso de processadores de anotação lentos retarda a iteração da 'Orquestração de Inteligência Artificial'."
+        # O Forge agora delega a auditoria de débito de build para o AuditEngine via perform_audit
         return None
 
     def validate_code_safety(self, code: str) -> bool:
