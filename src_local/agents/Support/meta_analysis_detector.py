@@ -20,8 +20,12 @@ class MetaAnalysisDetector:
         """🚀 Detecta se o nó é uma lógica de meta-análise (ex: isinstance(node, ast.Global))."""
         if not isinstance(node, ast.Call): return False
         
-        if self._is_isinstance_ast_check(node): return True
-        if self._is_regex_call(node): return True
+        if self._is_isinstance_ast_check(node):
+            logger.debug(f"Detector de Meta-Análise: Detectado check de AST (isinstance) na linha {getattr(node, 'lineno', 'unknown')}")
+            return True
+        if self._is_regex_call(node):
+            logger.debug(f"Detector de Meta-Análise: Detectado uso de regex na linha {getattr(node, 'lineno', 'unknown')}")
+            return True
         
         return False
 

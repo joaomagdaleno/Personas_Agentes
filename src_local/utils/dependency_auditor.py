@@ -4,6 +4,7 @@ import time
 import ast
 import json
 from pathlib import Path
+from src_local.utils.logging_config import log_performance
 
 logger = logging.getLogger("BulletProofSync_v9")
 
@@ -25,6 +26,7 @@ class DependencyAuditor:
 
     def sync_submodule(self):
         """Orquestra: Validação -> Boot -> Lock -> Sync -> Verify."""
+        start_t = time.time()
         if not self._validate_pre_conditions(): return False
         
         self._acquire_lock()
@@ -36,7 +38,9 @@ class DependencyAuditor:
 
             initial_hash = self.git.get_head_hash()
             from src_local.utils.update_transaction import UpdateTransaction
-            return UpdateTransaction(self.git, self.project_root).execute(initial_hash)
+            res = UpdateTransaction(self.git, self.project_root).execute(initial_hash)
+            log_performance(logger, start_t, "📦 [DependencyAuditor] Sincronização de submódulos", level=logging.INFO)
+            return res
         finally:
             self._release_lock()
 
@@ -50,12 +54,15 @@ class DependencyAuditor:
     def _is_locked(self):
         if not self.lock_file.exists(): return False
         
-        # Auditoria de timeout soberana
-        lock_age = time.time() - self.lock_file.stat().st_mtime
-        if lock_age > 600:
+        # Sincronia de Lock Soberana (Standardized timeout)
+        from datetime import datetime, timedelta
+        mtime = datetime.fromtimestamp(self.lock_file.stat().st_mtime)
+        if (datetime.now() - mtime) > timedelta(minutes=10):
             self._release_lock()
             return False
         return True
+
+
 
     def _acquire_lock(self):
         self.lock_file.parent.mkdir(parents=True, exist_ok=True)
