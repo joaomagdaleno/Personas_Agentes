@@ -48,11 +48,11 @@ class SemanticContextAnalyst:
             for op in node.ops:
                 if isinstance(op, ast.In):
                     left = node.left
-                    if isinstance(left, (ast.Constant, ast.Str)):
-                        val = left.value if isinstance(left, ast.Constant) else left.s
-                        if isinstance(val, str) and any(kw in val for kw in TRIVIAL_COMPARE_KEYWORDS):
+                    if isinstance(left, ast.Constant) and isinstance(left.value, str):
+                        if any(kw in left.value for kw in TRIVIAL_COMPARE_KEYWORDS):
                             return True
         return False
+
 
     def _is_inside_test_method(self, target_node, tree):
         """Identifica se o nó está dentro de uma função ou classe de teste."""

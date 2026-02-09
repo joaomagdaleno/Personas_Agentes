@@ -47,9 +47,12 @@ class LogicAuditor:
     def _audit_nodes(self, nodes, tree, content, line_no, risk_type, ignore_test):
         """Itera sobre nós da linha para classificar segurança."""
         for node in nodes:
-            intent = self.analyst.classify_intent(node, tree)
-            if intent == 'METADATA': return True, "Definição técnica (Metadata/Regra/Teste) validada como segura."
+            # Check the node itself and all its descendants
+            for sub_node in ast.walk(node):
+                intent = self.analyst.classify_intent(sub_node, tree)
+                if intent == 'METADATA': return True, "Definição técnica (Metadata/Regra/Teste) validada como segura."
 
+            intent = self.analyst.classify_intent(node, tree)
             if intent == 'OBSERVABILITY':
                 res, reason = self._audit_observability(node, tree, ignore_test)
                 if not res: return False, reason
@@ -65,6 +68,7 @@ class LogicAuditor:
             return True, "Palavra-chave detectada em texto/string, não em execução."
             
         return False, "Padrão de risco em contexto de execução real."
+
 
     def _audit_observability(self, node, tree, ignore_test):
         """Valida se um log contém telemetria manual que deve ser padronizada."""
