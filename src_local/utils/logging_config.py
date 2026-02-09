@@ -34,5 +34,11 @@ def configure_logging(level=logging.INFO):
 
 def setup_logging(level=logging.INFO): configure_logging(level)
 
+def log_performance(logger, start_time, message, level=logging.DEBUG):
+    """🛰️ Utilitário soberano para telemetria de performance padronizada."""
+    import time
+    duration = time.time() - start_time
+    logger.log(level, f"{message} in {duration:.4f}s.")
+
 if not logging.getLogger().handlers: configure_logging()
 

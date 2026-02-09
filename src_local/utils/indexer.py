@@ -64,9 +64,8 @@ class Indexer:
                 "classes": [node.name for node in ast.walk(tree) if isinstance(node, ast.ClassDef)],
                 "functions": [node.name for node in ast.walk(tree) if isinstance(node, ast.FunctionDef)]
             }
-            duration = time.time() - start_ast
-            if duration > 0.05:
-                logger.debug(f"⏱️ [Indexer] AST extraída em {path.name}: {duration:.4f}s")
+            from src_local.utils.logging_config import log_performance
+            log_performance(logger, start_ast, f"⏱️ [Indexer] AST extraída em {path.name}")
             return res
         except Exception as e:
             # Veto de Silenciamento: Reporta falha na decomposição para o log forense

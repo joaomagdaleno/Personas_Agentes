@@ -45,6 +45,6 @@ class MarkdownSanitizer:
                 res.append(line)
         
         sanitized = '\n'.join(res).strip() + '\n'
-        duration = time.time() - start_time
-        logger.debug(f"📝 Markdown Sanitized in {duration:.4f}s.")
+        from src_local.utils.logging_config import log_performance
+        log_performance(logger, start_time, "📝 Markdown Sanitized")
         return sanitized

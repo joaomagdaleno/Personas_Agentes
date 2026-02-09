@@ -49,7 +49,8 @@ def main():
     
     try:
         shutil.copy(report_path, local_report_path)
-        logger.info(f"✅ Auditoria de Território concluída em {time.time() - start_time:.2f}s.")
+        from src_local.utils.logging_config import log_performance
+        log_performance(logger, start_time, "✅ Auditoria de Território concluída", level=logging.INFO)
         logger.info(f"📄 Relatório Soberano consolidado em: {local_report_name}")
     except Exception as e:
         logger.error(f"⚠️ Falha ao mover relatório localmente: {e}")

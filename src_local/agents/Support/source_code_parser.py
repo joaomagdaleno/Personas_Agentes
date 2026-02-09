@@ -5,6 +5,7 @@ Função: Especialista em decompor sintaxe Python, Kotlin e Dart.
 """
 import ast
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +45,6 @@ class SourceCodeParser:
         📐 Cálculo de complexidade ciclomática via árvore AST.
         Mapeia a densidade de ramificações lógicas (if, for, while, except).
         """
-        import time
         start_comp = time.time()
         count = 1
         for node in ast.walk(tree):
@@ -53,9 +53,8 @@ class SourceCodeParser:
             elif isinstance(node, ast.BoolOp):
                 count += len(node.values) - 1
         
-        duration = time.time() - start_comp
-        if duration > 0.05:
-            logger.debug(f"⏱️ [SourceParser] Complexidade lenta: {duration:.4f}s")
+        from src_local.utils.logging_config import log_performance
+        log_performance(logger, start_comp, "⏱️ [SourceParser] Complexidade calculada")
             
         return count
 
@@ -64,7 +63,6 @@ class SourceCodeParser:
         🔗 Extração de dependências soberanas via AST.
         Mapeia todos os módulos importados para análise de acoplamento.
         """
-        import time
         start_imp = time.time()
         imports = []
         for node in ast.walk(tree):
@@ -73,9 +71,8 @@ class SourceCodeParser:
             elif isinstance(node, ast.ImportFrom) and node.module:
                 imports.append(node.module)
         
-        duration = time.time() - start_imp
-        if duration > 0.05:
-            logger.debug(f"⏱️ [SourceParser] Extração lenta: {duration:.4f}s")
+        from src_local.utils.logging_config import log_performance
+        log_performance(logger, start_imp, "⏱️ [SourceParser] Extração concluída")
             
         return list(set(imports))
 

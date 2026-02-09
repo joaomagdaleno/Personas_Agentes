@@ -35,11 +35,10 @@ class DiagnosticPipeline:
         # 3. Dedupe & Report
         final_findings = self._deduplicate(findings)
         res = self._finalize(ctx, internal_health, final_findings)
-        
-        duration = time.time() - start_time
-        logger.info(f"✅ Pipeline concluído em {duration:.2f}s.")
-        return res
 
+        from src_local.utils.logging_config import log_performance
+        log_performance(logger, start_time, "✅ Pipeline concluído", level=logging.INFO)
+        return res
     def _reset(self):
         self.orc.job_queue = []
         self.orc.metrics["all_findings"] = []

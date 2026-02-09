@@ -17,10 +17,14 @@ class MetricPersona(BaseActivePersona):
     def perform_audit(self) -> list:
         start_time = time.time()
         logger.info(f"[{self.name}] Validando Instrumentação de Telemetria...")
-        
-        audit_rules = [
+        results = self.find_patterns(('.py', '.dart', '.kt'), self.perform_audit_rules())
+        self._log_performance(start_time, len(results))
+        return results
+
+    def perform_audit_rules(self) -> list:
+        return [
             {
-                'regex': r"(?<!_log_performance\()time\.time\(\)\s*-\s*start_time", 
+                'regex': r"time\.time\(\)\s*-\s*\w+", 
                 'issue': 'Telemetria Manual: Use o utilitário _log_performance da Base.', 
                 'severity': 'low'
             },
@@ -30,10 +34,6 @@ class MetricPersona(BaseActivePersona):
                 'severity': 'medium'
             }
         ]
-        
-        results = self.find_patterns(('.py', '.dart', '.kt'), audit_rules)
-        self._log_performance(start_time, len(results))
-        return results
 
     def _reason_about_objective(self, objective, file, content):
         if "logger" not in content.lower():

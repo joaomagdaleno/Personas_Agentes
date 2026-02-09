@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import ast
 import logging
+import time
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -53,6 +54,7 @@ class BaseActivePersona(ABC):
         🔍 Varredura de padrões via AuditEngine delegado.
         Aplica filtros de veto e consciência de contexto para evitar falsos positivos.
         """
+        start_time = time.time()
         from src_local.agents.Support.audit_engine import AuditEngine
         engine = AuditEngine() # Fallback local se não injetado
         
@@ -62,6 +64,8 @@ class BaseActivePersona(ABC):
             content = self.read_project_file(file)
             if content:
                 issues.extend(engine.scan_content(file, content, patterns, self.context_data, self.name))
+        
+        self._log_performance(start_time, len(issues))
         return issues
 
     def analyze_logic(self, file_path):
@@ -95,9 +99,8 @@ class BaseActivePersona(ABC):
 
     def _log_performance(self, start_time, count):
         """🛰️ Utilitário soberano para telemetria de performance e volume de achados."""
-        import time
-        duration = time.time() - start_time
-        logger.info(f"{self.emoji} [{self.name}] Auditoria: {count} pontos em {duration:.4f}s.")
+        from src_local.utils.logging_config import log_performance
+        log_performance(logger, start_time, f"{self.emoji} [{self.name}] Auditoria: {count} pontos", level=logging.INFO)
 
     def read_project_file(self, rel_path):
         """💾 Lê arquivo via Pathlib (Modern API) com garantia de encoding UTF-8."""

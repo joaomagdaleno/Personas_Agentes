@@ -18,7 +18,7 @@ class SafetyHeuristics:
             'brittle_pattern', 'silent_pattern', 'target_pattern', 'fragilities',
             'part1', 'part2', 'part3', 'danger_kw', 'rules_def', 'reg_def',
             'keywords', 'tech_terms', 'financial_terms', 'forbidden', 'suggestions',
-            'identities'
+            'identities', 'log_performance', '_log_performance', '_log_perf'
         ]
 
     def is_dangerous_call(self, node):
@@ -41,9 +41,15 @@ class SafetyHeuristics:
 
     def is_inside_rule_definition(self, target_node, tree):
         """🧠 Análise Semântica: Verifica se o nó faz parte de uma estrutura de dados de metadados técnicos."""
-        # Caminha de baixo para cima na árvore para entender a intenção
+        # 1. Checa se o nó está dentro de uma função de infraestrutura técnica
         parent_chain = self.utils.get_parent_chain(target_node, tree)
-        
+        for parent in parent_chain:
+            if isinstance(parent, ast.FunctionDef) and parent.name in ['log_performance', '_log_performance', '_log_perf']:
+                return True
+            if isinstance(parent, ast.Assign) and self._is_assignment_to_safe_metadata(parent):
+                return True
+
+        # 2. Caminha de baixo para cima na árvore para entender a intenção
         for parent in parent_chain:
             # Se chegamos em uma atribuição, checamos o nome da variável alvo
             if isinstance(parent, ast.Assign):

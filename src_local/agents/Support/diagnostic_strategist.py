@@ -1,4 +1,5 @@
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -14,7 +15,6 @@ class DiagnosticStrategist:
         🎯 Mapeia incidências para evitar redundância na Rodada de Verificação.
         Cria um plano de batalha otimizado focando apenas em componentes suspeitos.
         """
-        import time
         start_plan = time.time()
         audit_map = {}
         for f in initial_findings:
@@ -24,7 +24,8 @@ class DiagnosticStrategist:
                 if file not in audit_map: audit_map[file] = set()
                 audit_map[file].add(agent_name)
         
-        logger.debug(f"⏱️ [Strategist] Plano alvo gerado em {time.time() - start_plan:.4f}s")
+        from src_local.utils.logging_config import log_performance
+        log_performance(logger, start_plan, "⏱️ [Strategist] Plano alvo gerado")
         return audit_map
 
     def calculate_efficiency(self, total_files: int, targeted_files: int) -> dict:

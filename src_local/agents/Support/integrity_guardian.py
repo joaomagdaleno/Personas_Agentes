@@ -6,70 +6,60 @@ logger = logging.getLogger(__name__)
 class IntegrityGuardian:
     """
     🛡️ Guardião de Integridade PhD.
-    Especialista em detectar fragilidades estruturais, riscos de segurança
-    e silenciamento de erros que comprometem a soberania do sistema.
+    Especialista em entender a intencionalidade por trás de fragilidades estruturais.
+    Não ignora padrões; decifra o contexto para validar a soberania.
     """
     
     def detect_vulnerabilities(self, content: str, component_type: str, ignore_test_context=False) -> dict:
         """
         🕵️ Analisa o conteúdo em busca de vulnerabilidades e antipadrões.
-        Diferencia comportamentos aceitáveis em testes de falhas em produção.
+        Usa o LogicAuditor para entender se o uso é uma definição técnica ou um risco real.
         """
-        logger.debug(f"Guarding integrity for {component_type} (ignore_test={ignore_test_context})")
         issues = {"brittle": False, "silent_error": False}
         
-        # 1. Veto de Autoconsciência
-        if self._should_veto_file(content):
+        # Bypass automático para testes (a menos que forçado)
+        if component_type == "TEST" and not ignore_test_context:
             return issues
-
+        
+        # Veto de Autoconsciência: Agentes são ferramentas técnicas por natureza.
+        # No entanto, ainda auditamos a lógica interna para garantir que não haja erros silenciosos.
+        
         from src_local.agents.Support.logic_auditor import LogicAuditor
         logic_auditor = LogicAuditor()
 
-        # 2. Fragilidade Lógica
-        if component_type != "TEST" or ignore_test_context:
-            self._scan_for_brittle_code(content, issues, logic_auditor, ignore_test_context)
+        # 1. Fragilidade Lógica (Padrão Amplo: Captura tudo para análise contextual)
+        self._analyze_brittle_context(content, issues, logic_auditor, ignore_test_context)
         
-        # 3. Silenciamento de Erros
-        if component_type != "TEST" or ignore_test_context:
-            self._scan_for_silent_errors(content, issues, logic_auditor, ignore_test_context)
+        # 2. Silenciamento de Erros
+        self._analyze_error_silencing(content, issues, logic_auditor, ignore_test_context)
                     
         return issues
 
-    def _should_veto_file(self, content):
-        """Identifica se o arquivo é puramente técnico e deve ser ignorado."""
-        content_lower = content.lower()
-        veto_patterns = [
-            "brittle_pattern =", "silent_pattern =", "rules =", "audit_rules =", 
-            "risk_type =", "audit_rules", "regex':", 'regex":', "navigator", 
-            "persona", "auditengine", "integrityguardian", "logicauditor", 
-            "ast.call", "diagnostic", "script",
-            "target_pattern =", "suggestions.append", "imprecision_pattern ="
-        ]
-        return any(p in content_lower for p in veto_patterns)
-
-    def _scan_for_brittle_code(self, content, issues, logic_auditor, ignore_test_context):
-        brittle_pattern = r"(?<!['\"_])\b(eval|exec|global|shell=True)\b"
-        match = re.search(brittle_pattern, content, re.MULTILINE)
-        if match:
+    def _analyze_brittle_context(self, content, issues, logic_auditor, ignore_test_context):
+        # Captura ampla de keywords sensíveis
+        brittle_pattern = r"\b(eval|exec|global|shell=True)\b"
+        for match in re.finditer(brittle_pattern, content):
             line_no = content[:match.start()].count('\n') + 1
-            risk_type = "shell" if "shell=True" in match.group(0) else \
-                        "global" if "global" in match.group(0) else "eval"
             
-            is_safe, reason = logic_auditor.is_interaction_safe(content, line_no, risk_type, ignore_test_context=ignore_test_context)
+            # Pergunta ao auditor: Qual o contexto/intencionalidade desta linha?
+            is_safe, reason = logic_auditor.is_interaction_safe(content, line_no, "brittle", ignore_test_context=ignore_test_context)
+            
             if not is_safe:
-                logger.warning(f"Brittle code detected (Type: {risk_type}) at line {line_no}")
+                # Se não for seguro (ex: lógica de produção sem justificativa técnica), marca o problema
+                logger.warning(f"Entropia detectada: {match.group()} em contexto de risco na linha {line_no}. Motivo: {reason}")
                 issues["brittle"] = True
+                break # Uma falha já compromete o arquivo
 
-    def _scan_for_silent_errors(self, content, issues, logic_auditor, ignore_test_context):
+    def _analyze_error_silencing(self, content, issues, logic_auditor, ignore_test_context):
         silent_pattern = 'except.*:\\s*pass'
         match = re.search(silent_pattern, content)
         if match:
             line_no = content[:match.start()].count('\n') + 1
             is_safe, reason = logic_auditor.is_interaction_safe(content, line_no, "except", ignore_test_context=ignore_test_context)
             if not is_safe:
-                # Só marca como erro se não houver telemetria ou log no mesmo arquivo
+                # Entende se há telemetria compensatória
                 if not any(kw in content for kw in ['logger.err', 'logger.excep', "telemetry"]):
-                    logger.warning(f"Silent error detected at line {line_no}")
+                    logger.warning(f"Cegueira operacional: Erro silenciado na linha {line_no} sem telemetria alternativa.")
                     issues["silent_error"] = True
 
     def is_relevant_file(self, file: str, stack: str) -> bool:

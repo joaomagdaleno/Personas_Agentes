@@ -60,8 +60,8 @@ class PersonaManager:
                 else:
                     logger.warning(f"⚠️ PhD Fantasma: {name} possui identidade mas o arquivo {file_path.name} está ausente.")
             
-            duration = time.time() - start_time
-            logger.info(f"✨ Censo concluído: {validated_count} PhDs operacionais em {duration:.4f}s.")
+            from src_local.utils.logging_config import log_performance
+            log_performance(logger, start_time, f"✨ Censo concluído: {validated_count} PhDs operacionais", level=logging.INFO)
             return validated_count
         except Exception as e:
             logger.error(f"🚨 Falha crítica durante validação de censo: {e}", exc_info=True)

@@ -1,6 +1,7 @@
 from src_local.agents.base import BaseActivePersona
 import logging
 import time
+import re
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -32,7 +33,6 @@ class VoyagerPersona(BaseActivePersona):
         """
         Cura Física Determinística: Reescreve arquivos para remover silenciamentos.
         """
-        import re
         healed_count = 0
         
         # Obfuscated keywords
@@ -71,7 +71,7 @@ class VoyagerPersona(BaseActivePersona):
                     logger.info(f"✨ [Voyager] Arquivo '{spot}' foi curado fisicamente.")
                     healed_count += 1
             except Exception as e:
-                logger.error(f"❌ Falha ao curar {spot}: {e}")
+                logger.error(f"❌ Falha ao curar {spot}: {e}", exc_info=True)
         
         return healed_count
 

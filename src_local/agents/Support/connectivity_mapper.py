@@ -1,4 +1,5 @@
 import logging
+import time
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -15,7 +16,6 @@ class ConnectivityMapper:
         📐 Calcula métricas de acoplamento aferente (entrada) e eferente (saída).
         Retorna o índice de instabilidade (0 a 1) para o componente.
         """
-        import time
         start_map = time.time()
         eferent = len(data.get("dependencies", []))
         afferent = 0
@@ -28,9 +28,8 @@ class ConnectivityMapper:
         
         instability = eferent / (afferent + eferent) if (afferent + eferent) > 0 else 0
         
-        duration = time.time() - start_map
-        if duration > 0.1:
-            logger.debug(f"⏱️ [Connectivity] Mapeamento lento em {file_path}: {duration:.4f}s")
+        from src_local.utils.logging_config import log_performance
+        log_performance(logger, start_map, f"⏱️ [Connectivity] Mapeamento em {file_path}")
             
         return {
             "in": afferent,

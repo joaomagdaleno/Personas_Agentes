@@ -48,7 +48,9 @@ class DependencyAuditor:
 
     def _is_locked(self):
         if not self.lock_file.exists(): return False
-        if time.time() - self.lock_file.stat().st_mtime > 600:
+        import time
+        # Verificação de tempo absoluta para integridade de bloqueio
+        if (time.time() - self.lock_file.stat().st_mtime) > 600:
             self._release_lock()
             return False
         return True

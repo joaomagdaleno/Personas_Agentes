@@ -1,4 +1,5 @@
 import logging
+import time
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -25,7 +26,6 @@ class StructuralAnalyst:
         🧬 Coordena a decomposição técnica via delegação para o SourceCodeParser.
         Injeta telemetria de processamento para garantir observabilidade PhD.
         """
-        import time
         start_t = time.time()
         res = {"complexity": 1, "dependencies": [], "functions": [], "classes": []}
         
@@ -44,9 +44,8 @@ class StructuralAnalyst:
                 "dependencies": d["imports"], "functions": d["functions"], "classes": d["classes"]
             }
             
-        duration = time.time() - start_t
-        if duration > 0.05:
-            logger.debug(f"⏱️ [StructuralAnalyst] Decomposição lenta em {filename}: {duration:.4f}s")
+        from src_local.utils.logging_config import log_performance
+        log_performance(logger, start_t, f"⏱️ [StructuralAnalyst] Decomposição em {filename}")
             
         return res
 
