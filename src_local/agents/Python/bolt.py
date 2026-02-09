@@ -1,6 +1,7 @@
 from src_local.agents.base import BaseActivePersona
 import logging
 import time
+import re
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +25,6 @@ class BoltPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        import re
         busy_wait_pattern = 'while True:\\s+pass'
         if re.search(busy_wait_pattern, content):
             return f"Gargalo de Runtime: O objetivo '{objective}' exige alta disponibilidade. Loops de espera ativa em '{file}' paralisam a 'Orquestração de Inteligência Artificial'."

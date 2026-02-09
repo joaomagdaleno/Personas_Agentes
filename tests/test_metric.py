@@ -17,10 +17,10 @@ class TestMetric(unittest.TestCase):
         logger.info("⚡ Testando discriminação de intenção semântica...")
         
         # Caso 1: Telemetria manual em Log (Intenção: OBSERVABILIDADE -> Sugestão STRATEGIC)
-        log_code = "logger.info(time.time() - start_time)"
+        log_code = "import time\nlogger.info(time.time() - start)"
         
-        # Caso 2: Telemetria manual em Lógica (Intenção: LOGIC -> Risco MEDIUM)
-        logic_code = "time_diff = time.time() - start_time"
+        # Caso 2: Telemetria manual em Lógica (Intenção: LOGIC -> Sugestão STRATEGIC para padronização)
+        logic_code = "import time\nduration = time.time() - start"
         
         self.agent.set_context({
             "identity": {},

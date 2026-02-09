@@ -39,7 +39,7 @@ class TestCoreDepth(unittest.TestCase):
         logger.info("⚡ Testando análise profunda do motor...")
         file = self.test_root / "logic.py"
         # Usamos eval direto aqui para garantir que o motor REALMENTE detecta
-        file.write_text("import os\ndef complex():\n    if True: pass\n    try: eval('1')\n    except: pass")
+        file.write_text("import os\ndef complex():\n    if True:\n        print('logic')\n    try: eval('1')\n    except Exception: pass")
         
         self.engine._register_file(file, ignore_test_context=True)
         info = self.engine.map.get("logic.py")

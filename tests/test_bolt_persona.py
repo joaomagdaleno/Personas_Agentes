@@ -15,7 +15,8 @@ class TestBoltPersona(unittest.TestCase):
     def test_performance_audit_logic(self):
         """Valida a detecção de gargalos de performance."""
         logger.info("⚡ Testando lógica de auditoria de performance...")
-        content = "while True: pass"
+        # Simula um loop de espera ativa puro (Busy wait)
+        content = "while True:\n    pass"
         
         self.agent.set_context({
             "identity": {},

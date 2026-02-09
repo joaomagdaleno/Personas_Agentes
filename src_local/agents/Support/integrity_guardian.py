@@ -64,9 +64,13 @@ class IntegrityGuardian:
 
     def is_relevant_file(self, file: str, stack: str) -> bool:
         """Determina se o arquivo pertence à stack ou é config global."""
-        if stack == "Universal": return True
-        ext_map = {"Flutter": ".dart", "Kotlin": ".kt", "Python": ".py"}
-        return file.endswith(ext_map.get(stack, "")) or file.endswith((".yaml", ".xml", ".json", ".gradle", ".kts"))
+        try:
+            if stack == "Universal": return True
+            ext_map = {"Flutter": ".dart", "Kotlin": ".kt", "Python": ".py"}
+            return file.endswith(ext_map.get(stack, "")) or file.endswith((".yaml", ".xml", ".json", ".gradle", ".kts"))
+        except Exception as e:
+            logger.error(f"Erro ao validar relevância de arquivo: {e}", exc_info=True)
+            return False
 
     def get_audit_mission(self, dna: dict, objective: str = None) -> str:
         """Define o objetivo estratégico da auditoria."""

@@ -22,26 +22,40 @@ def verify_markdown_compliance(path):
         
         if in_cb: continue
         
-        # MD012 (Blanks)
-        if not stripped and i > 0 and not lines[i-1].strip():
+        # Regra MD012: Linhas em branco consecutivas
+        if _is_consecutive_blank(lines, i):
             errors.append(f"MD012 at {i+1}")
             
-        # Headings (MD022, 024, 026)
+        # Regras de Headings
         if stripped.startswith('#'):
-            # Padding
-            if i > 0 and lines[i-1].strip(): 
-                errors.append(f"MD022 Above at {i+1}")
-            if i < len(lines)-1 and lines[i+1].strip(): 
-                errors.append(f"MD022 Below at {i+1}")
-            # Punctuation
-            if re.search(r'[\.\!\?\:]$', stripped): 
-                errors.append(f"MD026 at {i+1}")
-            # Duplicate
-            if stripped in headings: 
-                errors.append(f"MD024 Duplicate \"{stripped}\"")
+            errors.extend(_check_heading_rules(lines, i, stripped, headings))
             headings[stripped] = i
             
     return errors
+
+def _is_consecutive_blank(lines, i):
+    """Checa se há mais de uma linha em branco seguida."""
+    if i == 0: return False
+    return not lines[i].strip() and not lines[i-1].strip()
+
+def _check_heading_rules(lines, i, text, headings):
+    """Agrupa validações MD022, MD024 e MD026 para headings."""
+    errs = []
+    # MD022: Espaçamento ao redor de headings
+    if i > 0 and lines[i-1].strip(): 
+        errs.append(f"MD022 Above at {i+1}")
+    if i < len(lines)-1 and lines[i+1].strip(): 
+        errs.append(f"MD022 Below at {i+1}")
+    
+    # MD026: Pontuação proibida no final
+    if re.search(r'[\.\!\?\:]$', text): 
+        errs.append(f"MD026 at {i+1}")
+        
+    # MD024: Heading duplicado no mesmo nível
+    if text in headings: 
+        errs.append(f"MD024 Duplicate \"{text}\"")
+        
+    return errs
 
 def main():
     logging.basicConfig(level=logging.INFO)

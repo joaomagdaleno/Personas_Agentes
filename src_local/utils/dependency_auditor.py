@@ -2,6 +2,7 @@ import subprocess
 import logging
 import time
 import ast
+import json
 from pathlib import Path
 
 logger = logging.getLogger("BulletProofSync_v9")
@@ -48,9 +49,10 @@ class DependencyAuditor:
 
     def _is_locked(self):
         if not self.lock_file.exists(): return False
-        import time
-        # Verificação de tempo absoluta para integridade de bloqueio
-        if (time.time() - self.lock_file.stat().st_mtime) > 600:
+        
+        # Auditoria de timeout soberana
+        lock_age = time.time() - self.lock_file.stat().st_mtime
+        if lock_age > 600:
             self._release_lock()
             return False
         return True
@@ -67,17 +69,22 @@ class DependencyAuditor:
         if not (self.agent_path / ".git").exists(): self._ensure_initialized()
 
         try:
-            remote = self.git.discover_remote()
-            if not remote: return []
-            
-            self.git.run(["fetch", remote], check=False)
-            topo = self._get_topology(remote)
-            delta = self.git.get_commit_count(f"{topo['active_ref']}..{remote}/{topo['tracking_ref']}")
-            
-            if delta > 0:
-                return [{"file": ".agent/skills", "issue": f"Delta: {delta} commits", "severity": "CRITICAL", "context": "DependencyAuditor"}]
+            return self._get_submodule_delta()
         except Exception as e:
             logger.error(f"⚠️ Erro ao verificar status do submódulo: {e}")
+        return []
+
+    def _get_submodule_delta(self):
+        """Calcula a diferença de commits entre local e remoto."""
+        remote = self.git.discover_remote()
+        if not remote: return []
+        
+        self.git.run(["fetch", remote], check=False)
+        topo = self._get_topology(remote)
+        delta = self.git.get_commit_count(f"{topo['active_ref']}..{remote}/{topo['tracking_ref']}")
+        
+        if delta > 0:
+            return [{"file": ".agent/skills", "issue": f"Delta: {delta} commits", "severity": "CRITICAL", "context": "DependencyAuditor"}]
         return []
 
     def _verify_network_health(self):
@@ -107,5 +114,5 @@ class DependencyAuditor:
             try:
                 source = f.read_text(encoding='utf-8', errors='ignore')
                 if source.strip(): ast.parse(source)
-            except Exception:
-                logger.error(f"⚠️ Integridade violada em {f.name}")
+            except Exception as e:
+                logger.error(f"⚠️ Integridade violada em {f.name}: {e}", exc_info=True)

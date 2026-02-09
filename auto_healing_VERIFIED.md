@@ -11,29 +11,29 @@
 | Métrica | Valor | Status |
 | :--- | :--- | :--- |
 | **Índice de Saúde** | 76% | ⚠️ |
-| **Total de Alertas** | 36 | Monitorado |
-| **Sincronia** | 21:26:30 | Ativa |
+| **Total de Alertas** | 37 | Monitorado |
+| **Sincronia** | 22:10:35 | Ativa |
 
 ## 🩺 SINAIS VITAIS DO PRODUTO
 
 | Métrica | Status | Impacto |
 | :--- | :--- | :--- |
 | **Pontos Cegos** | 0 Arquivos | Seguro |
-| **Fragilidades** | 13 Pontos | Risco de Colapso |
+| **Fragilidades** | 5 Pontos | Risco de Colapso |
 | **Paridade de Stack** | Sincronizada | Nível de Maturidade |
 
 ## 🌪️ MAPA DE ENTROPIA & ACOPLAMENTO
 
 | Alvo | Complexidade | Instabilidade |
 | :--- | :---: | :---: |
-| `src_local/agents/Support/telemetry_intent_judge.py` | 22 | 0.5 |
-| `src_local/agents/Support/safety_heuristics.py` | 21 | 0.6 |
+| `src_local/agents/Support/safety_heuristics.py` | 26 | 0.5 |
+| `src_local/agents/Support/telemetry_intent_judge.py` | 23 | 0.5 |
+| `src_local/agents/Support/logic_auditor.py` | 22 | 0.69 |
+| `src_local/agents/Support/obfuscation_hunter.py` | 20 | 0.4 |
 | `scripts/verify_report_lint.py` | 19 | 0.75 |
-| `src_local/utils/context_engine.py` | 19 | 0.47 |
-| `src_local/utils/dependency_auditor.py` | 19 | 0.58 |
-| `src_local/agents/Support/obfuscation_hunter.py` | 19 | 0.4 |
+| `src_local/agents/base.py` | 19 | 0.09 |
+| `src_local/utils/dependency_auditor.py` | 19 | 0.62 |
 | `src_local/agents/Support/veto_rules.py` | 19 | 0.4 |
-| `src_local/agents/base.py` | 18 | 0.09 |
 | `src_local/agents/Support/battle_plan_formatter.py` | 18 | 0.33 |
 | `src_local/agents/Support/ast_navigator.py` | 17 | 0.33 |
 
@@ -41,18 +41,19 @@
 
 | Módulo | Entropia | Asserções | Status |
 | :--- | :---: | :---: | :--- |
-| `src_local/agents/Support/telemetry_intent_judge.py` | 22 | 1 | 🔴 FRÁGIL |
-| `src_local/agents/Support/safety_heuristics.py` | 21 | 1 | 🔴 FRÁGIL |
+| `src_local/agents/Support/safety_heuristics.py` | 26 | 1 | 🔴 FRÁGIL |
+| `src_local/agents/Support/telemetry_intent_judge.py` | 23 | 1 | 🔴 FRÁGIL |
+| `src_local/agents/Support/logic_auditor.py` | 22 | 4 | 🔴 FRÁGIL |
+| `src_local/agents/Support/obfuscation_hunter.py` | 20 | 6 | 🟢 PROFUNDO |
 | `scripts/verify_report_lint.py` | 19 | 1 | 🔴 FRÁGIL |
-| `src_local/utils/context_engine.py` | 19 | 21 | 🟢 PROFUNDO |
+| `src_local/agents/base.py` | 19 | 11 | 🟢 PROFUNDO |
 | `src_local/utils/dependency_auditor.py` | 19 | 10 | 🟢 PROFUNDO |
-| `src_local/agents/Support/obfuscation_hunter.py` | 19 | 6 | 🟢 PROFUNDO |
 | `src_local/agents/Support/veto_rules.py` | 19 | 1 | 🔴 FRÁGIL |
-| `src_local/agents/base.py` | 18 | 11 | 🟢 PROFUNDO |
 | `src_local/agents/Support/battle_plan_formatter.py` | 18 | 9 | 🟢 PROFUNDO |
 | `src_local/agents/Support/ast_navigator.py` | 17 | 2 | 🔴 FRÁGIL |
 | `src_local/agents/Support/line_veto.py` | 17 | 10 | 🟢 PROFUNDO |
 | `scripts/cleanup_obfuscation.py` | 16 | 1 | 🔴 FRÁGIL |
+| `src_local/utils/context_engine.py` | 16 | 21 | 🟢 PROFUNDO |
 | `src_local/core/orchestrator.py` | 15 | 9 | 🟢 PROFUNDO |
 | `src_local/core/validator.py` | 15 | 3 | 🟢 PROFUNDO |
 | `src_local/agents/Support/audit_engine.py` | 15 | 3 | 🟢 PROFUNDO |
@@ -66,13 +67,12 @@
 | `src_local/agents/Python/voyager.py` | 12 | 2 | 🔴 FRÁGIL |
 | `src_local/agents/Support/component_classifier.py` | 12 | 7 | 🟢 PROFUNDO |
 | `src_local/agents/Support/health_synthesizer.py` | 12 | 4 | 🟢 PROFUNDO |
-| `src_local/agents/Support/logic_auditor.py` | 12 | 4 | 🟢 PROFUNDO |
+| `src_local/agents/Support/integrity_guardian.py` | 12 | 1 | 🔴 FRÁGIL |
 | `src_local/agents/Support/quality_analyst.py` | 12 | 1 | 🔴 FRÁGIL |
 | `src_local/agents/Support/report_formatter.py` | 12 | 1 | 🔴 FRÁGIL |
 | `src_local/core/task_orchestrator.py` | 11 | 1 | 🔴 FRÁGIL |
 | `src_local/interface/gui.py` | 11 | 3 | 🟢 PROFUNDO |
 | `src_local/utils/file_system_scanner.py` | 11 | 1 | 🔴 FRÁGIL |
-| `src_local/agents/Support/integrity_guardian.py` | 11 | 1 | 🔴 FRÁGIL |
 | `src_local/utils/analysis_engine_phd.py` | 10 | 1 | 🔴 FRÁGIL |
 | `src_local/utils/maintenance_engine_phd.py` | 10 | 1 | 🔴 FRÁGIL |
 | `src_local/utils/persona_loader.py` | 10 | 2 | 🟢 PROFUNDO |
@@ -200,15 +200,63 @@
 
 | Severidade | Quantidade |
 | :--- | :---: |
-| STRATEGIC | 36 |
+| HIGH | 2 |
+| LOW | 1 |
+| STRATEGIC | 34 |
 
 ---
+
+## 🚩 NÍVEL: HIGH
+
+### 📂 Alvo: `src_local/agents/Support/logic_auditor.py` [HIGH]
+
+#### 🔴 Item 99: Violação: Uso de estado global detectado [ID: src_local/agents/Support/logic_auditor_py_99]
+
+- **Evidência:**
+
+```kotlin
+if risk_type == "brittle" and line_no <= len(lines) and "global" in lines[line_no-1]:
+            if isinstance(node, ast.Global):
+                return False, "Uso de estado global detectado. [Severity: HIGH]"
+            return None, None
+```
+
+- **Diretriz:** Padrão soberano de high
+
+#### 🔴 Item 99: Violação: Uso de estado global [ID: src_local/agents/Support/logic_auditor_py_99]
+
+- **Evidência:**
+
+```kotlin
+if risk_type == "brittle" and line_no <= len(lines) and "global" in lines[line_no-1]:
+            if isinstance(node, ast.Global):
+                return False, "Uso de estado global detectado. [Severity: HIGH]"
+            return None, None
+```
+
+- **Diretriz:** Padrão soberano de high
+
+## 🚩 NÍVEL: LOW
+
+### 📂 Alvo: `src_local/agents/Support/maturity_evaluator.py` [LOW]
+
+#### 🔴 Item 19: Telemetria Manual: Use o utilitário _log_performance da Base [ID: src_local/agents/Support/maturity_evaluator_py_19]
+
+- **Evidência:**
+
+```kotlin
+"""Reporta a evolução técnica usando detecção por presença de padrões core."""
+        evidences = {
+            "has_telemetry": "time.time()" in content or "_log_performance" in content,
+            "has_reasoning": "_reason_about_objective" in content,
+            "has_pathlib": "Path(" in content or "pathlib" in content,
+```
+
+- **Diretriz:** Padrão soberano de low
 
 ## 🚩 NÍVEL: STRATEGIC
 
 ### 📂 Alvo: `DNA` [STRATEGIC]
-
-- **Diretriz Estratégica:** Gargalo de Runtime: O objetivo 'Validar integridade ['Python']' exige alta disponibilidade. Loops de espera ativa em 'tests/test_bolt_persona.py' paralisam a 'Orquestração de Inteligência Artificial'
 
 - **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_core_depth.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
 
@@ -229,6 +277,10 @@
 - **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Support/ast_navigator.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível
 
 - **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Support/audit_engine.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível
+
+- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Support/logic_auditor.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível
+
+- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Support/safety_heuristics.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível
 
 - **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Support/telemetry_intent_judge.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível
 
@@ -270,68 +322,9 @@
 
 - **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/Support/silent_error_detector.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
 
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/Support/telemetry_intent_judge.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
 - **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/Support/test_runner.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
-
-### 📂 Alvo: `src_local/core/compiler.py` [STRATEGIC]
-
-#### 🔴 Item 34: Violação: Uso de estado global detectado [ID: src_local/core/compiler_py_34]
-
-- **Evidência:**
-
-```kotlin
-a prontidão técnica de cada agente.
-        """
-        logger.info("🚀 Sincronizando censo global de PhDs...")
-
-        try:
-```
-
-- **Diretriz:** Padrão soberano de strategic
-
-#### 🔴 Item 34: Violação: Uso de estado global [ID: src_local/core/compiler_py_34]
-
-- **Evidência:**
-
-```kotlin
-a prontidão técnica de cada agente.
-        """
-        logger.info("🚀 Sincronizando censo global de PhDs...")
-
-        try:
-```
-
-- **Diretriz:** Padrão soberano de strategic
-
-### 📂 Alvo: `src_local/utils/dependency_auditor.py` [STRATEGIC]
-
-#### 🔴 Item 53: Telemetria Manual: Use o utilitário _log_performance da Base [ID: src_local/utils/dependency_auditor_py_53]
-
-- **Evidência:**
-
-```kotlin
-import time
-        # Verificação de tempo absoluta para integridade de bloqueio
-        if (time.time() - self.lock_file.stat().st_mtime) > 600:
-            self._release_lock()
-            return False
-```
-
-- **Diretriz:** Padrão soberano de strategic
-
-### 📂 Alvo: `src_local/utils/logging_config.py` [STRATEGIC]
-
-#### 🔴 Item 40: Telemetria Manual: Use o utilitário _log_performance da Base [ID: src_local/utils/logging_config_py_40]
-
-- **Evidência:**
-
-```kotlin
-"""🛰️ Utilitário soberano para telemetria de performance padronizada."""
-    import time
-    duration = time.time() - start_time
-    logger.log(level, f"{message} in {duration:.4f}s.")
-```
-
-- **Diretriz:** Padrão soberano de strategic
 
 ## 💀 Risco Existencial
 

@@ -9,40 +9,29 @@ logger = logging.getLogger(__name__)
 class ContextEngine:
     """
     🧠 Cérebro Semântico PhD.
-    O Orquestrador de metadados responsável por mapear a topologia do projeto, 
-    identificar o DNA técnico e delegar a inteligência de análise para Agentes de Suporte.
+    O Orquestrador de metadados responsável por mapear a topologia do projeto.
     """
     
     def __init__(self, project_root, support_tools=None):
-        """
-        🏗️ Inicializa o motor de contexto.
-        Injeta ferramentas de análise estrutural, proteção e mapeamento.
-        """
         self.project_root = Path(project_root)
         self.map, self.call_graph, self.project_identity = {}, {}, {}
         self.dna_profiler = DNAProfiler()
         self.coverage_auditor = CoverageAuditor()
-        self.all_files_index = [] # Inicialização segura
+        self.all_files_index = []
         
         if support_tools:
-            self.analyst = support_tools["analyst"]
-            self.guardian = support_tools["guardian"]
-            self.mapper = support_tools["mapper"]
-            self.parity_analyst = support_tools["parity"]
+            self._inject_support(support_tools)
         else:
             self._initialize_support_tools()
 
+    def _inject_support(self, tools):
+        self.analyst, self.guardian = tools["analyst"], tools["guardian"]
+        self.mapper, self.parity_analyst = tools["mapper"], tools["parity"]
+
     def _initialize_support_tools(self):
-        """
-        🛡️ Injeção de Dependências via Assembler.
-        Mobiliza a junta de suporte core para operações de baixo nível.
-        """
         from src_local.agents.Support.infrastructure_assembler import InfrastructureAssembler
         support = InfrastructureAssembler.assemble_core_support()
-        self.analyst = support["analyst"]
-        self.guardian = support["guardian"]
-        self.mapper = support["mapper"]
-        self.parity_analyst = support["parity"]
+        self._inject_support(support)
 
     def analyze_project(self):
         """🔭 Varre o projeto delegando a inteligência para os assistentes técnicos."""
@@ -53,26 +42,28 @@ class ContextEngine:
         self.project_identity = self._discover_identity()
         self.map, self.all_files_index = {}, scanner.scan_all_filenames()
 
-        # 1. Batch I/O Optimization
-        self._content_cache = self._pre_read_files(scanner.get_analyzable_files())
-
-        # 2. Sequential Analysis
-        for path in self._content_cache.keys():
-            self._register_file(Path(self.project_root / path))
+        # Processamento em Lote
+        analyzable = scanner.get_analyzable_files()
+        self._content_cache = self._pre_read_files(analyzable)
+        self._register_batch_files()
         
-        # 3. Finalization
-        self._content_cache = {} # Free RAM
+        # Finalização
+        self._content_cache = {}
         self._build_dependency_map()
         logger.info(f"✅ DNA Processado: {len(self.map)} componentes.")
         return {"identity": self.project_identity, "map": self.map}
 
+    def _register_batch_files(self):
+        """Itera sobre o cache de conteúdo para registrar cada arquivo."""
+        for path_str in self._content_cache.keys():
+            self._register_file(Path(self.project_root / path_str))
+
     def _pre_read_files(self, files_iterator):
-        """Helper para otimização de I/O em lote."""
         cache = {}
         for path in files_iterator:
             try:
-                rel_path = path.relative_to(self.project_root).as_posix()
-                cache[rel_path] = path.read_text(encoding='utf-8', errors='ignore')
+                rel = path.relative_to(self.project_root).as_posix()
+                cache[rel] = path.read_text(encoding='utf-8', errors='ignore')
             except: continue
         return cache
 
@@ -95,16 +86,15 @@ class ContextEngine:
         content = self._content_cache.get(rel_path)
         return content if content is not None else path.read_text(encoding='utf-8', errors='ignore')
 
-    def _perform_deep_analysis(self, path, content, info, ignore_test_context):
-        """Executa as auditorias especializadas no conteúdo."""
-        rel_path = info["rel_path"]
+    def _perform_deep_analysis(self, path, content, info, ignore_test):
         if path.suffix == '.py':
             info.update(self.analyst.analyze_python(content, path.name))
         
-        info.update(self.guardian.detect_vulnerabilities(content, info["component_type"], ignore_test_context=ignore_test_context))
+        # Auditorias de vulnerabilidade e teste
+        info.update(self.guardian.detect_vulnerabilities(content, info["component_type"], ignore_test))
         info["has_test"] = self.coverage_auditor.detect_test(path, info["component_type"], self.all_files_index)
         
-        if info["component_type"] == "TEST" and ("tests/" in rel_path or "test/" in rel_path):
+        if info["component_type"] == "TEST":
             self._analyze_test_quality(content, info)
 
     def _get_initial_info(self, path: Path, rel_path):
@@ -118,57 +108,35 @@ class ContextEngine:
         }
 
     def _analyze_test_quality(self, content, info):
-        """
-        🧪 Avalia a profundidade e eficácia dos testes unitários.
-        Mapeia a densidade de asserções e classifica o nível de qualidade.
-        """
-        # Suporta Python (assert/self.assert) e Kotlin/Java (assert/check/assertEquals)
+        # Mapeia densidade de asserções
         assertions = len(re.findall(r"assert[A-Z]\w*\(|self\.assert|check\(|assertThat\(|expect\(", content))
-        # Adição de contagem linear para assert simples
         assertions += content.count("assert ")
-        
-        info["test_depth"] = {
-            "assertion_count": assertions,
-            "quality_level": "DEEP" if assertions > 5 else "SHALLOW"
-        }
+        info["test_depth"] = {"assertion_count": assertions, "quality_level": "DEEP" if assertions > 5 else "SHALLOW"}
 
     def _build_dependency_map(self):
-        """
-        🌐 Constrói o grafo de chamadas e dependências do projeto.
-        Calcula o acoplamento e a instabilidade de cada nó do sistema.
-        """
         for file, data in self.map.items():
             data["coupling"] = self.mapper.calculate_metrics(file, data, self.map)
-            self.call_graph[file] = [f for f in self.map.keys() if f != file and any(c in str(data) for c in self.map[f].get('classes', []))]
+            self.call_graph[file] = self._find_dependents(file, data)
+
+    def _find_dependents(self, file, data):
+        """Localiza componentes que dependem do arquivo atual."""
+        return [f for f in self.map.keys() if f != file and any(c in str(data) for c in self.map[f].get('classes', []))]
 
     def analyze_stack_parity(self, personas):
-        """
-        ⚖️ Analisa a simetria de inteligência entre as stacks operacionais.
-        Mapeia gaps de cobertura de Agentes PhD entre Python, Kotlin e Flutter.
-        """
         parity = self.parity_analyst.analyze_stack_gaps(personas)
         parity["detected"] = self.project_identity.get("stacks", set())
         return parity
 
     def _discover_identity(self):
-        """
-        🆔 Delega a descoberta de DNA estratégico para o DNAProfiler.
-        Mapeia as linguagens presentes e a missão central do repositório.
-        """
-        try:
-            return self.dna_profiler.discover_identity(self.project_root)
+        try: return self.dna_profiler.discover_identity(self.project_root)
         except Exception as e:
-            logger.error(f"🚨 Falha crítica ao descobrir identidade: {e}", exc_info=True)
+            logger.error(f"🚨 Falha ao descobrir identidade: {e}")
             return {"stacks": set(), "core_mission": "Software Proposital"}
 
     def get_criticality_score(self, file_path):
-        """
-        ⚠️ Calcula o índice de criticidade sistêmica de um arquivo.
-        Baseia-se no volume de dependentes e na localização estratégica (CORE/BASE).
-        """
         score = 0
-        file_name = Path(file_path).stem
+        stem = Path(file_path).stem
         for deps in self.call_graph.values():
-            if any(file_name in str(d) for d in deps): score += 1
-        if "core" in str(file_path) or "base" in str(file_path): score += 10
+            if any(stem in str(d) for d in deps): score += 1
+        if any(kw in str(file_path) for kw in ["core", "base"]): score += 10
         return score

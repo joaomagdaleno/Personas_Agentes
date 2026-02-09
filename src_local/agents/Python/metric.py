@@ -24,7 +24,7 @@ class MetricPersona(BaseActivePersona):
     def perform_audit_rules(self) -> list:
         return [
             {
-                'regex': r"time\.time\(\)\s*-\s*\w+", 
+                'regex': r"(?<!['\"_])\btime(?:\.time)?\s*\(", 
                 'issue': 'Telemetria Manual: Use o utilitário _log_performance da Base.', 
                 'severity': 'low'
             },

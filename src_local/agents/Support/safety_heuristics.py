@@ -5,7 +5,6 @@ Função: Centralizar lógica de detecção de contextos seguros e perigosos via
 """
 import ast
 import logging
-import time
 
 logger = logging.getLogger(__name__)
 
@@ -41,35 +40,44 @@ class SafetyHeuristics:
 
     def is_inside_rule_definition(self, target_node, tree):
         """🧠 Análise Semântica: Verifica se o nó faz parte de uma estrutura de dados de metadados técnicos."""
-        # 1. Checa se o nó está dentro de uma função de infraestrutura técnica
         parent_chain = self.utils.get_parent_chain(target_node, tree)
+        
+        # 1. Verificação Primária: Infraestrutura e Atribuição Direta
+        if self._is_infra_or_direct_assign(parent_chain):
+            return True
+
+        # 2. Verificação Secundária: Intencionalidade em Cadeia (Dicionários/Listas)
+        return self._is_inside_complex_metadata(target_node, parent_chain)
+
+    def _is_infra_or_direct_assign(self, parent_chain):
+        """Detecta se estamos dentro de funções core ou atribuições de metadados."""
         for parent in parent_chain:
             if isinstance(parent, ast.FunctionDef) and parent.name in ['log_performance', '_log_performance', '_log_perf']:
                 return True
             if isinstance(parent, ast.Assign) and self._is_assignment_to_safe_metadata(parent):
                 return True
+        return False
 
-        # 2. Caminha de baixo para cima na árvore para entender a intenção
+    def _is_inside_complex_metadata(self, target_node, parent_chain):
+        """Analisa se o nó está contido em estruturas de dados técnicas."""
         for parent in parent_chain:
-            # Se chegamos em uma atribuição, checamos o nome da variável alvo
-            if isinstance(parent, ast.Assign):
-                if self._is_assignment_to_safe_metadata(parent):
-                    logger.debug(f"Semantic Intent: Safe definition detected via assignment.")
-                    return True
-            
-            # Se estamos dentro de um dicionário, checamos se a chave é técnica
-            if isinstance(parent, ast.Dict):
-                if self.utils.is_in_dict_value(parent, target_node, self.safe_metadata_vars):
-                    logger.debug(f"Semantic Intent: Safe definition detected via dictionary key.")
-                    return True
-                    
+            if isinstance(parent, ast.Assign) and self._is_assignment_to_safe_metadata(parent):
+                return True
+            if isinstance(parent, ast.Dict) and self.utils.is_in_dict_value(parent, target_node, self.safe_metadata_vars):
+                return True
         return False
 
     def _is_assignment_to_safe_metadata(self, node):
         """Verifica se a atribuição é para uma variável de metadados conhecida."""
         for target in node.targets:
-            if isinstance(target, ast.Name) and target.id in self.safe_metadata_vars:
+            if self._is_safe_name(target):
                 return True
-            if isinstance(target, ast.Attribute) and target.attr in self.safe_metadata_vars:
-                return True
+        return False
+
+    def _is_safe_name(self, node):
+        """Valida se o nome do alvo da atribuição é técnico/seguro."""
+        if isinstance(node, ast.Name) and node.id in self.safe_metadata_vars:
+            return True
+        if isinstance(node, ast.Attribute) and node.attr in self.safe_metadata_vars:
+            return True
         return False

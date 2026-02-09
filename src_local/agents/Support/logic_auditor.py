@@ -31,55 +31,76 @@ class LogicAuditor:
         return self.silent_detector.detect(tree, rel_path, lines, agent_name, ignore_test_context)
 
     def is_interaction_safe(self, content: str, line_number: int, risk_type: str, ignore_test_context=False) -> tuple:
-        """
-        ⚖️ Validação profunda: Entende a diferença entre execução e definição.
-        Retorna (is_safe, reason) onde 'reason' pode conter overrides de severidade.
-        """
+        """⚖️ Validação profunda: Entende a diferença entre execução e definição."""
         try:
             tree = ast.parse(content)
-            # Pegamos todos os nós que começam na linha alvo
             line_nodes = [n for n in ast.walk(tree) if getattr(n, 'lineno', -1) == line_number]
             
             if not line_nodes:
-                # 🛡️ Se não há nós AST, a linha é provavelmente um comentário ou docstring.
-                # Como o IntegrityGuardian detectou algo via Regex, entendemos que é apenas texto.
                 return True, "Uso em comentário ou docstring validado como metadado seguro."
 
-            # Análise Semântica de Intencionalidade
-            final_reason = "Padrão de risco em contexto de execução real."
-            final_severity = "MEDIUM"
-            
-            for node in line_nodes:
-                intent = self.analyst.classify_intent(node, tree)
-                
-                # 1. Se qualquer nó na linha for METADATA, a linha toda é segura
-                if intent == 'METADATA':
-                    return True, "Definição técnica (Metadata/Regra/Teste) validada como segura."
-
-                # 2. Se for OBSERVABILITY, sugerimos padronização
-                if intent == 'OBSERVABILITY':
-                    final_reason = "Uso em contexto de Observabilidade. [Severity: STRATEGIC]"
-                    continue
-
-                # 3. Lógica Real: Validamos contra riscos específicos
-                if isinstance(node, (ast.Call, ast.BinOp)):
-                    # Caso especial: Telemetria
-                    if "time" in ast.dump(node):
-                        from src_local.agents.Support.telemetry_intent_judge import TelemetryIntentJudge
-                        tele_judge = TelemetryIntentJudge(self.nav.safety_nav.heuristics, self.judge)
-                        is_safe, severity, reason = tele_judge.judge_intent(node, tree, ignore_test_context)
-                        if is_safe: return True, reason
-                        if severity == "STRATEGIC":
-                            final_reason = f"{reason} [Severity: STRATEGIC]"
-                            continue
-
-                    if isinstance(node, ast.Call):
-                        is_safe, reason = self.call_judge.validate(node, tree, ignore_test_context)
-                        if not is_safe: 
-                            final_reason = reason
-                            break
-            
-            return False, final_reason
+            # Delega auditoria da lista de nós
+            return self._audit_nodes(line_nodes, tree, content, line_number, risk_type, ignore_test_context)
         except Exception as e:
             logger.error(f"Semantic analysis failure: {e}")
             return False, f"Falha na análise AST: {e}"
+
+    def _audit_nodes(self, nodes, tree, content, line_no, risk_type, ignore_test):
+        """Itera sobre nós da linha para classificar segurança."""
+        final_reason = "Padrão de risco em contexto de execução real."
+        
+        for node in nodes:
+            intent = self.analyst.classify_intent(node, tree)
+            if intent == 'METADATA':
+                return True, "Definição técnica (Metadata/Regra/Teste) validada como segura."
+
+            if intent == 'OBSERVABILITY':
+                res, reason = self._audit_observability(node, tree, ignore_test)
+                if res is False: return False, reason
+                continue
+
+            # Auditoria de Lógica Real
+            res, reason = self._audit_logic_node(node, tree, content, line_no, risk_type, ignore_test)
+            if res is True: return True, reason # Safe detectado
+            if reason: final_reason = reason
+
+        # Check de fallback para texto
+        if risk_type == "brittle" and not any(isinstance(n, (ast.Global, ast.Call)) for n in nodes):
+            return True, "Palavra-chave detectada em texto/string, não em execução."
+            
+        return False, final_reason
+
+    def _audit_observability(self, node, tree, ignore_test):
+        """Valida se um log contém telemetria manual que deve ser padronizada."""
+        if "time" in ast.dump(node):
+            from src_local.agents.Support.telemetry_intent_judge import TelemetryIntentJudge
+            tele_judge = TelemetryIntentJudge(self.nav.safety_nav.heuristics, self.judge)
+            _, _, reason = tele_judge.judge_intent(node, tree, ignore_test)
+            return False, f"{reason} [Severity: STRATEGIC]"
+        return True, "Log informativo seguro."
+
+    def _audit_logic_node(self, node, tree, content, line_no, risk_type, ignore_test):
+        """Valida um nó individual em contexto de lógica real."""
+        if not isinstance(node, (ast.Call, ast.BinOp, ast.Global, ast.Expr, ast.Assign)):
+            return None, None
+
+        # Telemetria em Lógica (Checa se há 'time' no dump do nó ou de seus filhos se BinOp)
+        node_dump = ast.dump(node)
+        if "time" in node_dump and ("Sub" in node_dump or "BinOp" in node_dump):
+            from src_local.agents.Support.telemetry_intent_judge import TelemetryIntentJudge
+            is_safe, _, reason = TelemetryIntentJudge(self.nav.safety_nav.heuristics, self.judge).judge_intent(node, tree, ignore_test)
+            if reason:
+                return is_safe, (reason + " [Severity: STRATEGIC]" if not is_safe else reason)
+
+        # Global em Lógica
+        lines = content.splitlines()
+        if risk_type == "brittle" and line_no <= len(lines) and "global" in lines[line_no-1]:
+            if isinstance(node, ast.Global):
+                return False, "Uso de estado global detectado. [Severity: HIGH]"
+            return None, None
+
+        # Chamadas Perigosas
+        if isinstance(node, ast.Call):
+            return self.call_judge.validate(node, tree, ignore_test)
+            
+        return None, None

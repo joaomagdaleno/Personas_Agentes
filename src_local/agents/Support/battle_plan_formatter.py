@@ -8,34 +8,34 @@ import logging
 logger = logging.getLogger(__name__)
 
 class BattlePlanFormatter:
-    """
-    Assistente Técnico: Especialista em Roteiros de Cura 🎯
-    Extraído do ReportFormatter para reduzir entropia.
-    """
+    """Assistente Técnico: Especialista em Roteiros de Cura 🎯"""
     
     def format(self, audit_results: list) -> str:
         """Estrutura os resultados da auditoria em um plano de batalha hierárquico."""
-        # Rigorosa deduplicação PhD
-        dedup, seen = [], set()
-        for i in audit_results:
-            key = self._get_item_key(i)
-            if key not in seen:
-                dedup.append(i)
-                seen.add(key)
-
-        active = [i for i in dedup if not isinstance(i, dict) or i.get('severity') != 'HEALED']
+        active = self._get_active_results(audit_results)
         if not active: return "## 🎯 PLANO DE BATALHA\n\n> ✅ Nenhuma intervenção necessária."
 
-        sections = ["## 🎯 PLANO DE BATALHA: DIRETRIZES DE ENGENHARIA"]
         categories = self._group_by_severity(active)
-        sections.append(self._format_impact_summary(categories))
-        sections.append("---")
+        sections = [
+            "## 🎯 PLANO DE BATALHA: DIRETRIZES DE ENGENHARIA",
+            self._format_impact_summary(categories), "---"
+        ]
 
         for sev in ["CRITICAL", "HIGH", "MEDIUM", "LOW", "STRATEGIC"]:
             if categories[sev]:
                 sections.append(self._format_severity_group(sev, categories[sev]))
         
         return "\n\n".join(s.strip() for s in sections if s).strip()
+
+    def _get_active_results(self, audit_results):
+        """Filtra e deduplica resultados ativos."""
+        dedup, seen = [], set()
+        for i in audit_results:
+            key = self._get_item_key(i)
+            if key not in seen:
+                dedup.append(i)
+                seen.add(key)
+        return [i for i in dedup if not isinstance(i, dict) or i.get('severity') != 'HEALED']
 
     def _get_item_key(self, item):
         if isinstance(item, dict):
@@ -66,25 +66,19 @@ class BattlePlanFormatter:
             file_groups[fname].append(item)
 
         for fname, group in file_groups.items():
-            # Título único para MD024: Inclui severidade no nível do arquivo
             res += f"### 📂 Alvo: `{fname}` [{sev}]\n\n"
-            for item in group:
-                res += self._format_item(item, sev)
+            for item in group: res += self._format_item(item, sev)
         return res.strip()
 
     def _format_item(self, item, sev):
         if not isinstance(item, dict):
-            clean_guideline = str(item).rstrip('.').strip()
-            return f"- **Diretriz Estratégica:** {clean_guideline}\n\n"
+            return f"- **Diretriz Estratégica:** {str(item).rstrip('.').strip()}\n\n"
         
-        # Sanitização Rigorosa PhD: Remove pontos finais para MD026
         issue_clean = str(item.get('issue', '')).rstrip('.').strip()
         line = item.get('line', 'N/A')
-        # UID sem dots nos identificadores técnicos
         file_id = str(item.get('file', '')).replace('.', '_').replace('\\', '/')
-        uid = f"{file_id}_{line}"
         
-        res = f"#### 🔴 Item {line}: {issue_clean} [ID: {uid}]\n\n"
+        res = f"#### 🔴 Item {line}: {issue_clean} [ID: {file_id}_{line}]\n\n"
         if item.get('snippet'):
             res += f"- **Evidência:**\n\n```kotlin\n{item.get('snippet').strip()}\n```\n\n"
         return res + f"- **Diretriz:** Padrão soberano de {sev.lower()}\n\n"
