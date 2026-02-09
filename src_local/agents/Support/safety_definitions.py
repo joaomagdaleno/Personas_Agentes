@@ -9,8 +9,12 @@ SAFE_METADATA_VARS = [
     'brittle_pattern', 'silent_pattern', 'target_pattern', 'fragilities',
     'part1', 'part2', 'part3', 'danger_kw', 'rules_def', 'reg_def',
     'keywords', 'tech_terms', 'financial_terms', 'forbidden', 'suggestions',
-    'identities', 'log_performance', '_log_performance', '_log_perf'
+    'identities', 'log_performance', '_log_performance', '_log_perf',
+    # Constants used for meta-analysis (prevent false positives on definition files)
+    'TRIVIAL_COMPARE_KEYWORDS', 'TELEMETRY_KEYWORDS', 'META_ANALYSIS_LIBS',
+    'SAFE_METADATA_VARS', 'ANALYZER_CLASSES', 'ANALYZER_METHODS', 'evidences'
 ]
+
 
 TELEMETRY_KEYWORDS = ["duration", "elapsed", "took", "time_diff", "start_t"]
 

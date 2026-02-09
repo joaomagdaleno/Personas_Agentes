@@ -5,6 +5,7 @@ Função: Identificar se um nó AST é uma definição técnica de regra (Litera
 """
 import ast
 import logging
+from src_local.agents.Support.safety_definitions import ANALYZER_CLASSES, ANALYZER_METHODS, CORE_PERFORMANCE_FUNCS
 
 logger = logging.getLogger(__name__)
 
@@ -25,3 +26,13 @@ class RuleDefinitionJudge:
              return False, "String sendo executada dinamicamente!"
         
         return True, "Literal de string não executado (Seguro)."
+
+    def is_in_analyzer_context(self, parent_chain):
+        """🔬 Verifica se o código está dentro de uma classe ou método de análise."""
+        for parent in parent_chain:
+            if isinstance(parent, ast.FunctionDef) and (parent.name in CORE_PERFORMANCE_FUNCS or parent.name in ANALYZER_METHODS):
+                return True
+            if isinstance(parent, ast.ClassDef) and parent.name in ANALYZER_CLASSES:
+                return True
+        return False
+
