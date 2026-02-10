@@ -16,8 +16,8 @@ class BridgePersona(BaseActivePersona):
         logger.info(f"[{self.name}] Analisando Camadas de Interoperabilidade...")
         
         audit_rules = [
-            {'regex': 'subprocess\\.run\\(.*shell=True', 'issue': 'Vulnerabilidade: Shell Injection.', 'severity': 'critical'},
-            {'regex': 'os\\.system\\(', 'issue': 'Obsolescência: Use subprocess.', 'severity': 'high'}
+            {'regex': r'subprocess\.run\(.*shell=True', 'issue': 'Vulnerabilidade: Shell Injection.', 'severity': 'critical'},
+            {'regex': r'os\.system\(', 'issue': 'Obsolescência: Use subprocess.', 'severity': 'high'}
         ]
         
         results = self.find_patterns(('.py',), audit_rules)

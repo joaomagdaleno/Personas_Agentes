@@ -28,6 +28,8 @@ class Orchestrator:
         
         self.synthesizer, self.strategist = tools["synthesizer"], tools["strategist"]
         self.executor, self.core_validator = tools["executor"], tools["validator"]
+        from src_local.agents.Support.metrics_assembler import MetricsAssembler
+        self.metrics_assembler = MetricsAssembler()
         self.task_orc = TaskOrchestrator(self)
         
         self.personas, self.job_queue = [], [] 
@@ -38,24 +40,40 @@ class Orchestrator:
 
     def run_strategic_audit(self, context, objective: str = None, include_history: bool = True):
         """🚀 Mobiliza a elite e executa auditoria paralela delegada."""
-        stacks = context['identity'].get('stacks', {'Python'})
-        obj = objective or f"Validar integridade {list(stacks)}"
-
-        active_phds = self._select_active_phds(obj, stacks)
+        start_time = time.time()
+        
+        target_obj = objective or self._generate_default_objective(context)
+        active_phds = self._select_active_phds(target_obj, context['identity'].get('stacks', {'Python'}))
         changed_files = self._detect_changed_files(context.get("map", {}).keys())
         
-        findings = self.task_orc.run_audit_cycle(active_phds, obj, changed_files, context)
-        findings.extend(self.synthesizer.get_topology_issues(context))
-        findings.extend(self.dependency_auditor.check_submodule_status())
+        findings = self.task_orc.run_audit_cycle(active_phds, target_obj, changed_files, context)
+        self._sync_and_ledger(findings, context, include_history)
         
-        self.stability_ledger.update(findings, context.get("map"))
+        self._log_orchestration_performance(start_time, "Auditoria Estratégica")
         return self._build_audit_report_queue(findings, include_history)
 
+    def _generate_default_objective(self, context):
+        stacks = context['identity'].get('stacks', {'Python'})
+        return f"Validar integridade {list(stacks)}"
+
+    def _sync_and_ledger(self, findings, context, include_history):
+        self._inject_topology_and_git_issues(findings, context)
+        self.stability_ledger.update(findings, context.get("map"))
+
+    def _inject_topology_and_git_issues(self, findings, context):
+        """Delega a injeção de problemas de infraestrutura."""
+        findings.extend(self.synthesizer.get_topology_issues(context))
+        findings.extend(self.dependency_auditor.check_submodule_status())
+
     def generate_full_diagnostic(self):
+        """Portal de diagnóstico com telemetria de performance."""
+        start_time = time.time()
         from src_local.core.diagnostic_pipeline import DiagnosticPipeline
         res = DiagnosticPipeline(self).execute()
         for info in self.context_engine.map.values():
             if "content" in info: del info["content"]
+        
+        self._log_orchestration_performance(start_time, "Diagnóstico 360")
         return res
 
     def get_system_health_360(self, context, internal_health, all_findings=None):
@@ -64,8 +82,8 @@ class Orchestrator:
         context["parity"] = self.context_engine.analyze_stack_parity(self.personas)
         context["efficiency"] = self.metrics.get("efficiency", {})
         
-        metrics = self._get_metrics_with_findings(all_findings)
-        qa_data = self._get_qa_data(map_data, internal_health)
+        metrics = self.metrics_assembler.get_orchestration_metrics(self.metrics, all_findings)
+        qa_data = self.metrics_assembler.gather_qa_data(map_data, internal_health, self.personas)
         
         return self.synthesizer.synthesize_360(context, metrics, self.personas, self.stability_ledger, qa_data)
 
@@ -74,26 +92,6 @@ class Orchestrator:
 
     def _run_targeted_verification(self, audit_map):
         return self.task_orc.run_targeted_verification(audit_map)
-
-    def _get_metrics_with_findings(self, all_findings):
-        m = dict(self.metrics)
-        if all_findings: m["all_findings"] = all_findings
-        return m
-
-    def _get_qa_data(self, map_data, internal_health):
-        return {
-            "pyramid": self._get_target_test_pyramid(map_data), 
-            "execution": internal_health,
-            "matrix": self._get_test_quality_matrix(map_data)
-        }
-
-    def _get_target_test_pyramid(self, map_data):
-        testify = next((p for p in self.personas if p.name == "Testify"), None)
-        return testify.analyze_test_pyramid(map_data) if testify else {}
-
-    def _get_test_quality_matrix(self, map_data):
-        testify = next((p for p in self.personas if p.name == "Testify"), None)
-        return testify.analyze_test_quality_matrix(map_data) if testify else []
 
     def _detect_changed_files(self, map_files):
         def check_file(p):
@@ -111,14 +109,18 @@ class Orchestrator:
         return q
 
     def _run_obfuscation_scan(self, context_map=None):
-        from src_local.agents.Support.obfuscation_hunter import ObfuscationHunter
-        hunter, findings = ObfuscationHunter(), []
-        t_map = context_map or self.context_engine.map
-        for rel_path, data in t_map.items():
-            if rel_path.endswith(".py"):
-                content = data.get("content") or self.context_engine.analyst.read_project_file(self.project_root / rel_path)
-                if content: findings.extend(self._get_obfuscation_findings(hunter, rel_path, content))
-        return findings
+        try:
+            from src_local.agents.Support.obfuscation_hunter import ObfuscationHunter
+            hunter, findings = ObfuscationHunter(), []
+            t_map = context_map or self.context_engine.map
+            for rel_path, data in t_map.items():
+                if rel_path.endswith(".py"):
+                    content = data.get("content") or self.context_engine.analyst.read_project_file(self.project_root / rel_path)
+                    if content: findings.extend(self._get_obfuscation_findings(hunter, rel_path, content))
+            return findings
+        except (ImportError, Exception) as e:
+            logger.error(f"🚨 Falha no escaneamento de ofuscação: {e}")
+            return []
 
     def _get_obfuscation_findings(self, hunter, rel_path, content):
         res = []
@@ -126,3 +128,8 @@ class Orchestrator:
             res.append({"file": rel_path, "line": i["line"], "severity": "CRITICAL", "context": "ObfuscationHunter",
                         "issue": f"Ofuscação: '{i['keyword']}'", "snippet": f"Reconstrução: {i['reconstruction']}"})
         return res
+
+    def _log_orchestration_performance(self, start_time, stage):
+        """Telemetria centralizada para o orquestrador."""
+        from src_local.utils.logging_config import log_performance
+        log_performance(logger, start_time, f"🎭 [Orchestrator] {stage}", level=logging.INFO)

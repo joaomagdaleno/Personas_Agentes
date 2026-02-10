@@ -37,50 +37,36 @@ class BaseActivePersona(ABC):
         obj = self.integrity_guardian.get_audit_mission(self.project_dna, objective)
         strategic_issues = []
         
+        for file, content in self._iter_auditable_files():
+            res = self._reason_about_objective(obj, file, content)
+            if res: strategic_issues.append(res)
+        return strategic_issues
+
+    def _iter_auditable_files(self):
+        """Gerador para iteração limpa e eficiente de arquivos auditáveis."""
         for file in self.context_data.keys():
             if self._should_audit_file(file):
                 content = self.read_project_file(file)
                 if content:
-                    res = self._reason_about_objective(obj, file, content)
-                    if res: strategic_issues.append(res)
-        return strategic_issues
+                    yield file, content
 
     def _should_audit_file(self, file):
-        """Valida se o arquivo é relevante para a persona e stack."""
+        """
+        Valida se o arquivo é relevante para a persona e stack.
+        Filtra arquivos ignorados e delegada a relevância ao IntegrityGuardian.
+        """
         if file in self.ignored_files: return False
         return self.integrity_guardian.is_relevant_file(file, self.stack)
 
     def find_patterns(self, extensions, patterns):
-        """🔍 Varredura de padrões via AuditEngine delegado."""
-        start_time = time.time()
-        from src_local.agents.Support.audit_engine import AuditEngine
-        engine = self.audit_engine or AuditEngine()
-        
-        issues = []
-        for file in self.context_data.keys():
-            if file in self.ignored_files or not file.endswith(extensions): continue
-            content = self.read_project_file(file)
-            if content:
-                issues.extend(engine.scan_content(file, content, patterns, self.context_data, self.name))
-        
-        self._log_performance(start_time, len(issues))
-        return issues
+        """🔍 Varredura delegada ao AuditEngine."""
+        if not self.audit_engine: return []
+        files = [f for f in self.context_data.keys() if f.endswith(extensions) and f not in self.ignored_files]
+        return self.audit_engine.scan_multiple_files(files, patterns, self.read_project_file, self.context_data, self.name)
 
     def analyze_logic(self, file_path):
-        """🧬 Análise AST via StructuralAnalyst delegado."""
-        if not file_path.endswith('.py'): return []
-        
-        target_path = Path(file_path)
-        try:
-            rel_path = str(target_path.relative_to(self.project_root)).replace("\\", "/")
-            if rel_path in self.ignored_files: return []
-            
-            content = self.structural_analyst.read_project_file(target_path)
-            if content:
-                return self.structural_analyst.analyze_logic_flaws(ast.parse(content), rel_path, content.splitlines(), self.name)
-        except Exception as e:
-            logger.error(f"❌ Falha na análise lógica de {file_path}: {e}")
-        return []
+        """🧬 Análise AST delegada ao StructuralAnalyst."""
+        return self.structural_analyst.analyze_file_logic(file_path, self.project_root, self.ignored_files, self.name)
 
     def get_maturity_metrics(self):
         """📊 Métricas de evolução via StructuralAnalyst delegado."""
@@ -89,16 +75,20 @@ class BaseActivePersona(ABC):
         return self.structural_analyst.calculate_maturity(content, self.stack) if content else {"score": 0}
 
     def _log_performance(self, start_time, count):
-        """🛰️ Utilitário soberano para telemetria de performance padronizada."""
+        """
+        🛰️ Utilitário soberano para telemetria de performance padronizada.
+        Injeta métricas de desempenho no sistema de logs PhD.
+        """
         from src_local.utils.logging_config import log_performance
         log_performance(logger, start_time, f"{self.emoji} [{self.name}] Auditoria: {count} pontos", level=logging.INFO)
 
     def read_project_file(self, rel_path):
         """💾 Lê arquivo via Pathlib (Modern API) com garantia de encoding UTF-8."""
+        abs_path = Path(self.project_root) / rel_path
         try:
-            abs_path = Path(self.project_root) / rel_path
             return abs_path.read_text(encoding='utf-8', errors='ignore')
-        except Exception:
+        except Exception as e:
+            logger.warning(f"⚠️ Falha na leitura do arquivo {rel_path}: {e}")
             return None
 
     @abstractmethod

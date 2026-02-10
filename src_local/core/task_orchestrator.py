@@ -46,7 +46,7 @@ class TaskOrchestrator:
         
         def is_eligible(p):
             if p.stack not in stacks and p.stack != "Universal": return False
-            if is_crit and p.__class__._reason_about_objective == BaseActivePersona._reason_about_objective:
+            if is_crit and getattr(p.__class__, "_reason_about_objective", None) == getattr(BaseActivePersona, "_reason_about_objective", None):
                 return False
             return True
 

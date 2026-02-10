@@ -10,8 +10,10 @@ class ASTNavigator:
     def __init__(self):
         from src_local.agents.Support.test_navigator import TestNavigator
         from src_local.agents.Support.safety_navigator import SafetyNavigator
+        from src_local.agents.Support.ast_traversal_logic import ASTTraversalLogic
         self.test_nav = TestNavigator(self)
         self.safety_nav = SafetyNavigator(self)
+        self.traversal = ASTTraversalLogic()
 
     def check_safety_rules(self, node, tree):
         """Coordenador: Executa verificação em cascata via delegados."""
@@ -19,51 +21,18 @@ class ASTNavigator:
         if self.safety_nav.is_safe_context(node, tree): return True
         return not self.safety_nav.is_being_executed(node, tree)
 
-    # --- Utilitários Compartilhados (Low Complexity) ---
+    # --- Utilitários Compartilhados (Delegados) ---
 
     def is_descendant(self, target, parent):
-        """Verifica se target é filho de parent na AST."""
-        if target is parent: return True
-        for child in ast.iter_child_nodes(parent):
-            if self.is_descendant(target, child):
-                return True
-        return False
+        return self.traversal.is_descendant(target, parent)
 
     def is_call_to(self, node, names):
-        """Verifica se o nó é uma chamada para uma das funções listadas."""
-        if not isinstance(node, ast.Call): return False
-        
-        # Chamada direta: eval()
-        if isinstance(node.func, ast.Name):
-            return node.func.id in names
-            
-        # Chamada de atributo: logger.info()
-        if isinstance(node.func, ast.Attribute):
-            return node.func.attr in names
-            
-        return False
+        return self.traversal.is_call_to(node, names)
 
     def is_in_dict_value(self, node, target_node, key_names):
-        """Verifica se target_node é valor em um dicionário cuja chave tem um dos nomes listados."""
-        if not isinstance(node, ast.Dict): return False
-        
-        # Compatibilidade Python modern (Constant) vs antigo (Str)
-        str_types = (ast.Constant,)
-        if hasattr(ast, "Str"): str_types += (getattr(ast, "Str"),)
-
-        for k, v in zip(node.keys, node.values):
-            if not v or not self.is_descendant(target_node, v): continue
-            
-            if isinstance(k, str_types): 
-                if getattr(k, "value", getattr(k, "s", "")) in key_names: return True
-        return False
+        """Verifica se target_node é valor em um dicionário via traversal logic."""
+        return self.traversal.is_in_dict_value(node, target_node, key_names, self)
 
     def get_parent_chain(self, target_node, tree):
-        """Reconstrói a linhagem do nó de baixo para cima."""
-        parent_map = {child: node for node in ast.walk(tree) for child in ast.iter_child_nodes(node)}
-        chain = []
-        curr = target_node
-        while curr in parent_map:
-            curr = parent_map[curr]
-            chain.append(curr)
-        return chain
+        """Reconstrói a linhagem delegando para traversal logic."""
+        return self.traversal.get_parent_chain(target_node, tree)

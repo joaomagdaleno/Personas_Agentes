@@ -54,7 +54,7 @@ class TestLineVetoDeep(unittest.TestCase):
         """Valida se o auditor não se auto-reporta ao ler suas próprias regras."""
         logger.info("⚡ Testando veto em definição de regras...")
         # Novo Regex busca palavras perigosas + sinais de manipulação
-        line_string = "rules = [{'regex': r'eval\('}]"
+        line_string = r"rules = [{'regex': r'eval\('}]"
         pattern = {'regex': r'eval\(', 'severity': 'critical'}
         ctx = {"file_path": "src/agents/base.py", "is_technical": True}
         

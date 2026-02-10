@@ -7,12 +7,22 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("TestCoverageAuditor")
 
 class TestCoverageauditor(unittest.TestCase):
-    def test_smoke(self):
-        """Smoke test for coverage_auditor.py"""
-        logger.info("⚡ Iniciando smoke test de auditoria de cobertura...")
-        # This test ensures the module can be imported and examined.
-        self.assertTrue(True)
-        logger.info("✅ Smoke test concluído.")
+    def test_detect_test_logic(self):
+        """Valida a detecção semântica de arquivos de teste."""
+        logger.info("⚡ Testando detecção de cobertura...")
+        from pathlib import Path
+        auditor = CoverageAuditor()
+        all_files = ["test_core.py", "test_utils.py", "main.py"]
+        
+        # Caso Positivo
+        self.assertTrue(auditor.detect_test(Path("core.py"), "CORE", all_files))
+        # Caso Negativo
+        self.assertFalse(auditor.detect_test(Path("logic.py"), "LOGIC", all_files))
+        # Isenções
+        self.assertTrue(auditor.detect_test(Path("test_core.py"), "TEST", all_files))
+        self.assertTrue(auditor.detect_test(Path("__init__.py"), "UTIL", all_files))
+        
+        logger.info("✅ Lógica de cobertura validada.")
 
 if __name__ == "__main__":
     unittest.main()

@@ -16,8 +16,10 @@ class ContextEngine:
         self.project_root = Path(project_root)
         self.map, self.call_graph, self.project_identity = {}, {}, {}
         self.dna_profiler = DNAProfiler()
+        from src_local.utils.context_mapping_logic import ContextMappingLogic
         self.coverage_auditor = CoverageAuditor()
         self.all_files_index = []
+        self.mapping_logic = ContextMappingLogic()
         
         if support_tools:
             self._inject_support(support_tools)
@@ -35,51 +37,44 @@ class ContextEngine:
 
     def analyze_project(self):
         """🔭 Varre o projeto delegando a inteligência para os assistentes técnicos."""
-        from src_local.utils.file_system_scanner import FileSystemScanner
-        scanner = FileSystemScanner(self.project_root, self.analyst)
-        
         logger.info("🧠 Mapeando topologia...")
         self.project_identity = self._discover_identity()
+        
+        scanner = self._get_scanner()
         self.map, self.all_files_index = {}, scanner.scan_all_filenames()
 
-        # Processamento em Lote
-        analyzable = scanner.get_analyzable_files()
-        self._content_cache = self._pre_read_files(analyzable)
-        self._register_batch_files()
-        
-        # Finalização
-        self._content_cache = {}
+        self._process_files_in_batch(scanner)
         self._build_dependency_map()
+        
         logger.info(f"✅ DNA Processado: {len(self.map)} componentes.")
         return {"identity": self.project_identity, "map": self.map}
 
-    def _register_batch_files(self):
-        """Itera sobre o cache de conteúdo para registrar cada arquivo."""
-        for path_str in self._content_cache.keys():
-            self._register_file(Path(self.project_root / path_str))
+    def _get_scanner(self):
+        from src_local.utils.file_system_scanner import FileSystemScanner
+        return FileSystemScanner(self.project_root, self.analyst)
 
-    def _pre_read_files(self, files_iterator):
-        cache = {}
-        for path in files_iterator:
-            try:
-                rel = path.relative_to(self.project_root).as_posix()
-                cache[rel] = path.read_text(encoding='utf-8', errors='ignore')
-            except: continue
-        return cache
+    def _process_files_in_batch(self, scanner):
+        """Executa a varredura delegando para mapping logic."""
+        self._content_cache = self.mapping_logic.process_batch(scanner, self)
+
 
     def _register_file(self, path, ignore_test_context=False):
         try:
             rel_path = path.relative_to(self.project_root).as_posix()
             if rel_path in self.map: return
             
-            content = self._get_cached_content(path, rel_path)
-            info = self._get_initial_info(path, rel_path)
-            info["content"] = content
-            
-            self._perform_deep_analysis(path, content, info, ignore_test_context)
-            self.map[rel_path] = info
+            self._analyze_single_file(path, rel_path, ignore_test_context)
         except Exception as e:
             logger.error(f"❌ Erro ao analisar {path}: {e}")
+
+    def _analyze_single_file(self, path, rel_path, ignore_test):
+        """Executa a análise isolada de um arquivo."""
+        content = self._get_cached_content(path, rel_path)
+        info = self._get_initial_info(path, rel_path)
+        info["content"] = content
+        
+        self._perform_deep_analysis(path, content, info, ignore_test)
+        self.map[rel_path] = info
 
     def _get_cached_content(self, path, rel_path):
         if not hasattr(self, '_content_cache'): self._content_cache = {}
@@ -98,14 +93,7 @@ class ContextEngine:
             self._analyze_test_quality(content, info)
 
     def _get_initial_info(self, path: Path, rel_path):
-        comp_type = self.analyst.map_component_type(rel_path)
-        return {
-            "purpose": "Logic", "functions": [], "classes": [],
-            "brittle": False, "silent_error": False, "has_test": False,
-            "component_type": comp_type, 
-            "domain": "EXPERIMENTATION" if comp_type == "TEST" else "PRODUCTION", 
-            "path": str(path), "rel_path": rel_path
-        }
+        return self.mapping_logic.get_initial_info(path, rel_path, self.analyst)
 
     def _analyze_test_quality(self, content, info):
         # Mapeia densidade de asserções

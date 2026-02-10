@@ -23,6 +23,10 @@ class TelemetryIntentJudge:
         if self.heuristics.is_inside_rule_definition(node, tree):
             return True, "STRATEGIC", "Definição técnica de padrão de telemetria."
             
+        return self._check_observability_context(node, tree)
+
+    def _check_observability_context(self, node, tree):
+        """Diferencia reportes críticos de logs informacionais."""
         if self._is_inside_critical_report(node, tree):
             return False, "HIGH", "Telemetria manual em fluxo de erro crítico. Use _log_performance para integridade."
 
@@ -32,42 +36,20 @@ class TelemetryIntentJudge:
         return None, None, None
 
     def _check_logic_and_standard(self, node, tree):
-        """Valida se o uso em lógica é passível de padronização estratégica."""
-        if self._is_assigned_to_log_variable(node, tree):
+        """Valida se o uso em lógica delegando para maturity logic."""
+        from src_local.agents.Support.telemetry_maturity_logic import TelemetryMaturityLogic
+        self.maturity = TelemetryMaturityLogic()
+        
+        if self.maturity.is_assigned_to_log_variable(node, tree, self.heuristics):
             return False, "STRATEGIC", "Cálculo de duração manual para Log futuro. Sugestão: Usar utilitários da Base."
 
-        if self._is_simple_time_subtraction(node):
+        if self.maturity.is_simple_time_subtraction(node):
             return False, "STRATEGIC", "Telemetria manual detectada. Sugestão: Migrar para _log_performance."
 
         return False, "MEDIUM", "Telemetria manual detectada em Lógica de Controle (Risco de Runtime)."
-
-    def _is_simple_time_subtraction(self, node):
-        """Verifica se o nó é uma subtração simples de time.time()."""
-        val = node.value if isinstance(node, ast.Assign) else node
-        if not (isinstance(val, ast.BinOp) and isinstance(val.op, ast.Sub)): return False
-            
-        left = val.left
-        if isinstance(left, ast.Call):
-            func = left.func
-            return (isinstance(func, ast.Attribute) and func.attr == 'time') or \
-                   (isinstance(func, ast.Name) and func.id == 'time')
-        return False
 
     def _is_inside_critical_report(self, target_node, tree):
         """Detecta se o nó está dentro de um logger.error ou similar."""
         parent_chain = self.heuristics.utils.get_parent_chain(target_node, tree)
         return any(isinstance(p, ast.Call) and self.heuristics.utils.is_call_to(p, CRITICAL_LOG_METHODS) for p in parent_chain)
-
-    def _is_assigned_to_log_variable(self, target_node, tree):
-        """Detecta se o resultado da subtração de tempo vai para uma variável de telemetria."""
-        parent_chain = self.heuristics.utils.get_parent_chain(target_node, tree)
-        for parent in parent_chain:
-            if isinstance(parent, ast.Assign):
-                return any(self._is_tele_name(t) for t in parent.targets)
-        return False
-
-    def _is_tele_name(self, node):
-        """Analisa se o nome indica telemetria."""
-        name = node.id if isinstance(node, ast.Name) else (node.attr if isinstance(node, ast.Attribute) else "")
-        return any(k in name.lower() for k in TELEMETRY_KEYWORDS)
 

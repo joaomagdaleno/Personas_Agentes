@@ -63,6 +63,21 @@ class StructuralAnalyst:
         """
         return self.logic_auditor.scan_flaws(tree, rel_path, lines, agent_name, ignore_test_context=ignore_test_context)
 
+    def analyze_file_logic(self, file_path, project_root, ignored_files, agent_name):
+        """🧬 Auxiliar para análise lógica via delegação AST."""
+        if not str(file_path).endswith('.py'): return []
+        try:
+            target_path = Path(file_path)
+            rel_path = str(target_path.relative_to(project_root)).replace("\\", "/")
+            if rel_path in ignored_files: return []
+            content = self.read_project_file(target_path)
+            if content:
+                import ast
+                return self.analyze_logic_flaws(ast.parse(content), rel_path, content.splitlines(), agent_name)
+        except Exception as e:
+            logger.error(f"❌ Falha na análise lógica delegada de {file_path}: {e}")
+        return []
+
     def calculate_maturity(self, content: str, stack: str) -> dict:
         """
         📊 Avalia a maturidade técnica do Agente PhD.

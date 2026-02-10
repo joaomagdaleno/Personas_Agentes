@@ -45,40 +45,33 @@ class CoreValidator:
 
         logger.info("🛡️ [Core] Iniciando Protocolo de Auto-Exame Vital...")
         try:
+            logger.info(f"🧪 [Core] Executando unit test discover em: {root}")
             result = subprocess.run(
                 [sys.executable, "-m", "unittest", "discover", "tests"],
                 capture_output=True, text=True, cwd=str(root),
                 encoding='utf-8', errors='ignore'
             )
             if result.returncode != 0:
-                logger.warning(f"⚠️ Alguns testes de integridade falharam:\n{result.stderr}")
+                logger.warning(f"⚠️ [Core] Alguns testes de integridade falharam.")
             
+            logger.info("📝 [Core] Consolidando resultados do auto-exame...")
             return self._parse_results(result.stderr, result.returncode == 0)
         except Exception as e:
             logger.error(f"🚨 Falha crítica na execução do protocolo de auto-exame: {e}", exc_info=True)
             return {"success": False, "pass_rate": 0, "total_run": 0, "failed": 1}
 
     def _parse_results(self, output: str, is_success: bool) -> dict:
-        tests_run = 0
-        failures = 0
+        """Sintetiza métricas do output do unittest discover."""
+        tests_run = self._extract_count(r"Ran (\d+) tests", output)
         
-        # 1. Total tests
-        m_total = re.search(r"Ran (\d+) tests", output)
-        if m_total: tests_run = int(m_total.group(1))
+        # Consolida falhas e erros
+        failures = self._extract_count(r"failures=(\d+)", output)
+        failures += self._extract_count(r"errors=(\d+)", output)
         
-        # 2. Extract failures and errors
-        m_fail = re.search(r"failures=(\d+)", output)
-        m_err = re.search(r"errors=(\d+)", output)
-        
-        failures += int(m_fail.group(1)) if m_fail else 0
-        failures += int(m_err.group(1)) if m_err else 0
-        
-        # 3. Fallback for single failure format
+        # Fallback para falha unitária
         if failures == 0 and not is_success:
-            m_single = re.search(r"FAILED \((?:failures|errors)=(\d+)\)", output)
-            if m_single: failures = int(m_single.group(1))
+            failures = self._extract_count(r"FAILED \((?:failures|errors)=(\d+)\)", output)
 
-        # 4. Result synthesis
         pass_rate = round(((tests_run - failures) / tests_run) * 100, 2) if tests_run > 0 else 0
         
         return {
@@ -87,3 +80,8 @@ class CoreValidator:
             "total_run": tests_run, 
             "failed": failures
         }
+
+    def _extract_count(self, pattern, text):
+        """Utilitário para extração segura de métricas via Regex."""
+        match = re.search(pattern, text)
+        return int(match.group(1)) if match else 0

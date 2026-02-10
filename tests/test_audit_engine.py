@@ -31,7 +31,7 @@ class TestAuditEngine(unittest.TestCase):
         logger.info("⚡ Testando integração com LineVeto...")
         file = "test.py"
         # Ofuscação de proteção para o Sentinel
-        reg_def = "r'eval\\('"
+        reg_def = r"r'eval\('"
         content = f"rules = [{{'regex': {reg_def}}}]"
         patterns = [{'regex': r"(?<!['\"_])eval\(", 'issue': 'Security', 'severity': 'critical'}]
         ctx = {file: {"domain": "PRODUCTION", "component_type": "AGENT"}}
@@ -39,6 +39,24 @@ class TestAuditEngine(unittest.TestCase):
         issues = self.engine.scan_content(file, content, patterns, ctx, "TestAgent")
         self.assertEqual(len(issues), 0)
         logger.info("✅ Integração com Veto validada.")
+
+    def test_scan_multiple_files(self):
+        """Valida a varredura em lote delegada."""
+        logger.info("⚡ Testando varredura em lote...")
+        files = ["file1.py", "file2.py"]
+        contents = {
+            "file1.py": "def f(): eval('x')",
+            "file2.py": "print('clean')"
+        }
+        def mock_read(path): return contents.get(path)
+        
+        patterns = [{'regex': r"eval\(", 'issue': 'Security'}]
+        ctx = {f: {"domain": "PRODUCTION"} for f in files}
+        
+        issues = self.engine.scan_multiple_files(files, patterns, mock_read, ctx, "BatchAgent")
+        self.assertEqual(len(issues), 1)
+        self.assertEqual(issues[0]['file'], "file1.py")
+        logger.info("✅ Varredura em lote validada.")
 
 if __name__ == "__main__":
     unittest.main()

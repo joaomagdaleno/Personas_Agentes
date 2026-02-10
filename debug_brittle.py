@@ -1,7 +1,12 @@
-
+"""
+🛠️ Utilitário de Depuração de Fragilidades.
+Este script executa um diagnóstico focado em arquivos marcados como 'brittle' (frágeis)
+ou identificados como 'dark matter' (pontos cegos), fornecendo visibilidade total
+sobre o status de cura no StabilityLedger.
+"""
 import sys
-from pathlib import Path
 import logging
+from pathlib import Path
 
 # FBI MODE
 current_dir = Path(__file__).parent.absolute()
@@ -11,6 +16,10 @@ from src_local.core.orchestrator import Orchestrator
 from src_local.utils.logging_config import configure_logging
 
 def main():
+    """
+    Função principal para execução do diagnóstico de depuração.
+    Orquestra a análise de contexto, mobilização de personas e síntese de saúde 360.
+    """
     configure_logging()
     orchestrator = Orchestrator(current_dir)
     

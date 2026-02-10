@@ -37,7 +37,7 @@ class TestSelfAwarenessFilter(unittest.TestCase):
         """Testa se padrões dentro de strings de regex são ignorados."""
         logger.info("⚡ Testando veto de regex...")
         file_path = "regex_rules.py"
-        content = "rules = [r'eval\\(', r'global\\s+']"
+        content = r"rules = [r'eval\(', r'global\s+']"
         (self.test_root / file_path).write_text(content)
         
         self.persona.set_context({
@@ -94,7 +94,7 @@ class TestSelfAwarenessFilter(unittest.TestCase):
         """SIMULAÇÃO CONTROLADA: Testa se definições de REGRAS continuam sendo ignoradas."""
         logger.info("⚡ Testando simulação de definição de regra...")
         file_path = "src/agents/rule_simulator.py"
-        content = "class Simulator:\n    rules = [r'eval\\(', r'exec\\(']"
+        content = "class Simulator:\n" + r"    rules = [r'eval\(', r'exec\(']"
         (self.test_root / "src/agents").mkdir(parents=True, exist_ok=True)
         (self.test_root / file_path).write_text(content)
         

@@ -12,7 +12,10 @@ class BattlePlanFormatter:
     
     def format(self, audit_results: list) -> str:
         """Estrutura os resultados da auditoria em um plano de batalha hierárquico."""
-        active = self._get_active_results(audit_results)
+        from src_local.agents.Support.battle_plan_sections_engine import BattlePlanSectionsEngine
+        self.engine = BattlePlanSectionsEngine()
+        
+        active = self.engine.filter_active_results(audit_results, self._get_item_key)
         if not active: return "## 🎯 PLANO DE BATALHA\n\n> ✅ Nenhuma intervenção necessária."
 
         categories = self._group_by_severity(active)
@@ -22,20 +25,15 @@ class BattlePlanFormatter:
         ]
 
         for sev in ["CRITICAL", "HIGH", "MEDIUM", "LOW", "STRATEGIC"]:
-            if categories[sev]:
-                sections.append(self._format_severity_group(sev, categories[sev]))
+            sections.append(self._format_section_if_active(sev, categories[sev]))
         
         return "\n\n".join(s.strip() for s in sections if s).strip()
 
-    def _get_active_results(self, audit_results):
-        """Filtra e deduplica resultados ativos."""
-        dedup, seen = [], set()
-        for i in audit_results:
-            key = self._get_item_key(i)
-            if key not in seen:
-                dedup.append(i)
-                seen.add(key)
-        return [i for i in dedup if not isinstance(i, dict) or i.get('severity') != 'HEALED']
+    def _format_section_if_active(self, sev, items):
+        """Formata uma seção de severidade apenas se contiver itens."""
+        if not items: return ""
+        return self.engine.format_severity_group(sev, items, self._format_item)
+
 
     def _get_item_key(self, item):
         if isinstance(item, dict):
@@ -57,18 +55,6 @@ class BattlePlanFormatter:
             if len(cats[s]) > 0: res += f"| {s} | {len(cats[s])} |\n"
         return res.strip()
 
-    def _format_severity_group(self, sev, items):
-        res = f"## 🚩 NÍVEL: {sev}\n\n"
-        file_groups = {}
-        for item in items:
-            fname = item.get('file', 'Global') if isinstance(item, dict) else "DNA"
-            if fname not in file_groups: file_groups[fname] = []
-            file_groups[fname].append(item)
-
-        for fname, group in file_groups.items():
-            res += f"### 📂 Alvo: `{fname}` [{sev}]\n\n"
-            for item in group: res += self._format_item(item, sev)
-        return res.strip()
 
     def _format_item(self, item, sev):
         if not isinstance(item, dict):

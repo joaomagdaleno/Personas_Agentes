@@ -6,21 +6,33 @@ logger = logging.getLogger(__name__)
 class ScoreCalculator:
     """Calculadora de Métricas de Saúde (Desacoplamento de Complexidade)."""
 
-    def calculate_final_score(self, map_data, all_alerts):
+    def calculate_final_score(self, map_data, all_alerts, qa_data=None):
         total_files = len(map_data)
         if total_files == 0:
             logger.debug("No files to calculate score.")
-            return 0
+            return {"score": 0, "breakdown": {}}
 
-        raw = (
-            self._calc_stability(map_data, total_files) +
-            self._calc_purity(map_data, total_files) +
-            self._calc_observability(map_data, total_files) +
-            self._calc_security(all_alerts) +
-            self._calc_excellence(map_data, total_files)
-        )
+        stability = self._calc_stability(map_data, total_files)
+        purity = self._calc_purity(map_data, total_files)
+        observability = self._calc_observability(map_data, total_files)
+        security = self._calc_security(all_alerts)
+        excellence = self._calc_excellence(map_data, total_files)
+
+        raw = stability + purity + observability + security + excellence
         logger.debug(f"Raw health score: {raw}")
-        return self._apply_penalties(raw, all_alerts, map_data, total_files)
+        
+        final_score = self._apply_penalties(raw, all_alerts, map_data, total_files, qa_data)
+        
+        return {
+            "score": final_score,
+            "breakdown": {
+                "Stability (Coverage)": round(stability, 1),
+                "Purity (Complexity)": round(purity, 1),
+                "Observability (Telemetry)": round(observability, 1),
+                "Security (Vulnerabilities)": round(security, 1),
+                "Excellence (Documentation)": round(excellence, 1)
+            }
+        }
 
     def _calc_stability(self, map_data, total):
         test_files = sum(1 for f, i in map_data.items() if i.get("has_test"))
@@ -52,22 +64,36 @@ class ScoreCalculator:
         logger.debug(f"Excellence score: {score}")
         return score
 
-    def _apply_penalties(self, raw, all_alerts, map_data, total):
+    def _apply_penalties(self, raw, all_alerts, map_data, total, qa_data=None):
         # Filtro de Integridade: Todas as falhas reais drenam a saúde
-        real_finds = all_alerts
+        alerts = [r for r in all_alerts if isinstance(r, dict)]
+        strat_count = sum(1 for r in all_alerts if isinstance(r, str))
+        loss_count = sum(1 for f, i in map_data.items() if not i.get("has_test"))
+        shallow_count = self._get_shallow_test_count(qa_data)
+
+        ceiling = self._calculate_health_ceiling(alerts, strat_count, loss_count, shallow_count)
+        drain = self._calculate_total_drain(alerts, strat_count, shallow_count)
         
-        high = [r for r in real_finds if isinstance(r, dict) and r.get('severity') in ['critical', 'high']]
-        medium = [r for r in real_finds if isinstance(r, dict) and r.get('severity') == 'medium']
-        low = [r for r in real_finds if isinstance(r, dict) and r.get('severity') in ['low', 'strategic']]
-        strat = sum(1 for r in real_finds if isinstance(r, str)) 
-        loss = sum(1 for f, i in map_data.items() if not i.get("has_test"))
-
-        ceiling = 100
-        if high: ceiling = 60
-        elif medium: ceiling = 85
-        elif low or strat > 0 or loss > 0: ceiling = 99
-
-        drain = (len(high) * 15) + (len(medium) * 5) + (len(low) * 1) + (strat * 0.5)
-        final = max(0, int(min(raw, ceiling) - (drain * 0.2)))
-        logger.debug(f"Applied penalties. Drain: {drain}, Final Score: {final}")
+        final = max(0, int(min(raw, ceiling) - drain))
+        logger.debug(f"Applied penalties. Drain: {drain}, Ceiling: {ceiling}, Final Score: {final}")
         return final
+
+    def _get_shallow_test_count(self, qa_data):
+        if not qa_data or "matrix" not in qa_data: return 0
+        return sum(1 for m in qa_data["matrix"] if m.get("test_status") == "SHALLOW")
+
+    def _calculate_health_ceiling(self, alerts, strat_count, loss_count, shallow_count):
+        high_alerts = [r for r in alerts if r.get('severity') in ['critical', 'high']]
+        medium_alerts = [r for r in alerts if r.get('severity') == 'medium']
+        
+        if high_alerts: return 60
+        if medium_alerts: return 85
+        if strat_count > 0 or loss_count > 0 or shallow_count > 0: return 99
+        return 100
+
+    def _calculate_total_drain(self, alerts, strat_count, shallow_count):
+        high = len([r for r in alerts if r.get('severity') in ['critical', 'high']])
+        medium = len([r for r in alerts if r.get('severity') == 'medium'])
+        low = len([r for r in alerts if r.get('severity') == 'low'])
+        
+        return (high * 15) + (medium * 5) + (low * 1) + (strat_count * 0.5) + (shallow_count * 5)

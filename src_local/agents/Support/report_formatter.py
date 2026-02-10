@@ -12,7 +12,9 @@ class ReportFormatter:
     
     def __init__(self):
         from src_local.agents.Support.battle_plan_formatter import BattlePlanFormatter
+        from src_local.agents.Support.report_sections_engine import ReportSectionsEngine
         self.battle_plan_formatter = BattlePlanFormatter()
+        self.sections_engine = ReportSectionsEngine()
 
     def format_header(self, health_data):
         """
@@ -22,25 +24,51 @@ class ReportFormatter:
         logger.info(f"✍️ [Formatter] Gerando cabeçalho de missão para {health_data['objective']}")
         
         score = health_data['health_score']
-        # Status baseados na escala de maturidade PhD 3.0
-        if score == 100: status = '💎 PERFEIÇÃO TÉCNICA (Soberania)'
-        elif score >= 90: status = '✅ ESTABILIDADE ELEVADA'
-        elif score >= 70: status = '⚠️ ALERTA: DÉBITO TÉCNICO'
-        elif score > 0: status = '🚨 EMERGÊNCIA ESTRUTURAL'
-        else: status = '💀 COLAPSO DE INTEGRIDADE'
+        status = self._get_health_status_label(score)
         
         # Injeção de Identidade Operacional (Snippets do Arquiteto)
-        op_status = "| Métrica | Valor | Status |\n| :--- | :--- | :--- |\n"
-        op_status += f"| **Índice de Saúde** | {score}% | {status.split()[0]} |\n"
-        op_status += f"| **Total de Alertas** | {health_data.get('total_issues', 0)} | {'Crítico' if health_data.get('total_issues', 0) > 50 else 'Monitorado'} |\n"
-        op_status += f"| **Sincronia** | {time.strftime('%H:%M:%S')} | Ativa |\n\n"
+        op_status = self._format_op_status_table(health_data, status)
 
         objective_clean = health_data['objective'].rstrip('.')
-        return (f"# 🏛️ MAPA DE CONSCIÊNCIA SISTÊMICA: {objective_clean}\n\n"
-                f"> **Visão Holística do Arquiteto PhD (Token: FBI_SINC_FINAL)**\n\n"
-                f"{status}\n\n"
-                f"---\n\n"
-                f"## 🧬 SINCRONIA DE IDENTIDADE\n\n{op_status.strip()}").strip()
+        header = (f"# 🏛️ MAPA DE CONSCIÊNCIA SISTÊMICA: {objective_clean}\n\n"
+                  f"> **Visão Holística do Arquiteto PhD (Token: FBI_SINC_FINAL)**\n\n"
+                  f"{status}\n\n"
+                  f"---\n\n"
+                  f"## 🧬 SINCRONIA DE IDENTIDADE\n\n{op_status.strip()}\n\n")
+        
+        # Injeção da Decomposição Analítica
+        if "health_breakdown" in health_data:
+            header += self.format_health_decomposition(health_data["health_breakdown"])
+            
+        return header.strip()
+
+    def _get_health_status_label(self, score):
+        """Determina o rótulo de saúde baseado no score PhD."""
+        if score == 100: return '💎 PERFEIÇÃO TÉCNICA (Soberania)'
+        if score >= 90: return '✅ ESTABILIDADE ELEVADA'
+        if score >= 70: return '⚠️ ALERTA: DÉBITO TÉCNICO'
+        if score > 0: return '🚨 EMERGÊNCIA ESTRUTURAL'
+        return '💀 COLAPSO DE INTEGRIDADE'
+
+    def _format_op_status_table(self, data, status):
+        """Gera a tabela de status operacional MD."""
+        table = "| Métrica | Valor | Status |\n| :--- | :--- | :--- |\n"
+        table += f"| **Índice de Saúde** | {data['health_score']}% | {status.split()[0]} |\n"
+        table += f"| **Total de Alertas** | {data.get('total_issues', 0)} | {'Crítico' if data.get('total_issues', 0) > 50 else 'Monitorado'} |\n"
+        table += f"| **Sincronia** | {time.strftime('%H:%M:%S')} | Ativa |\n"
+        return table
+
+    def format_health_decomposition(self, breakdown):
+        """📊 Expõe a anatomia do score soberano."""
+        res = "### 📊 DECOMPOSIÇÃO DA SAÚDE (PILARES)\n\n"
+        res += "| Pilar | Score | Peso Máx |\n| :--- | :---: | :---: |\n"
+        weights = {"Stability": 40, "Purity": 20, "Observability": 15, "Security": 15, "Excellence": 10}
+        
+        for pilar, score in breakdown.items():
+            key = pilar.split()[0]
+            max_w = weights.get(key, "--")
+            res += f"| {pilar} | {score} | {max_w} |\n"
+        return res + "\n"
 
     def format_vitals(self, health_data):
         """
@@ -66,10 +94,9 @@ class ReportFormatter:
             infra_status = "Sincronizada" if parity_gaps == 0 else f"{parity_gaps} Gaps"
 
         return (f"## 🩺 SINAIS VITAIS DO PRODUTO\n\n"
-                f"| Métrica | Status | Impacto |\n| :--- | :--- | :--- |\n"
-                f"| **Pontos Cegos** | {blind_count} Arquivos | {'Seguro' if blind_count == 0 else ('Alerta' if blind_count < 10 else 'CRÍTICO')} |\n"
-                f"| **Fragilidades** | {brittle_count} Pontos | {'Seguro' if brittle_count == 0 else 'Risco de Colapso'} |\n"
-                f"| {infra_label} | {infra_status} | Nível de Maturidade |").strip()
+                f"{self.sections_engine.format_vitals_table(health_data, infra_label, infra_status)}\n"
+                f"{self.sections_engine.format_roadmap(health_data)}").strip()
+
 
     def format_entropy(self, health_data):
         logger.debug("🌪️ [Formatter] Mapeando mapa de entropia...")

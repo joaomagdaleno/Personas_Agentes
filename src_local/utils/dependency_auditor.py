@@ -18,11 +18,13 @@ class DependencyAuditor:
     def __init__(self, project_root):
         """🏗️ Inicializa o auditor vinculando-o à raiz do projeto alvo."""
         from src_local.utils.git_client import GitClient
+        from src_local.utils.submodule_sync_logic import SubmoduleSyncLogic
         self.project_root = Path(project_root)
         self.agent_path = self.project_root / ".agent" / "skills"
         self.lock_file = self.project_root / ".gemini" / "sync.lock"
         self.is_internal = "Personas_Agentes" in str(self.project_root).replace("\\", "/")
         self.git = GitClient(self.agent_path)
+        self.sync_logic = SubmoduleSyncLogic()
 
     def sync_submodule(self):
         """Orquestra: Validação -> Boot -> Lock -> Sync -> Verify."""
@@ -37,12 +39,16 @@ class DependencyAuditor:
                 return False
 
             initial_hash = self.git.get_head_hash()
-            from src_local.utils.update_transaction import UpdateTransaction
-            res = UpdateTransaction(self.git, self.project_root).execute(initial_hash)
+            res = self._run_update_transaction(initial_hash)
             log_performance(logger, start_t, "📦 [DependencyAuditor] Sincronização de submódulos", level=logging.INFO)
             return res
         finally:
             self._release_lock()
+
+    def _run_update_transaction(self, initial_hash):
+        """Executa a transação de atualização delegada."""
+        from src_local.utils.update_transaction import UpdateTransaction
+        return UpdateTransaction(self.git, self.project_root).execute(initial_hash)
 
     def _ensure_initialized(self):
         if not self.agent_path.exists() or not list(self.agent_path.iterdir()):
@@ -52,15 +58,7 @@ class DependencyAuditor:
         return self.agent_path.exists() and (self.agent_path / ".git").exists()
 
     def _is_locked(self):
-        if not self.lock_file.exists(): return False
-        
-        # Sincronia de Lock Soberana (Standardized timeout)
-        from datetime import datetime, timedelta
-        mtime = datetime.fromtimestamp(self.lock_file.stat().st_mtime)
-        if (datetime.now() - mtime) > timedelta(minutes=10):
-            self._release_lock()
-            return False
-        return True
+        return self.sync_logic.is_locked(self.lock_file)
 
 
 
@@ -83,16 +81,7 @@ class DependencyAuditor:
 
     def _get_submodule_delta(self):
         """Calcula a diferença de commits entre local e remoto."""
-        remote = self.git.discover_remote()
-        if not remote: return []
-        
-        self.git.run(["fetch", remote], check=False)
-        topo = self._get_topology(remote)
-        delta = self.git.get_commit_count(f"{topo['active_ref']}..{remote}/{topo['tracking_ref']}")
-        
-        if delta > 0:
-            return [{"file": ".agent/skills", "issue": f"Delta: {delta} commits", "severity": "CRITICAL", "context": "DependencyAuditor"}]
-        return []
+        return self.sync_logic.get_submodule_delta(self.git, self.git.discover_remote())
 
     def _verify_network_health(self):
         """🌐 Verifica se o repositório remoto está acessível."""

@@ -11,45 +11,51 @@ logger = logging.getLogger(__name__)
 
 class ObfuscationHunter:
     """🕵️ Caçador de Ofuscação: Especialista em Desmascaramento."""
+    DANGEROUS_KEYWORDS = DANGEROUS_KEYWORDS
+
+    def __init__(self):
+        from src_local.agents.Support.obfuscation_logic_engine import ObfuscationLogicEngine
+        self.engine = ObfuscationLogicEngine()
+
+    def _resolve_string_concat(self, node):
+        return self.engine.resolve_constant(node)
     
     def scan_file(self, file_path: str, content: str) -> list:
         """Varredura de ofuscação de strings."""
         try:
             tree = ast.parse(content)
-            findings = []
-            for node in ast.walk(tree):
-                if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Add):
-                    res = self._check_node(node, tree)
-                    if res: findings.append(res)
-            return findings
+            return self._scan_tree(tree)
         except Exception:
             return []
 
+    def _scan_tree(self, tree):
+        """Itera sobre a árvore AST em busca de concatenações."""
+        findings = []
+        for node in ast.walk(tree):
+            if self._is_addition_node(node):
+                finding = self._check_node(node, tree)
+                if finding: findings.append(finding)
+        return findings
+
+    def _is_addition_node(self, node):
+        """Detecta nó de operador de adição binária."""
+        return isinstance(node, ast.BinOp) and isinstance(node.op, ast.Add)
+
     def _check_node(self, node, tree):
         """Valida um nó de concatenação."""
-        # Ignora definições de regras
-        from src_local.agents.Support.ast_navigator import ASTNavigator
-        if ASTNavigator().safety_nav.heuristics.is_inside_rule_definition(node, tree):
+        if self._should_skip_node(node, tree):
             return None
 
-        resolved = self._resolve(node)
+        resolved = self.engine.resolve_constant(node)
         if not resolved: return None
 
-        for kw in DANGEROUS_KEYWORDS:
-            if kw in resolved and self._is_hidden(node, kw):
-                logger.warning(f"Obfuscation: Detectado na linha {node.lineno}")
-                return {"line": node.lineno, "evidence": "Concatenação Suspeita", "reconstruction": resolved, "keyword": kw}
-        return None
+        return self.engine.check_dangerous_keywords(node, resolved, DANGEROUS_KEYWORDS)
 
-    def _resolve(self, node):
-        """Resolve recursivamente a string concatenada."""
-        if isinstance(node, (ast.Constant, getattr(ast, "Str", ast.Constant))):
-            val = getattr(node, "value", getattr(node, "s", ""))
-            return val if isinstance(val, str) else None
-        if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Add):
-            l, r = self._resolve(node.left), self._resolve(node.right)
-            return l + r if l is not None and r is not None else None
-        return None
+    def _should_skip_node(self, node, tree):
+        """Verifica se o nó deve ser ignorado (ex: definições de regras)."""
+        from src_local.agents.Support.ast_navigator import ASTNavigator
+        return ASTNavigator().safety_nav.heuristics.is_inside_rule_definition(node, tree)
+
 
     def _is_hidden(self, node, kw):
         """Verifica se a kw estava fragmentada."""
