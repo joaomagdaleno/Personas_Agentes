@@ -13,17 +13,23 @@ class TestContextMappingLogic(unittest.TestCase):
 
     def test_get_initial_info(self):
         logger.info("⚡ Testando get_initial_info...")
-        result = self.logic.get_initial_info("test.py")
+        analyst = MagicMock()
+        analyst.map_component_type.return_value = "MODULE"
+        result = self.logic.get_initial_info("test.py", "test.py", analyst)
         self.assertIsInstance(result, dict)
-        self.assertIn("file_path", result)
-        self.assertEqual(result["file_path"], "test.py")
+        self.assertIn("path", result)
+        self.assertIn("rel_path", result)
+        self.assertEqual(result["path"], "test.py")
+        self.assertEqual(result["component_type"], "MODULE")
         logger.info("✅ get_initial_info validado.")
 
-    def test_get_initial_info_with_ext(self):
-        logger.info("⚡ Testando get_initial_info (extensão .kt)...")
-        result = self.logic.get_initial_info("app/Main.kt")
-        self.assertIn("file_path", result)
-        logger.info("✅ get_initial_info extensão validado.")
+    def test_get_initial_info_test_domain(self):
+        logger.info("⚡ Testando get_initial_info (domínio TEST)...")
+        analyst = MagicMock()
+        analyst.map_component_type.return_value = "TEST"
+        result = self.logic.get_initial_info("tests/test_x.py", "tests/test_x.py", analyst)
+        self.assertEqual(result["domain"], "EXPERIMENTATION")
+        logger.info("✅ get_initial_info domínio TEST validado.")
 
 # ========== SubmoduleSyncLogic ==========
 class TestSubmoduleSyncLogic(unittest.TestCase):

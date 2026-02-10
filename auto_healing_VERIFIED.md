@@ -12,14 +12,14 @@
 | :--- | :--- | :--- |
 | **Índice de Saúde** | 0% | 💀 |
 | **Total de Alertas** | 68 | Crítico |
-| **Sincronia** | 13:12:04 | Ativa |
+| **Sincronia** | 13:24:54 | Ativa |
 
 ### 📊 DECOMPOSIÇÃO DA SAÚDE (PILARES)
 
 | Pilar | Score | Peso Máx |
 | :--- | :---: | :---: |
 | Stability (Coverage) | 37.7 | 40 |
-| Purity (Complexity) | 14.8 | 20 |
+| Purity (Complexity) | 14.9 | 20 |
 | Observability (Telemetry) | 0.5 | 15 |
 | Security (Vulnerabilities) | 15 | 15 |
 | Excellence (Documentation) | 10.0 | 10 |
@@ -34,7 +34,7 @@
 
 ### 🗺️ ROADMAP PARA 100% (REQUISITOS)
 
-- [ ] **Reduzir Complexidade**: Média atual drena 5.2 pts. Simplificar módulos > 15.
+- [ ] **Reduzir Complexidade**: Média atual drena 5.1 pts. Simplificar módulos > 15.
 - [ ] **Expandir Cobertura**: 18 arquivos sem testes drenam 2.3 pts.
 - [ ] **Injetar Telemetria**: Universalizar `log_performance` em utilitários e scripts.
 
@@ -245,64 +245,6 @@
 
 ### 📂 Alvo: `DNA` [STRATEGIC]
 
-- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_cli.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
-
-- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_core_depth.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
-
-- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_logic_auditor_deep.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
-
-- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_structural_analyst_deep.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
-
-- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_voyager.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
-
-- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'src_local/agents/Python/voyager.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
-
-- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'src_local/agents/Support/silent_error_detector.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
-
-- **Diretriz Estratégica:** Invisibilidade: O objetivo 'Validar integridade ['Python']' exige tração. Em 'src_local/agents/Python/hype.py', a falta de metadados prejudica a descoberta do valor do projeto
-
-- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Support/score_calculator.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'debug_brittle.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'scripts/lint_heading_logic.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'scripts/lint_rule_engine.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_context_sovereignty.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_logic_node_auditor.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_meta_analysis_detector.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_safety_definitions.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_support_complexity_fix.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/ast_navigator.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/ast_traversal_logic.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/audit_risk_engine.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/battle_plan_sections_engine.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/intent_heuristics_engine.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/safety_assignment_engine.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/safety_definitions.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/safety_navigator.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/telemetry_maturity_logic.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/test_discovery_logic.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/veto_criteria_engine.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
-
-- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/veto_structural_engine.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
-
 - **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'scripts/cleanup_obfuscation.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
 
 - **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'tests/test_cli.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
@@ -344,6 +286,64 @@
 - **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/Support/silent_error_detector.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
 
 - **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/Support/test_runner.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_cli.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
+
+- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_core_depth.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
+
+- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_logic_auditor_deep.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
+
+- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_structural_analyst_deep.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
+
+- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_voyager.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
+
+- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'src_local/agents/Python/voyager.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
+
+- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'src_local/agents/Support/silent_error_detector.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
+
+- **Diretriz Estratégica:** Invisibilidade: O objetivo 'Validar integridade ['Python']' exige tração. Em 'src_local/agents/Python/hype.py', a falta de metadados prejudica a descoberta do valor do projeto
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'debug_brittle.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'scripts/lint_heading_logic.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'scripts/lint_rule_engine.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_context_sovereignty.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_logic_node_auditor.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_meta_analysis_detector.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_safety_definitions.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_support_complexity_fix.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/ast_navigator.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/ast_traversal_logic.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/audit_risk_engine.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/battle_plan_sections_engine.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/intent_heuristics_engine.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/safety_assignment_engine.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/safety_definitions.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/safety_navigator.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/telemetry_maturity_logic.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/test_discovery_logic.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/veto_criteria_engine.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/veto_structural_engine.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Support/score_calculator.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível
 
 - **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'scripts/lint_heading_logic.py' é Matéria Escura (Sem testes detectados)
 

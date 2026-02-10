@@ -105,12 +105,14 @@ class TestAuditRiskEngine(unittest.TestCase):
 
     def test_create_entry(self):
         logger.info("⚡ Testando create_entry...")
-        ctx = {"lines": ["test_line"], "file_path": "test.py"}
+        ctx = {"lines": ["test_line", "line2", "line3"], "file_path": "test.py", "agent_name": "Auditor"}
         p = {"regex": "eval", "issue": "Insecure eval", "severity": "critical"}
         entry = self.engine.create_entry("test.py", 0, p, ctx, "HIGH")
         self.assertIsInstance(entry, dict)
-        self.assertIn("file", entry)
-        self.assertIn("severity", entry)
+        self.assertEqual(entry["file"], "test.py")
+        self.assertEqual(entry["severity"], "HIGH")
+        self.assertEqual(entry["line"], 1)
+        self.assertEqual(entry["context"], "Auditor")
         logger.info("✅ create_entry validado.")
 
 # ========== AuditScannerEngine ==========
@@ -232,8 +234,11 @@ class TestObfuscationCleanerEngine(unittest.TestCase):
 
     def test_get_offset(self):
         logger.info("⚡ Testando get_offset...")
-        offset = self.engine.get_offset(0, [])
+        lines = ["line one\n", "line two\n"]
+        offset = self.engine.get_offset(lines, 1, 0)
         self.assertEqual(offset, 0)
+        offset2 = self.engine.get_offset(lines, 2, 3)
+        self.assertEqual(offset2, len(lines[0]) + 3)
         logger.info("✅ get_offset validado.")
 
     def test_collect_replacements_empty(self):
