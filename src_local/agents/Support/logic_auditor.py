@@ -72,6 +72,10 @@ class LogicAuditor:
 
     def _audit_observability(self, node, tree, ignore_test):
         """Valida se um log contém telemetria manual que deve ser padronizada."""
+        # Se estiver em contexto de teste, ignora a regra de telemetria manual
+        if self.nav.test_nav.is_inside_test_context(node, tree):
+            return True, "Contexto de teste: Telemetria manual permitida."
+
         if "time" in ast.dump(node):
             from src_local.agents.Support.telemetry_intent_judge import TelemetryIntentJudge
             _, _, reason = TelemetryIntentJudge(self.nav.safety_nav.heuristics, self.judge).judge_intent(node, tree, ignore_test)

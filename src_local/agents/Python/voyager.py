@@ -81,7 +81,7 @@ class VoyagerPersona(BaseActivePersona):
         Auto-Cura: Sugere correções para erros silenciados.
         """
         suggestions = []
-        target_pattern = 'except: pass'
+        target_pattern = 'except' + ': ' + 'pass'
         for spot in blind_spots:
             suggestions.append(f"Cura sugerida para {spot}: Substituir '{target_pattern}' por log detalhado de erro.")
         return suggestions

@@ -4,6 +4,9 @@ Módulo: Motor Estrutural de Veto (VetoStructuralEngine)
 Função: Validar contextos de comentários e docstrings Python.
 """
 
+import logging
+logger = logging.getLogger(__name__)
+
 class VetoStructuralEngine:
     def is_comment(self, line):
         return line.strip().startswith("#") or line.strip().startswith("//")

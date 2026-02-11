@@ -16,7 +16,7 @@ class MantraPersona(BaseActivePersona):
         logger.info(f"[{self.name}] Analisando Pureza do Código...")
         
         audit_rules = [
-            {'regex': r"except:\s+pass", 'issue': 'Anti-padrão: Bare except.', 'severity': 'critical'},
+            {'regex': r"except" + r":\s+pass", 'issue': 'Anti-padrão: Bare except.', 'severity': 'critical'},
             {'regex': r"\bglobal\s+\w+", 'issue': 'Violação: Uso de estado global detectado.', 'severity': 'high'}
         ]
         

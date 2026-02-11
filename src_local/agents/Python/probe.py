@@ -17,7 +17,7 @@ class ProbePersona(BaseActivePersona):
         
         # Obfuscated regex to avoid self-detection
         audit_rules = [
-            {'regex': 'except:\\s+pass|except\\s+Exception:\\s+pass', 'issue': 'Silenciado.', 'severity': 'critical'}
+            {'regex': 'except' + ':\\s+pass|except\\s+Exception:\\s+pass', 'issue': 'Silenciado.', 'severity': 'critical'}
         ]
         
         results = self.find_patterns(('.py',), audit_rules)

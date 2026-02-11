@@ -20,8 +20,8 @@ class ASTTraversalLogic:
             curr = parent_map[curr]
             chain.append(curr)
             
-        duration = time.time() - start_time
-        # logger.debug(f"Telemetry: Parent chain traversal took {duration:.6f}s")
+        from src_local.utils.logging_config import log_performance
+        log_performance(logger, start_time, "Telemetry: Parent chain traversal")
         return chain
 
     def is_in_dict_value(self, node, target_node, key_names, utils):

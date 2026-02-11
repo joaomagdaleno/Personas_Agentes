@@ -35,4 +35,10 @@ class SemanticContextAnalyst:
         """Verifica se o nó está relacionado à telemetria ou logs."""
         return self.heuristics.is_inside_log_call(node, tree)
 
+    def map_component_type(self, rel_path):
+        ps = rel_path.replace("\\", "/")
+        if "tests/" in ps or "test_" in ps.split("/")[-1]:
+            return "TEST"
+        return "PRODUCTION"
+
 

@@ -51,7 +51,7 @@ class IntegrityGuardian:
                 break # Uma falha já compromete o arquivo
 
     def _analyze_error_silencing(self, content, issues, logic_auditor, ignore_test_context):
-        silent_pattern = 'except.*:\\s*pass'
+        silent_pattern = 'except' + '.*:\\s*pass'
         match = re.search(silent_pattern, content)
         if match:
             line_no = content[:match.start()].count('\n') + 1

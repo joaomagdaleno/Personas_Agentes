@@ -10,9 +10,9 @@
 
 | Métrica | Valor | Status |
 | :--- | :--- | :--- |
-| **Índice de Saúde** | 42% | 🚨 |
-| **Total de Alertas** | 0 | Monitorado |
-| **Sincronia** | 10:45:53 | Ativa |
+| **Índice de Saúde** | 32% | 🚨 |
+| **Total de Alertas** | 34 | Monitorado |
+| **Sincronia** | 11:07:33 | Ativa |
 
 ### 📊 DECOMPOSIÇÃO DA SAÚDE (PILARES)
 
@@ -20,7 +20,7 @@
 | :--- | :---: | :---: |
 | Stability (Coverage) | 39.9 | 40 |
 | Purity (Complexity) | 15.0 | 20 |
-| Observability (Telemetry) | 7.9 | 15 |
+| Observability (Telemetry) | 15.0 | 15 |
 | Security (Vulnerabilities) | 15 | 15 |
 | Excellence (Documentation) | 10.0 | 10 |
 
@@ -36,48 +36,46 @@
 
 - [ ] **Reduzir Complexidade**: Média atual drena 5.0 pts. Simplificar módulos > 15.
 - [ ] **Expandir Cobertura**: 0 arquivos sem testes drenam 0.1 pts.
-- [ ] **Injetar Telemetria**: Universalizar `log_performance` em utilitários e scripts.
 
 ## 🌪️ MAPA DE ENTROPIA & ACOPLAMENTO
 
 | Alvo | Complexidade | Instabilidade |
 | :--- | :---: | :---: |
+| `src_local/agents/base.py` | 15 | 0.08 |
 | `src_local/core/orchestrator.py` | 15 | 0.6 |
 | `src_local/utils/dependency_auditor.py` | 15 | 0.67 |
 | `src_local/agents/Support/health_synthesizer.py` | 15 | 0.6 |
 | `src_local/agents/Support/meta_analysis_detector.py` | 15 | 0.6 |
 | `src_local/utils/stability_ledger.py` | 14 | 0.57 |
 | `src_local/utils/veto_rules_phd.py` | 14 | 0.6 |
+| `src_local/agents/Support/logic_auditor.py` | 14 | 0.6 |
 | `src_local/agents/Support/markdown_sanitizer.py` | 14 | 0.67 |
 | `src_local/agents/Support/report_formatter.py` | 14 | 0.57 |
-| `src_local/agents/Support/test_navigator.py` | 14 | 0.67 |
-| `src_local/agents/Support/veto_criteria_engine.py` | 14 | 0.57 |
 
 ## 🧪 MATRIZ DE CONFIANÇA
 
 | Módulo | Entropia | Asserções | Status |
 | :--- | :---: | :---: | :--- |
+| `src_local/agents/base.py` | 15 | 11 | 🟢 PROFUNDO |
 | `src_local/core/orchestrator.py` | 15 | 9 | 🟢 PROFUNDO |
 | `src_local/utils/dependency_auditor.py` | 15 | 10 | 🟢 PROFUNDO |
 | `src_local/agents/Support/health_synthesizer.py` | 15 | 4 | 🟢 PROFUNDO |
 | `src_local/agents/Support/meta_analysis_detector.py` | 15 | 4 | 🟢 PROFUNDO |
 | `src_local/utils/stability_ledger.py` | 14 | 8 | 🟢 PROFUNDO |
 | `src_local/utils/veto_rules_phd.py` | 14 | 7 | 🟢 PROFUNDO |
+| `src_local/agents/Support/logic_auditor.py` | 14 | 4 | 🟢 PROFUNDO |
 | `src_local/agents/Support/markdown_sanitizer.py` | 14 | 7 | 🟢 PROFUNDO |
 | `src_local/agents/Support/report_formatter.py` | 14 | 8 | 🟢 PROFUNDO |
 | `src_local/agents/Support/veto_criteria_engine.py` | 14 | 1 | 🔴 FRÁGIL |
 | `scripts/git_doctor.py` | 13 | 4 | 🟢 PROFUNDO |
-| `src_local/agents/base.py` | 13 | 11 | 🟢 PROFUNDO |
 | `src_local/core/validator.py` | 13 | 3 | 🟢 PROFUNDO |
 | `src_local/utils/context_engine.py` | 13 | 21 | 🟢 PROFUNDO |
-| `src_local/agents/Support/logic_auditor.py` | 13 | 4 | 🟢 PROFUNDO |
 | `src_local/utils/scoring_engine_phd.py` | 12 | 3 | 🟢 PROFUNDO |
 | `src_local/utils/update_transaction.py` | 12 | 6 | 🟢 PROFUNDO |
 | `src_local/agents/Python/voyager.py` | 12 | 4 | 🟢 PROFUNDO |
 | `src_local/agents/Support/component_classifier.py` | 12 | 7 | 🟢 PROFUNDO |
 | `src_local/agents/Support/integrity_guardian.py` | 12 | 4 | 🟢 PROFUNDO |
 | `src_local/agents/Support/quality_analyst.py` | 12 | 6 | 🟢 PROFUNDO |
-| `src_local/agents/Support/score_calculator.py` | 12 | 4 | 🟢 PROFUNDO |
 | `scripts/cleanup_obfuscation.py` | 11 | 5 | 🟢 PROFUNDO |
 | `src_local/core/task_orchestrator.py` | 11 | 5 | 🟢 PROFUNDO |
 | `src_local/interface/gui.py` | 11 | 3 | 🟢 PROFUNDO |
@@ -104,6 +102,7 @@
 | `src_local/agents/Support/intent_heuristics_engine.py` | 9 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Support/logic_node_auditor.py` | 9 | 4 | 🟢 PROFUNDO |
 | `src_local/agents/Support/safety_assignment_engine.py` | 9 | 1 | 🔴 FRÁGIL |
+| `src_local/agents/Support/score_calculator.py` | 9 | 4 | 🟢 PROFUNDO |
 | `src_local/agents/Support/source_code_parser.py` | 9 | 5 | 🟢 PROFUNDO |
 | `src_local/utils/cache_manager.py` | 8 | 3 | 🟢 PROFUNDO |
 | `src_local/utils/conflict_policy_phd.py` | 8 | 4 | 🟢 PROFUNDO |
@@ -143,6 +142,7 @@
 | `src_local/utils/logging_config.py` | 5 | 1 | 🟢 PROFUNDO |
 | `src_local/agents/Kotlin/probe.py` | 5 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Support/safety_navigator.py` | 5 | 1 | 🟢 PROFUNDO |
+| `src_local/agents/Support/semantic_context_analyst.py` | 5 | 5 | 🟢 PROFUNDO |
 | `scripts/run_diagnostic.py` | 4 | 1 | 🟢 PROFUNDO |
 | `scripts/update_agent_submodule.py` | 4 | 1 | 🟢 PROFUNDO |
 | `src_local/core/compiler.py` | 4 | 1 | 🟢 PROFUNDO |
@@ -187,7 +187,6 @@
 | `src_local/agents/Python/stream.py` | 3 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Python/vault.py` | 3 | 3 | 🟢 PROFUNDO |
 | `src_local/agents/Support/ast_navigator.py` | 3 | 6 | 🟢 PROFUNDO |
-| `src_local/agents/Support/semantic_context_analyst.py` | 3 | 5 | 🟢 PROFUNDO |
 | `src_local/agents/Flutter/bolt.py` | 2 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Flutter/bridge.py` | 2 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Flutter/cache.py` | 2 | 2 | 🟢 PROFUNDO |
@@ -231,9 +230,87 @@
 | `src_local/agents/Support/infrastructure_assembler.py` | 1 | 1 | 🟢 PROFUNDO |
 | `src_local/agents/Support/safety_definitions.py` | 1 | 2 | 🟢 PROFUNDO |
 
-## 🎯 PLANO DE BATALHA
+## 🎯 PLANO DE BATALHA: DIRETRIZES DE ENGENHARIA
 
-> ✅ Nenhuma intervenção necessária.
+### 📊 RESUMO DE INTERVENÇÕES
+
+| Severidade | Quantidade |
+| :--- | :---: |
+| STRATEGIC | 34 |
+
+---
+
+## 🚩 NÍVEL: STRATEGIC
+
+### 📂 Alvo: `DNA` [STRATEGIC]
+
+- **Diretriz Estratégica:** Invisibilidade: O objetivo 'Validar integridade ['Python']' exige tração. Em 'src_local/agents/Python/hype.py', a falta de metadados prejudica a descoberta do valor do projeto
+
+- **Diretriz Estratégica:** Entropia Lógica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/agents/Support/score_calculator.py', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'scripts/cleanup_obfuscation.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'tests/test_cli.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'tests/test_context_engine_system.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'tests/test_core_depth.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'tests/test_integrity_guardian.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'tests/test_logic_auditor_deep.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'tests/test_silent_error_detector.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'tests/test_structural_analyst_deep.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'tests/test_support_agents.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'tests/test_voyager.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/base.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/core/validator.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/Python/echo.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/Python/mantra.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/Python/probe.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/Python/voyager.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/Support/integrity_guardian.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/Support/logic_auditor.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/Support/safety_definitions.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/Support/silent_error_detector.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Instabilidade Sistêmica: O objetivo 'Validar integridade ['Python']' exige resiliência. Em 'src_local/agents/Support/test_runner.py', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_cli.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
+
+- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_core_depth.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
+
+- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_logic_auditor_deep.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
+
+- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_structural_analyst_deep.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
+
+- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'tests/test_voyager.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
+
+- **Diretriz Estratégica:** Cegueira Operacional: O objetivo 'Validar integridade ['Python']' exige diagnóstico. Em 'src_local/agents/Support/silent_error_detector.py', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_context_sovereignty.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_logic_node_auditor.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_meta_analysis_detector.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_safety_definitions.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'tests/test_support_complexity_fix.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
 
 ## 💀 Risco Existencial
 

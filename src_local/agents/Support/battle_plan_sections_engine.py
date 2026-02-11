@@ -4,6 +4,9 @@ Módulo: Motor de Seções do Plano de Batalha (BattlePlanSectionsEngine)
 Função: Formatar grupos de severidade e itens individuais.
 """
 
+import logging
+logger = logging.getLogger(__name__)
+
 class BattlePlanSectionsEngine:
     def format_severity_group(self, sev, items, item_formatter):
         import time

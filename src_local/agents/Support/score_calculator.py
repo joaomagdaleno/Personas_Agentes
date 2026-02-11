@@ -47,9 +47,10 @@ class ScoreCalculator:
         return score
 
     def _calc_observability(self, map_data, total):
+        relevant_files = sum(1 for f, i in map_data.items() if i.get("component_type") != "TEST")
         tel_count = sum(1 for f, i in map_data.items() if i.get("component_type") != "TEST" and (i.get("telemetry") or "telemetry" in str(i)))
-        score = (tel_count / max(1, total)) * 15
-        logger.debug(f"Observability score: {score}")
+        score = (tel_count / max(1, relevant_files)) * 15
+        logger.debug(f"Observability score: {score} ({tel_count}/{relevant_files})")
         return score
 
     def _calc_security(self, all_alerts):
@@ -86,10 +87,9 @@ class ScoreCalculator:
         high_alerts = [r for r in alerts if r.get('severity') in ['critical', 'high']]
         medium_alerts = [r for r in alerts if r.get('severity') == 'medium']
         
-        if high_alerts: return 60
-        if medium_alerts: return 85
-        if strat_count > 0 or loss_count > 0 or shallow_count > 0: return 99
-        return 100
+        if any(r.get('severity') in ['critical', 'high'] for r in alerts): return 60
+        if any(r.get('severity') == 'medium' for r in alerts): return 85
+        return 99 if (strat_count + loss_count + shallow_count > 0) else 100
 
     def _calculate_total_drain(self, alerts, strat_count, shallow_count):
         severity_map = {'critical': 15, 'high': 15, 'medium': 5, 'low': 1}

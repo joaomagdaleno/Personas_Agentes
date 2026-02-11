@@ -61,7 +61,11 @@ class BaseActivePersona(ABC):
     def find_patterns(self, extensions, patterns):
         """🔍 Varredura delegada ao AuditEngine."""
         if not self.audit_engine: return []
-        files = [f for f in self.context_data.keys() if f.endswith(extensions) and f not in self.ignored_files]
+        files = [f for f in self.context_data.keys() 
+                 if f.endswith(extensions) 
+                 and f not in self.ignored_files
+                 and self.context_data[f].get("component_type") != "TEST"]
+        logger.info(f"[{self.name}] Scanning {len(files)} files (Filtered from {len(self.context_data)}). Sample excluded: {[f for f in self.context_data if 'test' in f and f not in files][:3]}")
         return self.audit_engine.scan_multiple_files(files, patterns, self.read_project_file, self.context_data, self.name)
 
     def analyze_logic(self, file_path):
