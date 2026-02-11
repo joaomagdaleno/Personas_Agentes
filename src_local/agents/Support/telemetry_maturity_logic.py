@@ -4,6 +4,8 @@ Módulo: Lógica de Maturidade de Telemetria (TelemetryMaturityLogic)
 Função: Avaliar padrões de tempo/performance e nomes de telemetria.
 """
 import ast
+import logging
+logger = logging.getLogger(__name__)
 from src_local.agents.Support.safety_definitions import TELEMETRY_KEYWORDS
 
 class TelemetryMaturityLogic:
@@ -26,8 +28,14 @@ class TelemetryMaturityLogic:
 
     def is_assigned_to_log_variable(self, target_node, tree, heuristics):
         """Detecta se o resultado da subtração de tempo vai para variável de telemetria."""
+        import time
+        start_time = time.time()
+        
         parent_chain = heuristics.utils.get_parent_chain(target_node, tree)
         for parent in parent_chain:
             if isinstance(parent, ast.Assign):
-                return any(self.is_tele_name(t) for t in parent.targets)
+                if any(self.is_tele_name(t) for t in parent.targets):
+                    from src_local.utils.logging_config import log_performance
+                    log_performance(logger, start_time, "Telemetry: Log variable check")
+                    return True
         return False

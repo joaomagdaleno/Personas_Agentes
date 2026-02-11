@@ -4,6 +4,8 @@ Módulo: Lógica de Cabeçalhos MD (LintHeadingLogic)
 Função: Validar integridade de títulos e espaçamentos em Markdown.
 """
 import re
+import logging
+logger = logging.getLogger(__name__)
 
 class LintHeadingLogic:
     def check_headings(self, lines, i, stripped, headings):
@@ -18,4 +20,7 @@ class LintHeadingLogic:
         # MD024: Headings duplicados
         if stripped in headings: errs.append(f"MD024 at {i+1}")
         
+        from src_local.utils.logging_config import log_performance
+        import time
+        log_performance(logger, time.time(), "Telemetry: Heading check")
         return errs

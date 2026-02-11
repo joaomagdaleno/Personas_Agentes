@@ -22,6 +22,7 @@ class VoyagerPersona(BaseActivePersona):
         ]
         
         results = self.find_patterns(('.py',), audit_rules)
+
         self._log_performance(start_time, len(results))
         return results
 

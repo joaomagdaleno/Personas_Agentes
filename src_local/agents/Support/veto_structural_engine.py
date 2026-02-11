@@ -10,6 +10,9 @@ class VetoStructuralEngine:
 
     def is_docstring(self, line, ctx):
         """📝 Detecta se a linha está dentro de uma docstring Python."""
+        import time
+        start_time = time.time()
+        
         clean = line.strip()
         if '"""' not in clean and "'''" not in clean:
             return ctx.get("in_docstring", False)
@@ -18,6 +21,8 @@ class VetoStructuralEngine:
         if not self._is_single_line_docstring(clean):
             ctx["in_docstring"] = not ctx.get("in_docstring", False)
             
+        from src_local.utils.logging_config import log_performance
+        log_performance(logger, start_time, "Telemetry: Docstring check")
         return True
 
     def _is_single_line_docstring(self, line):

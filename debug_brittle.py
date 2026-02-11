@@ -20,6 +20,8 @@ def main():
     Função principal para execução do diagnóstico de depuração.
     Orquestra a análise de contexto, mobilização de personas e síntese de saúde 360.
     """
+    import time
+    start_time = time.time()
     configure_logging()
     orchestrator = Orchestrator(current_dir)
     
@@ -58,6 +60,9 @@ def main():
     print(f"BLIND SPOTS ({len(snapshot['dark_matter'])}):")
     for dm in snapshot['dark_matter']:
         print(f"  - {dm}")
+        
+    from src_local.utils.logging_config import log_performance
+    log_performance(logging.getLogger(__name__), start_time, "Telemetry: Debug Brittle execution finished")
 
     print("="*50)
 

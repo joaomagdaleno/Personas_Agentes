@@ -4,15 +4,24 @@ Módulo: Motor de Risco de Auditoria (AuditRiskEngine)
 Função: Mapear níveis de risco e formatar entradas de vulnerabilidade.
 """
 
+import logging
+logger = logging.getLogger(__name__)
+    
 class AuditRiskEngine:
     def map_risk_type(self, regex):
+        import time
+        start_time = time.time()
         reg = regex.lower()
-        if "eval" in reg: return "eval"
-        if "shell" in reg: return "shell"
-        if "global" in reg: return "global"
-        if "debug" in reg: return "debug"
-        if "except" in reg: return "except"
-        return "print"
+        risk = "print"
+        if "eval" in reg: risk = "eval"
+        elif "shell" in reg: risk = "shell"
+        elif "global" in reg: risk = "global"
+        elif "debug" in reg: risk = "debug"
+        elif "except" in reg: risk = "except"
+        
+        from src_local.utils.logging_config import log_performance
+        log_performance(logger, start_time, "Telemetry: Risk mapping")
+        return risk
 
     def create_entry(self, file, index, pattern, ctx, sev_override):
         lines = ctx["lines"]

@@ -4,11 +4,19 @@ Módulo: Motor de Heurísticas de Intenção (IntentHeuristicsEngine)
 Função: Especialista em detectar padrões de metadados e contextos de teste em AST.
 """
 import ast
+import logging
+logger = logging.getLogger(__name__)
 
 class IntentHeuristicsEngine:
     def is_metadata_context(self, node, tree, heuristics):
         """Encapsula verificações de contexto técnico/metadados."""
-        if heuristics.is_meta_analysis_node(node): return True
+        import time
+        start_time = time.time()
+        
+        if heuristics.is_meta_analysis_node(node): 
+            from src_local.utils.logging_config import log_performance
+            log_performance(logger, start_time, "Telemetry: Context check")
+            return True
         if heuristics.is_inside_rule_definition(node, tree): return True
         if self._is_analysis_comparison(node): return True
         return self._is_inside_test_method(node, tree, heuristics)

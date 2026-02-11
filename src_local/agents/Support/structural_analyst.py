@@ -35,7 +35,8 @@ class StructuralAnalyst:
                 res = {
                     "complexity": self.parser.calculate_py_complexity(d["tree"]),
                     "dependencies": self.parser.extract_py_imports(d["tree"]),
-                    "functions": d["functions"], "classes": d["classes"]
+                    "functions": d["functions"], "classes": d["classes"],
+                    "telemetry": "telemetry" in content or "log_performance" in content
                 }
         elif filename.endswith(('.kt', '.kts')):
             d = self.parser.analyze_kt(content)

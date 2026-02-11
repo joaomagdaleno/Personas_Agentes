@@ -6,6 +6,9 @@ Função: Formatar grupos de severidade e itens individuais.
 
 class BattlePlanSectionsEngine:
     def format_severity_group(self, sev, items, item_formatter):
+        import time
+        start_time = time.time()
+        
         res = f"## 🚩 NÍVEL: {sev}\n\n"
         file_groups = {}
         for item in items:
@@ -16,6 +19,9 @@ class BattlePlanSectionsEngine:
         for fname, group in file_groups.items():
             res += f"### 📂 Alvo: `{fname}` [{sev}]\n\n"
             for item in group: res += item_formatter(item, sev)
+            
+        from src_local.utils.logging_config import log_performance
+        log_performance(logger, start_time, f"Telemetry: Formatting {sev} group")
         return res.strip()
 
     def format_item_entry(self, item, sev):

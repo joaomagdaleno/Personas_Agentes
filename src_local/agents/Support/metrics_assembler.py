@@ -12,7 +12,13 @@ class MetricsAssembler:
 
     def gather_qa_data(self, map_data, internal_health, personas):
         """Coleta a matriz de qualidade e pirâmide de testes via personas."""
+        import time
+        start_time = time.time()
+        
         testify = next((p for p in personas if p.name == "Testify"), None)
+        
+        from src_local.utils.logging_config import log_performance
+        log_performance(logger, start_time, "Telemetry: Metrics assembly")
         
         return {
             "pyramid": testify.analyze_test_pyramid(map_data) if testify else {}, 

@@ -18,6 +18,9 @@ class ReportSectionsEngine:
                 f"| {infra_label} | {infra_status} | Nível de Maturidade |\n")
 
     def format_roadmap(self, health_data):
+        import time
+        start_time = time.time()
+        
         breakdown = health_data.get("health_breakdown", {})
         points = []
         
@@ -25,6 +28,9 @@ class ReportSectionsEngine:
         self._add_stability_points(breakdown, health_data, points)
         self._add_obs_points(breakdown, points)
         self._add_excellence_points(breakdown, points)
+
+        from src_local.utils.logging_config import log_performance
+        log_performance(logger, start_time, "Telemetry: Roadmap generation")
 
         if not points:
             return "> 💎 **Sistema em estado de soberania técnica.** Requisitos de 100% atingidos."

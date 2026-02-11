@@ -10,10 +10,16 @@ logger = logging.getLogger(__name__)
 
 class ObfuscationCleanerEngine:
     def collect_replacements(self, tree, hunter):
+        import time
+        start_time = time.time()
+        
         collector = ReplacementCollector(hunter)
         collector.visit(tree)
         # Apply replacements in reverse order to keep offsets valid
         collector.replacements.sort(key=lambda x: x['start_offset'], reverse=True)
+        
+        from src_local.utils.logging_config import log_performance
+        log_performance(logger, start_time, "Telemetry: Obfuscation cleaning")
         return collector.replacements
 
     def get_offset(self, lines, lineno, col_offset):

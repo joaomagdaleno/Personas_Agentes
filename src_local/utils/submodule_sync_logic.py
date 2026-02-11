@@ -21,6 +21,9 @@ class SubmoduleSyncLogic:
 
     def get_submodule_delta(self, git, remote):
         """Calcula a diferença de commits entre local e remoto."""
+        import time
+        start_time = time.time()
+        
         if not remote: return []
         
         git.run(["fetch", remote], check=False)
@@ -30,5 +33,7 @@ class SubmoduleSyncLogic:
         delta = git.get_commit_count(f"{active}..{remote}/{tracking}")
         
         if delta > 0:
+            from src_local.utils.logging_config import log_performance
+            log_performance(logger, start_time, "Telemetry: Submodule delta check")
             return [{"file": ".agent/skills", "issue": f"Delta: {delta} commits", "severity": "CRITICAL", "context": "DependencyAuditor"}]
         return []

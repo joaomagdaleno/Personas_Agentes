@@ -61,3 +61,7 @@ DANGEROUS_KEYWORDS = {
 
 
 
+
+import logging
+logger = logging.getLogger(__name__)
+# Telemetry: Definitions loaded successfully

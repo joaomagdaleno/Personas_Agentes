@@ -4,9 +4,13 @@ Módulo: Motor de Varredura AST (AuditScannerEngine)
 Função: Executar análise profunda de risco e varredura de padrões em nível de linha.
 """
 import re
+import logging
+logger = logging.getLogger(__name__)
 
 class AuditScannerEngine:
     def scan_pattern(self, p, ctx, file, content, auditor, veto):
+        import time
+        start_time = time.time()
         pattern_issues = []
         for i, line in enumerate(ctx["lines"]):
             if veto.should_skip(line, p, ctx): continue
@@ -18,6 +22,9 @@ class AuditScannerEngine:
             if severity == "SKIP": continue
 
             pattern_issues.append(self._create_entry(file, i, p, ctx, severity))
+        
+        from src_local.utils.logging_config import log_performance
+        log_performance(logger, start_time, f"Telemetry: Pattern scan for {p.get('issue')}")
         return pattern_issues
 
     def _validate_risk_level(self, file, content, i, p, auditor):

@@ -1,0 +1,21 @@
+"""Testes para ObfuscationCleanerEngine"""
+import unittest
+import ast
+import logging
+from unittest.mock import MagicMock
+
+logger = logging.getLogger("test_obfuscation_cleaner_engine")
+
+class TestObfuscationCleanerEngine(unittest.TestCase):
+    def setUp(self):
+        from src_local.agents.Support.obfuscation_cleaner_engine import ObfuscationCleanerEngine
+        self.engine = ObfuscationCleanerEngine()
+
+    def test_collect_replacements(self):
+        tree = ast.parse("x = 1")
+        hunter = MagicMock()
+        hunter.dangerous_keywords = ["eval"]
+        result = self.engine.collect_replacements(tree, hunter)
+        self.assertIsInstance(result, list)
+
+if __name__ == '__main__': unittest.main()

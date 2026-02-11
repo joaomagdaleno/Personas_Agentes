@@ -1,4 +1,6 @@
 import ast
+import logging
+logger = logging.getLogger(__name__)
 
 class ASTNavigator:
     """
@@ -17,9 +19,16 @@ class ASTNavigator:
 
     def check_safety_rules(self, node, tree):
         """Coordenador: Executa verificação em cascata via delegados."""
+        import time
+        start_time = time.time()
+        
         if self.test_nav.is_inside_test_context(node, tree): return True
         if self.safety_nav.is_safe_context(node, tree): return True
-        return not self.safety_nav.is_being_executed(node, tree)
+        result = not self.safety_nav.is_being_executed(node, tree)
+        
+        from src_local.utils.logging_config import log_performance
+        log_performance(logger, start_time, "Telemetry: content safety check")
+        return result
 
     # --- Utilitários Compartilhados (Delegados) ---
 

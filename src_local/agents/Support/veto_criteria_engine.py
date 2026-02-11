@@ -4,15 +4,26 @@ Módulo: Motor de Critérios de Veto (VetoCriteriaEngine)
 Função: Avaliar permissões de exceção e contextos técnicos/matemáticos.
 """
 import re
+import logging
+logger = logging.getLogger(__name__)
 
 class VetoCriteriaEngine:
     def check_permissions(self, line, pattern, file_path):
+        import time
+        start_time = time.time()
+        
         if not ("/tests/" in file_path or "test_" in file_path): return False
         
         regex_val = pattern.get('regex', '')
         if regex_val and (f"'{regex_val}'" in line or f'"{regex_val}"' in line):
+            from src_local.utils.logging_config import log_performance
+            log_performance(logger, start_time, "Telemetry: Permission check")
             return True
-        return pattern.get("severity") == "critical" and "pass" in line
+        
+        if pattern.get("severity") == "critical" and "pass" in line:
+            return True
+            
+        return False
 
     def is_math_context(self, line, pattern):
         if "Imprecisão Monetária" not in pattern.get('issue', ''): return False

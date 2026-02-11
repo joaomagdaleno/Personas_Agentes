@@ -20,9 +20,15 @@ class ObfuscationLogicEngine:
         return None
 
     def check_dangerous_keywords(self, node, resolved, keywords):
+        import time
+        start_time = time.time()
+        
         for kw in keywords:
             if kw in resolved and self._is_fragmented(node, kw):
                 logger.warning(f"Obfuscation: Detectado na linha {node.lineno}")
+                
+                from src_local.utils.logging_config import log_performance
+                log_performance(logger, start_time, "Telemetry: Keyword check")
                 return {
                     "line": node.lineno, "evidence": "Concatenação Suspeita", 
                     "reconstruction": resolved, "keyword": kw

@@ -92,8 +92,7 @@ class ScoreCalculator:
         return 100
 
     def _calculate_total_drain(self, alerts, strat_count, shallow_count):
-        high = len([r for r in alerts if r.get('severity') in ['critical', 'high']])
-        medium = len([r for r in alerts if r.get('severity') == 'medium'])
-        low = len([r for r in alerts if r.get('severity') == 'low'])
-        
-        return (high * 15) + (medium * 5) + (low * 1) + (strat_count * 0.5) + (shallow_count * 5)
+        severity_map = {'critical': 15, 'high': 15, 'medium': 5, 'low': 1}
+        drain = sum(severity_map.get(r.get('severity'), 0) for r in alerts if isinstance(r, dict))
+        drain += (strat_count * 0.5) + (shallow_count * 5)
+        return drain
