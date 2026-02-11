@@ -13,5 +13,8 @@ class TestLintRuleEngine(unittest.TestCase):
         lines = ["# Title", "", "Paragraph."]
         errors = self.engine.verify_rules(lines)
         self.assertIsInstance(errors, list)
+        
+        # Test 2: No errors in clean content
+        self.assertEqual(len(errors), 0)
 
 if __name__ == '__main__': unittest.main()

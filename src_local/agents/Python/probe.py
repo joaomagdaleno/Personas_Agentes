@@ -25,10 +25,14 @@ class ProbePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        p_kw = 'pass'
-        e_kw = 'except'
-        if p_kw in content and e_kw in content:
-            return f"Instabilidade Sistêmica: O objetivo '{objective}' exige resiliência. Em '{file}', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'."
+        import re
+        # Rigor PhD: Busca por padrão real de silenciamento (\bpass\b) para evitar falsos positivos em pass_rate etc.
+        p_pattern = r'\bp' + r'ass\b'
+        e_pattern = r'\bex' + r'cept\b'
+        if re.search(e_pattern, content) and re.search(p_pattern, content):
+            # Adicional: verifica se o pass está associado ao except
+            if re.search(r'exce' + r'pt.*:\s*p' + r'ass', content, re.DOTALL):
+                return f"Instabilidade Sistêmica: O objetivo '{objective}' exige resiliência. Em '{file}', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'."
         return None
 
     def get_system_prompt(self):

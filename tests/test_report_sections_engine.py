@@ -13,5 +13,8 @@ class TestReportSectionsEngine(unittest.TestCase):
         data = {"dark_matter": [], "brittle_points": []}
         result = self.engine.format_vitals_table(data, "Paridade", "OK")
         self.assertIn("Pontos Cegos", result)
+        
+        # Test 2: Parity status included
+        self.assertIn("Paridade", result)
 
 if __name__ == '__main__': unittest.main()

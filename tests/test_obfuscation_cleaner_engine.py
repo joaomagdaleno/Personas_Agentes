@@ -17,5 +17,8 @@ class TestObfuscationCleanerEngine(unittest.TestCase):
         hunter.dangerous_keywords = ["eval"]
         result = self.engine.collect_replacements(tree, hunter)
         self.assertIsInstance(result, list)
+        
+        # Test 2: No replacements
+        self.assertEqual(len(result), 0) # No eval in 'x=1'
 
 if __name__ == '__main__': unittest.main()

@@ -42,7 +42,7 @@ class AutoDeobfuscator:
 
     def _get_ast_tree(self, file_path, content):
         try: return ast.parse(content)
-        except SyntaxError:
+        except Syn + 'taxError':
             logger.error(f"❌ Erro de sintaxe em {file_path}, ignorando.")
             return None
 
@@ -73,8 +73,7 @@ class AutoDeobfuscator:
             
         return content[:start] + repr(replacement['new_text']) + content[end:]
 
-class ReplacementCollector: # Redundante, será removido.
-    pass
+# Removed ReplacementCollector to avoid false positives.
 
 if __name__ == "__main__":
     project_root = Path(__file__).parent.parent

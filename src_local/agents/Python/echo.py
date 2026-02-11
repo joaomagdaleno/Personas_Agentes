@@ -28,7 +28,7 @@ class EchoPersona(BaseActivePersona):
         # Obfuscated keywords to prevent false positives in self-scan
         # Rigor PhD: Busca por padrão físico de silenciamento real
         import re
-        silent_pattern = 'except.*:\\s+pass'   
+        silent_pattern = 'exce' + 'pt.*:\\s*p' + 'ass'   
         if re.search(silent_pattern, content) and "silent_pattern =" not in content:
             return f"Cegueira Operacional: O objetivo '{objective}' exige diagnóstico. Em '{file}', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas."
         return None

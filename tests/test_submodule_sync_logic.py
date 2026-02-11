@@ -14,5 +14,9 @@ class TestSubmoduleSyncLogic(unittest.TestCase):
         mock_path = MagicMock()
         mock_path.exists.return_value = False
         self.assertFalse(self.logic.is_locked(mock_path))
+        
+        # Test 2: Locked
+        mock_path.exists.return_value = True
+        self.assertTrue(self.logic.is_locked(mock_path))
 
 if __name__ == '__main__': unittest.main()

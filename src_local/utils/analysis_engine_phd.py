@@ -27,7 +27,7 @@ class AnalysisEnginePhd:
             else:
                 info["test_depth"] = {"assertion_count": 0, "quality_level": "NONE"}
                 if not is_real_test:
-                    info["has_test"] = coverage.detect_test(path, info["component_type"], all_files)
+                    info["has_test"] = coverage.detect_test(path, info["component_type"], all_files, info)
             return info
         except Exception as e:
             logger.error(f"❌ Erro AnalysisEngine: {e}")

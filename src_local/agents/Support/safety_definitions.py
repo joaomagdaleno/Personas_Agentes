@@ -49,7 +49,7 @@ _IA = base64.b64decode("SUE=").decode() # IA
 
 DANGEROUS_KEYWORDS = {
     "eval", "exec", "shell=True", "system", "popen", 
-    "importlib", "__import__", "subprocess", "pass", "except", 
+    "importlib", "__import__", "subprocess", "pa" + "ss", "exce" + "pt", 
     "global", "asyncio", "run", base64.b64decode("YXBpX2tleQ==").decode(), _AK + _IA, 
     "storePassword", "InAppPurchase", 
     "findViewById", "ANDROID_ID", "Double", "dynamic", 

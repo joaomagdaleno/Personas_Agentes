@@ -29,15 +29,18 @@ class HealthSynthesizer:
         score = health_packet["score"] if isinstance(health_packet, dict) else health_packet
         breakdown = health_packet.get("breakdown", {}) if isinstance(health_packet, dict) else {}
         
-        dark_matter = [f for f, i in map_data.items() if i.get("component_type") in ["AGENT", "CORE", "LOGIC", "UTIL"] and not i.get("has_test")]
+        core_types = ["AGENT", "CORE", "LOGIC", "UTIL"]
+        # Rigor PhD Soberano: Apenas ativos de PRODUÇÃO com lógica exigem testes. Ferramentas (DOC) e UI são excluídas.
+        dark_matter = [f for f, i in map_data.items() if (i.get("component_type") in core_types or (i.get("complexity", 1) > 1 and i.get("component_type") not in ["DOC", "INTERFACE", "TEST"])) and not i.get("has_test")]
         
         # Identificação de Testes Frágeis (SHALLOW)
         shallow_files = {m['file'] for m in qa_data.get("matrix", []) if m.get("test_status") == "SHALLOW"}
         
-        # Filtro de Fragilidades: Inclui bugs latentes, ledger instável e testes rasos
+        # Filtro de Fragilidades: Inclui bugs latentes, ativos lógicos rasos e ledger instável
         brittle_points = []
         for f, i in map_data.items():
-            if i.get("component_type") in ["AGENT", "CORE", "LOGIC", "UTIL"] and not f.endswith("__init__.py"):
+            is_logical = i.get("component_type") in core_types or i.get("complexity", 1) > 1
+            if is_logical and not f.endswith("__init__.py"):
                 if i.get("brittle") or f in shallow_files:
                     brittle_points.append(f)
                 elif i.get("component_type") != "AGENT" and f in stability_ledger.ledger and stability_ledger.ledger[f].get("status") != "HEALED":

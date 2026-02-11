@@ -13,5 +13,9 @@ class TestLintHeadingLogic(unittest.TestCase):
         lines = ["", "# Title", ""]
         errors = self.logic.check_headings(lines, 1, "# Title", {})
         self.assertEqual(len(errors), 0)
+        
+        # Test 2: Invalid heading
+        errors2 = self.logic.check_headings(lines, 1, "Title", {})
+        self.assertTrue(len(errors2) > 0)
 
 if __name__ == '__main__': unittest.main()

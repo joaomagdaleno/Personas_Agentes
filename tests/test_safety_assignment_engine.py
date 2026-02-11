@@ -11,11 +11,13 @@ class TestSafetyAssignmentEngine(unittest.TestCase):
         from src_local.agents.Support.safety_assignment_engine import SafetyAssignmentEngine
         self.engine = SafetyAssignmentEngine()
 
-    def test_is_in_metadata_assignment(self):
-        tree = ast.parse("config = 'val'")
-        utils = MagicMock()
-        utils.is_in_dict_value.return_value = False
         result = self.engine.is_in_metadata_assignment([tree.body[0]], tree.body[0].value, utils, {"config"})
         self.assertTrue(result)
+        
+        # Test 2: Attribute assignment
+        tree2 = ast.parse("self.config = 'val'")
+        node2 = tree2.body[0]
+        result2 = self.engine.is_in_metadata_assignment([node2], node2.value, utils, {"config"})
+        self.assertTrue(result2)
 
 if __name__ == '__main__': unittest.main()

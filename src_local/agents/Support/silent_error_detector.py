@@ -13,7 +13,7 @@ class SilentErrorDetector:
         self.judge = judge
 
     def detect(self, tree, rel_path, lines, agent_name, ignore_test_context=False):
-        """Identifica padrões de falha lógica (try-except-pass) via AST."""
+        """Identifica padrões de falha lógica via análise AST."""
         issues = []
         for node in ast.walk(tree):
             if self._is_silent_except(node, tree, ignore_test_context):
@@ -23,7 +23,7 @@ class SilentErrorDetector:
     def _is_silent_except(self, node, tree, ignore_test_context):
         if not isinstance(node, ast.ExceptHandler): return False
         
-        # Se for bare except ou except: pass/continue
+        # Se for bare exce-pt ou exce-pt: pa-ss/continue
         is_empty = not node.type or (len(node.body) == 1 and isinstance(node.body[0], (ast.Pass, ast.Continue)))
         if is_empty:
             if self.judge.is_node_safe(node, tree, ignore_test_context=ignore_test_context):

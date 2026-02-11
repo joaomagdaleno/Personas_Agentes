@@ -12,5 +12,10 @@ class TestVetoCriteriaEngine(unittest.TestCase):
     def test_is_math_context(self):
         p = {"issue": "Imprecisão Monetária", "regex": "float"}
         self.assertTrue(self.engine.is_math_context("alpha = sin(x)", p))
+        
+        # Test 2: Another context
+        self.assertTrue(self.engine.is_math_context("y = sqrt(9)", p))
+        # Test 3: Non-math context
+        self.assertFalse(self.engine.is_math_context("msg = 'hello'", p))
 
 if __name__ == '__main__': unittest.main()

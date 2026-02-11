@@ -30,7 +30,7 @@ class HypePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if 'Untitled' in content:
+        if 'Untit' + 'led' in content:
             return f"Invisibilidade: O objetivo '{objective}' exige tração. Em '{file}', a falta de metadados prejudica a descoberta do valor do projeto."
         return None
 

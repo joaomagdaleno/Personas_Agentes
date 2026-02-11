@@ -15,15 +15,19 @@ class CoverageAuditor:
     para cada componente de produção, combatendo a "Matéria Escura" no código.
     """
     
-    def detect_test(self, file_path: Path, comp_type: str, all_files: list) -> bool:
+    def detect_test(self, file_path: Path, comp_type: str, all_files: list, f_info: dict = None) -> bool:
         """
         🕵️ Busca por um arquivo de teste correspondente no ecossistema.
         Utiliza busca semântica para validar se o componente possui verificação física.
         """
-        logger.debug(f"Detecting test for: {file_path.name} ({comp_type})")
-        # Apenas arquivos que são inerentemente de teste ou config estão isentos
-        if comp_type in ["TEST", "CONFIG", "DOC"]: return True
-        if "__init__.py" in file_path.name: return True
+        comp_type = comp_type or "UNKNOWN"
+        # Rigor Phd: Apenas arquivos puramente estruturais (complexidade 1) ou documentação são auto-verificados.
+        # Se houver lógica ou ambiguidade (complexidade > 1), a soberania exige evidência física de teste.
+        is_boilerplate = f_info.get("complexity", 1) <= 1 if f_info else True
+        
+        if comp_type == "DOC": return True
+        if comp_type in ["CONFIG", "PACKAGE_MARKER"] and is_boilerplate: return True
+        if comp_type == "TEST": return True
         
         name_stem = file_path.stem.lower()
         

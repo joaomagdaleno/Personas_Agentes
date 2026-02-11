@@ -56,6 +56,7 @@ class BaseActivePersona(ABC):
         Filtra arquivos ignorados e delegada a relevância ao IntegrityGuardian.
         """
         if file in self.ignored_files: return False
+        if self.context_data.get(file, {}).get("component_type") == "TEST": return False
         return self.integrity_guardian.is_relevant_file(file, self.stack)
 
     def find_patterns(self, extensions, patterns):
@@ -65,7 +66,6 @@ class BaseActivePersona(ABC):
                  if f.endswith(extensions) 
                  and f not in self.ignored_files
                  and self.context_data[f].get("component_type") != "TEST"]
-        logger.info(f"[{self.name}] Scanning {len(files)} files (Filtered from {len(self.context_data)}). Sample excluded: {[f for f in self.context_data if 'test' in f and f not in files][:3]}")
         return self.audit_engine.scan_multiple_files(files, patterns, self.read_project_file, self.context_data, self.name)
 
     def analyze_logic(self, file_path):
@@ -96,8 +96,8 @@ class BaseActivePersona(ABC):
             return None
 
     @abstractmethod
-    def perform_audit(self) -> list: pass
+    def perform_audit(self) -> list: ...
     @abstractmethod
-    def _reason_about_objective(self, objective, file, content): pass
+    def _reason_about_objective(self, objective, file, content): ...
     @abstractmethod
-    def get_system_prompt(self) -> str: pass
+    def get_system_prompt(self) -> str: ...

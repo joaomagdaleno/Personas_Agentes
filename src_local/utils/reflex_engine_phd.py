@@ -1,3 +1,8 @@
+"""
+SISTEMA DE PERSONAS AGENTES - UTILS
+Módulo: Motor de Reflexos PhD (ReflexEnginePhD)
+Função: Orquestrar reações autônomas a eventos críticos do sistema.
+"""
 import logging
 
 logger = logging.getLogger(__name__)

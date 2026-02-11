@@ -1,3 +1,8 @@
+"""
+SISTEMA DE PERSONAS AGENTES - UTILS
+Módulo: Regras de Veto PhD (VetoRulesPhD)
+Função: Avaliar critérios de integridade e aplicar vetos estratégicos.
+"""
 import re
 import logging
 from pathlib import Path

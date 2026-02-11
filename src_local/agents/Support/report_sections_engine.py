@@ -38,12 +38,16 @@ class ReportSectionsEngine:
         return "### 🗺️ ROADMAP PARA 100% (REQUISITOS)\n\n" + "\n".join(points) + "\n"
 
     def _add_purity_points(self, b, p):
-        if b.get("Purity (Complexity)", 20) < 20:
-            p.append(f"- [ ] **Reduzir Complexidade**: Média atual drena {round(20 - b['Purity (Complexity)'], 1)} pts. Simplificar módulos > 15.")
+        drain = 20 - b.get("Purity (Complexity)", 20)
+        if drain > 0.05:
+            p.append(f"- [ ] **Reduzir Complexidade**: Média atual drena {round(drain, 1)} pts. Simplificar módulos > 15.")
 
     def _add_stability_points(self, b, data, p):
-        if b.get("Stability (Coverage)", 40) < 40:
-            p.append(f"- [ ] **Expandir Cobertura**: {len(data.get('dark_matter', []))} arquivos sem testes drenam {round(40 - b['Stability (Coverage)'], 1)} pts.")
+        drain = 40 - b.get("Stability (Coverage)", 40)
+        if drain > 0.05:
+            blinds = len(data.get('dark_matter', []))
+            brittle = len([f for f in data.get('brittle_points', []) if f not in data.get('dark_matter', [])])
+            p.append(f"- [ ] **Expandir Cobertura**: {blinds} ativos sem teste e {brittle} ativos frágeis drenam {round(drain, 1)} pts.")
 
     def _add_obs_points(self, b, p):
         if b.get("Observability (Telemetry)", 15) < 15:
