@@ -1,0 +1,36 @@
+# Implement Entropy Peak Penalty
+
+The goal is to ensure that any individual functional component with a complexity (entropy) greater than 15 causes a direct health penalty, even if the system-wide average remains low. This aligns with the "Technical Sovereignty" goal of preventing hidden deep complexities.
+
+## User Review Required
+
+> [!IMPORTANT]
+> This change will likely cause the "Health Index" to drop from 100% to a lower value (e.g., 99% or 98%) until the reported high-complexity files are simplified.
+
+## Proposed Changes
+
+### Support Agents
+
+#### [MODIFY] [penalty_engine.py](file:///c:/Users/joaovitormagdaleno/Documents/GitHub/Personas_Agentes/src_local/agents/Support/penalty_engine.py)
+
+Update [_calc_ceiling](file:///c:/Users/joaovitormagdaleno/Documents/GitHub/Personas_Agentes/src_local/agents/Support/penalty_engine.py#28-38) to detect if any file in `map_data` has `complexity > 15` and is a "Functional" component (not DOC/INTERFACE/TEST).
+If such files exist, the ceiling will be capped at 99 (or 100 - peak_count).
+
+```python
+        # Entropy Peaks: Individual files exceeding the sovereignty threshold (15)
+        peak_count = sum(1 for f, i in map_data.items() 
+                         if i.get("complexity", 1) > 15 
+                         and i.get("component_type") not in ["DOC", "INTERFACE", "TEST"])
+        
+        total_impact = (loss_count + shallow_count + peak_count)
+```
+
+## Verification Plan
+
+### Automated Tests
+1. Run the health audit (e.g., `python final_check.py` or equivalent if available) and check [auto_healing_VERIFIED.md](file:///c:/Users/joaovitormagdaleno/Documents/GitHub/Personas_Agentes/auto_healing_VERIFIED.md).
+2. Confirm that the "Health Index" is no longer 100%.
+3. Confirm that the roadmap or vitals table reflects the need to simplify these modules.
+
+### Manual Verification
+- View the generated [auto_healing_VERIFIED.md](file:///c:/Users/joaovitormagdaleno/Documents/GitHub/Personas_Agentes/auto_healing_VERIFIED.md) and visually confirm the penalty application.

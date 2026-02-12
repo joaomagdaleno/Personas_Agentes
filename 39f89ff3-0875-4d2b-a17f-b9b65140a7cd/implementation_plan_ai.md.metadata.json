@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Technical plan for integrating built-in SLM intelligence (Cognitive Engine) into the Persona Agent system using llama-cpp-python and DeepSeek coder.",
+  "updatedAt": "2026-02-12T11:16:00.728311200Z"
+}

@@ -1,0 +1,15 @@
+# UI Modernization & Packaging
+
+- [/] Research & Planning <!-- id: 0 -->
+  - [x] Create implementation plan <!-- id: 1 -->
+  - [ ] Design UI Mockup <!-- id: 2 -->
+- [ ] Frontend Development <!-- id: 3 -->
+  - [ ] Initialize Vite/React project in `src_ui/` <!-- id: 4 -->
+  - [ ] Implement Glassmorphic Design System <!-- id: 5 -->
+  - [ ] Create Health Dashboard components <!-- id: 6 -->
+- [ ] Backend API <!-- id: 7 -->
+  - [ ] Implement FastAPI bridge in `src_local/core/api.py` <!-- id: 8 -->
+  - [ ] Connect Orchestrator to API endpoints <!-- id: 9 -->
+- [ ] Packaging <!-- id: 10 -->
+  - [ ] Configure PyInstaller for multi-asset bundling <!-- id: 11 -->
+  - [ ] Generate first `.exe` build <!-- id: 12 -->

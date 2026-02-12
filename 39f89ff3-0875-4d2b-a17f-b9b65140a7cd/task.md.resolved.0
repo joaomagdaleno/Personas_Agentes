@@ -1,0 +1,8 @@
+# Task: Analyze Health Index Discrepancy
+
+- [/] Investigate penalty and scoring logic <!-- id: 0 -->
+    - [ ] Read `auto_healing_VERIFIED.md` completeness <!-- id: 1 -->
+    - [ ] Analyze `penalty_engine.py` <!-- id: 2 -->
+    - [ ] Analyze `scoring_metrics_engine.py` <!-- id: 3 -->
+    - [ ] Identify why specific files are not penalized <!-- id: 4 -->
+- [ ] Explain findings to the user <!-- id: 5 -->

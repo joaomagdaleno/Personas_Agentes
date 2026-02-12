@@ -1,0 +1,37 @@
+# Modern UI & Packaging (The 2026 Standard)
+
+Transform the Persona Agent system from a CLI-based tool into a premium, interactive Web Application with a standalone executable.
+
+## User Experience Strategy: "Visual Sovereignty"
+
+- **Aesthetics**: Dark mode, glassmorphism (frosted glass), high-contrast accent colors (vibrant cyan/purple), and smooth micro-animations.
+- **Interactivity**: Real-time health gauge, interactive node map (entropy map), and a dynamic battle plan dashboard.
+- **Portability**: Single `.exe` (Windows) that launches both the backend and the browser-based UI.
+
+## Proposed Changes
+
+### [Frontend - Web Dashboard]
+
+#### [NEW] `src_ui/` (React + Vite + Vanilla CSS)
+- **Dashboard**: High-level vitals (Health Score, Stability, Complexity).
+- **System Map**: Visual representation of the project structure using canvas or SVG.
+- **Report Viewer**: Beautifully rendered markdown reports with interactive toggles.
+
+### [Backend - API Layer]
+
+#### [NEW] `src_local/core/api.py` (FastAPI)
+- Expose endpoints for [Orchestrator](file:///c:/Users/joaovitormagdaleno/Documents/GitHub/Personas_Agentes/src_local/core/orchestrator.py#13-136) findings, health data, and map metadata.
+- Serve the static UI files in production mode.
+
+### [Packaging - Standalone Executable]
+
+#### [NEW] `scripts/build_exe.py`
+- Configuration for `PyInstaller`.
+- Hooks to bundle Python dependencies and the build folder of the React app.
+
+## Verification Plan
+
+### Manual Verification
+- Verify the UI opens automatically upon running the executable.
+- Test responsiveness on different screen sizes.
+- Confirm real-time updates when a file is manually edited.

@@ -1,0 +1,6 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Refactoring plan to reduce complexity of health_synthesizer.py and component_classifier.py below 15.",
+  "updatedAt": "2026-02-12T10:26:21.385963800Z",
+  "version": "1"
+}
