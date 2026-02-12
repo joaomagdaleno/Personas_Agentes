@@ -1,6 +1,0 @@
-{
-  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
-  "summary": "Technical plan for a native, lightweight GUI (CustomTkinter) and standalone executable to minimize RAM usage while providing a modern 2026-style interface.",
-  "updatedAt": "2026-02-12T11:23:21.894856200Z",
-  "version": "1"
-}
