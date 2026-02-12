@@ -1,6 +1,6 @@
 import unittest
 import logging
-from src_local.agents.Python.vault import VaultPersona
+from src_local.agents.Python.Strategic.vault import VaultPersona
 
 # Configuração de telemetria de teste
 logging.basicConfig(level=logging.INFO)

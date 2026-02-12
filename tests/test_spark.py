@@ -1,7 +1,7 @@
 import unittest
 import logging
 from pathlib import Path
-from src_local.agents.Python.spark import SparkPersona
+from src_local.agents.Python.System.spark import SparkPersona
 
 # Telemetria PhD para Testes
 logger = logging.getLogger(__name__)

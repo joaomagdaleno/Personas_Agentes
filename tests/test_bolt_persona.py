@@ -1,6 +1,6 @@
 import unittest
 import logging
-from src_local.agents.Python.bolt import BoltPersona
+from src_local.agents.Python.Audit.bolt import BoltPersona
 
 # Configuração de telemetria de teste
 logging.basicConfig(level=logging.INFO)

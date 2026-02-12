@@ -26,7 +26,7 @@ class CoverageAuditor:
         is_boilerplate = f_info.get("complexity", 1) <= 1 if f_info else True
         
         if comp_type == "DOC": return True
-        if comp_type in ["CONFIG", "PACKAGE_MARKER"] and is_boilerplate: return True
+        if comp_type in ["CONFIG", "PACKAGE_MARKER", "UTIL"] and is_boilerplate: return True
         if comp_type == "TEST": return True
         
         name_stem = file_path.stem.lower()

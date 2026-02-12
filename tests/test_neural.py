@@ -1,7 +1,7 @@
 import unittest
 import logging
 from pathlib import Path
-from src_local.agents.Python.neural import NeuralPersona
+from src_local.agents.Python.System.neural import NeuralPersona
 
 # Telemetria PhD para Testes
 logger = logging.getLogger(__name__)

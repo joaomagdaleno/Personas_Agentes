@@ -26,10 +26,14 @@ class PersonaLoader:
             if not stack_dir.is_dir() or stack_dir.name in ["__pycache__", "Support"]:
                 continue
                 
-            for f in stack_dir.glob("*.py"):
-                if f.name == "__init__.py": continue
+            # rglob para busca recursiva em todos os subdiretórios técnicos
+            for f in stack_dir.rglob("*.py"):
+                if f.name == "__init__.py" or "__pycache__" in str(f): continue
                 try:
-                    module_name = f"{stack_dir.name}_{f.stem}"
+                    # Gera um nome de módulo único baseado no caminho relativo para evitar conflitos
+                    relative_path = f.relative_to(agents_base)
+                    module_name = f"{stack_dir.name}_" + "_".join(relative_path.parts[1:]).replace(".py", "")
+                    
                     spec = importlib.util.spec_from_file_location(module_name, f)
                     module = importlib.util.module_from_spec(spec)
                     spec.loader.exec_module(module)

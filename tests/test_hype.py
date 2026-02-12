@@ -1,7 +1,7 @@
 import unittest
 import logging
 from pathlib import Path
-from src_local.agents.Python.hype import HypePersona
+from src_local.agents.Python.Content.hype import HypePersona
 
 # Telemetria PhD para Testes
 logger = logging.getLogger(__name__)

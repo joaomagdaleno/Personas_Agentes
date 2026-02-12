@@ -18,16 +18,16 @@ class TestLineVetoDeep(unittest.TestCase):
         ctx = {"in_docstring": False}
         # Início de docstring
         line = '    """Este é um comentário'
-        self.assertTrue(self.veto._is_docstring(line, ctx))
+        self.assertTrue(self.veto.structural.is_docstring(line, ctx))
         self.assertTrue(ctx["in_docstring"])
         
         # Meio de docstring
         line = '    Ainda dentro do comentário'
-        self.assertTrue(self.veto._is_docstring(line, ctx))
+        self.assertTrue(self.veto.structural.is_docstring(line, ctx))
         
         # Fim de docstring
         line = '    """'
-        self.assertTrue(self.veto._is_docstring(line, ctx))
+        self.assertTrue(self.veto.structural.is_docstring(line, ctx))
         self.assertFalse(ctx["in_docstring"])
         logger.info("✅ Docstrings detectadas com sucesso.")
 

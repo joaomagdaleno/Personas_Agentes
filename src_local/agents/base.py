@@ -74,8 +74,18 @@ class BaseActivePersona(ABC):
 
     def get_maturity_metrics(self):
         """📊 Métricas de evolução via StructuralAnalyst delegado."""
-        path = f"src/agents/{self.stack}/{self.name.lower()}.py"
-        content = self.read_project_file(path)
+        # Busca recursiva no subdiretório da stack para encontrar o arquivo da persona
+        base_path = Path(self.project_root) / "src_local" / "agents" / self.stack
+        filename = f"{self.name.lower()}.py"
+        content = None
+        
+        # Encontra o arquivo da persona independente do subdiretório técnico (System, Audit, etc)
+        for f in base_path.rglob(filename):
+            try:
+                content = f.read_text(encoding='utf-8', errors='ignore')
+                if content: break
+            except: continue
+            
         return self.structural_analyst.calculate_maturity(content, self.stack) if content else {"score": 0}
 
     def _log_performance(self, start_time, count):

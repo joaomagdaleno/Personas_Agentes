@@ -1,7 +1,7 @@
 import unittest
 import logging
 from pathlib import Path
-from src_local.agents.Python.sentinel import SentinelPersona
+from src_local.agents.Python.Strategic.sentinel import SentinelPersona
 
 # Telemetria PhD para Testes
 logger = logging.getLogger(__name__)

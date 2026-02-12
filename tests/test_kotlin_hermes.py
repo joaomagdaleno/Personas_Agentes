@@ -1,6 +1,6 @@
 import unittest
 import logging
-from src_local.agents.Kotlin.hermes import HermesPersona
+from src_local.agents.Kotlin.System.hermes import HermesPersona
 
 # Configuração de telemetria de teste
 logging.basicConfig(level=logging.INFO)

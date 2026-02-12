@@ -1,6 +1,6 @@
 import unittest
 import logging
-from src_local.agents.Python.metric import MetricPersona
+from src_local.agents.Python.Audit.metric import MetricPersona
 
 # Configuração de telemetria de teste
 logging.basicConfig(level=logging.INFO)

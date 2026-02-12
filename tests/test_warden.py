@@ -1,7 +1,7 @@
 import unittest
 import logging
 from pathlib import Path
-from src_local.agents.Python.warden import WardenPersona
+from src_local.agents.Python.Strategic.warden import WardenPersona
 
 # Telemetria PhD para Testes
 logger = logging.getLogger(__name__)

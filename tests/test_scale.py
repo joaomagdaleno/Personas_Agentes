@@ -1,7 +1,7 @@
 import unittest
 import logging
 from pathlib import Path
-from src_local.agents.Python.scale import ScalePersona
+from src_local.agents.Python.Audit.scale import ScalePersona
 
 # Telemetria PhD para Testes
 logger = logging.getLogger(__name__)

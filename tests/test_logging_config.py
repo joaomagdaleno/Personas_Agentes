@@ -10,11 +10,11 @@ class TestLoggingConfig(unittest.TestCase):
         configure_logging(level=logging.DEBUG)
         logger = logging.getLogger("Test")
         self.assertIsNotNone(logger)
-        self.assertEqual(logger.level, logging.DEBUG)
+        self.assertEqual(logger.getEffectiveLevel(), logging.DEBUG)
         
         # Teste de emissão
         logger.info("Teste de Log PhD")
-        self.assertTrue(len(logger.handlers) > 0)
+        self.assertTrue(len(logging.getLogger().handlers) > 0)
         
         # Teste de Performance log
         from src_local.utils.logging_config import log_performance

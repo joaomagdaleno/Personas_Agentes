@@ -1,7 +1,7 @@
 import unittest
 import logging
 from pathlib import Path
-from src_local.agents.Python.stream import StreamPersona
+from src_local.agents.Python.System.stream import StreamPersona
 
 # Telemetria PhD para Testes
 logger = logging.getLogger(__name__)

@@ -2,7 +2,7 @@ import unittest
 import logging
 from unittest.mock import MagicMock
 from pathlib import Path
-from src_local.agents.Python.voyager import VoyagerPersona
+from src_local.agents.Python.Strategic.voyager import VoyagerPersona
 
 # Telemetria PhD para Testes
 logger = logging.getLogger(__name__)
@@ -48,13 +48,12 @@ class TestVoyager(unittest.TestCase):
             persona.set_context({"map": {"legacy.py": {}}})
             # Mock AuditEngine para evitar falha de infra
             persona.audit_engine = MagicMock()
-            persona.audit_engine.scan_content.return_value = [{'file': 'legacy.py', 'issue': 'os.mkdir issue', 'severity': 'low'}]
+            persona.audit_engine.scan_multiple_files.return_value = [{'file': 'legacy.py', 'issue': 'os.mkdir issue', 'severity': 'low'}]
             
             results = persona.perform_audit()
-            
-            # Verifica se detectou o uso de os.mkdir
-            found = any('os.' in r['issue'] for r in results)
-            self.assertTrue(found)
+            # Validação rigorosa: verifica se a issue injetada via mock está presente
+            found = any('os.' in r.get('issue', '').lower() for r in results)
+            self.assertTrue(found, f"Audit failed to find os. patterns in results: {results}")
             logger.info("✅ Auditoria validada.")
 
 if __name__ == "__main__":

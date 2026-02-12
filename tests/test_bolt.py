@@ -1,7 +1,7 @@
 import unittest
 import logging
 from pathlib import Path
-from src_local.agents.Python.bolt import BoltPersona
+from src_local.agents.Python.Audit.bolt import BoltPersona
 
 # Telemetria PhD para Testes
 logger = logging.getLogger(__name__)

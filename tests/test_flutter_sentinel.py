@@ -1,6 +1,6 @@
 import unittest
 import logging
-from src_local.agents.Flutter.sentinel import SentinelPersona
+from src_local.agents.Flutter.Strategic.sentinel import SentinelPersona
 
 # Configuração de telemetria de teste
 logging.basicConfig(level=logging.INFO)

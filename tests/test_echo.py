@@ -1,7 +1,7 @@
 import unittest
 import logging
 from pathlib import Path
-from src_local.agents.Python.echo import EchoPersona
+from src_local.agents.Python.Content.echo import EchoPersona
 
 # Telemetria PhD para Testes
 logger = logging.getLogger(__name__)

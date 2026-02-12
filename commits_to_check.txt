@@ -1,7 +1,0 @@
-c0cc827 🧬 Sincronia de Inteligência Upstream
-4867eb2 chore: sync generated registry files [ci skip]
-8affd38 feat: restore fast-android-build skill and update index
-414be12 chore: update star history chart
-1931eae chore: update star history chart
-6dde194 chore: sync generated registry files [ci skip]
-0ba2045 chore: Consolidando resultados de benchmarks e skills locais

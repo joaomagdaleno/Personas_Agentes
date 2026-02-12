@@ -1,7 +1,7 @@
 import unittest
 import logging
 from pathlib import Path
-from src_local.agents.Python.scribe import ScribePersona
+from src_local.agents.Python.Content.scribe import ScribePersona
 
 # Telemetria PhD para Testes
 logger = logging.getLogger(__name__)

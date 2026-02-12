@@ -1,6 +1,6 @@
 import unittest
 import logging
-from src_local.agents.Kotlin.sentinel import SentinelPersona
+from src_local.agents.Kotlin.Strategic.sentinel import SentinelPersona
 
 # Configuração de telemetria de teste
 logging.basicConfig(level=logging.INFO)

@@ -1,5 +1,5 @@
 import unittest
-from src_local.agents.Python.sentinel import SentinelPersona
+from src_local.agents.Python.Strategic.sentinel import SentinelPersona
 
 class TestSentinelPersona(unittest.TestCase):
     """🧪 Testes Unitários Soberanos para o Agente Sentinel."""

@@ -1,6 +1,6 @@
 import unittest
 import logging
-from src_local.agents.Kotlin.flow import FlowPersona
+from src_local.agents.Kotlin.System.flow import FlowPersona
 
 # Configuração de telemetria de teste
 logging.basicConfig(level=logging.INFO)

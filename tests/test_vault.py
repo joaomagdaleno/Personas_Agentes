@@ -1,7 +1,7 @@
 import unittest
 import logging
 from pathlib import Path
-from src_local.agents.Python.vault import VaultPersona
+from src_local.agents.Python.Strategic.vault import VaultPersona
 
 # Telemetria PhD para Testes
 logger = logging.getLogger(__name__)

@@ -35,7 +35,7 @@ class TestHealthSynthesizerDeep(unittest.TestCase):
         # Setup satisfazendo todos os pilares PhD 3.0
         context = {
             "identity": {"core_mission": "Test", "is_external": False}, 
-            "map": {"f1": {"has_test": True, "complexity": 1, "purpose": "CORE"}}
+            "map": {"f1": {"has_test": True, "complexity": 1, "purpose": "CORE", "component_type": "CORE"}}
         }
         # Injeção de telemetria simulada no mapa
         context["map"]["f1"]["metadata"] = "telemetry.track"

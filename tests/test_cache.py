@@ -1,7 +1,7 @@
 import unittest
 import logging
 from pathlib import Path
-from src_local.agents.Python.cache import CachePersona
+from src_local.agents.Python.System.cache import CachePersona
 
 # Telemetria PhD para Testes
 logger = logging.getLogger(__name__)

@@ -1,7 +1,7 @@
 import unittest
 import logging
 from pathlib import Path
-from src_local.agents.Python.bridge import BridgePersona
+from src_local.agents.Python.System.bridge import BridgePersona
 
 # Telemetria PhD para Testes
 logger = logging.getLogger(__name__)
