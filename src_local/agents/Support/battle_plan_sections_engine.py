@@ -15,7 +15,7 @@ class BattlePlanSectionsEngine:
         res = f"## 🚩 NÍVEL: {sev}\n\n"
         file_groups = {}
         for item in items:
-            fname = item.get('file', 'Global') if isinstance(item, dict) else "DNA"
+            fname = item.get('file', 'Global') if isinstance(item, dict) else "Sistêmico"
             if fname not in file_groups: file_groups[fname] = []
             file_groups[fname].append(item)
 

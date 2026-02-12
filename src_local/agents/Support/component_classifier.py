@@ -14,13 +14,29 @@ class ComponentClassifier:
         """Mapeamento semântico universal."""
         logger.debug(f"Classifying component: {rel_path}")
         p = rel_path.lower()
+        
+        # Rigor PhD: Redução de complexidade via despacho de regras.
         if p.endswith("__init__.py"): return "PACKAGE_MARKER"
         if "test" in p: return "TEST"
-        if any(x in p for x in ["audit", "forensics", "report", "diagnostic", "restore", "temp", "debug", "fix_"]): return "DOC"
-        if any(x in p for x in ["settings", "config", "manifest", ".json", ".yaml", ".yml"]): return "CONFIG"
-        if "core" in p or "domain" in p: return "CORE"
-        if "agent/" in p or p.startswith("agent_") or (p.endswith(".py") and "agent" in p and "personas" not in p): return "AGENT"
-        if "util" in p or "helper" in p: return "UTIL"
-        if any(x in p for x in ["ui", "screen", "layout", "gui", "view"]): return "INTERFACE"
-        if "data" in p or "repository" in p: return "DATA"
+        
+        rules = [
+            (self._is_doc, "DOC"),
+            (self._is_config, "CONFIG"),
+            (self._is_core, "CORE"),
+            (self._is_agent, "AGENT"),
+            (self._is_util, "UTIL"),
+            (self._is_interface, "INTERFACE"),
+            (self._is_data, "DATA")
+        ]
+        
+        for condition, result in rules:
+            if condition(p): return result
         return "LOGIC"
+
+    def _is_doc(self, p): return any(x in p for x in ["audit", "forensics", "report", "diagnostic", "restore", "temp", "debug", "fix_"])
+    def _is_config(self, p): return any(x in p for x in ["settings", "config", "manifest", ".json", ".yaml", ".yml"])
+    def _is_core(self, p): return "core" in p or "domain" in p
+    def _is_agent(self, p): return "agent/" in p or p.startswith("agent_") or (p.endswith(".py") and "agent" in p and "personas" not in p)
+    def _is_util(self, p): return "util" in p or "helper" in p
+    def _is_interface(self, p): return any(x in p for x in ["ui", "screen", "layout", "gui", "view"])
+    def _is_data(self, p): return "data" in p or "repository" in p

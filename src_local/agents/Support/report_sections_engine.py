@@ -55,4 +55,4 @@ class ReportSectionsEngine:
 
     def _add_excellence_points(self, b, p):
         if b.get("Excellence (Documentation)", 10) < 10:
-            p.append(f"- [ ] **Completar Documentação**: Módulos com propósito UNKNOWN detectados.")
+            p.append("- [ ] **Resolver Pendências de Excelência**: Diretrizes estratégicas ou módulos sem propósito detectados.")

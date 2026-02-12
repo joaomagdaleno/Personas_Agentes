@@ -7,37 +7,48 @@ class PenaltyEngine:
     """Motor de Penalidades e Tetos de Saúde PhD."""
     
     def apply(self, raw, all_alerts, map_data, total, qa_data=None):
+        adjustments = self.get_pilar_adjustments(all_alerts, map_data, qa_data)
+        
+        # O dreno total é a soma de todos os ajustes individuais + o impacto do teto global
+        total_drain = sum(adjustments.values())
+        
+        # Fator de Teto Soberano (Se houver qualquer problema, o máximo é 99)
+        ceiling = 100
         alerts = [r for r in all_alerts if isinstance(r, dict)]
-        strat_count = sum(1 for r in all_alerts if isinstance(r, str))
-        core_types = ["AGENT", "CORE", "LOGIC", "UTIL"]
-        # Rigor PhD Soberano: Apenas ativos de PRODUÇÃO impactam o dreno físico de saúde.
-        loss_count = sum(1 for f, i in map_data.items() if (i.get("component_type") in core_types or (i.get("complexity", 1) > 1 and i.get("component_type") not in ["DOC", "INTERFACE", "TEST"])) and not i.get("has_test"))
-        
-        shallow_count = 0
-        if qa_data and isinstance(qa_data.get("matrix"), list):
-            # Integridade Phd: Testes rasos só drenam se o ativo for funcional (não DOC/UI).
-            shallow_count = sum(1 for m in qa_data["matrix"] if m.get("test_status") == "SHALLOW" and (map_data.get(m.get("file"), {}).get("component_type") in core_types or (m.get("complexity", 1) > 1 and map_data.get(m.get("file"), {}).get("component_type") not in ["DOC", "INTERFACE", "TEST"])))
+        sevs = {r.get('severity') for r in alerts}
+        if sevs & {'critical', 'high'}: ceiling = 60
+        elif 'medium' in sevs: ceiling = 85
+        elif total_drain > 0: ceiling = 99
 
-        ceiling = self._calc_ceiling(alerts, strat_count, loss_count, shallow_count)
-        drain = self._calc_drain(alerts, strat_count, shallow_count)
-        
-        final = max(0, int(round(min(raw, ceiling) - drain)))
-        logger.info(f"🏆 [HealthCalculus] Raw: {raw:.3f} | Ceiling: {ceiling} | Drain: {drain} | Issues: {len(alerts)+strat_count+loss_count+shallow_count} | Final: {final}")
+        final = max(0, int(round(min(raw, ceiling) - total_drain)))
+        logger.info(f"🏆 [HealthCalculus] Raw: {raw:.3f} | Ceiling: {ceiling} | Drain: {total_drain} | Final: {final}")
         return final
 
-    def _calc_ceiling(self, alerts, strat_count, loss_count, shallow_count):
-        sevs = {r.get('severity') for r in alerts}
-        if sevs & {'critical', 'high'}: return 60
-        if 'medium' in sevs: return 85
-        total_impact = (loss_count + shallow_count)
-        if total_impact > 0: return min(99, 100 - total_impact)
+    def get_pilar_adjustments(self, all_alerts, map_data, qa_data=None):
+        """Calcula ajustes específicos para cada pilar para manter a honestidade do breakdown."""
+        core_types = ["AGENT", "CORE", "LOGIC", "UTIL"]
         
-        # Sinergia Phd: Alertas estratégicos (strings) são guias de Roadmap. 
-        # A Soberania (100%) é permitida se não houver riscos funcionais ou alertas de severidade definida.
-        return 100
+        # 1. Purity Penalty (Complexity Peaks > 15)
+        peak_count = sum(1 for f, i in map_data.items() 
+                         if i.get("complexity", 1) > 15 
+                         and i.get("component_type") not in ["DOC", "INTERFACE", "TEST"])
+        
+        # 2. Stability Penalty (Missing Tests + Shallow Tests)
+        shallow_count = 0
+        if qa_data and isinstance(qa_data.get("matrix"), list):
+            shallow_count = sum(1 for m in qa_data["matrix"] if m.get("test_status") == "SHALLOW" and (map_data.get(m.get("file"), {}).get("component_type") in core_types or (m.get("complexity", 1) > 1 and map_data.get(m.get("file"), {}).get("component_type") not in ["DOC", "INTERFACE", "TEST"])))
 
-    def _calc_drain(self, alerts, strat_count, shallow_count):
+        # 3. Security Drain
+        alerts = [r for r in all_alerts if isinstance(r, dict)]
         sev_map = {'critical': 15, 'high': 15, 'medium': 5, 'low': 1}
-        drain = sum(sev_map.get(r.get('severity'), 0) for r in alerts if isinstance(r, dict))
-        drain += (strat_count * 0.5) + (shallow_count * 5)
-        return drain
+        sec_drain = sum(sev_map.get(r.get('severity'), 0) for r in alerts)
+        
+        # 4. Strategic (Roadmap) points
+        strat_count = sum(1 for r in all_alerts if isinstance(r, str))
+
+        return {
+            "Purity (Complexity)": peak_count * 2.0,
+            "Stability (Coverage)": shallow_count * 5.0,
+            "Security (Vulnerabilities)": sec_drain,
+            "Excellence (Documentation)": strat_count * 0.5
+        }

@@ -12,7 +12,7 @@
 | :--- | :--- | :--- |
 | **Índice de Saúde** | 100% | 💎 |
 | **Total de Alertas** | 0 | Monitorado |
-| **Sincronia** | 13:24:22 | Ativa |
+| **Sincronia** | 07:49:58 | Ativa |
 
 ### 📊 DECOMPOSIÇÃO DA SAÚDE (PILARES)
 
@@ -28,7 +28,7 @@
 
 | Métrica | Status | Impacto |
 | :--- | :--- | :--- |
-| **Pontos Cegos** | 0 Arquivos | Seguro |
+| **Pontos Cegos** | 1 Arquivos | Alerta |
 | **Fragilidades** | 0 Pontos | Seguro |
 | **Paridade de Stack** | Sincronizada | Nível de Maturidade |
 
@@ -38,8 +38,6 @@
 
 | Alvo | Complexidade | Instabilidade |
 | :--- | :---: | :---: |
-| `src_local/agents/Support/health_synthesizer.py` | 18 | 0.6 |
-| `src_local/agents/Support/component_classifier.py` | 17 | 0.33 |
 | `src_local/agents/base.py` | 15 | 0.08 |
 | `src_local/core/orchestrator.py` | 15 | 0.6 |
 | `src_local/utils/dependency_auditor.py` | 15 | 0.67 |
@@ -48,13 +46,13 @@
 | `src_local/utils/veto_rules_phd.py` | 14 | 0.6 |
 | `src_local/agents/Support/logic_auditor.py` | 14 | 0.6 |
 | `src_local/agents/Support/markdown_sanitizer.py` | 14 | 0.67 |
+| `src_local/agents/Support/report_formatter.py` | 14 | 0.57 |
+| `src_local/agents/Support/test_navigator.py` | 14 | 0.5 |
 
 ## 🧪 MATRIZ DE CONFIANÇA
 
 | Módulo | Entropia | Asserções | Status |
 | :--- | :---: | :---: | :--- |
-| `src_local/agents/Support/health_synthesizer.py` | 18 | 4 | 🟢 PROFUNDO |
-| `src_local/agents/Support/component_classifier.py` | 17 | 7 | 🟢 PROFUNDO |
 | `src_local/agents/base.py` | 15 | 11 | 🟢 PROFUNDO |
 | `src_local/core/orchestrator.py` | 15 | 9 | 🟢 PROFUNDO |
 | `src_local/utils/dependency_auditor.py` | 15 | 10 | 🟢 PROFUNDO |
@@ -71,9 +69,10 @@
 | `src_local/utils/scoring_engine_phd.py` | 12 | 3 | 🟢 PROFUNDO |
 | `src_local/utils/update_transaction.py` | 12 | 6 | 🟢 PROFUNDO |
 | `src_local/agents/Python/voyager.py` | 12 | 4 | 🟢 PROFUNDO |
+| `src_local/agents/Support/component_classifier.py` | 12 | 7 | 🟢 PROFUNDO |
+| `src_local/agents/Support/health_synthesizer.py` | 12 | 4 | 🟢 PROFUNDO |
 | `src_local/agents/Support/integrity_guardian.py` | 12 | 4 | 🟢 PROFUNDO |
 | `src_local/agents/Support/obfuscation_hunter.py` | 12 | 6 | 🟢 PROFUNDO |
-| `src_local/agents/Support/penalty_engine.py` | 12 | 3 | 🟢 PROFUNDO |
 | `src_local/agents/Support/quality_analyst.py` | 12 | 6 | 🟢 PROFUNDO |
 | `scripts/cleanup_obfuscation.py` | 11 | 5 | 🟢 PROFUNDO |
 | `src_local/core/task_orchestrator.py` | 11 | 5 | 🟢 PROFUNDO |
@@ -89,6 +88,7 @@
 | `src_local/agents/Support/ast_traversal_logic.py` | 10 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Support/audit_scanner_engine.py` | 10 | 4 | 🟢 PROFUNDO |
 | `src_local/agents/Support/battle_plan_sections_engine.py` | 10 | 2 | 🟢 PROFUNDO |
+| `src_local/agents/Support/penalty_engine.py` | 10 | 3 | 🟢 PROFUNDO |
 | `src_local/agents/Support/rule_definition_judge.py` | 10 | 6 | 🟢 PROFUNDO |
 | `src_local/agents/Support/safety_heuristics.py` | 10 | 5 | 🟢 PROFUNDO |
 | `src_local/agents/Support/telemetry_maturity_logic.py` | 10 | 2 | 🟢 PROFUNDO |

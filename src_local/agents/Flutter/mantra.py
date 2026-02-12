@@ -29,7 +29,12 @@ class MantraPersona(BaseActivePersona):
 
     def _reason_about_objective(self, objective, file, content):
         if "setState" in content:
-            return f"Entropia Lógica: O objetivo '{objective}' exige modularidade. Em '{file}', o acoplamento de estado na UI dificulta a evolução da 'Orquestração de Inteligência Artificial'."
+            return {
+                "file": file,
+                "issue": "Entropia Lógica: Acoplamento de estado na UI detectado",
+                "severity": "STRATEGIC",
+                "context": self.name
+            }
         return None
 
     def get_system_prompt(self):

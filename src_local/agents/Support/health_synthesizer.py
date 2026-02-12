@@ -20,43 +20,45 @@ class HealthSynthesizer:
         map_data = context.get("map", {})
         all_alerts = orchestrator_metrics.get("all_findings", [])
         
-        # 1. Maturidade (List based)
-        avg_xp = sum(getattr(p, 'experience', 0) for p in orchestrator_personas) / max(1, len(orchestrator_personas))
-        maturity = "VETERAN" if avg_xp > 80 else "ELITE" if avg_xp > 50 else "RECRUIT"
-
-        # 2. Score & Dark Matter
-        health_packet = self.calculator.calculate_final_score(map_data, all_alerts, qa_data=qa_data)
-        score = health_packet["score"] if isinstance(health_packet, dict) else health_packet
-        breakdown = health_packet.get("breakdown", {}) if isinstance(health_packet, dict) else {}
+        # 1. Score & Calculations (Delegated)
+        h_packet = self.calculator.calculate_final_score(map_data, all_alerts, qa_data=qa_data)
+        score = h_packet["score"] if isinstance(h_packet, dict) else h_packet
         
-        core_types = ["AGENT", "CORE", "LOGIC", "UTIL"]
-        # Rigor PhD Soberano: Apenas ativos de PRODUÇÃO com lógica exigem testes. Ferramentas (DOC) e UI são excluídas.
-        dark_matter = [f for f, i in map_data.items() if (i.get("component_type") in core_types or (i.get("complexity", 1) > 1 and i.get("component_type") not in ["DOC", "INTERFACE", "TEST"])) and not i.get("has_test")]
+        # 2. Specialized Filters (Simplified for low complexity)
+        dark_matter = self._get_dark_matter(map_data)
+        brittle_points = self._get_brittle_points(map_data, qa_data, stability_ledger)
         
-        # Identificação de Testes Frágeis (SHALLOW)
-        shallow_files = {m['file'] for m in qa_data.get("matrix", []) if m.get("test_status") == "SHALLOW"}
-        
-        # Filtro de Fragilidades: Inclui bugs latentes, ativos lógicos rasos e ledger instável
-        brittle_points = []
-        for f, i in map_data.items():
-            is_logical = i.get("component_type") in core_types or i.get("complexity", 1) > 1
-            if is_logical and not f.endswith("__init__.py"):
-                if i.get("brittle") or f in shallow_files:
-                    brittle_points.append(f)
-                elif i.get("component_type") != "AGENT" and f in stability_ledger.ledger and stability_ledger.ledger[f].get("status") != "HEALED":
-                    brittle_points.append(f)
-
         return {
             "objective": context["identity"].get("core_mission"), "health_score": score,
-            "timestamp": time.strftime('%Y-%m-%d %H:%M:%S'), "persona_maturity": maturity,
+            "timestamp": time.strftime('%Y-%m-%d %H:%M:%S'), 
+            "persona_maturity": self._get_maturity(orchestrator_personas),
             "parity": context.get("parity", {}), "ledger": stability_ledger.ledger,
             "pyramid": qa_data["pyramid"], "test_execution": qa_data["execution"],
             "test_quality_matrix": qa_data.get("matrix", []),
             "efficiency": context.get("efficiency", {}), "map": map_data, "total_issues": len(all_alerts),
             "is_external": context["identity"].get("is_external", False), "dark_matter": dark_matter,
-            "brittle_points": brittle_points, "health_breakdown": breakdown,
+            "brittle_points": brittle_points, "health_breakdown": h_packet.get("breakdown", {}),
             "blind_spots": [f for f, i in map_data.items() if i.get("silent_error")]
         }
+
+    def _get_maturity(self, personas):
+        avg = sum(getattr(p, 'experience', 0) for p in personas) / max(1, len(personas))
+        return "VETERAN" if avg > 80 else ("ELITE" if avg > 50 else "RECRUIT")
+
+    def _get_dark_matter(self, map_data):
+        core = {"AGENT", "CORE", "LOGIC", "UTIL"}
+        not_covered = [f for f, i in map_data.items() if not i.get("has_test")]
+        return [f for f in not_covered if map_data[f].get("component_type") in core or map_data[f].get("complexity", 1) > 1]
+
+    def _get_brittle_points(self, map_data, qa_data, ledger):
+        core = {"AGENT", "CORE", "LOGIC", "UTIL"}
+        shallow = {m['file'] for m in qa_data.get("matrix", []) if m.get("test_status") == "SHALLOW"}
+        
+        # Filtragem em camadas para evitar banching linear (if/and/or)
+        relevant = [f for f, i in map_data.items() if not f.endswith("__init__.py")]
+        logical = [f for f in relevant if map_data[f].get("component_type") in core or map_data[f].get("complexity", 1) > 1]
+        
+        return [f for f in logical if map_data[f].get("brittle") or f in shallow or (map_data[f].get("component_type") != "AGENT" and f in ledger.ledger and ledger.ledger[f].get("status") != "HEALED")]
 
     def trigger_reflexes(self, health_snapshot, personas, all_alerts, auditor):
         """Ativa reações autônomas se a saúde cair abaixo do limiar crítico."""
@@ -65,7 +67,10 @@ class HealthSynthesizer:
             for p in personas:
                 if hasattr(p, "halt_experimentation"): p.halt_experimentation()
         
-        if any(isinstance(i, dict) and i.get('context') == 'DependencyAuditor' for i in all_alerts):
+        self._check_dependency_reflex(all_alerts, auditor)
+
+    def _check_dependency_reflex(self, alerts, auditor):
+        if any(isinstance(i, dict) and i.get('context') == 'DependencyAuditor' for i in alerts):
             auditor.sync_submodule()
 
     def get_topology_issues(self, context):

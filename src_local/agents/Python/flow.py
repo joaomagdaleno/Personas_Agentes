@@ -24,8 +24,15 @@ class FlowPersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if content.count("if") > 15:
-            return f"Entropia Lógica: O objetivo '{objective}' exige clareza. Em '{file}', a densidade de condicionais torna a 'Orquestração de Inteligência Artificial' imprevisível."
+        info = self.context_data.get(file, {})
+        complexity = info.get("complexity", 1)
+        if complexity > 15:
+            return {
+                "file": file,
+                "issue": f"Entropia Lógica: Complexidade ({complexity}) excede Soberania (15)",
+                "severity": "STRATEGIC",
+                "context": self.name
+            }
         return None
 
     def get_system_prompt(self):
