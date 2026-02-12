@@ -34,6 +34,10 @@ class Orchestrator:
         
         self.personas, self.job_queue = [], [] 
         self.metrics = {"files_scanned": 0, "health_score": 100, "start_time": time.time(), "efficiency": {}}
+        
+        # Callbacks para Interface SoC (Separation of Concerns)
+        self.on_health_update = None
+        self.on_findings_update = None
 
     def add_persona(self, persona_instance):
         self.personas.append(persona_instance)
@@ -85,7 +89,10 @@ class Orchestrator:
         metrics = self.metrics_assembler.get_orchestration_metrics(self.metrics, all_findings)
         qa_data = self.metrics_assembler.gather_qa_data(map_data, internal_health, self.personas)
         
-        return self.synthesizer.synthesize_360(context, metrics, self.personas, self.stability_ledger, qa_data)
+        res = self.synthesizer.synthesize_360(context, metrics, self.personas, self.stability_ledger, qa_data)
+        if self.on_health_update:
+            self.on_health_update(res)
+        return res
 
     def _select_active_phds(self, objective, stacks):
         return self.task_orc.select_active_phds(objective, stacks, self.personas)
