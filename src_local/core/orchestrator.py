@@ -53,6 +53,9 @@ class Orchestrator:
         findings = self.task_orc.run_audit_cycle(active_phds, target_obj, changed_files, context)
         self._sync_and_ledger(findings, context, include_history)
         
+        if self.on_findings_update:
+            self.on_findings_update(findings)
+            
         self._log_orchestration_performance(start_time, "Auditoria Estratégica")
         return self._build_audit_report_queue(findings, include_history)
 

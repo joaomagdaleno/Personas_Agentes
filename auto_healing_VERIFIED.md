@@ -2,7 +2,7 @@
 
 > **Visão Holística do Arquiteto PhD (Token: FBI_SINC_FINAL)**
 
-💎 PERFEIÇÃO TÉCNICA (Soberania)
+⚠️ ALERTA: DÉBITO TÉCNICO
 
 ---
 
@@ -10,37 +10,41 @@
 
 | Métrica | Valor | Status |
 | :--- | :--- | :--- |
-| **Índice de Saúde** | 100% | 💎 |
-| **Total de Alertas** | 0 | Monitorado |
-| **Sincronia** | 07:49:58 | Ativa |
+| **Índice de Saúde** | 85% | ⚠️ |
+| **Total de Alertas** | 6 | Monitorado |
+| **Sincronia** | 17:59:06 | Ativa |
 
 ### 📊 DECOMPOSIÇÃO DA SAÚDE (PILARES)
 
 | Pilar | Score | Peso Máx |
 | :--- | :---: | :---: |
-| Stability (Coverage) | 40.0 | 40 |
-| Purity (Complexity) | 20.0 | 20 |
+| Stability (Coverage) | 29.5 | 40 |
+| Purity (Complexity) | 18.0 | 20 |
 | Observability (Telemetry) | 15.0 | 15 |
 | Security (Vulnerabilities) | 15 | 15 |
-| Excellence (Documentation) | 10.0 | 10 |
+| Excellence (Documentation) | 8.0 | 10 |
 
 ## 🩺 SINAIS VITAIS DO PRODUTO
 
 | Métrica | Status | Impacto |
 | :--- | :--- | :--- |
-| **Pontos Cegos** | 1 Arquivos | Alerta |
-| **Fragilidades** | 0 Pontos | Seguro |
+| **Pontos Cegos** | 4 Arquivos | Alerta |
+| **Fragilidades** | 4 Pontos | Risco de Colapso |
 | **Paridade de Stack** | Sincronizada | Nível de Maturidade |
 
-> 💎 **Sistema em estado de soberania técnica.** Requisitos de 100% atingidos.
+### 🗺️ ROADMAP PARA 100% (REQUISITOS)
+
+- [ ] **Reduzir Complexidade**: Média atual drena 2.0 pts. Simplificar módulos > 15.
+- [ ] **Expandir Cobertura**: 4 ativos sem teste e 1 ativos frágeis drenam 10.5 pts.
+- [ ] **Resolver Pendências de Excelência**: Diretrizes estratégicas ou módulos sem propósito detectados.
 
 ## 🌪️ MAPA DE ENTROPIA & ACOPLAMENTO
 
 | Alvo | Complexidade | Instabilidade |
 | :--- | :---: | :---: |
+| `src_local/core/orchestrator.py` | 16 | 0.58 |
 | `src_local/agents/base.py` | 15 | 0.08 |
-| `src_local/core/orchestrator.py` | 15 | 0.6 |
-| `src_local/utils/dependency_auditor.py` | 15 | 0.67 |
+| `src_local/utils/dependency_auditor.py` | 15 | 0.71 |
 | `src_local/agents/Support/meta_analysis_detector.py` | 15 | 0.6 |
 | `src_local/utils/stability_ledger.py` | 14 | 0.57 |
 | `src_local/utils/veto_rules_phd.py` | 14 | 0.6 |
@@ -53,8 +57,8 @@
 
 | Módulo | Entropia | Asserções | Status |
 | :--- | :---: | :---: | :--- |
+| `src_local/core/orchestrator.py` | 16 | 9 | 🟢 PROFUNDO |
 | `src_local/agents/base.py` | 15 | 11 | 🟢 PROFUNDO |
-| `src_local/core/orchestrator.py` | 15 | 9 | 🟢 PROFUNDO |
 | `src_local/utils/dependency_auditor.py` | 15 | 10 | 🟢 PROFUNDO |
 | `src_local/agents/Support/meta_analysis_detector.py` | 15 | 4 | 🟢 PROFUNDO |
 | `src_local/utils/stability_ledger.py` | 14 | 8 | 🟢 PROFUNDO |
@@ -123,7 +127,6 @@
 | `src_local/agents/Support/diagnostic_strategist.py` | 7 | 5 | 🟢 PROFUNDO |
 | `src_local/agents/Support/line_veto.py` | 7 | 10 | 🟢 PROFUNDO |
 | `src_local/agents/Support/obfuscation_cleaner_engine.py` | 7 | 2 | 🟢 PROFUNDO |
-| `scripts/autonomous_sync.py` | 6 | 3 | 🟢 PROFUNDO |
 | `scripts/persona_manager.py` | 6 | 2 | 🟢 PROFUNDO |
 | `src_local/interface/cli.py` | 6 | 3 | 🟢 PROFUNDO |
 | `src_local/utils/submodule_sync_logic.py` | 6 | 2 | 🟢 PROFUNDO |
@@ -133,6 +136,7 @@
 | `src_local/agents/Support/report_sections_engine.py` | 6 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Support/veto_rules.py` | 6 | 7 | 🟢 PROFUNDO |
 | `scripts/analyze_external.py` | 5 | 1 | 🟢 PROFUNDO |
+| `src_local/interface/gui_native.py` | 5 | 0 | 🔴 FRÁGIL |
 | `src_local/utils/git_client.py` | 5 | 1 | 🟢 PROFUNDO |
 | `src_local/utils/indexer.py` | 5 | 3 | 🟢 PROFUNDO |
 | `src_local/utils/logging_config.py` | 5 | 5 | 🟢 PROFUNDO |
@@ -142,6 +146,7 @@
 | `scripts/update_agent_submodule.py` | 4 | 1 | 🟢 PROFUNDO |
 | `src_local/core/compiler.py` | 4 | 1 | 🟢 PROFUNDO |
 | `src_local/utils/context_mapping_logic.py` | 4 | 1 | 🟢 PROFUNDO |
+| `src_local/interface/components/health_gauge.py` | 4 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Flutter/scribe.py` | 4 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Kotlin/spark.py` | 4 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Kotlin/stream.py` | 4 | 2 | 🟢 PROFUNDO |
@@ -181,6 +186,7 @@
 | `src_local/agents/Python/stream.py` | 3 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Python/vault.py` | 3 | 3 | 🟢 PROFUNDO |
 | `src_local/agents/Support/ast_navigator.py` | 3 | 6 | 🟢 PROFUNDO |
+| `scripts/launch_dashboard.py` | 2 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Flutter/bolt.py` | 2 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Flutter/bridge.py` | 2 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Flutter/cache.py` | 2 | 2 | 🟢 PROFUNDO |
@@ -224,10 +230,44 @@
 | `src_local/agents/Python/warden.py` | 1 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Support/infrastructure_assembler.py` | 1 | 1 | 🟢 PROFUNDO |
 | `src_local/agents/Support/safety_definitions.py` | 1 | 2 | 🟢 PROFUNDO |
+| `forensic_env_24840/upstream_repo/core.py` | 1 | 12 | 🟢 PROFUNDO |
 
-## 🎯 PLANO DE BATALHA
+## 🎯 PLANO DE BATALHA: DIRETRIZES DE ENGENHARIA
 
-> ✅ Nenhuma intervenção necessária.
+### 📊 RESUMO DE INTERVENÇÕES
+
+| Severidade | Quantidade |
+| :--- | :---: |
+| CRITICAL | 1 |
+| STRATEGIC | 5 |
+
+---
+
+## 🚩 NÍVEL: CRITICAL
+
+### 📂 Alvo: `.agent/skills` [CRITICAL]
+
+#### 🔴 Item N/A: Delta: 17 commits [ID: _agent/skills_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+## 🚩 NÍVEL: STRATEGIC
+
+### 📂 Alvo: `src_local/core/orchestrator.py` [STRATEGIC]
+
+#### 🔴 Item N/A: Entropia Lógica: Complexidade (16) excede Soberania (15) [ID: src_local/core/orchestrator_py_N/A]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `Sistêmico` [STRATEGIC]
+
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/interface/components/health_gauge.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
+
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'scripts/launch_dashboard.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'scripts/launch_dashboard.py' é Matéria Escura (Sem testes detectados)
+
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src_local/interface/components/health_gauge.py' é Matéria Escura (Sem testes detectados)
 
 ## 💀 Risco Existencial
 
