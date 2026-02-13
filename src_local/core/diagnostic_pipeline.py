@@ -32,7 +32,13 @@ class DiagnosticPipeline:
             logger.info("🧪 [FastPath] Ignorando verificação core (unit tests)...")
             internal_health = {"success": True, "pass_rate": 100, "total_run": 0, "failed": 0, "pyramid": {}, "execution": {"success": True, "failed": 0}}
         else:
-            internal_health = self.orc.core_validator.verify_core_health(self.orc.project_root)
+            # Usa os arquivos alterados detectados pelo orquestrador
+            changed_paths = getattr(self.orc, 'last_detected_changes', [])
+            # Fallback seguro extraído dos findings (com filtro de tipo para evitar crashes)
+            if not changed_paths:
+                changed_paths = [f.get("file") for f in findings if isinstance(f, dict) and f.get("file")]
+            
+            internal_health = self.orc.core_validator.verify_core_health(self.orc.project_root, changed_files=changed_paths)
         
         if findings:
             findings += self.orc._run_targeted_verification(map_plan)

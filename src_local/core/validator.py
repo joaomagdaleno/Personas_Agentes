@@ -34,7 +34,7 @@ class CoreValidator:
         """🛡️ [RECONSTRUCTED] Verifica paridade de plataforma."""
         return []
 
-    def verify_core_health(self, project_root: str) -> dict:
+    def verify_core_health(self, project_root: str, changed_files: list = None) -> dict:
         """Executa a bateria de testes internos de integridade se existirem."""
         root = Path(project_root)
         
@@ -47,6 +47,12 @@ class CoreValidator:
         try:
             from src_local.agents.Support.test_runner import TestRunner
             runner = TestRunner()
+            
+            # Se tivermos poucos arquivos alterados (ex: < 5), usamos teste seletivo para velocidade extrema
+            if changed_files and len(changed_files) < 10:
+                logger.info(f"🧪 [Core] Executando Verificação Cirúrgica (Selective) para {len(changed_files)} arquivos.")
+                return runner.run_selective_tests(str(root), changed_files)
+            
             logger.info(f"🧪 [Core] Executando Protocolo de Aceleração em: {root}")
             results = runner.run_parallel_discovery(str(root))
             

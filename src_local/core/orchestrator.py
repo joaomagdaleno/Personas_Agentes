@@ -49,6 +49,7 @@ class Orchestrator:
         target_obj = objective or self._generate_default_objective(context)
         active_phds = self._select_active_phds(target_obj, context['identity'].get('stacks', {'Python'}))
         changed_files = self._detect_changed_files(context.get("map", {}).keys())
+        self.last_detected_changes = list(changed_files.keys())
         
         findings = self.task_orc.run_audit_cycle(active_phds, target_obj, changed_files, context)
         self._sync_and_ledger(findings, context, include_history)
@@ -64,8 +65,17 @@ class Orchestrator:
         return f"Validar integridade {list(stacks)}"
 
     def _sync_and_ledger(self, findings, context, include_history):
+        """Sincroniza descobertas e persiste memória de integridade."""
         self._inject_topology_and_git_issues(findings, context)
         self.stability_ledger.update(findings, context.get("map"))
+        
+        # Otimização PhD: Atualiza o cache de arquivos para auditorias seletivas futuras
+        map_data = context.get("map", {})
+        for rel_path in map_data:
+            f_hash = self.cache_manager.get_file_hash(self.project_root / rel_path)
+            if f_hash:
+                self.cache_manager.update(rel_path, f_hash)
+        self.cache_manager.save()
 
     def _inject_topology_and_git_issues(self, findings, context):
         """Delega a injeção de problemas de infraestrutura."""

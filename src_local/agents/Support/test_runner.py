@@ -31,8 +31,9 @@ class TestRunner:
             return {"success": False, "error": str(e), "total_run": 0, "failed": 1}
 
     def run_parallel_discovery(self, project_root: str) -> dict:
-        """🚀 Execução Paralela Soberana."""
+        """🚀 Execução Paralela Soberana com consciência de recursos."""
         import time
+        import os
         start_time = time.time()
         root = Path(project_root)
         test_dir = root / "tests"
@@ -41,10 +42,15 @@ class TestRunner:
             return {"success": True, "total_run": 0, "failed": 0, "pass_rate": 100}
 
         test_files = list(test_dir.glob("test_*.py"))
-        logger.info(f"🏎️ [TestRunner] Acelerando {len(test_files)} testes em paralelo...")
+        
+        # Limita workers para evitar travamento em máquinas com poucos cores
+        cpu_count = os.cpu_count() or 4
+        max_workers = max(1, cpu_count - 1)
+        
+        logger.info(f"🏎️ [TestRunner] Acelerando {len(test_files)} testes em paralelo (Workers: {max_workers})...")
 
         results = []
-        with ProcessPoolExecutor() as executor:
+        with ProcessPoolExecutor(max_workers=max_workers) as executor:
             futures = {executor.submit(self._run_single_test, str(f), project_root): f for f in test_files}
             for future in as_completed(futures):
                 results.append(future.result())
@@ -52,6 +58,58 @@ class TestRunner:
         duration = time.time() - start_time
         logger.info(f"⏱️ [TestRunner] Suíte paralela concluída em {duration:.2f}s")
         return self._consolidate_results(results)
+
+    def run_selective_tests(self, project_root: str, changed_files: list) -> dict:
+        """🎯 Diagnóstico Cirúrgico: Executa apenas testes afetados por mudanças."""
+        import time
+        start_time = time.time()
+        test_files = self._map_files_to_tests(project_root, changed_files)
+        
+        if not test_files:
+            logger.info("🛡️ [TestRunner] Nenhuma mudança detectada exige novos testes unitários.")
+            return {"success": True, "total_run": 0, "failed": 0, "pass_rate": 100, "selective": True}
+
+        logger.info(f"🎯 [TestRunner] Executando {len(test_files)} testes seletivos...")
+        results = []
+        with ProcessPoolExecutor(max_workers=len(test_files)) as executor:
+            futures = {executor.submit(self._run_single_test, str(f), project_root): f for f in test_files}
+            for future in as_completed(futures):
+                results.append(future.result())
+
+        duration = time.time() - start_time
+        logger.info(f"⏱️ [TestRunner] Testes seletivos concluídos em {duration:.2f}s")
+        consolidated = self._consolidate_results(results)
+        consolidated["selective"] = True
+        return consolidated
+
+    def _map_files_to_tests(self, project_root: str, changed_files: list) -> list:
+        """🧠 Heurística de Mapeamento PhD: Vincula arquivos de produção a suítes de teste."""
+        root = Path(project_root)
+        test_dir = root / "tests"
+        selected_tests = set()
+
+        for f in changed_files:
+            p = Path(f)
+            basename = p.stem
+            
+            # Heurística 1: test_<basename>.py
+            direct_match = test_dir / f"test_{basename}.py"
+            if direct_match.exists():
+                selected_tests.add(direct_match)
+                continue
+            
+            # Heurística 2: <basename>_persona.py -> test_<basename>_persona.py
+            persona_match = test_dir / f"test_{basename}_persona.py"
+            if persona_match.exists():
+                selected_tests.add(persona_match)
+                continue
+
+            # Heurística 3: Mapeamento de sistema (se mudar o core, roda testes core)
+            if "src_local/core" in str(f):
+                selected_tests.add(test_dir / "test_orchestrator.py")
+                selected_tests.add(test_dir / "test_validator.py")
+        
+        return list(selected_tests)
 
     def _run_single_test(self, test_file: str, project_root: str):
         res = subprocess.run(
