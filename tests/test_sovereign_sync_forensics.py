@@ -3,6 +3,8 @@ import subprocess
 import shutil
 import os
 import logging
+import tempfile
+import uuid
 from pathlib import Path
 from src_local.utils.dependency_auditor import DependencyAuditor
 
@@ -15,10 +17,14 @@ class TestSovereignSyncForensics(unittest.TestCase):
     """
 
     def setUp(self):
-        self.test_root = Path("Personas_Agentes_Forensics_" + str(os.getpid()))
+        # Otimização PhD: Usa diretório temporário do sistema para evitar poluição da raiz.
+        self.tmp_parent = Path(tempfile.gettempdir()) / "Forensics_Sovereign"
+        self.tmp_parent.mkdir(exist_ok=True)
+        self.test_root = self.tmp_parent / str(uuid.uuid4())
+        
         self.agent_dir = self.test_root / ".agent" / "skills"
         self.upstream_dir = self.test_root / "upstream_repo"
-        self.test_root.mkdir(exist_ok=True)
+        self.test_root.mkdir(parents=True, exist_ok=True)
         self.upstream_dir.mkdir(parents=True, exist_ok=True)
         self.agent_dir.mkdir(parents=True, exist_ok=True)
 

@@ -27,10 +27,13 @@ class InfrastructureAssembler:
     def assemble_core_support():
         """
         🛡️ Instancia a junta de suporte padrão.
-        FBI MODE: Cache desativado para garantir verdade técnica.
+        Utiliza cache soberano para otimização de performance.
         """
-        logger.info("🕵️‍♂️ [FBI_VERIFIED_RUN] Montando junta de suporte core (FRESH)...")
-        return {
+        if InfrastructureAssembler._core_cache:
+            return InfrastructureAssembler._core_cache
+
+        logger.info("🛡️ [Assembler] Mobilizando junta de suporte core...")
+        InfrastructureAssembler._core_cache = {
             "analyst": StructuralAnalyst(),
             "guardian": IntegrityGuardian(),
             "mapper": ConnectivityMapper(),
@@ -38,20 +41,26 @@ class InfrastructureAssembler:
             "audit_engine": AuditEngine(),
             "line_veto": LineVeto()
         }
+        return InfrastructureAssembler._core_cache
 
     @staticmethod
     def assemble_orchestrator_tools(project_root):
         """
         🎼 Mobiliza as ferramentas soberanas do Maestro.
-        FBI MODE: Cache desativado para garantir verdade técnica.
+        Cache inteligente baseado na raiz do projeto.
         """
         root_str = str(project_root)
-        logger.info(f"🎼 [Assembler] Mobilizando ferramentas do maestro para: {root_str} (FRESH)")
+        if root_str in InfrastructureAssembler._tools_cache:
+            return InfrastructureAssembler._tools_cache[root_str]
+
+        logger.info(f"🎼 [Assembler] Mobilizando ferramentas do maestro para: {root_str}")
         
-        return {
+        tools = {
             "synthesizer": HealthSynthesizer(),
             "strategist": DiagnosticStrategist(),
             "executor": TaskExecutor(),
             "validator": CoreValidator(),
             "refiner": TestRefiner(project_root)
         }
+        InfrastructureAssembler._tools_cache[root_str] = tools
+        return tools

@@ -9,47 +9,58 @@ logger = logging.getLogger(__name__)
 class DiagnosticPipeline:
     """Orquestra o fluxo de diagnóstico completo."""
     
+    _is_running = False  # 🛡️ Recursion Guard Soberano
+
     def __init__(self, orchestrator):
         self.orc = orchestrator
 
     def execute(self, skip_tests=False):
         """Protocolo Soberano: Reset -> Discovery -> Verify -> Report."""
-        start_time = time.time()
-        logger.info("🎬 Iniciando Pipeline de Diagnóstico Soberano...")
-        self._reset()
-        
-        # 1. Discovery
-        ctx = self.orc.context_engine.analyze_project()
-        findings = self.orc.run_strategic_audit(ctx, include_history=False)
-        
-        # 🕵️ Ofuscação
-        findings.extend(self.orc._run_obfuscation_scan())
-        
-        # 2. Validation
-        map_plan = self.orc.strategist.plan_targeted_verification(findings)
-        
-        if skip_tests:
-            logger.info("🧪 [FastPath] Ignorando verificação core (unit tests)...")
-            internal_health = {"success": True, "pass_rate": 100, "total_run": 0, "failed": 0, "pyramid": {}, "execution": {"success": True, "failed": 0}}
-        else:
-            # Usa os arquivos alterados detectados pelo orquestrador
-            changed_paths = getattr(self.orc, 'last_detected_changes', [])
-            # Fallback seguro extraído dos findings (com filtro de tipo para evitar crashes)
-            if not changed_paths:
-                changed_paths = [f.get("file") for f in findings if isinstance(f, dict) and f.get("file")]
-            
-            internal_health = self.orc.core_validator.verify_core_health(self.orc.project_root, changed_files=changed_paths)
-        
-        if findings:
-            findings += self.orc._run_targeted_verification(map_plan)
-            
-        # 3. Dedupe & Report
-        final_findings = self._deduplicate(findings)
-        res = self._finalize(ctx, internal_health, final_findings)
+        if DiagnosticPipeline._is_running:
+            logger.warning("⚠️ [RecursionGuard] Diagnóstico já em andamento. Abortando execução recursiva.")
+            return Path("recursion_prevented.md")
 
-        from src_local.utils.logging_config import log_performance
-        log_performance(logger, start_time, "✅ Pipeline concluído", level=logging.INFO)
-        return res
+        DiagnosticPipeline._is_running = True
+        try:
+            start_time = time.time()
+            logger.info("🎬 Iniciando Pipeline de Diagnóstico Soberano...")
+            self._reset()
+            
+            # 1. Discovery
+            ctx = self.orc.context_engine.analyze_project()
+            findings = self.orc.run_strategic_audit(ctx, include_history=False)
+            
+            # 🕵️ Ofuscação
+            findings.extend(self.orc._run_obfuscation_scan())
+            
+            # 2. Validation
+            map_plan = self.orc.strategist.plan_targeted_verification(findings)
+            
+            if skip_tests:
+                logger.info("🧪 [FastPath] Ignorando verificação core (unit tests)...")
+                internal_health = {"success": True, "pass_rate": 100, "total_run": 0, "failed": 0, "pyramid": {}, "execution": {"success": True, "failed": 0}}
+            else:
+                # Usa os arquivos alterados detectados pelo orquestrador
+                changed_paths = getattr(self.orc, 'last_detected_changes', [])
+                # Fallback seguro extraído dos findings (com filtro de tipo para evitar crashes)
+                if not changed_paths:
+                    changed_paths = [f.get("file") for f in findings if isinstance(f, dict) and f.get("file")]
+                
+                internal_health = self.orc.core_validator.verify_core_health(self.orc.project_root, changed_files=changed_paths)
+            
+            if findings:
+                findings += self.orc._run_targeted_verification(map_plan)
+                
+            # 3. Dedupe & Report
+            final_findings = self._deduplicate(findings)
+            res = self._finalize(ctx, internal_health, final_findings)
+
+            from src_local.utils.logging_config import log_performance
+            log_performance(logger, start_time, "✅ Pipeline concluído", level=logging.INFO)
+            return res
+        finally:
+            DiagnosticPipeline._is_running = False
+
     def _reset(self):
         self.orc.job_queue = []
         self.orc.metrics["all_findings"] = []
@@ -96,8 +107,16 @@ class DiagnosticPipeline:
                             flaw['ai_insight'] = insight
 
         self.orc.cache_manager.save()
+        
+        # 🛡️ Test Isolation Guard: Impede que testes sobrescrevam o relatório real
+        if os.environ.get("DIAGNOSTIC_TEST_MODE") == "1":
+            logger.info("🛡️ [TestPath] Suprimindo escrita de relatório em modo de teste.")
+            return Path("test_report_suppressed.md")
+
         report = self.orc.director.format_360_report(snapshot, findings)
         
-        report_file = self.orc.project_root / "auto_healing_VERIFIED.md"
+        docs_dir = self.orc.project_root / "docs"
+        docs_dir.mkdir(parents=True, exist_ok=True)
+        report_file = docs_dir / "auto_healing_VERIFIED.md"
         report_file.write_text(report, encoding="utf-8")
         return report_file
