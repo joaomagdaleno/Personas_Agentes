@@ -1,7 +1,7 @@
 import logging
 import time
 from pathlib import Path
-from src_local.agents.director import DirectorPersona
+from src_local.agents.Python.Strategic.director import DirectorPersona
 from src_local.utils.context_engine import ContextEngine
 from src_local.utils.cache_manager import CacheManager
 from src_local.utils.stability_ledger import StabilityLedger
@@ -72,11 +72,11 @@ class Orchestrator:
         findings.extend(self.synthesizer.get_topology_issues(context))
         findings.extend(self.dependency_auditor.check_submodule_status())
 
-    def generate_full_diagnostic(self):
+    def generate_full_diagnostic(self, skip_tests=False):
         """Portal de diagnóstico com telemetria de performance."""
         start_time = time.time()
         from src_local.core.diagnostic_pipeline import DiagnosticPipeline
-        res = DiagnosticPipeline(self).execute()
+        res = DiagnosticPipeline(self).execute(skip_tests=skip_tests)
         for info in self.context_engine.map.values():
             if "content" in info: del info["content"]
         

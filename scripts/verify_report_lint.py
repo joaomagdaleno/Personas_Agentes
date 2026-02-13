@@ -1,4 +1,11 @@
-import os, logging
+import os, logging, sys
+from pathlib import Path
+
+# FBI MODE: Força o Python a ler os arquivos da raiz
+current_dir = Path(__file__).parent.parent.absolute()
+if str(current_dir) not in sys.path:
+    sys.path.insert(0, str(current_dir))
+
 from scripts.lint_rule_engine import LintRuleEngine
 
 # ✍️ Auditor de Markdown PhD

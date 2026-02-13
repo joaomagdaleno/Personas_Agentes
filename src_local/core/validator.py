@@ -45,17 +45,13 @@ class CoreValidator:
 
         logger.info("🛡️ [Core] Iniciando Protocolo de Auto-Exame Vital...")
         try:
-            logger.info(f"🧪 [Core] Executando unit test discover em: {root}")
-            result = subprocess.run(
-                [sys.executable, "-m", "unittest", "discover", "tests"],
-                capture_output=True, text=True, cwd=str(root),
-                encoding='utf-8', errors='ignore'
-            )
-            if result.returncode != 0:
-                logger.warning(f"⚠️ [Core] Alguns testes de integridade falharam.")
+            from src_local.agents.Support.test_runner import TestRunner
+            runner = TestRunner()
+            logger.info(f"🧪 [Core] Executando Protocolo de Aceleração em: {root}")
+            results = runner.run_parallel_discovery(str(root))
             
             logger.info("📝 [Core] Consolidando resultados do auto-exame...")
-            return self._parse_results(result.stderr, result.returncode == 0)
+            return results
         except Exception as e:
             logger.error(f"🚨 Falha crítica na execução do protocolo de auto-exame: {e}", exc_info=True)
             return {"success": False, "pass_rate": 0, "total_run": 0, "failed": 1}

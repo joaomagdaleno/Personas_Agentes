@@ -2,7 +2,7 @@ import unittest
 import logging
 from pathlib import Path
 from unittest.mock import MagicMock
-from src_local.agents.director import DirectorPersona
+from src_local.agents.Python.Strategic.director import DirectorPersona
 
 # Telemetria PhD para Testes
 logger = logging.getLogger(__name__)

@@ -1,6 +1,6 @@
 import unittest
 import logging
-from src_local.agents.director import DirectorPersona
+from src_local.agents.Python.Strategic.director import DirectorPersona
 
 # Configuração de telemetria de teste
 logging.basicConfig(level=logging.INFO)

@@ -30,6 +30,7 @@ class ReportFormatter:
         op_status = self._format_op_status_table(health_data, status)
 
         objective_clean = health_data['objective'].rstrip('.')
+        # MD041: O cabeçalho deve ser sempre um H1 (#) no início do arquivo
         header = (f"# 🏛️ MAPA DE CONSCIÊNCIA SISTÊMICA: {objective_clean}\n\n"
                   f"> **Visão Holística do Arquiteto PhD (Token: FBI_SINC_FINAL)**\n\n"
                   f"{status}\n\n"

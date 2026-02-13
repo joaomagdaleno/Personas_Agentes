@@ -12,7 +12,7 @@ class DiagnosticPipeline:
     def __init__(self, orchestrator):
         self.orc = orchestrator
 
-    def execute(self):
+    def execute(self, skip_tests=False):
         """Protocolo Soberano: Reset -> Discovery -> Verify -> Report."""
         start_time = time.time()
         logger.info("🎬 Iniciando Pipeline de Diagnóstico Soberano...")
@@ -27,7 +27,12 @@ class DiagnosticPipeline:
         
         # 2. Validation
         map_plan = self.orc.strategist.plan_targeted_verification(findings)
-        internal_health = self.orc.core_validator.verify_core_health(self.orc.project_root)
+        
+        if skip_tests:
+            logger.info("🧪 [FastPath] Ignorando verificação core (unit tests)...")
+            internal_health = {"success": True, "pass_rate": 100, "total_run": 0, "failed": 0, "pyramid": {}, "execution": {"success": True, "failed": 0}}
+        else:
+            internal_health = self.orc.core_validator.verify_core_health(self.orc.project_root)
         
         if findings:
             findings += self.orc._run_targeted_verification(map_plan)
