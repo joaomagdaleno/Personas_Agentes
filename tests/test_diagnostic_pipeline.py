@@ -1,5 +1,6 @@
 import unittest
 import logging
+import tempfile
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 from src_local.core.diagnostic_pipeline import DiagnosticPipeline
@@ -11,9 +12,16 @@ logger = logging.getLogger("TestDiagnosticPipeline")
 class TestDiagnosticPipeline(unittest.TestCase):
     def setUp(self):
         self.orchestrator = MagicMock()
-        self.orchestrator.project_root = Path(".")
+        # Fix: Use temp dir to avoid overwriting production report
+        self.tmp_dir = tempfile.TemporaryDirectory()
+        self.orchestrator.project_root = Path(self.tmp_dir.name)
+        (self.orchestrator.project_root / "docs").mkdir(exist_ok=True)
+        
         self.orchestrator.director.format_360_report.return_value = "Mock Report Content"
         self.pipeline = DiagnosticPipeline(self.orchestrator)
+
+    def tearDown(self):
+        self.tmp_dir.cleanup()
 
     @patch("src_local.core.validator.CoreValidator.verify_core_health")
     def test_pipeline_reset(self, mock_verify):

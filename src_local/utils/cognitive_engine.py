@@ -63,13 +63,24 @@ class CognitiveEngine:
             logger.error(f"❌ Falha ao carregar cérebro: {e}")
             return False
 
-    def reason(self, prompt: str, max_tokens: int = 512) -> Optional[str]:
-        """Processa um pensamento (Inference)."""
+    def reason(self, prompt: str, max_tokens: int = 512, memory: Any = None) -> Optional[str]:
+        """Processa um pensamento com suporte a RAG (Contexto do Projeto)."""
         if not self.load_model(): return None
         
+        # 🧠 RAG: Injeta contexto do projeto se o motor de memória estiver disponível
+        rag_context = ""
+        if memory:
+            rag_context = memory.search_context(prompt)
+            if rag_context:
+                logger.info("🧠 [RAG] Contexto injetado no pensamento.")
+
         try:
-            # Formato ChatML Padrão (Qwen/DeepSeek/Modern Models)
-            formatted_prompt = f"<|im_start|>system\nVocê é uma IA assistente técnica especializada em Python, Bun e boas práticas de código.<|im_end|>\n<|im_start|>user\n{prompt}<|im_end|>\n<|im_start|>assistant\n"
+            # Formato ChatML Padrão
+            system_msg = "Você é uma IA assistente técnica especializada em Python e orquestração de agentes."
+            if rag_context:
+                system_msg += f"\n\n{rag_context}"
+                
+            formatted_prompt = f"<|im_start|>system\n{system_msg}<|im_end|>\n<|im_start|>user\n{prompt}<|im_end|>\n<|im_start|>assistant\n"
             
             output = self.model(
                 formatted_prompt,

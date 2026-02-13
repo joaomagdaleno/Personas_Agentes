@@ -11,6 +11,7 @@ from src_local.agents.Support.diagnostic_strategist import DiagnosticStrategist
 from src_local.agents.Support.task_executor import TaskExecutor
 from src_local.core.validator import CoreValidator
 from src_local.agents.Support.test_refiner import TestRefiner
+from src_local.agents.Support.healer import HealerPersona
 
 logger = logging.getLogger(__name__)
 
@@ -60,7 +61,8 @@ class InfrastructureAssembler:
             "strategist": DiagnosticStrategist(),
             "executor": TaskExecutor(),
             "validator": CoreValidator(),
-            "refiner": TestRefiner(project_root)
+            "refiner": TestRefiner(project_root),
+            "healer": HealerPersona(project_root) # Added healer
         }
         InfrastructureAssembler._tools_cache[root_str] = tools
         return tools

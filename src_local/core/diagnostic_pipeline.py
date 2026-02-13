@@ -13,11 +13,13 @@ class DiagnosticPipeline:
 
     def __init__(self, orchestrator):
         self.orc = orchestrator
+        from src_local.utils.finding_deduplicator import FindingDeduplicator
+        self.deduplicator = FindingDeduplicator()
 
     def execute(self, skip_tests=False):
         """Protocolo Soberano: Reset -> Discovery -> Verify -> Report."""
         if DiagnosticPipeline._is_running:
-            logger.warning("⚠️ [RecursionGuard] Diagnóstico já em andamento. Abortando execução recursiva.")
+            logger.warning("⚠️ [RecursionGuard] Diagnóstico já em andamento.")
             return Path("recursion_prevented.md")
 
         DiagnosticPipeline._is_running = True
@@ -26,33 +28,11 @@ class DiagnosticPipeline:
             logger.info("🎬 Iniciando Pipeline de Diagnóstico Soberano...")
             self._reset()
             
-            # 1. Discovery
-            ctx = self.orc.context_engine.analyze_project()
-            findings = self.orc.run_strategic_audit(ctx, include_history=False)
+            ctx, findings = self._run_discovery()
+            internal_health = self._run_validation(findings, skip_tests)
             
-            # 🕵️ Ofuscação
-            findings.extend(self.orc._run_obfuscation_scan())
-            
-            # 2. Validation
-            map_plan = self.orc.strategist.plan_targeted_verification(findings)
-            
-            if skip_tests:
-                logger.info("🧪 [FastPath] Ignorando verificação core (unit tests)...")
-                internal_health = {"success": True, "pass_rate": 100, "total_run": 0, "failed": 0, "pyramid": {}, "execution": {"success": True, "failed": 0}}
-            else:
-                # Usa os arquivos alterados detectados pelo orquestrador
-                changed_paths = getattr(self.orc, 'last_detected_changes', [])
-                # Fallback seguro extraído dos findings (com filtro de tipo para evitar crashes)
-                if not changed_paths:
-                    changed_paths = [f.get("file") for f in findings if isinstance(f, dict) and f.get("file")]
-                
-                internal_health = self.orc.core_validator.verify_core_health(self.orc.project_root, changed_files=changed_paths)
-            
-            if findings:
-                findings += self.orc._run_targeted_verification(map_plan)
-                
-            # 3. Dedupe & Report
-            final_findings = self._deduplicate(findings)
+            # Dedupe & Report
+            final_findings = self.deduplicator.deduplicate(findings)
             res = self._finalize(ctx, internal_health, final_findings)
 
             from src_local.utils.logging_config import log_performance
@@ -68,28 +48,29 @@ class DiagnosticPipeline:
             from src_local.utils.persona_loader import PersonaLoader
             PersonaLoader.mobilize_all(self.orc.project_root, self.orc)
 
-    def _deduplicate(self, raw_findings):
-        coord_map = {}
-        severity_rank = {"CRITICAL": 5, "HIGH": 4, "MEDIUM": 3, "LOW": 2, "STRATEGIC": 1, "HEALED": 0}
+    def _run_discovery(self):
+        """Fase 1: Descoberta e Auditoria Estratégica."""
+        ctx = self.orc.context_engine.analyze_project()
+        findings = self.orc.run_strategic_audit(ctx, include_history=False)
+        findings.extend(self.orc._run_obfuscation_scan())
+        return ctx, findings
+
+    def _run_validation(self, findings, skip_tests):
+        """Fase 2: Validação e Testes."""
+        map_plan = self.orc.strategist.plan_targeted_verification(findings)
         
-        for f in raw_findings:
-            if not isinstance(f, dict):
-                h = hashlib.md5(str(f).encode()).hexdigest()
-                if h not in coord_map: coord_map[h] = f
-                continue
-                
-            path = str(f.get('file', 'global')).replace("\\", "/")
-            key = (path, f.get('line', 0), f.get('issue'))
+        if findings:
+            findings += self.orc._run_targeted_verification(map_plan)
+
+        if skip_tests:
+            logger.info("🧪 [FastPath] Ignorando verificação core (unit tests)...")
+            return {"success": True, "pass_rate": 100, "total_run": 0, "failed": 0, "pyramid": {}, "execution": {"success": True}}
             
-            if key not in coord_map:
-                coord_map[key] = f
-            else:
-                curr = coord_map[key]
-                if isinstance(curr, dict):
-                    if severity_rank.get(f.get('severity', 'M').upper(), 0) > severity_rank.get(curr.get('severity', 'M').upper(), 0):
-                        coord_map[key] = f
-                        
-        return list(coord_map.values())
+        changed_paths = getattr(self.orc, 'last_detected_changes', [])
+        if not changed_paths:
+            changed_paths = [f.get("file") for f in findings if isinstance(f, dict) and f.get("file")]
+        
+        return self.orc.core_validator.verify_core_health(self.orc.project_root, changed_files=changed_paths)
 
     def _finalize(self, ctx, health, findings):
         snapshot = self.orc.get_system_health_360(ctx, health, findings)

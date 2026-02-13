@@ -10,44 +10,44 @@
 
 | Métrica | Valor | Status |
 | :--- | :--- | :--- |
-| **Índice de Saúde** | 64% | 🚨 |
-| **Total de Alertas** | 13 | Monitorado |
-| **Sincronia** | 07:36:18 | Ativa |
+| **Índice de Saúde** | 48% | 🚨 |
+| **Total de Alertas** | 15 | Monitorado |
+| **Sincronia** | 08:46:04 | Ativa |
 
 ### 📊 DECOMPOSIÇÃO DA SAÚDE (PILARES)
 
 | Pilar | Score | Peso Máx |
 | :--- | :---: | :---: |
-| Stability (Coverage) | 14.3 | 40 |
+| Stability (Coverage) | 0 | 40 |
 | Purity (Complexity) | 14.0 | 20 |
 | Observability (Telemetry) | 15.0 | 15 |
 | Security (Vulnerabilities) | 15 | 15 |
-| Excellence (Documentation) | 6.0 | 10 |
+| Excellence (Documentation) | 5.0 | 10 |
 
 ## 🩺 SINAIS VITAIS DO PRODUTO
 
 | Métrica | Status | Impacto |
 | :--- | :--- | :--- |
 | **Pontos Cegos** | 6 Arquivos | Alerta |
-| **Fragilidades** | 9 Pontos | Risco de Colapso |
+| **Fragilidades** | 15 Pontos | Risco de Colapso |
 | **Paridade de Stack** | Sincronizada | Nível de Maturidade |
 
 ### 🗺️ ROADMAP PARA 100% (REQUISITOS)
 
 - [ ] **Reduzir Complexidade**: Média atual drena 6.0 pts. Simplificar módulos > 15.
-- [ ] **Expandir Cobertura**: 6 ativos sem teste e 5 ativos frágeis drenam 25.7 pts.
+- [ ] **Expandir Cobertura**: 6 ativos sem teste e 10 ativos frágeis drenam 40 pts.
 - [ ] **Resolver Pendências de Excelência**: Diretrizes estratégicas ou módulos sem propósito detectados.
 
 ## 🌪️ MAPA DE ENTROPIA & ACOPLAMENTO
 
 | Alvo | Complexidade | Instabilidade |
 | :--- | :---: | :---: |
-| `src_local/agents/Support/markdown_sanitizer.py` | 25 | 0.67 |
-| `src_local/core/diagnostic_pipeline.py` | 22 | 0.78 |
-| `src_local/agents/Support/test_runner.py` | 22 | 0.62 |
-| `src_local/agents/base.py` | 19 | 0.09 |
-| `src_local/core/orchestrator.py` | 19 | 0.58 |
+| `src_local/core/orchestrator.py` | 22 | 0.64 |
+| `src_local/agents/Support/markdown_sanitizer.py` | 21 | 0.67 |
+| `src_local/agents/Support/structural_analyst.py` | 18 | 0.79 |
 | `src_local/utils/dependency_auditor.py` | 17 | 0.71 |
+| `src_local/core/diagnostic_pipeline.py` | 16 | 0.8 |
+| `src_local/interface/gui_native.py` | 15 | 0.92 |
 | `src_local/agents/Support/meta_analysis_detector.py` | 15 | 0.6 |
 | `src_local/core/validator.py` | 14 | 0.67 |
 | `src_local/utils/stability_ledger.py` | 14 | 0.57 |
@@ -57,11 +57,12 @@
 
 | Módulo | Entropia | Asserções | Status |
 | :--- | :---: | :---: | :--- |
-| `src_local/agents/Support/markdown_sanitizer.py` | 25 | 7 | 🟢 PROFUNDO |
-| `src_local/core/diagnostic_pipeline.py` | 22 | 2 | 🔴 FRÁGIL |
-| `src_local/agents/base.py` | 19 | 11 | 🟢 PROFUNDO |
-| `src_local/core/orchestrator.py` | 19 | 9 | 🟢 PROFUNDO |
+| `src_local/core/orchestrator.py` | 22 | 9 | 🟢 PROFUNDO |
+| `src_local/agents/Support/markdown_sanitizer.py` | 21 | 7 | 🟢 PROFUNDO |
+| `src_local/agents/Support/structural_analyst.py` | 18 | 4 | 🟢 PROFUNDO |
 | `src_local/utils/dependency_auditor.py` | 17 | 10 | 🟢 PROFUNDO |
+| `src_local/core/diagnostic_pipeline.py` | 16 | 2 | 🔴 FRÁGIL |
+| `src_local/interface/gui_native.py` | 15 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/meta_analysis_detector.py` | 15 | 4 | 🟢 PROFUNDO |
 | `src_local/core/validator.py` | 14 | 3 | 🟢 PROFUNDO |
 | `src_local/utils/stability_ledger.py` | 14 | 8 | 🟢 PROFUNDO |
@@ -69,8 +70,11 @@
 | `src_local/agents/Support/logic_auditor.py` | 14 | 4 | 🟢 PROFUNDO |
 | `src_local/agents/Support/report_formatter.py` | 14 | 8 | 🟢 PROFUNDO |
 | `src_local/agents/Support/veto_criteria_engine.py` | 14 | 3 | 🟢 PROFUNDO |
+| `src_local/agents/Python/Strategic/director.py` | 14 | 6 | 🟢 PROFUNDO |
 | `scripts/git_doctor.py` | 13 | 4 | 🟢 PROFUNDO |
 | `src_local/utils/context_engine.py` | 13 | 21 | 🟢 PROFUNDO |
+| `src_local/utils/cognitive_engine.py` | 12 | 0 | 🔴 FRÁGIL |
+| `src_local/utils/memory_engine.py` | 12 | 0 | 🔴 FRÁGIL |
 | `src_local/utils/scoring_engine_phd.py` | 12 | 3 | 🟢 PROFUNDO |
 | `src_local/utils/update_transaction.py` | 12 | 6 | 🟢 PROFUNDO |
 | `src_local/agents/Support/battle_plan_formatter.py` | 12 | 9 | 🟢 PROFUNDO |
@@ -81,12 +85,11 @@
 | `src_local/agents/Support/quality_analyst.py` | 12 | 6 | 🟢 PROFUNDO |
 | `src_local/agents/Python/Strategic/voyager.py` | 12 | 4 | 🟢 PROFUNDO |
 | `scripts/cleanup_obfuscation.py` | 11 | 5 | 🟢 PROFUNDO |
+| `src_local/agents/base.py` | 11 | 11 | 🟢 PROFUNDO |
 | `src_local/core/task_orchestrator.py` | 11 | 5 | 🟢 PROFUNDO |
-| `src_local/interface/gui.py` | 11 | 3 | 🟢 PROFUNDO |
 | `src_local/utils/file_system_scanner.py` | 11 | 7 | 🟢 PROFUNDO |
 | `src_local/utils/persona_loader.py` | 11 | 2 | 🔴 FRÁGIL |
 | `src_local/agents/Support/obfuscation_logic_engine.py` | 11 | 3 | 🟢 PROFUNDO |
-| `src_local/agents/Support/structural_analyst.py` | 11 | 4 | 🟢 PROFUNDO |
 | `scripts/lint_rule_engine.py` | 10 | 2 | 🟢 PROFUNDO |
 | `src_local/utils/analysis_engine_phd.py` | 10 | 12 | 🟢 PROFUNDO |
 | `src_local/utils/maintenance_engine_phd.py` | 10 | 5 | 🟢 PROFUNDO |
@@ -98,13 +101,13 @@
 | `src_local/agents/Support/safety_heuristics.py` | 10 | 5 | 🟢 PROFUNDO |
 | `src_local/agents/Support/telemetry_maturity_logic.py` | 10 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Support/veto_structural_engine.py` | 10 | 2 | 🟢 PROFUNDO |
-| `src_local/utils/cognitive_engine.py` | 9 | 0 | 🔴 FRÁGIL |
 | `src_local/utils/git_operations_phd.py` | 9 | 4 | 🟢 PROFUNDO |
 | `src_local/utils/reflex_engine_phd.py` | 9 | 4 | 🟢 PROFUNDO |
 | `src_local/agents/Support/call_safety_judge.py` | 9 | 6 | 🟢 PROFUNDO |
 | `src_local/agents/Support/coverage_auditor.py` | 9 | 4 | 🟢 PROFUNDO |
 | `src_local/agents/Support/intent_heuristics_engine.py` | 9 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Support/logic_node_auditor.py` | 9 | 4 | 🟢 PROFUNDO |
+| `src_local/agents/Support/maturity_evaluator.py` | 9 | 1 | 🔴 FRÁGIL |
 | `src_local/agents/Support/safety_assignment_engine.py` | 9 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Support/source_code_parser.py` | 9 | 5 | 🟢 PROFUNDO |
 | `scripts/lint_heading_logic.py` | 8 | 2 | 🟢 PROFUNDO |
@@ -112,6 +115,7 @@
 | `src_local/utils/conflict_policy_phd.py` | 8 | 4 | 🟢 PROFUNDO |
 | `src_local/utils/finding_deduplicator.py` | 8 | 4 | 🟢 PROFUNDO |
 | `src_local/utils/topology_engine_phd.py` | 8 | 4 | 🟢 PROFUNDO |
+| `src_local/agents/Support/healer.py` | 8 | 3 | 🟢 PROFUNDO |
 | `src_local/agents/Support/parity_analyst.py` | 8 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Support/pyramid_analyst.py` | 8 | 4 | 🟢 PROFUNDO |
 | `src_local/agents/Support/safe_context_judge.py` | 8 | 2 | 🟢 PROFUNDO |
@@ -120,15 +124,14 @@
 | `src_local/agents/Support/task_executor.py` | 8 | 6 | 🟢 PROFUNDO |
 | `src_local/agents/Support/telemetry_intent_judge.py` | 8 | 9 | 🟢 PROFUNDO |
 | `scripts/diagnose_blind_spots.py` | 7 | 4 | 🟢 PROFUNDO |
-| `src_local/interface/gui_native.py` | 7 | 0 | 🔴 FRÁGIL |
 | `src_local/utils/compliance_standard.py` | 7 | 3 | 🟢 PROFUNDO |
+| `src_local/utils/context_iterator.py` | 7 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/ast_node_inspector.py` | 7 | 4 | 🟢 PROFUNDO |
 | `src_local/agents/Support/audit_engine.py` | 7 | 5 | 🟢 PROFUNDO |
 | `src_local/agents/Support/audit_risk_engine.py` | 7 | 5 | 🟢 PROFUNDO |
 | `src_local/agents/Support/diagnostic_strategist.py` | 7 | 5 | 🟢 PROFUNDO |
 | `src_local/agents/Support/line_veto.py` | 7 | 10 | 🟢 PROFUNDO |
 | `src_local/agents/Support/obfuscation_cleaner_engine.py` | 7 | 2 | 🟢 PROFUNDO |
-| `src_local/agents/Python/Strategic/director.py` | 7 | 6 | 🟢 PROFUNDO |
 | `scripts/persona_manager.py` | 6 | 2 | 🟢 PROFUNDO |
 | `scripts/verify_cognitive.py` | 6 | 0 | 🔴 FRÁGIL |
 | `src_local/interface/cli.py` | 6 | 3 | 🟢 PROFUNDO |
@@ -148,15 +151,15 @@
 | `scripts/update_agent_submodule.py` | 4 | 1 | 🟢 PROFUNDO |
 | `src_local/core/compiler.py` | 4 | 1 | 🟢 PROFUNDO |
 | `src_local/utils/context_mapping_logic.py` | 4 | 1 | 🟢 PROFUNDO |
-| `src_local/interface/components/health_gauge.py` | 4 | 0 | 🔴 FRÁGIL |
+| `src_local/interface/components/health_gauge.py` | 4 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Support/connectivity_mapper.py` | 4 | 3 | 🟢 PROFUNDO |
-| `src_local/agents/Support/maturity_evaluator.py` | 4 | 1 | 🟢 PROFUNDO |
 | `src_local/agents/Support/memory_persistence.py` | 4 | 1 | 🟢 PROFUNDO |
 | `src_local/agents/Python/Audit/probe.py` | 4 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Kotlin/Strategic/vault.py` | 4 | 3 | 🟢 PROFUNDO |
 | `src_local/agents/Kotlin/System/spark.py` | 4 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Kotlin/System/stream.py` | 4 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Flutter/Content/scribe.py` | 4 | 2 | 🟢 PROFUNDO |
+| `src_local/interface/views/findings_view.py` | 3 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/ast_navigator.py` | 3 | 6 | 🟢 PROFUNDO |
 | `src_local/agents/Support/infrastructure_assembler.py` | 3 | 1 | 🟢 PROFUNDO |
 | `src_local/agents/Python/Audit/nebula.py` | 3 | 2 | 🟢 PROFUNDO |
@@ -189,6 +192,8 @@
 | `src_local/agents/Flutter/System/spark.py` | 3 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Flutter/System/stream.py` | 3 | 2 | 🟢 PROFUNDO |
 | `scripts/launch_dashboard.py` | 2 | 0 | 🔴 FRÁGIL |
+| `src_local/interface/views/chat_view.py` | 2 | 0 | 🔴 FRÁGIL |
+| `src_local/interface/views/dashboard_view.py` | 2 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/metrics_assembler.py` | 2 | 1 | 🟢 PROFUNDO |
 | `src_local/agents/Support/score_calculator.py` | 2 | 4 | 🟢 PROFUNDO |
 | `src_local/agents/Support/vulnerability_heuristic.py` | 2 | 7 | 🟢 PROFUNDO |
@@ -214,6 +219,7 @@
 | `src_local/agents/Flutter/System/hermes.py` | 2 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Flutter/System/neural.py` | 2 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Flutter/System/nexus.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src_local/interface/components/sidebar.py` | 1 | 0 | 🔴 FRÁGIL |
 | `src_local/agents/Support/safety_definitions.py` | 1 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Python/Audit/scale.py` | 1 | 2 | 🟢 PROFUNDO |
 | `src_local/agents/Python/Audit/scope.py` | 1 | 2 | 🟢 PROFUNDO |
@@ -238,7 +244,7 @@
 
 | Severidade | Quantidade |
 | :--- | :---: |
-| STRATEGIC | 13 |
+| STRATEGIC | 15 |
 
 ---
 
@@ -246,9 +252,9 @@
 
 ### 📂 Alvo: `Sistêmico` [STRATEGIC]
 
-- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'scripts/launch_dashboard.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta
+- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'src_local/interface/components/sidebar.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta
 
-- **Diretriz Estratégica:** Amnésia Técnica: O objetivo 'Validar integridade ['Python']' exige clareza. Em 'scripts/verify_cognitive.py', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta
+- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src_local/interface/components/sidebar.py' é Matéria Escura (Sem testes detectados)
 
 - **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'scripts/build_exe.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
 
@@ -256,27 +262,25 @@
 
 - **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/interface/components/health_gauge.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
 
-- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'scripts/launch_dashboard.py' é Matéria Escura (Sem testes detectados)
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/interface/components/sidebar.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
 
-- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'scripts/verify_cognitive.py' é Matéria Escura (Sem testes detectados)
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/interface/views/chat_view.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
 
-- **Diretriz Estratégica:** Exposição de Risco: O objetivo 'Validar integridade ['Python']' exige confiança. O módulo 'src_local/interface/components/health_gauge.py' é Matéria Escura (Sem testes detectados)
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/interface/views/dashboard_view.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
 
-### 📂 Alvo: `src_local/agents/base.py` [STRATEGIC]
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/interface/views/findings_view.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
 
-#### 🔴 Item N/A: Entropia Lógica: Complexidade (19) excede Soberania (15) [ID: src_local/agents/base_py_N/A]
-
-- **Diretriz:** Padrão soberano de strategic
+- **Diretriz Estratégica:** Cegueira Analítica: O objetivo 'Validar integridade ['Python']' exige observabilidade. Em 'src_local/agents/Support/maturity_evaluator.py', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'
 
 ### 📂 Alvo: `src_local/core/diagnostic_pipeline.py` [STRATEGIC]
 
-#### 🔴 Item N/A: Entropia Lógica: Complexidade (22) excede Soberania (15) [ID: src_local/core/diagnostic_pipeline_py_N/A]
+#### 🔴 Item N/A: Entropia Lógica: Complexidade (16) excede Soberania (15) [ID: src_local/core/diagnostic_pipeline_py_N/A]
 
 - **Diretriz:** Padrão soberano de strategic
 
 ### 📂 Alvo: `src_local/core/orchestrator.py` [STRATEGIC]
 
-#### 🔴 Item N/A: Entropia Lógica: Complexidade (19) excede Soberania (15) [ID: src_local/core/orchestrator_py_N/A]
+#### 🔴 Item N/A: Entropia Lógica: Complexidade (22) excede Soberania (15) [ID: src_local/core/orchestrator_py_N/A]
 
 - **Diretriz:** Padrão soberano de strategic
 
@@ -288,7 +292,13 @@
 
 ### 📂 Alvo: `src_local/agents/Support/markdown_sanitizer.py` [STRATEGIC]
 
-#### 🔴 Item N/A: Entropia Lógica: Complexidade (25) excede Soberania (15) [ID: src_local/agents/Support/markdown_sanitizer_py_N/A]
+#### 🔴 Item N/A: Entropia Lógica: Complexidade (21) excede Soberania (15) [ID: src_local/agents/Support/markdown_sanitizer_py_N/A]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/Support/structural_analyst.py` [STRATEGIC]
+
+#### 🔴 Item N/A: Entropia Lógica: Complexidade (18) excede Soberania (15) [ID: src_local/agents/Support/structural_analyst_py_N/A]
 
 - **Diretriz:** Padrão soberano de strategic
 

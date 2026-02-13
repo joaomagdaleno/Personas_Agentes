@@ -1,4 +1,12 @@
-
+"""
+🧠 Verificador de Integridade Cognitiva.
+---------------------------------------
+Diagnóstico isolado para o CognitiveEngine (LLM Local).
+Verifica:
+1. Lazy Loading (Gerenciamento de memória).
+2. Inferência Real (Teste de raciocínio).
+3. Liberação de Recursos (Memory Release).
+"""
 import sys
 import os
 
@@ -10,6 +18,7 @@ sys.path.append(project_root)
 from src_local.utils.cognitive_engine import CognitiveEngine
 
 def verify_cognitive_engine():
+    """Executa a bateria de testes cognitivos."""
     print("[INFO] Verificando Cognitive Engine...")
     
     engine = CognitiveEngine()

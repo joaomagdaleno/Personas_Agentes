@@ -1,3 +1,12 @@
+"""
+🚀 Launcher do Dashboard Nativo Soberano.
+-----------------------------------------
+Ponto de entrada único para a interface gráfica consolidada (NativeGUI).
+Inicializa o Orquestrador, carrega as Personas e exibe a central de comando.
+
+Uso:
+    python scripts/launch_dashboard.py
+"""
 import os
 import sys
 import logging
@@ -12,6 +21,10 @@ from src_local.interface.gui_native import NativeGUI
 from src_local.utils.logging_config import setup_logging
 
 def main():
+    """
+    🎬 Inicializa a aplicação NativeGUI.
+    Configura logging, orquestrador e loop principal da UI.
+    """
     setup_logging()
     logger = logging.getLogger("SystemMonitor")
     logger.info("🎬 Iniciando Dashboard Nativo Soberano...")

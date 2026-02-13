@@ -2,13 +2,19 @@ import customtkinter as ctk
 import logging
 import threading
 from typing import Optional
+import tkinter as tk
+
+from src_local.interface.components.sidebar import SidebarComponent
+from src_local.interface.views.dashboard_view import DashboardView
+from src_local.interface.views.findings_view import FindingsView
+from src_local.interface.views.chat_view import ChatView
 
 logger = logging.getLogger(__name__)
 
 class NativeGUI(ctk.CTk):
     """
     💎 Dashboard Sincronizado 2026.
-    Interface nativa de baixo consumo para monitoramento de saúde sistêmica.
+    Interface nativa modularizada de baixo consumo.
     """
     def __init__(self, orchestrator):
         super().__init__()
@@ -27,117 +33,147 @@ class NativeGUI(ctk.CTk):
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
-        self._setup_sidebar()
-        self._setup_main_dashboard()
-        
-        logger.info("🎨 Interface Nativa Inicializada.")
+        self._init_components()
+        logger.info("🎨 Interface Nativa Inicializada (Modular).")
 
-    def _update_health_ui(self, health_data):
-        """Atualiza o medidor de saúde via thread main."""
-        score = health_data.get("health_score", 100)
-        self.after(0, lambda: self.health_gauge.set_health(score))
-        self.after(0, lambda: self.health_desc.configure(text=f"Integridade: {score}%"))
+    def _init_components(self):
+        callbacks = {
+            'run_audit': self.run_audit_async,
+            'open_report': self.open_report,
+            'auto_heal': self.run_auto_healing_async,
+            'show_dashboard': lambda: self._show_view("dashboard"),
+            'show_findings': lambda: self._show_view("findings"),
+            'show_chat': lambda: self._show_view("chat")
+        }
+        self.sidebar = SidebarComponent(self, callbacks)
 
-    def _update_findings_ui(self, findings):
-        """Atualiza a lista de alertas."""
-        count = len(findings)
-        self.after(0, lambda: self.findings_label.configure(text=f"Problemas Detectados: {count}"))
-        # Se houver uma área de log, podemos injetar os achados nela também
-        self.after(0, lambda: self._log_findings(findings))
-
-    def _log_findings(self, findings):
-        if hasattr(self, "log_textbox"):
-            self.log_textbox.configure(state="normal")
-            for f in findings:
-                msg = f"[{f.get('severity', 'INFO')}] {f.get('file', 'Global')}: {f.get('issue')}\n"
-                self.log_textbox.insert("end", msg)
-            self.log_textbox.configure(state="disabled")
-            self.log_textbox.see("end")
-
-    def run_audit_async(self):
-        """Dispara o ciclo de auditoria do orquestrador real."""
-        if not self.orc: return
-        self.status_label.configure(text="Status: Analisando...", text_color="yellow")
-        self.run_button.configure(state="disabled")
-        
-        def job():
-            try:
-                # Executa o pipeline real
-                report_path = self.orc.generate_full_diagnostic()
-                self.after(0, lambda: self.status_label.configure(text="Status: Protegido", text_color="#00ffcc"))
-                self.after(0, lambda: self.run_button.configure(state="normal"))
-                logger.info(f"Auditoria concluída. Relatório em: {report_path}")
-            except Exception as e:
-                logger.error(f"Erro na auditoria UI: {e}", exc_info=True)
-                self.after(0, lambda: self.status_label.configure(text="Status: Erro", text_color="red"))
-                self.after(0, lambda: self.run_button.configure(state="normal"))
-
-        threading.Thread(target=job, daemon=True).start()
-
-    def _setup_sidebar(self):
-        self.sidebar_frame = ctk.CTkFrame(self, width=200, corner_radius=0)
-        self.sidebar_frame.grid(row=0, column=0, sticky="nsew", padx=0, pady=0)
-        self.sidebar_frame.grid_rowconfigure(4, weight=1)
-
-        self.logo_label = ctk.CTkLabel(self.sidebar_frame, text="AGENTES PhD", font=ctk.CTkFont(size=20, weight="bold"))
-        self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
-
-        self.run_button = ctk.CTkButton(self.sidebar_frame, text="🚀 Executar Auditoria", command=self.run_audit_async)
-        self.run_button.grid(row=1, column=0, padx=20, pady=10)
-
-        self.sidebar_button_1 = ctk.CTkButton(self.sidebar_frame, text="Dashboard", command=self._show_dashboard)
-        self.sidebar_button_1.grid(row=2, column=0, padx=20, pady=10)
-
-        self.sidebar_button_2 = ctk.CTkButton(self.sidebar_frame, text="Plano de Batalha", command=self._show_battle_plan)
-        self.sidebar_button_2.grid(row=3, column=0, padx=20, pady=10)
-
-        self.status_label = ctk.CTkLabel(self.sidebar_frame, text="Status: Monitorando", text_color="#00ffcc")
-        self.status_label.grid(row=5, column=0, padx=20, pady=20)
-
-    def _setup_main_dashboard(self):
-        """Configura a área principal: Dashboard com HealthGauge."""
-        from src_local.interface.components.health_gauge import HealthGauge
-        
         self.main_container = ctk.CTkFrame(self, corner_radius=10, fg_color="transparent")
         self.main_container.grid(row=0, column=1, sticky="nsew", padx=20, pady=20)
         self.main_container.grid_columnconfigure(0, weight=1)
-        self.main_container.grid_rowconfigure(1, weight=1)
+        self.main_container.grid_rowconfigure(0, weight=1)
 
-        # Header
-        self.header_label = ctk.CTkLabel(self.main_container, text="DASHBOARD DE SOBERANIA", font=ctk.CTkFont(size=24, weight="bold"))
-        self.header_label.grid(row=0, column=0, pady=(0, 20))
-
-        # Gauge Center
-        self.gauge_frame = ctk.CTkFrame(self.main_container, fg_color="#1a1a1a", corner_radius=15)
-        self.gauge_frame.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
-        self.gauge_frame.grid_columnconfigure(0, weight=1)
+        self.views = {}
+        self.views["dashboard"] = DashboardView(self.main_container)
         
-        self.health_gauge = HealthGauge(self.gauge_frame, size=250)
-        self.health_gauge.grid(row=0, column=0, pady=30)
+        findings_callbacks = {'copy_fix': self._copy_selected_issue}
+        self.views["findings"] = FindingsView(self.main_container, findings_callbacks)
         
-        self.health_desc = ctk.CTkLabel(self.gauge_frame, text="Integridade: 100%", font=ctk.CTkFont(size=18, weight="bold"), text_color="#00ffcc")
-        self.health_desc.grid(row=1, column=0, pady=(0, 20))
+        chat_callbacks = {'send_chat': self._handle_chat_query}
+        self.views["chat"] = ChatView(self.main_container, chat_callbacks)
 
-        self.findings_label = ctk.CTkLabel(self.gauge_frame, text="Problemas Detectados: 0", font=ctk.CTkFont(size=14))
-        self.findings_label.grid(row=2, column=0, pady=(0, 20))
+        self._show_view("dashboard")
 
-        # Log Area (Console)
-        self.log_textbox = ctk.CTkTextbox(self.main_container, height=150, font=("Consolas", 12))
-        self.log_textbox.grid(row=2, column=0, sticky="ew", padx=10, pady=10)
-        self.log_textbox.insert("0.0", "--- Console de Orquestração PhD ---\n")
-        self.log_textbox.configure(state="disabled")
+    def _show_view(self, view_name):
+        for name, frame in self.views.items():
+            if name == view_name:
+                frame.grid(row=0, column=0, sticky="nsew")
+            else:
+                frame.grid_forget()
 
-    def _show_dashboard(self):
-        """Switch to Dashboard view (default)."""
-        logger.info("Exibindo Dashboard.")
+    def _update_health_ui(self, health_data):
+        score = health_data.get("health_score", 100)
+        self.after(0, lambda: self.views["dashboard"].update_health(score))
 
-    def _show_battle_plan(self):
-        """Switch to Battle Plan view."""
-        logger.info("Exibindo Plano de Batalha.")
+    def _update_findings_ui(self, findings):
+        count = len(findings)
+        self.after(0, lambda: self.views["dashboard"].update_findings_count(count))
+        self.after(0, lambda: self.views["dashboard"].log_findings(findings))
+        
+        # Update Findings View logic needs adapter since it uses widgets
+        # We need to bridge the Gap
+        self.after(0, lambda: self._refresh_findings_view(findings))
+
+    def _refresh_findings_view(self, findings):
+        # Delegate to view
+        # We need to adapt the logic because FindingsView expects detailed list
+        # But here we have generic logic. Ideally FindingsView handles it.
+        # Check FindingsView implementation: it has refresh_findings method
+        view = self.views["findings"]
+        # Correctly call the method on the instance
+        view.refresh_findings(findings)
+        self.last_findings = findings
+
+    def log_message(self, msg: str, level: str = "INFO"):
+        self.after(0, lambda: self.views["dashboard"].log(msg, level))
+
+    def run_audit_async(self):
+        if not self.orc: return
+        self.sidebar.update_status("Status: Analisando...", "yellow")
+        self.sidebar.set_running_state(True)
+        self.log_message("🚀 Mobilizando junta de PhDs para Auditoria 360...", "SYSTEM")
+        
+        def job():
+            try:
+                report_path = self.orc.generate_full_diagnostic()
+                self.after(0, lambda: self.sidebar.update_status("Status: Protegido", "#00ffcc"))
+                self.after(0, lambda: self.sidebar.set_running_state(False))
+                self.log_message(f"✅ Auditoria concluída. Relatório em: {report_path.name}", "SUCCESS")
+            except Exception as e:
+                logger.error(f"Erro na auditoria UI: {e}", exc_info=True)
+                self.after(0, lambda: self.sidebar.update_status("Status: Erro", "red"))
+                self.after(0, lambda: self.sidebar.set_running_state(False))
+                self.log_message(f"🚨 Falha Crítica: {e}", "ERROR")
+
+        threading.Thread(target=job, daemon=True).start()
+
+    def run_auto_healing_async(self):
+        if not self.orc or not hasattr(self, "last_findings"): 
+            self.log_message("⚠️ Execute uma auditoria primeiro.", "WARNING")
+            return
+            
+        self.sidebar.update_status("Status: Curando...", "#cf6679")
+        self.sidebar.set_healing_state(True)
+        self.log_message("🩹 Iniciando Ciclo de Auto-Cura...", "HEAL")
+        
+        def job():
+            try:
+                count = self.orc.run_auto_healing(self.last_findings)
+                if count > 0:
+                    self.log_message(f"✨ Auto-cura aplicada em {count} arquivos.", "SUCCESS")
+                    self.run_audit_async()
+                else:
+                    self.log_message("🩹 Nenhuma fragilidade crítica curável.", "INFO")
+                    self.after(0, lambda: self.sidebar.update_status("Status: Protegido", "#00ffcc"))
+                
+                self.after(0, lambda: self.sidebar.set_healing_state(False))
+            except Exception as e:
+                logger.error(f"Erro na auto-cura UI: {e}", exc_info=True)
+                self.after(0, lambda: self.sidebar.update_status("Status: Erro", "red"))
+                self.after(0, lambda: self.sidebar.set_healing_state(False))
+
+        threading.Thread(target=job, daemon=True).start()
+
+    def open_report(self):
+        report_path = self.orc.project_root / "docs" / "auto_healing_VERIFIED.md"
+        if report_path.is_file():
+            try:
+                import os
+                os.startfile(str(report_path))
+                self.log_message(f"📂 Abrindo relatório: {report_path.name}")
+            except Exception as e:
+                self.log_message(f"❌ Falha ao abrir relatório: {e}", "ERROR")
+        else:
+            self.log_message("⚠️ Relatório ainda não gerado.", "WARNING")
+
+    def _copy_selected_issue(self):
+        self.log_message("Funcionalidade de cópia em integração PhD.", "INFO")
+
+    def _handle_chat_query(self, query):
+        self.log_message(f"🧠 Processando: {query}", "COGNITIVE")
+        
+        def think():
+            try:
+                from src_local.utils.cognitive_engine import CognitiveEngine
+                brain = CognitiveEngine()
+                response = brain.reason(query, memory=self.orc.memory_engine) or "Sem resposta."
+                self.after(0, lambda: self.views["chat"].add_message(f"🤖 Cérebro: {response}\n"))
+            except Exception as e:
+                self.after(0, lambda: self.views["chat"].add_message(f"🚨 Erro: {e}\n"))
+        
+        threading.Thread(target=think, daemon=True).start()
 
 if __name__ == "__main__":
-    # Teste isolado
     from src_local.core.orchestrator import Orchestrator
-    orc = Orchestrator(".") # Contexto dummy para teste
+    orc = Orchestrator(".")
     app = NativeGUI(orc)
     app.mainloop()

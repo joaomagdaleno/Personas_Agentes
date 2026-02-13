@@ -18,6 +18,8 @@ class Orchestrator:
         self.director = DirectorPersona(self.project_root)
         self.context_engine = ContextEngine(self.project_root)
         self.cache_manager = CacheManager(self.project_root)
+        from src_local.utils.memory_engine import MemoryEngine
+        self.memory_engine = MemoryEngine(self.project_root)
         self.stability_ledger = StabilityLedger(self.project_root)
         self.dependency_auditor = DependencyAuditor(self.project_root)
         
@@ -28,7 +30,8 @@ class Orchestrator:
         
         self.synthesizer, self.strategist = tools["synthesizer"], tools["strategist"]
         self.executor, self.core_validator = tools["executor"], tools["validator"]
-        self.refiner = tools.get("refiner") # Pode ser None se dependencies falharem
+        self.refiner = tools.get("refiner")
+        self.healer = tools.get("healer")
         from src_local.agents.Support.metrics_assembler import MetricsAssembler
         self.metrics_assembler = MetricsAssembler()
         self.task_orc = TaskOrchestrator(self)
@@ -39,6 +42,31 @@ class Orchestrator:
         # Callbacks para Interface SoC (Separation of Concerns)
         self.on_health_update = None
         self.on_findings_update = None
+
+    def run_auto_healing(self, findings: list) -> int:
+        """
+        🚀 Protocolo de Auto-Cura Total.
+        Percorre achados críticos e tenta corrigi-los usando o HealerPersona.
+        """
+        if not self.healer:
+            logger.warning("🩹 [Orchestrator] HealerPersona não disponível.")
+            return 0
+        
+        healed_count = 0
+        criticals = [f for f in findings if isinstance(f, dict) and f.get("severity") in ["CRITICAL", "HIGH"]]
+        
+        logger.info(f"🩹 [Orchestrator] Iniciando cura para {len(criticals)} fragilidades...")
+        for flaw in criticals:
+            if self.healer.heal_finding(flaw):
+                healed_count += 1
+                
+        if healed_count > 0:
+            logger.info(f"✨ [Orchestrator] Auto-Cura concluída: {healed_count} remendos aplicados.")
+            # Reseta o sistema para refletir a nova realidade (pode disparar re-diagnóstico)
+            self.stability_ledger.clear()
+            self.cache_manager.save()
+            
+        return healed_count
 
     def add_persona(self, persona_instance):
         self.personas.append(persona_instance)
@@ -69,9 +97,11 @@ class Orchestrator:
         """Sincroniza descobertas e persiste memória de integridade."""
         self._inject_topology_and_git_issues(findings, context)
         self.stability_ledger.update(findings, context.get("map"))
-        
-        # Otimização PhD: Atualiza o cache de arquivos para auditorias seletivas futuras
-        map_data = context.get("map", {})
+        self.memory_engine.index_project(context.get("map", {}))
+        self._refresh_file_cache(context.get("map", {}))
+
+    def _refresh_file_cache(self, map_data):
+        """Otimização PhD: Atualiza o cache de arquivos para auditorias seletivas futuras."""
         for rel_path in map_data:
             f_hash = self.cache_manager.get_file_hash(self.project_root / rel_path)
             if f_hash:
@@ -85,14 +115,9 @@ class Orchestrator:
 
     def generate_full_diagnostic(self, skip_tests=False):
         """Portal de diagnóstico com telemetria de performance."""
-        start_time = time.time()
+        # Delegação total para o Pipeline
         from src_local.core.diagnostic_pipeline import DiagnosticPipeline
-        res = DiagnosticPipeline(self).execute(skip_tests=skip_tests)
-        for info in self.context_engine.map.values():
-            if "content" in info: del info["content"]
-        
-        self._log_orchestration_performance(start_time, "Diagnóstico 360")
-        return res
+        return DiagnosticPipeline(self).execute(skip_tests=skip_tests)
 
     def get_system_health_360(self, context, internal_health, all_findings=None):
         """Sintetiza a saúde sistêmica via delegação."""

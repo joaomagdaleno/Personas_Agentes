@@ -19,20 +19,20 @@ class BaseActivePersona(ABC):
     def _initialize_support_tools(self):
         from src_local.agents.Support.infrastructure_assembler import InfrastructureAssembler
         from src_local.utils.cognitive_engine import CognitiveEngine
+        from src_local.agents.Support.maturity_evaluator import MaturityEvaluator
         
         support = InfrastructureAssembler.assemble_core_support()
         self.audit_engine = support.get("audit_engine")
         self.structural_analyst = support["analyst"]
         self.integrity_guardian = support["guardian"]
         self.cognitive = CognitiveEngine()
+        self.maturity_evaluator = MaturityEvaluator(self.structural_analyst)
 
     def set_context(self, context_data):
-        """🧠 Sincroniza o cérebro do Agente com o DNA e o Mapa do projeto alvo."""
         self.project_dna = context_data.get("identity", {})
         self.context_data = context_data.get("map", {})
 
     def perform_strategic_audit(self, objective: str = None, file_target: str = None, content_target: str = None) -> list:
-        """🎯 Executa auditoria focada no objetivo estratégico."""
         if file_target and content_target:
             res = self._reason_about_objective(objective or "Verificação", file_target, content_target)
             return [res] if res else []
@@ -40,64 +40,28 @@ class BaseActivePersona(ABC):
         obj = self.integrity_guardian.get_audit_mission(self.project_dna, objective)
         strategic_issues = []
         
-        for file, content in self._iter_auditable_files():
+        from src_local.utils.context_iterator import ContextIterator
+        iterator = ContextIterator(self.project_root, self.context_data, self.integrity_guardian, self.ignored_files, self.stack)
+        
+        for file, content in iterator.iter_auditable_files():
             res = self._reason_about_objective(obj, file, content)
             if res: strategic_issues.append(res)
         return strategic_issues
 
-    def _iter_auditable_files(self):
-        """Gerador para iteração limpa e eficiente de arquivos auditáveis."""
-        for file in self.context_data.keys():
-            if self._should_audit_file(file):
-                content = self.read_project_file(file)
-                if content:
-                    yield file, content
-
-    def _should_audit_file(self, file):
-        """
-        Valida se o arquivo é relevante para a persona e stack.
-        Filtra arquivos ignorados e delegada a relevância ao IntegrityGuardian.
-        """
-        if file in self.ignored_files: return False
-        if self.context_data.get(file, {}).get("component_type") == "TEST": return False
-        return self.integrity_guardian.is_relevant_file(file, self.stack)
-
     def find_patterns(self, extensions, patterns):
-        """🔍 Varredura delegada ao AuditEngine."""
         if not self.audit_engine: return []
+        # Simplificação: Filtro direto
         files = [f for f in self.context_data.keys() 
-                 if f.endswith(extensions) 
-                 and f not in self.ignored_files
+                 if f.endswith(extensions) and f not in self.ignored_files 
                  and self.context_data[f].get("component_type") != "TEST"]
         return self.audit_engine.scan_multiple_files(files, patterns, self.read_project_file, self.context_data, self.name)
 
     def analyze_logic(self, file_path):
-        """🧬 Análise AST delegada ao StructuralAnalyst."""
         return self.structural_analyst.analyze_file_logic(file_path, self.project_root, self.ignored_files, self.name)
 
     def get_maturity_metrics(self):
-        """📊 Métricas de evolução via StructuralAnalyst delegado."""
-        # Busca recursiva no subdiretório da stack para encontrar o arquivo da persona
-        base_path = Path(self.project_root) / "src_local" / "agents" / self.stack
-        filename = f"{self.name.lower()}.py"
-        content = None
-        
-        # Encontra o arquivo da persona independente do subdiretório técnico (System, Audit, etc)
-        for f in base_path.rglob(filename):
-            try:
-                content = f.read_text(encoding='utf-8', errors='ignore')
-                if content: break
-            except: continue
-            
-        return self.structural_analyst.calculate_maturity(content, self.stack) if content else {"score": 0}
-
-    def _log_performance(self, start_time, count):
-        """
-        🛰️ Utilitário soberano para telemetria de performance padronizada.
-        Injeta métricas de desempenho no sistema de logs PhD.
-        """
-        from src_local.utils.logging_config import log_performance
-        log_performance(logger, start_time, f"{self.emoji} [{self.name}] Auditoria: {count} pontos", level=logging.INFO)
+        """Delegação total ao MaturityEvaluator."""
+        return self.maturity_evaluator.evaluate_persona(self.project_root, self.stack, self.name)
 
     def read_project_file(self, rel_path):
         """💾 Lê arquivo via Pathlib (Modern API) com garantia de encoding UTF-8."""
@@ -108,8 +72,11 @@ class BaseActivePersona(ABC):
             logger.warning(f"⚠️ Falha na leitura do arquivo {rel_path}: {e}")
             return None
 
+    def _log_performance(self, start_time, count):
+        from src_local.utils.logging_config import log_performance
+        log_performance(logger, start_time, f"{self.emoji} [{self.name}] Auditoria: {count} pontos", level=logging.INFO)
+
     def reason(self, prompt: str) -> str:
-        """🧠 Solicita raciocínio à IA Local."""
         if not self.cognitive: return None
         return self.cognitive.reason(prompt)
 

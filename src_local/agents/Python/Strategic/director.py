@@ -19,8 +19,29 @@ class DirectorPersona(BaseActivePersona):
         self.sanitizer = MarkdownSanitizer()
 
     def perform_audit(self):
-        """O Diretor não realiza auditoria estática direta."""
-        return []
+        """
+        🛡️ Auditoria de Intenção Estratégica.
+        O Diretor verifica pessoalmente se os componentes críticos honram seus contratos (Docstrings).
+        """
+        findings = []
+        # Foca em arquivos críticos (Core e Security)
+        critical_files = [
+            f for f in self.context_data.keys() 
+            if f.endswith(".py") and ("core" in f or "security" in f or "agent" in f)
+            and f not in self.ignored_files
+        ]
+        
+        # Limita para não estourar tokens/tempo (Amostragem Estratégica)
+        import random
+        target_sample = random.sample(critical_files, min(len(critical_files), 3)) 
+        
+        for file in target_sample:
+            content = self.read_project_file(file)
+            if content:
+                res = self.structural_analyst.analyze_intent(content, file, self.cognitive)
+                if res: findings.append(res)
+                
+        return findings
 
     def _reason_about_objective(self, objective, file, content):
         """O Diretor sintetiza, não realiza raciocínio individual em arquivos."""

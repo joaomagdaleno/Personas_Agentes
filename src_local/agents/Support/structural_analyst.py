@@ -109,6 +109,61 @@ class StructuralAnalyst:
         try:
             return full_path.read_text(encoding='utf-8', errors='ignore')
         except Exception as e:
-            logger.error(f"❌ Erro ao ler {full_path}: {e}")
+            logger.warning(f"❌ Erro ao ler {full_path}: {e}")
             return None
+
+    def analyze_intent(self, content: str, filename: str, cognitive_engine) -> dict:
+        """
+        🧠 Análise de Intenção Cognitiva via LLM.
+        Verifica se a implementação do código condiz com seu propósito declarado (Docstring).
+        """
+        if not content or not cognitive_engine: return None
+        
+        # Extrai docstring e assinatura para economizar tokens
+        import ast
+        try:
+            tree = ast.parse(content)
+            docstring = ast.get_docstring(tree)
+            if not docstring: return None # Sem intenção declarada, sem análise
+        except:
+            return None
+
+        prompt = f"""
+        Você é um Auditor de Intenção de Software PhD.
+        Analise se o código abaixo cumpre o que promete em sua docstring.
+        
+        ARQUIVO: {filename}
+        DOCSTRING: "{docstring}"
+        
+        CÓDIGO (Resumo):
+        {content[:2000]}  # Limitado a 2k caracteres para foco
+        
+        RESPONDA EM JSON:
+        {{
+            "consistent": true/false,
+            "issue": "Breve descrição se houver discrepância ou risco oculto",
+            "severity": "LOW/MEDIUM/HIGH/CRITICAL"
+        }}
+        """
+        
+        try:
+            import json
+            response = cognitive_engine.reason(prompt)
+            # Tenta extrair JSON do markdown
+            import re
+            match = re.search(r"\{.*\}", response, re.DOTALL)
+            if match:
+                data = json.loads(match.group(0))
+                if not data.get("consistent", True):
+                    return {
+                        "file": filename,
+                        "line": 1,
+                        "issue": f"Desvio de Intenção: {data.get('issue')}",
+                        "severity": data.get("severity", "MEDIUM"),
+                        "context": "CognitiveIntent"
+                    }
+        except Exception as e:
+            logger.warning(f"⚠️ Falha na análise cognitiva de {filename}: {e}")
+            
+        return None
 

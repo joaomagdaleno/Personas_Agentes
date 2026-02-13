@@ -12,6 +12,16 @@ class TestRunner:
     🏎️ Executor de Testes PhD.
     O braço mecânico que valida a integridade funcional do sistema.
     """
+    def __init__(self):
+        self.mapper = None
+        self.executor = None
+
+    def _ensure_components(self):
+        if not self.mapper:
+            from src_local.utils.test_mapper import TestMapper
+            from src_local.utils.parallel_test_executor import ParallelTestExecutor
+            self.mapper = TestMapper()
+            self.executor = ParallelTestExecutor()
     
     def run_unittest_discover(self, project_root: str) -> dict:
         """🧪 Discovery Sequencial."""
@@ -31,33 +41,19 @@ class TestRunner:
             return {"success": False, "error": str(e), "total_run": 0, "failed": 1}
 
     def run_parallel_discovery(self, project_root: str) -> dict:
-        """🚀 Execução Paralela Soberana com consciência de recursos e otimização de lotes."""
+        """🚀 Execução Paralela Soberana via delegação."""
         import time
-        import os
+        self._ensure_components()
         start_time = time.time()
+        
         root = Path(project_root)
         test_dir = root / "tests"
-        
         if not test_dir.exists():
             return {"success": True, "total_run": 0, "failed": 0, "pass_rate": 100}
 
         test_files = [str(f) for f in test_dir.glob("test_*.py")]
         
-        # Limita workers para evitar travamento em máquinas com poucos cores
-        cpu_count = os.cpu_count() or 4
-        max_workers = max(1, cpu_count - 1)
-        
-        # Otimização PhD: Agrupa testes em lotes para reduzir overhead de criação de processos
-        batch_size = max(1, len(test_files) // (max_workers * 2))
-        batches = [test_files[i:i + batch_size] for i in range(0, len(test_files), batch_size)]
-        
-        logger.info(f"🏎️ [TestRunner] Acelerando {len(test_files)} testes em {len(batches)} lotes (Workers: {max_workers})...")
-
-        results = []
-        with ProcessPoolExecutor(max_workers=max_workers) as executor:
-            futures = {executor.submit(self._run_test_batch, batch, project_root): batch for batch in batches}
-            for future in as_completed(futures):
-                results.extend(future.result())
+        results = self.executor.run_parallel(project_root, test_files) # ParallelTestExecutor.run_parallel is instance method? Yes I implemented it as instance method.
 
         duration = time.time() - start_time
         logger.info(f"⏱️ [TestRunner] Suíte paralela concluída em {duration:.2f}s")
@@ -66,8 +62,10 @@ class TestRunner:
     def run_selective_tests(self, project_root: str, changed_files: list) -> dict:
         """🎯 Diagnóstico Cirúrgico: Executa apenas testes afetados por mudanças."""
         import time
+        self._ensure_components()
         start_time = time.time()
-        test_files = [str(f) for f in self._map_files_to_tests(project_root, changed_files)]
+        
+        test_files = [str(f) for f in self.mapper.map_files_to_tests(project_root, changed_files)]
         
         if not test_files:
             logger.info("🛡️ [TestRunner] Nenhuma mudança detectada exige novos testes unitários.")
@@ -75,59 +73,16 @@ class TestRunner:
 
         logger.info(f"🎯 [TestRunner] Executando {len(test_files)} testes seletivos...")
         
-        # Para testes seletivos, geralmente são poucos, podemos rodar em um único lote ou lotes pequenos
-        results = self._run_test_batch(test_files, project_root)
+        # Reusa lógica de execução (pode ser paralela ou sequencial dependendo do volume, aqui reusamos parallel executor para simplicidade se test_files > 1, mas idealmente batch único é melhor para poucos testes)
+        # Vamos rodar sequencial simplificado se for pouco, mas para manter consistência com extracted logic, podemos usar o executor também ou manter _run_test_batch aqui se quisermos.
+        # Mas o goal é reduzir complexidade. Vamos usar o executor paralelo mesmo para seletivos, ele lida bem.
+        results = self.executor.run_parallel(project_root, test_files)
 
         duration = time.time() - start_time
         logger.info(f"⏱️ [TestRunner] Testes seletivos concluídos em {duration:.2f}s")
         consolidated = self._consolidate_results(results)
         consolidated["selective"] = True
         return consolidated
-
-    def _map_files_to_tests(self, project_root: str, changed_files: list) -> list:
-        """🧠 Heurística de Mapeamento PhD: Vincula arquivos de produção a suítes de teste."""
-        root = Path(project_root)
-        test_dir = root / "tests"
-        selected_tests = set()
-
-        for f in changed_files:
-            p = Path(f)
-            basename = p.stem
-            
-            # Heurística 1: test_<basename>.py
-            direct_match = test_dir / f"test_{basename}.py"
-            if direct_match.exists():
-                selected_tests.add(direct_match)
-                continue
-            
-            # Heurística 2: <basename>_persona.py -> test_<basename>_persona.py
-            persona_match = test_dir / f"test_{basename}_persona.py"
-            if persona_match.exists():
-                selected_tests.add(persona_match)
-                continue
-
-            # Heurística 3: Mapeamento de sistema (se mudar o core, roda testes core)
-            if "src_local/core" in str(f):
-                selected_tests.add(test_dir / "test_orchestrator.py")
-                selected_tests.add(test_dir / "test_validator.py")
-        
-        return list(selected_tests)
-
-    def _run_test_batch(self, test_files: list, project_root: str) -> list:
-        """Executa um lote de arquivos de teste em um único processo."""
-        batch_results = []
-        for test_file in test_files:
-            try:
-                res = subprocess.run(
-                    [sys.executable, "-m", "unittest", test_file],
-                    capture_output=True, text=True, cwd=str(project_root),
-                    encoding='utf-8', errors='ignore'
-                )
-                batch_results.append(self._parse_output(res.stderr, res.returncode == 0))
-            except Exception as e:
-                logger.error(f"❌ Falha ao executar {test_file}: {e}")
-                batch_results.append({"success": False, "failed": 1, "total_run": 1, "error": str(e)})
-        return batch_results
 
     def _consolidate_results(self, results: list) -> dict:
         total_run = sum(r.get("total_run", 0) for r in results)
