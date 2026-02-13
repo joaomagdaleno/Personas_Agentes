@@ -84,6 +84,17 @@ class DiagnosticPipeline:
         snapshot = self.orc.get_system_health_360(ctx, health, findings)
         self.orc.synthesizer.trigger_reflexes(snapshot, self.orc.personas, findings, self.orc.dependency_auditor)
         
+        # 🧠 Cognitive Layer: Análise de Erros Críticos (Top 3)
+        if hasattr(self.orc, 'refiner') and self.orc.refiner:
+            criticals = [f for f in findings if isinstance(f, dict) and f.get('severity') == 'CRITICAL'][:3]
+            if criticals:
+                logger.info(f"🧠 [Cognitive] Analisando {len(criticals)} erros críticos com IA...")
+                for flaw in criticals:
+                    if 'issue' in flaw and 'file' in flaw:
+                        insight = self.orc.refiner.analyze_failure(flaw['file'], flaw['issue'])
+                        if insight:
+                            flaw['ai_insight'] = insight
+
         self.orc.cache_manager.save()
         report = self.orc.director.format_360_report(snapshot, findings)
         

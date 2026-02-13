@@ -28,6 +28,7 @@ class Orchestrator:
         
         self.synthesizer, self.strategist = tools["synthesizer"], tools["strategist"]
         self.executor, self.core_validator = tools["executor"], tools["validator"]
+        self.refiner = tools.get("refiner") # Pode ser None se dependencies falharem
         from src_local.agents.Support.metrics_assembler import MetricsAssembler
         self.metrics_assembler = MetricsAssembler()
         self.task_orc = TaskOrchestrator(self)

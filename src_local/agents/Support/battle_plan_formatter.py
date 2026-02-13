@@ -66,5 +66,9 @@ class BattlePlanFormatter:
         
         res = f"#### 🔴 Item {line}: {issue_clean} [ID: {file_id}_{line}]\n\n"
         if item.get('snippet'):
-            res += f"- **Evidência:**\n\n```kotlin\n{item.get('snippet').strip()}\n```\n\n"
+            res += f"- **Evidência:**\n\n```python\n{str(item.get('snippet')).strip()}\n```\n\n"
+            
+        if item.get('ai_insight'):
+            res += f"> 🧠 **TestRefiner (AI Insight):**\n> {str(item.get('ai_insight')).replace(chr(10), chr(10)+'> ')}\n\n"
+            
         return res + f"- **Diretriz:** Padrão soberano de {sev.lower()}\n\n"

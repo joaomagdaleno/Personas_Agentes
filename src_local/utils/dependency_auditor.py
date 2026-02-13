@@ -51,8 +51,15 @@ class DependencyAuditor:
         return UpdateTransaction(self.git, self.project_root).execute(initial_hash)
 
     def _ensure_initialized(self):
+        if not self.project_root.is_dir():
+            logger.warning(f"⚠️ Project root is not a directory: {self.project_root}")
+            return
+            
         if not self.agent_path.exists() or not list(self.agent_path.iterdir()):
-            subprocess.run(["git", "submodule", "update", "--init", "--recursive"], cwd=self.project_root, capture_output=True)
+            try:
+                subprocess.run(["git", "submodule", "update", "--init", "--recursive"], cwd=self.project_root, capture_output=True, check=False)
+            except Exception as e:
+                logger.error(f"❌ Failed to init submodules: {e}")
 
     def _is_valid_repo(self):
         return self.agent_path.exists() and (self.agent_path / ".git").exists()

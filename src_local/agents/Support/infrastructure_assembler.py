@@ -10,6 +10,7 @@ from src_local.agents.Support.health_synthesizer import HealthSynthesizer
 from src_local.agents.Support.diagnostic_strategist import DiagnosticStrategist
 from src_local.agents.Support.task_executor import TaskExecutor
 from src_local.core.validator import CoreValidator
+from src_local.agents.Support.test_refiner import TestRefiner
 
 logger = logging.getLogger(__name__)
 
@@ -51,5 +52,6 @@ class InfrastructureAssembler:
             "synthesizer": HealthSynthesizer(),
             "strategist": DiagnosticStrategist(),
             "executor": TaskExecutor(),
-            "validator": CoreValidator()
+            "validator": CoreValidator(),
+            "refiner": TestRefiner(project_root)
         }

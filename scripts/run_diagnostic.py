@@ -28,18 +28,33 @@ def main():
     
     # Se um argumento for passado, usa como alvo. Senão, usa o diretório atual.
     if len(sys.argv) > 1:
-        project_root = Path(sys.argv[1]).absolute()
+        target_path = Path(sys.argv[1]).absolute()
     else:
-        project_root = Path.cwd()
+        target_path = Path.cwd()
     
-    if not project_root.exists():
-        logger.error(f"❌ Caminho não encontrado: {project_root}")
+    if not target_path.exists():
+        logger.error(f"❌ Caminho não encontrado: {target_path}")
         return
 
-    logger.info(f"📡 Acionando Autoconsciência sobre o alvo: {project_root}")
+    # Se o alvo for um arquivo, a raiz do projeto é o pai. 
+    # Idealmente procuraríamos por .git, mas o pai é um fallback seguro aqui.
+    if target_path.is_file():
+        project_root = target_path.parent
+        # Se estivermos dentro de /scripts, a raiz é o pai de /scripts
+        if project_root.name == "scripts":
+            project_root = project_root.parent
+    else:
+        project_root = target_path
+
+    logger.info(f"📡 Acionando Autoconsciência sobre o alvo: {target_path}")
+    logger.info(f"📁 Raiz do Projeto identificada: {project_root}")
     
     # O Orquestrador agora é autossuficiente e carrega seus próprios PhDs
     orchestrator = Orchestrator(project_root)
+    
+    # Passa o alvo específico se for diferente da raiz
+    if target_path != project_root:
+        orchestrator.last_detected_changes = [str(target_path.relative_to(project_root))]
     
     # Executa o diagnóstico absoluto que agora inclui a automobiliização
     report_path = orchestrator.generate_full_diagnostic()
