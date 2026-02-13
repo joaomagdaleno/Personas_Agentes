@@ -33,10 +33,12 @@ ENV/
 *.swp
 *.swo
 
+
 # Project Specific
 .gemini/cache/
 .gemini/*.lock
 forensic_env_*/
+Personas_Agentes_Forensics_*/
 git_diag.txt
 origin_url.txt
 *.log
