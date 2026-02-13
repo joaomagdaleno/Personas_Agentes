@@ -6,3 +6,5 @@ requests
 colorama
 customtkinter
 psutil
+llama-cpp-python
+huggingface_hub

@@ -18,10 +18,13 @@ class BaseActivePersona(ABC):
 
     def _initialize_support_tools(self):
         from src_local.agents.Support.infrastructure_assembler import InfrastructureAssembler
+        from src_local.utils.cognitive_engine import CognitiveEngine
+        
         support = InfrastructureAssembler.assemble_core_support()
         self.audit_engine = support.get("audit_engine")
         self.structural_analyst = support["analyst"]
         self.integrity_guardian = support["guardian"]
+        self.cognitive = CognitiveEngine()
 
     def set_context(self, context_data):
         """🧠 Sincroniza o cérebro do Agente com o DNA e o Mapa do projeto alvo."""
@@ -104,6 +107,11 @@ class BaseActivePersona(ABC):
         except Exception as e:
             logger.warning(f"⚠️ Falha na leitura do arquivo {rel_path}: {e}")
             return None
+
+    def reason(self, prompt: str) -> str:
+        """🧠 Solicita raciocínio à IA Local."""
+        if not self.cognitive: return None
+        return self.cognitive.reason(prompt)
 
     @abstractmethod
     def perform_audit(self) -> list: ...
