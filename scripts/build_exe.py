@@ -1,8 +1,16 @@
+"""
+🚀 Build Engine PhD.
+Empacota o Dashboard Nativo Soberano em um executável autônomo.
+"""
 import subprocess
 import sys
+import logging
 from pathlib import Path
 
+logger = logging.getLogger(__name__)
+
 def build():
+    logger.info("🎬 Iniciando processo de empacotamento soberano...")
     project_root = Path(__file__).parent.parent
     main_script = project_root / "scripts" / "launch_dashboard.py"
     

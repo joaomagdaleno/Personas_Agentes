@@ -10,7 +10,7 @@ import time
 logger = logging.getLogger(__name__)
 
 class ResourceGovernor:
-    def __init__(self, cpu_limit=70, mem_limit=80):
+    def __init__(self, cpu_limit=85, mem_limit=95):
         self.cpu_limit = cpu_limit
         self.mem_limit = mem_limit
         self.process = psutil.Process(os.getpid())

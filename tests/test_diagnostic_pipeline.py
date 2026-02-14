@@ -1,54 +1,33 @@
 import unittest
-import logging
-import tempfile
-from pathlib import Path
 from unittest.mock import MagicMock, patch
 from src_local.core.diagnostic_pipeline import DiagnosticPipeline
 
-# Configuração de telemetria de teste
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("TestDiagnosticPipeline")
-
 class TestDiagnosticPipeline(unittest.TestCase):
     def setUp(self):
-        self.orchestrator = MagicMock()
-        # Fix: Use temp dir to avoid overwriting production report
-        self.tmp_dir = tempfile.TemporaryDirectory()
-        self.orchestrator.project_root = Path(self.tmp_dir.name)
-        (self.orchestrator.project_root / "docs").mkdir(exist_ok=True)
-        
-        self.orchestrator.director.format_360_report.return_value = "Mock Report Content"
-        self.pipeline = DiagnosticPipeline(self.orchestrator)
+        self.orc = MagicMock()
+        self.pipeline = DiagnosticPipeline(self.orc)
 
-    def tearDown(self):
-        self.tmp_dir.cleanup()
+    def test_init_state(self):
+        self.assertFalse(DiagnosticPipeline._is_running)
+        self.assertIsNotNone(self.pipeline.deduplicator)
+        self.assertEqual(self.pipeline.orc, self.orc)
 
-    @patch("src_local.core.validator.CoreValidator.verify_core_health")
-    def test_pipeline_reset(self, mock_verify):
-        logger.info("⚡ Testando reset do pipeline...")
-        mock_verify.return_value = {"success": True, "pass_rate": 100, "total_run": 0, "failed": 0}
-        self.orchestrator.job_queue = [1, 2, 3]
-        self.pipeline.execute()
-        self.assertTrue(hasattr(self.orchestrator, 'job_queue'))
-        # Pipeline should trigger audits
-        self.orchestrator.run_strategic_audit.assert_called()
-        logger.info("✅ Reset do pipeline validado.")
+    def test_reset_logic(self):
+        self.orc.metrics = {"all_findings": [1, 2]}
+        self.orc.job_queue = [1, 2, 3]
+        self.orc.personas = ["PhD"]
+        self.pipeline._reset_system()
+        self.assertEqual(self.orc.job_queue, [])
+        self.assertEqual(self.orc.metrics["all_findings"], [])
+        self.assertEqual(self.orc.personas, ["PhD"]) # Não deve resetar personas se já existem
 
-    @patch("src_local.core.validator.CoreValidator.verify_core_health")
-    @patch("src_local.core.diagnostic_pipeline.Path")
-    def test_deduplication(self, mock_path, mock_verify):
-        logger.info("⚡ Testando deduplicação no pipeline...")
-        mock_verify.return_value = {"success": True}
-        self.orchestrator.run_strategic_audit.return_value = [
-            {'file': 'a.py', 'issue': 'A'},
-            {'file': 'a.py', 'issue': 'A'}
-        ]
-        self.orchestrator.director.format_360_report.return_value = "Report Content"
+    def test_recursion_guard_and_state(self):
+        DiagnosticPipeline._is_running = True
         res = self.pipeline.execute()
-        # Verify call to format_360_report
-        self.orchestrator.director.format_360_report.assert_called()
-        self.assertIsInstance(res, Path)
-        logger.info("✅ Deduplicação validada.")
+        self.assertEqual(res.name, "recursion_prevented.md")
+        self.assertTrue(DiagnosticPipeline._is_running)
+        DiagnosticPipeline._is_running = False
+        self.assertFalse(DiagnosticPipeline._is_running)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()

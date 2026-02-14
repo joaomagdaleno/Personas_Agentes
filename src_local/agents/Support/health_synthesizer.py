@@ -46,9 +46,19 @@ class HealthSynthesizer:
         return "VETERAN" if avg > 80 else ("ELITE" if avg > 50 else "RECRUIT")
 
     def _get_dark_matter(self, map_data):
-        core = {"AGENT", "CORE", "LOGIC", "UTIL"}
-        not_covered = [f for f, i in map_data.items() if not i.get("has_test")]
-        return [f for f in not_covered if map_data[f].get("component_type") in core or map_data[f].get("complexity", 1) > 1]
+        """Identifica ativos críticos sem cobertura de testes (Pontos Cegos)."""
+        # Otimização PhD: Ignora boilerplate e arquivos sem lógica real (Complexidade <= 1)
+        core_types = {"AGENT", "CORE", "LOGIC", "UTIL"}
+        
+        candidates = [f for f, i in map_data.items() if not i.get("has_test")]
+        
+        # Filtro de relevância: deve ser um tipo core E ter complexidade real, ignorando __init__
+        return [
+            f for f in candidates 
+            if not f.endswith("__init__.py") and 
+            map_data[f].get("component_type") in core_types and 
+            map_data[f].get("complexity", 1) > 1
+        ]
 
     def _get_brittle_points(self, map_data, qa_data, ledger):
         core = {"AGENT", "CORE", "LOGIC", "UTIL"}

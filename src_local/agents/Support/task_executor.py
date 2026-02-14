@@ -12,11 +12,10 @@ class TaskExecutor:
     """
     
     def __init__(self):
-        # Modernização: multiprocessing substitui os.cpu_count
-        try:
-            self.max_workers = multiprocessing.cpu_count() or 4
-        except Exception:
-            self.max_workers = 4
+        from src_local.utils.resource_governor import ResourceGovernor
+        profile = ResourceGovernor.get_performance_profile()
+        self.max_workers = profile["max_workers"]
+        logger.info(f"🚀 TaskExecutor em modo {profile['profile']} ({self.max_workers} workers).")
 
     def run_parallel(self, task_func, items):
         """

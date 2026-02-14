@@ -1,5 +1,12 @@
+"""
+🎨 Componente de Gauge de Saúde PhD.
+Exibição circular dinâmica da integridade sistêmica usando Canvas.
+"""
 import customtkinter as ctk
 import math
+import logging
+
+logger = logging.getLogger(__name__)
 
 class HealthGauge(ctk.CTkCanvas):
     """
@@ -7,12 +14,16 @@ class HealthGauge(ctk.CTkCanvas):
     Um arco dinâmico que muda de cor conforme a saúde sistêmica.
     """
     def __init__(self, master, size=200, **kwargs):
-        super().__init__(master, width=size, height=size, bg=master._fg_color[1] if isinstance(master, ctk.CTkFrame) else "#2b2b2b", highlightthickness=0, **kwargs)
+        bg_color = master._fg_color[1] if isinstance(master, ctk.CTkFrame) else "#2b2b2b"
+        super().__init__(master, width=size, height=size, bg=bg_color, highlightthickness=0, **kwargs)
+        logger.debug(f"🎨 [HealthGauge] Inicializando gauge circular (tamanho {size})...")
         self.size = size
         self.health = 100
         self._draw_gauge()
 
     def set_health(self, value):
+        """Atualiza o valor de saúde e redesenha o gauge."""
+        logger.debug(f"🎨 [HealthGauge] Novo valor de saúde recebido: {value}")
         self.health = max(0, min(100, value))
         self._draw_gauge()
 

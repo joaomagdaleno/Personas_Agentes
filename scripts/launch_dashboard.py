@@ -7,6 +7,10 @@ Inicializa o Orquestrador, carrega as Personas e exibe a central de comando.
 Uso:
     python scripts/launch_dashboard.py
 """
+"""
+🚀 Launcher do Dashboard Soberano.
+Inicializa o ambiente gráfico e o orquestrador PhD para interação visual.
+"""
 import os
 import sys
 import logging

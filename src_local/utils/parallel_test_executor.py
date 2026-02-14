@@ -12,54 +12,73 @@ class ParallelTestExecutor:
     """🚀 Executor Paralelo de Testes."""
 
     def run_parallel(self, project_root: str, test_files: list) -> list:
-        # Limita workers para evitar travamento em máquinas com poucos cores
-        cpu_count = os.cpu_count() or 4
-        max_workers = max(1, cpu_count - 1)
+        # Arquitetura de Estabilidade Total: 2 Blocos Estáticos
+        # Minimiza a comunicação entre processos que causa travamentos no Windows/i5
+        max_workers = 2
         
-        # Otimização PhD: Agrupa testes em lotes para reduzir overhead de criação de processos
-        batch_size = max(1, len(test_files) // (max_workers * 2))
-        batches = [test_files[i:i + batch_size] for i in range(0, len(test_files), batch_size)]
+        # Divide a lista em apenas 2 metades
+        mid = (len(test_files) + 1) // 2
+        batches = [test_files[:mid], test_files[mid:]]
+        batches = [b for b in batches if b] # Remove lotes vazios se houver poucos testes
         
-        logger.info(f"🏎️ [Executor] Acelerando {len(test_files)} testes em {len(batches)} lotes (Workers: {max_workers})...")
+        logger.info(f"🏎️ [Executor] Executando {len(test_files)} testes em 2 blocos fixos (Workers: {max_workers})...")
 
         results = []
+        abs_root = str(Path(project_root).resolve())
+        
         with ProcessPoolExecutor(max_workers=max_workers) as executor:
-            stop_event = None # No simple way to share stop event in process pool without manager, skipping complexity for now
-            futures = {executor.submit(self._run_test_batch, batch, project_root): batch for batch in batches}
+            futures = {executor.submit(self._run_test_batch_in_process, batch, abs_root): i for i, batch in enumerate(batches)}
             for future in as_completed(futures):
                 try:
-                    results.extend(future.result())
+                    res = future.result()
+                    if res: results.extend(res)
                 except Exception as e:
-                    logger.error(f"❌ Erro no lote de testes: {e}")
+                    logger.error(f"❌ Falha crítica no bloco de testes: {e}")
 
         return results
 
-    def _run_test_batch(self, test_files: list, project_root: str) -> list:
-        """Executa um lote de arquivos de teste em um único processo."""
-        # Re-import needed inside process
-        import subprocess 
+    def _run_test_batch_in_process(self, test_files: list, project_root: str) -> list:
+        """Executa um bloco inteiro de testes de forma serial e ultra-eficiente."""
+        import unittest
         import sys
+        import io
+        import logging
+        from pathlib import Path
         
+        # Otimização Crucial: Desativa LOGGING para ganhar performance
+        logging.disable(logging.CRITICAL)
+        
+        if project_root not in sys.path:
+            sys.path.insert(0, project_root)
+            
+        abs_project_root = Path(project_root).resolve()
         batch_results = []
-        for test_file in test_files:
+        
+        module_names = []
+        file_map = {}
+        for f in test_files:
             try:
-                # Usa subprocesso isolado para garantir que vazamentos de memória/estado não afetem o worker
-                res = subprocess.run(
-                    [sys.executable, "-m", "unittest", str(test_file)],
-                    capture_output=True, text=True, cwd=str(project_root),
-                    encoding='utf-8', errors='ignore'
-                )
-                
-                # Parsing simplificado para não duplicar lógica (idealmente TestRunner faria isso, 
-                # mas aqui precisamos retornar info estruturada do worker)
-                is_success = res.returncode == 0
+                rel = Path(f).resolve().relative_to(abs_project_root)
+                mod = str(rel.with_suffix('')).replace(os.path.sep, '.')
+                module_names.append(mod)
+                file_map[mod] = f
+            except: continue
+
+        loader = unittest.TestLoader()
+        # Reusa o runner e o stream para o bloco inteiro
+        runner = unittest.TextTestRunner(stream=io.StringIO(), verbosity=0)
+        
+        for mod_name in module_names:
+            try:
+                suite = loader.loadTestsFromName(mod_name)
+                result = runner.run(suite)
                 batch_results.append({
-                    "file": str(test_file),
-                    "success": is_success, 
-                    "raw_output": res.stderr,
-                    "total_run": 1 if is_success else 0, # Estimativa bruta se não parsear stderr
-                    "failed": 0 if is_success else 1
+                    "file": file_map[mod_name],
+                    "success": result.wasSuccessful(), 
+                    "total_run": result.testsRun,
+                    "failed": len(result.failures) + len(result.errors)
                 })
-            except Exception as e:
-                batch_results.append({"success": False, "failed": 1, "total_run": 1, "error": str(e)})
+            except Exception:
+                batch_results.append({"file": file_map.get(mod_name, "unknown"), "success": False, "failed": 1, "total_run": 1})
+                
         return batch_results

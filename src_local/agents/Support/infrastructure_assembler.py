@@ -46,23 +46,25 @@ class InfrastructureAssembler:
 
     @staticmethod
     def assemble_orchestrator_tools(project_root):
-        """
-        🎼 Mobiliza as ferramentas soberanas do Maestro.
-        Cache inteligente baseado na raiz do projeto.
-        """
+        """🎼 Mobiliza as ferramentas do Maestro incluindo os novos Agentes de IA."""
         root_str = str(project_root)
         if root_str in InfrastructureAssembler._tools_cache:
             return InfrastructureAssembler._tools_cache[root_str]
 
-        logger.info(f"🎼 [Assembler] Mobilizando ferramentas do maestro para: {root_str}")
+        from src_local.utils.cognitive_engine import CognitiveEngine
+        from src_local.agents.Support.test_architect_agent import TestArchitectAgent
+        from src_local.agents.Support.doc_gen_agent import DocGenAgent
         
+        brain = CognitiveEngine()
         tools = {
             "synthesizer": HealthSynthesizer(),
             "strategist": DiagnosticStrategist(),
             "executor": TaskExecutor(),
             "validator": CoreValidator(),
             "refiner": TestRefiner(project_root),
-            "healer": HealerPersona(project_root) # Added healer
+            "healer": HealerPersona(project_root),
+            "architect": TestArchitectAgent(brain),
+            "doc_gen": DocGenAgent(brain)
         }
         InfrastructureAssembler._tools_cache[root_str] = tools
         return tools

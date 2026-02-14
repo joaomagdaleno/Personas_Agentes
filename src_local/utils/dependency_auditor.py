@@ -2,7 +2,6 @@ import subprocess
 import logging
 import time
 import ast
-import json
 from pathlib import Path
 from src_local.utils.logging_config import log_performance
 
@@ -27,95 +26,48 @@ class DependencyAuditor:
         self.sync_logic = SubmoduleSyncLogic()
 
     def sync_submodule(self):
-        """Orquestra: Validação -> Boot -> Lock -> Sync -> Verify."""
-        start_t = time.time()
-        if not self._validate_pre_conditions(): return False
+        """Orquestra a sincronização de submódulos."""
+        if not self.agent_path.exists(): return False
         
         self._acquire_lock()
         try:
             self._ensure_initialized()
-            if not self._is_valid_repo():
-                logger.error("Falha Crítica: Submódulo Inválido.")
-                return False
+            if not (self.agent_path / ".git").exists(): return False
 
-            initial_hash = self.git.get_head_hash()
-            res = self._run_update_transaction(initial_hash)
-            log_performance(logger, start_t, "📦 [DependencyAuditor] Sincronização de submódulos", level=logging.INFO)
+            from src_local.utils.update_transaction import UpdateTransaction
+            res = UpdateTransaction(self.git, self.project_root).execute(self.git.get_head_hash())
             return res
         finally:
             self._release_lock()
 
-    def _run_update_transaction(self, initial_hash):
-        """Executa a transação de atualização delegada."""
-        from src_local.utils.update_transaction import UpdateTransaction
-        return UpdateTransaction(self.git, self.project_root).execute(initial_hash)
-
     def _ensure_initialized(self):
-        if not self.project_root.is_dir():
-            logger.warning(f"⚠️ Project root is not a directory: {self.project_root}")
-            return
-            
-        if not self.agent_path.exists() or not list(self.agent_path.iterdir()):
+        if self.project_root.is_dir() and (not self.agent_path.exists() or not list(self.agent_path.iterdir())):
             try:
-                subprocess.run(["git", "submodule", "update", "--init", "--recursive"], cwd=self.project_root, capture_output=True, check=False)
+                subprocess.run(["git", "submodule", "update", "--init", "--recursive"], cwd=self.project_root, capture_output=True, check=True)
             except Exception as e:
-                logger.error(f"❌ Failed to init submodules: {e}")
-
-    def _is_valid_repo(self):
-        return self.agent_path.exists() and (self.agent_path / ".git").exists()
-
-    def _is_locked(self):
-        return self.sync_logic.is_locked(self.lock_file)
-
-
-
-    def _acquire_lock(self):
-        self.lock_file.parent.mkdir(parents=True, exist_ok=True)
-        self.lock_file.write_text(str(time.time()))
-
-    def _release_lock(self):
-        if self.lock_file.exists(): self.lock_file.unlink()
+                logger.error(f"❌ Falha na inicialização de submódulos: {e}")
 
     def check_submodule_status(self):
         if not self.is_internal: return []
         if not (self.agent_path / ".git").exists(): self._ensure_initialized()
-
         try:
-            return self._get_submodule_delta()
-        except Exception as e:
-            logger.error(f"⚠️ Erro ao verificar status do submódulo: {e}")
-        return []
-
-    def _get_submodule_delta(self):
-        """Calcula a diferença de commits entre local e remoto."""
-        return self.sync_logic.get_submodule_delta(self.git, self.git.discover_remote())
-
-    def _verify_network_health(self):
-        """🌐 Verifica se o repositório remoto está acessível."""
-        return self.git.discover_remote() is not None
+            return self.sync_logic.get_submodule_delta(self.git, self.git.discover_remote())
+        except Exception: return []
 
     def _get_topology(self, remote):
-        """🧬 Mapeia a topologia de branches local vs remoto."""
         active = self.git.get_current_branch()
-        tracking = self.git.get_tracking_branch(active)
-        return {'active_ref': active, 'tracking_ref': tracking}
+        return {'active_ref': active, 'tracking_ref': self.git.get_tracking_branch(active)}
 
     def _validate_pre_conditions(self):
-        """🛡️ Valida se o ambiente está pronto para sincronização."""
-        if not self.agent_path.exists(): 
-            logger.warning("Agent path does not exist.")
-            return False
-        return True
+        return self.agent_path.exists()
 
     def _verify_system_integrity(self):
-        """🧬 Valida a sintaxe Python de todos os arquivos após a atualização."""
-        # Filtra arquivos pertinentes (ignora recursão .agent dentro de .agent se houver)
+        """🧬 Valida a sintaxe Python de todos os arquivos."""
         py_files = [f for f in self.agent_path.rglob("*.py") 
                     if not (".agent" in str(f) and self.agent_path not in f.parents)]
-        
         for f in py_files:
             try:
-                source = f.read_text(encoding='utf-8', errors='ignore')
-                if source.strip(): ast.parse(source)
+                src = f.read_text(encoding='utf-8', errors='ignore')
+                if src.strip(): ast.parse(src)
             except Exception as e:
-                logger.error(f"⚠️ Integridade violada em {f.name}: {e}", exc_info=True)
+                logger.error(f"⚠️ Erro em {f.name}: {e}")

@@ -78,11 +78,24 @@ class HealerPersona(BaseActivePersona):
             
             try:
                 full_path.write_text(new_content, encoding="utf-8")
-                logger.info(f"✨ [Healer] Remendo aplicado em {file_path}. Verificando integridade...")
-                return True
+                logger.info(f"✨ [Healer] Remendo aplicado em {file_path}. Validando...")
+                
+                # Validação imediata pós-cura
+                from src_local.agents.Support.infrastructure_assembler import InfrastructureAssembler
+                tools = InfrastructureAssembler.assemble_orchestrator_tools(self.project_root)
+                res = tools["validator"].verify_core_health(self.project_root, changed_files=[file_path])
+                
+                if res.get("success"):
+                    logger.info(f"✅ [Healer] Cura CONFIRMADA em {file_path}.")
+                    if backup_path.exists(): backup_path.unlink()
+                    return True
+                else:
+                    logger.warning(f"❌ [Healer] Cura REPROVADA. Revertendo {file_path}...")
+                    backup_path.replace(full_path)
+                    return False
             except Exception as e:
-                logger.error(f"❌ [Healer] Falha ao escrever correção: {e}")
-                backup_path.rename(full_path)
+                logger.error(f"❌ [Healer] Falha fatal no processo: {e}")
+                if backup_path.exists(): backup_path.replace(full_path)
                 return False
         
         return False

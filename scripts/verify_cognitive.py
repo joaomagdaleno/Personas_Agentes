@@ -1,14 +1,10 @@
 """
-🧠 Verificador de Integridade Cognitiva.
----------------------------------------
-Diagnóstico isolado para o CognitiveEngine (LLM Local).
-Verifica:
-1. Lazy Loading (Gerenciamento de memória).
-2. Inferência Real (Teste de raciocínio).
-3. Liberação de Recursos (Memory Release).
+🧠 Verificador de Sanidade Cognitiva PhD.
+Valida se o SLM (Small Language Model) está carregando e respondendo corretamente.
 """
 import sys
 import os
+import logging
 
 # Adiciona o diretório raiz ao sys.path para importação correta
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -17,40 +13,36 @@ sys.path.append(project_root)
 
 from src_local.utils.cognitive_engine import CognitiveEngine
 
+logger = logging.getLogger(__name__)
+
 def verify_cognitive_engine():
-    """Executa a bateria de testes cognitivos."""
-    print("[INFO] Verificando Cognitive Engine...")
+    """Executa a bateria de testes cognitivos soberanos."""
+    logger.info("🧠 [Verify] Verificando Cognitive Engine...")
     
     engine = CognitiveEngine()
     
     # Teste 1: Lazy Loading
-    print("[TEST] 1: Lazy Loading (nao deve carregar modelo ainda)...")
     if engine.model is not None:
-        print("[FAIL] Modelo carregado prematuramente.")
+        logger.error("❌ [Verify] Modelo carregado prematuramente.")
         return
-    print("[PASS] Lazy Loading OK.")
+    logger.info("✅ [Verify] Lazy Loading OK.")
     
-    # Teste 2: Carga real (Mocked se dependencias faltarem, mas aqui queremos ver se tenta)
-    print("[TEST] 2: Tentativa de Raciocinio (pode demorar no download)...")
-    
+    # Teste 2: Carga real
     try:
         response = engine.reason("Responda apenas 'OK'.")
-        
         if response:
-            print(f"[PASS] Raciocinio OK. Resposta: {response}")
+            logger.info(f"✅ [Verify] Raciocínio OK. Resposta: {response}")
         else:
-            print("[WARN] Raciocinio retornou None (provavelmente falta de libs ou modelo nao baixado).")
-            print("Verifique os logs para detalhes.")
-            
+            logger.warning("⚠️ [Verify] Raciocínio retornou vazio.")
     except Exception as e:
-        print(f"[FAIL] Erro durante raciocinio: {e}")
+        logger.error(f"❌ [Verify] Erro no raciocínio: {e}")
 
     # Teste 3: Release
     engine.release()
     if engine.model is None:
-        print("[PASS] Memoria liberada.")
+        logger.info("✅ [Verify] Memória liberada.")
     else:
-        print("[FAIL] Falha na liberacao de memoria.")
+        logger.error("❌ [Verify] Falha na liberação.")
 
 if __name__ == "__main__":
     verify_cognitive_engine()

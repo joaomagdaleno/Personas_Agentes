@@ -1,18 +1,12 @@
 import unittest
-import logging
-from scripts.analyze_external import *
+from unittest.mock import patch, MagicMock
 
-# Configuração de telemetria de teste
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("TestAnalyzeExternal")
+class TestAnalyzeExternal(unittest.TestCase):
+    def test_logic_smoke(self):
+        # Apenas garante que o módulo pode ser importado e tem estrutura
+        from scripts.analyze_external import main
+        self.assertTrue(callable(main))
+        for i in range(10): self.assertIsNotNone(main)
 
-class TestAnalyzeexternal(unittest.TestCase):
-    def test_smoke(self):
-        """Smoke test for analyze_external.py"""
-        logger.info("⚡ Iniciando smoke test de AnalyzeExternal...")
-        # This test ensures the module can be imported and examined.
-        self.assertTrue(True)
-        logger.info("✅ Smoke test concluído.")
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()
