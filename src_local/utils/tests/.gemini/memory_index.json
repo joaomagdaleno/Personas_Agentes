@@ -1,0 +1,266 @@
+{
+  "test_analysis_engine_phd.py": {
+    "hash": "c0d746087d4b7557acbae80e6c405e01",
+    "anchors": [
+      "test_analyze_data",
+      "TestAnalysisEnginePhd"
+    ],
+    "type": "TEST"
+  },
+  "test_behavior_analyst.py": {
+    "hash": "4dfd95bfdcd887db737d3e107e879f1d",
+    "anchors": [
+      "TestDigitalBehaviorAnalyst",
+      "test_some_method"
+    ],
+    "type": "TEST"
+  },
+  "test_cache_manager.py": {
+    "hash": "df8744bb4dfdbadd604bd2112ead1712",
+    "anchors": [
+      "TestCacheManager",
+      "test_disk_cache_creation"
+    ],
+    "type": "TEST"
+  },
+  "test_cognitive_analyst.py": {
+    "hash": "f790fca478fb881b06c4b9bb5e26f431",
+    "anchors": [
+      "test_init",
+      "TestCognitiveAnalyst",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "test_cognitive_engine.py": {
+    "hash": "14e7182102cb4bed39636e440f632e4f",
+    "anchors": [
+      "TestCognitiveEngine",
+      "test_load_and_process_data"
+    ],
+    "type": "TEST"
+  },
+  "test_compliance_standard.py": {
+    "hash": "473034e1cf9a6221020fb789b4aa2523",
+    "anchors": [
+      "test_get_compliance_status",
+      "TestComplianceStandard"
+    ],
+    "type": "TEST"
+  },
+  "test_conflict_policy_phd.py": {
+    "hash": "4dde1a64383ed5a7c6191e7d5b7581a9",
+    "anchors": [
+      "TestConflictPolicyPhd",
+      "test_get_resource"
+    ],
+    "type": "TEST"
+  },
+  "test_context_engine.py": {
+    "hash": "e01341a1b2f8701919189b1b20fd406c",
+    "anchors": [
+      "test_context_engine_initialization",
+      "TestContextEngine"
+    ],
+    "type": "TEST"
+  },
+  "test_context_iterator.py": {
+    "hash": "cd0a592987eb95f81f44d4b0654e16f2",
+    "anchors": [
+      "test_context_iterator_with_mock",
+      "TestContextIterator"
+    ],
+    "type": "TEST"
+  },
+  "test_context_mapping_logic.py": {
+    "hash": "7b41b9996183f719d5bbeeb66cbb05e4",
+    "anchors": [
+      "TestContextMappingLogic",
+      "test_context_mapping"
+    ],
+    "type": "TEST"
+  },
+  "test_file_system_scanner.py": {
+    "hash": "899174eacc562910002c60076a1d110a",
+    "anchors": [
+      "test_scan_directory",
+      "TestFileSystemScanner",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "test_finding_deduplicator.py": {
+    "hash": "475015070be631990e75137ba9dd1e42",
+    "anchors": [
+      "test_findings",
+      "TestFindingDeduplicator"
+    ],
+    "type": "TEST"
+  },
+  "test_git_client.py": {
+    "hash": "102bbdded2a957756e92d7f068113d79",
+    "anchors": [
+      "test_clone_repository",
+      "TestGitClient",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "test_git_operations_phd.py": {
+    "hash": "efcb137db90f48489a6d62c8f9da2ae7",
+    "anchors": [
+      "test_pull",
+      "TestGitOperationsPhd",
+      "test_init",
+      "test_clone"
+    ],
+    "type": "TEST"
+  },
+  "test_history_agent.py": {
+    "hash": "28a7337753049ec6ff7e8f52d3bff6cf",
+    "anchors": [
+      "TestHistoryAgent",
+      "test_history_agent"
+    ],
+    "type": "TEST"
+  },
+  "test_indexer.py": {
+    "hash": "b4308ba0cf3de0b918be2744f1699534",
+    "anchors": [
+      "TestIndexer",
+      "test_indexing",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "test_maintenance_engine_phd.py": {
+    "hash": "638852b661b1e58b3659aaf67dbd7a29",
+    "anchors": [
+      "TestMaintenanceEnginePhd",
+      "test_maintenance_engine_phd"
+    ],
+    "type": "TEST"
+  },
+  "test_markdown_processor.py": {
+    "hash": "3b523adc4ce4136078465f06a29b56d3",
+    "anchors": [
+      "test_parse",
+      "TestMarkdownProcessor",
+      "test_load_config"
+    ],
+    "type": "TEST"
+  },
+  "test_memory_engine.py": {
+    "hash": "4c0f6db89e7b4a3b22e448f62dd7e07d",
+    "anchors": [
+      "TestMemoryEngine",
+      "test_get",
+      "test_set",
+      "test_remove"
+    ],
+    "type": "TEST"
+  },
+  "test_memory_pruning_agent.py": {
+    "hash": "9f29154cb9e902f452e2f6a1a99bb0e1",
+    "anchors": [
+      "test_memory_pruning",
+      "TestMemoryPruningAgent"
+    ],
+    "type": "TEST"
+  },
+  "test_persona_loader.py": {
+    "hash": "a92ff119daa4ea49fb1d715b4c958f5e",
+    "anchors": [
+      "test_load_personas",
+      "TestPersonaLoader"
+    ],
+    "type": "TEST"
+  },
+  "test_reflex_engine_phd.py": {
+    "hash": "c2190e608a572ab905d13eb73cb406cc",
+    "anchors": [
+      "setUp",
+      "test_reflex_cycle",
+      "TestReflexEnginePhd",
+      "test_init"
+    ],
+    "type": "TEST"
+  },
+  "test_resource_governor.py": {
+    "hash": "30c573336f263ee64758bed7a07c3e45",
+    "anchors": [
+      "TestResourceGovernor",
+      "test_resource_governor_dependencies"
+    ],
+    "type": "TEST"
+  },
+  "test_scoring_engine_phd.py": {
+    "hash": "4a98eac9b987cff2f7e8c343ab69414a",
+    "anchors": [
+      "TestScoringEnginePhd",
+      "test_method_name"
+    ],
+    "type": "TEST"
+  },
+  "test_stability_ledger.py": {
+    "hash": "5804fbe688e35ca9ba586138d611d568",
+    "anchors": [
+      "test_stability_ledger_init",
+      "with",
+      "TestStabilityLedger"
+    ],
+    "type": "TEST"
+  },
+  "test_submodule_sync_logic.py": {
+    "hash": "af9f69f6522d6114b3c40d180a2f80a1",
+    "anchors": [
+      "TestSubmoduleSyncLogic",
+      "test_some_method"
+    ],
+    "type": "TEST"
+  },
+  "test_system_sentinel.py": {
+    "hash": "3c99165919325e2ecf00767db6f49d29",
+    "anchors": [
+      "TestSystemSentinel",
+      "test_system_alive",
+      "setUp",
+      "test_system_not_alive"
+    ],
+    "type": "TEST"
+  },
+  "test_topology_engine_phd.py": {
+    "hash": "2d1de2d828ce0086f602d02d44bc912a",
+    "anchors": [
+      "TestTopologyEnginePhd",
+      "setUp",
+      "test_init"
+    ],
+    "type": "TEST"
+  },
+  "test_update_transaction.py": {
+    "hash": "d87f7f8864057cfbc0aaf2ab3c18b247",
+    "anchors": [
+      "TestUpdateTransaction",
+      "test_update_transaction",
+      "mock_transaction"
+    ],
+    "type": "TEST"
+  },
+  "test_veto_rules_phd.py": {
+    "hash": "2e1cbe3bf040b5f3c66ac5896c37fac7",
+    "anchors": [
+      "test_something",
+      "TestVetoRulesPhd"
+    ],
+    "type": "TEST"
+  },
+  "test_voice_engine.py": {
+    "hash": "10d8b0003de3e893cc2d412b0d53aa82",
+    "anchors": [
+      "TestVoiceEngine",
+      "test_init"
+    ],
+    "type": "TEST"
+  }
+}

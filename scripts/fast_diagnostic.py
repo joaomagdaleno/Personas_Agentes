@@ -1,29 +1,27 @@
-import logging
+import subprocess
 import sys
-import os
 from pathlib import Path
 
-# FBI MODE
-current_dir = Path(__file__).parent.parent.absolute()
-sys.path.insert(0, str(current_dir))
-os.chdir(str(current_dir))
-
-from src_local.core.orchestrator import Orchestrator
-from src_local.utils.logging_config import configure_logging
-
 def main():
-    """🚀 Fast Diagnostic: Gera relatórios em segundos ignorando testes unitários."""
-    configure_logging()
-    logger = logging.getLogger("FastMonitor")
+    """Fast Diagnostic: Redirects to the Bun diagnostic engine."""
+    print("[*] Redirecting to Bun Diagnostic...")
     
-    project_root = Path.cwd()
-    logger.info(f"📡 Acionando Diagnóstico Rápido: {project_root}")
+    project_root = Path(__file__).parent.parent.absolute()
     
-    orchestrator = Orchestrator(project_root)
-    # Ativa o skip_tests no método oficial
-    report_path = orchestrator.generate_full_diagnostic(skip_tests=True)
-    
-    logger.info(f"✅ Diagnóstico concluído em: {report_path.name}")
+    try:
+        # Execute the Bun diagnostic command
+        # This allows the Git hook to verify the actual active system (Bun)
+        result = subprocess.run(
+            ["bun", "run", "run-diagnostic.ts", "."],
+            cwd=project_root,
+            shell=True 
+        )
+        
+        sys.exit(result.returncode)
+        
+    except Exception as e:
+        print(f"[!] Failed to trigger Bun diagnostic: {e}")
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()

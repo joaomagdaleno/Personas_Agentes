@@ -1,0 +1,1008 @@
+{
+  "ast_navigator.py": {
+    "hash": "970595da70327b0df0da175f321ad450",
+    "anchors": [
+      "is_in_dict_value",
+      "get_parent_chain",
+      "is_descendant",
+      "ASTNavigator",
+      "__init__",
+      "is_call_to",
+      "check_safety_rules"
+    ],
+    "type": "LOGIC"
+  },
+  "ast_node_inspector.py": {
+    "hash": "c0db1151f0481d652a9843b3478cdddf",
+    "anchors": [
+      "ASTNodeInspector",
+      "is_descendant",
+      "is_call_to"
+    ],
+    "type": "LOGIC"
+  },
+  "ast_traversal_logic.py": {
+    "hash": "243bed0395d1c28e89c5696c3052a15e",
+    "anchors": [
+      "get_parent_chain",
+      "is_in_dict_value",
+      "is_descendant",
+      "_inspector",
+      "is_call_to",
+      "ASTTraversalLogic"
+    ],
+    "type": "LOGIC"
+  },
+  "audit_engine.py": {
+    "hash": "0ef6ddeb31c9d11fc7eacba865bb3700",
+    "anchors": [
+      "AuditEngine",
+      "_build_scan_context",
+      "__init__",
+      "scan_content",
+      "scan_multiple_files",
+      "_log_perf"
+    ],
+    "type": "DOC"
+  },
+  "audit_risk_engine.py": {
+    "hash": "c50603091669413f4f89e25fcaf9fe3c",
+    "anchors": [
+      "map_risk_type",
+      "AuditRiskEngine",
+      "create_entry"
+    ],
+    "type": "DOC"
+  },
+  "audit_scanner_engine.py": {
+    "hash": "dda57bd39cdc4df75faebc3095aedeec",
+    "anchors": [
+      "_is_error_report",
+      "scan_pattern",
+      "_create_entry",
+      "_parse_severity",
+      "_validate_risk_level",
+      "AuditScannerEngine"
+    ],
+    "type": "DOC"
+  },
+  "aurelius_persona.py": {
+    "hash": "f318cafe9612f068d1f4f81a8189f2e9",
+    "anchors": [
+      "AureliusPersona",
+      "perform_audit",
+      "__init__",
+      "get_system_prompt"
+    ],
+    "type": "LOGIC"
+  },
+  "battle_plan_formatter.py": {
+    "hash": "7c4a2cb45ec0ba542a9061e88dfd5577",
+    "anchors": [
+      "BattlePlanFormatter",
+      "_get_item_key",
+      "_format_impact_summary",
+      "_format_section_if_active",
+      "_group_by_severity",
+      "format",
+      "_format_item"
+    ],
+    "type": "LOGIC"
+  },
+  "battle_plan_sections_engine.py": {
+    "hash": "7e5e75d8b880703cc1222a2c88835114",
+    "anchors": [
+      "format_item_entry",
+      "filter_active_results",
+      "format_severity_group",
+      "BattlePlanSectionsEngine"
+    ],
+    "type": "LOGIC"
+  },
+  "briefing_agent.py": {
+    "hash": "826f945615596be4744c5eff6974e292",
+    "anchors": [
+      "_get_optimization_stats",
+      "_get_health_stats",
+      "BriefingAgent",
+      "__init__",
+      "generate_morning_report",
+      "_get_recent_insights",
+      "_format_report"
+    ],
+    "type": "AGENT"
+  },
+  "call_safety_judge.py": {
+    "hash": "f6594c6a42ce4593f447d3fd1ab7ec42",
+    "anchors": [
+      "__init__",
+      "CallSafetyJudge",
+      "validate",
+      "_is_dangerous_call"
+    ],
+    "type": "LOGIC"
+  },
+  "code_inspector_agent.py": {
+    "hash": "0bcbf5467f5599d0d202bfc13065e558",
+    "anchors": [
+      "scan_file_logic",
+      "inspect_intent",
+      "__init__",
+      "CodeInspectorAgent"
+    ],
+    "type": "AGENT"
+  },
+  "component_classifier.py": {
+    "hash": "6148c920b55b1a48fa7009ce00990cbe",
+    "anchors": [
+      "_is_config",
+      "_is_agent",
+      "_is_doc",
+      "_is_data",
+      "ComponentClassifier",
+      "_is_util",
+      "_is_core",
+      "_is_interface",
+      "map_type"
+    ],
+    "type": "LOGIC"
+  },
+  "connectivity_mapper.py": {
+    "hash": "eaefbf5699a897951021565d0b307f54",
+    "anchors": [
+      "calculate_metrics",
+      "ConnectivityMapper"
+    ],
+    "type": "LOGIC"
+  },
+  "coverage_auditor.py": {
+    "hash": "cc99847c6b57bc18785ace43121212b2",
+    "anchors": [
+      "CoverageAuditor",
+      "detect_test"
+    ],
+    "type": "DOC"
+  },
+  "diagnostic_strategist.py": {
+    "hash": "3402aff489e7499d0457ba0fd275bf41",
+    "anchors": [
+      "calculate_efficiency",
+      "plan_targeted_verification",
+      "DiagnosticStrategist"
+    ],
+    "type": "DOC"
+  },
+  "discovery_agent.py": {
+    "hash": "7277c8146b09203d5979ec03ec113021",
+    "anchors": [
+      "__init__",
+      "run_discovery_phase",
+      "DiscoveryAgent"
+    ],
+    "type": "AGENT"
+  },
+  "dna_profiler.py": {
+    "hash": "b6a48fa9b506255eaeab93c6f4c3a4f6",
+    "anchors": [
+      "discover_identity",
+      "DNAProfiler"
+    ],
+    "type": "LOGIC"
+  },
+  "doc_gen_agent.py": {
+    "hash": "a674c0cd01d0ff67ef9aeb73e6069031",
+    "anchors": [
+      "__init__",
+      "DocGenAgent",
+      "generate_docstring"
+    ],
+    "type": "AGENT"
+  },
+  "git_automaton.py": {
+    "hash": "e31fcc88745bc3857f18be62dbf0df35",
+    "anchors": [
+      "commit_fix",
+      "__init__",
+      "_run_git",
+      "is_clean_state",
+      "GitAutomaton"
+    ],
+    "type": "LOGIC"
+  },
+  "healer.py": {
+    "hash": "1999ad04c7b54bbbf7509ef4c2a519eb",
+    "anchors": [
+      "_reason_about_objective",
+      "heal_finding",
+      "_heal_stability",
+      "__init__",
+      "perform_audit",
+      "HealerPersona",
+      "_heal_security",
+      "get_system_prompt",
+      "_heal_generic",
+      "_apply_cure"
+    ],
+    "type": "LOGIC"
+  },
+  "health_synthesizer.py": {
+    "hash": "82b13605ab40d96ff6afd2db6d277e74",
+    "anchors": [
+      "_get_maturity",
+      "_get_brittle_points",
+      "trigger_reflexes",
+      "get_topology_issues",
+      "__init__",
+      "HealthSynthesizer",
+      "_calculate_rigorous_3_0",
+      "synthesize_360",
+      "_get_dark_matter",
+      "_check_dependency_reflex"
+    ],
+    "type": "LOGIC"
+  },
+  "infrastructure_assembler.py": {
+    "hash": "115767a4262c01902b545a3330cc88c9",
+    "anchors": [
+      "assemble_orchestrator_tools",
+      "InfrastructureAssembler",
+      "assemble_core_support"
+    ],
+    "type": "LOGIC"
+  },
+  "integrity_guardian.py": {
+    "hash": "7f82ecd60860b1e3de5fd98ac74bd257",
+    "anchors": [
+      "detect_vulnerabilities",
+      "_analyze_error_silencing",
+      "IntegrityGuardian",
+      "is_relevant_file",
+      "get_audit_mission",
+      "_analyze_brittle_context"
+    ],
+    "type": "LOGIC"
+  },
+  "intent_heuristics_engine.py": {
+    "hash": "082924bf6ea642e364945b71648fc4b4",
+    "anchors": [
+      "IntentHeuristicsEngine",
+      "_is_analysis_comparison",
+      "_is_inside_test_method",
+      "is_metadata_context"
+    ],
+    "type": "LOGIC"
+  },
+  "line_veto.py": {
+    "hash": "17e9fb5c9e380d8540d5930ad71e2da1",
+    "anchors": [
+      "LineVeto",
+      "_is_permission_or_content_veto",
+      "should_skip",
+      "_is_structural_veto",
+      "__init__",
+      "_is_rule_definition",
+      "_is_domain_excluded"
+    ],
+    "type": "LOGIC"
+  },
+  "logic_auditor.py": {
+    "hash": "271a2ea6ecfaaf328f523a233dfd9847",
+    "anchors": [
+      "scan_flaws",
+      "__init__",
+      "LogicAuditor",
+      "_audit_nodes",
+      "is_interaction_safe",
+      "_audit_observability"
+    ],
+    "type": "DOC"
+  },
+  "logic_node_auditor.py": {
+    "hash": "5af982c5272d4278d19ca585870c003a",
+    "anchors": [
+      "__init__",
+      "audit",
+      "LogicNodeAuditor"
+    ],
+    "type": "DOC"
+  },
+  "markdown_sanitizer.py": {
+    "hash": "ad425ce16690d15805b2d2ff7db7922b",
+    "anchors": [
+      "_ensure_h1",
+      "MarkdownSanitizer",
+      "_cleanup",
+      "sanitize"
+    ],
+    "type": "LOGIC"
+  },
+  "markdown_structure_agent.py": {
+    "hash": "c78a88421af3a3d64281ec3157fa22a7",
+    "anchors": [
+      "MarkdownStructureAgent",
+      "_apply_header_logic",
+      "_handle_code_block",
+      "_process_line",
+      "__init__",
+      "execute_refinement"
+    ],
+    "type": "AGENT"
+  },
+  "maturity_evaluator.py": {
+    "hash": "cf6481d54f89e748e450815ce1c97bc7",
+    "anchors": [
+      "__init__",
+      "evaluate_persona",
+      "calculate_maturity",
+      "MaturityEvaluator"
+    ],
+    "type": "LOGIC"
+  },
+  "memory_persistence.py": {
+    "hash": "fe1fbe2edb4ae0ec89285a69f0cd2a50",
+    "anchors": [
+      "save_ledger",
+      "load_ledger",
+      "__init__",
+      "MemoryPersistence",
+      "get_file_metadata"
+    ],
+    "type": "LOGIC"
+  },
+  "meta_analysis_detector.py": {
+    "hash": "3baced1ba1c39c8a8d3c53aef72a91b5",
+    "anchors": [
+      "is_meta_analysis_node",
+      "_is_isinstance_ast_check",
+      "__init__",
+      "_is_regex_call",
+      "MetaAnalysisDetector"
+    ],
+    "type": "LOGIC"
+  },
+  "metrics_assembler.py": {
+    "hash": "72214e487fe5412e95526d5c9c55d10b",
+    "anchors": [
+      "gather_qa_data",
+      "MetricsAssembler",
+      "get_orchestration_metrics"
+    ],
+    "type": "LOGIC"
+  },
+  "obfuscation_cleaner_engine.py": {
+    "hash": "26e8aca24f35dd834ccf6f3ce3f3665d",
+    "anchors": [
+      "__init__",
+      "ObfuscationCleanerEngine",
+      "get_offset",
+      "visit_BinOp",
+      "collect_replacements",
+      "ReplacementCollector"
+    ],
+    "type": "LOGIC"
+  },
+  "obfuscation_hunter.py": {
+    "hash": "39550e73ef43a58b48096b15df058733",
+    "anchors": [
+      "_should_skip_node",
+      "_is_hidden",
+      "_resolve_string_concat",
+      "_check_node",
+      "__init__",
+      "scan_file",
+      "ObfuscationHunter",
+      "_is_addition_node",
+      "_scan_tree"
+    ],
+    "type": "LOGIC"
+  },
+  "obfuscation_logic_engine.py": {
+    "hash": "ecc67524823481c8954327d07d47f8af",
+    "anchors": [
+      "check_dangerous_keywords",
+      "ObfuscationLogicEngine",
+      "resolve_constant",
+      "_is_fragmented"
+    ],
+    "type": "LOGIC"
+  },
+  "parity_analyst.py": {
+    "hash": "9b21d1aec2b486283ff4ee7362df4049",
+    "anchors": [
+      "ParityAnalyst",
+      "_detect_gaps",
+      "analyze_stack_gaps"
+    ],
+    "type": "LOGIC"
+  },
+  "penalty_engine.py": {
+    "hash": "005c686c3230653fa36b9685e54a4c8a",
+    "anchors": [
+      "PenaltyEngine",
+      "apply",
+      "get_pilar_adjustments"
+    ],
+    "type": "LOGIC"
+  },
+  "pyramid_analyst.py": {
+    "hash": "422856f8e45e136162856dcb2a4b3f86",
+    "anchors": [
+      "PyramidAnalyst",
+      "analyze"
+    ],
+    "type": "LOGIC"
+  },
+  "quality_analyst.py": {
+    "hash": "842e3d2bef06572a0b2d861b047a33cc",
+    "anchors": [
+      "QualityAnalyst",
+      "calculate_confidence_matrix",
+      "_find_test_for_module"
+    ],
+    "type": "LOGIC"
+  },
+  "registry_compiler.py": {
+    "hash": "61b8946e13deb9ca3e14f3d9631541bc",
+    "anchors": [
+      "RegistryCompiler",
+      "compile_stacks"
+    ],
+    "type": "LOGIC"
+  },
+  "report_formatter.py": {
+    "hash": "31056f54e043e4ae62efbbf350670b4f",
+    "anchors": [
+      "format_health_decomposition",
+      "format_efficiency",
+      "ReportFormatter",
+      "format_vitals",
+      "_get_health_status_label",
+      "format_quality_matrix",
+      "__init__",
+      "format_battle_plan",
+      "format_obfuscation_zone",
+      "format_entropy",
+      "format_header",
+      "_format_op_status_table"
+    ],
+    "type": "DOC"
+  },
+  "report_sections_engine.py": {
+    "hash": "f8726ca77b47ca9c9c8aed74b6dfba60",
+    "anchors": [
+      "_add_excellence_points",
+      "format_roadmap",
+      "_add_stability_points",
+      "_add_obs_points",
+      "_add_purity_points",
+      "format_vitals_table",
+      "ReportSectionsEngine"
+    ],
+    "type": "DOC"
+  },
+  "rule_definition_judge.py": {
+    "hash": "def15b3134e2ddc08d2a37fc9ca48302",
+    "anchors": [
+      "validate",
+      "RuleDefinitionJudge",
+      "is_in_analyzer_context"
+    ],
+    "type": "LOGIC"
+  },
+  "safety_assignment_engine.py": {
+    "hash": "39ad8ec82d28ab4c493df65c56004c57",
+    "anchors": [
+      "_is_safe_name",
+      "_is_assignment_to_safe",
+      "SafetyAssignmentEngine",
+      "is_in_metadata_assignment"
+    ],
+    "type": "LOGIC"
+  },
+  "safety_definitions.py": {
+    "hash": "04a6fef1627a81f20936e2802f16d709",
+    "anchors": [],
+    "type": "LOGIC"
+  },
+  "safety_heuristics.py": {
+    "hash": "ccf3beca3bcf635407589cf44a915921",
+    "anchors": [
+      "is_meta_analysis_node",
+      "is_dangerous_call",
+      "SafetyHeuristics",
+      "__init__",
+      "is_inside_log_call",
+      "is_inside_rule_definition"
+    ],
+    "type": "LOGIC"
+  },
+  "safety_navigator.py": {
+    "hash": "4834b83acebfb2c66a40112a08d2fa7b",
+    "anchors": [
+      "SafetyNavigator",
+      "__init__",
+      "is_being_executed",
+      "is_safe_context"
+    ],
+    "type": "LOGIC"
+  },
+  "safe_context_judge.py": {
+    "hash": "cb4cb8821a418771b87752cd425db4da",
+    "anchors": [
+      "__init__",
+      "is_node_safe",
+      "SafeContextJudge"
+    ],
+    "type": "LOGIC"
+  },
+  "score_calculator.py": {
+    "hash": "3b6d0a378c8d33d6fbda84b49ea27556",
+    "anchors": [
+      "ScoreCalculator",
+      "__init__",
+      "calculate_final_score"
+    ],
+    "type": "CORE"
+  },
+  "scoring_metrics_engine.py": {
+    "hash": "71ea82f3771860fec4e4b8573bb35ee6",
+    "anchors": [
+      "calc_excellence",
+      "calc_purity",
+      "calc_security",
+      "calc_observability",
+      "ScoringMetricsEngine",
+      "calc_stability"
+    ],
+    "type": "LOGIC"
+  },
+  "security_sentinel_agent.py": {
+    "hash": "7fc9a97eda7d8eb899566fa0ee4a4854",
+    "anchors": [
+      "__init__",
+      "SecuritySentinelAgent",
+      "scan_project",
+      "_scan_content"
+    ],
+    "type": "AGENT"
+  },
+  "semantic_context_analyst.py": {
+    "hash": "589e0b0a3184b5ab85cf8061e4da9356",
+    "anchors": [
+      "_is_observability_context",
+      "classify_intent",
+      "__init__",
+      "map_component_type",
+      "SemanticContextAnalyst",
+      "_is_metadata_context"
+    ],
+    "type": "LOGIC"
+  },
+  "silent_error_detector.py": {
+    "hash": "91a94e0fecd8fa43d71115bc7bc77a75",
+    "anchors": [
+      "_is_silent_except",
+      "detect",
+      "SilentErrorDetector",
+      "__init__",
+      "_create_issue"
+    ],
+    "type": "LOGIC"
+  },
+  "source_code_parser.py": {
+    "hash": "a9c104b820e90d88b834e7cf6e56e5b2",
+    "anchors": [
+      "analyze_py",
+      "SourceCodeParser",
+      "calculate_py_complexity",
+      "calculate_kt_complexity",
+      "analyze_kt",
+      "extract_py_imports"
+    ],
+    "type": "LOGIC"
+  },
+  "structural_analyst.py": {
+    "hash": "93630be806b42f8ce582d2c3fe1bfbf2",
+    "anchors": [
+      "analyze_python",
+      "_analyze_raw",
+      "StructuralAnalyst",
+      "read_project_file",
+      "should_ignore",
+      "analyze_file_logic",
+      "__init__",
+      "analyze_intent",
+      "calculate_maturity",
+      "map_component_type",
+      "is_analyable",
+      "analyze_logic_flaws"
+    ],
+    "type": "LOGIC"
+  },
+  "task_executor.py": {
+    "hash": "b253ecd4ea97cb9e6daea26f2cca1142",
+    "anchors": [
+      "__init__",
+      "TaskExecutor",
+      "run_parallel"
+    ],
+    "type": "LOGIC"
+  },
+  "telemetry_intent_judge.py": {
+    "hash": "29c803ecb5501e273f1b61cda5316cf4",
+    "anchors": [
+      "_check_definition_and_obs",
+      "_is_inside_critical_report",
+      "__init__",
+      "TelemetryIntentJudge",
+      "_check_observability_context",
+      "_check_logic_and_standard",
+      "judge_intent"
+    ],
+    "type": "LOGIC"
+  },
+  "telemetry_maturity_logic.py": {
+    "hash": "2dcf303be42e65952ec6c6b7c3e5da87",
+    "anchors": [
+      "is_simple_time_subtraction",
+      "TelemetryMaturityLogic",
+      "is_tele_name",
+      "is_assigned_to_log_variable"
+    ],
+    "type": "LOGIC"
+  },
+  "test_architect_agent.py": {
+    "hash": "66f3f8604cc289f228fd260e8e7159f9",
+    "anchors": [
+      "draft_test_for_file",
+      "__init__",
+      "TestArchitectAgent"
+    ],
+    "type": "TEST"
+  },
+  "test_discovery_logic.py": {
+    "hash": "4f863dbf36147ae4e10dcd4f3586b37a",
+    "anchors": [
+      "TestDiscoveryLogic",
+      "is_inside_test_method"
+    ],
+    "type": "TEST"
+  },
+  "test_navigator.py": {
+    "hash": "25b532cd1b91c07befcf51518c6eeb50",
+    "anchors": [
+      "TestNavigator",
+      "__init__",
+      "is_inside_test_context",
+      "_is_inside_test_method",
+      "_is_inside_assertion"
+    ],
+    "type": "TEST"
+  },
+  "test_refiner.py": {
+    "hash": "81fb6575f6d78aa0c99c03ec5eae0524",
+    "anchors": [
+      "TestRefiner",
+      "perform_audit",
+      "__init__",
+      "analyze_failure",
+      "get_system_prompt",
+      "_reason_about_objective",
+      "suggest_test_case"
+    ],
+    "type": "TEST"
+  },
+  "test_runner.py": {
+    "hash": "315015b14133cd6abf819c868e1530a8",
+    "anchors": [
+      "run_selective_tests",
+      "TestRunner",
+      "run_unittest_discover",
+      "_ensure_components",
+      "__init__",
+      "_parse_output",
+      "_consolidate_results",
+      "run_parallel_discovery"
+    ],
+    "type": "TEST"
+  },
+  "topology_graph_agent.py": {
+    "hash": "71d3fd2991532ab7bac59790175efaee",
+    "anchors": [
+      "TopologyGraphAgent",
+      "generate_mermaid_graph"
+    ],
+    "type": "AGENT"
+  },
+  "validation_agent.py": {
+    "hash": "05857887a38ad0aec7e9715c06ec001d",
+    "anchors": [
+      "__init__",
+      "_fast_fallback",
+      "ValidationAgent",
+      "run_validation_phase"
+    ],
+    "type": "AGENT"
+  },
+  "veto_criteria_engine.py": {
+    "hash": "bc25ded2209d851c77ce40dd05df26df",
+    "anchors": [
+      "check_permissions",
+      "is_math_context",
+      "is_rule_def",
+      "VetoCriteriaEngine"
+    ],
+    "type": "LOGIC"
+  },
+  "veto_rules.py": {
+    "hash": "36a07c39631da5375846b6822515e3f8",
+    "anchors": [
+      "is_docstring",
+      "is_rule_definition",
+      "VetoRules",
+      "is_technical_math_context",
+      "is_domain_excluded",
+      "check_test_permissions"
+    ],
+    "type": "LOGIC"
+  },
+  "veto_structural_engine.py": {
+    "hash": "51d1afaa91346c34e5baa7aad7606a12",
+    "anchors": [
+      "_is_single_line_docstring",
+      "VetoStructuralEngine",
+      "is_comment",
+      "is_docstring"
+    ],
+    "type": "LOGIC"
+  },
+  "vulnerability_heuristic.py": {
+    "hash": "b198c00490be9f61edc9b7c9b800312b",
+    "anchors": [
+      "VulnerabilityHeuristic",
+      "is_strategic_phrase",
+      "is_obfuscated_vulnerability"
+    ],
+    "type": "LOGIC"
+  },
+  "web_insight_agent.py": {
+    "hash": "40be88d51b67e75df4e03a261630a6eb",
+    "anchors": [
+      "WebInsightAgent",
+      "fetch_library_context"
+    ],
+    "type": "AGENT"
+  },
+  "tests/test_battle_plan_formatter.py": {
+    "hash": "f092451c05bb97a5db2f0f801a801d5f",
+    "anchors": [
+      "TestBattlePlanFormatter",
+      "test_format_battle_plan"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_battle_plan_sections_engine.py": {
+    "hash": "65ef49e1f3b2b36c01ea0872b54ce172",
+    "anchors": [
+      "test_init",
+      "TestBattlePlanSectionsEngine",
+      "test_method_not_implemented"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_infrastructure_assembler.py": {
+    "hash": "e22d33ecfe4ae5b3375660499d81b91f",
+    "anchors": [
+      "TestInfrastructureAssembler",
+      "test_assemble_infrastructure"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_integrity_guardian.py": {
+    "hash": "d590a2cc7a23249ee98c90b98583530f",
+    "anchors": [
+      "test_integrity_check",
+      "TestIntegrityGuardian"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_intent_heuristics_engine.py": {
+    "hash": "ef85d3d31239f565f430cf37e727a2ce",
+    "anchors": [
+      "test_method_name",
+      "TestIntentHeuristicsEngine"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_line_veto.py": {
+    "hash": "9d5755e37d498a411e026329f25b579d",
+    "anchors": [
+      "test_init",
+      "setUp",
+      "TestLineVeto",
+      "tearDown"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_markdown_sanitizer.py": {
+    "hash": "ded2d885c5e6ff4a448978cf6bf1ce41",
+    "anchors": [
+      "test_init",
+      "TestMarkdownSanitizer"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_markdown_structure_agent.py": {
+    "hash": "2628c80dfc5c45db7f7a54287e0bd5b5",
+    "anchors": [
+      "test_load_dependencies",
+      "TestMarkdownStructureAgent"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_maturity_evaluator.py": {
+    "hash": "365be3b9877a5c3c21cadf630cce74b5",
+    "anchors": [
+      "test_maturity_evaluator",
+      "TestMaturityEvaluator"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_memory_persistence.py": {
+    "hash": "1a7acf5b1b8a11f0d41c1af225ddb2f2",
+    "anchors": [
+      "TestMemoryPersistence",
+      "test_save_data",
+      "test_get_storage",
+      "test_load_data"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_meta_analysis_detector.py": {
+    "hash": "b3404cb064eac3250026e5305822d907",
+    "anchors": [
+      "TestMetaAnalysisDetector",
+      "test_analyze_data",
+      "test_write_result",
+      "test_fetch_data"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_metrics_assembler.py": {
+    "hash": "e389f89ada07f1a87c1e9afe56e4f714",
+    "anchors": [
+      "test_assemble_metrics",
+      "TestMetricsAssembler"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_obfuscation_cleaner_engine.py": {
+    "hash": "92b1652fb7f62333271896b18c3a3f43",
+    "anchors": [
+      "secret_function",
+      "test_clean_code",
+      "setUp",
+      "TestObfuscationCleanerEngine"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_obfuscation_hunter.py": {
+    "hash": "3cd4cba01cce18915d5f0ade23d7a7bc",
+    "anchors": [
+      "test_obfuscation_hunter",
+      "TestObfuscationHunter"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_obfuscation_logic_engine.py": {
+    "hash": "9ae53ba72fd77e5538e62660b9dd6ae7",
+    "anchors": [
+      "TestObfuscationLogicEngine",
+      "test_obfuscation_logic_engine"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_parity_analyst.py": {
+    "hash": "28ac14ffa805e20b6789e68ea8a93b26",
+    "anchors": [
+      "TestParityAnalyst",
+      "test_analyse_parity"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_penalty_engine.py": {
+    "hash": "5d5d120f4d3c4c6f4e8817d9fdc9cf88",
+    "anchors": [
+      "TestPenaltyEngine",
+      "test_load_penalty_data"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_pyramid_analyst.py": {
+    "hash": "dc16dbe35c4622e273515fb1246dec7c",
+    "anchors": [
+      "TestPyramidAnalyst",
+      "test_init",
+      "test_predict",
+      "test_update"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_quality_analyst.py": {
+    "hash": "a218186379eec10a506e1c78e71942f8",
+    "anchors": [
+      "TestQualityAnalyst",
+      "test_initialization",
+      "QualityAnalyst",
+      "__init__"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_registry_compiler.py": {
+    "hash": "0fb6df2ea05accfe54b7b31e9b01f35b",
+    "anchors": [
+      "test_register_with_mock_file_watcher",
+      "TestRegistryCompiler"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_rule_definition_judge.py": {
+    "hash": "7c55f8d1188e518967aa148a39be914d",
+    "anchors": [
+      "test_method_name",
+      "TestRuleDefinitionJudge"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_safety_assignment_engine.py": {
+    "hash": "c51c468beba9fe6ef504466cdd294da8",
+    "anchors": [
+      "test_safety_assignment_engine",
+      "TestSafetyAssignmentEngine"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_safety_heuristics.py": {
+    "hash": "0964b833b6b723487d2d4a8ce7d8967d",
+    "anchors": [
+      "test_safety_heuristics",
+      "TestSafetyHeuristics"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_safety_navigator.py": {
+    "hash": "29b1369b4ac92ccf7597e237bcc6ce80",
+    "anchors": [
+      "TestSafetyNavigator",
+      "test_init"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_safe_context_judge.py": {
+    "hash": "1da3d78a939444becaab401db9a52c88",
+    "anchors": [
+      "TestSafeContextJudge",
+      "test_safe_context_judge",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_score_calculator.py": {
+    "hash": "3e2d563129015f9a118e122367968b86",
+    "anchors": [
+      "is",
+      "TestScoreCalculator",
+      "test_score_calculator_init"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_scoring_metrics_engine.py": {
+    "hash": "ff14263c7e3ec46773cccae50a0b225b",
+    "anchors": [
+      "test_scoring_metrics_engine_init",
+      "test_scoring_metrics_engine_call",
+      "TestScoringMetricsEngine"
+    ],
+    "type": "TEST"
+  }
+}

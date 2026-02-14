@@ -1,0 +1,5096 @@
+{
+  "scripts/analyze_external.py": {
+    "hash": "324c5aaef31d1c027d33c4dbfcef5038",
+    "anchors": [
+      "main"
+    ],
+    "type": "LOGIC"
+  },
+  "scripts/build_exe.py": {
+    "hash": "41e255518a1ef55af3cc8ebd660b216d",
+    "anchors": [
+      "build"
+    ],
+    "type": "INTERFACE"
+  },
+  "scripts/cleanup_obfuscation.py": {
+    "hash": "41c63800f270503064b11a4a01892dfb",
+    "anchors": [
+      "process_file",
+      "_collect_replacements",
+      "_apply_single_replacement",
+      "__init__",
+      "_get_ast_tree",
+      "AutoDeobfuscator",
+      "_apply_and_save"
+    ],
+    "type": "LOGIC"
+  },
+  "scripts/diagnose_blind_spots.py": {
+    "hash": "266d2f089b82345a55f47a6f7549776a",
+    "anchors": [
+      "diagnose"
+    ],
+    "type": "LOGIC"
+  },
+  "scripts/fast_diagnostic.py": {
+    "hash": "639f649244283209be81fab35a61c630",
+    "anchors": [
+      "main"
+    ],
+    "type": "DOC"
+  },
+  "scripts/generate_tests.py": {
+    "hash": "3ffb28c2f18a066927da6305136fe7b4",
+    "anchors": [
+      "generate_missing_tests",
+      "_generate_test_file",
+      "test_smoke",
+      "Test"
+    ],
+    "type": "TEST"
+  },
+  "scripts/git_doctor.py": {
+    "hash": "09d62b912faf7a2f24078400f7023485",
+    "anchors": [
+      "_is_protected",
+      "diagnose_and_fix",
+      "run_command",
+      "GitDoctor",
+      "_merge_skills_index",
+      "__init__",
+      "_clear_locks"
+    ],
+    "type": "LOGIC"
+  },
+  "scripts/launch_dashboard.py": {
+    "hash": "b680e626cda3a3df1b75349fa8d120f0",
+    "anchors": [
+      "main"
+    ],
+    "type": "LOGIC"
+  },
+  "scripts/lint_heading_logic.py": {
+    "hash": "3a82c04006fdabdb2fd65d10d0d017a8",
+    "anchors": [
+      "LintHeadingLogic",
+      "check_headings"
+    ],
+    "type": "LOGIC"
+  },
+  "scripts/lint_rule_engine.py": {
+    "hash": "ad4f269279c200331859a9a0386ad91e",
+    "anchors": [
+      "verify_rules",
+      "LintRuleEngine",
+      "_is_blank_violation"
+    ],
+    "type": "LOGIC"
+  },
+  "scripts/persona_manager.py": {
+    "hash": "0e9c2ce27c0b98324202f70e68491d47",
+    "anchors": [
+      "__init__",
+      "PersonaManager",
+      "validate_census"
+    ],
+    "type": "LOGIC"
+  },
+  "scripts/run_diagnostic.py": {
+    "hash": "b1a5ed77244e2c1f05f525a95261a4b6",
+    "anchors": [
+      "main"
+    ],
+    "type": "DOC"
+  },
+  "scripts/update_agent_submodule.py": {
+    "hash": "574b9b8a862881875c979cef8a0f044c",
+    "anchors": [
+      "update_submodule"
+    ],
+    "type": "AGENT"
+  },
+  "scripts/verify_cognitive.py": {
+    "hash": "764a0c87764b0656123562edea4a94f9",
+    "anchors": [
+      "verify_cognitive_engine"
+    ],
+    "type": "LOGIC"
+  },
+  "scripts/verify_report_lint.py": {
+    "hash": "a281683226eb01944ea50d628b66b6b9",
+    "anchors": [
+      "verify_markdown_compliance",
+      "main"
+    ],
+    "type": "DOC"
+  },
+  "tests/test_analysis_engine_phd.py": {
+    "hash": "f3b81f0919d81db43f64ddf7542b4e68",
+    "anchors": [
+      "test_analyze_python_file",
+      "TestAnalysisenginephd",
+      "test_test_quality_deep",
+      "test_fn",
+      "test"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_analyze_external.py": {
+    "hash": "c2c1dfc806d93fc53e87faffd4a5bec7",
+    "anchors": [
+      "TestAnalyzeExternal",
+      "test_logic_smoke"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_ast_navigator.py": {
+    "hash": "747e616f5d463c87092467baa92937ef",
+    "anchors": [
+      "test_is_call_to",
+      "setUp",
+      "test_dict_value",
+      "test_parent_chain",
+      "TestASTNavigator"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_ast_node_inspector.py": {
+    "hash": "cb81ad39a6708c4252a0a9cd19987a2f",
+    "anchors": [
+      "TestASTNodeInspector",
+      "test_is_descendant",
+      "setUp",
+      "test_is_call_to"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_ast_traversal_logic.py": {
+    "hash": "069d196ea2b5fce51984746bbba813bd",
+    "anchors": [
+      "test_is_in_dict_value",
+      "test_get_parent_chain",
+      "setUp",
+      "TestASTTraversalLogic"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_audit_engine.py": {
+    "hash": "4842e1fff2ec8570fa7578eb3fd63b5d",
+    "anchors": [
+      "test_scan_single_file_empty",
+      "setUp",
+      "test_run_strategic_audit_structure",
+      "TestAuditEngine"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_audit_risk_engine.py": {
+    "hash": "2eed7fb4870a0f23d82a6ce5f8503bb5",
+    "anchors": [
+      "TestAuditRiskEngine",
+      "test_create_entry",
+      "setUp",
+      "test_map_risk_type"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_audit_scanner_engine.py": {
+    "hash": "2ab979abbf135e54b02fac67f6daa0c7",
+    "anchors": [
+      "test_parse_severity",
+      "TestAuditScannerEngine",
+      "setUp",
+      "test_is_error_report"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_base_deep.py": {
+    "hash": "28928b3ec212001f6a3015d5706f9385",
+    "anchors": [
+      "MockPersona",
+      "test_context_management",
+      "perform_audit",
+      "tearDown",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "setUp",
+      "TestBaseActivePersonaDeep",
+      "test_strategic_audit_flow",
+      "test_ignored_files_logic",
+      "test_find_patterns_integration",
+      "test_initialization"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_battle_plan_formatter_deep.py": {
+    "hash": "246323404f922026e1ae78ed07dafd2c",
+    "anchors": [
+      "test_empty_results",
+      "test_grouping_logic",
+      "setUp",
+      "test_item_formatting",
+      "TestBattlePlanFormatterDeep"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_battle_plan_sections_engine.py": {
+    "hash": "36d7676acd569dc2926082403ac20339",
+    "anchors": [
+      "test_filter_active_results",
+      "TestBattlePlanSectionsEngine",
+      "setUp",
+      "test_format_severity_group"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_bolt.py": {
+    "hash": "1ac79f3ec0a449eebcbe9f4faea9ed19",
+    "anchors": [
+      "test_init",
+      "TestBolt"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_bolt_persona.py": {
+    "hash": "4bd8c50b93e8d1dc261dbd9b3d8c312d",
+    "anchors": [
+      "test_performance_audit_logic",
+      "TestBoltPersona",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_bridge.py": {
+    "hash": "6266eeacb2561a0d8def6e9967f5ed5d",
+    "anchors": [
+      "test_init",
+      "TestBridge"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_cache.py": {
+    "hash": "7853c583f93a7d32f061b29f27f51564",
+    "anchors": [
+      "test_init",
+      "TestCache"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_cache_manager.py": {
+    "hash": "415ab71069d9869686511811816e1833",
+    "anchors": [
+      "tearDown",
+      "test_hashing_and_change_detection",
+      "setUp",
+      "test_save_load_cycle",
+      "TestCacheManager"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_cache_manager_system.py": {
+    "hash": "a53b9b75811e742baca61aa0a3d3d468",
+    "anchors": [
+      "test_hash_generation",
+      "tearDown",
+      "setUp",
+      "TestCacheManager",
+      "test_update_and_save"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_call_safety_judge.py": {
+    "hash": "519c74c4527cf48f86b5e1d76620a57f",
+    "anchors": [
+      "test_is_dangerous_call",
+      "TestCallsafetyjudge",
+      "test_validate_safe_context"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_cleanup_obfuscation.py": {
+    "hash": "f00df5467abb9801dbd95a1868353af1",
+    "anchors": [
+      "TestCleanupObfuscation",
+      "test_init",
+      "test_deobfuscation_logic"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_cli.py": {
+    "hash": "a156409795eef45e9598b6baebf23bfc",
+    "anchors": [
+      "test_main",
+      "test_cli_unknown_command",
+      "test_cli_audit_command",
+      "TestCLI"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_cli_system.py": {
+    "hash": "a974902f8223c5500ac9e6135679bebb",
+    "anchors": [
+      "TestCLISystem",
+      "test_cli_audit_command",
+      "test_cli_no_args"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_compiler.py": {
+    "hash": "5118dde874906bdbe68e1f1b8adc0cb1",
+    "anchors": [
+      "test_compiler_init",
+      "TestCompiler"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_compliance.py": {
+    "hash": "5a145afb84d70fd5fdcd0a57050498a7",
+    "anchors": [
+      "test_secure_payload_calculation",
+      "test_invalid_input_handling",
+      "TestComplianceStandard"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_compliance_standard.py": {
+    "hash": "d7be9bb8aaefddf5474ff5682debfbb4",
+    "anchors": [
+      "test_smoke",
+      "test_process_secure_payload_memory",
+      "TestCompliancestandard"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_component_classifier_deep.py": {
+    "hash": "08998a1c50d020fd5cb209fc7dd0fe15",
+    "anchors": [
+      "TestComponentClassifierDeep",
+      "setUp",
+      "test_interface_mapping",
+      "test_agent_mapping",
+      "test_core_mapping",
+      "test_logic_fallback"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_conflict_policy_phd.py": {
+    "hash": "30938ead7fc9dbfe473a629d25d68473",
+    "anchors": [
+      "test_resolve_json_merge_success",
+      "test_resolve_ours_protected",
+      "test_resolve_cache",
+      "TestConflictpolicyphd"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_connectivity_mapper.py": {
+    "hash": "fa917e1152ff0b93550fd51dcddbc110",
+    "anchors": [
+      "test_instability_calculation",
+      "setUp",
+      "TestConnectivityMapper"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_context_engine_deep.py": {
+    "hash": "aac3ca024cc3d1469ece17e45e4fe4fd",
+    "anchors": [
+      "test_test_quality_metrics",
+      "tearDown",
+      "setUp",
+      "Essential",
+      "test_stack_parity_integration",
+      "test_complex",
+      "test_full_project_mapping",
+      "TestContextEngineDeep",
+      "test_criticality_scoring"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_context_engine_system.py": {
+    "hash": "9199222969579370d5913d79126cd0d4",
+    "anchors": [
+      "tearDown",
+      "test_brittle_code_detection",
+      "setUp",
+      "TestContextEngine",
+      "test_identity_discovery",
+      "test_silent_error_detection"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_context_mapping_logic.py": {
+    "hash": "e161af5a9434f0ffa103f4d0babf6670",
+    "anchors": [
+      "test_get_initial_info",
+      "setUp",
+      "TestContextMappingLogic"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_context_sovereignty.py": {
+    "hash": "1823988562f7f76f1e5dee6a91996013",
+    "anchors": [
+      "TestContextSovereignty",
+      "setUp",
+      "test_meta_analysis_isinstance_is_safe",
+      "test_string_comparison_analysis_is_safe",
+      "test_real_global_still_detected"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_core_depth.py": {
+    "hash": "947c1a1cce702a0385e6965ea3faeaf2",
+    "anchors": [
+      "MockPhD",
+      "perform_audit",
+      "tearDown",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "test_base_persona_targeted_audit",
+      "setUp",
+      "TestCoreDepth",
+      "test_audit_engine_precision",
+      "complex",
+      "test_context_engine_deep_analysis"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_coverage_auditor.py": {
+    "hash": "2e6f021ebcc90bcf3869d781b9292550",
+    "anchors": [
+      "TestCoverageauditor",
+      "test_detect_test_logic"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_debug_relevance.py": {
+    "hash": "649c3f02995edad56b4aafb231408986",
+    "anchors": [
+      "TestDebugrelevance",
+      "test_smoke"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_delegation_engines.py": {
+    "hash": "78754101c3cbc70146cb8fb562df6242",
+    "anchors": [
+      "TestASTNodeInspector",
+      "test_delegation_to_inspector",
+      "test_get_parent_chain",
+      "test_is_in_dict_value_false",
+      "test_map_risk_type_unknown",
+      "test_format_severity_group",
+      "test_get_orchestration_metrics",
+      "test_check_dangerous_keywords",
+      "TestMetricsAssembler",
+      "TestIntentHeuristicsEngine",
+      "test_parse_severity",
+      "TestAuditScannerEngine",
+      "test_gather_qa_data_with_testify",
+      "TestReportSectionsEngine",
+      "test_is_in_metadata_assignment_true",
+      "TestAuditRiskEngine",
+      "TestBattlePlanSectionsEngine",
+      "test_is_call_to_non_call",
+      "test_analysis_comparison",
+      "test_is_in_metadata_assignment_false"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_dependency_auditor_deep.py": {
+    "hash": "0547fad1247348620fa345231843383c",
+    "anchors": [
+      "test_check_submodule_status_up_to_date",
+      "test_check_submodule_status_behind",
+      "TestDependencyAuditorDeep",
+      "test_network_health_check",
+      "setUp",
+      "test_lock_mechanism"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_dependency_auditor_system.py": {
+    "hash": "c7edc3c3c0903443d5db48da34b74c2a",
+    "anchors": [
+      "test_invalid_repo_detection",
+      "TestDependencyAuditor",
+      "tearDown",
+      "setUp",
+      "test_lock_mechanism"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_diagnose_blind_spots.py": {
+    "hash": "50e3cae4b41d9627663576e6cd10a70a",
+    "anchors": [
+      "TestDiagnoseblindspots",
+      "test_diagnose_logic"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_diagnostic_pipeline.py": {
+    "hash": "a3d38723454893c36348d54f72ed9d9b",
+    "anchors": [
+      "TestDiagnosticPipeline",
+      "setUp",
+      "test_recursion_guard_and_state",
+      "test_init_state",
+      "test_reset_logic"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_diagnostic_strategist.py": {
+    "hash": "2d3586dc7594146ecfb0b1caf0f3dd70",
+    "anchors": [
+      "TestDiagnosticStrategist",
+      "test_efficiency_calculation",
+      "setUp",
+      "test_plan_targeted_verification"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_director_persona.py": {
+    "hash": "a86410fb17eda1bb4d6ed0c03e8c5da8",
+    "anchors": [
+      "test_deduplicate_results",
+      "TestDirectorPersona",
+      "test_init",
+      "test_format_360_report_sections"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_director_system.py": {
+    "hash": "d3673a9316e6ccba3c2590ca2cd717da",
+    "anchors": [
+      "TestDirectorPersona",
+      "test_format_360_report",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_dna_profiler.py": {
+    "hash": "a25fdbfdb1e2562de5e600a08d364ad7",
+    "anchors": [
+      "TestDnaprofiler",
+      "test_discover_identity_logic"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_echo.py": {
+    "hash": "406fc275934b3c8843d2a96c91a086b0",
+    "anchors": [
+      "TestEcho",
+      "test_init"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_file_system_scanner.py": {
+    "hash": "858f2f95bf4cac7bcaf35cafbc7e4496",
+    "anchors": [
+      "test_scan_all_filenames",
+      "TestFileSystemScanner",
+      "test_should_skip",
+      "test_get_analyzable_files"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_final_check.py": {
+    "hash": "99c4d7adb79fc757831bab8b1e7e4765",
+    "anchors": [
+      "TestFinalcheck",
+      "test_smoke"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_finding_deduplicator.py": {
+    "hash": "cb1a6e73584f13ed5fd521c0345cc289",
+    "anchors": [
+      "test_normalize_path",
+      "TestFindingdeduplicator",
+      "test_deduplicate_mixed"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_flow.py": {
+    "hash": "18e2000dc177f2103235bb86b7b688db",
+    "anchors": [
+      "TestFlow",
+      "test_init"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_flutter_sentinel.py": {
+    "hash": "b6edf8cc84d6350f359811d8836ca8dc",
+    "anchors": [
+      "TestFlutterSentinel",
+      "test_security_rules",
+      "setUp",
+      "test_initialization"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_flutter_vault.py": {
+    "hash": "727cec477ed668507a1213c846263d2e",
+    "anchors": [
+      "test_initialization",
+      "test_financial_reasoning",
+      "TestFlutterVault",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_forge.py": {
+    "hash": "59b1cb11de0048e91bffafb5b597e9c3",
+    "anchors": [
+      "TestForge",
+      "test_init"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_git_client.py": {
+    "hash": "7d61ade4f9e4b7ef9b2ac16ab661d276",
+    "anchors": [
+      "test_init",
+      "TestGitClient"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_git_doctor.py": {
+    "hash": "0068d055630a7f105868896a9e258bb9",
+    "anchors": [
+      "test_merge_skills_index_parsing",
+      "TestGitDoctor",
+      "setUp",
+      "test_is_protected"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_git_logic.py": {
+    "hash": "310d53d7912312e2c2ae10f1c99bf837",
+    "anchors": [
+      "test_environment_readiness",
+      "TestGitLogic",
+      "setUp",
+      "tearDown"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_git_operations_phd.py": {
+    "hash": "8a2647e85afc66c8927832c82ce2ad3f",
+    "anchors": [
+      "test_discover_remote",
+      "test_transactional_rollback",
+      "TestGitoperationsphd",
+      "test_get_topology"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_globe.py": {
+    "hash": "73d4b102f7ee67c467bc637dd123afb6",
+    "anchors": [
+      "test_init",
+      "TestGlobe"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_gui_system.py": {
+    "hash": "cee718eeb0e91f9a5f607c9e12b8af2c",
+    "anchors": [
+      "test_views_and_components_init",
+      "setUp",
+      "tearDown",
+      "TestGUISystemDeep"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_health_synthesizer_deep.py": {
+    "hash": "eb6c56730b80a5780e719e92ffb4de45",
+    "anchors": [
+      "test_full_synthesis",
+      "TestHealthSynthesizerDeep",
+      "setUp",
+      "test_score_calculation"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_hermes.py": {
+    "hash": "784ecad3cb33b6a397b2cc72d6405206",
+    "anchors": [
+      "TestHermes",
+      "test_init"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_hype.py": {
+    "hash": "7d76b5dd7b50026e254b68df62739a32",
+    "anchors": [
+      "TestHype",
+      "test_init"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_indexer.py": {
+    "hash": "f10fdcdb4ba033487269fd9e6359609b",
+    "anchors": [
+      "test_indexing_anatomy",
+      "tearDown",
+      "Core",
+      "setUp",
+      "start",
+      "TestIndexer",
+      "helper"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_indexer_system.py": {
+    "hash": "0738e7ac9d50f4f541c88f2e42c0214f",
+    "anchors": [
+      "tearDown",
+      "MyClass",
+      "test_metadata_extraction",
+      "setUp",
+      "TestIndexer",
+      "my_func"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_infrastructure_assembler.py": {
+    "hash": "dbee9cbdf35b722bc93af2424c26bccd",
+    "anchors": [
+      "test_smoke",
+      "TestInfrastructureassembler"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_integrity_guardian.py": {
+    "hash": "f528da43d9bc92e54344ba78570ace1a",
+    "anchors": [
+      "TestIntegrityGuardian",
+      "test_error_silencing_detection",
+      "test_vulnerabilities"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_intent_heuristics_engine.py": {
+    "hash": "26b411ec9270ac427cdcd49d6f253f53",
+    "anchors": [
+      "test_analysis_comparison",
+      "test_metadata_context",
+      "TestIntentHeuristicsEngine"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_kotlin_flow.py": {
+    "hash": "d3d16ff9eff26302e9c55c866c42aeef",
+    "anchors": [
+      "test_initialization",
+      "setUp",
+      "test_navigation_reasoning",
+      "TestKotlinFlow"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_kotlin_hermes.py": {
+    "hash": "bbe8151014f0cf6775fcbff96129d09e",
+    "anchors": [
+      "TestKotlinHermes",
+      "test_supply_chain_reasoning",
+      "test_initialization",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_kotlin_sentinel.py": {
+    "hash": "8e81eda5c38d2102c317fc8a88666536",
+    "anchors": [
+      "TestKotlinSentinel",
+      "test_cyber_security_reasoning",
+      "test_initialization",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_line_veto_deep.py": {
+    "hash": "aac9f0d22a466af32160a094e2f9c1de",
+    "anchors": [
+      "test_docstring_detection",
+      "setUp",
+      "TestLineVetoDeep",
+      "test_structural_obfuscation_veto",
+      "test_rule_definition_veto",
+      "test_domain_exclusion_logic"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_lint_engines.py": {
+    "hash": "8e1ea9ecbf7149724a09b5e0403f1f5e",
+    "anchors": [
+      "test_check_headings_trailing_punct",
+      "TestLintHeadingLogic",
+      "test_verify_rules_multiple_blanks",
+      "test_check_headings_duplicate",
+      "setUp",
+      "test_is_blank_violation",
+      "test_check_headings_valid",
+      "test_verify_rules_heading_no_blank",
+      "test_verify_rules_clean",
+      "test_check_headings_md022_missing_blank",
+      "TestLintRuleEngine"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_lint_heading_logic.py": {
+    "hash": "4eb012548ef55c93b5e294de428f8067",
+    "anchors": [
+      "test_check_headings",
+      "setUp",
+      "TestLintHeadingLogic"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_lint_rule_engine.py": {
+    "hash": "3e64881ba65fc827c0faeac809b09a53",
+    "anchors": [
+      "test_engine_init",
+      "TestLintRuleEngine"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_logging_config.py": {
+    "hash": "2399c03fdb63f0de744d31923e399f3f",
+    "anchors": [
+      "TestLoggingConfig",
+      "test_configuration_resilience"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_logic_auditor_deep.py": {
+    "hash": "9ebfb45611cddef57750d7955c19fec6",
+    "anchors": [
+      "test_silent_error_detection",
+      "TestLogicAuditorDeep",
+      "setUp",
+      "test_safe_except_ignored"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_logic_node_auditor.py": {
+    "hash": "eb5f59b004432c58ae865b68df2b2bee",
+    "anchors": [
+      "test_telemetry_check",
+      "setUp",
+      "test_audit_global_outside_rule",
+      "TestLogicNodeAuditor"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_maintenance_engine_phd.py": {
+    "hash": "57381ae5ddd30a567f25ea5e4f918980",
+    "anchors": [
+      "test_clean_submodules",
+      "test_merge_skills_index",
+      "TestMaintenanceenginephd"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_mantra.py": {
+    "hash": "dc785a205d4de439a7144318cf133a32",
+    "anchors": [
+      "test_init",
+      "TestMantra"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_markdown_sanitizer.py": {
+    "hash": "2820d3ff62674f66c0bba4dd15c230c9",
+    "anchors": [
+      "test_md024_unique_headings",
+      "test_md022_heading_padding",
+      "TestMarkdownSanitizer",
+      "foo",
+      "test_md026_remove_heading_punctuation",
+      "setUp",
+      "test_md012_collapse_lines",
+      "test_md012_ignore_code_blocks"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_maturity_evaluator.py": {
+    "hash": "1ac51fd917408370a01c5ed19113729e",
+    "anchors": [
+      "test_calculate_maturity_fragile",
+      "_reason_about_objective",
+      "TestMaturityEvaluatorDeep",
+      "setUp",
+      "test_calculate_maturity_profound"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_memory_persistence.py": {
+    "hash": "979b05883eed1e8c5fb0c57ed19e747c",
+    "anchors": [
+      "TestMemorypersistence",
+      "test_smoke"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_meta_analysis_detector.py": {
+    "hash": "8a7166f0b6ff55fd4794f804a54f774a",
+    "anchors": [
+      "test_regex_call",
+      "setUp",
+      "test_normal_call",
+      "test_isinstance_ast_check",
+      "TestMetaAnalysisDetector"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_metric.py": {
+    "hash": "7e7bb753eecee92ad7e5ee437dc28084",
+    "anchors": [
+      "test_telemetry_intent_discrimination",
+      "test_technical_definition_ignored",
+      "TestMetric",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_metrics_assembler.py": {
+    "hash": "be10be218efcd0020e133eb1fc752386",
+    "anchors": [
+      "test_gather_qa_data",
+      "TestMetricsAssembler",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_nebula.py": {
+    "hash": "11ea56e83ab5b53fe3306883ee7d272a",
+    "anchors": [
+      "TestNebula",
+      "test_init"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_neural.py": {
+    "hash": "2db888ea332a33e2ea412bd941673bec",
+    "anchors": [
+      "test_init",
+      "TestNeural"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_nexus.py": {
+    "hash": "75705d3c0e00d44182fef7addcd14c63",
+    "anchors": [
+      "test_init",
+      "TestNexus"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_obfuscation_cleaner_engine.py": {
+    "hash": "cfb42d87d162b96940f7d0e0ad56e0f2",
+    "anchors": [
+      "test_collect_replacements",
+      "setUp",
+      "TestObfuscationCleanerEngine"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_obfuscation_hunter.py": {
+    "hash": "393a99ccd2e588731a51f26471dd2bbd",
+    "anchors": [
+      "TestObfuscationHunter",
+      "test_concatenation_detection"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_obfuscation_logic_engine.py": {
+    "hash": "4334f53493691984bc062217962b11b0",
+    "anchors": [
+      "TestObfuscationLogicEngine",
+      "test_resolve_constant",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_orchestrator.py": {
+    "hash": "dd87ce9e161ef033139348415b4dd71f",
+    "anchors": [
+      "tearDown",
+      "test_dna_discovery",
+      "setUp",
+      "test_init",
+      "TestOrchestrator",
+      "test_persona_mobilization"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_package_integrity.py": {
+    "hash": "9530a49a0ca64c44d9b5b914a18c5377",
+    "anchors": [
+      "test_imports",
+      "TestPackageIntegrity"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_palette.py": {
+    "hash": "b06d0ca42a262b25421d54262790f135",
+    "anchors": [
+      "TestPalette",
+      "test_init"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_parity_analyst.py": {
+    "hash": "da3ea79352a258fd7c76eec6197867e0",
+    "anchors": [
+      "TestParityanalyst",
+      "test_analyze_stack_gaps_success"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_penalty_engine.py": {
+    "hash": "482a0c483c5f5173265a5c841817f826",
+    "anchors": [
+      "test_apply_with_drain",
+      "TestPenaltyEngine",
+      "setUp",
+      "test_apply_no_penalties",
+      "test_ceiling_logic"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_persona_loader.py": {
+    "hash": "492e9c34dd3cd1f103a668a82f5ab801",
+    "anchors": [
+      "test_load_signatures",
+      "TestPersonaLoader"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_persona_manager.py": {
+    "hash": "fd708a4cd78030aaedd31f3413c47cad",
+    "anchors": [
+      "test_validate_census_logic",
+      "TestPersonamanager"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_phd_helpers.py": {
+    "hash": "55ab617ae408c6add7394ffc1e8dc027",
+    "anchors": [
+      "test_scoring_engine_basic",
+      "test_maintenance_engine_no_submodules",
+      "test_veto_rules",
+      "test_topology_engine",
+      "TestPhdHelpers",
+      "test_reflex_engine_trigger_none"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_probe.py": {
+    "hash": "e662f1bf07377307d16aa8465fc0a21b",
+    "anchors": [
+      "test_init",
+      "TestProbe"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_pyramid_analyst.py": {
+    "hash": "26a4bb70d87cb81ec251c815829abf2d",
+    "anchors": [
+      "test",
+      "test_analyze_distribution",
+      "mock_read",
+      "TestPyramidanalyst"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_python_personas.py": {
+    "hash": "c4db6336cdbaccb45b0735ebc6c15790",
+    "anchors": [
+      "TestPythonPersonas",
+      "test_personas_load_and_contract"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_quality_analyst.py": {
+    "hash": "267c18aa1d859bc31ec9524e6ed61b1f",
+    "anchors": [
+      "TestQualityanalyst",
+      "test_calculate_confidence_matrix"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_reflex_engine_phd.py": {
+    "hash": "422777853cd7f373bbf80edf1d2d701e",
+    "anchors": [
+      "TestReflexEnginePhd",
+      "test_trigger_auditor_sync",
+      "test_brittle_point_warning",
+      "test_trigger_voyager_healing"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_registry_compiler.py": {
+    "hash": "bb70eacd617469b49411dc6d7e4062a3",
+    "anchors": [
+      "test_compile_stacks_logic",
+      "TestRegistrycompiler"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_report_formatter.py": {
+    "hash": "d9034a2e6488c9760091767ad94f16a8",
+    "anchors": [
+      "test_format_vitals",
+      "test_format_quality_matrix",
+      "test_format_obfuscation_zone",
+      "TestReportFormatter"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_report_sections_engine.py": {
+    "hash": "a8ef0b0f7630b2e37443fa49918c67de",
+    "anchors": [
+      "setUp",
+      "test_format_vitals_table",
+      "TestReportSectionsEngine"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_rule_definition_judge.py": {
+    "hash": "1500cfa980f1df0079b9291213b04c0a",
+    "anchors": [
+      "test_validate_unsafe_exec",
+      "TestRuledefinitionjudge",
+      "test_is_in_analyzer_context",
+      "test_validate_safe_log"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_run_diagnostic.py": {
+    "hash": "24c42fb1d06c0403acde34a495b4e3d3",
+    "anchors": [
+      "test_main_execution_flow",
+      "TestRunDiagnostic"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_safety_assignment_engine.py": {
+    "hash": "c13d4012bbccf2e46fce2dd1d3d811ec",
+    "anchors": [
+      "TestSafetyAssignmentEngine",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_safety_definitions.py": {
+    "hash": "448a0a5ba307fcf3fce7b60cfb670797",
+    "anchors": [
+      "TestSafetyDefinitions",
+      "test_constants_presence"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_safety_heuristics.py": {
+    "hash": "1a948397abb278ca41ca8f5d4483cefc",
+    "anchors": [
+      "test_smoke",
+      "test_heuristics_logic",
+      "TestSafetyheuristics",
+      "MockUtils"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_safety_navigator.py": {
+    "hash": "1e39fa079876872026c645a24a110eaf",
+    "anchors": [
+      "TestSafetyNavigator",
+      "test_is_safe_in_rule",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_safe_context_judge.py": {
+    "hash": "706646aecb4692ccaa041f201dd24323",
+    "anchors": [
+      "TestSafeContextJudge",
+      "test_is_node_safe_in_rules",
+      "setUp",
+      "test_eval",
+      "test_is_node_safe_in_test_function"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_scale.py": {
+    "hash": "5b59df593ffe345f04b5320aab1e5376",
+    "anchors": [
+      "TestScale",
+      "test_init"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_scope.py": {
+    "hash": "8ae4e4298282c43ef7d2179468b7b7ea",
+    "anchors": [
+      "test_init",
+      "TestScope"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_score_calculator.py": {
+    "hash": "5d6c89979122d706def4d4b810d4ba9c",
+    "anchors": [
+      "test_calculate_final_score",
+      "TestScoreCalculator",
+      "test_score_penalties"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_scoring_engine_phd.py": {
+    "hash": "40f6c33d4870a12826e53ead61ad5469",
+    "anchors": [
+      "test_constraints",
+      "test_calculate_logic",
+      "TestScoringenginephd"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_scoring_metrics_engine.py": {
+    "hash": "8fab0842b37f1984a0b2dff4c67eec9d",
+    "anchors": [
+      "TestScoringMetricsEngine",
+      "test_calc_stability",
+      "setUp",
+      "test_calc_purity",
+      "test_calc_observability"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_scribe.py": {
+    "hash": "93cf856b87e27cf5d7033e1bb633e0b7",
+    "anchors": [
+      "test_init",
+      "TestScribe"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_self_awareness.py": {
+    "hash": "e00db9d7732d0cf067060adcff8e37ca",
+    "anchors": [
+      "MockPersona",
+      "simulation_run",
+      "_scan_content_for_patterns",
+      "perform_audit",
+      "tearDown",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "test_regex_veto",
+      "safe",
+      "setUp",
+      "test_simulation_of_active_code_in_agent",
+      "Simulator",
+      "simulation_execute",
+      "test_docstring_veto",
+      "test_simulation_of_rule_definition_ignored",
+      "test_simulation_of_gold_standard_active_code",
+      "__init__",
+      "TestSelfAwarenessFilter"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_semantic_context_analyst.py": {
+    "hash": "be057372e7ac2ca25f30f048a0105706",
+    "anchors": [
+      "test_smoke",
+      "TestSemanticcontextanalyst",
+      "test_logic",
+      "MockHeuristics",
+      "test_classify_intent"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_sentinel.py": {
+    "hash": "b2e768829e369e285524ff876d800fc0",
+    "anchors": [
+      "test_init",
+      "TestSentinel"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_sentinel_persona.py": {
+    "hash": "abe58700569bc08e45f473ae840855ed",
+    "anchors": [
+      "run",
+      "setUp",
+      "test_security_audit_logic",
+      "TestSentinelPersona"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_silent_error_detector.py": {
+    "hash": "d6750d8479ede8880d9dbf32b3789abe",
+    "anchors": [
+      "TestSilenterrordetector",
+      "test_detect_silent_pass",
+      "test_detect_silent_continue"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_source_code_parser.py": {
+    "hash": "e0917fb0ba4e069fd27f7204e7088010",
+    "anchors": [
+      "A",
+      "TestSourceCodeParser",
+      "b",
+      "setUp",
+      "MainActivity",
+      "test_complexity_phd",
+      "test_analyze_py_anatomy",
+      "test_analyze_kt_anatomy"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_source_code_parser_deep.py": {
+    "hash": "d842f91d83a7bf17a5b10afec613dbba",
+    "anchors": [
+      "test_python_parsing",
+      "TestSourceCodeParserDeep",
+      "MyClass",
+      "setUp",
+      "test_kotlin_parsing",
+      "test_complexity_calculation",
+      "my_func",
+      "MainScreen"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_spark.py": {
+    "hash": "664842ad515efd40ba4e980f77001777",
+    "anchors": [
+      "test_init",
+      "TestSpark"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_stability_ledger_deep.py": {
+    "hash": "cbbd998ac6cfa5b6549831853ff2cbc2",
+    "anchors": [
+      "test_get_file_metadata",
+      "tearDown",
+      "setUp",
+      "test_update_and_persistence",
+      "TestStabilityLedgerDeep",
+      "test_healing_detection"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_stream.py": {
+    "hash": "d08c208e2a4a55cd206d60a35a9bdfd0",
+    "anchors": [
+      "test_init",
+      "TestStream"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_structural_analyst.py": {
+    "hash": "7abf498fca75722c57c821f495ce7a68",
+    "anchors": [
+      "test_analyze_python_basic",
+      "TestStructuralAnalyst",
+      "Main",
+      "run",
+      "setUp",
+      "test_complexity_calculation"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_structural_analyst_deep.py": {
+    "hash": "ffce308c2f28e2a562453400e362f6aa",
+    "anchors": [
+      "test_python_analysis_full",
+      "TestStructuralAnalystDeep",
+      "test_logic_flaw_detection",
+      "test_component_mapping",
+      "_reason_about_objective",
+      "MyClass",
+      "setUp",
+      "test_maturity_metrics",
+      "test_import_extraction",
+      "test_complexity_calculation",
+      "my_func",
+      "complex_func"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_submodule_sync_logic.py": {
+    "hash": "f9205633d69d15c21a276711282943df",
+    "anchors": [
+      "TestSubmoduleSyncLogic",
+      "test_is_locked",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_support_agents.py": {
+    "hash": "ba3bf2bcf2ff8512d2b07d6d21d50462",
+    "anchors": [
+      "setUp",
+      "test_code_inspector_init",
+      "TestSupportAgents",
+      "test_markdown_structure_agent_logic",
+      "test_validation_agent_fallback",
+      "test_discovery_agent_init"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_support_complexity_fix.py": {
+    "hash": "c5dadc6600efd9980a2f7945abc8099e",
+    "anchors": [
+      "test_refactored_telemetry_intent",
+      "test_delegated_logic_node_auditing",
+      "test_safe_metadata_definition",
+      "setUp",
+      "TestSupportComplexityFix"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_support_extended.py": {
+    "hash": "501286876de57a0200e0850c84c7cb5a",
+    "anchors": [
+      "test_markdown_util_padding",
+      "test_markdown_util_deduplicate",
+      "test_cognitive_analyst_prompt_build",
+      "TestUtilsExtended"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_sync_engine_mocks.py": {
+    "hash": "84f74f290682abe45263f1580825845f",
+    "anchors": [
+      "tearDown",
+      "test_logic_success_no_diff",
+      "test_logic_syntax_veto",
+      "TestSyncEngineMocks",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_system_health.py": {
+    "hash": "8a79d80a69be3229bf655330fd9aa5f6",
+    "anchors": [
+      "test_context_engine_dna",
+      "TestSystemHealth",
+      "test_orchestrator_load",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_system_intelligence.py": {
+    "hash": "f3cd2cbf5dc2335631d140198eefb175",
+    "anchors": [
+      "tearDown",
+      "setUp",
+      "TestSystemIntelligence",
+      "test_criticality_mapping",
+      "Maestro",
+      "test_gold_standard_veto",
+      "test_stability_ledger_memory"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_task_executor.py": {
+    "hash": "93e64c43e44cc4b4da22028bb9c6005c",
+    "anchors": [
+      "failing_fn",
+      "test_run_parallel_mixed_results",
+      "test_run_parallel_error_isolation",
+      "task_fn",
+      "TestTaskexecutor"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_task_orchestrator.py": {
+    "hash": "aa804f8fa1f346cce5c93de7a9de8f01",
+    "anchors": [
+      "MockPersona",
+      "test_select_active_phds",
+      "test_run_targeted_verification",
+      "__init__",
+      "TestTaskorchestrator"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_telemetry_intent_judge.py": {
+    "hash": "0f77c6aed4fbfd02c252760dcac23d11",
+    "anchors": [
+      "test_judge_intent_logic",
+      "TestTelemetryintentjudge"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_telemetry_maturity_logic.py": {
+    "hash": "5d0935e2c12901f02368fd99151cda19",
+    "anchors": [
+      "test_is_simple_time_subtraction",
+      "setUp",
+      "TestTelemetryMaturityLogic"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_testify.py": {
+    "hash": "2c95e89595f29266beb7e468266349aa",
+    "anchors": [
+      "test_init",
+      "TestTestify"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_test_discovery_logic.py": {
+    "hash": "83c46b2d2018d0298fbf6b18f6c95a98",
+    "anchors": [
+      "setUp",
+      "test_get_metrics",
+      "TestTestDiscoveryLogic"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_test_navigator.py": {
+    "hash": "796899e55d6a26a984521584e9a75360",
+    "anchors": [
+      "test_find_tests_for_files",
+      "TestTestNavigator",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_test_runner.py": {
+    "hash": "3228ac656aa355fed775190668d01e51",
+    "anchors": [
+      "test_parse_output",
+      "test_run_all",
+      "setUp",
+      "TestTestRunner"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_topology_engine_phd.py": {
+    "hash": "41370172cd78ed2f6e41a16d0cd863e9",
+    "anchors": [
+      "test_discover_files",
+      "test_should_process_logic",
+      "TestTopologyenginephd"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_update_agent_submodule.py": {
+    "hash": "733db05d8d6fe889b182cb946e2b9853",
+    "anchors": [
+      "test_smoke",
+      "TestUpdateagentsubmodule"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_update_transaction.py": {
+    "hash": "0f7c23adf4ec83ea19098ea53637c93b",
+    "anchors": [
+      "TestUpdateTransaction",
+      "test_integrity_check_failure",
+      "test_rollback_on_failure",
+      "test_execute_success"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_utils_engines.py": {
+    "hash": "e75801ae9b0f28d8903659910b03bac8",
+    "anchors": [
+      "TestVetoStructuralEngine",
+      "test_is_comment",
+      "test_is_locked_no_file",
+      "TestVetoCriteriaEngine",
+      "TestContextMappingLogic",
+      "test_is_rule_def",
+      "test_check_permissions_test_file",
+      "setUp",
+      "TestSubmoduleSyncLogic",
+      "validado",
+      "test_get_submodule_delta_with_delta",
+      "test_is_docstring",
+      "test_is_math_context_true",
+      "test_is_math_context_false_money",
+      "test_get_initial_info_test_domain",
+      "test_get_initial_info",
+      "test_get_submodule_delta_no_remote",
+      "test_check_permissions_production",
+      "test_is_docstring_multiline"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_utils_interface.py": {
+    "hash": "5d2a16f39c8a1389eedfb4132731fd98",
+    "anchors": [
+      "TestUtilsInterface",
+      "test_cli_main_no_args",
+      "test_update_transaction_init",
+      "test_auto_deobfuscator_init",
+      "test_git_client_initialization",
+      "test_file_system_scanner_init"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_validator.py": {
+    "hash": "d12a2d15abd82abe5bbc656c4223ae8b",
+    "anchors": [
+      "test_validate_integrity",
+      "setUp",
+      "test_check_parity",
+      "TestCoreValidator"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_validator_deep.py": {
+    "hash": "5d62df636d399336dbb39b69569f097a",
+    "anchors": [
+      "test_results_parsing_success",
+      "tearDown",
+      "setUp",
+      "TestValidatorDeep",
+      "test_health_verification_flow",
+      "test_results_parsing_failure"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_vault.py": {
+    "hash": "acb9b94f8c3fe4e83161475b999bd578",
+    "anchors": [
+      "test_init",
+      "TestVault"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_vault_persona.py": {
+    "hash": "8f0eb0f698ddbc57c7a5e46d34afef35",
+    "anchors": [
+      "test_financial_audit_logic",
+      "setUp",
+      "TestVaultPersona"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_verify_report_lint.py": {
+    "hash": "51c99e4420e572adaf68bda7869bb995",
+    "anchors": [
+      "TestVerifyReportLint",
+      "test_lint_rules",
+      "test_main_exists"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_veto_criteria_engine.py": {
+    "hash": "5b071667a794aab1f5a8a49dee3753e4",
+    "anchors": [
+      "test_is_math_context",
+      "TestVetoCriteriaEngine",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_veto_rules_phd.py": {
+    "hash": "c354694eda95b19d98e44dc71ed2580f",
+    "anchors": [
+      "test_veto_logic",
+      "test_smoke",
+      "TestVetorulesphd",
+      "is_strategic_phrase",
+      "is_obfuscated_vulnerability",
+      "MockHeuristic"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_veto_structural_engine.py": {
+    "hash": "5b9a6c0644fbaf66dc4e69767af7fb63",
+    "anchors": [
+      "test_is_comment",
+      "setUp",
+      "TestVetoStructuralEngine"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_voyager.py": {
+    "hash": "7597b4c85b2f3448bd62fe0f34e1f1f7",
+    "anchors": [
+      "TestVoyager",
+      "test_perform_audit_logic",
+      "test_perform_active_healing"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_vulnerability_heuristic_deep.py": {
+    "hash": "31b9c8d9a5c0b14c4074c021e8872256",
+    "anchors": [
+      "test_strategic_phrase_detection",
+      "TestVulnerabilityHeuristicDeep",
+      "setUp",
+      "test_obfuscated_eval_detection",
+      "run_objective",
+      "test_obfuscated_exec_detection"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_warden.py": {
+    "hash": "0966858687d1f2e9575593b63298d0aa",
+    "anchors": [
+      "test_init",
+      "TestWarden"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/base.py": {
+    "hash": "03762f95ce380b3e6e7ce58ae32dcfcb",
+    "anchors": [
+      "_reason_about_objective",
+      "find_patterns",
+      "perform_strategic_audit",
+      "get_system_prompt",
+      "set_context",
+      "__init__",
+      "BaseActivePersona",
+      "get_maturity_metrics",
+      "perform_audit",
+      "_initialize_support_tools",
+      "read_project_file",
+      "_log_performance",
+      "reason",
+      "analyze_logic"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/core/compiler.py": {
+    "hash": "cb71cad76057580b8a581d85813d3adc",
+    "anchors": [
+      "compile_all",
+      "__init__",
+      "Compiler"
+    ],
+    "type": "CORE"
+  },
+  "src_local/core/diagnostic_pipeline.py": {
+    "hash": "f78693c3d42648f562fbee8d03c4848e",
+    "anchors": [
+      "_reset",
+      "DiagnosticPipeline",
+      "_run_atomic_pipeline",
+      "execute",
+      "__init__"
+    ],
+    "type": "DOC"
+  },
+  "src_local/core/orchestrator.py": {
+    "hash": "9ccbda174273f0af8fc3efe308d9e426",
+    "anchors": [
+      "Orchestrator",
+      "_log_performance",
+      "generate_full_diagnostic",
+      "_sync_and_ledger",
+      "set_thinking_depth",
+      "run_auto_healing",
+      "_init_engines",
+      "run_strategic_audit",
+      "_init_tools",
+      "add_persona",
+      "_run_targeted_verification",
+      "_build_audit_report_queue",
+      "get_system_health_360",
+      "_update_cache",
+      "__init__",
+      "_run_obfuscation_scan"
+    ],
+    "type": "CORE"
+  },
+  "src_local/core/task_orchestrator.py": {
+    "hash": "2513c3ec0e2e8029f52d98c10046101e",
+    "anchors": [
+      "audit_task",
+      "run_targeted_verification",
+      "run_audit_cycle",
+      "select_active_phds",
+      "TaskOrchestrator",
+      "is_eligible",
+      "__init__"
+    ],
+    "type": "CORE"
+  },
+  "src_local/core/validator.py": {
+    "hash": "12003639e944223c44969e2fd8ea683a",
+    "anchors": [
+      "_parse_results",
+      "validate_system_integrity",
+      "_check_platform_parity",
+      "CoreValidator",
+      "_extract_count",
+      "verify_core_health",
+      "__init__"
+    ],
+    "type": "CORE"
+  },
+  "src_local/interface/cli.py": {
+    "hash": "ca38623ac714c881b9173949da22028f",
+    "anchors": [
+      "main"
+    ],
+    "type": "LOGIC"
+  },
+  "src_local/interface/gui_native.py": {
+    "hash": "7562065cdaa23b4f9f79cf70765f7fe4",
+    "anchors": [
+      "NativeGUI",
+      "_refresh_findings_view",
+      "_handle_chat_query",
+      "think",
+      "job",
+      "log_message",
+      "run_auto_healing_async",
+      "_update_findings_ui",
+      "open_report",
+      "_init_components",
+      "_copy_selected_issue",
+      "__init__",
+      "_update_health_ui",
+      "run_audit_async",
+      "_show_view"
+    ],
+    "type": "INTERFACE"
+  },
+  "src_local/utils/analysis_engine_phd.py": {
+    "hash": "51f7feddba7aa082d5ffd61dc0698e81",
+    "anchors": [
+      "_test_quality",
+      "_get_init",
+      "AnalysisEnginePhd",
+      "analyze"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/cache_manager.py": {
+    "hash": "3c2309bc900730d7ead5ec807e61522d",
+    "anchors": [
+      "save",
+      "_load",
+      "update",
+      "__init__",
+      "is_changed",
+      "get_file_hash",
+      "CacheManager"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/cognitive_engine.py": {
+    "hash": "2967215813185c28918ecdc56520d393",
+    "anchors": [
+      "reason",
+      "__init__",
+      "__new__",
+      "CognitiveEngine",
+      "set_thinking_depth",
+      "release",
+      "load_model"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/compliance_standard.py": {
+    "hash": "7074f2a450398458a8bb52d6a1d1b36c",
+    "anchors": [
+      "process_secure_payload",
+      "ComplianceStandard"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/conflict_policy_phd.py": {
+    "hash": "c9a0da3516f3b4a7dcb5a604b69e2421",
+    "anchors": [
+      "resolve_file",
+      "_resolve_theirs",
+      "ConflictPolicyPhd",
+      "__init__",
+      "_resolve_cache",
+      "_resolve_json",
+      "_resolve_ours"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/context_engine.py": {
+    "hash": "018eef4fae9a608930b07e3ea9647966",
+    "anchors": [
+      "_analyze_test_quality",
+      "_get_cached_content",
+      "_analyze_single_file",
+      "_find_dependents",
+      "_process_files_in_batch",
+      "_get_initial_info",
+      "ContextEngine",
+      "_register_file",
+      "_perform_deep_analysis",
+      "get_criticality_score",
+      "_get_scanner",
+      "_discover_identity",
+      "analyze_stack_parity",
+      "analyze_project",
+      "__init__",
+      "_inject_support",
+      "_initialize_support_tools",
+      "_build_dependency_map"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/context_mapping_logic.py": {
+    "hash": "6b77e91148fa02aade46491c44c9f541",
+    "anchors": [
+      "process_batch",
+      "ContextMappingLogic",
+      "_pre_read_files",
+      "get_initial_info"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/dependency_auditor.py": {
+    "hash": "0886cf9368f2aa76b01d38d1aa790168",
+    "anchors": [
+      "_release_lock",
+      "check_submodule_status",
+      "sync_submodule",
+      "_ensure_initialized",
+      "_validate_pre_conditions",
+      "_verify_system_integrity",
+      "__init__",
+      "_acquire_lock",
+      "_get_topology",
+      "DependencyAuditor"
+    ],
+    "type": "DOC"
+  },
+  "src_local/utils/file_system_scanner.py": {
+    "hash": "de2dc09718b8b6cf25648db2c778c49e",
+    "anchors": [
+      "FileSystemScanner",
+      "scan_all_filenames",
+      "_should_skip",
+      "get_analyzable_files",
+      "__init__"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/finding_deduplicator.py": {
+    "hash": "4c2be981f9d647cfd1685a7a46100215",
+    "anchors": [
+      "_normalize_path",
+      "FindingDeduplicator",
+      "_handle_finding_dict",
+      "_resolve_severity_conflict",
+      "_handle_raw_text",
+      "__init__",
+      "deduplicate"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/git_client.py": {
+    "hash": "b50ac3d5d704eb20a25599ca5e0c44dc",
+    "anchors": [
+      "rebase",
+      "get_head_hash",
+      "get_current_branch",
+      "get_output",
+      "discover_remote",
+      "run",
+      "reset_hard",
+      "stash_push",
+      "get_commit_count",
+      "fetch_prune",
+      "stash_pop",
+      "rebase_abort",
+      "get_tracking_branch",
+      "__init__",
+      "GitClient"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/git_operations_phd.py": {
+    "hash": "081af58ed981e54c86700d54d5a31c1b",
+    "anchors": [
+      "discover_remote",
+      "GitOperationsPhd",
+      "transactional_rollback",
+      "is_valid_repo",
+      "run_git",
+      "get_topology",
+      "run_git_out",
+      "get_metrics"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/indexer.py": {
+    "hash": "3cffeb7084b736389a067a24100c366c",
+    "anchors": [
+      "__init__",
+      "Indexer",
+      "_extract_metadata",
+      "update_index"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/logging_config.py": {
+    "hash": "da8903980491f76737cf0ab5defcc194",
+    "anchors": [
+      "log_performance",
+      "configure_logging",
+      "setup_logging",
+      "format",
+      "SimpleFormatter"
+    ],
+    "type": "CONFIG"
+  },
+  "src_local/utils/maintenance_engine_phd.py": {
+    "hash": "f986e265744ed5966158ba7580b48855",
+    "anchors": [
+      "clean_submodules",
+      "merge_skills_index",
+      "MaintenanceEnginePhd"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/memory_engine.py": {
+    "hash": "89748855b8df67fded0b6f2f42973566",
+    "anchors": [
+      "index_project",
+      "MemoryEngine",
+      "_load_index",
+      "save_index",
+      "search_context",
+      "_extract_anchors",
+      "__init__"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/persona_loader.py": {
+    "hash": "41f8bb1519fdfd79d82f6ac604f762fc",
+    "anchors": [
+      "mobilize_all",
+      "load_personas",
+      "PersonaLoader"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/reflex_engine_phd.py": {
+    "hash": "c495e7dc5e5caa119dff671cc138c4ff",
+    "anchors": [
+      "ReflexEnginePhd",
+      "trigger"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/scoring_engine_phd.py": {
+    "hash": "51b59d63a84bca0ee5f37fa9d13cc806",
+    "anchors": [
+      "_apply_constraints",
+      "_excellence",
+      "calculate",
+      "_purity",
+      "ScoringEnginePhd",
+      "_security",
+      "_obs",
+      "_stability"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/stability_ledger.py": {
+    "hash": "81dffcdd63f9bae4de571432b73f6697",
+    "anchors": [
+      "__init__",
+      "StabilityLedger",
+      "_detect_healed_files",
+      "update",
+      "_update_file_status",
+      "clear",
+      "get_file_data"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/submodule_sync_logic.py": {
+    "hash": "9964e1ed7fdbded82e607cf9533e6120",
+    "anchors": [
+      "get_submodule_delta",
+      "SubmoduleSyncLogic",
+      "is_locked"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/topology_engine_phd.py": {
+    "hash": "21856641c335f7eda943d6b300c067e0",
+    "anchors": [
+      "should_process",
+      "discover_files",
+      "TopologyEnginePhd",
+      "get_search_dirs"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/update_transaction.py": {
+    "hash": "42961f76f9dccd94aeb0a2d6d368b24a",
+    "anchors": [
+      "UpdateTransaction",
+      "execute",
+      "_sync_fetch",
+      "_rollback",
+      "_perform_update",
+      "_handle_conflict",
+      "_verify_system_integrity",
+      "__init__"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/veto_rules_phd.py": {
+    "hash": "bb6b1edb89d389ba5b8b49d2e28267ed",
+    "anchors": [
+      "should_veto",
+      "is_technical_math",
+      "apply_test_veto",
+      "is_rule_def",
+      "VetoRulesPhd"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/interface/components/health_gauge.py": {
+    "hash": "917916ba0afa032cce4894d9d9034abf",
+    "anchors": [
+      "_get_color",
+      "HealthGauge",
+      "set_health",
+      "__init__",
+      "_draw_gauge"
+    ],
+    "type": "LOGIC"
+  },
+  "src_local/agents/Support/ast_navigator.py": {
+    "hash": "970595da70327b0df0da175f321ad450",
+    "anchors": [
+      "is_call_to",
+      "check_safety_rules",
+      "ASTNavigator",
+      "get_parent_chain",
+      "is_descendant",
+      "__init__",
+      "is_in_dict_value"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/ast_node_inspector.py": {
+    "hash": "c0db1151f0481d652a9843b3478cdddf",
+    "anchors": [
+      "ASTNodeInspector",
+      "is_descendant",
+      "is_call_to"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/ast_traversal_logic.py": {
+    "hash": "243bed0395d1c28e89c5696c3052a15e",
+    "anchors": [
+      "_inspector",
+      "is_call_to",
+      "get_parent_chain",
+      "is_descendant",
+      "is_in_dict_value",
+      "ASTTraversalLogic"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/audit_engine.py": {
+    "hash": "0ef6ddeb31c9d11fc7eacba865bb3700",
+    "anchors": [
+      "_build_scan_context",
+      "_log_perf",
+      "scan_content",
+      "__init__",
+      "scan_multiple_files",
+      "AuditEngine"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Support/audit_risk_engine.py": {
+    "hash": "c50603091669413f4f89e25fcaf9fe3c",
+    "anchors": [
+      "AuditRiskEngine",
+      "create_entry",
+      "map_risk_type"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Support/audit_scanner_engine.py": {
+    "hash": "dda57bd39cdc4df75faebc3095aedeec",
+    "anchors": [
+      "AuditScannerEngine",
+      "_validate_risk_level",
+      "scan_pattern",
+      "_create_entry",
+      "_parse_severity",
+      "_is_error_report"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Support/battle_plan_formatter.py": {
+    "hash": "7c4a2cb45ec0ba542a9061e88dfd5577",
+    "anchors": [
+      "BattlePlanFormatter",
+      "_format_section_if_active",
+      "_get_item_key",
+      "_format_impact_summary",
+      "_format_item",
+      "_group_by_severity",
+      "format"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/battle_plan_sections_engine.py": {
+    "hash": "7e5e75d8b880703cc1222a2c88835114",
+    "anchors": [
+      "format_item_entry",
+      "BattlePlanSectionsEngine",
+      "format_severity_group",
+      "filter_active_results"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/call_safety_judge.py": {
+    "hash": "f6594c6a42ce4593f447d3fd1ab7ec42",
+    "anchors": [
+      "__init__",
+      "CallSafetyJudge",
+      "_is_dangerous_call",
+      "validate"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/component_classifier.py": {
+    "hash": "6148c920b55b1a48fa7009ce00990cbe",
+    "anchors": [
+      "_is_data",
+      "_is_doc",
+      "ComponentClassifier",
+      "_is_agent",
+      "_is_config",
+      "_is_util",
+      "_is_interface",
+      "map_type",
+      "_is_core"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/connectivity_mapper.py": {
+    "hash": "eaefbf5699a897951021565d0b307f54",
+    "anchors": [
+      "ConnectivityMapper",
+      "calculate_metrics"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/coverage_auditor.py": {
+    "hash": "cc99847c6b57bc18785ace43121212b2",
+    "anchors": [
+      "detect_test",
+      "CoverageAuditor"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Support/diagnostic_strategist.py": {
+    "hash": "3402aff489e7499d0457ba0fd275bf41",
+    "anchors": [
+      "calculate_efficiency",
+      "DiagnosticStrategist",
+      "plan_targeted_verification"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Support/dna_profiler.py": {
+    "hash": "b6a48fa9b506255eaeab93c6f4c3a4f6",
+    "anchors": [
+      "discover_identity",
+      "DNAProfiler"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/healer.py": {
+    "hash": "1999ad04c7b54bbbf7509ef4c2a519eb",
+    "anchors": [
+      "_heal_generic",
+      "_reason_about_objective",
+      "heal_finding",
+      "get_system_prompt",
+      "HealerPersona",
+      "perform_audit",
+      "_heal_security",
+      "_heal_stability",
+      "_apply_cure",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/health_synthesizer.py": {
+    "hash": "82b13605ab40d96ff6afd2db6d277e74",
+    "anchors": [
+      "_check_dependency_reflex",
+      "_calculate_rigorous_3_0",
+      "_get_maturity",
+      "__init__",
+      "trigger_reflexes",
+      "get_topology_issues",
+      "synthesize_360",
+      "_get_dark_matter",
+      "HealthSynthesizer",
+      "_get_brittle_points"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/infrastructure_assembler.py": {
+    "hash": "115767a4262c01902b545a3330cc88c9",
+    "anchors": [
+      "assemble_orchestrator_tools",
+      "InfrastructureAssembler",
+      "assemble_core_support"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/integrity_guardian.py": {
+    "hash": "7f82ecd60860b1e3de5fd98ac74bd257",
+    "anchors": [
+      "detect_vulnerabilities",
+      "is_relevant_file",
+      "IntegrityGuardian",
+      "_analyze_brittle_context",
+      "get_audit_mission",
+      "_analyze_error_silencing"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/intent_heuristics_engine.py": {
+    "hash": "082924bf6ea642e364945b71648fc4b4",
+    "anchors": [
+      "IntentHeuristicsEngine",
+      "_is_analysis_comparison",
+      "_is_inside_test_method",
+      "is_metadata_context"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/line_veto.py": {
+    "hash": "17e9fb5c9e380d8540d5930ad71e2da1",
+    "anchors": [
+      "LineVeto",
+      "_is_rule_definition",
+      "_is_domain_excluded",
+      "_is_structural_veto",
+      "_is_permission_or_content_veto",
+      "should_skip",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/logic_auditor.py": {
+    "hash": "271a2ea6ecfaaf328f523a233dfd9847",
+    "anchors": [
+      "is_interaction_safe",
+      "LogicAuditor",
+      "_audit_nodes",
+      "scan_flaws",
+      "_audit_observability",
+      "__init__"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Support/logic_node_auditor.py": {
+    "hash": "5af982c5272d4278d19ca585870c003a",
+    "anchors": [
+      "__init__",
+      "LogicNodeAuditor",
+      "audit"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Support/markdown_sanitizer.py": {
+    "hash": "ad425ce16690d15805b2d2ff7db7922b",
+    "anchors": [
+      "_cleanup",
+      "sanitize",
+      "MarkdownSanitizer",
+      "_ensure_h1"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/maturity_evaluator.py": {
+    "hash": "cf6481d54f89e748e450815ce1c97bc7",
+    "anchors": [
+      "calculate_maturity",
+      "evaluate_persona",
+      "MaturityEvaluator",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/memory_persistence.py": {
+    "hash": "fe1fbe2edb4ae0ec89285a69f0cd2a50",
+    "anchors": [
+      "load_ledger",
+      "get_file_metadata",
+      "MemoryPersistence",
+      "__init__",
+      "save_ledger"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/meta_analysis_detector.py": {
+    "hash": "3baced1ba1c39c8a8d3c53aef72a91b5",
+    "anchors": [
+      "_is_regex_call",
+      "MetaAnalysisDetector",
+      "is_meta_analysis_node",
+      "__init__",
+      "_is_isinstance_ast_check"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/metrics_assembler.py": {
+    "hash": "72214e487fe5412e95526d5c9c55d10b",
+    "anchors": [
+      "get_orchestration_metrics",
+      "MetricsAssembler",
+      "gather_qa_data"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/obfuscation_cleaner_engine.py": {
+    "hash": "26e8aca24f35dd834ccf6f3ce3f3665d",
+    "anchors": [
+      "visit_BinOp",
+      "ReplacementCollector",
+      "get_offset",
+      "ObfuscationCleanerEngine",
+      "__init__",
+      "collect_replacements"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/obfuscation_hunter.py": {
+    "hash": "39550e73ef43a58b48096b15df058733",
+    "anchors": [
+      "_is_addition_node",
+      "_scan_tree",
+      "_check_node",
+      "scan_file",
+      "ObfuscationHunter",
+      "_is_hidden",
+      "__init__",
+      "_should_skip_node",
+      "_resolve_string_concat"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/obfuscation_logic_engine.py": {
+    "hash": "ecc67524823481c8954327d07d47f8af",
+    "anchors": [
+      "_is_fragmented",
+      "check_dangerous_keywords",
+      "resolve_constant",
+      "ObfuscationLogicEngine"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/parity_analyst.py": {
+    "hash": "9b21d1aec2b486283ff4ee7362df4049",
+    "anchors": [
+      "ParityAnalyst",
+      "_detect_gaps",
+      "analyze_stack_gaps"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/penalty_engine.py": {
+    "hash": "005c686c3230653fa36b9685e54a4c8a",
+    "anchors": [
+      "PenaltyEngine",
+      "get_pilar_adjustments",
+      "apply"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/pyramid_analyst.py": {
+    "hash": "422856f8e45e136162856dcb2a4b3f86",
+    "anchors": [
+      "PyramidAnalyst",
+      "analyze"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/quality_analyst.py": {
+    "hash": "842e3d2bef06572a0b2d861b047a33cc",
+    "anchors": [
+      "QualityAnalyst",
+      "calculate_confidence_matrix",
+      "_find_test_for_module"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/registry_compiler.py": {
+    "hash": "61b8946e13deb9ca3e14f3d9631541bc",
+    "anchors": [
+      "RegistryCompiler",
+      "compile_stacks"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/report_formatter.py": {
+    "hash": "31056f54e043e4ae62efbbf350670b4f",
+    "anchors": [
+      "format_obfuscation_zone",
+      "ReportFormatter",
+      "_format_op_status_table",
+      "format_health_decomposition",
+      "format_efficiency",
+      "format_vitals",
+      "format_header",
+      "format_battle_plan",
+      "format_entropy",
+      "format_quality_matrix",
+      "__init__",
+      "_get_health_status_label"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Support/report_sections_engine.py": {
+    "hash": "f8726ca77b47ca9c9c8aed74b6dfba60",
+    "anchors": [
+      "_add_purity_points",
+      "ReportSectionsEngine",
+      "_add_obs_points",
+      "_add_stability_points",
+      "_add_excellence_points",
+      "format_vitals_table",
+      "format_roadmap"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Support/rule_definition_judge.py": {
+    "hash": "def15b3134e2ddc08d2a37fc9ca48302",
+    "anchors": [
+      "is_in_analyzer_context",
+      "RuleDefinitionJudge",
+      "validate"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/safety_assignment_engine.py": {
+    "hash": "39ad8ec82d28ab4c493df65c56004c57",
+    "anchors": [
+      "SafetyAssignmentEngine",
+      "_is_assignment_to_safe",
+      "is_in_metadata_assignment",
+      "_is_safe_name"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/safety_definitions.py": {
+    "hash": "04a6fef1627a81f20936e2802f16d709",
+    "anchors": [],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/safety_heuristics.py": {
+    "hash": "ccf3beca3bcf635407589cf44a915921",
+    "anchors": [
+      "is_inside_rule_definition",
+      "is_dangerous_call",
+      "SafetyHeuristics",
+      "is_meta_analysis_node",
+      "__init__",
+      "is_inside_log_call"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/safety_navigator.py": {
+    "hash": "4834b83acebfb2c66a40112a08d2fa7b",
+    "anchors": [
+      "__init__",
+      "SafetyNavigator",
+      "is_being_executed",
+      "is_safe_context"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/safe_context_judge.py": {
+    "hash": "cb4cb8821a418771b87752cd425db4da",
+    "anchors": [
+      "__init__",
+      "is_node_safe",
+      "SafeContextJudge"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/score_calculator.py": {
+    "hash": "3b6d0a378c8d33d6fbda84b49ea27556",
+    "anchors": [
+      "__init__",
+      "ScoreCalculator",
+      "calculate_final_score"
+    ],
+    "type": "CORE"
+  },
+  "src_local/agents/Support/scoring_metrics_engine.py": {
+    "hash": "71ea82f3771860fec4e4b8573bb35ee6",
+    "anchors": [
+      "calc_purity",
+      "ScoringMetricsEngine",
+      "calc_security",
+      "calc_stability",
+      "calc_observability",
+      "calc_excellence"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/semantic_context_analyst.py": {
+    "hash": "589e0b0a3184b5ab85cf8061e4da9356",
+    "anchors": [
+      "SemanticContextAnalyst",
+      "_is_metadata_context",
+      "classify_intent",
+      "__init__",
+      "map_component_type",
+      "_is_observability_context"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/silent_error_detector.py": {
+    "hash": "91a94e0fecd8fa43d71115bc7bc77a75",
+    "anchors": [
+      "_create_issue",
+      "_is_silent_except",
+      "detect",
+      "SilentErrorDetector",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/source_code_parser.py": {
+    "hash": "a9c104b820e90d88b834e7cf6e56e5b2",
+    "anchors": [
+      "analyze_py",
+      "analyze_kt",
+      "calculate_py_complexity",
+      "extract_py_imports",
+      "SourceCodeParser",
+      "calculate_kt_complexity"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/structural_analyst.py": {
+    "hash": "93630be806b42f8ce582d2c3fe1bfbf2",
+    "anchors": [
+      "analyze_file_logic",
+      "should_ignore",
+      "__init__",
+      "map_component_type",
+      "calculate_maturity",
+      "StructuralAnalyst",
+      "analyze_logic_flaws",
+      "read_project_file",
+      "analyze_intent",
+      "_analyze_raw",
+      "is_analyable",
+      "analyze_python"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/task_executor.py": {
+    "hash": "b253ecd4ea97cb9e6daea26f2cca1142",
+    "anchors": [
+      "run_parallel",
+      "TaskExecutor",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/telemetry_intent_judge.py": {
+    "hash": "29c803ecb5501e273f1b61cda5316cf4",
+    "anchors": [
+      "_check_observability_context",
+      "judge_intent",
+      "_check_logic_and_standard",
+      "_check_definition_and_obs",
+      "__init__",
+      "_is_inside_critical_report",
+      "TelemetryIntentJudge"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/telemetry_maturity_logic.py": {
+    "hash": "2dcf303be42e65952ec6c6b7c3e5da87",
+    "anchors": [
+      "TelemetryMaturityLogic",
+      "is_tele_name",
+      "is_simple_time_subtraction",
+      "is_assigned_to_log_variable"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/test_discovery_logic.py": {
+    "hash": "4f863dbf36147ae4e10dcd4f3586b37a",
+    "anchors": [
+      "is_inside_test_method",
+      "TestDiscoveryLogic"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/test_navigator.py": {
+    "hash": "25b532cd1b91c07befcf51518c6eeb50",
+    "anchors": [
+      "TestNavigator",
+      "_is_inside_assertion",
+      "_is_inside_test_method",
+      "__init__",
+      "is_inside_test_context"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/test_refiner.py": {
+    "hash": "81fb6575f6d78aa0c99c03ec5eae0524",
+    "anchors": [
+      "suggest_test_case",
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "TestRefiner",
+      "__init__",
+      "analyze_failure"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/test_runner.py": {
+    "hash": "315015b14133cd6abf819c868e1530a8",
+    "anchors": [
+      "TestRunner",
+      "_parse_output",
+      "run_unittest_discover",
+      "run_selective_tests",
+      "_ensure_components",
+      "run_parallel_discovery",
+      "_consolidate_results",
+      "__init__"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/veto_criteria_engine.py": {
+    "hash": "bc25ded2209d851c77ce40dd05df26df",
+    "anchors": [
+      "VetoCriteriaEngine",
+      "is_rule_def",
+      "is_math_context",
+      "check_permissions"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/veto_rules.py": {
+    "hash": "36a07c39631da5375846b6822515e3f8",
+    "anchors": [
+      "is_technical_math_context",
+      "is_domain_excluded",
+      "is_docstring",
+      "is_rule_definition",
+      "check_test_permissions",
+      "VetoRules"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/veto_structural_engine.py": {
+    "hash": "51d1afaa91346c34e5baa7aad7606a12",
+    "anchors": [
+      "_is_single_line_docstring",
+      "is_docstring",
+      "VetoStructuralEngine",
+      "is_comment"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/vulnerability_heuristic.py": {
+    "hash": "b198c00490be9f61edc9b7c9b800312b",
+    "anchors": [
+      "is_obfuscated_vulnerability",
+      "VulnerabilityHeuristic",
+      "is_strategic_phrase"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Python/Audit/bolt.py": {
+    "hash": "389505f5c5f35c3a79d89491a6ae4e3b",
+    "anchors": [
+      "BoltPersona",
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Python/Audit/metric.py": {
+    "hash": "88df825ca8505cb0f7b4b28638b231f4",
+    "anchors": [
+      "perform_audit",
+      "MetricPersona",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "perform_audit_rules",
+      "__init__"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Python/Audit/nebula.py": {
+    "hash": "5617f2b3da00b20d80c690e0b282ccf7",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "NebulaPersona",
+      "__init__"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Python/Audit/probe.py": {
+    "hash": "baad67db78dcda4c84c5d91752e574ad",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "ProbePersona",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Python/Audit/scale.py": {
+    "hash": "3cb9620be2248d2d117dcd32ab7afba3",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "ScalePersona",
+      "__init__"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Python/Audit/scope.py": {
+    "hash": "3deeac59fda64b932728f95c9ec99db6",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "ScopePersona",
+      "__init__"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Python/Audit/testify.py": {
+    "hash": "fbe934399eaa5ff3374b0cb3556a3c26",
+    "anchors": [
+      "TestifyPersona",
+      "test_",
+      "perform_audit",
+      "analyze_test_pyramid",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "_interpret_failures",
+      "analyze_test_quality_matrix",
+      "run_test_suite",
+      "__init__"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Python/Content/echo.py": {
+    "hash": "7ed360586cfea9a7dcb92823ed27f1c4",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "EchoPersona",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Python/Content/forge.py": {
+    "hash": "fc0d213d47e585de2fcef415a301255c",
+    "anchors": [
+      "validate_code_safety",
+      "perform_audit",
+      "ForgePersona",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Python/Content/globe.py": {
+    "hash": "e81ee6aed6a4e1c323fd2b24c6badb97",
+    "anchors": [
+      "GlobePersona",
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Python/Content/hype.py": {
+    "hash": "f274cdfad4952e140f3c7cb5f29ad3b3",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__",
+      "HypePersona"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Python/Content/mantra.py": {
+    "hash": "9a644a2222beec568a1c48f606cd3c55",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__",
+      "MantraPersona"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Python/Content/palette.py": {
+    "hash": "5a817e86a25e6691da375e4f090aaef8",
+    "anchors": [
+      "PalettePersona",
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Python/Content/scribe.py": {
+    "hash": "3c7337d4e1b20100aa23e9bf559f056b",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__",
+      "ScribePersona"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Python/Strategic/director.py": {
+    "hash": "fe25649fd0801bd1435150fb2a1222fc",
+    "anchors": [
+      "DirectorPersona",
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "format_360_report",
+      "__init__",
+      "_deduplicate_results"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Python/Strategic/sentinel.py": {
+    "hash": "ea0279b1ec280c11e04b89980001d973",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "SentinelPersona",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Python/Strategic/vault.py": {
+    "hash": "bac3bfe2e9ce7febe3523460c552923a",
+    "anchors": [
+      "VaultPersona",
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Python/Strategic/voyager.py": {
+    "hash": "fd3d4b7ccc552f321f9cf48829cd92aa",
+    "anchors": [
+      "VoyagerPersona",
+      "suggest_auto_healing",
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "perform_active_healing",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Python/Strategic/warden.py": {
+    "hash": "da36e51c91151edf17dc2f4c0f1e91d0",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__",
+      "WardenPersona"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Python/System/bridge.py": {
+    "hash": "c07f6043b08041b5ae1d1a05da6962e9",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "BridgePersona",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Python/System/cache.py": {
+    "hash": "12a45f7a91c2f9928afee694467a22b5",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__",
+      "CachePersona"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Python/System/flow.py": {
+    "hash": "e1acff07e7c6015c3fa681b4a91332e9",
+    "anchors": [
+      "perform_audit",
+      "FlowPersona",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Python/System/hermes.py": {
+    "hash": "3e93f205c05772afd9b1e4f890984411",
+    "anchors": [
+      "perform_audit",
+      "HermesPersona",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Python/System/neural.py": {
+    "hash": "c20be9927518066cf95f3130a2fe7186",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "NeuralPersona",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Python/System/nexus.py": {
+    "hash": "0fe320f5c0022437f0c7253fb8e57254",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__",
+      "NexusPersona"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Python/System/spark.py": {
+    "hash": "84a04863919e088901b26b29e4944d69",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "SparkPersona",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Python/System/stream.py": {
+    "hash": "ac127a8b7480118e1fb35df8af856775",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "StreamPersona",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Kotlin/Audit/bolt.py": {
+    "hash": "5ef4813a3827e821634718c8b46c3f8c",
+    "anchors": [
+      "BoltPersona",
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Kotlin/Audit/metric.py": {
+    "hash": "f7fb82f491d22438b8994993f36b36c4",
+    "anchors": [
+      "perform_audit",
+      "MetricPersona",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Kotlin/Audit/nebula.py": {
+    "hash": "00339d357d2453ec1561b28f04f150e2",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "NebulaPersona",
+      "__init__"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Kotlin/Audit/probe.py": {
+    "hash": "4be16c0b60e1e6c55e5096a0528fcc0d",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "ProbePersona",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Kotlin/Audit/scale.py": {
+    "hash": "27b885f23b1b3c90d49986df753ed295",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "ScalePersona",
+      "__init__"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Kotlin/Audit/scope.py": {
+    "hash": "762159f8b1047e6df524db232c28c73d",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "ScopePersona",
+      "__init__"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Kotlin/Audit/testify.py": {
+    "hash": "ebfdbf970418bb72aba11c351748eda3",
+    "anchors": [
+      "TestifyPersona",
+      "perform_audit",
+      "analyze_test_pyramid",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "analyze_test_quality_matrix",
+      "run_test_suite",
+      "__init__"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Kotlin/Content/echo.py": {
+    "hash": "4cbf9004489bbd02b0b161344a3b302d",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "EchoPersona",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Kotlin/Content/forge.py": {
+    "hash": "51f25a33a89f587880f98cf45efc3ffe",
+    "anchors": [
+      "validate_code_safety",
+      "perform_audit",
+      "ForgePersona",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Kotlin/Content/globe.py": {
+    "hash": "d931ba5566451efa550814c13cddfe5e",
+    "anchors": [
+      "GlobePersona",
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Kotlin/Content/hype.py": {
+    "hash": "ab3e393c473779a1c1e1954d7deebf49",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__",
+      "HypePersona"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Kotlin/Content/mantra.py": {
+    "hash": "f4c1627d2ffc6d6310e7578e77a960b4",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__",
+      "MantraPersona"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Kotlin/Content/palette.py": {
+    "hash": "1824902f93aa3972c549800aa839e27f",
+    "anchors": [
+      "PalettePersona",
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Kotlin/Content/scribe.py": {
+    "hash": "4931c160e83e9d666a686cbe9ae34ddb",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__",
+      "ScribePersona"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Kotlin/Strategic/sentinel.py": {
+    "hash": "92b9f836a0620a38d83f33cb8d805154",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "SentinelPersona",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Kotlin/Strategic/vault.py": {
+    "hash": "89ade184060d4c2dd57f926636cbac4c",
+    "anchors": [
+      "VaultPersona",
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Kotlin/Strategic/voyager.py": {
+    "hash": "5cf2230738c7689c744aa41ab70590b3",
+    "anchors": [
+      "VoyagerPersona",
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Kotlin/Strategic/warden.py": {
+    "hash": "da9af837e5f17ae1d98d9cc236af7976",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__",
+      "WardenPersona"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Kotlin/System/bridge.py": {
+    "hash": "635696e4fa185e88d6cc5a9aca271e72",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "BridgePersona",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Kotlin/System/cache.py": {
+    "hash": "d99606a8573597e901fb54529f5833b3",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__",
+      "CachePersona"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Kotlin/System/flow.py": {
+    "hash": "a671b0a675db0a5cf6e01445d518810f",
+    "anchors": [
+      "perform_audit",
+      "FlowPersona",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Kotlin/System/hermes.py": {
+    "hash": "5a7bd54d4b88ee40a1dbd1d3d7df8189",
+    "anchors": [
+      "perform_audit",
+      "HermesPersona",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Kotlin/System/neural.py": {
+    "hash": "71ff0f5dd32976154532c692a7f521ac",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "NeuralPersona",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Kotlin/System/nexus.py": {
+    "hash": "290819a11367c23df02aa64ef14917d9",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__",
+      "NexusPersona"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Kotlin/System/spark.py": {
+    "hash": "2a7251da1e15cec57306f0e317154ba7",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "SparkPersona",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Kotlin/System/stream.py": {
+    "hash": "4916dd5dd241cbeefb6c468dde73a709",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "StreamPersona",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Flutter/Audit/bolt.py": {
+    "hash": "1cee2abc4f9049d831f3ecacc37278ff",
+    "anchors": [
+      "BoltPersona",
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Flutter/Audit/metric.py": {
+    "hash": "2a0cc3262a5a4b76e90ea0620c66d2eb",
+    "anchors": [
+      "perform_audit",
+      "MetricPersona",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Flutter/Audit/nebula.py": {
+    "hash": "238d7533a14784dd748c6074db8a84ae",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "NebulaPersona",
+      "__init__"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Flutter/Audit/probe.py": {
+    "hash": "738e19f8b44dab63645ba87c011fc5d3",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "ProbePersona",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Flutter/Audit/scale.py": {
+    "hash": "e98494061f26323314afd7046e6d6338",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "ScalePersona",
+      "__init__"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Flutter/Audit/scope.py": {
+    "hash": "742df951f8c4124b9aa115cd820c73f0",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "ScopePersona",
+      "__init__"
+    ],
+    "type": "DOC"
+  },
+  "src_local/agents/Flutter/Audit/testify.py": {
+    "hash": "f453204bb392ed6b35df30f96a5388bf",
+    "anchors": [
+      "TestifyPersona",
+      "perform_audit",
+      "analyze_test_pyramid",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "analyze_test_quality_matrix",
+      "run_test_suite",
+      "__init__"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Flutter/Content/echo.py": {
+    "hash": "232e93abba4885b73e70422c70da131f",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "EchoPersona",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Flutter/Content/forge.py": {
+    "hash": "7f617882fb7bc109210477b3738b6b20",
+    "anchors": [
+      "validate_code_safety",
+      "perform_audit",
+      "ForgePersona",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Flutter/Content/globe.py": {
+    "hash": "9bf3dc33bbc991952391988aeae54fe6",
+    "anchors": [
+      "GlobePersona",
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Flutter/Content/hype.py": {
+    "hash": "5fc9d9d43db1853111c712b32725e72d",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__",
+      "HypePersona"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Flutter/Content/mantra.py": {
+    "hash": "bc00b99149db4b4396a7ecea3b17f981",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__",
+      "MantraPersona"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Flutter/Content/palette.py": {
+    "hash": "c65852e615ca53c53fb92f8a1b886dad",
+    "anchors": [
+      "PalettePersona",
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Flutter/Content/scribe.py": {
+    "hash": "005f1f8d599c612ce41dacbcda5b766f",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__",
+      "ScribePersona"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Flutter/Strategic/sentinel.py": {
+    "hash": "59be35efd17f7132f23e63d8413e13a8",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "SentinelPersona",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Flutter/Strategic/vault.py": {
+    "hash": "b9295bdb6138d229499eb4cf53fd179f",
+    "anchors": [
+      "VaultPersona",
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Flutter/Strategic/voyager.py": {
+    "hash": "52bfe15502e2d0d531450ffb04c94dea",
+    "anchors": [
+      "VoyagerPersona",
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Flutter/Strategic/warden.py": {
+    "hash": "f183472ac51a73b014a2b293d8571587",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__",
+      "WardenPersona"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Flutter/System/bridge.py": {
+    "hash": "7df827e2c8f91a3f3a7a8ef847e70d44",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "BridgePersona",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Flutter/System/cache.py": {
+    "hash": "b4fe8a792a309c664fc323b7e23a0244",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__",
+      "CachePersona"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Flutter/System/flow.py": {
+    "hash": "12c0b17e00ccecc6ec721f340f8e6b20",
+    "anchors": [
+      "perform_audit",
+      "FlowPersona",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Flutter/System/hermes.py": {
+    "hash": "16515aeeff275f60bb716853e2fbf9ed",
+    "anchors": [
+      "perform_audit",
+      "HermesPersona",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Flutter/System/neural.py": {
+    "hash": "640dccb8b7426612f9ff1187e89431ee",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "NeuralPersona",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Flutter/System/nexus.py": {
+    "hash": "ecb03f932fe73cdb6882d63d82e452dc",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "__init__",
+      "NexusPersona"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Flutter/System/spark.py": {
+    "hash": "0f87c3eefb1ef83a84e4d8126d81eba4",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "SparkPersona",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Flutter/System/stream.py": {
+    "hash": "d87b8b4047a946e8ed19c62a358e0a85",
+    "anchors": [
+      "perform_audit",
+      "_reason_about_objective",
+      "get_system_prompt",
+      "StreamPersona",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "tests/test_gui_components.py": {
+    "hash": "f4ccd5bf460eb4051110d54b91ae9dff",
+    "anchors": [
+      "TestLaunchScripts",
+      "DummyCanvas",
+      "create_text",
+      "TestHealthGauge",
+      "__init__",
+      "test_launch_dashboard_syntax",
+      "delete",
+      "test_color_thresholds",
+      "test_set_health_clamping",
+      "for",
+      "create_arc",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_healer.py": {
+    "hash": "b1fea21ebdf05a8e47a29164cecc2f5a",
+    "anchors": [
+      "test_heal_finding_success",
+      "test_heal_finding_no_file",
+      "foo",
+      "test_heal_finding_llm_failure",
+      "setUp",
+      "TestHealerPersona"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_health_gauge.py": {
+    "hash": "540607c73f0d2cb37fcf50aae18be845",
+    "anchors": [
+      "TestHealthGauge",
+      "setUp",
+      "test_gauge_draw"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_launch_dashboard.py": {
+    "hash": "93ce3ce0721e736b728cc565c6295683",
+    "anchors": [
+      "TestLaunchDashboard",
+      "test_importability"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_verify_cognitive.py": {
+    "hash": "982a5b1d1307c9d1d79681468201e0cc",
+    "anchors": [
+      "test_importability",
+      "TestVerifyCognitive"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/context_iterator.py": {
+    "hash": "0b5986d33fe4e4f95ca5021123c80fb1",
+    "anchors": [
+      "get_py_files",
+      "ContextIterator",
+      "_read_file",
+      "__init__",
+      "iter_auditable_files"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/parallel_test_executor.py": {
+    "hash": "3ed545a89170c256ef5132eecd73e885",
+    "anchors": [
+      "run_parallel",
+      "_run_test_batch_in_process",
+      "ParallelTestExecutor"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/test_mapper.py": {
+    "hash": "462922418871ee14884a1a0243b635f4",
+    "anchors": [
+      "TestMapper",
+      "map_files_to_tests"
+    ],
+    "type": "TEST"
+  },
+  "src_local/interface/components/sidebar.py": {
+    "hash": "790c8954ae5900897d661809b243d14b",
+    "anchors": [
+      "SidebarComponent",
+      "set_healing_state",
+      "__init__",
+      "_setup_ui",
+      "update_status",
+      "set_running_state"
+    ],
+    "type": "LOGIC"
+  },
+  "src_local/interface/views/chat_view.py": {
+    "hash": "93ca78966eea22e40ed7c3239afc90fd",
+    "anchors": [
+      "add_message",
+      "setup_ui",
+      "__init__",
+      "_on_send",
+      "ChatView"
+    ],
+    "type": "INTERFACE"
+  },
+  "src_local/interface/views/dashboard_view.py": {
+    "hash": "0fd8b2aaa256a9eaf48d8cf917fb6baf",
+    "anchors": [
+      "update_health",
+      "DashboardView",
+      "setup_ui",
+      "__init__",
+      "update_findings_count",
+      "log",
+      "log_findings"
+    ],
+    "type": "INTERFACE"
+  },
+  "src_local/interface/views/findings_view.py": {
+    "hash": "a167733371613d1faec532e567a0bae4",
+    "anchors": [
+      "FindingsView",
+      "__init__",
+      "refresh_findings",
+      "_render_finding",
+      "setup_ui"
+    ],
+    "type": "INTERFACE"
+  },
+  "tests/test_components_smoke.py": {
+    "hash": "72e4af5e222e2b85f16d8be732e68271",
+    "anchors": [
+      "test_sidebar_init",
+      "test_chat_view_init",
+      "test_dashboard_view_init",
+      "TestComponentsSmoke",
+      "test_findings_view_init",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "scripts/benchmark_tests.py": {
+    "hash": "1262a1c2c254a18aaf2c0d519e5ca194",
+    "anchors": [
+      "measure"
+    ],
+    "type": "TEST"
+  },
+  "scripts/debug_test_hang.py": {
+    "hash": "395ef0893fa03e5d73cf7aafb0674f75",
+    "anchors": [
+      "run_debug"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/markdown_util.py": {
+    "hash": "c7529e64fab74e465a8c7ef46d9e3c03",
+    "anchors": [
+      "MarkdownUtil",
+      "apply_header_padding",
+      "deduplicate_header"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/core/audit_engine.py": {
+    "hash": "200276d1d1a5fbf6cb82c8887d6a3e93",
+    "anchors": [
+      "_detect_changes",
+      "check",
+      "__init__",
+      "run_strategic_audit",
+      "AuditEngine",
+      "_scan_single_file",
+      "run_obfuscation_scan"
+    ],
+    "type": "DOC"
+  },
+  "src_local/core/diagnostic_finalizer.py": {
+    "hash": "20cc2e21f80560c8843def79ed1e7342",
+    "anchors": [
+      "_queue_task",
+      "finalize",
+      "DiagnosticFinalizer",
+      "_persist_report",
+      "_auto_test",
+      "_auto_doc",
+      "_run_cognitive_healing",
+      "_analyze_critical_findings"
+    ],
+    "type": "DOC"
+  },
+  "src_local/utils/cognitive_analyst.py": {
+    "hash": "1d685c31aca547668a806d4263d3f415",
+    "anchors": [
+      "_build_prompt",
+      "CognitiveAnalyst",
+      "analyze_intent"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/markdown_processor.py": {
+    "hash": "2df14a0adf2de3b40496d4aa380b4285",
+    "anchors": [
+      "__init__",
+      "_handle_header",
+      "process",
+      "_should_append",
+      "_handle_block",
+      "MarkdownStructureProcessor"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/agents/Support/code_inspector_agent.py": {
+    "hash": "0bcbf5467f5599d0d202bfc13065e558",
+    "anchors": [
+      "CodeInspectorAgent",
+      "__init__",
+      "inspect_intent",
+      "scan_file_logic"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/markdown_structure_agent.py": {
+    "hash": "c78a88421af3a3d64281ec3157fa22a7",
+    "anchors": [
+      "execute_refinement",
+      "_process_line",
+      "_handle_code_block",
+      "__init__",
+      "_apply_header_logic",
+      "MarkdownStructureAgent"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/discovery_agent.py": {
+    "hash": "7277c8146b09203d5979ec03ec113021",
+    "anchors": [
+      "DiscoveryAgent",
+      "run_discovery_phase",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/validation_agent.py": {
+    "hash": "05857887a38ad0aec7e9715c06ec001d",
+    "anchors": [
+      "run_validation_phase",
+      "__init__",
+      "ValidationAgent",
+      "_fast_fallback"
+    ],
+    "type": "AGENT"
+  },
+  "tests/test_finalizer.py": {
+    "hash": "898f94dd45f6de08451f12b26a8f7799",
+    "anchors": [
+      "test_persist_report_suppression",
+      "test_run_ai_analysis_empty",
+      "TestFinalizer"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_code_inspector_agent.py": {
+    "hash": "01c531e3ed0cc59572682205d869f691",
+    "anchors": [
+      "TestCodeInspectorAgent",
+      "test_init",
+      "test_scan_file_logic_empty",
+      "test_inspect_intent_no_brain"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_cognitive_analyst.py": {
+    "hash": "f68a756cef8562f2366e6f7517def214",
+    "anchors": [
+      "test_markdown_util_deduplicate",
+      "test_markdown_util_padding",
+      "test_cognitive_analyst_full",
+      "TestUtilsExtended"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_diagnostic_finalizer.py": {
+    "hash": "898f94dd45f6de08451f12b26a8f7799",
+    "anchors": [
+      "test_persist_report_suppression",
+      "test_run_ai_analysis_empty",
+      "TestFinalizer"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_discovery_agent.py": {
+    "hash": "0a508955cde004eafd4eb2324bcf7dd8",
+    "anchors": [
+      "TestDiscoveryAgent",
+      "test_init"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_markdown_processor.py": {
+    "hash": "efa1d6200263f608493836f27a53cc9a",
+    "anchors": [
+      "test_header_padding_application",
+      "TestMarkdownProcessorDetailed",
+      "test_process_with_code_blocks"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_markdown_structure_agent.py": {
+    "hash": "33648321b77939e81f56124e1c6257e4",
+    "anchors": [
+      "TestMarkdownStructureAgent",
+      "test_refinement"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_markdown_util.py": {
+    "hash": "3bacfb1cbeeb480bb83abb641e033853",
+    "anchors": [
+      "TestMarkdownUtil",
+      "test_deduplicate_advanced",
+      "test_apply_padding_logic"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_validation_agent.py": {
+    "hash": "1f68a38e659537090336ed1a8e4d1195",
+    "anchors": [
+      "TestValidationAgent",
+      "test_fallback"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_ai_infra.py": {
+    "hash": "9aee013886871cb9f6e7fb8a94426039",
+    "anchors": [
+      "TestAIInfra",
+      "test_memory_engine_full_cycle",
+      "setUp",
+      "run",
+      "test_memory_engine_edge_cases",
+      "Core",
+      "test_cognitive_engine_details",
+      "log"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_dashboard_view.py": {
+    "hash": "e5d8d81b3980bd5a378dc5db0df17e03",
+    "anchors": [
+      "test_dashboard_logic",
+      "setUp",
+      "TestDashboardView"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_sidebar.py": {
+    "hash": "6d6c988f52463345fee7c8ae5c57a66e",
+    "anchors": [
+      "TestSidebarComponent",
+      "setUp",
+      "test_sidebar_integrity"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_ui_controller.py": {
+    "hash": "36f07bada1983f94d143138544e6fb6d",
+    "anchors": [
+      "test_gauge_extent_calculation",
+      "test_format_finding_text",
+      "test_severity_colors",
+      "TestUIController"
+    ],
+    "type": "TEST"
+  },
+  "src_local/interface/controllers/ui_controller.py": {
+    "hash": "327b0842992895431447ce8f26ad110b",
+    "anchors": [
+      "get_severity_color",
+      "UIController",
+      "format_finding_text",
+      "calculate_gauge_extent"
+    ],
+    "type": "INTERFACE"
+  },
+  "tests/test_cognitive_engine.py": {
+    "hash": "48cb0c93bd435f62d7002fb263b59056",
+    "anchors": [
+      "test_init_and_singleton",
+      "test_release_logic",
+      "TestCognitiveEngine"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_context_iterator.py": {
+    "hash": "2b40199beecbdf7c7c0577b56b294e45",
+    "anchors": [
+      "test_filter_py",
+      "TestContextIterator"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_memory_engine.py": {
+    "hash": "7290cfdf856080b0f27988430dcf3f2b",
+    "anchors": [
+      "TestMemoryEngine",
+      "x",
+      "test_full_lifecycle"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/doc_gen_agent.py": {
+    "hash": "a674c0cd01d0ff67ef9aeb73e6069031",
+    "anchors": [
+      "DocGenAgent",
+      "__init__",
+      "generate_docstring"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/test_architect_agent.py": {
+    "hash": "66f3f8604cc289f228fd260e8e7159f9",
+    "anchors": [
+      "__init__",
+      "TestArchitectAgent",
+      "draft_test_for_file"
+    ],
+    "type": "TEST"
+  },
+  "scripts/install_hooks.py": {
+    "hash": "c75c76d9b9a8506a37b48f0e313df928",
+    "anchors": [
+      "install_pre_commit"
+    ],
+    "type": "LOGIC"
+  },
+  "src_local/utils/history_agent.py": {
+    "hash": "63602a168843b4d03225cfbc145b64a1",
+    "anchors": [
+      "get_setting",
+      "get_overnight_summary",
+      "record_insight",
+      "_check_entropy_trend",
+      "_init_db",
+      "__init__",
+      "HistoryAgent",
+      "set_setting",
+      "record_snapshot",
+      "generate_trend_data"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/utils/semantic_search_agent.py": {
+    "hash": "0dffca8341a7c1e99b35356c0e5926b2",
+    "anchors": [
+      "__init__",
+      "find_relevant_files",
+      "SemanticSearchAgent"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/topology_graph_agent.py": {
+    "hash": "71d3fd2991532ab7bac59790175efaee",
+    "anchors": [
+      "TopologyGraphAgent",
+      "generate_mermaid_graph"
+    ],
+    "type": "AGENT"
+  },
+  "scripts/launch_api.py": {
+    "hash": "d1d4fcecb2257d910e435c7fb5fcc423",
+    "anchors": [
+      "chat",
+      "get_status"
+    ],
+    "type": "LOGIC"
+  },
+  "src_local/utils/memory_pruning_agent.py": {
+    "hash": "5c1c2d55a2cea9314ab78f8c5f9cd590",
+    "anchors": [
+      "prune_old_logs",
+      "__init__",
+      "MemoryPruningAgent"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/utils/resource_governor.py": {
+    "hash": "2709a45655b7a9d56b2e4b4befb2d45c",
+    "anchors": [
+      "should_throttle",
+      "get_performance_profile",
+      "get_current_pressure",
+      "__init__",
+      "_set_low_priority",
+      "ResourceGovernor",
+      "wait_if_needed"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/agents/Support/security_sentinel_agent.py": {
+    "hash": "7fc9a97eda7d8eb899566fa0ee4a4854",
+    "anchors": [
+      "_scan_content",
+      "scan_project",
+      "__init__",
+      "SecuritySentinelAgent"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/web_insight_agent.py": {
+    "hash": "40be88d51b67e75df4e03a261630a6eb",
+    "anchors": [
+      "fetch_library_context",
+      "WebInsightAgent"
+    ],
+    "type": "AGENT"
+  },
+  "tests/test_memory_pruning.py": {
+    "hash": "935d6174da9c467bad33be5d3dbbc146",
+    "anchors": [
+      "TestMemoryPruning",
+      "test_init"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_resource_governor.py": {
+    "hash": "95a1bc498d1987a59285ab096c17d6e2",
+    "anchors": [
+      "test_performance_profile",
+      "TestResourceGovernor",
+      "test_current_pressure"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_security_sentinel.py": {
+    "hash": "1b7357fe854e384e3f28281dbfd4d786",
+    "anchors": [
+      "TestSecuritySentinel",
+      "setUp",
+      "test_secret_detection"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_web_insight.py": {
+    "hash": "34246c5510fc4f2ab5424f827d385c4b",
+    "anchors": [
+      "test_fetch_library_context_success",
+      "setUp",
+      "TestWebInsight"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_install_hooks.py": {
+    "hash": "fbff6b297058c06d1db49d3736596a42",
+    "anchors": [
+      "TestInstallPreCommit",
+      "test_install_pre_commit"
+    ],
+    "type": "TEST"
+  },
+  "scripts/shadow_tray.py": {
+    "hash": "82c6728def44db0e058c47f4bb16bc84",
+    "anchors": [
+      "toggle",
+      "show_flyout",
+      "_position_window",
+      "update_health",
+      "set_score",
+      "_heal_worker",
+      "on_modified",
+      "_add_card",
+      "__init__",
+      "hide_flyout",
+      "HealthGauge",
+      "on_tray_activated",
+      "create_sovereign_icon",
+      "get_health_color_qt",
+      "paintEvent",
+      "SovereignFlyout",
+      "_discovery_worker",
+      "IntelligentWatcher",
+      "_start_workers",
+      "run"
+    ],
+    "type": "LOGIC"
+  },
+  "tests/test_launch_api.py": {
+    "hash": "98ad7e0e921044f520477eef78ee6c59",
+    "anchors": [
+      "test_get_status",
+      "test_chat",
+      "TestLaunchApi"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/behavior_analyst.py": {
+    "hash": "d53985814b7bad89add5ff87c6269a24",
+    "anchors": [
+      "__init__",
+      "DigitalBehaviorAnalyst",
+      "_save_to_db",
+      "log_activity",
+      "get_active_window_info",
+      "classify_activity",
+      "_init_db",
+      "get_smart_memory_limit",
+      "record_memory_state"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/system_sentinel.py": {
+    "hash": "a789b7ec8c6e9aa96f3888f3b9e599b8",
+    "anchors": [
+      "get_system_health",
+      "__init__",
+      "_check_admin",
+      "analyze_and_kill_bloatware",
+      "SystemSentinel",
+      "suggest_optimizations"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/utils/voice_engine.py": {
+    "hash": "4ba55b626278fdded0cdf9dd99da01df",
+    "anchors": [
+      "announce_morning_briefing",
+      "VoiceEngine",
+      "_speak_worker",
+      "__new__",
+      "speak"
+    ],
+    "type": "UTIL"
+  },
+  "src_local/agents/Support/briefing_agent.py": {
+    "hash": "826f945615596be4744c5eff6974e292",
+    "anchors": [
+      "generate_morning_report",
+      "_format_report",
+      "BriefingAgent",
+      "_get_optimization_stats",
+      "__init__",
+      "_get_health_stats",
+      "_get_recent_insights"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/agents/Support/git_automaton.py": {
+    "hash": "e31fcc88745bc3857f18be62dbf0df35",
+    "anchors": [
+      "commit_fix",
+      "is_clean_state",
+      "GitAutomaton",
+      "__init__",
+      "_run_git"
+    ],
+    "type": "AGENT"
+  },
+  "tests/test_briefing_agent.py": {
+    "hash": "cbd79eba301e3be505dd66b0723f2d29",
+    "anchors": [
+      "test_init",
+      "TestBriefingAgent"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_git_automaton.py": {
+    "hash": "94d7c717f540413dca9106439ccd0925",
+    "anchors": [
+      "TestGitAutomaton",
+      "test_execute_command"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_history_agent.py": {
+    "hash": "b60fb96edf81e92ccc6d79c9b4f85b6c",
+    "anchors": [
+      "TestHistoryAgent",
+      "test_fetch_data"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_memory_pruning_agent.py": {
+    "hash": "58f3f2aebf7f539d55757f5d9bfd8e39",
+    "anchors": [
+      "test_memory_pruning_agent",
+      "TestMemoryPruningAgent"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_security_sentinel_agent.py": {
+    "hash": "b67e2d97666ae5a1cd67173f95ca07cd",
+    "anchors": [
+      "TestSecuritySentinelAgent",
+      "test_method"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_shadow_tray.py": {
+    "hash": "e747b18b40d9061018c9d64c7079393a",
+    "anchors": [
+      "test_ensure_single_instance",
+      "test_run_tray",
+      "ShadowTrayTest"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_topology_graph_agent.py": {
+    "hash": "23d25d364e1383ad1ec99a93f5993bf4",
+    "anchors": [
+      "test_load_graph",
+      "TestTopologyGraphAgent"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_web_insight_agent.py": {
+    "hash": "955a53ba07654c775d51abdca55d65be",
+    "anchors": [
+      "TestWebInsightAgent",
+      "test_some_method"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_ontology.py": {
+    "hash": "d21e5918001e9937d5b0734a28cc5991",
+    "anchors": [
+      "TestSystemOntology",
+      "test_function"
+    ],
+    "type": "TEST"
+  },
+  "src_local/core/ontology.py": {
+    "hash": "832cdee97bbcd6d44344d42f42f3d88e",
+    "anchors": [
+      "SystemOntology",
+      "get_self_description",
+      "is_self_modification"
+    ],
+    "type": "CORE"
+  },
+  "src_local/agents/Support/aurelius_persona.py": {
+    "hash": "f318cafe9612f068d1f4f81a8189f2e9",
+    "anchors": [
+      "perform_audit",
+      "AureliusPersona",
+      "get_system_prompt",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "src_local/utils/tests/test_analysis_engine_phd.py": {
+    "hash": "c0d746087d4b7557acbae80e6c405e01",
+    "anchors": [
+      "test_analyze_data",
+      "TestAnalysisEnginePhd"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_behavior_analyst.py": {
+    "hash": "4dfd95bfdcd887db737d3e107e879f1d",
+    "anchors": [
+      "TestDigitalBehaviorAnalyst",
+      "test_some_method"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_cache_manager.py": {
+    "hash": "df8744bb4dfdbadd604bd2112ead1712",
+    "anchors": [
+      "TestCacheManager",
+      "test_disk_cache_creation"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_cognitive_analyst.py": {
+    "hash": "f790fca478fb881b06c4b9bb5e26f431",
+    "anchors": [
+      "TestCognitiveAnalyst",
+      "setUp",
+      "test_init"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_cognitive_engine.py": {
+    "hash": "14e7182102cb4bed39636e440f632e4f",
+    "anchors": [
+      "TestCognitiveEngine",
+      "test_load_and_process_data"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_compliance_standard.py": {
+    "hash": "473034e1cf9a6221020fb789b4aa2523",
+    "anchors": [
+      "test_get_compliance_status",
+      "TestComplianceStandard"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_conflict_policy_phd.py": {
+    "hash": "4dde1a64383ed5a7c6191e7d5b7581a9",
+    "anchors": [
+      "TestConflictPolicyPhd",
+      "test_get_resource"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_battle_plan_formatter.py": {
+    "hash": "f092451c05bb97a5db2f0f801a801d5f",
+    "anchors": [
+      "TestBattlePlanFormatter",
+      "test_format_battle_plan"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_battle_plan_sections_engine.py": {
+    "hash": "65ef49e1f3b2b36c01ea0872b54ce172",
+    "anchors": [
+      "test_init",
+      "TestBattlePlanSectionsEngine",
+      "test_method_not_implemented"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_infrastructure_assembler.py": {
+    "hash": "e22d33ecfe4ae5b3375660499d81b91f",
+    "anchors": [
+      "TestInfrastructureAssembler",
+      "test_assemble_infrastructure"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_integrity_guardian.py": {
+    "hash": "d590a2cc7a23249ee98c90b98583530f",
+    "anchors": [
+      "test_integrity_check",
+      "TestIntegrityGuardian"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_context_engine.py": {
+    "hash": "e01341a1b2f8701919189b1b20fd406c",
+    "anchors": [
+      "test_context_engine_initialization",
+      "TestContextEngine"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_context_iterator.py": {
+    "hash": "cd0a592987eb95f81f44d4b0654e16f2",
+    "anchors": [
+      "test_context_iterator_with_mock",
+      "TestContextIterator"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_context_mapping_logic.py": {
+    "hash": "7b41b9996183f719d5bbeeb66cbb05e4",
+    "anchors": [
+      "TestContextMappingLogic",
+      "test_context_mapping"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_file_system_scanner.py": {
+    "hash": "899174eacc562910002c60076a1d110a",
+    "anchors": [
+      "test_scan_directory",
+      "setUp",
+      "TestFileSystemScanner"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_finding_deduplicator.py": {
+    "hash": "475015070be631990e75137ba9dd1e42",
+    "anchors": [
+      "test_findings",
+      "TestFindingDeduplicator"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_git_client.py": {
+    "hash": "102bbdded2a957756e92d7f068113d79",
+    "anchors": [
+      "TestGitClient",
+      "setUp",
+      "test_clone_repository"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_git_operations_phd.py": {
+    "hash": "efcb137db90f48489a6d62c8f9da2ae7",
+    "anchors": [
+      "test_clone",
+      "test_init",
+      "TestGitOperationsPhd",
+      "test_pull"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_history_agent.py": {
+    "hash": "28a7337753049ec6ff7e8f52d3bff6cf",
+    "anchors": [
+      "test_history_agent",
+      "TestHistoryAgent"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_indexer.py": {
+    "hash": "b4308ba0cf3de0b918be2744f1699534",
+    "anchors": [
+      "TestIndexer",
+      "setUp",
+      "test_indexing"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_maintenance_engine_phd.py": {
+    "hash": "638852b661b1e58b3659aaf67dbd7a29",
+    "anchors": [
+      "TestMaintenanceEnginePhd",
+      "test_maintenance_engine_phd"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_markdown_processor.py": {
+    "hash": "3b523adc4ce4136078465f06a29b56d3",
+    "anchors": [
+      "test_load_config",
+      "TestMarkdownProcessor",
+      "test_parse"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_memory_engine.py": {
+    "hash": "4c0f6db89e7b4a3b22e448f62dd7e07d",
+    "anchors": [
+      "test_set",
+      "test_remove",
+      "test_get",
+      "TestMemoryEngine"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_memory_pruning_agent.py": {
+    "hash": "9f29154cb9e902f452e2f6a1a99bb0e1",
+    "anchors": [
+      "TestMemoryPruningAgent",
+      "test_memory_pruning"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_persona_loader.py": {
+    "hash": "a92ff119daa4ea49fb1d715b4c958f5e",
+    "anchors": [
+      "TestPersonaLoader",
+      "test_load_personas"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_reflex_engine_phd.py": {
+    "hash": "c2190e608a572ab905d13eb73cb406cc",
+    "anchors": [
+      "test_init",
+      "test_reflex_cycle",
+      "TestReflexEnginePhd",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_resource_governor.py": {
+    "hash": "30c573336f263ee64758bed7a07c3e45",
+    "anchors": [
+      "TestResourceGovernor",
+      "test_resource_governor_dependencies"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_scoring_engine_phd.py": {
+    "hash": "4a98eac9b987cff2f7e8c343ab69414a",
+    "anchors": [
+      "test_method_name",
+      "TestScoringEnginePhd"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_stability_ledger.py": {
+    "hash": "5804fbe688e35ca9ba586138d611d568",
+    "anchors": [
+      "TestStabilityLedger",
+      "with",
+      "test_stability_ledger_init"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_submodule_sync_logic.py": {
+    "hash": "af9f69f6522d6114b3c40d180a2f80a1",
+    "anchors": [
+      "TestSubmoduleSyncLogic",
+      "test_some_method"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_system_sentinel.py": {
+    "hash": "3c99165919325e2ecf00767db6f49d29",
+    "anchors": [
+      "TestSystemSentinel",
+      "test_system_not_alive",
+      "setUp",
+      "test_system_alive"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_topology_engine_phd.py": {
+    "hash": "2d1de2d828ce0086f602d02d44bc912a",
+    "anchors": [
+      "TestTopologyEnginePhd",
+      "test_init",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_update_transaction.py": {
+    "hash": "d87f7f8864057cfbc0aaf2ab3c18b247",
+    "anchors": [
+      "TestUpdateTransaction",
+      "mock_transaction",
+      "test_update_transaction"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_veto_rules_phd.py": {
+    "hash": "2e1cbe3bf040b5f3c66ac5896c37fac7",
+    "anchors": [
+      "TestVetoRulesPhd",
+      "test_something"
+    ],
+    "type": "TEST"
+  },
+  "src_local/utils/tests/test_voice_engine.py": {
+    "hash": "10d8b0003de3e893cc2d412b0d53aa82",
+    "anchors": [
+      "TestVoiceEngine",
+      "test_init"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_intent_heuristics_engine.py": {
+    "hash": "ef85d3d31239f565f430cf37e727a2ce",
+    "anchors": [
+      "test_method_name",
+      "TestIntentHeuristicsEngine"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_line_veto.py": {
+    "hash": "9d5755e37d498a411e026329f25b579d",
+    "anchors": [
+      "tearDown",
+      "test_init",
+      "TestLineVeto",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_markdown_sanitizer.py": {
+    "hash": "ded2d885c5e6ff4a448978cf6bf1ce41",
+    "anchors": [
+      "test_init",
+      "TestMarkdownSanitizer"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_markdown_structure_agent.py": {
+    "hash": "2628c80dfc5c45db7f7a54287e0bd5b5",
+    "anchors": [
+      "TestMarkdownStructureAgent",
+      "test_load_dependencies"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_maturity_evaluator.py": {
+    "hash": "365be3b9877a5c3c21cadf630cce74b5",
+    "anchors": [
+      "test_maturity_evaluator",
+      "TestMaturityEvaluator"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_memory_persistence.py": {
+    "hash": "1a7acf5b1b8a11f0d41c1af225ddb2f2",
+    "anchors": [
+      "test_load_data",
+      "TestMemoryPersistence",
+      "test_get_storage",
+      "test_save_data"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_meta_analysis_detector.py": {
+    "hash": "b3404cb064eac3250026e5305822d907",
+    "anchors": [
+      "test_write_result",
+      "TestMetaAnalysisDetector",
+      "test_analyze_data",
+      "test_fetch_data"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_metrics_assembler.py": {
+    "hash": "e389f89ada07f1a87c1e9afe56e4f714",
+    "anchors": [
+      "TestMetricsAssembler",
+      "test_assemble_metrics"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_obfuscation_cleaner_engine.py": {
+    "hash": "92b1652fb7f62333271896b18c3a3f43",
+    "anchors": [
+      "TestObfuscationCleanerEngine",
+      "test_clean_code",
+      "secret_function",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_obfuscation_hunter.py": {
+    "hash": "3cd4cba01cce18915d5f0ade23d7a7bc",
+    "anchors": [
+      "TestObfuscationHunter",
+      "test_obfuscation_hunter"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_obfuscation_logic_engine.py": {
+    "hash": "9ae53ba72fd77e5538e62660b9dd6ae7",
+    "anchors": [
+      "TestObfuscationLogicEngine",
+      "test_obfuscation_logic_engine"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_parity_analyst.py": {
+    "hash": "28ac14ffa805e20b6789e68ea8a93b26",
+    "anchors": [
+      "test_analyse_parity",
+      "TestParityAnalyst"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_penalty_engine.py": {
+    "hash": "5d5d120f4d3c4c6f4e8817d9fdc9cf88",
+    "anchors": [
+      "TestPenaltyEngine",
+      "test_load_penalty_data"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_pyramid_analyst.py": {
+    "hash": "dc16dbe35c4622e273515fb1246dec7c",
+    "anchors": [
+      "TestPyramidAnalyst",
+      "test_init",
+      "test_update",
+      "test_predict"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_quality_analyst.py": {
+    "hash": "a218186379eec10a506e1c78e71942f8",
+    "anchors": [
+      "test_initialization",
+      "QualityAnalyst",
+      "TestQualityAnalyst",
+      "__init__"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_registry_compiler.py": {
+    "hash": "0fb6df2ea05accfe54b7b31e9b01f35b",
+    "anchors": [
+      "TestRegistryCompiler",
+      "test_register_with_mock_file_watcher"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_rule_definition_judge.py": {
+    "hash": "7c55f8d1188e518967aa148a39be914d",
+    "anchors": [
+      "test_method_name",
+      "TestRuleDefinitionJudge"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_safety_assignment_engine.py": {
+    "hash": "c51c468beba9fe6ef504466cdd294da8",
+    "anchors": [
+      "test_safety_assignment_engine",
+      "TestSafetyAssignmentEngine"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_safety_heuristics.py": {
+    "hash": "0964b833b6b723487d2d4a8ce7d8967d",
+    "anchors": [
+      "test_safety_heuristics",
+      "TestSafetyHeuristics"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_safety_navigator.py": {
+    "hash": "29b1369b4ac92ccf7597e237bcc6ce80",
+    "anchors": [
+      "test_init",
+      "TestSafetyNavigator"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_safe_context_judge.py": {
+    "hash": "1da3d78a939444becaab401db9a52c88",
+    "anchors": [
+      "test_safe_context_judge",
+      "setUp",
+      "TestSafeContextJudge"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_score_calculator.py": {
+    "hash": "3e2d563129015f9a118e122367968b86",
+    "anchors": [
+      "TestScoreCalculator",
+      "is",
+      "test_score_calculator_init"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_scoring_metrics_engine.py": {
+    "hash": "ff14263c7e3ec46773cccae50a0b225b",
+    "anchors": [
+      "test_scoring_metrics_engine_call",
+      "test_scoring_metrics_engine_init",
+      "TestScoringMetricsEngine"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_security_sentinel_agent.py": {
+    "hash": "829d2823baddfa069a7d18fffa444e66",
+    "anchors": [
+      "TestSecuritySentinelAgent",
+      "test_init"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_semantic_context_analyst.py": {
+    "hash": "6bcdb9cc848425a7d663ed9f04ec7acf",
+    "anchors": [
+      "test_semantic_context_analyst",
+      "TestSemanticContextAnalyst"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_silent_error_detector.py": {
+    "hash": "e655d1f7a6afcbd3931b494283cdb848",
+    "anchors": [
+      "TestSilentErrorDetector",
+      "test_detect_silent_error"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_source_code_parser.py": {
+    "hash": "cd3775d6f7cabe9ad043bd82968cf2f2",
+    "anchors": [
+      "TestSourceCodeParser",
+      "test_parser"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_structural_analyst.py": {
+    "hash": "14d8bcc79af8286c4dd4be9b2b1a640a",
+    "anchors": [
+      "test_init",
+      "TestStructuralAnalyst"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_task_executor.py": {
+    "hash": "6788c0d1120126516d043fdac9f94c8d",
+    "anchors": [
+      "TestTaskExecutor",
+      "test_start",
+      "test_init_with_mock_file_watcher",
+      "test_stop"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_telemetry_intent_judge.py": {
+    "hash": "a3568254cfc3994a5b0f254993ed11b0",
+    "anchors": [
+      "to",
+      "test_detect_intents",
+      "TestTelemetryIntentJudge"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_telemetry_maturity_logic.py": {
+    "hash": "600f15c847882f9b8d1b7cf115655a5c",
+    "anchors": [
+      "test_get_telemetry_maturity",
+      "TelemetryMaturityLogicTest"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_topology_graph_agent.py": {
+    "hash": "e6e1f01de9069dadba019451cfea4562",
+    "anchors": [
+      "test_topology_graph_agent_init",
+      "test_topology_graph_agent_update_topology",
+      "test_topology_graph_agent_load_topology",
+      "test_topology_graph_agent_notify_topology",
+      "TestTopologyGraphAgent"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_validation_agent.py": {
+    "hash": "8c423c02c607e40d9bfeb40373b1016d",
+    "anchors": [
+      "test_init",
+      "TestValidationAgent"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_veto_criteria_engine.py": {
+    "hash": "df0aff5e7a4124d465072a53e839aa66",
+    "anchors": [
+      "test_process_veto_criteria",
+      "TestVetoCriteriaEngine"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_veto_rules.py": {
+    "hash": "e1df6f1236860a8ff640a0294ea5c06c",
+    "anchors": [
+      "TestVetoRules",
+      "test_veto_rules_call",
+      "test_veto_rules_init",
+      "setUp",
+      "test_veto_rules_dependencies"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_veto_structural_engine.py": {
+    "hash": "2ea66314e37277c54707eb6d1d4f9fd8",
+    "anchors": [
+      "names",
+      "with",
+      "TestVetoStructuralEngine",
+      "test_method_with_dependencies"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_vulnerability_heuristic.py": {
+    "hash": "2d30f5c625b674fffbb13db73998c60c",
+    "anchors": [
+      "TestVulnerabilityHeuristic",
+      "test_some_function"
+    ],
+    "type": "TEST"
+  },
+  "src_local/agents/Support/tests/test_web_insight_agent.py": {
+    "hash": "ee832d12a8d8dd95e8aea32acf07fd47",
+    "anchors": [
+      "test_web_insight_agent",
+      "TestWebInsightAgent"
+    ],
+    "type": "TEST"
+  }
+}

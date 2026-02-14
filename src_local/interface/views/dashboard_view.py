@@ -1,18 +1,9 @@
-"""
-📊 View de Dashboard Sistêmico.
-Centraliza a visualização dos sinais vitais e telemetria de saúde.
-"""
 import customtkinter as ctk
-import logging
 from src_local.interface.components.health_gauge import HealthGauge
 
-logger = logging.getLogger(__name__)
-
 class DashboardView(ctk.CTkFrame):
-    """View soberana para monitoramento de saúde do projeto."""
     def __init__(self, master):
         super().__init__(master, fg_color="transparent")
-        logger.info("📊 [Dashboard] Inicializando interface de telemetria...")
         self.setup_ui()
 
     def setup_ui(self):
@@ -42,7 +33,6 @@ class DashboardView(ctk.CTkFrame):
         self.log_textbox.configure(state="disabled")
 
     def update_health(self, score):
-        logger.debug(f"📊 [Dashboard] Atualizando score de saúde: {score}")
         self.health_gauge.set_health(score)
         self.health_desc.configure(text=f"Integridade: {score}%")
 

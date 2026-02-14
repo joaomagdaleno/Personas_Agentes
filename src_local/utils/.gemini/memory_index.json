@@ -1,0 +1,706 @@
+{
+  "analysis_engine_phd.py": {
+    "hash": "51f7feddba7aa082d5ffd61dc0698e81",
+    "anchors": [
+      "analyze",
+      "_test_quality",
+      "AnalysisEnginePhd",
+      "_get_init"
+    ],
+    "type": "LOGIC"
+  },
+  "behavior_analyst.py": {
+    "hash": "d53985814b7bad89add5ff87c6269a24",
+    "anchors": [
+      "_save_to_db",
+      "get_active_window_info",
+      "log_activity",
+      "get_smart_memory_limit",
+      "_init_db",
+      "record_memory_state",
+      "__init__",
+      "classify_activity",
+      "DigitalBehaviorAnalyst"
+    ],
+    "type": "LOGIC"
+  },
+  "cache_manager.py": {
+    "hash": "3c2309bc900730d7ead5ec807e61522d",
+    "anchors": [
+      "CacheManager",
+      "save",
+      "get_file_hash",
+      "update",
+      "is_changed",
+      "__init__",
+      "_load"
+    ],
+    "type": "LOGIC"
+  },
+  "cognitive_analyst.py": {
+    "hash": "1d685c31aca547668a806d4263d3f415",
+    "anchors": [
+      "_build_prompt",
+      "CognitiveAnalyst",
+      "analyze_intent"
+    ],
+    "type": "LOGIC"
+  },
+  "cognitive_engine.py": {
+    "hash": "2967215813185c28918ecdc56520d393",
+    "anchors": [
+      "reason",
+      "release",
+      "__new__",
+      "CognitiveEngine",
+      "set_thinking_depth",
+      "__init__",
+      "load_model"
+    ],
+    "type": "LOGIC"
+  },
+  "compliance_standard.py": {
+    "hash": "7074f2a450398458a8bb52d6a1d1b36c",
+    "anchors": [
+      "ComplianceStandard",
+      "process_secure_payload"
+    ],
+    "type": "LOGIC"
+  },
+  "conflict_policy_phd.py": {
+    "hash": "c9a0da3516f3b4a7dcb5a604b69e2421",
+    "anchors": [
+      "_resolve_cache",
+      "_resolve_theirs",
+      "ConflictPolicyPhd",
+      "_resolve_json",
+      "resolve_file",
+      "_resolve_ours",
+      "__init__"
+    ],
+    "type": "LOGIC"
+  },
+  "context_engine.py": {
+    "hash": "018eef4fae9a608930b07e3ea9647966",
+    "anchors": [
+      "_process_files_in_batch",
+      "analyze_project",
+      "_perform_deep_analysis",
+      "_analyze_test_quality",
+      "_build_dependency_map",
+      "_inject_support",
+      "analyze_stack_parity",
+      "_find_dependents",
+      "_discover_identity",
+      "ContextEngine",
+      "_get_scanner",
+      "get_criticality_score",
+      "_register_file",
+      "_get_initial_info",
+      "_get_cached_content",
+      "_analyze_single_file",
+      "__init__",
+      "_initialize_support_tools"
+    ],
+    "type": "LOGIC"
+  },
+  "context_iterator.py": {
+    "hash": "0b5986d33fe4e4f95ca5021123c80fb1",
+    "anchors": [
+      "get_py_files",
+      "_read_file",
+      "ContextIterator",
+      "iter_auditable_files",
+      "__init__"
+    ],
+    "type": "LOGIC"
+  },
+  "context_mapping_logic.py": {
+    "hash": "6b77e91148fa02aade46491c44c9f541",
+    "anchors": [
+      "ContextMappingLogic",
+      "get_initial_info",
+      "_pre_read_files",
+      "process_batch"
+    ],
+    "type": "LOGIC"
+  },
+  "dependency_auditor.py": {
+    "hash": "0886cf9368f2aa76b01d38d1aa790168",
+    "anchors": [
+      "_validate_pre_conditions",
+      "_acquire_lock",
+      "_verify_system_integrity",
+      "sync_submodule",
+      "check_submodule_status",
+      "_release_lock",
+      "_get_topology",
+      "DependencyAuditor",
+      "__init__",
+      "_ensure_initialized"
+    ],
+    "type": "DOC"
+  },
+  "file_system_scanner.py": {
+    "hash": "de2dc09718b8b6cf25648db2c778c49e",
+    "anchors": [
+      "FileSystemScanner",
+      "get_analyzable_files",
+      "scan_all_filenames",
+      "_should_skip",
+      "__init__"
+    ],
+    "type": "LOGIC"
+  },
+  "finding_deduplicator.py": {
+    "hash": "4c2be981f9d647cfd1685a7a46100215",
+    "anchors": [
+      "deduplicate",
+      "_normalize_path",
+      "_handle_raw_text",
+      "FindingDeduplicator",
+      "_resolve_severity_conflict",
+      "__init__",
+      "_handle_finding_dict"
+    ],
+    "type": "LOGIC"
+  },
+  "git_client.py": {
+    "hash": "b50ac3d5d704eb20a25599ca5e0c44dc",
+    "anchors": [
+      "rebase",
+      "get_current_branch",
+      "stash_push",
+      "GitClient",
+      "get_commit_count",
+      "stash_pop",
+      "fetch_prune",
+      "discover_remote",
+      "get_head_hash",
+      "run",
+      "reset_hard",
+      "get_tracking_branch",
+      "rebase_abort",
+      "__init__",
+      "get_output"
+    ],
+    "type": "LOGIC"
+  },
+  "git_operations_phd.py": {
+    "hash": "081af58ed981e54c86700d54d5a31c1b",
+    "anchors": [
+      "is_valid_repo",
+      "run_git_out",
+      "run_git",
+      "discover_remote",
+      "get_metrics",
+      "get_topology",
+      "GitOperationsPhd",
+      "transactional_rollback"
+    ],
+    "type": "LOGIC"
+  },
+  "history_agent.py": {
+    "hash": "63602a168843b4d03225cfbc145b64a1",
+    "anchors": [
+      "HistoryAgent",
+      "generate_trend_data",
+      "get_overnight_summary",
+      "get_setting",
+      "_init_db",
+      "record_insight",
+      "set_setting",
+      "record_snapshot",
+      "_check_entropy_trend",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "indexer.py": {
+    "hash": "3cffeb7084b736389a067a24100c366c",
+    "anchors": [
+      "Indexer",
+      "_extract_metadata",
+      "__init__",
+      "update_index"
+    ],
+    "type": "LOGIC"
+  },
+  "logging_config.py": {
+    "hash": "da8903980491f76737cf0ab5defcc194",
+    "anchors": [
+      "format",
+      "SimpleFormatter",
+      "configure_logging",
+      "setup_logging",
+      "log_performance"
+    ],
+    "type": "CONFIG"
+  },
+  "maintenance_engine_phd.py": {
+    "hash": "f986e265744ed5966158ba7580b48855",
+    "anchors": [
+      "MaintenanceEnginePhd",
+      "merge_skills_index",
+      "clean_submodules"
+    ],
+    "type": "LOGIC"
+  },
+  "markdown_processor.py": {
+    "hash": "2df14a0adf2de3b40496d4aa380b4285",
+    "anchors": [
+      "_should_append",
+      "MarkdownStructureProcessor",
+      "_handle_header",
+      "process",
+      "__init__",
+      "_handle_block"
+    ],
+    "type": "LOGIC"
+  },
+  "markdown_util.py": {
+    "hash": "c7529e64fab74e465a8c7ef46d9e3c03",
+    "anchors": [
+      "MarkdownUtil",
+      "deduplicate_header",
+      "apply_header_padding"
+    ],
+    "type": "UTIL"
+  },
+  "memory_engine.py": {
+    "hash": "89748855b8df67fded0b6f2f42973566",
+    "anchors": [
+      "MemoryEngine",
+      "index_project",
+      "_load_index",
+      "save_index",
+      "_extract_anchors",
+      "search_context",
+      "__init__"
+    ],
+    "type": "LOGIC"
+  },
+  "memory_pruning_agent.py": {
+    "hash": "5c1c2d55a2cea9314ab78f8c5f9cd590",
+    "anchors": [
+      "MemoryPruningAgent",
+      "prune_old_logs",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "parallel_test_executor.py": {
+    "hash": "3ed545a89170c256ef5132eecd73e885",
+    "anchors": [
+      "run_parallel",
+      "ParallelTestExecutor",
+      "_run_test_batch_in_process"
+    ],
+    "type": "TEST"
+  },
+  "persona_loader.py": {
+    "hash": "41f8bb1519fdfd79d82f6ac604f762fc",
+    "anchors": [
+      "load_personas",
+      "mobilize_all",
+      "PersonaLoader"
+    ],
+    "type": "LOGIC"
+  },
+  "reflex_engine_phd.py": {
+    "hash": "c495e7dc5e5caa119dff671cc138c4ff",
+    "anchors": [
+      "ReflexEnginePhd",
+      "trigger"
+    ],
+    "type": "LOGIC"
+  },
+  "resource_governor.py": {
+    "hash": "2709a45655b7a9d56b2e4b4befb2d45c",
+    "anchors": [
+      "get_current_pressure",
+      "get_performance_profile",
+      "ResourceGovernor",
+      "wait_if_needed",
+      "_set_low_priority",
+      "__init__",
+      "should_throttle"
+    ],
+    "type": "LOGIC"
+  },
+  "scoring_engine_phd.py": {
+    "hash": "51b59d63a84bca0ee5f37fa9d13cc806",
+    "anchors": [
+      "_apply_constraints",
+      "_obs",
+      "_excellence",
+      "_stability",
+      "_security",
+      "ScoringEnginePhd",
+      "_purity",
+      "calculate"
+    ],
+    "type": "LOGIC"
+  },
+  "semantic_search_agent.py": {
+    "hash": "0dffca8341a7c1e99b35356c0e5926b2",
+    "anchors": [
+      "find_relevant_files",
+      "SemanticSearchAgent",
+      "__init__"
+    ],
+    "type": "AGENT"
+  },
+  "stability_ledger.py": {
+    "hash": "81dffcdd63f9bae4de571432b73f6697",
+    "anchors": [
+      "clear",
+      "update",
+      "StabilityLedger",
+      "_detect_healed_files",
+      "get_file_data",
+      "_update_file_status",
+      "__init__"
+    ],
+    "type": "LOGIC"
+  },
+  "submodule_sync_logic.py": {
+    "hash": "9964e1ed7fdbded82e607cf9533e6120",
+    "anchors": [
+      "SubmoduleSyncLogic",
+      "is_locked",
+      "get_submodule_delta"
+    ],
+    "type": "LOGIC"
+  },
+  "system_sentinel.py": {
+    "hash": "a789b7ec8c6e9aa96f3888f3b9e599b8",
+    "anchors": [
+      "_check_admin",
+      "get_system_health",
+      "suggest_optimizations",
+      "analyze_and_kill_bloatware",
+      "SystemSentinel",
+      "__init__"
+    ],
+    "type": "LOGIC"
+  },
+  "test_mapper.py": {
+    "hash": "462922418871ee14884a1a0243b635f4",
+    "anchors": [
+      "TestMapper",
+      "map_files_to_tests"
+    ],
+    "type": "TEST"
+  },
+  "topology_engine_phd.py": {
+    "hash": "21856641c335f7eda943d6b300c067e0",
+    "anchors": [
+      "discover_files",
+      "TopologyEnginePhd",
+      "get_search_dirs",
+      "should_process"
+    ],
+    "type": "LOGIC"
+  },
+  "update_transaction.py": {
+    "hash": "42961f76f9dccd94aeb0a2d6d368b24a",
+    "anchors": [
+      "_handle_conflict",
+      "execute",
+      "UpdateTransaction",
+      "_verify_system_integrity",
+      "_sync_fetch",
+      "_rollback",
+      "__init__",
+      "_perform_update"
+    ],
+    "type": "LOGIC"
+  },
+  "veto_rules_phd.py": {
+    "hash": "bb6b1edb89d389ba5b8b49d2e28267ed",
+    "anchors": [
+      "apply_test_veto",
+      "should_veto",
+      "is_rule_def",
+      "is_technical_math",
+      "VetoRulesPhd"
+    ],
+    "type": "LOGIC"
+  },
+  "voice_engine.py": {
+    "hash": "4ba55b626278fdded0cdf9dd99da01df",
+    "anchors": [
+      "_speak_worker",
+      "announce_morning_briefing",
+      "speak",
+      "__new__",
+      "VoiceEngine"
+    ],
+    "type": "LOGIC"
+  },
+  "tests/test_analysis_engine_phd.py": {
+    "hash": "c0d746087d4b7557acbae80e6c405e01",
+    "anchors": [
+      "TestAnalysisEnginePhd",
+      "test_analyze_data"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_behavior_analyst.py": {
+    "hash": "4dfd95bfdcd887db737d3e107e879f1d",
+    "anchors": [
+      "TestDigitalBehaviorAnalyst",
+      "test_some_method"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_cache_manager.py": {
+    "hash": "df8744bb4dfdbadd604bd2112ead1712",
+    "anchors": [
+      "TestCacheManager",
+      "test_disk_cache_creation"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_cognitive_analyst.py": {
+    "hash": "f790fca478fb881b06c4b9bb5e26f431",
+    "anchors": [
+      "setUp",
+      "test_init",
+      "TestCognitiveAnalyst"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_cognitive_engine.py": {
+    "hash": "14e7182102cb4bed39636e440f632e4f",
+    "anchors": [
+      "TestCognitiveEngine",
+      "test_load_and_process_data"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_compliance_standard.py": {
+    "hash": "473034e1cf9a6221020fb789b4aa2523",
+    "anchors": [
+      "test_get_compliance_status",
+      "TestComplianceStandard"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_conflict_policy_phd.py": {
+    "hash": "4dde1a64383ed5a7c6191e7d5b7581a9",
+    "anchors": [
+      "TestConflictPolicyPhd",
+      "test_get_resource"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_context_engine.py": {
+    "hash": "e01341a1b2f8701919189b1b20fd406c",
+    "anchors": [
+      "TestContextEngine",
+      "test_context_engine_initialization"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_context_iterator.py": {
+    "hash": "cd0a592987eb95f81f44d4b0654e16f2",
+    "anchors": [
+      "test_context_iterator_with_mock",
+      "TestContextIterator"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_context_mapping_logic.py": {
+    "hash": "7b41b9996183f719d5bbeeb66cbb05e4",
+    "anchors": [
+      "test_context_mapping",
+      "TestContextMappingLogic"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_file_system_scanner.py": {
+    "hash": "899174eacc562910002c60076a1d110a",
+    "anchors": [
+      "setUp",
+      "test_scan_directory",
+      "TestFileSystemScanner"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_finding_deduplicator.py": {
+    "hash": "475015070be631990e75137ba9dd1e42",
+    "anchors": [
+      "TestFindingDeduplicator",
+      "test_findings"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_git_client.py": {
+    "hash": "102bbdded2a957756e92d7f068113d79",
+    "anchors": [
+      "setUp",
+      "test_clone_repository",
+      "TestGitClient"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_git_operations_phd.py": {
+    "hash": "efcb137db90f48489a6d62c8f9da2ae7",
+    "anchors": [
+      "TestGitOperationsPhd",
+      "test_init",
+      "test_clone",
+      "test_pull"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_history_agent.py": {
+    "hash": "28a7337753049ec6ff7e8f52d3bff6cf",
+    "anchors": [
+      "test_history_agent",
+      "TestHistoryAgent"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_indexer.py": {
+    "hash": "b4308ba0cf3de0b918be2744f1699534",
+    "anchors": [
+      "setUp",
+      "test_indexing",
+      "TestIndexer"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_maintenance_engine_phd.py": {
+    "hash": "638852b661b1e58b3659aaf67dbd7a29",
+    "anchors": [
+      "TestMaintenanceEnginePhd",
+      "test_maintenance_engine_phd"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_markdown_processor.py": {
+    "hash": "3b523adc4ce4136078465f06a29b56d3",
+    "anchors": [
+      "test_load_config",
+      "TestMarkdownProcessor",
+      "test_parse"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_memory_engine.py": {
+    "hash": "4c0f6db89e7b4a3b22e448f62dd7e07d",
+    "anchors": [
+      "TestMemoryEngine",
+      "test_remove",
+      "test_get",
+      "test_set"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_memory_pruning_agent.py": {
+    "hash": "9f29154cb9e902f452e2f6a1a99bb0e1",
+    "anchors": [
+      "TestMemoryPruningAgent",
+      "test_memory_pruning"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_persona_loader.py": {
+    "hash": "a92ff119daa4ea49fb1d715b4c958f5e",
+    "anchors": [
+      "test_load_personas",
+      "TestPersonaLoader"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_reflex_engine_phd.py": {
+    "hash": "c2190e608a572ab905d13eb73cb406cc",
+    "anchors": [
+      "TestReflexEnginePhd",
+      "test_reflex_cycle",
+      "test_init",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_resource_governor.py": {
+    "hash": "30c573336f263ee64758bed7a07c3e45",
+    "anchors": [
+      "test_resource_governor_dependencies",
+      "TestResourceGovernor"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_scoring_engine_phd.py": {
+    "hash": "4a98eac9b987cff2f7e8c343ab69414a",
+    "anchors": [
+      "test_method_name",
+      "TestScoringEnginePhd"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_stability_ledger.py": {
+    "hash": "5804fbe688e35ca9ba586138d611d568",
+    "anchors": [
+      "test_stability_ledger_init",
+      "with",
+      "TestStabilityLedger"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_submodule_sync_logic.py": {
+    "hash": "af9f69f6522d6114b3c40d180a2f80a1",
+    "anchors": [
+      "TestSubmoduleSyncLogic",
+      "test_some_method"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_system_sentinel.py": {
+    "hash": "3c99165919325e2ecf00767db6f49d29",
+    "anchors": [
+      "setUp",
+      "test_system_not_alive",
+      "TestSystemSentinel",
+      "test_system_alive"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_topology_engine_phd.py": {
+    "hash": "2d1de2d828ce0086f602d02d44bc912a",
+    "anchors": [
+      "setUp",
+      "TestTopologyEnginePhd",
+      "test_init"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_update_transaction.py": {
+    "hash": "d87f7f8864057cfbc0aaf2ab3c18b247",
+    "anchors": [
+      "TestUpdateTransaction",
+      "test_update_transaction",
+      "mock_transaction"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_veto_rules_phd.py": {
+    "hash": "2e1cbe3bf040b5f3c66ac5896c37fac7",
+    "anchors": [
+      "test_something",
+      "TestVetoRulesPhd"
+    ],
+    "type": "TEST"
+  },
+  "tests/test_voice_engine.py": {
+    "hash": "10d8b0003de3e893cc2d412b0d53aa82",
+    "anchors": [
+      "test_init",
+      "TestVoiceEngine"
+    ],
+    "type": "TEST"
+  }
+}

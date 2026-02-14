@@ -69,46 +69,27 @@ class BriefingAgent:
         now = datetime.now().strftime("%H:%M")
         date = datetime.now().strftime("%d/%m/%Y")
         
-        md = f"# 🏛️ Relatório Soberano - {date}
-
-"
-        md += f"> **Gerado às {now}** | *Status do Sistema: Operacional*
-
-"
+        md = f"# 🏛️ Relatório Soberano - {date}\n\n"
+        md += f"> **Gerado às {now}** | *Status do Sistema: Operacional*\n\n"
         
-        md += "## 🛡️ Atividade de Defesa & Otimização
-"
-        md += f"- **Processos Ociosos Encerrados:** {optimizations['processes_killed']}
-"
-        md += f"- **Sistema Operacional:** {platform.system()} {platform.release()}
-
-"
+        md += "## 🛡️ Atividade de Defesa & Otimização\n"
+        md += f"- **Processos Ociosos Encerrados:** {optimizations['processes_killed']}\n"
+        md += f"- **Sistema Operacional:** {platform.system()} {platform.release()}\n\n"
         
-        md += "## 📡 Saúde dos Territórios (Projetos)
-"
-        md += "| Projeto | Saúde Atual | Status |
-|---|---|---|
-"
+        md += "## 📡 Saúde dos Territórios (Projetos)\n"
+        md += "| Projeto | Saúde Atual | Status |\n|---|---|---|\n"
         for name, score in projects:
             status = "✅ Estável" if score > 80 else "⚠️ Atenção" if score > 50 else "🚨 Crítico"
-            md += f"| **{name}** | `{int(score)}%` | {status} |
-"
+            md += f"| **{name}** | `{int(score)}%` | {status} |\n"
         
-        md += "
-## 🧠 Sabedoria Noturna (Insights)
-"
+        md += "\n## 🧠 Sabedoria Noturna (Insights)\n"
         if not insights:
-            md += "*Nenhum insight profundo gerado. O sistema pode não ter entrado em modo ocioso prolongado.*
-"
+            md += "*Nenhum insight profundo gerado. O sistema pode não ter entrado em modo ocioso prolongado.*\n"
         else:
             for mode, text, impact, time in insights:
                 icon = "🧹" if mode == "KILL" else "💡" if mode == "DEEP" else "📝"
                 badge = f"**[{impact}]**" if impact == "HIGH" else ""
-                md += f"### {icon} {time[11:16]} - {badge}
-{text}
-
-"
+                md += f"### {icon} {time[11:16]} - {badge}\n{text}\n\n"
         
-        md += "---
-*Este relatório foi gerado automaticamente pela sua IA Soberana.*"
+        md += "---\n*Este relatório foi gerado automaticamente pela sua IA Soberana.*"
         return md

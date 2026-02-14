@@ -119,7 +119,6 @@ class SovereignManager(ctk.CTkToplevel):
                 run_as_admin()
         else:
             messagebox.showinfo("Otimização", "Iniciando limpeza de caches de sistema e ajuste de prioridades...")
-            # Aqui entrariam comandos como del /q /s %temp%\* etc.
 
     def load_wisdom(self):
         history = HistoryAgent(project_root)
@@ -194,6 +193,9 @@ class BackgroundOrchestrator:
         analyst = DigitalBehaviorAnalyst(project_root)
         
         while self.running:
+            # 0. Get Idle time first
+            idle_s = self.get_idle_time()
+
             # 1. Analisa Comportamento Imediato (O que você está fazendo?)
             current_app, current_title = analyst.get_active_window_info()
             context = analyst.classify_activity(current_app or "System", current_title or "")
@@ -214,7 +216,6 @@ class BackgroundOrchestrator:
                 continue
 
             # 2. Verifica Ociosidade Física (Teclado/Mouse)
-            idle_s = self.get_idle_time()
             conn = sqlite3.connect(self.db_path)
             cursor = conn.execute("SELECT id, path FROM projects")
             projects = cursor.fetchall()
@@ -234,8 +235,6 @@ class BackgroundOrchestrator:
 
                 for pid, path in projects:
                     if not self.running: break
-                    # Se estava codando antes de sair, foca no projeto ativo
-                    is_focus = (context == "DEV" and path in (current_title or ""))
                     self._diagnose_project(pid, path, deep_mode=True)
                 
                 time.sleep(300) 
@@ -258,7 +257,7 @@ class BackgroundOrchestrator:
                     
                     self.was_idle = False
 
-                # Modo Pulse (Ativo): Se estiver codando (DEV), verifica com menos frequência para economizar CPU
+                # Modo Pulse (Ativo)
                 interval = 60 if context == "DEV" else 120
                 
                 for pid, path in projects:

@@ -1,0 +1,234 @@
+{
+  "test_battle_plan_formatter.py": {
+    "hash": "f092451c05bb97a5db2f0f801a801d5f",
+    "anchors": [
+      "TestBattlePlanFormatter",
+      "test_format_battle_plan"
+    ],
+    "type": "TEST"
+  },
+  "test_battle_plan_sections_engine.py": {
+    "hash": "65ef49e1f3b2b36c01ea0872b54ce172",
+    "anchors": [
+      "TestBattlePlanSectionsEngine",
+      "test_init",
+      "test_method_not_implemented"
+    ],
+    "type": "TEST"
+  },
+  "test_infrastructure_assembler.py": {
+    "hash": "e22d33ecfe4ae5b3375660499d81b91f",
+    "anchors": [
+      "TestInfrastructureAssembler",
+      "test_assemble_infrastructure"
+    ],
+    "type": "TEST"
+  },
+  "test_integrity_guardian.py": {
+    "hash": "d590a2cc7a23249ee98c90b98583530f",
+    "anchors": [
+      "TestIntegrityGuardian",
+      "test_integrity_check"
+    ],
+    "type": "TEST"
+  },
+  "test_intent_heuristics_engine.py": {
+    "hash": "ef85d3d31239f565f430cf37e727a2ce",
+    "anchors": [
+      "test_method_name",
+      "TestIntentHeuristicsEngine"
+    ],
+    "type": "TEST"
+  },
+  "test_line_veto.py": {
+    "hash": "9d5755e37d498a411e026329f25b579d",
+    "anchors": [
+      "setUp",
+      "test_init",
+      "TestLineVeto",
+      "tearDown"
+    ],
+    "type": "TEST"
+  },
+  "test_markdown_sanitizer.py": {
+    "hash": "ded2d885c5e6ff4a448978cf6bf1ce41",
+    "anchors": [
+      "TestMarkdownSanitizer",
+      "test_init"
+    ],
+    "type": "TEST"
+  },
+  "test_markdown_structure_agent.py": {
+    "hash": "2628c80dfc5c45db7f7a54287e0bd5b5",
+    "anchors": [
+      "TestMarkdownStructureAgent",
+      "test_load_dependencies"
+    ],
+    "type": "TEST"
+  },
+  "test_maturity_evaluator.py": {
+    "hash": "365be3b9877a5c3c21cadf630cce74b5",
+    "anchors": [
+      "TestMaturityEvaluator",
+      "test_maturity_evaluator"
+    ],
+    "type": "TEST"
+  },
+  "test_memory_persistence.py": {
+    "hash": "1a7acf5b1b8a11f0d41c1af225ddb2f2",
+    "anchors": [
+      "test_load_data",
+      "test_save_data",
+      "TestMemoryPersistence",
+      "test_get_storage"
+    ],
+    "type": "TEST"
+  },
+  "test_meta_analysis_detector.py": {
+    "hash": "b3404cb064eac3250026e5305822d907",
+    "anchors": [
+      "test_fetch_data",
+      "test_write_result",
+      "TestMetaAnalysisDetector",
+      "test_analyze_data"
+    ],
+    "type": "TEST"
+  },
+  "test_metrics_assembler.py": {
+    "hash": "e389f89ada07f1a87c1e9afe56e4f714",
+    "anchors": [
+      "test_assemble_metrics",
+      "TestMetricsAssembler"
+    ],
+    "type": "TEST"
+  },
+  "test_obfuscation_cleaner_engine.py": {
+    "hash": "92b1652fb7f62333271896b18c3a3f43",
+    "anchors": [
+      "TestObfuscationCleanerEngine",
+      "test_clean_code",
+      "secret_function",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "test_obfuscation_hunter.py": {
+    "hash": "3cd4cba01cce18915d5f0ade23d7a7bc",
+    "anchors": [
+      "test_obfuscation_hunter",
+      "TestObfuscationHunter"
+    ],
+    "type": "TEST"
+  },
+  "test_obfuscation_logic_engine.py": {
+    "hash": "9ae53ba72fd77e5538e62660b9dd6ae7",
+    "anchors": [
+      "TestObfuscationLogicEngine",
+      "test_obfuscation_logic_engine"
+    ],
+    "type": "TEST"
+  },
+  "test_parity_analyst.py": {
+    "hash": "28ac14ffa805e20b6789e68ea8a93b26",
+    "anchors": [
+      "test_analyse_parity",
+      "TestParityAnalyst"
+    ],
+    "type": "TEST"
+  },
+  "test_penalty_engine.py": {
+    "hash": "5d5d120f4d3c4c6f4e8817d9fdc9cf88",
+    "anchors": [
+      "TestPenaltyEngine",
+      "test_load_penalty_data"
+    ],
+    "type": "TEST"
+  },
+  "test_pyramid_analyst.py": {
+    "hash": "dc16dbe35c4622e273515fb1246dec7c",
+    "anchors": [
+      "test_predict",
+      "TestPyramidAnalyst",
+      "test_init",
+      "test_update"
+    ],
+    "type": "TEST"
+  },
+  "test_quality_analyst.py": {
+    "hash": "a218186379eec10a506e1c78e71942f8",
+    "anchors": [
+      "test_initialization",
+      "__init__",
+      "QualityAnalyst",
+      "TestQualityAnalyst"
+    ],
+    "type": "TEST"
+  },
+  "test_registry_compiler.py": {
+    "hash": "0fb6df2ea05accfe54b7b31e9b01f35b",
+    "anchors": [
+      "test_register_with_mock_file_watcher",
+      "TestRegistryCompiler"
+    ],
+    "type": "TEST"
+  },
+  "test_rule_definition_judge.py": {
+    "hash": "7c55f8d1188e518967aa148a39be914d",
+    "anchors": [
+      "TestRuleDefinitionJudge",
+      "test_method_name"
+    ],
+    "type": "TEST"
+  },
+  "test_safety_assignment_engine.py": {
+    "hash": "c51c468beba9fe6ef504466cdd294da8",
+    "anchors": [
+      "TestSafetyAssignmentEngine",
+      "test_safety_assignment_engine"
+    ],
+    "type": "TEST"
+  },
+  "test_safety_heuristics.py": {
+    "hash": "0964b833b6b723487d2d4a8ce7d8967d",
+    "anchors": [
+      "test_safety_heuristics",
+      "TestSafetyHeuristics"
+    ],
+    "type": "TEST"
+  },
+  "test_safety_navigator.py": {
+    "hash": "29b1369b4ac92ccf7597e237bcc6ce80",
+    "anchors": [
+      "TestSafetyNavigator",
+      "test_init"
+    ],
+    "type": "TEST"
+  },
+  "test_safe_context_judge.py": {
+    "hash": "1da3d78a939444becaab401db9a52c88",
+    "anchors": [
+      "TestSafeContextJudge",
+      "test_safe_context_judge",
+      "setUp"
+    ],
+    "type": "TEST"
+  },
+  "test_score_calculator.py": {
+    "hash": "3e2d563129015f9a118e122367968b86",
+    "anchors": [
+      "TestScoreCalculator",
+      "test_score_calculator_init",
+      "is"
+    ],
+    "type": "TEST"
+  },
+  "test_scoring_metrics_engine.py": {
+    "hash": "ff14263c7e3ec46773cccae50a0b225b",
+    "anchors": [
+      "TestScoringMetricsEngine",
+      "test_scoring_metrics_engine_call",
+      "test_scoring_metrics_engine_init"
+    ],
+    "type": "TEST"
+  }
+}

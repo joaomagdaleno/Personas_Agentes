@@ -1,16 +1,8 @@
-"""
-🏛️ Componente de Sidebar Soberano.
-Gerencia a navegação principal e o status vital do sistema em tempo real.
-"""
 import customtkinter as ctk
-import logging
-
-logger = logging.getLogger(__name__)
 
 class SidebarComponent(ctk.CTkFrame):
     def __init__(self, master, callbacks):
         super().__init__(master, width=200, corner_radius=0)
-        logger.info("🎨 [Sidebar] Inicializando navegação lateral...")
         self.callbacks = callbacks
         self._setup_ui()
 

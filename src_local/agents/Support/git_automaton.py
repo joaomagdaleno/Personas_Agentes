@@ -51,9 +51,7 @@ class GitAutomaton:
             self._run_git(["add", str(rel_path)])
         
         # 3. Commit com mensagem semântica
-        commit_msg = f"fix(ai): {fix_description}
-
-Automated fix by Sovereign AI during idle cycle."
+        commit_msg = f"fix(ai): {fix_description}\n\nAutomated fix by Sovereign AI during idle cycle."
         out, code = self._run_git(["commit", "-m", commit_msg])
         
         if code == 0:

@@ -1,0 +1,926 @@
+{
+  "personas": [
+    {
+      "id": "Python_Audit_bolt",
+      "name": "bolt",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Bolt",
+      "category": "Audit",
+      "rules": [
+        {
+          "regex": "while True:\\\\s+pass",
+          "issue": "Gargalo: Busy-waiting.",
+          "severity": "critical"
+        }
+      ],
+      "reasonTemplate": "Gargalo de Runtime: O objetivo '{objective}' exige alta disponibilidade. Loops de espera ativa em '{file}' paralisam a 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Python/Audit/bolt.py"
+    },
+    {
+      "id": "Python_Audit_metric",
+      "name": "metric",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Metric",
+      "category": "Audit",
+      "rules": [],
+      "reasonTemplate": "Cegueira Analítica: O objetivo '{objective}' exige observabilidade. Em '{file}', a falta de telemetria estruturada impede a gestão da 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Python/Audit/metric.py"
+    },
+    {
+      "id": "Python_Audit_nebula",
+      "name": "nebula",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Nebula",
+      "category": "Audit",
+      "rules": [],
+      "reasonTemplate": "Catástrofe de Segurança: O objetivo '{objective}' exige proteção total. Credenciais em '{file}' permitem o sequestro da 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Python/Audit/nebula.py"
+    },
+    {
+      "id": "Python_Audit_probe",
+      "name": "probe",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Probe",
+      "category": "Audit",
+      "rules": [
+        {
+          "regex": "except' + ':\\\\s+pass|except\\\\s+Exception:\\\\s+pass",
+          "issue": "Silenciado.",
+          "severity": "critical"
+        }
+      ],
+      "reasonTemplate": "Instabilidade Sistêmica: O objetivo '{objective}' exige resiliência. Em '{file}', falhas silenciosas impedem a cura da 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Python/Audit/probe.py"
+    },
+    {
+      "id": "Python_Audit_scale",
+      "name": "scale",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Scale",
+      "category": "Audit",
+      "rules": [],
+      "reasonTemplate": "Você é o Dr. {self.name}, mestre em arquitetura.",
+      "originalFile": "src_local/agents/Python/Audit/scale.py"
+    },
+    {
+      "id": "Python_Audit_scope",
+      "name": "scope",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Scope",
+      "category": "Audit",
+      "rules": [],
+      "reasonTemplate": "Você é o Dr. {self.name}, mestre em gestão.",
+      "originalFile": "src_local/agents/Python/Audit/scope.py"
+    },
+    {
+      "id": "Python_Audit_testify",
+      "name": "testify",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Testify",
+      "category": "Audit",
+      "rules": [
+        {
+          "regex": "def test_.*:\\\\s+pass",
+          "issue": "Vazio: Teste sem asserções.",
+          "severity": "critical"
+        }
+      ],
+      "reasonTemplate": "Exposição de Risco: O objetivo '{objective}' exige confiança. O módulo '{file}' é Matéria Escura (Sem testes detectados).",
+      "originalFile": "src_local/agents/Python/Audit/testify.py"
+    },
+    {
+      "id": "Python_Content_echo",
+      "name": "echo",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Echo",
+      "category": "Content",
+      "rules": [
+        {
+          "regex": "except Exception:\\\\s+pass",
+          "issue": "Cegueira: Exceção silenciada.",
+          "severity": "critical"
+        }
+      ],
+      "reasonTemplate": "Cegueira Operacional: O objetivo '{objective}' exige diagnóstico. Em '{file}', o silenciamento de erros impede que a 'Orquestração de Inteligência Artificial' reporte falhas.",
+      "originalFile": "src_local/agents/Python/Content/echo.py"
+    },
+    {
+      "id": "Python_Content_forge",
+      "name": "forge",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Forge",
+      "category": "Content",
+      "rules": [],
+      "reasonTemplate": "Você é o Dr. {self.name}, mestre em automação.",
+      "originalFile": "src_local/agents/Python/Content/forge.py"
+    },
+    {
+      "id": "Python_Content_globe",
+      "name": "globe",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Globe",
+      "category": "Content",
+      "rules": [],
+      "reasonTemplate": "Risco de Localização: O objetivo '{objective}' exige portabilidade global. Em '{file}', o uso de open() sem encoding UTF-8 pode corromper dados.",
+      "originalFile": "src_local/agents/Python/Content/globe.py"
+    },
+    {
+      "id": "Python_Content_hype",
+      "name": "hype",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Hype",
+      "category": "Content",
+      "rules": [],
+      "reasonTemplate": "Invisibilidade: O objetivo '{objective}' exige tração. Em '{file}', a falta de metadados prejudica a descoberta do valor do projeto.",
+      "originalFile": "src_local/agents/Python/Content/hype.py"
+    },
+    {
+      "id": "Python_Content_mantra",
+      "name": "mantra",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Mantra",
+      "category": "Content",
+      "rules": [],
+      "reasonTemplate": "Você é o Dr. {self.name}, guardião da qualidade.",
+      "originalFile": "src_local/agents/Python/Content/mantra.py"
+    },
+    {
+      "id": "Python_Content_palette",
+      "name": "palette",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Palette",
+      "category": "Content",
+      "rules": [],
+      "reasonTemplate": "Dr. {self.name}",
+      "originalFile": "src_local/agents/Python/Content/palette.py"
+    },
+    {
+      "id": "Python_Content_scribe",
+      "name": "scribe",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Scribe",
+      "category": "Content",
+      "rules": [],
+      "reasonTemplate": "Amnésia Técnica: O objetivo '{objective}' exige clareza. Em '{file}', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.",
+      "originalFile": "src_local/agents/Python/Content/scribe.py"
+    },
+    {
+      "id": "Python_Strategic_director",
+      "name": "director",
+      "emoji": "👤",
+      "role": "Director",
+      "stack": "Python",
+      "category": "Strategic",
+      "rules": [],
+      "reasonTemplate": "You are the Director 🏛️. Your mission is: {self.mission}",
+      "originalFile": "src_local/agents/Python/Strategic/director.py"
+    },
+    {
+      "id": "Python_Strategic_sentinel",
+      "name": "sentinel",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Sentinel",
+      "category": "Strategic",
+      "rules": [],
+      "reasonTemplate": "Você é o Dr. {self.name}, mestre em segurança.",
+      "originalFile": "src_local/agents/Python/Strategic/sentinel.py"
+    },
+    {
+      "id": "Python_Strategic_vault",
+      "name": "vault",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Vault",
+      "category": "Strategic",
+      "rules": [],
+      "reasonTemplate": "Erro de Precisão: O objetivo '{objective}' exige exatidão. Em '{file}', floats monetários invalidam os cálculos da 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Python/Strategic/vault.py"
+    },
+    {
+      "id": "Python_Strategic_voyager",
+      "name": "voyager",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Voyager",
+      "category": "Strategic",
+      "rules": [],
+      "reasonTemplate": "Você é o Dr. {self.name}, mestre em inovação.",
+      "originalFile": "src_local/agents/Python/Strategic/voyager.py"
+    },
+    {
+      "id": "Python_Strategic_warden",
+      "name": "warden",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Warden",
+      "category": "Strategic",
+      "rules": [],
+      "reasonTemplate": "Você é o Dr. {self.name}, guardião da ética.",
+      "originalFile": "src_local/agents/Python/Strategic/warden.py"
+    },
+    {
+      "id": "Python_System_bridge",
+      "name": "bridge",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Bridge",
+      "category": "System",
+      "rules": [],
+      "reasonTemplate": "Você é o Dr. {self.name}, mestre em integração.",
+      "originalFile": "src_local/agents/Python/System/bridge.py"
+    },
+    {
+      "id": "Python_System_cache",
+      "name": "cache",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Cache",
+      "category": "System",
+      "rules": [],
+      "reasonTemplate": "Você é o Dr. {self.name}, mestre em dados.",
+      "originalFile": "src_local/agents/Python/System/cache.py"
+    },
+    {
+      "id": "Python_System_flow",
+      "name": "flow",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Flow",
+      "category": "System",
+      "rules": [],
+      "reasonTemplate": "Você é o Dr. {self.name}, mestre em fluxos.",
+      "originalFile": "src_local/agents/Python/System/flow.py"
+    },
+    {
+      "id": "Python_System_hermes",
+      "name": "hermes",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Hermes",
+      "category": "System",
+      "rules": [
+        {
+          "regex": "DEBUG\\\\s*=\\\\s*True",
+          "issue": "Ambiente: DEBUG ativo em produção.",
+          "severity": "high"
+        }
+      ],
+      "reasonTemplate": "Você é o Dr. {self.name}, mestre em SRE.",
+      "originalFile": "src_local/agents/Python/System/hermes.py"
+    },
+    {
+      "id": "Python_System_neural",
+      "name": "neural",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Neural",
+      "category": "System",
+      "rules": [],
+      "reasonTemplate": "Risco de Autonomia: O objetivo '{objective}' exige segurança de tokens. Em '{file}', a exposição de chaves compromete a 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Python/System/neural.py"
+    },
+    {
+      "id": "Python_System_nexus",
+      "name": "nexus",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Nexus",
+      "category": "System",
+      "rules": [],
+      "reasonTemplate": "Fragilidade Nervosa: O objetivo '{objective}' exige resiliência. Em '{file}', chamadas externas sem timeout ameaçam a 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Python/System/nexus.py"
+    },
+    {
+      "id": "Python_System_spark",
+      "name": "spark",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Spark",
+      "category": "System",
+      "rules": [],
+      "reasonTemplate": "Você é o Dr. {self.name}, mestre em engajamento.",
+      "originalFile": "src_local/agents/Python/System/spark.py"
+    },
+    {
+      "id": "Python_System_stream",
+      "name": "stream",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Stream",
+      "category": "System",
+      "rules": [],
+      "reasonTemplate": "Conflito de Fluxo: O objetivo '{objective}' exige reatividade. Em '{file}', bloqueios no event loop paralisam a 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Python/System/stream.py"
+    },
+    {
+      "id": "Flutter_Audit_bolt",
+      "name": "bolt",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Bolt",
+      "category": "Audit",
+      "rules": [],
+      "reasonTemplate": "Degradação de UX: O objetivo '{objective}' exige fluidez. Em '{file}', o uso de sleep() trava a Main Thread, impedindo a 'Orquestração de Inteligência Artificial' de manter 60fps.",
+      "originalFile": "src_local/agents/Flutter/Audit/bolt.py"
+    },
+    {
+      "id": "Flutter_Audit_metric",
+      "name": "metric",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Metric",
+      "category": "Audit",
+      "rules": [],
+      "reasonTemplate": "Você é o Dr. {self.name}, mestre em telemetria e análise Flutter.",
+      "originalFile": "src_local/agents/Flutter/Audit/metric.py"
+    },
+    {
+      "id": "Flutter_Audit_nebula",
+      "name": "nebula",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Nebula",
+      "category": "Audit",
+      "rules": [
+        {
+          "regex": "AKIA[0-9A-Z]{16}",
+          "issue": "Vulnerabilidade Crítica: Chave AWS exposta no código Flutter.",
+          "severity": "critical"
+        },
+        {
+          "regex": "https://(?!.*\\\\.google\\\\.com|.*\\\\.firebaseio\\\\.com)",
+          "issue": "Aviso: Domínio externo detectado. Verifique segurança de CORS.",
+          "severity": "medium"
+        }
+      ],
+      "reasonTemplate": "Catástrofe de Segurança: O objetivo '{objective}' exige proteção total. Credenciais expostas em '{file}' permitem o sequestro da 'Orquestração de Inteligência Artificial' via nuvem.",
+      "originalFile": "src_local/agents/Flutter/Audit/nebula.py"
+    },
+    {
+      "id": "Flutter_Audit_probe",
+      "name": "probe",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Probe",
+      "category": "Audit",
+      "rules": [],
+      "reasonTemplate": "Corrupção de Memória: O objetivo '{objective}' exige estabilidade. Em '{file}', a falta de liberação de recursos paralisará a 'Orquestração de Inteligência Artificial' em execuções longas.",
+      "originalFile": "src_local/agents/Flutter/Audit/probe.py"
+    },
+    {
+      "id": "Flutter_Audit_scale",
+      "name": "scale",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Scale",
+      "category": "Audit",
+      "rules": [],
+      "reasonTemplate": "Você é o Dr. {self.name}, mestre em sistemas de larga escala Flutter.",
+      "originalFile": "src_local/agents/Flutter/Audit/scale.py"
+    },
+    {
+      "id": "Flutter_Audit_scope",
+      "name": "scope",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Scope",
+      "category": "Audit",
+      "rules": [],
+      "reasonTemplate": "Você é o Dr. {self.name}, mestre em estratégia de produto Flutter.",
+      "originalFile": "src_local/agents/Flutter/Audit/scope.py"
+    },
+    {
+      "id": "Flutter_Audit_testify",
+      "name": "testify",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Testify",
+      "category": "Audit",
+      "rules": [],
+      "reasonTemplate": "Fragilidade de Regressão: O objetivo '{objective}' exige robustez. Em '{file}', a falta de testes automatizados ameaça a integridade da 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Flutter/Audit/testify.py"
+    },
+    {
+      "id": "Flutter_Content_echo",
+      "name": "echo",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Echo",
+      "category": "Content",
+      "rules": [],
+      "reasonTemplate": "Você é o Dr. {self.name}, mestre em telemetria e rastro digital Flutter.",
+      "originalFile": "src_local/agents/Flutter/Content/echo.py"
+    },
+    {
+      "id": "Flutter_Content_forge",
+      "name": "forge",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Forge",
+      "category": "Content",
+      "rules": [
+        {
+          "regex": "eval\\\\(",
+          "issue": "Vulnerabilidade: Execução dinâmica detectada no ambiente Flutter.",
+          "severity": "critical"
+        }
+      ],
+      "reasonTemplate": "Você é o Dr. {self.name}, mestre em automação e codegen Flutter.",
+      "originalFile": "src_local/agents/Flutter/Content/forge.py"
+    },
+    {
+      "id": "Flutter_Content_globe",
+      "name": "globe",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Globe",
+      "category": "Content",
+      "rules": [],
+      "reasonTemplate": "Débito de i18n: O objetivo '{objective}' exige alcance global. Em '{file}', strings hardcoded impedem a localização automática.",
+      "originalFile": "src_local/agents/Flutter/Content/globe.py"
+    },
+    {
+      "id": "Flutter_Content_hype",
+      "name": "hype",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Hype",
+      "category": "Content",
+      "rules": [],
+      "reasonTemplate": "Risco de Tração: O objetivo '{objective}' exige identidade única. Em '{file}', o uso de identificadores genéricos impede a descoberta e confiança na 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Flutter/Content/hype.py"
+    },
+    {
+      "id": "Flutter_Content_mantra",
+      "name": "mantra",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Mantra",
+      "category": "Content",
+      "rules": [],
+      "reasonTemplate": "Você é o Dr. {self.name}, mestre em arquitetura e pureza Flutter.",
+      "originalFile": "src_local/agents/Flutter/Content/mantra.py"
+    },
+    {
+      "id": "Flutter_Content_palette",
+      "name": "palette",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Palette",
+      "category": "Content",
+      "rules": [],
+      "reasonTemplate": "Fragmentação Visual: O objetivo '{objective}' exige deleite. Em '{file}', o uso de cores fixas impede que a 'Orquestração de Inteligência Artificial' mantenha consistência de marca.",
+      "originalFile": "src_local/agents/Flutter/Content/palette.py"
+    },
+    {
+      "id": "Flutter_Content_scribe",
+      "name": "scribe",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Scribe",
+      "category": "Content",
+      "rules": [],
+      "reasonTemplate": "Amnésia Técnica: O objetivo '{objective}' exige clareza. Em '{file}', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.",
+      "originalFile": "src_local/agents/Flutter/Content/scribe.py"
+    },
+    {
+      "id": "Flutter_Strategic_sentinel",
+      "name": "sentinel",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Sentinel",
+      "category": "Strategic",
+      "rules": [],
+      "reasonTemplate": "Vulnerabilidade Crítica: O objetivo '{objective}' exige segurança de transporte. Em '{file}', o uso de HTTP permite ataques MITM que comprometem a soberania da 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Flutter/Strategic/sentinel.py"
+    },
+    {
+      "id": "Flutter_Strategic_vault",
+      "name": "vault",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Vault",
+      "category": "Strategic",
+      "rules": [],
+      "reasonTemplate": "Risco de Sustentabilidade: O objetivo '{objective}' exige fluxo de caixa íntegro. Em '{file}', falhas de faturamento ameaçam a economia da 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Flutter/Strategic/vault.py"
+    },
+    {
+      "id": "Flutter_Strategic_voyager",
+      "name": "voyager",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Voyager",
+      "category": "Strategic",
+      "rules": [],
+      "reasonTemplate": "Débito Tecnológico: O objetivo '{objective}' exige agilidade. Em '{file}', a tipagem fraca retarda a evolução da 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Flutter/Strategic/voyager.py"
+    },
+    {
+      "id": "Flutter_Strategic_warden",
+      "name": "warden",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Warden",
+      "category": "Strategic",
+      "rules": [],
+      "reasonTemplate": "Risco de Governança: O objetivo '{objective}' exige ética. Em '{file}', a falta de transparência em permissões ameaça a legitimidade da 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Flutter/Strategic/warden.py"
+    },
+    {
+      "id": "Flutter_System_bridge",
+      "name": "bridge",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Bridge",
+      "category": "System",
+      "rules": [],
+      "reasonTemplate": "Quebra de Contrato: O objetivo '{objective}' exige previsibilidade. Em '{file}', o uso de 'dynamic' torna a 'Orquestração de Inteligência Artificial' vulnerável a erros em tempo de execução.",
+      "originalFile": "src_local/agents/Flutter/System/bridge.py"
+    },
+    {
+      "id": "Flutter_System_cache",
+      "name": "cache",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Cache",
+      "category": "System",
+      "rules": [],
+      "reasonTemplate": "Lentidão Sistêmica: O objetivo '{objective}' exige velocidade. Em '{file}', acessos frequentes ao disco prejudicam a 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Flutter/System/cache.py"
+    },
+    {
+      "id": "Flutter_System_flow",
+      "name": "flow",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Flow",
+      "category": "System",
+      "rules": [],
+      "reasonTemplate": "Entropia Lógica: O objetivo '{objective}' exige previsibilidade. Em '{file}', o uso de Strings para navegação pode quebrar a 'Orquestração de Inteligência Artificial' em runtime.",
+      "originalFile": "src_local/agents/Flutter/System/flow.py"
+    },
+    {
+      "id": "Flutter_System_hermes",
+      "name": "hermes",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Hermes",
+      "category": "System",
+      "rules": [],
+      "reasonTemplate": "Risco de Integridade: O objetivo '{objective}' exige artefatos verificados. Em '{file}', segredos expostos permitem o sequestro da 'Orquestração de Inteligência Artificial' via binários maliciosos.",
+      "originalFile": "src_local/agents/Flutter/System/hermes.py"
+    },
+    {
+      "id": "Flutter_System_neural",
+      "name": "neural",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Neural",
+      "category": "System",
+      "rules": [],
+      "reasonTemplate": "Risco de Autonomia: O objetivo '{objective}' exige segurança de tokens. Em '{file}', a exposição de chaves compromete a 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Flutter/System/neural.py"
+    },
+    {
+      "id": "Flutter_System_nexus",
+      "name": "nexus",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Nexus",
+      "category": "System",
+      "rules": [],
+      "reasonTemplate": "Risco de Bloqueio: O objetivo '{objective}' exige reatividade. Em '{file}', a falta de timeout pode paralisar a 'Orquestração de Inteligência Artificial' em redes instáveis.",
+      "originalFile": "src_local/agents/Flutter/System/nexus.py"
+    },
+    {
+      "id": "Flutter_System_spark",
+      "name": "spark",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Spark",
+      "category": "System",
+      "rules": [],
+      "reasonTemplate": "Interface Árida: O objetivo '{objective}' exige alta percepção de qualidade. Em '{file}', a falta de fluidez visual torna a 'Orquestração de Inteligência Artificial' menos intuitiva para o usuário sênior.",
+      "originalFile": "src_local/agents/Flutter/System/spark.py"
+    },
+    {
+      "id": "Flutter_System_stream",
+      "name": "stream",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Stream",
+      "category": "System",
+      "rules": [],
+      "reasonTemplate": "Instabilidade Reativa: O objetivo '{objective}' exige vazão de dados contínua. Em '{file}', a má gestão de streams causa travamentos na 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Flutter/System/stream.py"
+    },
+    {
+      "id": "Kotlin_Audit_bolt",
+      "name": "bolt",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Bolt",
+      "category": "Audit",
+      "rules": [],
+      "reasonTemplate": "Paralisia Sistêmica: O objetivo '{objective}' exige reatividade. Em '{file}', o uso de Thread.sleep() pode congelar a 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Kotlin/Audit/bolt.py"
+    },
+    {
+      "id": "Kotlin_Audit_metric",
+      "name": "metric",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Metric",
+      "category": "Audit",
+      "rules": [],
+      "reasonTemplate": "Cegueira Analítica: O objetivo '{objective}' exige visibilidade. Em '{file}', a ausência de telemetria isola a 'Orquestração de Inteligência Artificial' de dados reais de campo.",
+      "originalFile": "src_local/agents/Kotlin/Audit/metric.py"
+    },
+    {
+      "id": "Kotlin_Audit_nebula",
+      "name": "nebula",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Nebula",
+      "category": "Audit",
+      "rules": [
+        {
+          "regex": "AKIA[0-9A-Z]{16}",
+          "issue": "Vazamento Crítico: Credencial AWS exposta.",
+          "severity": "critical"
+        }
+      ],
+      "reasonTemplate": "Risco de Soberania: O objetivo '{objective}' exige infraestrutura protegida. Em '{file}', a exposição de segredos cloud invalida a autonomia da 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Kotlin/Audit/nebula.py"
+    },
+    {
+      "id": "Kotlin_Audit_probe",
+      "name": "probe",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Probe",
+      "category": "Audit",
+      "rules": [],
+      "reasonTemplate": "Instabilidade Oculta: O objetivo '{objective}' exige resiliência. Em '{file}', o silenciamento de falhas JVM impede a auto-correção da 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Kotlin/Audit/probe.py"
+    },
+    {
+      "id": "Kotlin_Audit_scale",
+      "name": "scale",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Scale",
+      "category": "Audit",
+      "rules": [],
+      "reasonTemplate": "Você é o Dr. {self.name}, mestre em arquitetura JVM.",
+      "originalFile": "src_local/agents/Kotlin/Audit/scale.py"
+    },
+    {
+      "id": "Kotlin_Audit_scope",
+      "name": "scope",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Scope",
+      "category": "Audit",
+      "rules": [],
+      "reasonTemplate": "Você é o Dr. {self.name}, guardião da entrega JVM.",
+      "originalFile": "src_local/agents/Kotlin/Audit/scope.py"
+    },
+    {
+      "id": "Kotlin_Audit_testify",
+      "name": "testify",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Testify",
+      "category": "Audit",
+      "rules": [],
+      "reasonTemplate": "Risco de Regressão: O objetivo '{objective}' exige estabilidade. Em '{file}', a ausência de verificações automatizadas oculta falhas na 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Kotlin/Audit/testify.py"
+    },
+    {
+      "id": "Kotlin_Content_echo",
+      "name": "echo",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Echo",
+      "category": "Content",
+      "rules": [],
+      "reasonTemplate": "Cegueira Operacional: O objetivo '{objective}' exige diagnóstico. Em '{file}', o uso de println() impede a gestão da 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Kotlin/Content/echo.py"
+    },
+    {
+      "id": "Kotlin_Content_forge",
+      "name": "forge",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Forge",
+      "category": "Content",
+      "rules": [],
+      "reasonTemplate": "Você é o Dr. {self.name}, mestre em automação Kotlin.",
+      "originalFile": "src_local/agents/Kotlin/Content/forge.py"
+    },
+    {
+      "id": "Kotlin_Content_globe",
+      "name": "globe",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Globe",
+      "category": "Content",
+      "rules": [],
+      "reasonTemplate": "Barreira Linguística: O objetivo '{objective}' exige escala. Em '{file}', a falta de abstração de strings impede a 'Orquestração de Inteligência Artificial' de atingir maturidade global.",
+      "originalFile": "src_local/agents/Kotlin/Content/globe.py"
+    },
+    {
+      "id": "Kotlin_Content_hype",
+      "name": "hype",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Hype",
+      "category": "Content",
+      "rules": [],
+      "reasonTemplate": "Invisibilidade de Produto: O objetivo '{objective}' exige escala. Em '{file}', identificadores amadores barram a expansão da 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Kotlin/Content/hype.py"
+    },
+    {
+      "id": "Kotlin_Content_mantra",
+      "name": "mantra",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Mantra",
+      "category": "Content",
+      "rules": [],
+      "reasonTemplate": "Poluição de Estado: O objetivo '{objective}' exige determinismo. Em '{file}', a mutabilidade excessiva dificulta o rastreamento lógico necessário para a 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Kotlin/Content/mantra.py"
+    },
+    {
+      "id": "Kotlin_Content_palette",
+      "name": "palette",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Palette",
+      "category": "Content",
+      "rules": [],
+      "reasonTemplate": "Fragmentação de UX: O objetivo '{objective}' exige inclusão. Em '{file}', a falha semântica impede a 'Orquestração de Inteligência Artificial' de ser universal.",
+      "originalFile": "src_local/agents/Kotlin/Content/palette.py"
+    },
+    {
+      "id": "Kotlin_Content_scribe",
+      "name": "scribe",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Scribe",
+      "category": "Content",
+      "rules": [],
+      "reasonTemplate": "Déficit de Explicabilidade: O objetivo '{objective}' exige transparência de lógica. Em '{file}', a ausência de KDoc isola a 'Orquestração de Inteligência Artificial' de sua base de conhecimento.",
+      "originalFile": "src_local/agents/Kotlin/Content/scribe.py"
+    },
+    {
+      "id": "Kotlin_Strategic_sentinel",
+      "name": "sentinel",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Sentinel",
+      "category": "Strategic",
+      "rules": [],
+      "reasonTemplate": "Vulnerabilidade Crítica: O objetivo '{objective}' exige segurança total. Em '{file}', o uso de HTTP expõe a 'Orquestração de Inteligência Artificial' a ataques de rede.",
+      "originalFile": "src_local/agents/Kotlin/Strategic/sentinel.py"
+    },
+    {
+      "id": "Kotlin_Strategic_vault",
+      "name": "vault",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Vault",
+      "category": "Strategic",
+      "rules": [],
+      "reasonTemplate": "Risco de Precisão: O objetivo '{objective}' exige exatidão fiscal. Em '{file}', o uso de ponto flutuante para dinheiro invalida os cálculos da 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Kotlin/Strategic/vault.py"
+    },
+    {
+      "id": "Kotlin_Strategic_voyager",
+      "name": "voyager",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Voyager",
+      "category": "Strategic",
+      "rules": [],
+      "reasonTemplate": "Débito de Modernidade: O objetivo '{objective}' exige velocidade de desenvolvimento. Em '{file}', o uso de padrões imperativos limita a agilidade da 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Kotlin/Strategic/voyager.py"
+    },
+    {
+      "id": "Kotlin_Strategic_warden",
+      "name": "warden",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Warden",
+      "category": "Strategic",
+      "rules": [],
+      "reasonTemplate": "Risco Jurídico: O objetivo '{objective}' exige conformidade legal. Em '{file}', o rastreamento via ID persistente viola a LGPD no sistema de 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Kotlin/Strategic/warden.py"
+    },
+    {
+      "id": "Kotlin_System_bridge",
+      "name": "bridge",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Bridge",
+      "category": "System",
+      "rules": [],
+      "reasonTemplate": "Risco de Corrupção: O objetivo '{objective}' exige estabilidade. Em '{file}', o uso de chamadas externas JNI pode causar crashes que fogem do controle da 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Kotlin/System/bridge.py"
+    },
+    {
+      "id": "Kotlin_System_cache",
+      "name": "cache",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Cache",
+      "category": "System",
+      "rules": [],
+      "reasonTemplate": "Paralisia de I/O: O objetivo '{objective}' exige fluidez. Em '{file}', queries na thread principal travam a 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Kotlin/System/cache.py"
+    },
+    {
+      "id": "Kotlin_System_flow",
+      "name": "flow",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Flow",
+      "category": "System",
+      "rules": [],
+      "reasonTemplate": "Entropia de Destino: O objetivo '{objective}' exige determinismo. Em '{file}', o uso de rotas dinâmicas não-tipadas ameaça a integridade da 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Kotlin/System/flow.py"
+    },
+    {
+      "id": "Kotlin_System_hermes",
+      "name": "hermes",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Hermes",
+      "category": "System",
+      "rules": [],
+      "reasonTemplate": "Risco de Integridade: O objetivo '{objective}' exige artefatos verificados. Em '{file}', segredos expostos permitem ataques à 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Kotlin/System/hermes.py"
+    },
+    {
+      "id": "Kotlin_System_neural",
+      "name": "neural",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Neural",
+      "category": "System",
+      "rules": [],
+      "reasonTemplate": "Fragilidade Cognitiva: O objetivo '{objective}' exige autonomia. Em '{file}', a dependência do ML Kit vincula a 'Orquestração de Inteligência Artificial' a serviços proprietários.",
+      "originalFile": "src_local/agents/Kotlin/System/neural.py"
+    },
+    {
+      "id": "Kotlin_System_nexus",
+      "name": "nexus",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Nexus",
+      "category": "System",
+      "rules": [],
+      "reasonTemplate": "Risco de Inconsistência: O objetivo '{objective}' exige gestão de escopo. Em '{file}', o uso de GlobalScope impede o controle de cancelamento da 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Kotlin/System/nexus.py"
+    },
+    {
+      "id": "Kotlin_System_spark",
+      "name": "spark",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Spark",
+      "category": "System",
+      "rules": [],
+      "reasonTemplate": "Interface Estática: O objetivo '{objective}' exige engajamento. Em '{file}', a ausência de feedback visual premium torna a 'Orquestração de Inteligência Artificial' menos intuitiva.",
+      "originalFile": "src_local/agents/Kotlin/System/spark.py"
+    },
+    {
+      "id": "Kotlin_System_stream",
+      "name": "stream",
+      "emoji": "👤",
+      "role": "PhD Agent",
+      "stack": "Stream",
+      "category": "System",
+      "rules": [],
+      "reasonTemplate": "Instabilidade Sistêmica: O objetivo '{objective}' exige resiliência. Em '{file}', o vazamento de listeners paralisa o sistema de 'Orquestração de Inteligência Artificial'.",
+      "originalFile": "src_local/agents/Kotlin/System/stream.py"
+    }
+  ]
+}
