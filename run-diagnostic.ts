@@ -15,7 +15,8 @@ async function main() {
         args: Bun.argv.slice(2),
         options: {
             root: { type: "string", short: "r" },
-            "auto-heal": { type: "boolean", short: "a" }
+            "auto-heal": { type: "boolean", short: "a" },
+            "dry-run": { type: "boolean", short: "d" }
         },
         allowPositionals: true
     });
@@ -26,6 +27,9 @@ async function main() {
     const startTime = Date.now();
 
     logger.info(`📡 Acionando Autoconsciência sobre o alvo: ${projectRootStr}`);
+    if (args.values["dry-run"]) {
+        logger.info("🛡️ MODO DRY-RUN: Nenhuma alteração persistente será salva.");
+    }
 
     try {
         const orchestrator = new Orchestrator(projectRootStr);
@@ -34,7 +38,8 @@ async function main() {
         orchestrator.addPersona(new DirectorPersona(projectRootStr));
 
         const reportPath = await orchestrator.generateFullDiagnostic({
-            autoHeal: !!args.values["auto-heal"]
+            autoHeal: !!args.values["auto-heal"],
+            dryRun: !!args.values["dry-run"]
         });
 
         const duration = ((Date.now() - startTime) / 1000).toFixed(2);

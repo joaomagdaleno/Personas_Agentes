@@ -18,7 +18,7 @@ export class AuditEngine {
         this.taskOrc = new TaskOrchestrator(orchestrator);
     }
 
-    async runStrategicAudit(context: any, objective: string | null = null): Promise<[any[], number]> {
+    async runStrategicAudit(context: any, objective: string | null = null, dryRun: boolean = false): Promise<[any[], number]> {
         const startT = Date.now();
         const stacks = context.identity?.stacks || new Set(["Python"]);
         const target = objective || `Validar integridade ${Array.from(stacks).join(', ')}`;
@@ -31,12 +31,16 @@ export class AuditEngine {
         // Execução
         const findings = await this.taskOrc.runAuditCycle(active, target, changedFiles, context);
 
-        // Persistência Atômica
-        for (const [p, h] of Object.entries(changedFiles)) {
-            this.orc.cacheManager.update(p, h);
+        if (!dryRun) {
+            // Persistência Atômica
+            for (const [p, h] of Object.entries(changedFiles)) {
+                this.orc.cacheManager.update(p, h);
+            }
+            this.orc.cacheManager.save();
+            this.orc.stabilityLedger.update(findings, context.map);
+        } else {
+            logger.info("🛡️ [AuditEngine] Dry-Run: Persistência de cache e ledger ignorada.");
         }
-        this.orc.cacheManager.save();
-        this.orc.stabilityLedger.update(findings, context.map);
 
         return [findings, startT];
     }

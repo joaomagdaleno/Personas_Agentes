@@ -11,8 +11,9 @@ def main():
     try:
         # Execute the Bun diagnostic command
         # This allows the Git hook to verify the actual active system (Bun)
+        # Added --dry-run to prevent loop (modifying files during commit)
         result = subprocess.run(
-            ["bun", "run", "run-diagnostic.ts", "."],
+            ["bun", "run", "run-diagnostic.ts", ".", "--dry-run"],
             cwd=project_root,
             shell=True 
         )

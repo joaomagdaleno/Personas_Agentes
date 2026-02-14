@@ -5,11 +5,16 @@ import { Path } from "./path_utils";
 const logger = winston.child({ module: "DiagnosticFinalizer" });
 
 export class DiagnosticFinalizer {
-    static async finalize(pipeline: any, ctx: any, health: any, findings: any[]): Promise<Path> {
+    static async finalize(pipeline: any, ctx: any, health: any, findings: any[], dryRun: boolean = false): Promise<Path> {
         const orc = pipeline.orc;
         const snapshot = await orc.getSystemHealth360(ctx, health, findings);
 
         logger.info(`✨ Finalizando diagnóstico com score: ${snapshot.health_score}%`);
+
+        if (dryRun) {
+            logger.info("🛡️ [DryRun] Snapshot gerado, mas persistência ignorada.");
+            return new Path("dry_run_report.md");
+        }
 
         // Database and history logic
         orc.historyAgent.recordSnapshot(

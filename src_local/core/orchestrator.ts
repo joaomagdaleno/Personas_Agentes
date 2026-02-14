@@ -114,10 +114,10 @@ export class Orchestrator {
         };
     }
 
-    async generateFullDiagnostic(options: { autoHeal: boolean }): Promise<Path> {
+    async generateFullDiagnostic(options: { autoHeal: boolean, dryRun?: boolean }): Promise<Path> {
         logger.info("🚀 Acionando DiagnosticPipeline (Bun Version)...");
         const pipeline = new DiagnosticPipeline(this);
-        return await pipeline.execute({ autoHeal: options.autoHeal });
+        return await pipeline.execute({ autoHeal: options.autoHeal, dryRun: options.dryRun });
     }
 
     private _logPerformance(startTime: number, message: string) {
