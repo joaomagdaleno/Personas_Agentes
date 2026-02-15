@@ -40,6 +40,11 @@ export class AuditEngine {
                 const { LogicAuditor } = await import("../agents/Support/logic_auditor.ts");
                 const sourceFile = ts.createSourceFile(filePath, content, ts.ScriptTarget.Latest, true);
                 findings.push(...LogicAuditor.auditSilentErrors(sourceFile));
+            } else if (filePath.endsWith(".md")) {
+                const fullPath = this.root.join(filePath);
+                const content = await Bun.file(fullPath.toString()).text();
+                const { MarkdownAuditor } = await import("../agents/Support/markdown_auditor.ts");
+                findings.push(...MarkdownAuditor.auditMarkdown(filePath, content));
             }
         }
 
