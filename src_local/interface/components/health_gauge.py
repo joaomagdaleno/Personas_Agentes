@@ -7,7 +7,11 @@ class HealthGauge(ctk.CTkCanvas):
     Um arco dinâmico que muda de cor conforme a saúde sistêmica.
     """
     def __init__(self, master, size=200, **kwargs):
-        super().__init__(master, width=size, height=size, bg=master._fg_color[1] if isinstance(master, ctk.CTkFrame) else "#2b2b2b", highlightthickness=0, **kwargs)
+        bg_color = master._fg_color
+        if isinstance(bg_color, (list, tuple)):
+            bg_color = bg_color[1] if len(bg_color) > 1 else bg_color[0]
+        
+        super().__init__(master, width=size, height=size, bg=bg_color, highlightthickness=0, **kwargs)
         self.size = size
         self.health = 100
         self._draw_gauge()

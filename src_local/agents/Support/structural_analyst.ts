@@ -57,14 +57,19 @@ export class StructuralAnalyst {
     }
 
     shouldIgnore(path: Path): boolean {
-        const ignored = new Set(['.git', '__pycache__', 'build', 'node_modules', '.venv', '.agent', '.gemini']);
         const pathStr = path.toString().replace(/\\/g, "/");
+
+        // Ignore .agent/skills except for fast-android-build
+        if (pathStr.includes("/.agent/skills/") && !pathStr.includes("fast-android-build")) return true;
+        if (pathStr.endsWith("/.agent/skills")) return true;
+
+        const ignored = new Set(['.git', '__pycache__', 'build', 'node_modules', '.venv', '.gemini', '.idea', '.vscode', 'dist', 'out']);
         return Array.from(ignored).some(p => pathStr.includes(`/${p}/`) || pathStr.endsWith(`/${p}`));
     }
 
     isAnalyable(path: Path): boolean {
         const name = path.name();
-        return (name.endsWith('.py') || name.endsWith('.dart') || name.endsWith('.kt') || name.endsWith('.yaml'));
+        return (name.endsWith('.py') || name.endsWith('.ts') || name.endsWith('.tsx') || name.endsWith('.js') || name.endsWith('.yaml'));
     }
 
     async readProjectFile(path: string): Promise<string | null> {

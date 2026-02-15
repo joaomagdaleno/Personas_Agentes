@@ -1,0 +1,63 @@
+import { BaseActivePersona } from "../../base_persona.ts";
+import winston from "winston";
+
+const logger = winston.child({ module: "TS_Nebula" });
+
+/**
+ * ☁️ Dr. Nebula — PhD in TypeScript Cloud Security & Secrets Management
+ * Especialista em segurança de credenciais, chaves expostas e vazamento de segredos.
+ */
+export class NebulaPersona extends BaseActivePersona {
+    constructor(projectRoot: string | null = null) {
+        super(projectRoot);
+        this.name = "Nebula";
+        this.emoji = "☁️";
+        this.role = "PhD Cloud Security Architect";
+        this.stack = "TypeScript";
+    }
+
+    async performAudit(): Promise<any[]> {
+        const start = Date.now();
+        logger.info(`[${this.name}] Analisando Segurança Cloud TypeScript...`);
+
+        const auditRules = [
+            { regex: 'AKIA[0-9A-Z]{16}', issue: 'Vulnerabilidade Crítica: Chave AWS exposta no código TypeScript.', severity: 'critical' },
+            { regex: '(?:api[_-]?key|apiKey|API_KEY)\\s*[:=]\\s*["\'][^"\']{8,}', issue: 'Vazamento: API Key hardcoded no código-fonte.', severity: 'critical' },
+            { regex: '(?:password|passwd|secret)\\s*[:=]\\s*["\'][^"\']+["\']', issue: 'Vazamento: Credencial hardcoded no código-fonte.', severity: 'critical' },
+            { regex: 'sk-[a-zA-Z0-9]{20,}', issue: 'Vulnerabilidade Crítica: Chave OpenAI exposta.', severity: 'critical' },
+            { regex: 'ghp_[a-zA-Z0-9]{36}', issue: 'Vulnerabilidade Crítica: Token GitHub exposto.', severity: 'critical' },
+            { regex: 'process\\.env\\.[A-Z_]+\\s*\\|\\|\\s*["\'][^"\']{8,}', issue: 'Risco: Fallback de variável de ambiente contém segredo real.', severity: 'high' },
+        ];
+
+        const results: any[] = [];
+        for (const rule of auditRules) {
+            const regex = new RegExp(rule.regex, 'g');
+            for (const [filePath, content] of Object.entries(this.contextData)) {
+                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx') || filePath.endsWith('.json')) {
+                    if (filePath.includes('persona_manifest') || filePath.includes('rules')) continue;
+                    for (const match of (content as string).matchAll(regex)) {
+                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0].substring(0, 30) + '...', persona: this.name });
+                    }
+                }
+            }
+        }
+
+        const duration = (Date.now() - start) / 1000;
+        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
+        return results;
+    }
+
+    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+        if (/AKIA|sk-[a-zA-Z0-9]{20}|ghp_/.test(content) && !/rules\s*=/.test(content)) {
+            return {
+                file, severity: "CRITICAL", persona: this.name,
+                issue: `Catástrofe de Segurança: O objetivo '${objective}' exige proteção total. Credenciais expostas em '${file}' permitem o sequestro da 'Orquestração de Inteligência Artificial'.`
+            };
+        }
+        return null;
+    }
+
+    getSystemPrompt(): string {
+        return `Você é o Dr. ${this.name}, mestre em soberania cloud e segurança de segredos TypeScript.`;
+    }
+}

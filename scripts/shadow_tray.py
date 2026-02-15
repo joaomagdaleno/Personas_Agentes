@@ -30,7 +30,7 @@ current_dir = Path(__file__).parent.absolute()
 project_root = current_dir.parent
 sys.path.append(str(project_root))
 
-from src_local.core.orchestrator import Orchestrator
+from src_local.core.bridge_orchestrator import BridgeOrchestrator as Orchestrator
 from src_local.utils.cognitive_engine import CognitiveEngine
 from src_local.utils.system_sentinel import SystemSentinel
 from src_local.utils.history_agent import HistoryAgent

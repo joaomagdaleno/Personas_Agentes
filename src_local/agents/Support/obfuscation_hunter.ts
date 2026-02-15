@@ -17,12 +17,9 @@ export class ObfuscationHunter {
     /**
      * Varredura de ofuscação em arquivos TypeScript/JavaScript.
      */
-    scanFile(filePath: string, content: string): any[] {
-        // Whitelist PhD
-        const skipList = [
-            'safety_definitions.ts', 'integrity_guardian.ts', 'base_persona.ts'
-        ];
-        if (skipList.some(f => filePath.includes(f))) return [];
+    async scanFile(filePath: string, content: string): Promise<any[]> {
+        const { VetoEngine } = await import("../../utils/veto_engine.ts");
+        if (VetoEngine.shouldSkip("", filePath)) return [];
 
         try {
             const sourceFile = ts.createSourceFile(filePath, content, ts.ScriptTarget.Latest, true);

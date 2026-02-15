@@ -6,7 +6,7 @@ import winston from 'winston';
  */
 export class CognitiveEngine {
     private static instance: CognitiveEngine;
-    private logger: winston.Logger;
+    private logger!: winston.Logger;
     private initialized: boolean = false;
     private modelName: string = "qwen2.5-coder:1.5b";
     private endpoint: string = process.env.AI_ENDPOINT || "http://localhost:11434/api/generate";

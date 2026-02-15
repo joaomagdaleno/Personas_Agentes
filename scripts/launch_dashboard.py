@@ -20,7 +20,7 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.append(str(project_root))
 
-from src_local.core.orchestrator import Orchestrator
+from src_local.core.bridge_orchestrator import BridgeOrchestrator as Orchestrator
 from src_local.interface.gui_native import NativeGUI
 from src_local.utils.logging_config import setup_logging
 
@@ -37,7 +37,8 @@ def main():
     
     # Injeta personas básicas para o dashboard inicial
     from src_local.utils.persona_loader import PersonaLoader
-    PersonaLoader().load_personas(orc)
+    # PersonaLoader.mobilize_all expects (target_project_root, orchestrator)
+    PersonaLoader.mobilize_all(orc.project_root, orc)
     
     app = NativeGUI(orc)
     app.mainloop()

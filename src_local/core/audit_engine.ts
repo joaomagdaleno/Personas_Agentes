@@ -1,6 +1,7 @@
 import winston from "winston";
 import { Path } from "./path_utils.ts";
 import { TaskOrchestrator } from "./task_orchestrator.ts";
+import * as ts from "typescript";
 
 const logger = winston.child({ module: "AuditEngine" });
 
@@ -30,6 +31,17 @@ export class AuditEngine {
 
         // Execução
         const findings = await this.taskOrc.runAuditCycle(active, target, changedFiles, context);
+
+        // Auditoria Lógica Semântica (Novidade Phd TS)
+        for (const filePath of Object.keys(changedFiles)) {
+            if (filePath.endsWith(".ts") || filePath.endsWith(".tsx")) {
+                const fullPath = this.root.join(filePath);
+                const content = await Bun.file(fullPath.toString()).text();
+                const { LogicAuditor } = await import("../agents/Support/logic_auditor.ts");
+                const sourceFile = ts.createSourceFile(filePath, content, ts.ScriptTarget.Latest, true);
+                findings.push(...LogicAuditor.auditSilentErrors(sourceFile));
+            }
+        }
 
         if (!dryRun) {
             // Persistência Atômica
@@ -75,8 +87,8 @@ export class AuditEngine {
                     const fullPath = this.root.join(filePath);
                     if (await Bun.file(fullPath.toString()).exists()) {
                         const content = await Bun.file(fullPath.toString()).text();
-                        const fileFindings = hunter.scanFile(filePath, content);
-                        findings = findings.concat(fileFindings.map(f => ({ ...f, file: filePath })));
+                        const fileFindings = await hunter.scanFile(filePath, content);
+                        findings = findings.concat(fileFindings.map((f: any) => ({ ...f, file: filePath })));
                     }
                 }
             }

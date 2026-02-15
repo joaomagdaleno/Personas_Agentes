@@ -173,7 +173,7 @@ class NativeGUI(ctk.CTk):
         threading.Thread(target=think, daemon=True).start()
 
 if __name__ == "__main__":
-    from src_local.core.orchestrator import Orchestrator
+    from src_local.core.bridge_orchestrator import BridgeOrchestrator as Orchestrator
     orc = Orchestrator(".")
     app = NativeGUI(orc)
     app.mainloop()

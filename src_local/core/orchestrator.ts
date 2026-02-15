@@ -5,7 +5,7 @@ import { ContextEngine } from "../utils/context_engine.ts";
 import { CacheManager } from "../utils/cache_manager.ts";
 import { TaskExecutor } from "../utils/task_executor.ts";
 import { AuditEngine } from "./audit_engine.ts";
-import { DirectorPersona } from "../agents/Python/Strategic/director.ts";
+import { DirectorPersona } from "../agents/Support/director.ts";
 import { StabilityLedger } from "../utils/stability_ledger.ts";
 import { HistoryAgent } from "../utils/history_agent.ts";
 
@@ -28,7 +28,8 @@ export class Orchestrator {
     historyAgent: HistoryAgent;
     strategist: any;
     coreValidator: any;
-    synthesizer: any;
+    syntax: any;
+    synthesizer: any; // HealthSynthesizer;
 
     constructor(projectRoot: string) {
         this.projectRoot = new Path(projectRoot);
@@ -40,6 +41,7 @@ export class Orchestrator {
         this.stabilityLedger = new StabilityLedger(this.projectRoot.toString());
         this.historyAgent = new HistoryAgent(this.projectRoot.toString());
 
+        // Lazy loaded synthesizer below or in _initTools
         this._initEngines();
         this._initTools();
     }
@@ -64,7 +66,11 @@ export class Orchestrator {
         };
         this.synthesizer = {
             getTopologyIssues: (ctx: any) => [],
-            synthesize_360: (ctx: any, m_orc: any, personas: any, ledger: any, qa: any) => ({ health_score: 100 })
+            synthesize360: async (ctx: any, m_orc: any, personas: any, ledger: any, qa: any) => {
+                const { HealthSynthesizer } = await import("../agents/Support/health_synthesizer.ts");
+                const syn = new HealthSynthesizer();
+                return syn.synthesize360(ctx, m_orc, personas, ledger, qa);
+            }
         };
     }
 
@@ -107,11 +113,9 @@ export class Orchestrator {
     }
 
     async getSystemHealth360(ctx: any, health: any, findings: any[]) {
-        return {
-            health_score: health.score || 100,
-            health_breakdown: {},
-            dark_matter: []
-        };
+        // Now using the real synthesizer through the orchestrator's proxy
+        const qaData = { pyramid: {}, execution: {}, matrix: [] }; // Mock QA for now or fetch from pipeline
+        return await this.synthesizer.synthesize360(ctx, this.metrics, this.personas, this.stabilityLedger, qaData);
     }
 
     async generateFullDiagnostic(options: { autoHeal: boolean, dryRun?: boolean }): Promise<Path> {

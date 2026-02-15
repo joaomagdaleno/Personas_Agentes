@@ -72,8 +72,8 @@ export class DiagnosticPipeline {
         this.orc.metrics.all_findings = [];
         // Mobilize personas logic if needed
         if (this.orc.personas.length === 0) {
-            const { PersonaLoader } = await import("../utils/persona_loader.ts");
-            await PersonaLoader.mobilizeAll(this.orc.projectRoot.toString(), this.orc);
+            const { PersonaRegistry } = await import("../utils/persona_registry.ts");
+            await PersonaRegistry.mobilizeAll(this.orc.projectRoot.toString(), this.orc);
         }
     }
 }
