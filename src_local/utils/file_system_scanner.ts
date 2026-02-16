@@ -40,7 +40,7 @@ export class FileSystemScanner {
     private isForbiddenDir(dir: string): boolean {
         const normalized = dir.replace(/\\/g, "/").toLowerCase();
         const segments = normalized.split("/");
-        
+
         // Check for forbidden directories using Set for O(1) lookups
         const forbidden = new Set([".git", ".gemini", "restore", "forensics", "__pycache__", "node_modules", ".venv", "dist", "build"]);
         if (segments.some(p => forbidden.has(p))) {
@@ -52,13 +52,13 @@ export class FileSystemScanner {
             if (normalized.includes("fast-android-build")) {
                 return false;
             }
-            
+
             const sub = segments.slice(segments.indexOf(".agent"));
             const allowedHierarchy = new Set([".agent", "skills"]);
             if (sub.every(p => allowedHierarchy.has(p))) {
                 return false;
             }
-            
+
             return true;
         }
 
@@ -68,7 +68,7 @@ export class FileSystemScanner {
     async *getAnalyzableFiles(): AsyncGenerator<Path> {
         const seen = new Set<string>();
 
-        const walk = async function* (dir: string): AsyncGenerator<string> {
+        const walk = async function* (this: FileSystemScanner, dir: string): AsyncGenerator<string> {
             if (this.isForbiddenDir(dir)) return;
 
             const entries = await readdir(dir, { withFileTypes: true });
@@ -84,9 +84,9 @@ export class FileSystemScanner {
 
         for await (const pathStr of walk.call(this, this.root.toString())) {
             if (seen.has(pathStr)) continue;
-            
+
             const path = new Path(pathStr);
-            
+
             if (await this.shouldSkip(path)) {
                 continue;
             }
