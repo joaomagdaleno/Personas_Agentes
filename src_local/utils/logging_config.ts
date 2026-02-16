@@ -3,6 +3,9 @@
  * Configuração centralizada de logs com suporte a rotação e output estruturado.
  */
 
+import winston from 'winston';
+import { formatDate } from './date_utils.ts'; // We'll create this
+
 function formatDate(date: Date): string {
     const pad = (num: number) => num.toString().padStart(2, '0');
     return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ` +
@@ -10,7 +13,40 @@ function formatDate(date: Date): string {
 }
 
 export function configureLogging(level: string = "info") {
-    // Placeholder to keep compatibility with run-diagnostic.ts
+    // Configure Winston logging
+    const transports: winston.transport[] = [
+        new winston.transports.Console({
+            format: winston.format.combine(
+                winston.format.colorize(),
+                winston.format.timestamp(),
+                winston.format.printf(({ timestamp, level, message, metadata }) => {
+                    const timeStr = formatDate(new Date(timestamp));
+                    return `[${timeStr}] [${level}] ${message}${metadata ? ` ${JSON.stringify(metadata)}` : ''}`;
+                })
+            ),
+            level: level
+        })
+    ];
+
+    // Add file transport if running in production
+    if (process.env.NODE_ENV === 'production') {
+        transports.push(
+            new winston.transports.File({
+                filename: `logs/forensic_${Date.now()}.log`,
+                format: winston.format.combine(
+                    winston.format.timestamp(),
+                    winston.format.json()
+                ),
+                level: 'error'
+            })
+        );
+    }
+
+    winston.configure({
+        level: level,
+        transports: transports
+    });
+
     console.log(`[Config] Logging level set to: ${level}`);
 }
 
@@ -42,7 +78,9 @@ export class SovereigntyLogger {
             timestamp: formatDate(new Date()),
         };
 
-        console.log(`[${fullEntry.timestamp}] [${fullEntry.level}] [${fullEntry.persona}] ${fullEntry.message}`);
+        // Use Winston for logging
+        const logger = winston.child({ persona: entry.persona });
+        logger.log(entry.level.toLowerCase(), entry.message, entry.metadata);
 
         this.logBuffer.push(fullEntry);
         if (this.logBuffer.length > this.MAX_BUFFER) {

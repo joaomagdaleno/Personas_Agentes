@@ -3,7 +3,7 @@ import { Path } from "./src_local/core/path_utils.ts";
 import { Orchestrator } from "./src_local/core/orchestrator.ts";
 import { configureLogging } from "./src_local/utils/logging_config.ts";
 import winston from "winston";
-import { DirectorPersona } from "./src_local/agents/Support/director.ts";
+import { DirectorPersona } from "./src_local/agents/TypeScript/Strategic/director.ts";
 
 /**
  * 🌌 Portal de Consciência Sistêmica (Bun Version).

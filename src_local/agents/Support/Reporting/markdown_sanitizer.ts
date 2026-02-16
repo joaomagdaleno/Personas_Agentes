@@ -22,7 +22,7 @@ export class MarkdownSanitizer {
         const startTime = Date.now();
 
         // 1. Limpeza de caracteres especiais (como BOM) e normalização de quebra de linha
-        let internalContent = content.lstrip("\ufeff").replace(/\r\n/g, "\n").trim();
+        let internalContent = content.replace(/^\ufeff+/, '').replace(/\r\n/g, "\n").trim();
         let lines = internalContent.split("\n");
 
         // 2. Delegação para o Agente de Estrutura para refinamento semântico

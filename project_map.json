@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-02-15T19:45:03.580Z",
+  "timestamp": "2026-02-15T19:48:19.204Z",
   "sovereign": [
     {
       "path": "src_local/agents/base.py",
@@ -1812,7 +1812,7 @@
       "name": "specialized_personas_hub.ts",
       "extension": ".ts",
       "category": "Agent",
-      "size": 1992,
+      "size": 3275,
       "stack": "TypeScript"
     },
     {
@@ -1830,7 +1830,7 @@
       "name": "structural_auditor_supreme.ts",
       "extension": ".ts",
       "category": "Agent",
-      "size": 4123,
+      "size": 5698,
       "stack": "TypeScript",
       "parity": 100,
       "legacyMatch": "legacy_restore/src_local/agents/Support/veto_structural_engine.py"
@@ -2274,7 +2274,7 @@
       "name": "phd_governance_system.ts",
       "extension": ".ts",
       "category": "Core",
-      "size": 2832,
+      "size": 5003,
       "stack": "TypeScript",
       "parity": 100,
       "legacyMatch": "legacy_restore/src_local/utils/veto_rules_phd.py"

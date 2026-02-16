@@ -1,162 +1,11 @@
 import winston from "winston";
 import * as fs from "node:fs";
 import * as path from "node:path";
+import { ParityReport, DepthMetric, AgentParityResult, AtomicFingerprint } from "./parity_types";
+import { LEGACY_ALIASES, FILE_MAPPINGS, IGNORE_LIST } from "./parity_config";
+import { extractPythonFingerprint, extractTSFingerprint, computeDeltas, computeScore, capitalize } from "./parity_utils";
 
 const logger = winston.child({ module: "ParityAnalyst" });
-
-// ─── Types ──────────────────────────────────────────────────────────────────
-
-export interface AtomicFingerprint {
-    name: string;
-    emoji: string;
-    role: string;
-    stack: string;
-    rulesCount: number;
-    rulePatterns: string[];
-    ruleIssues: string[];
-    ruleSeverities: string[];
-    fileExtensions: string[];
-    hasReasoning: boolean;
-    reasoningTrigger: string;
-    systemPrompt: string;
-    hasExtraMethods: string[];
-    methods: string[];
-}
-
-export interface AgentDelta {
-    dimension: string;
-    legacy: string;
-    current: string;
-    severity: "INFO" | "MEDIUM" | "HIGH" | "CRITICAL";
-    context: string;
-}
-
-export type TelemetryJudgment = "STRONG" | "WEAK" | "ABSENT";
-
-export interface AgentParityResult {
-    agent: string;
-    stack: string;
-    category: string;
-    status: "IDENTICAL" | "DIVERGENT" | "MISSING_TS" | "MISSING_PY" | "AMBIGUOUS" | "PORTED_ELSEWHERE";
-    score: number;
-    deltas: AgentDelta[];
-    legacy: AtomicFingerprint | null;
-    current: AtomicFingerprint | null;
-}
-
-export interface ParityReport {
-    timestamp: string;
-    totalAgents: number;       // Number of unique agent identities
-    totalInstances: number;    // Total agent-stack combinations
-    symmetricCount: number;    // Number of instances perfectly mirrored vs reference
-    divergentCount: number;    // Number of instances with discrepancies
-    overallParity: number;     // 0-100 average symmetry score
-    byStack: Record<string, { total: number; symmetric: number; parity: number }>;
-    byCategory: Record<string, { total: number; symmetric: number; parity: number }>;
-    coverage: Array<{ agent: string, stacks: string[] }>;
-    results: AgentParityResult[];
-    criticalDeltas: AgentDelta[];
-}
-
-export interface DepthMetric {
-    path: string;
-    pyDepth: number;
-    tsDepth: number;
-    parity: number;
-}
-
-// ─── Mappings ─────────────────────────────────────────────────────────────
-
-const LEGACY_ALIASES: Record<string, string> = {
-    "reflex_engine_phd": "reflex_engine",
-    "ast_navigator": "ast_intelligence",
-    "ast_node_inspector": "ast_intelligence",
-    "ast_traversal_logic": "ast_intelligence",
-    "audit_risk_engine": "audit_expert_engine",
-    "audit_scanner_engine": "audit_expert_engine",
-    "safe_context_judge": "safety_supreme_judge",
-    "safety_heuristics": "safety_supreme_judge",
-    "safety_assignment_engine": "safety_supreme_judge",
-    "safety_navigator": "safety_supreme_judge",
-    "rule_definition_judge": "safety_supreme_judge",
-    "obfuscation_cleaner_engine": "vulnerability_heuristic",
-    "telemetry_intent_judge": "telemetry_excellence_engine",
-    "telemetry_maturity_logic": "telemetry_excellence_engine",
-    "intent_heuristics_engine": "telemetry_excellence_engine",
-    "test_discovery_logic": "telemetry_excellence_engine",
-    "analysis_engine_phd": "phd_governance_system",
-    "conflict_policy_phd": "phd_governance_system",
-    "scoring_engine_phd": "phd_governance_system",
-    "topology_engine_phd": "phd_governance_system",
-    "compliance_standard": "phd_governance_system",
-    "git_operations_phd": "phd_governance_system",
-    "veto_rules_phd": "phd_governance_system",
-    "test_bolt": "specialized_personas_hub",
-    "test_director": "specialized_personas_hub",
-    "test_sentinel": "specialized_personas_hub",
-    "test_vault": "specialized_personas_hub",
-    "logic_node_auditor": "structural_auditor_supreme",
-    "silent_error_detector": "structural_auditor_supreme",
-    "semantic_context_analyst": "structural_auditor_supreme",
-    "meta_analysis_detector": "structural_auditor_supreme",
-    "call_safety_judge": "safety_supreme_judge",
-    "code_inspector": "structural_auditor_supreme",
-    "line_veto": "structural_auditor_supreme",
-    "metrics_assembler": "structural_auditor_supreme",
-    "registry_compiler": "audit_expert_engine",
-    "report_sections_engine": "report_formatter",
-    "test_navigator": "ast_intelligence",
-    "veto_criteria_engine": "structural_auditor_supreme",
-    "veto_rules": "structural_auditor_supreme",
-    "veto_structural_engine": "structural_auditor_supreme",
-    "web_insight": "discovery",
-    "compiler": "phd_governance_system",
-    "test_core_depth": "telemetry_excellence_engine",
-    "test_score_calculator": "phd_governance_system",
-    "indexer": "phd_governance_system",
-    "parallel_test_executor": "telemetry_excellence_engine",
-    "persona_loader": "phd_governance_system",
-    "resource_governor": "phd_governance_system",
-    "semantic_search": "discovery",
-    "test_mapper": "telemetry_excellence_engine",
-    "voice_engine": "briefing",
-    "agents_registry": "audit_expert_engine"
-};
-
-const FILE_MAPPINGS: Record<string, string> = {
-    "git_automaton.py": "utils/git_client.ts",
-    "markdown_sanitizer.py": "agents/Support/markdown_auditor.ts",
-    "telemetry_intent_judge.py": "agents/Support/logic_auditor.ts",
-    "telemetry_maturity_logic.py": "agents/Support/logic_auditor.ts",
-    "silent_error_detector.py": "agents/Support/logic_auditor.ts",
-    "meta_analysis_detector.py": "agents/Support/logic_auditor.ts",
-    "call_safety_judge.py": "agents/Support/logic_auditor.ts",
-    "safe_context_judge.py": "agents/Support/logic_auditor.ts",
-    "resource_governor.py": "utils/system_sentinel.ts",
-    "conflict_policy.py": "utils/conflict_policy.ts",
-    "memory_pruning_agent.py": "utils/memory_pruning_agent.ts",
-    "audit_risk_engine.py": "agents/Support/logic_auditor.ts",
-    "audit_scanner_engine.py": "core/audit_engine.ts",
-    "veto_criteria_engine.py": "utils/veto_engine.ts",
-    "veto_rules.py": "utils/veto_engine.ts",
-    "veto_structural_engine.py": "utils/veto_engine.ts",
-    "safety_heuristics.py": "agents/Support/logic_auditor.ts",
-    "safety_assignment_engine.py": "agents/Support/logic_auditor.ts",
-    "report_formatter.py": "core/diagnostic_finalizer.ts",
-    "report_sections_engine.py": "core/diagnostic_finalizer.ts"
-};
-
-const IGNORE_LIST = [
-    "ast_navigator.py",
-    "ast_node_inspector.py",
-    "ast_traversal_logic.py",
-    "source_code_parser.py",
-    "registry_compiler.py",
-    "obfuscation_cleaner_engine.py",
-    "logic_node_auditor.py"
-];
-
-// ─── Parity Analyst ────────────────────────────────────────────────────────
 
 /**
  * ⚖️ ParityAnalyst — PhD in Atomic Symmetry & Forensic Audit
@@ -341,10 +190,7 @@ export class ParityAnalyst {
             return { results, gaps };
         }
 
-        // Crawl legacy_restore
         const legacyFiles = this.crawlDirectory(legPath, [".py"]);
-
-        // Crawl current src_local
         const currentFiles = this.crawlDirectory(path.join(process.cwd(), "src_local"), [".ts", ".py", ".go", ".kt", ".dart"]);
 
         for (const lPath of legacyFiles) {
@@ -356,7 +202,6 @@ export class ParityAnalyst {
 
             let match = currentFiles.find(c => path.basename(c).toLowerCase().startsWith(targetName.toLowerCase()));
 
-            // Try explicit mappings
             if (!match && FILE_MAPPINGS[fileName]) {
                 const targetPath = FILE_MAPPINGS[fileName]!;
                 match = currentFiles.find(c => c.replace(/\\/g, "/").endsWith(targetPath));
@@ -389,9 +234,6 @@ export class ParityAnalyst {
         return results;
     }
 
-    /**
-     * Relatório formatado.
-     */
     formatMarkdownReport(report: ParityReport): string {
         let md = `## ⚖️ SIMETRIA ALFA: Paridade Cross-Stack (6 Linguagens)\n\n`;
         md += `> Inteligência de Sincronia entre Bun, Flutter, Go, Kotlin, Python e TypeScript | Timestamp: ${report.timestamp}\n\n`;
@@ -411,7 +253,6 @@ export class ParityAnalyst {
         }
         md += `\n`;
 
-        // Forensic Section
         const forensics = this.analyzeLegacyForensics();
         md += `--- \n\n## 🕵️ AUDITORIA FORENSE (LEGACY RECOVERY)\n\n`;
         md += `| Legacy File | Target Sovereign | Paridade |\n| :--- | :--- | :---: |\n`;
@@ -429,127 +270,4 @@ export class ParityAnalyst {
         if (report.overallParity >= 80) return `${report.overallParity}% Parcial`;
         return `${report.overallParity}% Crítica`;
     }
-}
-
-// ─── Fingerprint Extractors ───────────────────────────────────────────────
-
-function extractPythonFingerprint(content: string, name: string): AtomicFingerprint {
-    const emojiMatch = content.match(/emoji\s*=\s*["'](.*?)["']/) || content.match(/self\.emoji\s*=\s*["'](.*?)["']/);
-    const roleMatch = content.match(/role\s*=\s*["'](.*?)["']/) || content.match(/self\.role\s*=\s*["'](.*?)["']/);
-    const stackMatch = content.match(/stack\s*=\s*["'](.*?)["']/) || content.match(/self\.stack\s*=\s*["'](.*?)["']/);
-
-    // Deeper regex from parity_scanner.ts
-    const rulePatterns = content.match(/'regex':\s*r?"([^"]+)"/g)?.map(r => r.match(/"([^"]+)"/)?.[1] || "") || [];
-    const ruleIssues = content.match(/'issue':\s*'([^']+)'/g)?.map(i => i.match(/'([^']+)'/)?.[1] || "") || [];
-
-    const promptMatch = content.match(/def\s+get_system_prompt\(self\):\s*\n\s+return\s+f?"([^"]+)"/) ||
-        content.match(/system_prompt\s*=\s*f?["']([\s\S]*?)["']\s*(?=def|class|$)/);
-
-    const hasReasoning = content.includes("def _reason_about_objective") || content.includes("def reasoning") || content.includes("brain.reason");
-
-    return {
-        name,
-        emoji: emojiMatch?.[1] || "?",
-        role: roleMatch?.[1] || "?",
-        stack: stackMatch?.[1] || "?",
-        rulesCount: rulePatterns.length,
-        rulePatterns,
-        ruleIssues,
-        ruleSeverities: [],
-        fileExtensions: [],
-        hasReasoning,
-        reasoningTrigger: "",
-        systemPrompt: promptMatch ? promptMatch[1]! : "",
-        hasExtraMethods: content.includes("def validate_code_safety") ? ["validate_code_safety"] : [],
-        methods: content.match(/^\s*def\s+(\w+)/gm)?.map(m => m.trim().replace("def ", "")) || []
-    };
-}
-
-function extractTSFingerprint(content: string, name: string): AtomicFingerprint | null {
-    const emojiMatch = content.match(/emoji:\s*["'](.*?)["']/) || content.match(/this\.emoji\s*=\s*["'](.*?)["']/);
-    const roleMatch = content.match(/role:\s*["']([\s\S]*?)["']/) || content.match(/this\.role\s*=\s*["'](.*?)["']/);
-    const stackMatch = content.match(/stack:\s*["'](.*?)["']/) || content.match(/this\.stack\s*=\s*["'](.*?)["']/);
-
-    // Deeper regex from parity_scanner.ts
-    const rules: string[] = [];
-    const ruleRegex = /regex:\s*(?:\/([^\/]+)\/|["']([^"']+)["'])/g;
-    let m: RegExpExecArray | null;
-    while ((m = ruleRegex.exec(content)) !== null) {
-        rules.push(m[1] || m[2] || "");
-    }
-
-    const promptMatch = content.match(/this\.systemPrompt\s*=\s*`([\s\S]*?)`/) ||
-        content.match(/getSystemPrompt\(\)\s*:?\s*string\s*\{\s*return\s*`([\s\S]*?)`\s*\}/);
-
-    const hasReasoning = (content.includes("reasonAboutObjective") || content.includes("protected reasoning(")) && !content.includes("return null");
-
-    return {
-        name,
-        emoji: emojiMatch?.[1] || "?",
-        role: roleMatch?.[1] || "?",
-        stack: stackMatch?.[1] || "?",
-        rulesCount: rules.length,
-        rulePatterns: rules,
-        ruleIssues: [],
-        ruleSeverities: [],
-        fileExtensions: [],
-        hasReasoning,
-        reasoningTrigger: "",
-        systemPrompt: promptMatch ? promptMatch[1]! : "",
-        hasExtraMethods: (content.includes("validateCodeSafety") || content.includes("validate_code_safety")) ? ["validate_code_safety"] : [],
-        methods: content.match(/(?:public|private|protected|async)?\s+(\w+)\s*\(.*?\)\s*(?::|{)/g)
-            ?.map(m => m.match(/(\w+)\s*\(/)?.[1] || "")
-            .filter(n => n && !["if", "for", "while", "switch", "catch"].includes(n)) || []
-    };
-}
-
-function computeDeltas(legacy: AtomicFingerprint, current: AtomicFingerprint, agent: string): AgentDelta[] {
-    const deltas: AgentDelta[] = [];
-    if (legacy.name.toLowerCase() !== current.name.toLowerCase())
-        deltas.push({ dimension: "name", legacy: legacy.name, current: current.name, severity: "CRITICAL", context: `Agent identity mismatch for ${agent}` });
-
-    if (legacy.rulesCount !== current.rulesCount)
-        deltas.push({ dimension: "rulesCount", legacy: String(legacy.rulesCount), current: String(current.rulesCount), severity: "MEDIUM", context: `Rule count divergence` });
-
-    if (legacy.hasReasoning !== current.hasReasoning)
-        deltas.push({ dimension: "reasoning", legacy: String(legacy.hasReasoning), current: String(current.hasReasoning), severity: "CRITICAL", context: "Strategy logic MISSING" });
-
-    // Dimension: Methods (Deep Disparity)
-    const legacyMethods = legacy.methods.filter(m => !m.startsWith("_"));
-    const currentMethods = current.methods || [];
-    for (const lm of legacyMethods) {
-        const camelName = lm.replace(/_([a-z])/g, (_, p1: string) => p1.toUpperCase());
-        const match = currentMethods.find(cm =>
-            cm === lm ||
-            cm === camelName ||
-            cm.toLowerCase() === lm.replace(/_/g, "").toLowerCase()
-        );
-
-        if (!match) {
-            deltas.push({
-                dimension: "Method",
-                legacy: lm,
-                current: "MISSING",
-                severity: "HIGH",
-                context: `Method '${lm}' from legacy not found in current implementation.`
-            });
-        }
-    }
-
-    return deltas;
-}
-
-function computeScore(deltas: AgentDelta[]): number {
-    let score = 100;
-    for (const d of deltas) {
-        if (d.severity === "CRITICAL") score -= 50;
-        if (d.severity === "HIGH") score -= 30;
-        if (d.severity === "MEDIUM") score -= 15;
-        if (d.severity === "INFO") score -= 2;
-    }
-    return Math.max(0, score);
-}
-
-function capitalize(s: string): string {
-    return s.charAt(0).toUpperCase() + s.slice(1);
 }

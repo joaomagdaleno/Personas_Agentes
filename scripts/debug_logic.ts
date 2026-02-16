@@ -1,6 +1,6 @@
 import * as ts from "typescript";
 import * as fs from "fs";
-import { LogicAuditor } from "../src_local/agents/Support/logic_auditor.ts";
+import { LogicAuditor } from "../src_local/agents/Support/Analysis/logic_auditor.ts";
 
 const filePath = "c:/Users/joaom/Documents/GitHub/Personas_Agentes/src_local/agents/Kotlin/Content/echo.ts";
 const content = fs.readFileSync(filePath, "utf-8");

@@ -18,8 +18,8 @@ export class DiscoveryAgent {
         logger.info("🔭 Iniciando fase de descoberta (Híbrida: Go + TS + Depth Audit)...");
 
         const projectRoot = this.orc.projectRoot.toString();
-        const legacyRoot = "C:/Users/joaom/Documents/GitHub/legacy_restore/src_local";
-        const currentRoot = new Path(projectRoot).join("src_local").toString();
+        const legacyRoot = "C:/Users/joaom/Documents/GitHub/legacy_restore"; // Scan entire legacy repository
+        const currentRoot = projectRoot; // Scan entire current repository
 
         // 1. Scan Atômico Dual (Legacy vs Current) com Força Bruta Go
         const legacyFiles = GoDiscoveryAdapter.scan(legacyRoot, legacyRoot, true);

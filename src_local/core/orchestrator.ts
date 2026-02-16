@@ -163,7 +163,14 @@ export class Orchestrator {
             topology_graph: topology.generateMermaidGraph(ctx.map || {}),
             depth_audit: ctx.depthAudit // Transferindo auditoria de profundidade para o snapshot
         };
-        return await this.synthesizer.synthesize360(ctx, this.metrics, this.personas, this.stabilityLedger, qaData);
+        
+        // Pass findings to synthesize360 by adding them to context as alerts
+        const contextWithAlerts = {
+            ...ctx,
+            alerts: findings
+        };
+        
+        return await this.synthesizer.synthesize360(contextWithAlerts, this.metrics, this.personas, this.stabilityLedger, qaData);
     }
 
     async generateMorningBriefing() {

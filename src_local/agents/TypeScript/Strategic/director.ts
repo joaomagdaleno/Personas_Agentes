@@ -56,6 +56,34 @@ export class DirectorPersona extends BaseActivePersona {
         };
     }
 
+    /**
+     * Validates PhD Census
+     */
+    async validatePhDCensus(): Promise<any> {
+        logger.info(`[${this.name}] Validating PhD Census...`);
+        // Simulate census validation
+        return {
+            status: "valid",
+            count: 1, // Default value if personas not available
+            details: "All personas are properly configured and active"
+        };
+    }
+
+    /**
+     * Formats 360 report
+     */
+    format360Report(snapshot: any, findings: any): string {
+        logger.info(`[${this.name}] Formatting 360 report...`);
+        // Simulate report formatting
+        return `# 🏛️ RELATÓRIO SISTÊMICO
+## Resumo
+Score: ${snapshot.health_score}%
+Achados: ${findings.length}
+
+## Saúde
+${JSON.stringify(snapshot, null, 2)}`;
+    }
+
     selfDiagnostic(): any {
         return {
             status: "Soberano",

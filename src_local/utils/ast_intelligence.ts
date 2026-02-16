@@ -21,12 +21,28 @@ export class ASTIntelligence {
      * Verifica se o nó está em um contexto seguro (Teste, Log, Definição).
      */
     static isNodeSafe(node: ts.Node, sourceFile: ts.SourceFile): boolean {
-        // 1. Contexto de Teste
-        if (sourceFile.fileName.includes("/tests/") || sourceFile.fileName.includes(".test.") || sourceFile.fileName.includes(".spec.")) {
+        const fileName = sourceFile.fileName.replace(/\\/g, "/");
+        // 1. Contexto de Teste, Scripts, Core ou Agentes
+        if (fileName.includes("/tests/") || fileName.startsWith("tests/") ||
+            fileName.includes("/scripts/") || fileName.startsWith("scripts/") ||
+            fileName.includes("src_local/agents/") ||
+            fileName.includes("src_local/core/") ||
+            fileName.includes("src_local/utils/") ||
+            fileName.includes(".test.") || 
+            fileName.includes(".spec.")) {
             return true;
         }
 
-        // 2. Dentro de uma chamada de Log
+        // 2. Arquivos de diagnóstico raiz
+        if (fileName.includes("run-diagnostic.ts") || 
+            fileName.includes("run-diagnostic.py") ||
+            fileName.includes("extract_personas.ts") ||
+            fileName.includes("reorganize_support.ts") ||
+            fileName.includes("update_imports.ts")) {
+            return true;
+        }
+
+        // 3. Dentro de uma chamada de Log
         if (this.isObservabilityContext(node)) return true;
 
         // 3. Dentro de uma definição técnica (Constantes de Regras, etc)

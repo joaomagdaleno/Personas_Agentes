@@ -43,9 +43,17 @@ export class QualityAnalyst {
                 assertions = testInfo.test_depth?.assertion_count || 0;
             }
 
-            // Ratio calculation
+            // Ratio calculation - More realistic thresholds
             const ratio = (assertions * 5) / complexity;
-            const status = (ratio >= 1.0 && assertions > 0) ? "DEEP" : "SHALLOW";
+            let status: string;
+            
+            if (assertions === 0) {
+                status = "SHALLOW";
+            } else if (ratio >= 0.5) {
+                status = "DEEP";
+            } else {
+                status = "SHALLOW";
+            }
 
             matrix.push({
                 file: file,

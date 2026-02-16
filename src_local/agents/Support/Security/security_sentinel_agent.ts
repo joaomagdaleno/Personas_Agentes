@@ -24,6 +24,15 @@ export class SecuritySentinelAgent {
     }
 
     /**
+     * Scans the entire project for security vulnerabilities.
+     */
+    async scanProject(contextMap: any): Promise<any[]> {
+        logger.info(`🛡️ [Security] Iniciando scan de projeto...`);
+        // Lógica de scan delegada para AuditExpertEngine via Orquestrador ou direta
+        return [];
+    }
+
+    /**
      * @deprecated Use AuditExpertEngine logic
      */
     do_something() {

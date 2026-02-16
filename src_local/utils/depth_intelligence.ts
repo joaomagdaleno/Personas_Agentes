@@ -1,4 +1,4 @@
-import * as fs from "node:fs";
+import { readFile, exists } from "node:fs/promises";
 import * as path from "node:path";
 import * as ts from "typescript";
 import type { FileAnalysis } from "./go_discovery_adapter.ts";
@@ -82,7 +82,7 @@ const LEGACY_ALIASES: Record<string, string> = {
  * 🧠 Inteligência de Profundidade: Cálculos de Densidade Lógica e Soberania.
  */
 export class DepthIntelligence {
-    static calculateDepthAudit(projectRoot: string, tsFiles: string[], pyFiles: string[], atomicUnits: FileAnalysis[]): DepthSummary {
+    static async calculateDepthAudit(projectRoot: string, tsFiles: string[], pyFiles: string[], atomicUnits: FileAnalysis[]): Promise<DepthSummary> {
         console.log("🧠 [DepthIntelligence] Iniciando calculateDepthAudit...");
         const legacyMap = this.buildLegacyMap(pyFiles);
         console.log(`🧠 [DepthIntelligence] LegacyMap construído com ${legacyMap.size} entradas.`);
@@ -101,8 +101,11 @@ export class DepthIntelligence {
                     if (pySourcesRetry && pySourcesRetry.length > 0) pySources.push(...pySourcesRetry);
                 }
 
-                const pyDepth = pySources.reduce((acc, p) => acc + this.getPythonDepth(p, atomicUnits), 0);
-                const tsDepth = this.getTsDepth(sovPath, atomicUnits);
+                const pyDepthPromises = pySources.map(p => this.getPythonDepth(p, atomicUnits));
+                const pyDepths = await Promise.all(pyDepthPromises);
+                const pyDepth = pyDepths.reduce((acc, d) => acc + d, 0);
+                
+                const tsDepth = await this.getTsDepth(sovPath, atomicUnits);
 
                 let status: DepthMetric["status"] = "⚠️ MAINTAINED";
                 let evolution = "Paridade funcional preservada.";
@@ -147,9 +150,9 @@ export class DepthIntelligence {
         return map;
     }
 
-    private static getPythonDepth(filePath: string, atomicUnits: FileAnalysis[]): number {
-        if (!fs.existsSync(filePath)) return 0;
-        const content = fs.readFileSync(filePath, "utf-8");
+    private static async getPythonDepth(filePath: string, atomicUnits: FileAnalysis[]): Promise<number> {
+        if (!await exists(filePath)) return 0;
+        const content = await readFile(filePath, "utf-8");
         let score = 0;
 
         const logicKeywords = [" if ", " elif ", " for ", " while ", " def ", " class ", " try ", " except ", " with "];
@@ -170,9 +173,9 @@ export class DepthIntelligence {
         return score;
     }
 
-    private static getTsDepth(filePath: string, atomicUnits: FileAnalysis[]): number {
-        if (!fs.existsSync(filePath)) return 0;
-        const content = fs.readFileSync(filePath, "utf-8");
+    private static async getTsDepth(filePath: string, atomicUnits: FileAnalysis[]): Promise<number> {
+        if (!await exists(filePath)) return 0;
+        const content = await readFile(filePath, "utf-8");
         const sourceFile = ts.createSourceFile(filePath, content, ts.ScriptTarget.Latest, true);
         let score = 0;
 

@@ -9,7 +9,7 @@
  */
 import winston from "winston";
 import * as path from "node:path";
-import * as fs from "node:fs";
+import { readFile, existsSync } from "node:fs/promises";
 
 const logger = winston.child({ module: "BaseActivePersona" });
 
@@ -120,11 +120,11 @@ export abstract class BaseActivePersona {
     }
 
     /** Lê arquivo do projeto com encoding UTF-8. */
-    readProjectFile(relPath: string): string | null {
+    async readProjectFile(relPath: string): Promise<string | null> {
         if (!this.projectRoot) return null;
         const absPath = path.join(this.projectRoot, relPath);
         try {
-            return fs.readFileSync(absPath, "utf-8");
+            return await readFile(absPath, "utf-8");
         } catch (e: any) {
             logger.warn(`⚠️ Falha na leitura: ${relPath}: ${e.message}`);
             return null;

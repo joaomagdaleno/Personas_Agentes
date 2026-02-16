@@ -18,7 +18,7 @@ export class ObfuscationHunter {
      * Varredura de ofuscação em arquivos TypeScript/JavaScript.
      */
     async scanFile(filePath: string, content: string): Promise<any[]> {
-        const { VetoEngine } = await import("../../utils/veto_engine.ts");
+        const { VetoEngine } = await import("../../../utils/veto_engine.ts");
         if (VetoEngine.shouldSkip("", filePath)) return [];
 
         try {

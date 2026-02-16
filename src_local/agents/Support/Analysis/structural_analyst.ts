@@ -8,6 +8,17 @@ import { IntegrityGuardian } from "./../Core/integrity_guardian.ts";
 const logger = winston.child({ module: "StructuralAnalyst" });
 
 /**
+ * Analysis results interface
+ */
+export interface FileAnalysis {
+    complexity: number;
+    dependencies: string[];
+    functions?: string[];
+    classes?: string[];
+    telemetry?: boolean;
+}
+
+/**
  * 🏗️ Analista Estrutural PhD (Bun Version).
  */
 export class StructuralAnalyst {
@@ -15,8 +26,8 @@ export class StructuralAnalyst {
     parser: SourceCodeParser;
     classifier: ComponentClassifier;
     integrityGuardian: IntegrityGuardian;
-    logicAuditor: any;
-    inspector: any;
+    logicAuditor: any; // Will be fixed when LogicAuditor type is available
+    inspector: any; // Will be fixed when Inspector type is available
 
     constructor() {
         this.maturityEvaluator = new MaturityEvaluator();
@@ -24,13 +35,19 @@ export class StructuralAnalyst {
         this.classifier = new ComponentClassifier();
         this.integrityGuardian = new IntegrityGuardian();
 
-        const { LogicAuditor } = require("./logic_auditor.ts");
-        this.logicAuditor = new LogicAuditor();
+        try {
+            const { LogicAuditor } = require("./logic_auditor.ts");
+            this.logicAuditor = new LogicAuditor();
+        } catch (error) {
+            logger.error(`❌ [StructuralAnalyst] Failed to load LogicAuditor: ${error}`);
+            this.logicAuditor = null;
+        }
+        
         // Placeholder for inspector
         this.inspector = { scanFileLogic: () => [] };
     }
 
-    analyzePython(content: string, filename: string): any {
+    analyzePython(content: string, filename: string): FileAnalysis {
         const startT = Date.now();
         const res = this.analyzeRaw(content, filename);
 
@@ -39,23 +56,37 @@ export class StructuralAnalyst {
         return res;
     }
 
-    private analyzeRaw(content: string, filename: string): any {
-        if (!filename.endsWith('.py')) return { complexity: 1, dependencies: [] };
+    private analyzeRaw(content: string, filename: string): FileAnalysis {
+        if (!filename.endsWith('.py')) {
+            return { complexity: 1, dependencies: [] };
+        }
 
-        const d = this.parser.analyzePy(content);
-        if (!d.tree) return { complexity: 1, dependencies: [] };
+        try {
+            const d = this.parser.analyzePy(content);
+            if (!d.tree) {
+                return { complexity: 1, dependencies: [] };
+            }
 
-        return {
-            complexity: this.parser.calculatePyComplexity(content),
-            dependencies: this.parser.extractPyImports(content),
-            functions: d.functions,
-            classes: d.classes,
-            telemetry: ["telemetry", "log_performance", "winston", "logger"].some(kw => content.includes(kw))
-        };
+            return {
+                complexity: this.parser.calculatePyComplexity(content),
+                dependencies: this.parser.extractPyImports(content),
+                functions: d.functions,
+                classes: d.classes,
+                telemetry: ["telemetry", "log_performance", "winston", "logger"].some(kw => content.includes(kw))
+            };
+        } catch (error) {
+            logger.error(`❌ [StructuralAnalyst] Failed to analyze ${filename}: ${error}`);
+            return { complexity: 1, dependencies: [] };
+        }
     }
 
     mapComponentType(relPath: string): string {
-        return this.classifier.mapType(relPath);
+        try {
+            return this.classifier.mapType(relPath);
+        } catch (error) {
+            logger.error(`❌ [StructuralAnalyst] Failed to map component type for ${relPath}: ${error}`);
+            return 'unknown';
+        }
     }
 
     shouldIgnore(path: Path): boolean {
@@ -80,13 +111,19 @@ export class StructuralAnalyst {
     async readProjectFile(path: string): Promise<string | null> {
         try {
             return await Bun.file(path).text();
-        } catch {
+        } catch (error) {
+            logger.error(`❌ [StructuralAnalyst] Failed to read file ${path}: ${error}`);
             return null;
         }
     }
 
     calculateMaturity(content: string, stack: string): any {
-        return this.maturityEvaluator.calculateMaturity(content, stack);
+        try {
+            return this.maturityEvaluator.calculateMaturity(content, stack);
+        } catch (error) {
+            logger.error(`❌ [StructuralAnalyst] Failed to calculate maturity: ${error}`);
+            return null;
+        }
     }
 
     /**
@@ -94,22 +131,31 @@ export class StructuralAnalyst {
      */
     analyze_logic_flaws(content: string, filename: string): any[] {
         if (!this.logicAuditor) return [];
-        // Assuming LogicAuditor has scanContent or similar, or we re-parse
-        // LogicAuditor.scanFile expects a SourceFile.
-        const ts = require("typescript");
-        const sourceFile = ts.createSourceFile(filename, content, ts.ScriptTarget.Latest, true);
-        return this.logicAuditor.constructor.scanFile(sourceFile);
+        
+        try {
+            const ts = require("typescript");
+            const sourceFile = ts.createSourceFile(filename, content, ts.ScriptTarget.Latest, true);
+            return this.logicAuditor.constructor.scanFile(sourceFile);
+        } catch (error) {
+            logger.error(`❌ [StructuralAnalyst] Failed to analyze logic flaws in ${filename}: ${error}`);
+            return [];
+        }
     }
 
     /**
      * 🏗️ Mapeia a lógica do arquivo (AST Simplificado).
      */
     analyze_file_logic(content: string, filename: string): any {
-        if (filename.endsWith('.py')) {
-            return this.analyzeRaw(content, filename);
+        try {
+            if (filename.endsWith('.py')) {
+                return this.analyzeRaw(content, filename);
+            }
+            // For TS/JS, use SourceCodeParser if available/extended or return parser result
+            return this.parser.analyzeTs(content);
+        } catch (error) {
+            logger.error(`❌ [StructuralAnalyst] Failed to analyze file logic in ${filename}: ${error}`);
+            return { complexity: 1, dependencies: [] };
         }
-        // For TS/JS, use SourceCodeParser if available/extended or return parser result
-        return this.parser.analyzeTs(content);
     }
 }
 

@@ -1,5 +1,5 @@
 
-import { InfrastructureAssembler } from "../src_local/agents/Support/infrastructure_assembler";
+import { InfrastructureAssembler } from "../src_local/agents/Support/Automation/infrastructure_assembler";
 import { MaintenanceEnginePhd } from "../src_local/utils/maintenance_engine_phd";
 import winston from "winston";
 
