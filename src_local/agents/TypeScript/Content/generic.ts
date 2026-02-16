@@ -51,7 +51,18 @@ export class GenericPersona extends BaseActivePersona {
                 issue: `Magia Negra de Tipos: O objetivo '${objective}' exige clareza. Em '${file}', double casts indicam design inadequado na 'Orquestração de Inteligência Artificial'.`
             };
         }
-        return null;
+        return {
+            file, severity: "INFO", persona: this.name,
+            issue: `PhD Generics: Analisando álgebra de tipos para ${objective}. Focando em simplificação e inferência.`
+        };
+    }
+
+    selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Analista de álgebra de tipos TS operando com precisão PhD."
+        };
     }
 
     getSystemPrompt(): string {

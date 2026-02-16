@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "./base_persona";
+import { BaseActivePersona } from "./base_active_persona";
 import winston from "winston";
 
 const logger = winston.loggers.get('default_logger') || winston;

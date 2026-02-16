@@ -38,7 +38,7 @@ export class PersonaRegistry {
             logger.info(`🎭 [Registry] Analisando memórias de ${manifest.personas.length} PhDs...`);
 
             const { SchemaPersona } = await import("../agents/schema_persona.ts");
-            const { TestifyPersona } = await import("../agents/Support/testify_persona.ts");
+            const { TestifyPersona } = await import("../agents/Support/Automation/testify_persona.ts");
 
             for (const metadata of manifest.personas) {
                 let persona;

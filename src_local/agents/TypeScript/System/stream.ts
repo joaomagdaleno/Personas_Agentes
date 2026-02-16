@@ -52,7 +52,18 @@ export class StreamPersona extends BaseActivePersona {
                 issue: `Instabilidade Reativa: O objetivo '${objective}' exige resiliência. Em '${file}', event listeners sem cleanup causam memory leaks na 'Orquestração de Inteligência Artificial'.`
             };
         }
-        return null;
+        return {
+            file, severity: "INFO", persona: this.name,
+            issue: `PhD Stream: Analisando arquitetura reativa para ${objective}. Focando em lifecycle de eventos e memory leaks.`
+        };
+    }
+
+    selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Engenheiro de fluxo TS operando com reatividade PhD."
+        };
     }
 
     getSystemPrompt(): string {

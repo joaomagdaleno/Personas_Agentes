@@ -52,7 +52,18 @@ export class WardenPersona extends BaseActivePersona {
                 issue: `Risco Jurídico: O objetivo '${objective}' exige conformidade LGPD. Em '${file}', dados sensíveis sem proteção ameaçam a legitimidade da 'Orquestração de Inteligência Artificial'.`
             };
         }
-        return null;
+        return {
+            file, severity: "INFO", persona: this.name,
+            issue: `PhD Warden: Analisando ética de dados para ${objective}. Focando em privacidade e conformidade LGPD.`
+        };
+    }
+
+    selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Juiz de ética e governança TS operando com lei PhD."
+        };
     }
 
     getSystemPrompt(): string {

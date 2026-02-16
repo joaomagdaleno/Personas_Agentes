@@ -1,0 +1,112 @@
+import { Database } from "bun:sqlite";
+import winston from "winston";
+import { execSync } from "node:child_process";
+import { Path } from "../core/path_utils.ts";
+
+const logger = winston.child({ module: "BehaviorAnalyst" });
+
+/**
+ * Analista Comportamental Digital PhD.
+ * Monitora o contexto de uso para adaptar a intensidade do sistema.
+ */
+export class BehaviorAnalyst {
+    private db: Database;
+    private lastApp: string | null = null;
+    private startTime: number = Date.now();
+    private windowCache: { data: { app: string, title: string }, timestamp: number } | null = null;
+    private readonly CACHE_TTL = 30000;
+
+    constructor(projectRoot: string) {
+        const dbPath = new Path(projectRoot).join("system_vault.db").toString();
+        this.db = new Database(dbPath);
+    }
+
+    /**
+     * Obtém a janela em foco usando PowerShell com cache.
+     */
+    getActiveWindow(): { app: string, title: string } {
+        if (this.windowCache && Date.now() - this.windowCache.timestamp < this.CACHE_TTL) {
+            return this.windowCache.data;
+        }
+
+        try {
+            const command = `
+                Add-Type @"
+                using System;
+                using System.Runtime.InteropServices;
+                using System.Text;
+                public class Win32 {
+                    [DllImport("user32.dll")]
+                    public static extern IntPtr GetForegroundWindow();
+                    [DllImport("user32.dll")]
+                    public static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
+                    [DllImport("user32.dll")]
+                    public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+                }
+"@
+                $hwnd = [Win32]::GetForegroundWindow()
+                $sb = New-Object System.Text.StringBuilder 256
+                [Win32]::GetWindowText($hwnd, $sb, $sb.Capacity)
+                $pid = 0
+                [Win32]::GetWindowThreadProcessId($hwnd, [ref]$pid)
+                $proc = Get-Process -Id $pid
+                "$($proc.ProcessName)|$($sb.ToString())"
+            `;
+
+            const output = execSync(`powershell -Command "${command.replace(/\n/g, '')}"`, { encoding: 'utf8' }).trim();
+            const [app, title] = output.split('|');
+            const data = { app: app || "Unknown", title: title || "" };
+            this.windowCache = { data, timestamp: Date.now() };
+            return data;
+        } catch (e) {
+            return { app: "System", title: "N/A" };
+        }
+    }
+
+    classifyActivity(app: string, title: string): string {
+        const app_l = app.toLowerCase();
+        const title_l = title.toLowerCase();
+
+        if (["code", "powershell", "cmd", "wt", "pycharm", "cursor"].includes(app_l)) return "DEV";
+        if (["chrome", "msedge", "firefox", "brave"].includes(app_l)) {
+            if (title_l.includes("youtube") || title_l.includes("netflix")) return "MEDIA";
+            return "BROWSING";
+        }
+        if (["steam", "valorant", "cs2", "minecraft"].includes(app_l)) return "GAMING";
+
+        return "GENERAL";
+    }
+
+    /**
+     * Registra a atividade atual e retorna a categoria.
+     */
+    logActivity(): string {
+        const { app, title } = this.getActiveWindow();
+        const category = this.classifyActivity(app, title);
+        const now = Date.now();
+
+        if (this.lastApp !== app) {
+            if (this.lastApp) {
+                const duration = Math.floor((now - this.startTime) / 1000);
+                this.saveActivity(this.lastApp, category, duration);
+            }
+            this.lastApp = app;
+            this.startTime = now;
+            logger.info(`👀 [Behavior] Foco: ${app} (${category})`);
+        }
+
+        return category;
+    }
+
+    private saveActivity(app: string, category: string, duration: number) {
+        if (duration < 5) return;
+        try {
+            this.db.run(
+                "INSERT INTO user_activity (app_name, category, duration_seconds) VALUES (?, ?, ?)",
+                [app, category, duration]
+            );
+        } catch (e) {
+            // Tabela pode não existir se HistoryAgent não a criou
+        }
+    }
+}

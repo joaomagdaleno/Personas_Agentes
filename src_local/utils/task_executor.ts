@@ -14,4 +14,18 @@ export class TaskExecutor {
         if (!items || items.length === 0) return [];
         return await Promise.all(items.map(item => fn(item)));
     }
+
+    async runCommand(command: string, cwd: string = "."): Promise<{ stdout: string, stderr: string, exitCode: number }> {
+        const proc = Bun.spawn(command.split(" "), {
+            cwd,
+            stdout: "pipe",
+            stderr: "pipe"
+        });
+
+        const stdout = await new Response(proc.stdout).text();
+        const stderr = await new Response(proc.stderr).text();
+        const exitCode = await proc.exited;
+
+        return { stdout, stderr, exitCode };
+    }
 }

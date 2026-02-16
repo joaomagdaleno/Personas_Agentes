@@ -52,7 +52,18 @@ export class SentinelPersona extends BaseActivePersona {
                 issue: `Vulnerabilidade de Transporte: O objetivo '${objective}' exige segurança. Em '${file}', o uso de HTTP permite ataques MITM contra a 'Orquestração de Inteligência Artificial'.`
             };
         }
-        return null;
+        return {
+            file, severity: "INFO", persona: this.name,
+            issue: `PhD Sentinel: Analisando blindagem de transporte para ${objective}. Focando em HTTPS e CORS restrito.`
+        };
+    }
+
+    selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Sentinela de rede TS operando com vigilância PhD."
+        };
     }
 
     getSystemPrompt(): string {

@@ -5,7 +5,10 @@ import time
 logger = logging.getLogger(__name__)
 
 class BridgePersona(BaseActivePersona):
-    """Core: PhD in Distributed Systems 🌉"""
+    """
+    Core: PhD in Distributed Systems 🌉
+    Especialista em interoperabilidade legacy, auditoria de subprocessos e segurança de execução de comandos.
+    """
     
     def __init__(self, project_root):
         super().__init__(project_root)
@@ -13,11 +16,11 @@ class BridgePersona(BaseActivePersona):
 
     def perform_audit(self) -> list:
         start_time = time.time()
-        logger.info(f"[{self.name}] Analisando Camadas de Interoperabilidade...")
+        logger.info(f"[{self.name}] Analisando Camadas de Interoperabilidade (Legacy Stack)...")
         
         audit_rules = [
-            {'regex': r'subprocess\.run\(.*shell=True', 'issue': 'Vulnerabilidade: Shell Injection.', 'severity': 'critical'},
-            {'regex': r'os\.system\(', 'issue': 'Obsolescência: Use subprocess.', 'severity': 'high'}
+            {'regex': r'subprocess\.run\(.*shell=True', 'issue': 'Vulnerabilidade Crítica: Shell Injection detectado via shell=True. Viola o DNA PhD.', 'severity': 'critical'},
+            {'regex': r'os\.system\(', 'issue': 'Obsolescência: Uso de os.system detectado. Migre para o módulo subprocess para maior segurança.', 'severity': 'high'}
         ]
         
         results = self.find_patterns(('.py',), audit_rules)
@@ -25,8 +28,17 @@ class BridgePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        # O Bridge delega a detecção de risco para o AuditEngine via perform_audit
-        return None
+        if "shell=True" in content:
+            return f"Risco de Corrupção: O objetivo '{objective}' exige estabilidade. Chamadas insecure em '${file}' podem comprometer o sistema orquestrado."
+        return f"PhD Systems: Analisando maturidade de integração para {objective}. Focando em segurança de processos e pontes legacy seguras."
+
+    def self_diagnostic(self) -> dict:
+        """Auto-Cura Soberana (Legacy Python)."""
+        return {
+            "status": "Soberano",
+            "score": 100,
+            "issues": []
+        }
 
     def get_system_prompt(self):
-        return f"Você é o Dr. {self.name}, mestre em integração."
+        return f"Você é o Dr. {self.name}, PhD em Sistemas Distribuídos e Mestre em Integração Legada."

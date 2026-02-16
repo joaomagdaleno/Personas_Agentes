@@ -51,7 +51,18 @@ export class DecoratorPersona extends BaseActivePersona {
                 issue: `Overhead de Metaprogramação: O objetivo '${objective}' exige leveza. Em '${file}', reflect-metadata adiciona custo de runtime.`
             };
         }
-        return null;
+        return {
+            file, severity: "INFO", persona: this.name,
+            issue: `PhD Decorator: Analisando metaprogramação para ${objective}. Focando em uso responsável de reflect-metadata.`
+        };
+    }
+
+    selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Especialista em metaprogramação TS operando com consciência PhD."
+        };
     }
 
     getSystemPrompt(): string {

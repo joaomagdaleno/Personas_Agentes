@@ -1,12 +1,12 @@
 import winston from "winston";
 import { Path } from "../core/path_utils.ts";
-import { DNAProfiler } from "../agents/Support/dna_profiler.ts";
+import { DNAProfiler } from "../agents/Support/Analysis/dna_profiler.ts";
 import { ContextMappingLogic } from "./context_mapping_logic.ts";
 import { FileSystemScanner } from "./file_system_scanner.ts";
-import { StructuralAnalyst } from "../agents/Support/structural_analyst.ts";
-import { CoverageAuditor } from "../agents/Support/coverage_auditor.ts";
-import { ConnectivityMapper } from "../agents/Support/connectivity_mapper.ts";
-import { ParityAnalyst } from "../agents/Support/parity_analyst.ts";
+import { StructuralAnalyst } from "../agents/Support/Analysis/structural_analyst.ts";
+import { CoverageAuditor } from "../agents/Support/Analysis/coverage_auditor.ts";
+import { ConnectivityMapper } from "../agents/Support/Analysis/connectivity_mapper.ts";
+import { ParityAnalyst } from "../agents/Support/Analysis/parity_analyst.ts";
 
 const logger = winston.child({ module: "ContextEngine" });
 
@@ -39,10 +39,14 @@ export class ContextEngine {
 
     async analyzeProject(): Promise<any> {
         logger.info("🧠 Mapeando topologia...");
+        console.log("🐛 [ContextEngine] Descobrindo identidade do projeto...");
         this.projectIdentity = await this.dnaProfiler.discoverIdentity(this.projectRoot);
+        console.log("🐛 [ContextEngine] Identidade descoberta. Iniciando FileSystemScanner...");
 
         const scanner = new FileSystemScanner(this.projectRoot.toString(), this.analyst);
+        console.log("🐛 [ContextEngine] Escaneando nomes de arquivos...");
         this.allFilesIndex = await scanner.scanAllFilenames();
+        console.log(`🐛 [ContextEngine] Escaneados ${this.allFilesIndex.length} arquivos.`);
         this.map = {};
 
         this.contentCache = await this.mappingLogic.processBatch(scanner, this);
@@ -84,6 +88,15 @@ export class ContextEngine {
     private async performDeepAnalysis(path: Path, content: string, info: any, ignoreTest: boolean) {
         if (path.toString().endsWith('.py')) {
             Object.assign(info, this.analyst.analyzePython(content, path.name()));
+        } else {
+            // TypeScript/JS/Go support via StructuralAnalyst
+            const metrics = this.analyst.analyze_file_logic(content, path.name());
+            if (metrics) {
+                info.complexity = metrics.complexity || 1;
+                info.dependencies = metrics.dependencies || [];
+                // Merge other structural data if available
+                if (metrics.functions) info.functions = metrics.functions;
+            }
         }
 
         // Logic Auditor / Integrity Guardian
@@ -108,18 +121,48 @@ export class ContextEngine {
     private buildDependencyMap() {
         for (const [file, data] of Object.entries(this.map)) {
             data.coupling = this.connectivityMapper.calculateMetrics(file, data, this.map);
-            this.callGraph[file] = this.findDependents(file, data);
+        }
+
+        // Inverter o mapa de dependências para encontrar dependentes de forma eficiente
+        this.callGraph = {};
+        for (const [file, data] of Object.entries(this.map)) {
+            const deps = data.dependencies || [];
+            for (const dep of deps) {
+                // Tenta resolver a dependência para um arquivo no mapa
+                const resolved = this.resolveDependency(dep);
+                if (resolved && resolved !== file) {
+                    if (!this.callGraph[resolved]) this.callGraph[resolved] = [];
+                    if (!this.callGraph[resolved].includes(file)) {
+                        this.callGraph[resolved].push(file);
+                    }
+                }
+            }
         }
     }
 
-    private findDependents(file: string, data: any): string[] {
-        const stem = new Path(file).stem();
-        return Object.keys(this.map).filter(f => f !== file && JSON.stringify(this.map[f]).includes(stem));
+    private resolveDependency(depName: string): string | null {
+        // Busca simples por nome de arquivo (procura por match no final do path)
+        const lowerDep = depName.toLowerCase().replace(/\./g, '/');
+        for (const file of Object.keys(this.map)) {
+            const fileLower = file.toLowerCase();
+            if (fileLower.endsWith(`${lowerDep}.ts`) ||
+                fileLower.endsWith(`${lowerDep}.py`) ||
+                fileLower.endsWith(`/${lowerDep}`)) {
+                return file;
+            }
+        }
+        return null;
     }
 
     analyzeStackParity(personas: any[]): any {
         const parity = this.parityAnalyst.analyzeStackGaps(personas);
         parity.detected = this.projectIdentity.stacks || new Set();
         return parity;
+    }
+
+    async cognitiveReason(prompt: string): Promise<string | null> {
+        const { CognitiveEngine } = await import("./cognitive_engine.ts");
+        const engine = new CognitiveEngine();
+        return await engine.reason(prompt);
     }
 }

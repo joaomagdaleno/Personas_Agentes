@@ -1,0 +1,86 @@
+[
+  {
+    "file": "temp.ts",
+    "line": 1,
+    "issue": "Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC]",
+    "severity": "strategic",
+    "context": "LogicAuditor"
+  },
+  {
+    "file": "temp.ts",
+    "line": 1,
+    "issue": "Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC]",
+    "severity": "strategic",
+    "context": "LogicAuditor"
+  },
+  {
+    "file": "temp.ts",
+    "line": 1,
+    "issue": "Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC]",
+    "severity": "strategic",
+    "context": "LogicAuditor"
+  },
+  {
+    "file": "temp.ts",
+    "line": 1,
+    "issue": "Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC]",
+    "severity": "strategic",
+    "context": "LogicAuditor"
+  },
+  {
+    "file": "temp.ts",
+    "line": 1,
+    "issue": "Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC]",
+    "severity": "strategic",
+    "context": "LogicAuditor"
+  },
+  {
+    "file": "temp.ts",
+    "line": 1,
+    "issue": "Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC]",
+    "severity": "strategic",
+    "context": "LogicAuditor"
+  },
+  {
+    "file": "temp.ts",
+    "line": 2,
+    "issue": "Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC]",
+    "severity": "strategic",
+    "context": "LogicAuditor"
+  },
+  {
+    "file": "temp.ts",
+    "line": 2,
+    "issue": "Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC]",
+    "severity": "strategic",
+    "context": "LogicAuditor"
+  },
+  {
+    "file": "temp.ts",
+    "line": 2,
+    "issue": "Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC]",
+    "severity": "strategic",
+    "context": "LogicAuditor"
+  },
+  {
+    "file": "temp.ts",
+    "line": 2,
+    "issue": "Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC]",
+    "severity": "strategic",
+    "context": "LogicAuditor"
+  },
+  {
+    "file": "temp.ts",
+    "line": 2,
+    "issue": "Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC]",
+    "severity": "strategic",
+    "context": "LogicAuditor"
+  },
+  {
+    "file": "temp.ts",
+    "line": 2,
+    "issue": "Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC]",
+    "severity": "strategic",
+    "context": "LogicAuditor"
+  }
+]

@@ -11,16 +11,16 @@
 | Métrica | Valor | Status |
 | :--- | :--- | :--- |
 | **Índice de Saúde** | 0% | 🚨 |
-| **Total de Alertas** | 784 | Monitorado |
-| **Sincronia** | 20:33:40 | Ativa |
+| **Total de Alertas** | 824 | Monitorado |
+| **Sincronia** | 15:18:37 | Ativa |
 
 ### 📊 DECOMPOSIÇÃO DA SAÚDE (PILARES)
 
 | Pilar | Score | Peso Máx |
 | :--- | :---: | :---: |
-| **Stability (Coverage)** | 11.2 | 20 |
-| **Purity (Complexity)** | 0 | 20 |
-| **Observability (Telemetry)** | 8.2 | 20 |
+| **Stability (Coverage)** | 0 | 20 |
+| **Purity (Complexity)** | 10 | 20 |
+| **Observability (Telemetry)** | 11.9 | 20 |
 | **Security (Vulnerabilities)** | 15 | 20 |
 | **Excellence (Documentation)** | 10 | 20 |
 
@@ -29,779 +29,749 @@
 | Métrica | Status | Impacto |
 | :--- | :--- | :--- |
 | **Pontos Cegos** | 0 Arquivos | Estável |
-| **Fragilidades** | 784 Pontos | Risco de Colapso |
-| **Paridade de Stack** | Sincronizada | Nível de Maturidade |
+| **Fragilidades** | 824 Pontos | Risco de Colapso |
+| **Paridade de Stack** | 34% Crítica | 0/79 idênticos |
 
 ### 🗺️ ROADMAP PARA 100% (REQUISITOS)
 
-- [ ] **Resolver Pendências**: 784 alertas detectados drenam a saúde do sistema.
+- [ ] **Resolver Pendências**: 824 alertas detectados drenam a saúde do sistema.
 
 ## 🌪️ MAPA DE ENTROPIA & ACOPLAMENTO
 
 | Alvo | Complexidade | Instabilidade |
 | :--- | :---: | :---: |
-| `.agent\skills\scripts\generate_index.py` | 11 | 0.10 |
-| `.agent\skills\scripts\skills_manager.py` | 11 | 0.10 |
-| `.agent\skills\scripts\sync_microsoft_skills.py` | 11 | 0.10 |
-| `.agent\skills\scripts\tests\inspect_microsoft_repo.py` | 11 | 0.10 |
-| `.agent\skills\scripts\tests\test_comprehensive_coverage.py` | 11 | 0.10 |
-| `.agent\skills\scripts\tests\test_validate_skills_headings.py` | 11 | 0.10 |
-| `.agent\skills\scripts\update_readme.py` | 11 | 0.10 |
-| `.agent\skills\scripts\validate_skills.py` | 11 | 0.10 |
-| `.agent\skills\skills\api-design-principles\assets\rest-api-template.py` | 11 | 0.10 |
-| `.agent\skills\skills\api-patterns\scripts\api_validator.py` | 11 | 0.10 |
-| `.agent\skills\skills\app-store-optimization\ab_test_planner.py` | 11 | 0.10 |
-| `.agent\skills\skills\app-store-optimization\aso_scorer.py` | 11 | 0.10 |
-| `.agent\skills\skills\app-store-optimization\competitor_analyzer.py` | 11 | 0.10 |
-| `.agent\skills\skills\app-store-optimization\keyword_analyzer.py` | 11 | 0.10 |
-| `.agent\skills\skills\app-store-optimization\launch_checklist.py` | 11 | 0.10 |
-| `.agent\skills\skills\app-store-optimization\localization_helper.py` | 11 | 0.10 |
-| `.agent\skills\skills\app-store-optimization\metadata_optimizer.py` | 11 | 0.10 |
-| `.agent\skills\skills\app-store-optimization\review_analyzer.py` | 11 | 0.10 |
-| `.agent\skills\skills\audio-transcriber\scripts\transcribe.py` | 11 | 0.10 |
-| `.agent\skills\skills\content-creator\scripts\brand_voice_analyzer.py` | 11 | 0.10 |
-| `.agent\skills\skills\content-creator\scripts\seo_optimizer.py` | 11 | 0.10 |
-| `.agent\skills\skills\database-design\scripts\schema_validator.py` | 11 | 0.10 |
-| `.agent\skills\skills\docx-official\ooxml\scripts\pack.py` | 11 | 0.10 |
-| `.agent\skills\skills\docx-official\ooxml\scripts\unpack.py` | 11 | 0.10 |
-| `.agent\skills\skills\docx-official\ooxml\scripts\validate.py` | 11 | 0.10 |
-| `.agent\skills\skills\docx-official\ooxml\scripts\validation\base.py` | 11 | 0.10 |
-| `.agent\skills\skills\docx-official\ooxml\scripts\validation\docx.py` | 11 | 0.10 |
-| `.agent\skills\skills\docx-official\ooxml\scripts\validation\pptx.py` | 11 | 0.10 |
-| `.agent\skills\skills\docx-official\ooxml\scripts\validation\redlining.py` | 11 | 0.10 |
-| `.agent\skills\skills\docx-official\ooxml\scripts\validation\__init__.py` | 11 | 0.10 |
-| `.agent\skills\skills\docx-official\scripts\document.py` | 11 | 0.10 |
-| `.agent\skills\skills\docx-official\scripts\utilities.py` | 11 | 0.10 |
-| `.agent\skills\skills\docx-official\scripts\__init__.py` | 11 | 0.10 |
-| `.agent\skills\skills\geo-fundamentals\scripts\geo_checker.py` | 11 | 0.10 |
-| `.agent\skills\skills\i18n-localization\scripts\i18n_checker.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\scripts\last30days.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\scripts\lib\cache.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\scripts\lib\dates.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\scripts\lib\dedupe.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\scripts\lib\env.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\scripts\lib\http.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\scripts\lib\models.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\scripts\lib\normalize.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\scripts\lib\openai_reddit.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\scripts\lib\reddit_enrich.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\scripts\lib\render.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\scripts\lib\schema.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\scripts\lib\score.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\scripts\lib\ui.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\scripts\lib\websearch.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\scripts\lib\xai_x.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\scripts\lib\__init__.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\tests\test_cache.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\tests\test_dates.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\tests\test_dedupe.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\tests\test_models.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\tests\test_normalize.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\tests\test_render.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\tests\test_score.py` | 11 | 0.10 |
-| `.agent\skills\skills\last30days\tests\__init__.py` | 11 | 0.10 |
-| `.agent\skills\skills\lint-and-validate\scripts\lint_runner.py` | 11 | 0.10 |
-| `.agent\skills\skills\lint-and-validate\scripts\type_coverage.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\0.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\1.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\10.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\100.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\101.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\102.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\103.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\104.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\105.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\106.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\107.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\108.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\109.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\11.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\110.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\111.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\112.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\113.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\114.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\115.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\116.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\117.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\118.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\119.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\12.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\120.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\121.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\122.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\123.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\124.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\125.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\126.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\127.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\128.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\129.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\13.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\130.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\131.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\132.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\133.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\134.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\135.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\136.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\137.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\138.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\139.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\14.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\140.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\141.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\142.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\143.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\144.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\145.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\146.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\147.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\148.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\149.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\15.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\150.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\151.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\152.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\153.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\154.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\155.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\156.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\157.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\158.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\159.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\16.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\160.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\161.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\162.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\163.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\17.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\18.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\19.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\2.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\20.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\21.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\22.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\23.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\24.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\25.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\26.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\27.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\28.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\29.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\3.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\30.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\31.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\32.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\33.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\34.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\35.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\36.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\37.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\38.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\39.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\4.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\40.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\41.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\42.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\43.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\44.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\45.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\46.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\47.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\48.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\49.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\5.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\50.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\51.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\52.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\53.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\54.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\55.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\56.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\57.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\58.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\59.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\6.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\60.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\61.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\62.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\63.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\64.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\65.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\66.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\67.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\68.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\69.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\7.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\70.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\71.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\72.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\73.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\74.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\75.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\76.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\77.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\78.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\79.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\8.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\80.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\81.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\82.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\83.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\84.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\85.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\86.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\87.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\88.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\89.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\9.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\90.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\91.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\92.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\93.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\94.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\95.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\96.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\97.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\98.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\99.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\0.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\1.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\10.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\100.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\101.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\102.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\103.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\104.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\105.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\106.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\107.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\108.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\109.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\11.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\110.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\111.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\112.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\113.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\114.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\115.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\116.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\117.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\118.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\119.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\12.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\120.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\121.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\122.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\123.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\124.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\125.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\126.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\127.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\128.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\129.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\13.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\130.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\131.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\132.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\133.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\134.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\135.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\136.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\137.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\138.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\139.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\14.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\140.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\141.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\142.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\143.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\144.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\145.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\146.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\147.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\148.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\149.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\15.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\150.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\151.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\152.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\153.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\154.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\155.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\156.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\157.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\158.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\159.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\16.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\160.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\161.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\162.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\163.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\17.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\18.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\19.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\2.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\20.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\21.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\22.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\23.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\24.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\25.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\26.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\27.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\28.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\29.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\3.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\30.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\31.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\32.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\33.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\34.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\35.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\36.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\37.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\38.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\39.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\4.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\40.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\41.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\42.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\43.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\44.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\45.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\46.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\47.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\48.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\49.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\5.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\50.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\51.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\52.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\53.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\54.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\55.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\56.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\57.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\58.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\59.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\6.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\60.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\61.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\62.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\63.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\64.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\65.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\66.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\67.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\68.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\69.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\7.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\70.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\71.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\72.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\73.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\74.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\75.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\76.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\77.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\78.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\79.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\8.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\80.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\81.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\82.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\83.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\84.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\85.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\86.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\87.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\88.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\89.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\9.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\90.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\91.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\92.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\93.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\94.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\95.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\96.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\97.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\98.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\99.py` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\examples\todo-app-generated\backend\src\db\database.ts` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\examples\todo-app-generated\backend\src\db\db.ts` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\examples\todo-app-generated\backend\src\db\index.ts` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\examples\todo-app-generated\backend\src\db\migrations.ts` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\examples\todo-app-generated\backend\src\index.ts` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\examples\todo-app-generated\backend\src\routes\todos.ts` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\examples\todo-app-generated\backend\src\types\index.ts` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\examples\todo-app-generated\frontend\src\api\todos.ts` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\examples\todo-app-generated\frontend\src\hooks\useTodos.ts` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\examples\todo-app-generated\frontend\src\vite-env.d.ts` | 11 | 0.10 |
-| `.agent\skills\skills\loki-mode\examples\todo-app-generated\frontend\vite.config.ts` | 11 | 0.10 |
-| `.agent\skills\skills\mcp-builder\scripts\connections.py` | 11 | 0.10 |
-| `.agent\skills\skills\mcp-builder\scripts\evaluation.py` | 11 | 0.10 |
-| `.agent\skills\skills\mobile-design\scripts\mobile_audit.py` | 11 | 0.10 |
-| `.agent\skills\skills\notebooklm\scripts\ask_question.py` | 11 | 0.10 |
-| `.agent\skills\skills\notebooklm\scripts\auth_manager.py` | 11 | 0.10 |
-| `.agent\skills\skills\notebooklm\scripts\browser_session.py` | 11 | 0.10 |
-| `.agent\skills\skills\notebooklm\scripts\browser_utils.py` | 11 | 0.10 |
-| `.agent\skills\skills\notebooklm\scripts\cleanup_manager.py` | 11 | 0.10 |
-| `.agent\skills\skills\notebooklm\scripts\config.py` | 11 | 0.10 |
-| `.agent\skills\skills\notebooklm\scripts\notebook_manager.py` | 11 | 0.10 |
-| `.agent\skills\skills\notebooklm\scripts\run.py` | 11 | 0.10 |
-| `.agent\skills\skills\notebooklm\scripts\setup_environment.py` | 11 | 0.10 |
-| `.agent\skills\skills\notebooklm\scripts\__init__.py` | 11 | 0.10 |
-| `.agent\skills\skills\oss-hunter\bin\hunter.py` | 11 | 0.10 |
-| `.agent\skills\skills\pdf-official\scripts\check_bounding_boxes.py` | 11 | 0.10 |
-| `.agent\skills\skills\pdf-official\scripts\check_bounding_boxes_test.py` | 11 | 0.10 |
-| `.agent\skills\skills\pdf-official\scripts\check_fillable_fields.py` | 11 | 0.10 |
-| `.agent\skills\skills\pdf-official\scripts\convert_pdf_to_images.py` | 11 | 0.10 |
-| `.agent\skills\skills\pdf-official\scripts\create_validation_image.py` | 11 | 0.10 |
-| `.agent\skills\skills\pdf-official\scripts\extract_form_field_info.py` | 11 | 0.10 |
-| `.agent\skills\skills\pdf-official\scripts\fill_fillable_fields.py` | 11 | 0.10 |
-| `.agent\skills\skills\pdf-official\scripts\fill_pdf_form_with_annotations.py` | 11 | 0.10 |
-| `.agent\skills\skills\performance-profiling\scripts\lighthouse_audit.py` | 11 | 0.10 |
-| `.agent\skills\skills\pptx-official\ooxml\scripts\pack.py` | 11 | 0.10 |
-| `.agent\skills\skills\pptx-official\ooxml\scripts\unpack.py` | 11 | 0.10 |
-| `.agent\skills\skills\pptx-official\ooxml\scripts\validate.py` | 11 | 0.10 |
-| `.agent\skills\skills\pptx-official\ooxml\scripts\validation\base.py` | 11 | 0.10 |
-| `.agent\skills\skills\pptx-official\ooxml\scripts\validation\docx.py` | 11 | 0.10 |
-| `.agent\skills\skills\pptx-official\ooxml\scripts\validation\pptx.py` | 11 | 0.10 |
-| `.agent\skills\skills\pptx-official\ooxml\scripts\validation\redlining.py` | 11 | 0.10 |
-| `.agent\skills\skills\pptx-official\ooxml\scripts\validation\__init__.py` | 11 | 0.10 |
-| `.agent\skills\skills\pptx-official\scripts\inventory.py` | 11 | 0.10 |
-| `.agent\skills\skills\pptx-official\scripts\rearrange.py` | 11 | 0.10 |
-| `.agent\skills\skills\pptx-official\scripts\replace.py` | 11 | 0.10 |
-| `.agent\skills\skills\pptx-official\scripts\thumbnail.py` | 11 | 0.10 |
-| `.agent\skills\skills\product-manager-toolkit\scripts\customer_interview_analyzer.py` | 11 | 0.10 |
-| `.agent\skills\skills\product-manager-toolkit\scripts\rice_prioritizer.py` | 11 | 0.10 |
-| `.agent\skills\skills\prompt-engineering-patterns\scripts\optimize-prompt.py` | 11 | 0.10 |
-| `.agent\skills\skills\senior-architect\scripts\architecture_diagram_generator.py` | 11 | 0.10 |
-| `.agent\skills\skills\senior-architect\scripts\dependency_analyzer.py` | 11 | 0.10 |
-| `.agent\skills\skills\senior-architect\scripts\project_architect.py` | 11 | 0.10 |
-| `.agent\skills\skills\senior-fullstack\scripts\code_quality_analyzer.py` | 11 | 0.10 |
-| `.agent\skills\skills\senior-fullstack\scripts\fullstack_scaffolder.py` | 11 | 0.10 |
-| `.agent\skills\skills\senior-fullstack\scripts\project_scaffolder.py` | 11 | 0.10 |
-| `.agent\skills\skills\seo-fundamentals\scripts\seo_checker.py` | 11 | 0.10 |
-| `.agent\skills\skills\shopify-development\scripts\shopify_graphql.py` | 11 | 0.10 |
-| `.agent\skills\skills\shopify-development\scripts\shopify_init.py` | 11 | 0.10 |
-| `.agent\skills\skills\shopify-development\scripts\tests\test_shopify_init.py` | 11 | 0.10 |
-| `.agent\skills\skills\skill-creator\scripts\init_skill.py` | 11 | 0.10 |
-| `.agent\skills\skills\skill-creator\scripts\package_skill.py` | 11 | 0.10 |
-| `.agent\skills\skills\skill-creator\scripts\quick_validate.py` | 11 | 0.10 |
-| `.agent\skills\skills\slack-gif-creator\core\easing.py` | 11 | 0.10 |
-| `.agent\skills\skills\slack-gif-creator\core\frame_composer.py` | 11 | 0.10 |
-| `.agent\skills\skills\slack-gif-creator\core\gif_builder.py` | 11 | 0.10 |
-| `.agent\skills\skills\slack-gif-creator\core\validators.py` | 11 | 0.10 |
-| `.agent\skills\skills\systematic-debugging\condition-based-waiting-example.ts` | 11 | 0.10 |
-| `.agent\skills\skills\typescript-expert\references\utility-types.ts` | 11 | 0.10 |
-| `.agent\skills\skills\typescript-expert\scripts\ts_diagnostic.py` | 11 | 0.10 |
-| `.agent\skills\skills\ui-ux-pro-max\scripts\core.py` | 11 | 0.10 |
-| `.agent\skills\skills\ui-ux-pro-max\scripts\design_system.py` | 11 | 0.10 |
-| `.agent\skills\skills\ui-ux-pro-max\scripts\search.py` | 11 | 0.10 |
-| `.agent\skills\skills\voice-ai-engine-development\examples\complete_voice_engine.py` | 11 | 0.10 |
-| `.agent\skills\skills\voice-ai-engine-development\examples\gemini_agent_example.py` | 11 | 0.10 |
-| `.agent\skills\skills\voice-ai-engine-development\examples\interrupt_system_example.py` | 11 | 0.10 |
-| `.agent\skills\skills\voice-ai-engine-development\templates\base_worker_template.py` | 11 | 0.10 |
-| `.agent\skills\skills\voice-ai-engine-development\templates\multi_provider_factory_template.py` | 11 | 0.10 |
-| `.agent\skills\skills\vulnerability-scanner\scripts\security_scan.py` | 11 | 0.10 |
-| `.agent\skills\skills\webapp-testing\scripts\with_server.py` | 11 | 0.10 |
-| `.agent\skills\skills\xlsx-official\recalc.py` | 11 | 0.10 |
-| `.agent\skills\skills\youtube-summarizer\scripts\extract-transcript.py` | 11 | 0.10 |
-| `node_modules\bun-types\security.d.ts` | 11 | 0.10 |
-| `node_modules\bun-types\vendor\expect-type\utils.d.ts` | 11 | 0.10 |
-| `node_modules\typescript\lib\lib.es2015.core.d.ts` | 11 | 0.10 |
-| `node_modules\typescript\lib\lib.webworker.importscripts.d.ts` | 11 | 0.10 |
-| `node_modules\undici-types\agent.d.ts` | 11 | 0.10 |
-| `node_modules\undici-types\env-http-proxy-agent.d.ts` | 11 | 0.10 |
-| `node_modules\undici-types\mock-agent.d.ts` | 11 | 0.10 |
-| `node_modules\undici-types\proxy-agent.d.ts` | 11 | 0.10 |
-| `node_modules\undici-types\retry-agent.d.ts` | 11 | 0.10 |
-| `node_modules\undici-types\snapshot-agent.d.ts` | 11 | 0.10 |
+| `src_local/agents/Flutter/Audit/metric.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/Audit/probe.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/Audit/nebula.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/Audit/scale.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/Audit/scope.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/Audit/testify.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/Content/echo.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/Content/forge.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/Content/globe.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/Content/hype.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/Content/mantra.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/Content/scribe.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/Audit/bolt.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/Content/palette.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/Strategic/voyager.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/Strategic/vault.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/Strategic/warden.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/System/bridge.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/Strategic/sentinel.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/System/flow.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/System/hermes.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/System/neural.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/System/nexus.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/System/cache.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/System/stream.py` | 11 | 0.10 |
+| `src_local/agents/Flutter/System/spark.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/Audit/bolt.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/Audit/metric.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/Audit/nebula.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/Audit/scope.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/Audit/scale.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/Audit/testify.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/Audit/probe.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/Content/echo.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/Content/globe.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/Content/forge.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/Content/hype.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/Content/palette.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/Content/mantra.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/Content/scribe.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/Strategic/vault.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/Strategic/sentinel.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/Strategic/voyager.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/System/bridge.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/Strategic/warden.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/System/flow.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/System/hermes.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/System/nexus.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/System/cache.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/System/neural.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/System/stream.py` | 11 | 0.10 |
+| `src_local/agents/Kotlin/System/spark.py` | 11 | 0.10 |
+| `src_local/agents/Python/Audit/bolt.py` | 11 | 0.10 |
+| `src_local/agents/Python/Audit/metric.py` | 11 | 0.10 |
+| `src_local/agents/Python/Audit/probe.py` | 11 | 0.10 |
+| `src_local/agents/Python/Audit/nebula.py` | 11 | 0.10 |
+| `src_local/agents/Python/Audit/scale.py` | 11 | 0.10 |
+| `src_local/agents/Python/Audit/scope.py` | 11 | 0.10 |
+| `src_local/agents/Python/Audit/testify.py` | 11 | 0.10 |
+| `src_local/agents/Python/Content/echo.py` | 11 | 0.10 |
+| `src_local/agents/Python/Content/forge.py` | 11 | 0.10 |
+| `src_local/agents/Python/Content/hype.py` | 11 | 0.10 |
+| `src_local/agents/Python/Content/mantra.py` | 11 | 0.10 |
+| `src_local/agents/Python/Content/globe.py` | 11 | 0.10 |
+| `src_local/agents/Python/Content/palette.py` | 11 | 0.10 |
+| `src_local/agents/Python/Content/scribe.py` | 11 | 0.10 |
+| `src_local/agents/Python/Strategic/director.py` | 11 | 0.10 |
+| `src_local/agents/Python/Strategic/vault.py` | 11 | 0.10 |
+| `src_local/agents/Python/Strategic/sentinel.py` | 11 | 0.10 |
+| `src_local/agents/Python/Strategic/voyager.py` | 11 | 0.10 |
+| `src_local/agents/Python/Strategic/warden.py` | 11 | 0.10 |
+| `src_local/agents/Python/System/bridge.py` | 11 | 0.10 |
+| `src_local/agents/Python/System/flow.py` | 11 | 0.10 |
+| `src_local/agents/Python/System/neural.py` | 11 | 0.10 |
+| `src_local/agents/Python/System/cache.py` | 11 | 0.10 |
+| `src_local/agents/Python/System/hermes.py` | 11 | 0.10 |
+| `src_local/agents/Python/System/nexus.py` | 11 | 0.10 |
+| `src_local/agents/Python/System/spark.py` | 11 | 0.10 |
+| `src_local/agents/Support/ast_navigator.py` | 11 | 0.10 |
+| `src_local/agents/Support/audit_engine.py` | 11 | 0.10 |
+| `src_local/agents/Support/ast_node_inspector.py` | 11 | 0.10 |
+| `src_local/agents/Support/ast_traversal_logic.py` | 11 | 0.10 |
+| `src_local/agents/Support/diagnostic_strategist.py` | 11 | 0.10 |
+| `src_local/agents/Support/audit_risk_engine.py` | 11 | 0.10 |
+| `src_local/agents/Support/audit_scanner_engine.py` | 11 | 0.10 |
+| `src_local/agents/Support/battle_plan_formatter.py` | 11 | 0.10 |
+| `src_local/agents/Support/battle_plan_sections_engine.py` | 11 | 0.10 |
+| `src_local/agents/Support/briefing_agent.py` | 11 | 0.10 |
+| `src_local/agents/Support/call_safety_judge.py` | 11 | 0.10 |
+| `src_local/agents/Python/System/stream.py` | 11 | 0.10 |
+| `src_local/agents/Support/code_inspector_agent.py` | 11 | 0.10 |
+| `src_local/agents/Support/parity_analyst.py` | 11 | 0.10 |
+| `src_local/agents/Support/discovery_agent.py` | 11 | 0.10 |
+| `src_local/agents/Support/component_classifier.py` | 11 | 0.10 |
+| `src_local/agents/Support/connectivity_mapper.py` | 11 | 0.10 |
+| `src_local/agents/Support/dna_profiler.py` | 11 | 0.10 |
+| `src_local/agents/Support/coverage_auditor.py` | 11 | 0.10 |
+| `src_local/agents/Support/doc_gen_agent.py` | 11 | 0.10 |
+| `src_local/agents/Support/semantic_context_analyst.py` | 11 | 0.10 |
+| `src_local/agents/Support/git_automaton.py` | 11 | 0.10 |
+| `src_local/agents/Support/penalty_engine.py` | 11 | 0.10 |
+| `src_local/agents/Support/healer.py` | 11 | 0.10 |
+| `src_local/agents/Support/test_navigator.py` | 11 | 0.10 |
+| `src_local/agents/Support/pyramid_analyst.py` | 11 | 0.10 |
+| `src_local/agents/Support/health_synthesizer.py` | 11 | 0.10 |
+| `src_local/agents/Support/quality_analyst.py` | 11 | 0.10 |
+| `src_local/agents/Support/silent_error_detector.py` | 11 | 0.10 |
+| `src_local/agents/Support/infrastructure_assembler.py` | 11 | 0.10 |
+| `src_local/agents/Support/registry_compiler.py` | 11 | 0.10 |
+| `src_local/agents/Support/source_code_parser.py` | 11 | 0.10 |
+| `src_local/agents/Support/integrity_guardian.py` | 11 | 0.10 |
+| `src_local/agents/Support/report_formatter.py` | 11 | 0.10 |
+| `src_local/agents/Support/test_refiner.py` | 11 | 0.10 |
+| `src_local/agents/Support/report_sections_engine.py` | 11 | 0.10 |
+| `src_local/agents/Support/test_runner.py` | 11 | 0.10 |
+| `src_local/agents/Support/structural_analyst.py` | 11 | 0.10 |
+| `src_local/agents/Support/topology_graph_agent.py` | 11 | 0.10 |
+| `src_local/agents/Support/rule_definition_judge.py` | 11 | 0.10 |
+| `src_local/agents/Support/task_executor.py` | 11 | 0.10 |
+| `src_local/agents/Support/validation_agent.py` | 11 | 0.10 |
+| `src_local/agents/Support/safe_context_judge.py` | 11 | 0.10 |
+| `src_local/agents/Support/veto_criteria_engine.py` | 11 | 0.10 |
+| `src_local/agents/Support/telemetry_intent_judge.py` | 11 | 0.10 |
+| `src_local/agents/Support/veto_rules.py` | 11 | 0.10 |
+| `src_local/agents/Support/safety_assignment_engine.py` | 11 | 0.10 |
+| `src_local/agents/Support/telemetry_maturity_logic.py` | 11 | 0.10 |
+| `src_local/agents/Support/veto_structural_engine.py` | 11 | 0.10 |
+| `src_local/agents/Support/vulnerability_heuristic.py` | 11 | 0.10 |
+| `src_local/agents/Support/test_architect_agent.py` | 11 | 0.10 |
+| `src_local/agents/Support/safety_definitions.py` | 11 | 0.10 |
+| `src_local/agents/Support/test_discovery_logic.py` | 11 | 0.10 |
+| `src_local/agents/Support/safety_heuristics.py` | 11 | 0.10 |
+| `src_local/agents/Support/intent_heuristics_engine.py` | 11 | 0.10 |
+| `src_local/agents/Support/safety_navigator.py` | 11 | 0.10 |
+| `src_local/agents/Support/line_veto.py` | 11 | 0.10 |
+| `src_local/agents/Support/score_calculator.py` | 11 | 0.10 |
+| `src_local/agents/Support/scoring_metrics_engine.py` | 11 | 0.10 |
+| `src_local/agents/Support/logic_auditor.py` | 11 | 0.10 |
+| `src_local/agents/Support/logic_node_auditor.py` | 11 | 0.10 |
+| `src_local/agents/Support/markdown_sanitizer.py` | 11 | 0.10 |
+| `src_local/agents/base.py` | 11 | 0.10 |
+| `src_local/agents/Support/markdown_structure_agent.py` | 11 | 0.10 |
+| `src_local/agents/Support/web_insight_agent.py` | 11 | 0.10 |
+| `src_local/agents/Support/maturity_evaluator.py` | 11 | 0.10 |
+| `src_local/agents/Support/security_sentinel_agent.py` | 11 | 0.10 |
+| `src_local/agents/Support/memory_persistence.py` | 11 | 0.10 |
+| `src_local/agents/Support/meta_analysis_detector.py` | 11 | 0.10 |
+| `src_local/agents/Support/obfuscation_hunter.py` | 11 | 0.10 |
+| `src_local/agents/Support/obfuscation_logic_engine.py` | 11 | 0.10 |
+| `src_local/core/task_orchestrator.py` | 11 | 0.10 |
+| `src_local/core/orchestrator.py` | 11 | 0.10 |
+| `src_local/core/diagnostic_pipeline.py` | 11 | 0.10 |
+| `src_local/core/compiler.py` | 11 | 0.10 |
+| `src_local/core/audit_engine.py` | 11 | 0.10 |
+| `src_local/core/diagnostic_finalizer.py` | 11 | 0.10 |
+| `src_local/interface/components/health_gauge.py` | 11 | 0.10 |
+| `src_local/core/validator.py` | 11 | 0.10 |
+| `src_local/interface/cli.py` | 11 | 0.10 |
+| `src_local/agents/Support/obfuscation_cleaner_engine.py` | 11 | 0.10 |
+| `src_local/interface/controllers/ui_controller.py` | 11 | 0.10 |
+| `src_local/interface/gui_native.py` | 11 | 0.10 |
+| `src_local/interface/views/findings_view.py` | 11 | 0.10 |
+| `src_local/interface/views/dashboard_view.py` | 11 | 0.10 |
+| `src_local/interface/views/chat_view.py` | 11 | 0.10 |
+| `src_local/utils/analysis_engine_phd.py` | 11 | 0.10 |
+| `src_local/utils/behavior_analyst.py` | 11 | 0.10 |
+| `src_local/utils/cognitive_analyst.py` | 11 | 0.10 |
+| `src_local/utils/cache_manager.py` | 11 | 0.10 |
+| `src_local/agents/Support/metrics_assembler.py` | 11 | 0.10 |
+| `src_local/utils/compliance_standard.py` | 11 | 0.10 |
+| `src_local/utils/cognitive_engine.py` | 11 | 0.10 |
+| `src_local/utils/conflict_policy_phd.py` | 11 | 0.10 |
+| `src_local/interface/components/sidebar.py` | 11 | 0.10 |
+| `src_local/utils/context_engine.py` | 11 | 0.10 |
+| `src_local/utils/finding_deduplicator.py` | 11 | 0.10 |
+| `src_local/utils/logging_config.py` | 11 | 0.10 |
+| `src_local/utils/git_client.py` | 11 | 0.10 |
+| `src_local/utils/history_agent.py` | 11 | 0.10 |
+| `src_local/utils/context_iterator.py` | 11 | 0.10 |
+| `src_local/utils/voice_engine.py` | 11 | 0.10 |
+| `src_local/utils/git_operations_phd.py` | 11 | 0.10 |
+| `src_local/utils/maintenance_engine_phd.py` | 11 | 0.10 |
+| `src_local/utils/context_mapping_logic.py` | 11 | 0.10 |
+| `src_local/utils/file_system_scanner.py` | 11 | 0.10 |
+| `src_local/utils/dependency_auditor.py` | 11 | 0.10 |
+| `src_local/utils/indexer.py` | 11 | 0.10 |
+| `src_local/utils/topology_engine_phd.py` | 11 | 0.10 |
+| `src_local/utils/markdown_processor.py` | 11 | 0.10 |
+| `src_local/utils/system_sentinel.py` | 11 | 0.10 |
+| `src_local/utils/test_mapper.py` | 11 | 0.10 |
+| `src_local/utils/semantic_search_agent.py` | 11 | 0.10 |
+| `src_local/utils/update_transaction.py` | 11 | 0.10 |
+| `src_local/utils/submodule_sync_logic.py` | 11 | 0.10 |
+| `src_local/utils/stability_ledger.py` | 11 | 0.10 |
+| `src_local/utils/veto_rules_phd.py` | 11 | 0.10 |
+| `src_local/utils/markdown_util.py` | 11 | 0.10 |
+| `src_local/utils/memory_engine.py` | 11 | 0.10 |
+| `src_local/utils/parallel_test_executor.py` | 11 | 0.10 |
+| `src_local/utils/reflex_engine_phd.py` | 11 | 0.10 |
+| `src_local/utils/persona_loader.py` | 11 | 0.10 |
+| `src_local/utils/memory_pruning_agent.py` | 11 | 0.10 |
+| `src_local/utils/resource_governor.py` | 11 | 0.10 |
+| `src_local/utils/scoring_engine_phd.py` | 11 | 0.10 |
+| `legacy_restore\scripts\build_exe.py` | 11 | 0.10 |
+| `legacy_restore\scripts\analyze_external.py` | 11 | 0.10 |
+| `legacy_restore\scripts\benchmark_tests.py` | 11 | 0.10 |
+| `legacy_restore\scripts\debug_test_hang.py` | 11 | 0.10 |
+| `legacy_restore\scripts\diagnose_blind_spots.py` | 11 | 0.10 |
+| `legacy_restore\scripts\cleanup_obfuscation.py` | 12 | 0.20 |
+| `legacy_restore\scripts\generate_tests.py` | 11 | 0.10 |
+| `legacy_restore\scripts\git_doctor.py` | 11 | 0.10 |
+| `legacy_restore\scripts\lint_heading_logic.py` | 11 | 0.10 |
+| `legacy_restore\scripts\lint_rule_engine.py` | 11 | 0.10 |
+| `legacy_restore\scripts\install_hooks.py` | 11 | 0.10 |
+| `legacy_restore\scripts\run_diagnostic.py` | 11 | 0.10 |
+| `legacy_restore\scripts\launch_api.py` | 11 | 0.10 |
+| `legacy_restore\scripts\fast_diagnostic.py` | 11 | 0.10 |
+| `legacy_restore\scripts\shadow_tray.py` | 11 | 0.10 |
+| `legacy_restore\scripts\update_agent_submodule.py` | 11 | 0.10 |
+| `legacy_restore\scripts\launch_dashboard.py` | 11 | 0.10 |
+| `legacy_restore\scripts\verify_cognitive.py` | 11 | 0.10 |
+| `legacy_restore\scripts\verify_report_lint.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\base.py` | 11 | 0.10 |
+| `legacy_restore\scripts\persona_manager.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\Audit\metric.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\Audit\bolt.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\Audit\nebula.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\Audit\probe.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\Audit\scale.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\Audit\testify.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\Audit\scope.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\Content\echo.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\Content\forge.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\Content\globe.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\Content\hype.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\Content\palette.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\Content\mantra.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\Content\scribe.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\Strategic\sentinel.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\Strategic\vault.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\System\bridge.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\Strategic\voyager.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\Strategic\warden.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\System\cache.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\System\flow.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\System\hermes.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\System\neural.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\System\nexus.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\System\spark.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Flutter\System\stream.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\Audit\bolt.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\Audit\nebula.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\Audit\metric.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\Audit\scale.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\Audit\scope.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\Audit\probe.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\Content\forge.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\Content\echo.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\Audit\testify.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\Content\globe.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\Content\hype.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\Content\palette.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\Content\scribe.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\Content\mantra.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\Strategic\vault.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\Strategic\sentinel.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\Strategic\voyager.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\Strategic\warden.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\System\flow.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\System\bridge.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\System\hermes.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\System\cache.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\System\neural.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\System\spark.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\System\nexus.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Kotlin\System\stream.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\Audit\probe.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\Audit\nebula.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\Audit\bolt.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\Audit\scale.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\Audit\scope.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\Audit\testify.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\Audit\metric.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\Content\echo.py` | 12 | 0.20 |
+| `legacy_restore\src_local\agents\Python\Content\mantra.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\Content\forge.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\Content\globe.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\Content\hype.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\Content\scribe.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\Content\palette.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\Strategic\vault.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\Strategic\director.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\Strategic\sentinel.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\Strategic\voyager.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\System\bridge.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\System\flow.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\System\cache.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\System\nexus.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\System\neural.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\System\spark.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\Strategic\warden.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\System\stream.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\ast_navigator.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Python\System\hermes.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\ast_node_inspector.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\ast_traversal_logic.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\audit_engine.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\audit_scanner_engine.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\audit_risk_engine.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\battle_plan_formatter.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\battle_plan_sections_engine.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\briefing_agent.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\component_classifier.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\code_inspector_agent.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\call_safety_judge.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\coverage_auditor.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\discovery_agent.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\connectivity_mapper.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\dna_profiler.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\diagnostic_strategist.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\doc_gen_agent.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\healer.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\git_automaton.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\health_synthesizer.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\infrastructure_assembler.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\intent_heuristics_engine.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\integrity_guardian.py` | 12 | 0.20 |
+| `legacy_restore\src_local\agents\Support\logic_node_auditor.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\markdown_sanitizer.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\logic_auditor.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\line_veto.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\markdown_structure_agent.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\memory_persistence.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\maturity_evaluator.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\meta_analysis_detector.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\metrics_assembler.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\obfuscation_hunter.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\obfuscation_cleaner_engine.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\pyramid_analyst.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\obfuscation_logic_engine.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\penalty_engine.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\quality_analyst.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\registry_compiler.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\report_sections_engine.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\rule_definition_judge.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\report_formatter.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\parity_analyst.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\safety_assignment_engine.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\safety_definitions.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\safety_navigator.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\safety_heuristics.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\safe_context_judge.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\scoring_metrics_engine.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\score_calculator.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\silent_error_detector.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\semantic_context_analyst.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\security_sentinel_agent.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\structural_analyst.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\source_code_parser.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\task_executor.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\telemetry_intent_judge.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\test_architect_agent.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\test_discovery_logic.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\telemetry_maturity_logic.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\test_navigator.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\test_refiner.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\test_runner.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\topology_graph_agent.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\validation_agent.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\veto_criteria_engine.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\veto_rules.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\veto_structural_engine.py` | 11 | 0.10 |
+| `legacy_restore\src_local\core\audit_engine.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\web_insight_agent.py` | 11 | 0.10 |
+| `legacy_restore\src_local\agents\Support\vulnerability_heuristic.py` | 11 | 0.10 |
+| `legacy_restore\src_local\core\diagnostic_finalizer.py` | 11 | 0.10 |
+| `legacy_restore\src_local\core\diagnostic_pipeline.py` | 11 | 0.10 |
+| `legacy_restore\src_local\core\compiler.py` | 11 | 0.10 |
+| `legacy_restore\src_local\core\orchestrator.py` | 11 | 0.10 |
+| `legacy_restore\src_local\core\task_orchestrator.py` | 11 | 0.10 |
+| `legacy_restore\src_local\core\validator.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\analysis_engine_phd.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\behavior_analyst.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\cache_manager.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\compliance_standard.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\cognitive_engine.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\conflict_policy_phd.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\cognitive_analyst.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\context_engine.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\context_iterator.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\context_mapping_logic.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\dependency_auditor.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\file_system_scanner.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\finding_deduplicator.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\git_client.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\git_operations_phd.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\history_agent.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\indexer.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\logging_config.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\maintenance_engine_phd.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\markdown_processor.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\markdown_util.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\reflex_engine_phd.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\parallel_test_executor.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\memory_pruning_agent.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\memory_engine.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\persona_loader.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\resource_governor.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\scoring_engine_phd.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\semantic_search_agent.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\submodule_sync_logic.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\stability_ledger.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\system_sentinel.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\test_mapper.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\voice_engine.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\update_transaction.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\topology_engine_phd.py` | 11 | 0.10 |
+| `legacy_restore\src_local\utils\veto_rules_phd.py` | 11 | 0.10 |
+| `legacy_restore\tests\test_code_inspector_agent.py` | 11 | 0.10 |
+| `legacy_restore\tests\test_core_depth.py` | 11 | 0.10 |
+| `legacy_restore\tests\test_discovery_agent.py` | 11 | 0.10 |
+| `legacy_restore\tests\test_markdown_structure_agent.py` | 11 | 0.10 |
+| `legacy_restore\tests\test_score_calculator.py` | 11 | 0.10 |
+| `legacy_restore\tests\test_security_sentinel.py` | 13 | 0.30 |
+| `legacy_restore\tests\test_utils_interface.py` | 11 | 0.10 |
+| `legacy_restore\tests\test_update_agent_submodule.py` | 11 | 0.10 |
+| `legacy_restore\tests\test_utils_engines.py` | 11 | 0.10 |
+| `legacy_restore\tests\test_validation_agent.py` | 11 | 0.10 |
 | `scripts\analyze_external.py` | 11 | 0.10 |
 | `scripts\benchmark_tests.py` | 11 | 0.10 |
 | `scripts\build_exe.py` | 11 | 0.10 |
 | `scripts\cleanup_obfuscation.py` | 12 | 0.20 |
+| `scripts\debug_logic.ts` | 11 | 0.10 |
+| `scripts\deep_disparity_scanner.ts` | 11 | 0.10 |
 | `scripts\debug_test_hang.py` | 11 | 0.10 |
 | `scripts\diagnose_blind_spots.py` | 11 | 0.10 |
+| `scripts\disparity_scanner.ts` | 11 | 0.10 |
 | `scripts\fast_diagnostic.py` | 11 | 0.10 |
 | `scripts\generate_tests.py` | 11 | 0.10 |
-| `scripts\git_doctor.py` | 11 | 0.10 |
 | `scripts\install_hooks.py` | 11 | 0.10 |
+| `scripts\git_doctor.py` | 11 | 0.10 |
 | `scripts\launch_api.py` | 11 | 0.10 |
 | `scripts\launch_dashboard.py` | 11 | 0.10 |
 | `scripts\lint_heading_logic.py` | 11 | 0.10 |
 | `scripts\lint_rule_engine.py` | 11 | 0.10 |
 | `scripts\persona_manager.py` | 11 | 0.10 |
+| `scripts\project_cartographer.ts` | 11 | 0.10 |
+| `scripts\parity_scanner.ts` | 11 | 0.10 |
 | `scripts\run_diagnostic.py` | 11 | 0.10 |
 | `scripts\shadow_tray.py` | 11 | 0.10 |
 | `scripts\update_agent_submodule.py` | 11 | 0.10 |
 | `scripts\verify_cognitive.py` | 11 | 0.10 |
+| `scripts\verify_phase_18.ts` | 11 | 0.10 |
+| `scripts\verify_phase_19.ts` | 11 | 0.10 |
+| `scripts\verify_phase_17.ts` | 11 | 0.10 |
 | `scripts\verify_report_lint.py` | 11 | 0.10 |
 | `src_local\agents\base.py` | 11 | 0.10 |
+| `src_local\agents\base.ts` | 11 | 0.10 |
 | `src_local\agents\base_persona.ts` | 11 | 0.10 |
 | `src_local\agents\Bun\Audit\bolt.ts` | 11 | 0.10 |
-| `src_local\agents\Bun\Audit\macro.ts` | 11 | 0.10 |
-| `src_local\agents\Bun\Audit\metric.ts` | 11 | 0.10 |
-| `src_local\agents\Bun\Audit\nebula.ts` | 11 | 0.10 |
-| `src_local\agents\Bun\Audit\probe.ts` | 11 | 0.10 |
 | `src_local\agents\Bun\Audit\scale.ts` | 11 | 0.10 |
+| `src_local\agents\Bun\Audit\metric.ts` | 11 | 0.10 |
+| `src_local\agents\Bun\Audit\macro.ts` | 11 | 0.10 |
+| `src_local\agents\Bun\Audit\nebula.ts` | 11 | 0.10 |
 | `src_local\agents\Bun\Audit\scope.ts` | 11 | 0.10 |
+| `src_local\agents\Bun\Audit\probe.ts` | 11 | 0.10 |
+| `src_local\agents\Bun\Content\globe.ts` | 11 | 0.10 |
 | `src_local\agents\Bun\Audit\testify.ts` | 11 | 0.10 |
 | `src_local\agents\Bun\Content\echo.ts` | 11 | 0.10 |
 | `src_local\agents\Bun\Content\forge.ts` | 11 | 0.10 |
-| `src_local\agents\Bun\Content\globe.ts` | 11 | 0.10 |
 | `src_local\agents\Bun\Content\hype.ts` | 11 | 0.10 |
-| `src_local\agents\Bun\Content\mantra.ts` | 11 | 0.10 |
-| `src_local\agents\Bun\Content\palette.ts` | 11 | 0.10 |
 | `src_local\agents\Bun\Content\scribe.ts` | 11 | 0.10 |
-| `src_local\agents\Bun\Content\sqlite.ts` | 11 | 0.10 |
-| `src_local\agents\Bun\Strategic\sentinel.ts` | 11 | 0.10 |
+| `src_local\agents\Bun\Content\palette.ts` | 11 | 0.10 |
+| `src_local\agents\Bun\Content\mantra.ts` | 11 | 0.10 |
 | `src_local\agents\Bun\Strategic\vault.ts` | 11 | 0.10 |
+| `src_local\agents\Bun\Strategic\sentinel.ts` | 11 | 0.10 |
 | `src_local\agents\Bun\Strategic\voyager.ts` | 11 | 0.10 |
+| `src_local\agents\Bun\Content\sqlite.ts` | 11 | 0.10 |
 | `src_local\agents\Bun\Strategic\warden.ts` | 11 | 0.10 |
 | `src_local\agents\Bun\Strategic\worker.ts` | 11 | 0.10 |
-| `src_local\agents\Bun\System\bridge.ts` | 11 | 0.10 |
-| `src_local\agents\Bun\System\cache.ts` | 11 | 0.10 |
-| `src_local\agents\Bun\System\flow.ts` | 11 | 0.10 |
-| `src_local\agents\Bun\System\hermes.ts` | 11 | 0.10 |
 | `src_local\agents\Bun\System\neural.ts` | 11 | 0.10 |
+| `src_local\agents\Bun\System\hermes.ts` | 11 | 0.10 |
+| `src_local\agents\Bun\System\cache.ts` | 11 | 0.10 |
 | `src_local\agents\Bun\System\nexus.ts` | 11 | 0.10 |
+| `src_local\agents\Bun\System\flow.ts` | 11 | 0.10 |
 | `src_local\agents\Bun\System\plugin.ts` | 11 | 0.10 |
 | `src_local\agents\Bun\System\spark.ts` | 11 | 0.10 |
-| `src_local\agents\Bun\System\stream.ts` | 11 | 0.10 |
+| `src_local\agents\Bun\System\bridge.ts` | 11 | 0.10 |
 | `src_local\agents\Flutter\Audit\bolt.py` | 11 | 0.10 |
+| `src_local\agents\Bun\System\stream.ts` | 11 | 0.10 |
+| `src_local\agents\Flutter\Audit\nebula.ts` | 11 | 0.10 |
+| `src_local\agents\Flutter\Audit\bolt.ts` | 11 | 0.10 |
 | `src_local\agents\Flutter\Audit\metric.py` | 11 | 0.10 |
+| `src_local\agents\Flutter\Audit\metric.ts` | 11 | 0.10 |
 | `src_local\agents\Flutter\Audit\nebula.py` | 11 | 0.10 |
-| `src_local\agents\Flutter\Audit\probe.py` | 11 | 0.10 |
 | `src_local\agents\Flutter\Audit\scale.py` | 11 | 0.10 |
+| `src_local\agents\Flutter\Audit\probe.py` | 11 | 0.10 |
+| `src_local\agents\Flutter\Audit\probe.ts` | 11 | 0.10 |
 | `src_local\agents\Flutter\Audit\scope.py` | 11 | 0.10 |
+| `src_local\agents\Flutter\Audit\scale.ts` | 11 | 0.10 |
 | `src_local\agents\Flutter\Audit\testify.py` | 11 | 0.10 |
+| `src_local\agents\Flutter\Audit\testify.ts` | 11 | 0.10 |
+| `src_local\agents\Flutter\Audit\scope.ts` | 11 | 0.10 |
+| `src_local\agents\Flutter\Content\echo.ts` | 11 | 0.10 |
+| `src_local\agents\Flutter\Content\forge.ts` | 11 | 0.10 |
 | `src_local\agents\Flutter\Content\echo.py` | 11 | 0.10 |
-| `src_local\agents\Flutter\Content\forge.py` | 11 | 0.10 |
 | `src_local\agents\Flutter\Content\globe.py` | 11 | 0.10 |
+| `src_local\agents\Flutter\Content\globe.ts` | 11 | 0.10 |
+| `src_local\agents\Flutter\Content\forge.py` | 11 | 0.10 |
 | `src_local\agents\Flutter\Content\hype.py` | 11 | 0.10 |
+| `src_local\agents\Flutter\Content\mantra.ts` | 11 | 0.10 |
+| `src_local\agents\Flutter\Content\hype.ts` | 11 | 0.10 |
 | `src_local\agents\Flutter\Content\mantra.py` | 11 | 0.10 |
 | `src_local\agents\Flutter\Content\palette.py` | 11 | 0.10 |
+| `src_local\agents\Flutter\Content\palette.ts` | 11 | 0.10 |
+| `src_local\agents\Flutter\Content\scribe.ts` | 11 | 0.10 |
 | `src_local\agents\Flutter\Content\scribe.py` | 11 | 0.10 |
-| `src_local\agents\Flutter\Strategic\sentinel.py` | 11 | 0.10 |
 | `src_local\agents\Flutter\Strategic\vault.py` | 11 | 0.10 |
+| `src_local\agents\Flutter\Strategic\sentinel.py` | 11 | 0.10 |
+| `src_local\agents\Flutter\Strategic\sentinel.ts` | 11 | 0.10 |
+| `src_local\agents\Flutter\Strategic\vault.ts` | 11 | 0.10 |
+| `src_local\agents\Flutter\Strategic\voyager.ts` | 11 | 0.10 |
 | `src_local\agents\Flutter\Strategic\voyager.py` | 11 | 0.10 |
 | `src_local\agents\Flutter\Strategic\warden.py` | 11 | 0.10 |
-| `src_local\agents\Flutter\System\bridge.py` | 11 | 0.10 |
+| `src_local\agents\Flutter\System\bridge.ts` | 11 | 0.10 |
+| `src_local\agents\Flutter\Strategic\warden.ts` | 11 | 0.10 |
 | `src_local\agents\Flutter\System\cache.py` | 11 | 0.10 |
+| `src_local\agents\Flutter\System\bridge.py` | 11 | 0.10 |
+| `src_local\agents\Flutter\System\cache.ts` | 11 | 0.10 |
+| `src_local\agents\Flutter\System\flow.ts` | 11 | 0.10 |
 | `src_local\agents\Flutter\System\flow.py` | 11 | 0.10 |
 | `src_local\agents\Flutter\System\hermes.py` | 11 | 0.10 |
 | `src_local\agents\Flutter\System\neural.py` | 11 | 0.10 |
+| `src_local\agents\Flutter\System\hermes.ts` | 11 | 0.10 |
+| `src_local\agents\Flutter\System\neural.ts` | 11 | 0.10 |
+| `src_local\agents\Flutter\System\nexus.ts` | 11 | 0.10 |
 | `src_local\agents\Flutter\System\nexus.py` | 11 | 0.10 |
 | `src_local\agents\Flutter\System\spark.py` | 11 | 0.10 |
+| `src_local\agents\Flutter\System\stream.ts` | 11 | 0.10 |
 | `src_local\agents\Flutter\System\stream.py` | 11 | 0.10 |
-| `src_local\agents\Kotlin\Audit\bolt.py` | 11 | 0.10 |
 | `src_local\agents\Kotlin\Audit\metric.py` | 11 | 0.10 |
+| `src_local\agents\Kotlin\Audit\bolt.py` | 11 | 0.10 |
+| `src_local\agents\Kotlin\Audit\bolt.ts` | 11 | 0.10 |
+| `src_local\agents\Flutter\System\spark.ts` | 11 | 0.10 |
+| `src_local\agents\Kotlin\Audit\nebula.ts` | 11 | 0.10 |
+| `src_local\agents\Kotlin\Audit\metric.ts` | 11 | 0.10 |
+| `src_local\agents\Kotlin\Audit\probe.ts` | 11 | 0.10 |
 | `src_local\agents\Kotlin\Audit\nebula.py` | 11 | 0.10 |
 | `src_local\agents\Kotlin\Audit\probe.py` | 11 | 0.10 |
-| `src_local\agents\Kotlin\Audit\scale.py` | 11 | 0.10 |
+| `src_local\agents\Kotlin\Audit\scale.ts` | 11 | 0.10 |
 | `src_local\agents\Kotlin\Audit\scope.py` | 11 | 0.10 |
-| `src_local\agents\Kotlin\Audit\testify.py` | 11 | 0.10 |
+| `src_local\agents\Kotlin\Audit\scale.py` | 11 | 0.10 |
+| `src_local\agents\Kotlin\Audit\scope.ts` | 11 | 0.10 |
+| `src_local\agents\Kotlin\Audit\testify.ts` | 11 | 0.10 |
 | `src_local\agents\Kotlin\Content\echo.py` | 11 | 0.10 |
-| `src_local\agents\Kotlin\Content\forge.py` | 11 | 0.10 |
+| `src_local\agents\Kotlin\Audit\testify.py` | 11 | 0.10 |
 | `src_local\agents\Kotlin\Content\globe.py` | 11 | 0.10 |
-| `src_local\agents\Kotlin\Content\hype.py` | 11 | 0.10 |
+| `src_local\agents\Kotlin\Content\forge.py` | 11 | 0.10 |
+| `src_local\agents\Kotlin\Content\globe.ts` | 11 | 0.10 |
+| `src_local\agents\Kotlin\Content\forge.ts` | 11 | 0.10 |
+| `src_local\agents\Kotlin\Content\mantra.ts` | 11 | 0.10 |
 | `src_local\agents\Kotlin\Content\mantra.py` | 11 | 0.10 |
-| `src_local\agents\Kotlin\Content\palette.py` | 11 | 0.10 |
+| `src_local\agents\Kotlin\Content\hype.py` | 11 | 0.10 |
+| `src_local\agents\Kotlin\Content\palette.ts` | 11 | 0.10 |
 | `src_local\agents\Kotlin\Content\scribe.py` | 11 | 0.10 |
+| `src_local\agents\Kotlin\Content\palette.py` | 11 | 0.10 |
+| `src_local\agents\Kotlin\Content\echo.ts` | 11 | 0.10 |
 | `src_local\agents\Kotlin\Strategic\sentinel.py` | 11 | 0.10 |
+| `src_local\agents\Kotlin\Content\scribe.ts` | 11 | 0.10 |
+| `src_local\agents\Kotlin\Strategic\sentinel.ts` | 11 | 0.10 |
+| `src_local\agents\Kotlin\Content\hype.ts` | 11 | 0.10 |
 | `src_local\agents\Kotlin\Strategic\vault.py` | 11 | 0.10 |
 | `src_local\agents\Kotlin\Strategic\voyager.py` | 11 | 0.10 |
+| `src_local\agents\Kotlin\Strategic\warden.ts` | 11 | 0.10 |
 | `src_local\agents\Kotlin\Strategic\warden.py` | 11 | 0.10 |
+| `src_local\agents\Kotlin\Strategic\vault.ts` | 11 | 0.10 |
 | `src_local\agents\Kotlin\System\bridge.py` | 11 | 0.10 |
+| `src_local\agents\Kotlin\System\bridge.ts` | 11 | 0.10 |
+| `src_local\agents\Kotlin\Strategic\voyager.ts` | 11 | 0.10 |
 | `src_local\agents\Kotlin\System\cache.py` | 11 | 0.10 |
+| `src_local\agents\Kotlin\System\cache.ts` | 11 | 0.10 |
+| `src_local\agents\Kotlin\System\flow.ts` | 11 | 0.10 |
 | `src_local\agents\Kotlin\System\flow.py` | 11 | 0.10 |
 | `src_local\agents\Kotlin\System\hermes.py` | 11 | 0.10 |
+| `src_local\agents\Kotlin\System\hermes.ts` | 11 | 0.10 |
 | `src_local\agents\Kotlin\System\neural.py` | 11 | 0.10 |
+| `src_local\agents\Kotlin\System\neural.ts` | 11 | 0.10 |
+| `src_local\agents\Kotlin\System\nexus.ts` | 11 | 0.10 |
 | `src_local\agents\Kotlin\System\nexus.py` | 11 | 0.10 |
 | `src_local\agents\Kotlin\System\spark.py` | 11 | 0.10 |
 | `src_local\agents\Kotlin\System\stream.py` | 11 | 0.10 |
+| `src_local\agents\Kotlin\System\stream.ts` | 11 | 0.10 |
+| `src_local\agents\Kotlin\System\spark.ts` | 11 | 0.10 |
 | `src_local\agents\Python\Audit\bolt.py` | 11 | 0.10 |
 | `src_local\agents\Python\Audit\metric.py` | 11 | 0.10 |
 | `src_local\agents\Python\Audit\nebula.py` | 11 | 0.10 |
 | `src_local\agents\Python\Audit\probe.py` | 11 | 0.10 |
 | `src_local\agents\Python\Audit\scale.py` | 11 | 0.10 |
 | `src_local\agents\Python\Audit\scope.py` | 11 | 0.10 |
-| `src_local\agents\Python\Audit\testify.py` | 11 | 0.10 |
-| `src_local\agents\Python\Content\echo.py` | 12 | 0.20 |
 | `src_local\agents\Python\Content\forge.py` | 11 | 0.10 |
-| `src_local\agents\Python\Content\globe.py` | 11 | 0.10 |
+| `src_local\agents\Python\Audit\testify.py` | 11 | 0.10 |
+| `src_local\agents\Python\Content\echo.py` | 11 | 0.10 |
 | `src_local\agents\Python\Content\hype.py` | 11 | 0.10 |
+| `src_local\agents\Python\Content\globe.py` | 11 | 0.10 |
+| `src_local\agents\Python\Content\scribe.py` | 11 | 0.10 |
 | `src_local\agents\Python\Content\mantra.py` | 11 | 0.10 |
 | `src_local\agents\Python\Content\palette.py` | 11 | 0.10 |
-| `src_local\agents\Python\Content\scribe.py` | 11 | 0.10 |
 | `src_local\agents\Python\Strategic\director.py` | 11 | 0.10 |
-| `src_local\agents\Python\Strategic\sentinel.py` | 11 | 0.10 |
 | `src_local\agents\Python\Strategic\vault.py` | 11 | 0.10 |
+| `src_local\agents\Python\Strategic\sentinel.py` | 11 | 0.10 |
 | `src_local\agents\Python\Strategic\voyager.py` | 11 | 0.10 |
-| `src_local\agents\Python\Strategic\warden.py` | 11 | 0.10 |
 | `src_local\agents\Python\System\bridge.py` | 11 | 0.10 |
+| `src_local\agents\Python\Strategic\warden.py` | 11 | 0.10 |
 | `src_local\agents\Python\System\cache.py` | 11 | 0.10 |
 | `src_local\agents\Python\System\flow.py` | 11 | 0.10 |
 | `src_local\agents\Python\System\hermes.py` | 11 | 0.10 |
 | `src_local\agents\Python\System\neural.py` | 11 | 0.10 |
 | `src_local\agents\Python\System\nexus.py` | 11 | 0.10 |
-| `src_local\agents\Python\System\spark.py` | 11 | 0.10 |
 | `src_local\agents\Python\System\stream.py` | 11 | 0.10 |
+| `src_local\agents\Python\System\spark.py` | 11 | 0.10 |
+| `src_local\agents\Support\battle_plan_formatter.ts` | 11 | 0.10 |
+| `src_local\agents\Support\briefing_agent.ts` | 11 | 0.10 |
+| `src_local\agents\Support\battle_plan_sections_engine.ts` | 11 | 0.10 |
 | `src_local\agents\schema_persona.ts` | 11 | 0.10 |
-| `src_local\agents\Support\ast_navigator.py` | 11 | 0.10 |
-| `src_local\agents\Support\ast_node_inspector.py` | 11 | 0.10 |
-| `src_local\agents\Support\ast_traversal_logic.py` | 11 | 0.10 |
-| `src_local\agents\Support\audit_engine.py` | 11 | 0.10 |
-| `src_local\agents\Support\audit_risk_engine.py` | 11 | 0.10 |
-| `src_local\agents\Support\audit_scanner_engine.py` | 11 | 0.10 |
-| `src_local\agents\Support\battle_plan_formatter.py` | 11 | 0.10 |
-| `src_local\agents\Support\battle_plan_sections_engine.py` | 11 | 0.10 |
-| `src_local\agents\Support\briefing_agent.py` | 11 | 0.10 |
-| `src_local\agents\Support\call_safety_judge.py` | 11 | 0.10 |
-| `src_local\agents\Support\component_classifier.py` | 11 | 0.10 |
-| `src_local\agents\Support\component_classifier.ts` | 11 | 0.10 |
-| `src_local\agents\Support\connectivity_mapper.py` | 11 | 0.10 |
 | `src_local\agents\Support\connectivity_mapper.ts` | 11 | 0.10 |
-| `src_local\agents\Support\coverage_auditor.py` | 11 | 0.10 |
-| `src_local\agents\Support\coverage_auditor.ts` | 11 | 0.10 |
-| `src_local\agents\Support\diagnostic_strategist.py` | 11 | 0.10 |
-| `src_local\agents\Support\director.ts` | 11 | 0.10 |
+| `src_local\agents\Support\diagnostic_strategist.ts` | 11 | 0.10 |
+| `src_local\agents\Support\component_classifier.ts` | 11 | 0.10 |
+| `src_local\agents\Support\cognitive_analyst.ts` | 11 | 0.10 |
 | `src_local\agents\Support\discovery_agent.ts` | 11 | 0.10 |
-| `src_local\agents\Support\dna_profiler.py` | 11 | 0.10 |
+| `src_local\agents\Support\coverage_auditor.ts` | 11 | 0.10 |
 | `src_local\agents\Support\dna_profiler.ts` | 11 | 0.10 |
-| `src_local\agents\Support\git_automaton.py` | 11 | 0.10 |
-| `src_local\agents\Support\healer.py` | 11 | 0.10 |
+| `src_local\agents\Support\director.ts` | 11 | 0.10 |
+| `src_local\agents\Support\doc_gen_agent.ts` | 11 | 0.10 |
 | `src_local\agents\Support\healer.ts` | 11 | 0.10 |
-| `src_local\agents\Support\health_synthesizer.py` | 11 | 0.10 |
+| `src_local\agents\Support\healer_persona.ts` | 11 | 0.10 |
 | `src_local\agents\Support\health_synthesizer.ts` | 11 | 0.10 |
-| `src_local\agents\Support\infrastructure_assembler.py` | 11 | 0.10 |
-| `src_local\agents\Support\integrity_guardian.py` | 12 | 0.20 |
+| `src_local\agents\Support\infrastructure_assembler.ts` | 11 | 0.10 |
 | `src_local\agents\Support\integrity_guardian.ts` | 11 | 0.10 |
-| `src_local\agents\Support\intent_heuristics_engine.py` | 11 | 0.10 |
-| `src_local\agents\Support\line_veto.py` | 11 | 0.10 |
-| `src_local\agents\Support\logic_auditor.py` | 11 | 0.10 |
 | `src_local\agents\Support\logic_auditor.ts` | 11 | 0.10 |
-| `src_local\agents\Support\logic_node_auditor.py` | 11 | 0.10 |
-| `src_local\agents\Support\markdown_sanitizer.py` | 11 | 0.10 |
-| `src_local\agents\Support\maturity_evaluator.py` | 11 | 0.10 |
-| `src_local\agents\Support\maturity_evaluator.ts` | 11 | 0.10 |
-| `src_local\agents\Support\memory_persistence.py` | 11 | 0.10 |
-| `src_local\agents\Support\memory_persistence.ts` | 11 | 0.10 |
-| `src_local\agents\Support\meta_analysis_detector.py` | 11 | 0.10 |
-| `src_local\agents\Support\metrics_assembler.py` | 11 | 0.10 |
-| `src_local\agents\Support\obfuscation_cleaner_engine.py` | 11 | 0.10 |
-| `src_local\agents\Support\obfuscation_hunter.py` | 11 | 0.10 |
+| `src_local\agents\Support\markdown_structure_agent.ts` | 11 | 0.10 |
+| `src_local\agents\Support\markdown_auditor.ts` | 11 | 0.10 |
 | `src_local\agents\Support\obfuscation_hunter.ts` | 11 | 0.10 |
-| `src_local\agents\Support\obfuscation_logic_engine.py` | 11 | 0.10 |
+| `src_local\agents\Support\memory_persistence.ts` | 11 | 0.10 |
+| `src_local\agents\Support\maturity_evaluator.ts` | 11 | 0.10 |
 | `src_local\agents\Support\obfuscation_logic_engine.ts` | 11 | 0.10 |
-| `src_local\agents\Support\parity_analyst.py` | 11 | 0.10 |
 | `src_local\agents\Support\parity_analyst.ts` | 11 | 0.10 |
-| `src_local\agents\Support\penalty_engine.py` | 11 | 0.10 |
-| `src_local\agents\Support\penalty_engine.ts` | 11 | 0.10 |
-| `src_local\agents\Support\pyramid_analyst.py` | 11 | 0.10 |
 | `src_local\agents\Support\pyramid_analyst.ts` | 11 | 0.10 |
-| `src_local\agents\Support\quality_analyst.py` | 11 | 0.10 |
-| `src_local\agents\Support\quality_analyst.ts` | 11 | 0.10 |
-| `src_local\agents\Support\registry_compiler.py` | 11 | 0.10 |
-| `src_local\agents\Support\report_formatter.py` | 11 | 0.10 |
-| `src_local\agents\Support\report_sections_engine.py` | 11 | 0.10 |
-| `src_local\agents\Support\rule_definition_judge.py` | 11 | 0.10 |
-| `src_local\agents\Support\safety_assignment_engine.py` | 11 | 0.10 |
-| `src_local\agents\Support\safety_definitions.py` | 11 | 0.10 |
-| `src_local\agents\Support\safety_definitions.ts` | 11 | 0.10 |
-| `src_local\agents\Support\safety_heuristics.py` | 11 | 0.10 |
-| `src_local\agents\Support\safety_navigator.py` | 11 | 0.10 |
-| `src_local\agents\Support\safe_context_judge.py` | 11 | 0.10 |
-| `src_local\agents\Support\score_calculator.py` | 11 | 0.10 |
-| `src_local\agents\Support\score_calculator.ts` | 11 | 0.10 |
-| `src_local\agents\Support\scoring_metrics_engine.py` | 11 | 0.10 |
+| `src_local\agents\Support\penalty_engine.ts` | 11 | 0.10 |
 | `src_local\agents\Support\scoring_metrics_engine.ts` | 11 | 0.10 |
-| `src_local\agents\Support\semantic_context_analyst.py` | 11 | 0.10 |
-| `src_local\agents\Support\silent_error_detector.py` | 11 | 0.10 |
-| `src_local\agents\Support\source_code_parser.py` | 11 | 0.10 |
-| `src_local\agents\Support\source_code_parser.ts` | 11 | 0.10 |
-| `src_local\agents\Support\structural_analyst.py` | 11 | 0.10 |
+| `src_local\agents\Support\quality_analyst.ts` | 11 | 0.10 |
+| `src_local\agents\Support\security_sentinel_agent.ts` | 11 | 0.10 |
+| `src_local\agents\Support\safety_definitions.ts` | 13 | 0.30 |
 | `src_local\agents\Support\structural_analyst.ts` | 11 | 0.10 |
-| `src_local\agents\Support\task_executor.py` | 11 | 0.10 |
-| `src_local\agents\Support\telemetry_intent_judge.py` | 11 | 0.10 |
-| `src_local\agents\Support\telemetry_maturity_logic.py` | 11 | 0.10 |
 | `src_local\agents\Support\testify_persona.ts` | 11 | 0.10 |
-| `src_local\agents\Support\test_discovery_logic.py` | 11 | 0.10 |
-| `src_local\agents\Support\test_navigator.py` | 11 | 0.10 |
-| `src_local\agents\Support\test_refiner.py` | 11 | 0.10 |
-| `src_local\agents\Support\test_runner.py` | 11 | 0.10 |
+| `src_local\agents\Support\source_code_parser.ts` | 11 | 0.10 |
+| `src_local\agents\Support\test_architect_agent.ts` | 11 | 0.10 |
+| `src_local\agents\Support\score_calculator.ts` | 11 | 0.10 |
 | `src_local\agents\Support\test_runner.ts` | 11 | 0.10 |
-| `src_local\agents\Support\validation_agent.ts` | 11 | 0.10 |
-| `src_local\agents\Support\veto_criteria_engine.py` | 11 | 0.10 |
-| `src_local\agents\Support\veto_rules.py` | 11 | 0.10 |
-| `src_local\agents\Support\veto_structural_engine.py` | 11 | 0.10 |
-| `src_local\agents\Support\vulnerability_heuristic.py` | 11 | 0.10 |
-| `src_local\agents\TypeScript\Audit\bolt.ts` | 11 | 0.10 |
+| `src_local\agents\Support\test_refiner.ts` | 11 | 0.10 |
+| `src_local\agents\Support\topology_graph_agent.ts` | 11 | 0.10 |
 | `src_local\agents\TypeScript\Audit\metric.ts` | 11 | 0.10 |
+| `src_local\agents\Support\validation_agent.ts` | 11 | 0.10 |
+| `src_local\agents\TypeScript\Audit\bolt.ts` | 11 | 0.10 |
 | `src_local\agents\TypeScript\Audit\nebula.ts` | 11 | 0.10 |
 | `src_local\agents\TypeScript\Audit\probe.ts` | 11 | 0.10 |
 | `src_local\agents\TypeScript\Audit\scale.ts` | 11 | 0.10 |
+| `src_local\agents\TypeScript\Audit\testify.ts` | 11 | 0.10 |
 | `src_local\agents\TypeScript\Audit\scope.ts` | 11 | 0.10 |
 | `src_local\agents\TypeScript\Audit\strict.ts` | 11 | 0.10 |
-| `src_local\agents\TypeScript\Audit\testify.ts` | 11 | 0.10 |
-| `src_local\agents\TypeScript\Content\echo.ts` | 11 | 0.10 |
-| `src_local\agents\TypeScript\Content\forge.ts` | 11 | 0.10 |
-| `src_local\agents\TypeScript\Content\generic.ts` | 11 | 0.10 |
 | `src_local\agents\TypeScript\Content\globe.ts` | 11 | 0.10 |
+| `src_local\agents\TypeScript\Content\generic.ts` | 11 | 0.10 |
+| `src_local\agents\TypeScript\Content\forge.ts` | 11 | 0.10 |
+| `src_local\agents\TypeScript\Content\echo.ts` | 11 | 0.10 |
 | `src_local\agents\TypeScript\Content\hype.ts` | 11 | 0.10 |
-| `src_local\agents\TypeScript\Content\mantra.ts` | 11 | 0.10 |
 | `src_local\agents\TypeScript\Content\palette.ts` | 11 | 0.10 |
+| `src_local\agents\TypeScript\Content\mantra.ts` | 11 | 0.10 |
 | `src_local\agents\TypeScript\Content\scribe.ts` | 11 | 0.10 |
-| `src_local\agents\TypeScript\Strategic\decorator.ts` | 11 | 0.10 |
 | `src_local\agents\TypeScript\Strategic\sentinel.ts` | 11 | 0.10 |
+| `src_local\agents\TypeScript\Strategic\decorator.ts` | 11 | 0.10 |
+| `src_local\agents\TypeScript\Strategic\director.ts` | 11 | 0.10 |
 | `src_local\agents\TypeScript\Strategic\vault.ts` | 11 | 0.10 |
-| `src_local\agents\TypeScript\Strategic\voyager.ts` | 11 | 0.10 |
 | `src_local\agents\TypeScript\Strategic\warden.ts` | 11 | 0.10 |
+| `src_local\agents\TypeScript\Strategic\voyager.ts` | 11 | 0.10 |
 | `src_local\agents\TypeScript\System\bridge.ts` | 11 | 0.10 |
 | `src_local\agents\TypeScript\System\cache.ts` | 11 | 0.10 |
 | `src_local\agents\TypeScript\System\enum.ts` | 11 | 0.10 |
+| `src_local\agents\TypeScript\System\neural.ts` | 11 | 0.10 |
 | `src_local\agents\TypeScript\System\flow.ts` | 11 | 0.10 |
 | `src_local\agents\TypeScript\System\hermes.ts` | 11 | 0.10 |
-| `src_local\agents\TypeScript\System\neural.ts` | 11 | 0.10 |
-| `src_local\agents\TypeScript\System\nexus.ts` | 11 | 0.10 |
 | `src_local\agents\TypeScript\System\spark.ts` | 11 | 0.10 |
 | `src_local\agents\TypeScript\System\stream.ts` | 11 | 0.10 |
-| `src_local\core\audit_engine.ts` | 11 | 0.10 |
-| `src_local\core\bridge_orchestrator.py` | 11 | 0.10 |
-| `src_local\core\diagnostic_finalizer.ts` | 11 | 0.10 |
-| `src_local\core\diagnostic_pipeline.ts` | 11 | 0.10 |
+| `src_local\agents\TypeScript\System\nexus.ts` | 11 | 0.10 |
 | `src_local\core\orchestrator.py` | 11 | 0.10 |
+| `src_local\core\audit_engine.ts` | 11 | 0.10 |
+| `src_local\core\diagnostic_pipeline.ts` | 11 | 0.10 |
+| `src_local\core\bridge_orchestrator.py` | 11 | 0.10 |
+| `src_local\core\language_persona_orchestrator.ts` | 11 | 0.10 |
+| `src_local\core\diagnostic_finalizer.ts` | 11 | 0.10 |
 | `src_local\core\orchestrator.ts` | 11 | 0.10 |
-| `src_local\core\path_utils.ts` | 11 | 0.10 |
+| `src_local\core\reflex_engine.ts` | 11 | 0.10 |
 | `src_local\core\task_orchestrator.ts` | 11 | 0.10 |
+| `src_local\core\validator.ts` | 11 | 0.10 |
+| `src_local\core\path_utils.ts` | 11 | 0.10 |
 | `src_local\utils\ast_intelligence.ts` | 11 | 0.10 |
-| `src_local\utils\behavior_analyst.py` | 11 | 0.10 |
-| `src_local\utils\cache_manager.ts` | 11 | 0.10 |
-| `src_local\utils\cognitive_engine.py` | 11 | 0.10 |
+| `src_local\utils\behavior_analyst.ts` | 11 | 0.10 |
 | `src_local\utils\cognitive_engine.ts` | 11 | 0.10 |
+| `src_local\utils\cache_manager.ts` | 11 | 0.10 |
 | `src_local\utils\context_engine.ts` | 11 | 0.10 |
 | `src_local\utils\context_iterator.ts` | 11 | 0.10 |
-| `src_local\utils\context_mapping_logic.ts` | 11 | 0.10 |
+| `src_local\utils\conflict_policy.ts` | 11 | 0.10 |
 | `src_local\utils\file_system_scanner.ts` | 11 | 0.10 |
+| `src_local\utils\context_mapping_logic.ts` | 11 | 0.10 |
+| `src_local\utils\git_client.ts` | 11 | 0.10 |
 | `src_local\utils\finding_deduplicator.ts` | 11 | 0.10 |
-| `src_local\utils\history_agent.py` | 11 | 0.10 |
+| `src_local\utils\dependency_auditor.ts` | 11 | 0.10 |
 | `src_local\utils\history_agent.ts` | 11 | 0.10 |
-| `src_local\utils\logging_config.py` | 11 | 0.10 |
+| `src_local\utils\maintenance_engine_phd.ts` | 11 | 0.10 |
+| `src_local\utils\go_discovery_adapter.ts` | 11 | 0.10 |
 | `src_local\utils\logging_config.ts` | 11 | 0.10 |
-| `src_local\utils\parallel_test_executor.py` | 11 | 0.10 |
-| `src_local\utils\persona_loader.py` | 11 | 0.10 |
+| `src_local\utils\markdown_processor.ts` | 11 | 0.10 |
+| `src_local\utils\memory_engine.ts` | 11 | 0.10 |
+| `src_local\utils\markdown_util.ts` | 11 | 0.10 |
+| `src_local\utils\memory_pruning_agent.ts` | 11 | 0.10 |
 | `src_local\utils\persona_registry.ts` | 11 | 0.10 |
-| `src_local\utils\resource_governor.py` | 11 | 0.10 |
-| `src_local\utils\stability_ledger.ts` | 11 | 0.10 |
-| `src_local\utils\system_sentinel.py` | 11 | 0.10 |
+| `src_local\utils\submodule_sync_logic.ts` | 11 | 0.10 |
 | `src_local\utils\task_executor.ts` | 11 | 0.10 |
+| `src_local\utils\system_sentinel.ts` | 11 | 0.10 |
+| `src_local\utils\stability_ledger.ts` | 11 | 0.10 |
+| `src_local\utils\update_transaction.ts` | 11 | 0.10 |
+| `src_local\utils\task_queue.ts` | 11 | 0.10 |
+| `src_local\utils\task_worker.ts` | 11 | 0.10 |
 | `src_local\utils\veto_engine.ts` | 11 | 0.10 |
-| `src_local\utils\voice_engine.py` | 11 | 0.10 |
 | `tests\test_briefing_agent.py` | 11 | 0.10 |
 | `tests\test_code_inspector_agent.py` | 11 | 0.10 |
 | `tests\test_core_depth.py` | 11 | 0.10 |
@@ -818,799 +788,5164 @@
 | `tests\test_utils_interface.py` | 11 | 0.10 |
 | `tests\test_validation_agent.py` | 11 | 0.10 |
 | `tests\test_web_insight_agent.py` | 11 | 0.10 |
-| `src_local/agents/Bun/Content/hype.ts` | 11 | 0.10 |
-| `src_local/agents/TypeScript/Audit/strict.ts` | 11 | 0.10 |
-| `src_local/agents/TypeScript/Content/hype.ts` | 11 | 0.10 |
+| `run-diagnostic.ts` | 11 | 0.10 |
+| `scripts/debug_logic.ts` | 11 | 0.10 |
+| `scripts/parity_scanner.ts` | 15 | 0.50 |
+| `src_local/agents/base.ts` | 13 | 0.30 |
+| `src_local/agents/Flutter/Content/forge.ts` | 13 | 0.30 |
+| `src_local/agents/Support/logic_auditor.ts` | 29 | 1.90 |
+| `src_local/agents/Support/parity_analyst.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/Audit/metric.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/Audit/bolt.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/Audit/nebula.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/Audit/probe.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/Audit/scale.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/Audit/testify.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/Audit/scope.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/Audit/strict.ts` | 12 | 0.20 |
+| `src_local/agents/TypeScript/Content/globe.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/Content/generic.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/Content/forge.ts` | 14 | 0.40 |
+| `src_local/agents/TypeScript/Content/echo.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/Content/hype.ts` | 12 | 0.20 |
+| `src_local/agents/TypeScript/Content/palette.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/Content/mantra.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/Content/scribe.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/Strategic/sentinel.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/Strategic/decorator.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/Strategic/director.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/Strategic/vault.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/Strategic/warden.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/Strategic/voyager.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/System/bridge.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/System/cache.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/System/neural.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/System/flow.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/System/hermes.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/System/spark.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/System/stream.ts` | 11 | 0.10 |
+| `src_local/agents/TypeScript/System/nexus.ts` | 11 | 0.10 |
 
 ## 🧪 MATRIZ DE CONFIANÇA
 
 | Módulo | Entropia | Asserções | Status |
 | :--- | :---: | :---: | :--- |
-| `.agent\skills\scripts\generate_index.py:?` | - | Complexity:11|Assertions:0|Lines:116 | 🟢 PROFUNDO |
-| `.agent\skills\scripts\skills_manager.py:?` | - | Complexity:12|Assertions:0|Lines:120 | 🟢 PROFUNDO |
-| `.agent\skills\scripts\sync_microsoft_skills.py:?` | - | Complexity:42|Assertions:3|Lines:425 | 🟢 PROFUNDO |
-| `.agent\skills\scripts\tests\inspect_microsoft_repo.py:?` | - | Complexity:9|Assertions:0|Lines:99 | 🟢 PROFUNDO |
-| `.agent\skills\scripts\tests\test_comprehensive_coverage.py:?` | - | Complexity:19|Assertions:0|Lines:190 | 🟢 PROFUNDO |
-| `.agent\skills\scripts\tests\test_validate_skills_headings.py:?` | - | Complexity:1|Assertions:3|Lines:19 | 🟢 PROFUNDO |
-| `.agent\skills\scripts\update_readme.py:?` | - | Complexity:6|Assertions:0|Lines:66 | 🟢 PROFUNDO |
-| `.agent\skills\scripts\validate_skills.py:?` | - | Complexity:13|Assertions:0|Lines:133 | 🟢 PROFUNDO |
-| `.agent\skills\skills\api-design-principles\assets\rest-api-template.py:?` | - | Complexity:18|Assertions:0|Lines:183 | 🟢 PROFUNDO |
-| `.agent\skills\skills\api-patterns\scripts\api_validator.py:?` | - | Complexity:21|Assertions:0|Lines:212 | 🟢 PROFUNDO |
-| `.agent\skills\skills\app-store-optimization\ab_test_planner.py:?` | - | Complexity:66|Assertions:6|Lines:663 | 🟢 PROFUNDO |
-| `.agent\skills\skills\app-store-optimization\aso_scorer.py:?` | - | Complexity:48|Assertions:9|Lines:483 | 🟢 PROFUNDO |
-| `.agent\skills\skills\app-store-optimization\competitor_analyzer.py:?` | - | Complexity:57|Assertions:0|Lines:578 | 🟢 PROFUNDO |
-| `.agent\skills\skills\app-store-optimization\keyword_analyzer.py:?` | - | Complexity:40|Assertions:0|Lines:407 | 🟢 PROFUNDO |
-| `.agent\skills\skills\app-store-optimization\launch_checklist.py:?` | - | Complexity:74|Assertions:0|Lines:740 | 🟢 PROFUNDO |
-| `.agent\skills\skills\app-store-optimization\localization_helper.py:?` | - | Complexity:58|Assertions:13|Lines:589 | 🟢 PROFUNDO |
-| `.agent\skills\skills\app-store-optimization\metadata_optimizer.py:?` | - | Complexity:58|Assertions:0|Lines:582 | 🟢 PROFUNDO |
-| `.agent\skills\skills\app-store-optimization\review_analyzer.py:?` | - | Complexity:71|Assertions:0|Lines:715 | 🟢 PROFUNDO |
-| `.agent\skills\skills\audio-transcriber\scripts\transcribe.py:?` | - | Complexity:48|Assertions:0|Lines:487 | 🟢 PROFUNDO |
-| `.agent\skills\skills\content-creator\scripts\brand_voice_analyzer.py:?` | - | Complexity:18|Assertions:0|Lines:186 | 🟢 PROFUNDO |
-| `.agent\skills\skills\content-creator\scripts\seo_optimizer.py:?` | - | Complexity:42|Assertions:0|Lines:420 | 🟢 PROFUNDO |
-| `.agent\skills\skills\database-design\scripts\schema_validator.py:?` | - | Complexity:17|Assertions:0|Lines:173 | 🟢 PROFUNDO |
-| `.agent\skills\skills\docx-official\ooxml\scripts\pack.py:?` | - | Complexity:16|Assertions:1|Lines:160 | 🟢 PROFUNDO |
-| `.agent\skills\skills\docx-official\ooxml\scripts\unpack.py:?` | - | Complexity:3|Assertions:1|Lines:30 | 🟢 PROFUNDO |
-| `.agent\skills\skills\docx-official\ooxml\scripts\validate.py:?` | - | Complexity:7|Assertions:3|Lines:70 | 🟢 PROFUNDO |
-| `.agent\skills\skills\docx-official\ooxml\scripts\validation\base.py:?` | - | Complexity:95|Assertions:16|Lines:952 | 🟢 PROFUNDO |
-| `.agent\skills\skills\docx-official\ooxml\scripts\validation\docx.py:?` | - | Complexity:27|Assertions:1|Lines:275 | 🟢 PROFUNDO |
-| `.agent\skills\skills\docx-official\ooxml\scripts\validation\pptx.py:?` | - | Complexity:31|Assertions:0|Lines:316 | 🟢 PROFUNDO |
-| `.agent\skills\skills\docx-official\ooxml\scripts\validation\redlining.py:?` | - | Complexity:28|Assertions:0|Lines:280 | 🟢 PROFUNDO |
-| `.agent\skills\skills\docx-official\ooxml\scripts\validation\__init__.py:?` | - | Complexity:1|Assertions:0|Lines:16 | 🟢 PROFUNDO |
-| `.agent\skills\skills\docx-official\scripts\document.py:?` | - | Complexity:127|Assertions:1|Lines:1277 | 🟢 PROFUNDO |
-| `.agent\skills\skills\docx-official\scripts\utilities.py:?` | - | Complexity:37|Assertions:1|Lines:375 | 🟢 PROFUNDO |
-| `.agent\skills\skills\docx-official\scripts\__init__.py:?` | - | Complexity:0|Assertions:0|Lines:2 | 🟢 PROFUNDO |
-| `.agent\skills\skills\geo-fundamentals\scripts\geo_checker.py:?` | - | Complexity:29|Assertions:0|Lines:290 | 🟢 PROFUNDO |
-| `.agent\skills\skills\i18n-localization\scripts\i18n_checker.py:?` | - | Complexity:24|Assertions:0|Lines:242 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\scripts\last30days.py:?` | - | Complexity:52|Assertions:0|Lines:522 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\scripts\lib\cache.py:?` | - | Complexity:15|Assertions:0|Lines:153 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\scripts\lib\dates.py:?` | - | Complexity:12|Assertions:0|Lines:125 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\scripts\lib\dedupe.py:?` | - | Complexity:12|Assertions:0|Lines:121 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\scripts\lib\env.py:?` | - | Complexity:15|Assertions:0|Lines:150 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\scripts\lib\http.py:?` | - | Complexity:15|Assertions:0|Lines:153 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\scripts\lib\models.py:?` | - | Complexity:17|Assertions:0|Lines:176 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\scripts\lib\normalize.py:?` | - | Complexity:16|Assertions:0|Lines:161 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\scripts\lib\openai_reddit.py:?` | - | Complexity:23|Assertions:0|Lines:231 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\scripts\lib\reddit_enrich.py:?` | - | Complexity:23|Assertions:0|Lines:233 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\scripts\lib\render.py:?` | - | Complexity:38|Assertions:0|Lines:384 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\scripts\lib\schema.py:?` | - | Complexity:33|Assertions:0|Lines:337 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\scripts\lib\score.py:?` | - | Complexity:31|Assertions:0|Lines:312 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\scripts\lib\ui.py:?` | - | Complexity:32|Assertions:0|Lines:325 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\scripts\lib\websearch.py:?` | - | Complexity:40|Assertions:1|Lines:402 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\scripts\lib\xai_x.py:?` | - | Complexity:21|Assertions:0|Lines:218 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\scripts\lib\__init__.py:?` | - | Complexity:0|Assertions:0|Lines:2 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\tests\test_cache.py:?` | - | Complexity:6|Assertions:8|Lines:60 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\tests\test_dates.py:?` | - | Complexity:11|Assertions:23|Lines:115 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\tests\test_dedupe.py:?` | - | Complexity:11|Assertions:19|Lines:112 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\tests\test_models.py:?` | - | Complexity:13|Assertions:20|Lines:136 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\tests\test_normalize.py:?` | - | Complexity:13|Assertions:19|Lines:139 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\tests\test_render.py:?` | - | Complexity:11|Assertions:15|Lines:117 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\tests\test_score.py:?` | - | Complexity:16|Assertions:27|Lines:169 | 🟢 PROFUNDO |
-| `.agent\skills\skills\last30days\tests\__init__.py:?` | - | Complexity:0|Assertions:0|Lines:2 | 🟢 PROFUNDO |
-| `.agent\skills\skills\lint-and-validate\scripts\lint_runner.py:?` | - | Complexity:17|Assertions:2|Lines:173 | 🟢 PROFUNDO |
-| `.agent\skills\skills\lint-and-validate\scripts\type_coverage.py:?` | - | Complexity:17|Assertions:0|Lines:174 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\0.py:?` | - | Complexity:1|Assertions:0|Lines:16 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\1.py:?` | - | Complexity:2|Assertions:0|Lines:28 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\10.py:?` | - | Complexity:2|Assertions:0|Lines:25 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\100.py:?` | - | Complexity:2|Assertions:0|Lines:20 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\101.py:?` | - | Complexity:1|Assertions:0|Lines:15 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\102.py:?` | - | Complexity:1|Assertions:0|Lines:16 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\103.py:?` | - | Complexity:1|Assertions:0|Lines:15 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\104.py:?` | - | Complexity:2|Assertions:0|Lines:22 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\105.py:?` | - | Complexity:3|Assertions:0|Lines:39 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\106.py:?` | - | Complexity:2|Assertions:0|Lines:21 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\107.py:?` | - | Complexity:3|Assertions:0|Lines:35 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\108.py:?` | - | Complexity:2|Assertions:0|Lines:22 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\109.py:?` | - | Complexity:4|Assertions:0|Lines:41 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\11.py:?` | - | Complexity:1|Assertions:0|Lines:16 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\110.py:?` | - | Complexity:2|Assertions:0|Lines:20 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\111.py:?` | - | Complexity:2|Assertions:0|Lines:28 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\112.py:?` | - | Complexity:1|Assertions:0|Lines:14 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\113.py:?` | - | Complexity:1|Assertions:0|Lines:19 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\114.py:?` | - | Complexity:1|Assertions:0|Lines:16 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\115.py:?` | - | Complexity:4|Assertions:0|Lines:41 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\116.py:?` | - | Complexity:1|Assertions:0|Lines:12 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\117.py:?` | - | Complexity:2|Assertions:0|Lines:25 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\118.py:?` | - | Complexity:2|Assertions:0|Lines:26 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\119.py:?` | - | Complexity:3|Assertions:0|Lines:30 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\12.py:?` | - | Complexity:2|Assertions:0|Lines:21 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\120.py:?` | - | Complexity:2|Assertions:0|Lines:28 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\121.py:?` | - | Complexity:1|Assertions:0|Lines:10 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\122.py:?` | - | Complexity:1|Assertions:0|Lines:19 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\123.py:?` | - | Complexity:3|Assertions:0|Lines:31 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\124.py:?` | - | Complexity:5|Assertions:0|Lines:56 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\125.py:?` | - | Complexity:2|Assertions:0|Lines:20 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\126.py:?` | - | Complexity:2|Assertions:0|Lines:29 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\127.py:?` | - | Complexity:4|Assertions:0|Lines:47 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\128.py:?` | - | Complexity:2|Assertions:0|Lines:25 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\129.py:?` | - | Complexity:6|Assertions:0|Lines:61 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\13.py:?` | - | Complexity:1|Assertions:0|Lines:10 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\130.py:?` | - | Complexity:2|Assertions:0|Lines:29 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\131.py:?` | - | Complexity:1|Assertions:0|Lines:18 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\132.py:?` | - | Complexity:3|Assertions:0|Lines:36 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\133.py:?` | - | Complexity:1|Assertions:0|Lines:16 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\134.py:?` | - | Complexity:2|Assertions:0|Lines:27 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\135.py:?` | - | Complexity:1|Assertions:0|Lines:15 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\136.py:?` | - | Complexity:1|Assertions:0|Lines:19 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\137.py:?` | - | Complexity:2|Assertions:0|Lines:26 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\138.py:?` | - | Complexity:0|Assertions:0|Lines:8 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\139.py:?` | - | Complexity:1|Assertions:0|Lines:18 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\14.py:?` | - | Complexity:0|Assertions:0|Lines:9 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\140.py:?` | - | Complexity:3|Assertions:0|Lines:30 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\141.py:?` | - | Complexity:3|Assertions:0|Lines:35 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\142.py:?` | - | Complexity:2|Assertions:0|Lines:20 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\143.py:?` | - | Complexity:3|Assertions:0|Lines:35 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\144.py:?` | - | Complexity:1|Assertions:0|Lines:19 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\145.py:?` | - | Complexity:2|Assertions:0|Lines:22 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\146.py:?` | - | Complexity:2|Assertions:0|Lines:21 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\147.py:?` | - | Complexity:2|Assertions:1|Lines:22 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\148.py:?` | - | Complexity:2|Assertions:0|Lines:28 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\149.py:?` | - | Complexity:1|Assertions:2|Lines:17 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\15.py:?` | - | Complexity:0|Assertions:0|Lines:8 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\150.py:?` | - | Complexity:1|Assertions:0|Lines:15 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\151.py:?` | - | Complexity:2|Assertions:0|Lines:20 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\152.py:?` | - | Complexity:1|Assertions:0|Lines:16 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\153.py:?` | - | Complexity:3|Assertions:0|Lines:30 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\154.py:?` | - | Complexity:1|Assertions:0|Lines:15 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\155.py:?` | - | Complexity:1|Assertions:0|Lines:15 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\156.py:?` | - | Complexity:3|Assertions:0|Lines:32 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\157.py:?` | - | Complexity:1|Assertions:0|Lines:12 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\158.py:?` | - | Complexity:1|Assertions:0|Lines:11 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\159.py:?` | - | Complexity:3|Assertions:0|Lines:33 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\16.py:?` | - | Complexity:0|Assertions:0|Lines:8 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\160.py:?` | - | Complexity:2|Assertions:0|Lines:29 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\161.py:?` | - | Complexity:2|Assertions:0|Lines:24 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\162.py:?` | - | Complexity:1|Assertions:0|Lines:11 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\163.py:?` | - | Complexity:1|Assertions:0|Lines:14 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\17.py:?` | - | Complexity:2|Assertions:0|Lines:27 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\18.py:?` | - | Complexity:2|Assertions:0|Lines:23 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\19.py:?` | - | Complexity:2|Assertions:0|Lines:21 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\2.py:?` | - | Complexity:1|Assertions:0|Lines:10 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\20.py:?` | - | Complexity:2|Assertions:0|Lines:22 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\21.py:?` | - | Complexity:1|Assertions:0|Lines:13 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\22.py:?` | - | Complexity:1|Assertions:0|Lines:11 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\23.py:?` | - | Complexity:0|Assertions:0|Lines:8 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\24.py:?` | - | Complexity:0|Assertions:0|Lines:9 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\25.py:?` | - | Complexity:2|Assertions:0|Lines:24 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\26.py:?` | - | Complexity:1|Assertions:0|Lines:12 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\27.py:?` | - | Complexity:0|Assertions:0|Lines:6 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\28.py:?` | - | Complexity:1|Assertions:0|Lines:11 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\29.py:?` | - | Complexity:1|Assertions:0|Lines:11 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\3.py:?` | - | Complexity:1|Assertions:0|Lines:18 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\30.py:?` | - | Complexity:0|Assertions:0|Lines:8 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\31.py:?` | - | Complexity:2|Assertions:0|Lines:27 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\32.py:?` | - | Complexity:5|Assertions:0|Lines:50 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\33.py:?` | - | Complexity:2|Assertions:0|Lines:20 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\34.py:?` | - | Complexity:0|Assertions:0|Lines:6 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\35.py:?` | - | Complexity:0|Assertions:0|Lines:8 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\36.py:?` | - | Complexity:1|Assertions:0|Lines:14 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\37.py:?` | - | Complexity:1|Assertions:0|Lines:14 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\38.py:?` | - | Complexity:1|Assertions:0|Lines:11 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\39.py:?` | - | Complexity:3|Assertions:0|Lines:35 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\4.py:?` | - | Complexity:1|Assertions:0|Lines:14 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\40.py:?` | - | Complexity:2|Assertions:0|Lines:24 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\41.py:?` | - | Complexity:1|Assertions:0|Lines:13 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\42.py:?` | - | Complexity:0|Assertions:0|Lines:8 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\43.py:?` | - | Complexity:2|Assertions:0|Lines:22 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\44.py:?` | - | Complexity:1|Assertions:0|Lines:18 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\45.py:?` | - | Complexity:0|Assertions:0|Lines:6 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\46.py:?` | - | Complexity:2|Assertions:0|Lines:23 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\47.py:?` | - | Complexity:1|Assertions:0|Lines:14 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\48.py:?` | - | Complexity:1|Assertions:0|Lines:13 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\49.py:?` | - | Complexity:1|Assertions:0|Lines:14 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\5.py:?` | - | Complexity:1|Assertions:0|Lines:19 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\50.py:?` | - | Complexity:1|Assertions:0|Lines:12 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\51.py:?` | - | Complexity:1|Assertions:0|Lines:18 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\52.py:?` | - | Complexity:0|Assertions:0|Lines:8 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\53.py:?` | - | Complexity:0|Assertions:0|Lines:8 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\54.py:?` | - | Complexity:1|Assertions:0|Lines:17 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\55.py:?` | - | Complexity:1|Assertions:0|Lines:18 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\56.py:?` | - | Complexity:2|Assertions:0|Lines:22 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\57.py:?` | - | Complexity:1|Assertions:0|Lines:16 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\58.py:?` | - | Complexity:0|Assertions:0|Lines:9 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\59.py:?` | - | Complexity:2|Assertions:0|Lines:22 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\6.py:?` | - | Complexity:2|Assertions:0|Lines:26 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\60.py:?` | - | Complexity:1|Assertions:0|Lines:14 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\61.py:?` | - | Complexity:2|Assertions:0|Lines:22 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\62.py:?` | - | Complexity:1|Assertions:0|Lines:10 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\63.py:?` | - | Complexity:2|Assertions:0|Lines:25 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\64.py:?` | - | Complexity:2|Assertions:0|Lines:20 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\65.py:?` | - | Complexity:1|Assertions:0|Lines:14 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\66.py:?` | - | Complexity:1|Assertions:0|Lines:14 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\67.py:?` | - | Complexity:1|Assertions:0|Lines:16 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\68.py:?` | - | Complexity:5|Assertions:0|Lines:50 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\69.py:?` | - | Complexity:2|Assertions:0|Lines:21 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\7.py:?` | - | Complexity:1|Assertions:0|Lines:11 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\70.py:?` | - | Complexity:2|Assertions:0|Lines:26 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\71.py:?` | - | Complexity:1|Assertions:0|Lines:17 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\72.py:?` | - | Complexity:2|Assertions:0|Lines:21 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\73.py:?` | - | Complexity:1|Assertions:0|Lines:17 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\74.py:?` | - | Complexity:2|Assertions:0|Lines:21 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\75.py:?` | - | Complexity:3|Assertions:0|Lines:30 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\76.py:?` | - | Complexity:2|Assertions:0|Lines:20 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\77.py:?` | - | Complexity:1|Assertions:0|Lines:17 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\78.py:?` | - | Complexity:2|Assertions:0|Lines:24 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\79.py:?` | - | Complexity:1|Assertions:0|Lines:13 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\8.py:?` | - | Complexity:1|Assertions:0|Lines:17 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\80.py:?` | - | Complexity:1|Assertions:0|Lines:18 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\81.py:?` | - | Complexity:5|Assertions:0|Lines:54 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\82.py:?` | - | Complexity:2|Assertions:0|Lines:20 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\83.py:?` | - | Complexity:2|Assertions:0|Lines:21 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\84.py:?` | - | Complexity:1|Assertions:0|Lines:16 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\85.py:?` | - | Complexity:1|Assertions:0|Lines:12 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\86.py:?` | - | Complexity:1|Assertions:0|Lines:16 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\87.py:?` | - | Complexity:2|Assertions:0|Lines:29 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\88.py:?` | - | Complexity:2|Assertions:0|Lines:24 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\89.py:?` | - | Complexity:2|Assertions:0|Lines:23 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\9.py:?` | - | Complexity:2|Assertions:0|Lines:20 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\90.py:?` | - | Complexity:2|Assertions:0|Lines:20 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\91.py:?` | - | Complexity:2|Assertions:0|Lines:20 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\92.py:?` | - | Complexity:2|Assertions:0|Lines:25 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\93.py:?` | - | Complexity:3|Assertions:0|Lines:34 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\94.py:?` | - | Complexity:3|Assertions:0|Lines:33 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\95.py:?` | - | Complexity:2|Assertions:0|Lines:27 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\96.py:?` | - | Complexity:2|Assertions:0|Lines:28 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\97.py:?` | - | Complexity:1|Assertions:0|Lines:13 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\98.py:?` | - | Complexity:1|Assertions:0|Lines:15 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\2026-01-05-00-49-17\humaneval-solutions\99.py:?` | - | Complexity:3|Assertions:0|Lines:30 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\0.py:?` | - | Complexity:2|Assertions:0|Lines:21 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\1.py:?` | - | Complexity:3|Assertions:0|Lines:36 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\10.py:?` | - | Complexity:3|Assertions:0|Lines:30 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\100.py:?` | - | Complexity:2|Assertions:0|Lines:23 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\101.py:?` | - | Complexity:1|Assertions:0|Lines:17 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\102.py:?` | - | Complexity:2|Assertions:0|Lines:21 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\103.py:?` | - | Complexity:2|Assertions:0|Lines:22 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\104.py:?` | - | Complexity:2|Assertions:0|Lines:23 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\105.py:?` | - | Complexity:3|Assertions:0|Lines:34 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\106.py:?` | - | Complexity:2|Assertions:0|Lines:26 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\107.py:?` | - | Complexity:4|Assertions:0|Lines:40 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\108.py:?` | - | Complexity:2|Assertions:0|Lines:27 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\109.py:?` | - | Complexity:5|Assertions:0|Lines:53 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\11.py:?` | - | Complexity:2|Assertions:0|Lines:21 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\110.py:?` | - | Complexity:2|Assertions:0|Lines:25 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\111.py:?` | - | Complexity:3|Assertions:0|Lines:34 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\112.py:?` | - | Complexity:2|Assertions:0|Lines:20 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\113.py:?` | - | Complexity:2|Assertions:0|Lines:25 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\114.py:?` | - | Complexity:2|Assertions:0|Lines:24 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\115.py:?` | - | Complexity:4|Assertions:0|Lines:41 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\116.py:?` | - | Complexity:1|Assertions:0|Lines:17 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\117.py:?` | - | Complexity:3|Assertions:0|Lines:30 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\118.py:?` | - | Complexity:3|Assertions:0|Lines:31 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\119.py:?` | - | Complexity:3|Assertions:0|Lines:35 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\12.py:?` | - | Complexity:2|Assertions:0|Lines:27 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\120.py:?` | - | Complexity:3|Assertions:0|Lines:33 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\121.py:?` | - | Complexity:1|Assertions:0|Lines:15 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\122.py:?` | - | Complexity:2|Assertions:0|Lines:24 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\123.py:?` | - | Complexity:3|Assertions:0|Lines:35 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\124.py:?` | - | Complexity:5|Assertions:0|Lines:58 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\125.py:?` | - | Complexity:2|Assertions:0|Lines:25 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\126.py:?` | - | Complexity:3|Assertions:0|Lines:34 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\127.py:?` | - | Complexity:4|Assertions:0|Lines:41 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\128.py:?` | - | Complexity:3|Assertions:0|Lines:31 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\129.py:?` | - | Complexity:6|Assertions:0|Lines:62 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\13.py:?` | - | Complexity:1|Assertions:0|Lines:17 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\130.py:?` | - | Complexity:3|Assertions:0|Lines:35 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\131.py:?` | - | Complexity:2|Assertions:0|Lines:24 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\132.py:?` | - | Complexity:3|Assertions:0|Lines:32 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\133.py:?` | - | Complexity:2|Assertions:0|Lines:21 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\134.py:?` | - | Complexity:2|Assertions:0|Lines:23 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\135.py:?` | - | Complexity:2|Assertions:0|Lines:20 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\136.py:?` | - | Complexity:2|Assertions:0|Lines:24 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\137.py:?` | - | Complexity:3|Assertions:0|Lines:31 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\138.py:?` | - | Complexity:1|Assertions:0|Lines:13 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\139.py:?` | - | Complexity:2|Assertions:0|Lines:23 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\14.py:?` | - | Complexity:1|Assertions:0|Lines:14 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\140.py:?` | - | Complexity:2|Assertions:0|Lines:26 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\141.py:?` | - | Complexity:4|Assertions:0|Lines:42 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\142.py:?` | - | Complexity:2|Assertions:0|Lines:25 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\143.py:?` | - | Complexity:4|Assertions:0|Lines:40 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\144.py:?` | - | Complexity:2|Assertions:0|Lines:24 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\145.py:?` | - | Complexity:2|Assertions:0|Lines:24 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\146.py:?` | - | Complexity:2|Assertions:0|Lines:21 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\147.py:?` | - | Complexity:3|Assertions:1|Lines:32 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\148.py:?` | - | Complexity:3|Assertions:0|Lines:33 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\149.py:?` | - | Complexity:2|Assertions:2|Lines:22 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\15.py:?` | - | Complexity:1|Assertions:0|Lines:13 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\150.py:?` | - | Complexity:2|Assertions:0|Lines:26 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\151.py:?` | - | Complexity:2|Assertions:0|Lines:22 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\152.py:?` | - | Complexity:2|Assertions:0|Lines:21 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\153.py:?` | - | Complexity:3|Assertions:0|Lines:32 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\154.py:?` | - | Complexity:2|Assertions:0|Lines:25 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\155.py:?` | - | Complexity:2|Assertions:0|Lines:20 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\156.py:?` | - | Complexity:3|Assertions:0|Lines:39 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\157.py:?` | - | Complexity:2|Assertions:0|Lines:28 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\158.py:?` | - | Complexity:1|Assertions:0|Lines:16 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\159.py:?` | - | Complexity:3|Assertions:0|Lines:36 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\16.py:?` | - | Complexity:1|Assertions:0|Lines:13 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\160.py:?` | - | Complexity:3|Assertions:0|Lines:34 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\161.py:?` | - | Complexity:2|Assertions:0|Lines:29 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\162.py:?` | - | Complexity:1|Assertions:0|Lines:16 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\163.py:?` | - | Complexity:1|Assertions:0|Lines:18 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\17.py:?` | - | Complexity:2|Assertions:0|Lines:27 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\18.py:?` | - | Complexity:2|Assertions:0|Lines:23 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\19.py:?` | - | Complexity:3|Assertions:0|Lines:34 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\2.py:?` | - | Complexity:1|Assertions:0|Lines:15 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\20.py:?` | - | Complexity:2|Assertions:0|Lines:27 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\21.py:?` | - | Complexity:1|Assertions:0|Lines:18 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\22.py:?` | - | Complexity:1|Assertions:0|Lines:16 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\23.py:?` | - | Complexity:1|Assertions:0|Lines:13 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\24.py:?` | - | Complexity:1|Assertions:0|Lines:14 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\25.py:?` | - | Complexity:2|Assertions:0|Lines:29 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\26.py:?` | - | Complexity:1|Assertions:0|Lines:17 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\27.py:?` | - | Complexity:1|Assertions:0|Lines:11 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\28.py:?` | - | Complexity:1|Assertions:0|Lines:16 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\29.py:?` | - | Complexity:1|Assertions:0|Lines:16 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\3.py:?` | - | Complexity:2|Assertions:0|Lines:23 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\30.py:?` | - | Complexity:1|Assertions:0|Lines:13 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\31.py:?` | - | Complexity:3|Assertions:0|Lines:34 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\32.py:?` | - | Complexity:3|Assertions:0|Lines:37 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\33.py:?` | - | Complexity:1|Assertions:0|Lines:19 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\34.py:?` | - | Complexity:1|Assertions:0|Lines:11 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\35.py:?` | - | Complexity:1|Assertions:0|Lines:13 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\36.py:?` | - | Complexity:1|Assertions:0|Lines:19 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\37.py:?` | - | Complexity:1|Assertions:0|Lines:19 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\38.py:?` | - | Complexity:2|Assertions:0|Lines:25 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\39.py:?` | - | Complexity:4|Assertions:0|Lines:40 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\4.py:?` | - | Complexity:2|Assertions:0|Lines:23 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\40.py:?` | - | Complexity:4|Assertions:0|Lines:43 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\41.py:?` | - | Complexity:1|Assertions:0|Lines:18 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\42.py:?` | - | Complexity:1|Assertions:0|Lines:13 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\43.py:?` | - | Complexity:2|Assertions:0|Lines:27 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\44.py:?` | - | Complexity:2|Assertions:0|Lines:25 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\45.py:?` | - | Complexity:1|Assertions:0|Lines:11 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\46.py:?` | - | Complexity:3|Assertions:0|Lines:35 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\47.py:?` | - | Complexity:1|Assertions:0|Lines:19 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\48.py:?` | - | Complexity:1|Assertions:0|Lines:18 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\49.py:?` | - | Complexity:2|Assertions:0|Lines:26 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\5.py:?` | - | Complexity:2|Assertions:0|Lines:25 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\50.py:?` | - | Complexity:1|Assertions:0|Lines:10 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\51.py:?` | - | Complexity:2|Assertions:0|Lines:23 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\52.py:?` | - | Complexity:1|Assertions:0|Lines:13 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\53.py:?` | - | Complexity:1|Assertions:0|Lines:13 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\54.py:?` | - | Complexity:2|Assertions:0|Lines:22 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\55.py:?` | - | Complexity:2|Assertions:0|Lines:20 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\56.py:?` | - | Complexity:2|Assertions:0|Lines:27 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\57.py:?` | - | Complexity:2|Assertions:0|Lines:27 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\58.py:?` | - | Complexity:1|Assertions:0|Lines:14 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\59.py:?` | - | Complexity:3|Assertions:0|Lines:32 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\6.py:?` | - | Complexity:3|Assertions:0|Lines:33 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\60.py:?` | - | Complexity:1|Assertions:0|Lines:19 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\61.py:?` | - | Complexity:2|Assertions:0|Lines:27 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\62.py:?` | - | Complexity:1|Assertions:0|Lines:15 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\63.py:?` | - | Complexity:3|Assertions:0|Lines:30 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\64.py:?` | - | Complexity:2|Assertions:0|Lines:29 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\65.py:?` | - | Complexity:1|Assertions:0|Lines:18 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\66.py:?` | - | Complexity:2|Assertions:0|Lines:23 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\67.py:?` | - | Complexity:2|Assertions:0|Lines:22 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\68.py:?` | - | Complexity:5|Assertions:0|Lines:55 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\69.py:?` | - | Complexity:2|Assertions:0|Lines:26 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\7.py:?` | - | Complexity:1|Assertions:0|Lines:16 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\70.py:?` | - | Complexity:3|Assertions:0|Lines:35 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\71.py:?` | - | Complexity:2|Assertions:0|Lines:29 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\72.py:?` | - | Complexity:2|Assertions:0|Lines:24 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\73.py:?` | - | Complexity:2|Assertions:0|Lines:22 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\74.py:?` | - | Complexity:2|Assertions:0|Lines:26 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\75.py:?` | - | Complexity:4|Assertions:0|Lines:42 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\76.py:?` | - | Complexity:2|Assertions:0|Lines:25 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\77.py:?` | - | Complexity:2|Assertions:0|Lines:25 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\78.py:?` | - | Complexity:2|Assertions:0|Lines:29 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\79.py:?` | - | Complexity:1|Assertions:0|Lines:18 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\8.py:?` | - | Complexity:2|Assertions:0|Lines:24 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\80.py:?` | - | Complexity:2|Assertions:0|Lines:26 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\81.py:?` | - | Complexity:6|Assertions:0|Lines:61 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\82.py:?` | - | Complexity:2|Assertions:0|Lines:21 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\83.py:?` | - | Complexity:1|Assertions:0|Lines:13 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\84.py:?` | - | Complexity:2|Assertions:0|Lines:21 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\85.py:?` | - | Complexity:1|Assertions:0|Lines:17 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\86.py:?` | - | Complexity:2|Assertions:0|Lines:21 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\87.py:?` | - | Complexity:3|Assertions:0|Lines:31 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\88.py:?` | - | Complexity:2|Assertions:0|Lines:29 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\89.py:?` | - | Complexity:2|Assertions:0|Lines:25 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\9.py:?` | - | Complexity:2|Assertions:0|Lines:25 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\90.py:?` | - | Complexity:2|Assertions:0|Lines:21 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\91.py:?` | - | Complexity:3|Assertions:0|Lines:31 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\92.py:?` | - | Complexity:2|Assertions:0|Lines:29 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\93.py:?` | - | Complexity:3|Assertions:0|Lines:30 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\94.py:?` | - | Complexity:3|Assertions:0|Lines:32 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\95.py:?` | - | Complexity:3|Assertions:0|Lines:32 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\96.py:?` | - | Complexity:3|Assertions:0|Lines:38 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\97.py:?` | - | Complexity:1|Assertions:0|Lines:16 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\98.py:?` | - | Complexity:2|Assertions:0|Lines:20 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\benchmarks\results\humaneval-loki-solutions\99.py:?` | - | Complexity:3|Assertions:0|Lines:36 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\examples\todo-app-generated\backend\src\db\database.ts:?` | - | Complexity:2|Assertions:2|Lines:25 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\examples\todo-app-generated\backend\src\db\db.ts:?` | - | Complexity:3|Assertions:2|Lines:36 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\examples\todo-app-generated\backend\src\db\index.ts:?` | - | Complexity:0|Assertions:0|Lines:3 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\examples\todo-app-generated\backend\src\db\migrations.ts:?` | - | Complexity:3|Assertions:0|Lines:32 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\examples\todo-app-generated\backend\src\index.ts:?` | - | Complexity:4|Assertions:0|Lines:45 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\examples\todo-app-generated\backend\src\routes\todos.ts:?` | - | Complexity:15|Assertions:13|Lines:156 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\examples\todo-app-generated\backend\src\types\index.ts:?` | - | Complexity:3|Assertions:0|Lines:36 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\examples\todo-app-generated\frontend\src\api\todos.ts:?` | - | Complexity:5|Assertions:4|Lines:58 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\examples\todo-app-generated\frontend\src\hooks\useTodos.ts:?` | - | Complexity:8|Assertions:1|Lines:82 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\examples\todo-app-generated\frontend\src\vite-env.d.ts:?` | - | Complexity:0|Assertions:0|Lines:2 | 🟢 PROFUNDO |
-| `.agent\skills\skills\loki-mode\examples\todo-app-generated\frontend\vite.config.ts:?` | - | Complexity:1|Assertions:0|Lines:16 | 🟢 PROFUNDO |
-| `.agent\skills\skills\mcp-builder\scripts\connections.py:?` | - | Complexity:15|Assertions:1|Lines:152 | 🟢 PROFUNDO |
-| `.agent\skills\skills\mcp-builder\scripts\evaluation.py:?` | - | Complexity:37|Assertions:3|Lines:374 | 🟢 PROFUNDO |
-| `.agent\skills\skills\mobile-design\scripts\mobile_audit.py:?` | - | Complexity:67|Assertions:1|Lines:671 | 🟢 PROFUNDO |
-| `.agent\skills\skills\notebooklm\scripts\ask_question.py:?` | - | Complexity:25|Assertions:0|Lines:257 | 🟢 PROFUNDO |
-| `.agent\skills\skills\notebooklm\scripts\auth_manager.py:?` | - | Complexity:35|Assertions:0|Lines:358 | 🟢 PROFUNDO |
-| `.agent\skills\skills\notebooklm\scripts\browser_session.py:?` | - | Complexity:25|Assertions:0|Lines:255 | 🟢 PROFUNDO |
-| `.agent\skills\skills\notebooklm\scripts\browser_utils.py:?` | - | Complexity:10|Assertions:0|Lines:108 | 🟢 PROFUNDO |
-| `.agent\skills\skills\notebooklm\scripts\cleanup_manager.py:?` | - | Complexity:30|Assertions:0|Lines:302 | 🟢 PROFUNDO |
-| `.agent\skills\skills\notebooklm\scripts\config.py:?` | - | Complexity:4|Assertions:0|Lines:45 | 🟢 PROFUNDO |
-| `.agent\skills\skills\notebooklm\scripts\notebook_manager.py:?` | - | Complexity:41|Assertions:0|Lines:410 | 🟢 PROFUNDO |
-| `.agent\skills\skills\notebooklm\scripts\run.py:?` | - | Complexity:10|Assertions:0|Lines:102 | 🟢 PROFUNDO |
-| `.agent\skills\skills\notebooklm\scripts\setup_environment.py:?` | - | Complexity:20|Assertions:0|Lines:204 | 🟢 PROFUNDO |
-| `.agent\skills\skills\notebooklm\scripts\__init__.py:?` | - | Complexity:8|Assertions:0|Lines:81 | 🟢 PROFUNDO |
-| `.agent\skills\skills\oss-hunter\bin\hunter.py:?` | - | Complexity:5|Assertions:0|Lines:57 | 🟢 PROFUNDO |
-| `.agent\skills\skills\pdf-official\scripts\check_bounding_boxes.py:?` | - | Complexity:7|Assertions:0|Lines:71 | 🟢 PROFUNDO |
-| `.agent\skills\skills\pdf-official\scripts\check_bounding_boxes_test.py:?` | - | Complexity:22|Assertions:21|Lines:227 | 🟢 PROFUNDO |
-| `.agent\skills\skills\pdf-official\scripts\check_fillable_fields.py:?` | - | Complexity:1|Assertions:1|Lines:13 | 🟢 PROFUNDO |
-| `.agent\skills\skills\pdf-official\scripts\convert_pdf_to_images.py:?` | - | Complexity:3|Assertions:0|Lines:36 | 🟢 PROFUNDO |
-| `.agent\skills\skills\pdf-official\scripts\create_validation_image.py:?` | - | Complexity:4|Assertions:0|Lines:42 | 🟢 PROFUNDO |
-| `.agent\skills\skills\pdf-official\scripts\extract_form_field_info.py:?` | - | Complexity:15|Assertions:1|Lines:153 | 🟢 PROFUNDO |
-| `.agent\skills\skills\pdf-official\scripts\fill_fillable_fields.py:?` | - | Complexity:11|Assertions:2|Lines:115 | 🟢 PROFUNDO |
-| `.agent\skills\skills\pdf-official\scripts\fill_pdf_form_with_annotations.py:?` | - | Complexity:10|Assertions:0|Lines:108 | 🟢 PROFUNDO |
-| `.agent\skills\skills\performance-profiling\scripts\lighthouse_audit.py:?` | - | Complexity:7|Assertions:0|Lines:77 | 🟢 PROFUNDO |
-| `.agent\skills\skills\pptx-official\ooxml\scripts\pack.py:?` | - | Complexity:16|Assertions:1|Lines:160 | 🟢 PROFUNDO |
-| `.agent\skills\skills\pptx-official\ooxml\scripts\unpack.py:?` | - | Complexity:3|Assertions:1|Lines:30 | 🟢 PROFUNDO |
-| `.agent\skills\skills\pptx-official\ooxml\scripts\validate.py:?` | - | Complexity:7|Assertions:3|Lines:70 | 🟢 PROFUNDO |
-| `.agent\skills\skills\pptx-official\ooxml\scripts\validation\base.py:?` | - | Complexity:95|Assertions:16|Lines:952 | 🟢 PROFUNDO |
-| `.agent\skills\skills\pptx-official\ooxml\scripts\validation\docx.py:?` | - | Complexity:27|Assertions:1|Lines:275 | 🟢 PROFUNDO |
-| `.agent\skills\skills\pptx-official\ooxml\scripts\validation\pptx.py:?` | - | Complexity:31|Assertions:0|Lines:316 | 🟢 PROFUNDO |
-| `.agent\skills\skills\pptx-official\ooxml\scripts\validation\redlining.py:?` | - | Complexity:28|Assertions:0|Lines:280 | 🟢 PROFUNDO |
-| `.agent\skills\skills\pptx-official\ooxml\scripts\validation\__init__.py:?` | - | Complexity:1|Assertions:0|Lines:16 | 🟢 PROFUNDO |
-| `.agent\skills\skills\pptx-official\scripts\inventory.py:?` | - | Complexity:102|Assertions:4|Lines:1021 | 🟢 PROFUNDO |
-| `.agent\skills\skills\pptx-official\scripts\rearrange.py:?` | - | Complexity:23|Assertions:0|Lines:232 | 🟢 PROFUNDO |
-| `.agent\skills\skills\pptx-official\scripts\replace.py:?` | - | Complexity:38|Assertions:1|Lines:386 | 🟢 PROFUNDO |
-| `.agent\skills\skills\pptx-official\scripts\thumbnail.py:?` | - | Complexity:45|Assertions:0|Lines:451 | 🟢 PROFUNDO |
-| `.agent\skills\skills\product-manager-toolkit\scripts\customer_interview_analyzer.py:?` | - | Complexity:44|Assertions:0|Lines:442 | 🟢 PROFUNDO |
-| `.agent\skills\skills\product-manager-toolkit\scripts\rice_prioritizer.py:?` | - | Complexity:29|Assertions:0|Lines:297 | 🟢 PROFUNDO |
-| `.agent\skills\skills\prompt-engineering-patterns\scripts\optimize-prompt.py:?` | - | Complexity:28|Assertions:13|Lines:280 | 🟢 PROFUNDO |
-| `.agent\skills\skills\senior-architect\scripts\architecture_diagram_generator.py:?` | - | Complexity:11|Assertions:0|Lines:115 | 🟢 PROFUNDO |
-| `.agent\skills\skills\senior-architect\scripts\dependency_analyzer.py:?` | - | Complexity:11|Assertions:0|Lines:115 | 🟢 PROFUNDO |
-| `.agent\skills\skills\senior-architect\scripts\project_architect.py:?` | - | Complexity:11|Assertions:0|Lines:115 | 🟢 PROFUNDO |
-| `.agent\skills\skills\senior-fullstack\scripts\code_quality_analyzer.py:?` | - | Complexity:11|Assertions:0|Lines:115 | 🟢 PROFUNDO |
-| `.agent\skills\skills\senior-fullstack\scripts\fullstack_scaffolder.py:?` | - | Complexity:11|Assertions:0|Lines:115 | 🟢 PROFUNDO |
-| `.agent\skills\skills\senior-fullstack\scripts\project_scaffolder.py:?` | - | Complexity:11|Assertions:0|Lines:115 | 🟢 PROFUNDO |
-| `.agent\skills\skills\seo-fundamentals\scripts\seo_checker.py:?` | - | Complexity:22|Assertions:0|Lines:220 | 🟢 PROFUNDO |
-| `.agent\skills\skills\shopify-development\scripts\shopify_graphql.py:?` | - | Complexity:42|Assertions:0|Lines:429 | 🟢 PROFUNDO |
-| `.agent\skills\skills\shopify-development\scripts\shopify_init.py:?` | - | Complexity:44|Assertions:0|Lines:442 | 🟢 PROFUNDO |
-| `.agent\skills\skills\shopify-development\scripts\tests\test_shopify_init.py:?` | - | Complexity:38|Assertions:61|Lines:380 | 🟢 PROFUNDO |
-| `.agent\skills\skills\skill-creator\scripts\init_skill.py:?` | - | Complexity:30|Assertions:0|Lines:304 | 🟢 PROFUNDO |
-| `.agent\skills\skills\skill-creator\scripts\package_skill.py:?` | - | Complexity:11|Assertions:0|Lines:111 | 🟢 PROFUNDO |
-| `.agent\skills\skills\skill-creator\scripts\quick_validate.py:?` | - | Complexity:9|Assertions:5|Lines:95 | 🟢 PROFUNDO |
-| `.agent\skills\skills\slack-gif-creator\core\easing.py:?` | - | Complexity:23|Assertions:0|Lines:235 | 🟢 PROFUNDO |
-| `.agent\skills\skills\slack-gif-creator\core\frame_composer.py:?` | - | Complexity:17|Assertions:0|Lines:177 | 🟢 PROFUNDO |
-| `.agent\skills\skills\slack-gif-creator\core\gif_builder.py:?` | - | Complexity:27|Assertions:0|Lines:270 | 🟢 PROFUNDO |
-| `.agent\skills\skills\slack-gif-creator\core\validators.py:?` | - | Complexity:13|Assertions:0|Lines:137 | 🟢 PROFUNDO |
-| `.agent\skills\skills\systematic-debugging\condition-based-waiting-example.ts:?` | - | Complexity:15|Assertions:8|Lines:159 | 🟢 PROFUNDO |
-| `.agent\skills\skills\typescript-expert\references\utility-types.ts:?` | - | Complexity:33|Assertions:2|Lines:336 | 🟢 PROFUNDO |
-| `.agent\skills\skills\typescript-expert\scripts\ts_diagnostic.py:?` | - | Complexity:20|Assertions:5|Lines:204 | 🟢 PROFUNDO |
-| `.agent\skills\skills\ui-ux-pro-max\scripts\core.py:?` | - | Complexity:25|Assertions:0|Lines:258 | 🟢 PROFUNDO |
-| `.agent\skills\skills\ui-ux-pro-max\scripts\design_system.py:?` | - | Complexity:48|Assertions:0|Lines:488 | 🟢 PROFUNDO |
-| `.agent\skills\skills\ui-ux-pro-max\scripts\search.py:?` | - | Complexity:7|Assertions:0|Lines:77 | 🟢 PROFUNDO |
-| `.agent\skills\skills\voice-ai-engine-development\examples\complete_voice_engine.py:?` | - | Complexity:42|Assertions:0|Lines:424 | 🟢 PROFUNDO |
-| `.agent\skills\skills\voice-ai-engine-development\examples\gemini_agent_example.py:?` | - | Complexity:24|Assertions:0|Lines:240 | 🟢 PROFUNDO |
-| `.agent\skills\skills\voice-ai-engine-development\examples\interrupt_system_example.py:?` | - | Complexity:33|Assertions:0|Lines:335 | 🟢 PROFUNDO |
-| `.agent\skills\skills\voice-ai-engine-development\templates\base_worker_template.py:?` | - | Complexity:19|Assertions:0|Lines:194 | 🟢 PROFUNDO |
-| `.agent\skills\skills\voice-ai-engine-development\templates\multi_provider_factory_template.py:?` | - | Complexity:29|Assertions:0|Lines:290 | 🟢 PROFUNDO |
-| `.agent\skills\skills\vulnerability-scanner\scripts\security_scan.py:?` | - | Complexity:45|Assertions:1|Lines:459 | 🟢 PROFUNDO |
-| `.agent\skills\skills\webapp-testing\scripts\with_server.py:?` | - | Complexity:10|Assertions:0|Lines:106 | 🟢 PROFUNDO |
-| `.agent\skills\skills\xlsx-official\recalc.py:?` | - | Complexity:17|Assertions:0|Lines:178 | 🟢 PROFUNDO |
-| `.agent\skills\skills\youtube-summarizer\scripts\extract-transcript.py:?` | - | Complexity:6|Assertions:0|Lines:66 | 🟢 PROFUNDO |
-| `node_modules\bun-types\security.d.ts:?` | - | Complexity:10|Assertions:0|Lines:102 | 🟢 PROFUNDO |
-| `node_modules\bun-types\vendor\expect-type\utils.d.ts:?` | - | Complexity:43|Assertions:3|Lines:432 | 🟢 PROFUNDO |
-| `node_modules\typescript\lib\lib.es2015.core.d.ts:?` | - | Complexity:59|Assertions:0|Lines:598 | 🟢 PROFUNDO |
-| `node_modules\typescript\lib\lib.webworker.importscripts.d.ts:?` | - | Complexity:2|Assertions:0|Lines:24 | 🟢 PROFUNDO |
-| `node_modules\undici-types\agent.d.ts:?` | - | Complexity:3|Assertions:0|Lines:33 | 🟢 PROFUNDO |
-| `node_modules\undici-types\env-http-proxy-agent.d.ts:?` | - | Complexity:2|Assertions:0|Lines:23 | 🟢 PROFUNDO |
-| `node_modules\undici-types\mock-agent.d.ts:?` | - | Complexity:6|Assertions:1|Lines:69 | 🟢 PROFUNDO |
-| `node_modules\undici-types\proxy-agent.d.ts:?` | - | Complexity:3|Assertions:0|Lines:30 | 🟢 PROFUNDO |
-| `node_modules\undici-types\retry-agent.d.ts:?` | - | Complexity:0|Assertions:0|Lines:9 | 🟢 PROFUNDO |
-| `node_modules\undici-types\snapshot-agent.d.ts:?` | - | Complexity:11|Assertions:0|Lines:110 | 🟢 PROFUNDO |
-| `scripts\analyze_external.py:?` | - | Complexity:6|Assertions:0|Lines:61 | 🟢 PROFUNDO |
-| `scripts\benchmark_tests.py:?` | - | Complexity:2|Assertions:0|Lines:29 | 🟢 PROFUNDO |
-| `scripts\build_exe.py:?` | - | Complexity:4|Assertions:0|Lines:48 | 🟢 PROFUNDO |
-| `scripts\cleanup_obfuscation.py:?` | - | Complexity:9|Assertions:0|Lines:93 | 🟢 PROFUNDO |
-| `scripts\debug_test_hang.py:?` | - | Complexity:2|Assertions:0|Lines:25 | 🟢 PROFUNDO |
-| `scripts\diagnose_blind_spots.py:?` | - | Complexity:4|Assertions:0|Lines:49 | 🟢 PROFUNDO |
-| `scripts\fast_diagnostic.py:?` | - | Complexity:2|Assertions:0|Lines:29 | 🟢 PROFUNDO |
-| `scripts\generate_tests.py:?` | - | Complexity:7|Assertions:1|Lines:75 | 🟢 PROFUNDO |
-| `scripts\git_doctor.py:?` | - | Complexity:5|Assertions:0|Lines:59 | 🟢 PROFUNDO |
-| `scripts\install_hooks.py:?` | - | Complexity:3|Assertions:0|Lines:31 | 🟢 PROFUNDO |
-| `scripts\launch_api.py:?` | - | Complexity:4|Assertions:0|Lines:44 | 🟢 PROFUNDO |
-| `scripts\launch_dashboard.py:?` | - | Complexity:4|Assertions:1|Lines:48 | 🟢 PROFUNDO |
-| `scripts\lint_heading_logic.py:?` | - | Complexity:3|Assertions:0|Lines:31 | 🟢 PROFUNDO |
-| `scripts\lint_rule_engine.py:?` | - | Complexity:4|Assertions:0|Lines:47 | 🟢 PROFUNDO |
-| `scripts\persona_manager.py:?` | - | Complexity:7|Assertions:0|Lines:74 | 🟢 PROFUNDO |
-| `scripts\run_diagnostic.py:?` | - | Complexity:6|Assertions:0|Lines:67 | 🟢 PROFUNDO |
-| `scripts\shadow_tray.py:?` | - | Complexity:33|Assertions:0|Lines:338 | 🟢 PROFUNDO |
-| `scripts\update_agent_submodule.py:?` | - | Complexity:3|Assertions:0|Lines:35 | 🟢 PROFUNDO |
-| `scripts\verify_cognitive.py:?` | - | Complexity:4|Assertions:0|Lines:49 | 🟢 PROFUNDO |
-| `scripts\verify_report_lint.py:?` | - | Complexity:3|Assertions:0|Lines:39 | 🟢 PROFUNDO |
-| `src_local\agents\base.py:?` | - | Complexity:8|Assertions:0|Lines:89 | 🟢 PROFUNDO |
-| `src_local\agents\base_persona.ts:?` | - | Complexity:7|Assertions:3|Lines:77 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\Audit\bolt.ts:?` | - | Complexity:6|Assertions:2|Lines:63 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\Audit\macro.ts:?` | - | Complexity:6|Assertions:2|Lines:61 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\Audit\metric.ts:?` | - | Complexity:6|Assertions:2|Lines:61 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\Audit\nebula.ts:?` | - | Complexity:6|Assertions:3|Lines:64 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\Audit\probe.ts:?` | - | Complexity:6|Assertions:2|Lines:61 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\Audit\scale.ts:?` | - | Complexity:6|Assertions:5|Lines:62 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\Audit\scope.ts:?` | - | Complexity:6|Assertions:2|Lines:63 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\Audit\testify.ts:?` | - | Complexity:7|Assertions:5|Lines:77 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\Content\echo.ts:?` | - | Complexity:6|Assertions:2|Lines:61 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\Content\forge.ts:?` | - | Complexity:6|Assertions:2|Lines:61 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\Content\globe.ts:?` | - | Complexity:6|Assertions:2|Lines:60 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\Content\hype.ts:?` | - | Complexity:5|Assertions:7|Lines:58 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\Content\mantra.ts:?` | - | Complexity:6|Assertions:3|Lines:63 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\Content\palette.ts:?` | - | Complexity:6|Assertions:2|Lines:60 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\Content\scribe.ts:?` | - | Complexity:6|Assertions:4|Lines:61 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\Content\sqlite.ts:?` | - | Complexity:6|Assertions:2|Lines:61 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\Strategic\sentinel.ts:?` | - | Complexity:6|Assertions:2|Lines:61 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\Strategic\vault.ts:?` | - | Complexity:6|Assertions:2|Lines:60 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\Strategic\voyager.ts:?` | - | Complexity:6|Assertions:2|Lines:62 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\Strategic\warden.ts:?` | - | Complexity:6|Assertions:2|Lines:61 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\Strategic\worker.ts:?` | - | Complexity:6|Assertions:2|Lines:61 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\System\bridge.ts:?` | - | Complexity:6|Assertions:2|Lines:61 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\System\cache.ts:?` | - | Complexity:6|Assertions:2|Lines:61 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\System\flow.ts:?` | - | Complexity:6|Assertions:2|Lines:60 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\System\hermes.ts:?` | - | Complexity:6|Assertions:3|Lines:66 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\System\neural.ts:?` | - | Complexity:6|Assertions:3|Lines:62 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\System\nexus.ts:?` | - | Complexity:6|Assertions:2|Lines:60 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\System\plugin.ts:?` | - | Complexity:6|Assertions:2|Lines:61 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\System\spark.ts:?` | - | Complexity:6|Assertions:2|Lines:60 | 🟢 PROFUNDO |
-| `src_local\agents\Bun\System\stream.ts:?` | - | Complexity:6|Assertions:2|Lines:61 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\Audit\bolt.py:?` | - | Complexity:3|Assertions:0|Lines:39 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\Audit\metric.py:?` | - | Complexity:4|Assertions:0|Lines:46 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\Audit\nebula.py:?` | - | Complexity:3|Assertions:0|Lines:38 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\Audit\probe.py:?` | - | Complexity:3|Assertions:0|Lines:37 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\Audit\scale.py:?` | - | Complexity:3|Assertions:0|Lines:36 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\Audit\scope.py:?` | - | Complexity:3|Assertions:0|Lines:36 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\Audit\testify.py:?` | - | Complexity:5|Assertions:1|Lines:59 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\Content\echo.py:?` | - | Complexity:4|Assertions:0|Lines:46 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\Content\forge.py:?` | - | Complexity:4|Assertions:0|Lines:45 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\Content\globe.py:?` | - | Complexity:3|Assertions:0|Lines:33 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\Content\hype.py:?` | - | Complexity:3|Assertions:0|Lines:38 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\Content\mantra.py:?` | - | Complexity:4|Assertions:0|Lines:42 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\Content\palette.py:?` | - | Complexity:3|Assertions:0|Lines:37 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\Content\scribe.py:?` | - | Complexity:3|Assertions:0|Lines:37 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\Strategic\sentinel.py:?` | - | Complexity:3|Assertions:0|Lines:38 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\Strategic\vault.py:?` | - | Complexity:4|Assertions:0|Lines:41 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\Strategic\voyager.py:?` | - | Complexity:4|Assertions:0|Lines:41 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\Strategic\warden.py:?` | - | Complexity:4|Assertions:0|Lines:41 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\System\bridge.py:?` | - | Complexity:3|Assertions:0|Lines:37 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\System\cache.py:?` | - | Complexity:3|Assertions:0|Lines:37 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\System\flow.py:?` | - | Complexity:3|Assertions:0|Lines:37 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\System\hermes.py:?` | - | Complexity:3|Assertions:0|Lines:37 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\System\neural.py:?` | - | Complexity:3|Assertions:0|Lines:37 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\System\nexus.py:?` | - | Complexity:3|Assertions:0|Lines:37 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\System\spark.py:?` | - | Complexity:3|Assertions:0|Lines:38 | 🟢 PROFUNDO |
-| `src_local\agents\Flutter\System\stream.py:?` | - | Complexity:3|Assertions:0|Lines:38 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\Audit\bolt.py:?` | - | Complexity:3|Assertions:0|Lines:39 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\Audit\metric.py:?` | - | Complexity:4|Assertions:0|Lines:41 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\Audit\nebula.py:?` | - | Complexity:4|Assertions:0|Lines:41 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\Audit\probe.py:?` | - | Complexity:4|Assertions:0|Lines:41 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\Audit\scale.py:?` | - | Complexity:3|Assertions:0|Lines:39 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\Audit\scope.py:?` | - | Complexity:3|Assertions:0|Lines:39 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\Audit\testify.py:?` | - | Complexity:5|Assertions:1|Lines:59 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\Content\echo.py:?` | - | Complexity:3|Assertions:0|Lines:37 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\Content\forge.py:?` | - | Complexity:4|Assertions:0|Lines:48 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\Content\globe.py:?` | - | Complexity:4|Assertions:0|Lines:40 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\Content\hype.py:?` | - | Complexity:4|Assertions:0|Lines:41 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\Content\mantra.py:?` | - | Complexity:4|Assertions:0|Lines:41 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\Content\palette.py:?` | - | Complexity:4|Assertions:0|Lines:41 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\Content\scribe.py:?` | - | Complexity:5|Assertions:0|Lines:58 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\Strategic\sentinel.py:?` | - | Complexity:4|Assertions:0|Lines:41 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\Strategic\vault.py:?` | - | Complexity:4|Assertions:0|Lines:48 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\Strategic\voyager.py:?` | - | Complexity:4|Assertions:0|Lines:41 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\Strategic\warden.py:?` | - | Complexity:4|Assertions:0|Lines:41 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\System\bridge.py:?` | - | Complexity:3|Assertions:0|Lines:37 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\System\cache.py:?` | - | Complexity:3|Assertions:0|Lines:37 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\System\flow.py:?` | - | Complexity:4|Assertions:0|Lines:40 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\System\hermes.py:?` | - | Complexity:4|Assertions:0|Lines:41 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\System\neural.py:?` | - | Complexity:4|Assertions:0|Lines:41 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\System\nexus.py:?` | - | Complexity:4|Assertions:0|Lines:40 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\System\spark.py:?` | - | Complexity:4|Assertions:0|Lines:41 | 🟢 PROFUNDO |
-| `src_local\agents\Kotlin\System\stream.py:?` | - | Complexity:4|Assertions:0|Lines:41 | 🟢 PROFUNDO |
-| `src_local\agents\Python\Audit\bolt.py:?` | - | Complexity:3|Assertions:0|Lines:35 | 🟢 PROFUNDO |
-| `src_local\agents\Python\Audit\metric.py:?` | - | Complexity:4|Assertions:0|Lines:45 | 🟢 PROFUNDO |
-| `src_local\agents\Python\Audit\nebula.py:?` | - | Complexity:4|Assertions:0|Lines:45 | 🟢 PROFUNDO |
-| `src_local\agents\Python\Audit\probe.py:?` | - | Complexity:4|Assertions:0|Lines:40 | 🟢 PROFUNDO |
-| `src_local\agents\Python\Audit\scale.py:?` | - | Complexity:3|Assertions:0|Lines:32 | 🟢 PROFUNDO |
-| `src_local\agents\Python\Audit\scope.py:?` | - | Complexity:3|Assertions:0|Lines:32 | 🟢 PROFUNDO |
-| `src_local\agents\Python\Audit\testify.py:?` | - | Complexity:7|Assertions:0|Lines:77 | 🟢 PROFUNDO |
-| `src_local\agents\Python\Content\echo.py:?` | - | Complexity:3|Assertions:0|Lines:38 | 🟢 PROFUNDO |
-| `src_local\agents\Python\Content\forge.py:?` | - | Complexity:4|Assertions:0|Lines:44 | 🟢 PROFUNDO |
-| `src_local\agents\Python\Content\globe.py:?` | - | Complexity:3|Assertions:0|Lines:37 | 🟢 PROFUNDO |
-| `src_local\agents\Python\Content\hype.py:?` | - | Complexity:3|Assertions:0|Lines:39 | 🟢 PROFUNDO |
-| `src_local\agents\Python\Content\mantra.py:?` | - | Complexity:3|Assertions:0|Lines:33 | 🟢 PROFUNDO |
-| `src_local\agents\Python\Content\palette.py:?` | - | Complexity:2|Assertions:0|Lines:22 | 🟢 PROFUNDO |
-| `src_local\agents\Python\Content\scribe.py:?` | - | Complexity:4|Assertions:0|Lines:46 | 🟢 PROFUNDO |
-| `src_local\agents\Python\Strategic\director.py:?` | - | Complexity:9|Assertions:0|Lines:96 | 🟢 PROFUNDO |
-| `src_local\agents\Python\Strategic\sentinel.py:?` | - | Complexity:3|Assertions:0|Lines:34 | 🟢 PROFUNDO |
-| `src_local\agents\Python\Strategic\vault.py:?` | - | Complexity:3|Assertions:0|Lines:36 | 🟢 PROFUNDO |
-| `src_local\agents\Python\Strategic\voyager.py:?` | - | Complexity:9|Assertions:0|Lines:91 | 🟢 PROFUNDO |
-| `src_local\agents\Python\Strategic\warden.py:?` | - | Complexity:3|Assertions:0|Lines:34 | 🟢 PROFUNDO |
-| `src_local\agents\Python\System\bridge.py:?` | - | Complexity:3|Assertions:0|Lines:33 | 🟢 PROFUNDO |
-| `src_local\agents\Python\System\cache.py:?` | - | Complexity:3|Assertions:0|Lines:34 | 🟢 PROFUNDO |
-| `src_local\agents\Python\System\flow.py:?` | - | Complexity:4|Assertions:0|Lines:40 | 🟢 PROFUNDO |
-| `src_local\agents\Python\System\hermes.py:?` | - | Complexity:3|Assertions:0|Lines:32 | 🟢 PROFUNDO |
-| `src_local\agents\Python\System\neural.py:?` | - | Complexity:3|Assertions:0|Lines:34 | 🟢 PROFUNDO |
-| `src_local\agents\Python\System\nexus.py:?` | - | Complexity:3|Assertions:0|Lines:35 | 🟢 PROFUNDO |
-| `src_local\agents\Python\System\spark.py:?` | - | Complexity:3|Assertions:0|Lines:31 | 🟢 PROFUNDO |
-| `src_local\agents\Python\System\stream.py:?` | - | Complexity:3|Assertions:0|Lines:34 | 🟢 PROFUNDO |
-| `src_local\agents\schema_persona.ts:?` | - | Complexity:9|Assertions:3|Lines:92 | 🟢 PROFUNDO |
-| `src_local\agents\Support\ast_navigator.py:?` | - | Complexity:4|Assertions:0|Lines:48 | 🟢 PROFUNDO |
-| `src_local\agents\Support\ast_node_inspector.py:?` | - | Complexity:3|Assertions:0|Lines:37 | 🟢 PROFUNDO |
-| `src_local\agents\Support\ast_traversal_logic.py:?` | - | Complexity:5|Assertions:0|Lines:53 | 🟢 PROFUNDO |
-| `src_local\agents\Support\audit_engine.py:?` | - | Complexity:7|Assertions:0|Lines:73 | 🟢 PROFUNDO |
-| `src_local\agents\Support\audit_risk_engine.py:?` | - | Complexity:3|Assertions:0|Lines:35 | 🟢 PROFUNDO |
-| `src_local\agents\Support\audit_scanner_engine.py:?` | - | Complexity:5|Assertions:0|Lines:53 | 🟢 PROFUNDO |
-| `src_local\agents\Support\battle_plan_formatter.py:?` | - | Complexity:7|Assertions:0|Lines:74 | 🟢 PROFUNDO |
-| `src_local\agents\Support\battle_plan_sections_engine.py:?` | - | Complexity:5|Assertions:0|Lines:51 | 🟢 PROFUNDO |
-| `src_local\agents\Support\briefing_agent.py:?` | - | Complexity:9|Assertions:0|Lines:96 | 🟢 PROFUNDO |
-| `src_local\agents\Support\call_safety_judge.py:?` | - | Complexity:3|Assertions:0|Lines:33 | 🟢 PROFUNDO |
-| `src_local\agents\Support\component_classifier.py:?` | - | Complexity:4|Assertions:0|Lines:43 | 🟢 PROFUNDO |
-| `src_local\agents\Support\component_classifier.ts:?` | - | Complexity:6|Assertions:3|Lines:60 | 🟢 PROFUNDO |
-| `src_local\agents\Support\connectivity_mapper.py:?` | - | Complexity:3|Assertions:1|Lines:39 | 🟢 PROFUNDO |
-| `src_local\agents\Support\connectivity_mapper.ts:?` | - | Complexity:3|Assertions:2|Lines:36 | 🟢 PROFUNDO |
-| `src_local\agents\Support\coverage_auditor.py:?` | - | Complexity:4|Assertions:0|Lines:42 | 🟢 PROFUNDO |
-| `src_local\agents\Support\coverage_auditor.ts:?` | - | Complexity:3|Assertions:4|Lines:32 | 🟢 PROFUNDO |
-| `src_local\agents\Support\diagnostic_strategist.py:?` | - | Complexity:4|Assertions:0|Lines:42 | 🟢 PROFUNDO |
-| `src_local\agents\Support\director.ts:?` | - | Complexity:18|Assertions:10|Lines:181 | 🟢 PROFUNDO |
-| `src_local\agents\Support\discovery_agent.ts:?` | - | Complexity:2|Assertions:0|Lines:24 | 🟢 PROFUNDO |
-| `src_local\agents\Support\dna_profiler.py:?` | - | Complexity:4|Assertions:3|Lines:43 | 🟢 PROFUNDO |
-| `src_local\agents\Support\dna_profiler.ts:?` | - | Complexity:2|Assertions:4|Lines:28 | 🟢 PROFUNDO |
-| `src_local\agents\Support\git_automaton.py:?` | - | Complexity:6|Assertions:0|Lines:63 | 🟢 PROFUNDO |
-| `src_local\agents\Support\healer.py:?` | - | Complexity:9|Assertions:0|Lines:92 | 🟢 PROFUNDO |
-| `src_local\agents\Support\healer.ts:?` | - | Complexity:11|Assertions:6|Lines:110 | 🟢 PROFUNDO |
-| `src_local\agents\Support\health_synthesizer.py:?` | - | Complexity:8|Assertions:0|Lines:81 | 🟢 PROFUNDO |
-| `src_local\agents\Support\health_synthesizer.ts:?` | - | Complexity:9|Assertions:4|Lines:98 | 🟢 PROFUNDO |
-| `src_local\agents\Support\infrastructure_assembler.py:?` | - | Complexity:6|Assertions:0|Lines:69 | 🟢 PROFUNDO |
-| `src_local\agents\Support\integrity_guardian.py:?` | - | Complexity:7|Assertions:0|Lines:79 | 🟢 PROFUNDO |
-| `src_local\agents\Support\integrity_guardian.ts:?` | - | Complexity:5|Assertions:6|Lines:58 | 🟢 PROFUNDO |
-| `src_local\agents\Support\intent_heuristics_engine.py:?` | - | Complexity:3|Assertions:0|Lines:36 | 🟢 PROFUNDO |
-| `src_local\agents\Support\line_veto.py:?` | - | Complexity:5|Assertions:0|Lines:50 | 🟢 PROFUNDO |
-| `src_local\agents\Support\logic_auditor.py:?` | - | Complexity:8|Assertions:0|Lines:85 | 🟢 PROFUNDO |
-| `src_local\agents\Support\logic_auditor.ts:?` | - | Complexity:7|Assertions:5|Lines:77 | 🟢 PROFUNDO |
-| `src_local\agents\Support\logic_node_auditor.py:?` | - | Complexity:4|Assertions:0|Lines:41 | 🟢 PROFUNDO |
-| `src_local\agents\Support\markdown_sanitizer.py:?` | - | Complexity:8|Assertions:0|Lines:87 | 🟢 PROFUNDO |
-| `src_local\agents\Support\maturity_evaluator.py:?` | - | Complexity:5|Assertions:0|Lines:52 | 🟢 PROFUNDO |
-| `src_local\agents\Support\maturity_evaluator.ts:?` | - | Complexity:4|Assertions:0|Lines:46 | 🟢 PROFUNDO |
-| `src_local\agents\Support\memory_persistence.py:?` | - | Complexity:3|Assertions:0|Lines:34 | 🟢 PROFUNDO |
-| `src_local\agents\Support\memory_persistence.ts:?` | - | Complexity:4|Assertions:2|Lines:49 | 🟢 PROFUNDO |
-| `src_local\agents\Support\meta_analysis_detector.py:?` | - | Complexity:5|Assertions:0|Lines:50 | 🟢 PROFUNDO |
-| `src_local\agents\Support\metrics_assembler.py:?` | - | Complexity:3|Assertions:0|Lines:35 | 🟢 PROFUNDO |
-| `src_local\agents\Support\obfuscation_cleaner_engine.py:?` | - | Complexity:4|Assertions:0|Lines:49 | 🟢 PROFUNDO |
-| `src_local\agents\Support\obfuscation_hunter.py:?` | - | Complexity:7|Assertions:1|Lines:73 | 🟢 PROFUNDO |
-| `src_local\agents\Support\obfuscation_hunter.ts:?` | - | Complexity:7|Assertions:6|Lines:74 | 🟢 PROFUNDO |
-| `src_local\agents\Support\obfuscation_logic_engine.py:?` | - | Complexity:4|Assertions:1|Lines:41 | 🟢 PROFUNDO |
-| `src_local\agents\Support\obfuscation_logic_engine.ts:?` | - | Complexity:5|Assertions:5|Lines:57 | 🟢 PROFUNDO |
-| `src_local\agents\Support\parity_analyst.py:?` | - | Complexity:3|Assertions:0|Lines:32 | 🟢 PROFUNDO |
-| `src_local\agents\Support\parity_analyst.ts:?` | - | Complexity:4|Assertions:5|Lines:41 | 🟢 PROFUNDO |
-| `src_local\agents\Support\penalty_engine.py:?` | - | Complexity:5|Assertions:0|Lines:55 | 🟢 PROFUNDO |
-| `src_local\agents\Support\penalty_engine.ts:?` | - | Complexity:6|Assertions:4|Lines:67 | 🟢 PROFUNDO |
-| `src_local\agents\Support\pyramid_analyst.py:?` | - | Complexity:2|Assertions:0|Lines:29 | 🟢 PROFUNDO |
-| `src_local\agents\Support\pyramid_analyst.ts:?` | - | Complexity:3|Assertions:4|Lines:33 | 🟢 PROFUNDO |
-| `src_local\agents\Support\quality_analyst.py:?` | - | Complexity:4|Assertions:7|Lines:44 | 🟢 PROFUNDO |
-| `src_local\agents\Support\quality_analyst.ts:?` | - | Complexity:5|Assertions:11|Lines:55 | 🟢 PROFUNDO |
-| `src_local\agents\Support\registry_compiler.py:?` | - | Complexity:3|Assertions:0|Lines:33 | 🟢 PROFUNDO |
-| `src_local\agents\Support\report_formatter.py:?` | - | Complexity:15|Assertions:1|Lines:156 | 🟢 PROFUNDO |
-| `src_local\agents\Support\report_sections_engine.py:?` | - | Complexity:5|Assertions:0|Lines:59 | 🟢 PROFUNDO |
-| `src_local\agents\Support\rule_definition_judge.py:?` | - | Complexity:3|Assertions:0|Lines:39 | 🟢 PROFUNDO |
-| `src_local\agents\Support\safety_assignment_engine.py:?` | - | Complexity:3|Assertions:0|Lines:31 | 🟢 PROFUNDO |
-| `src_local\agents\Support\safety_definitions.py:?` | - | Complexity:6|Assertions:0|Lines:68 | 🟢 PROFUNDO |
-| `src_local\agents\Support\safety_definitions.ts:?` | - | Complexity:5|Assertions:0|Lines:54 | 🟢 PROFUNDO |
-| `src_local\agents\Support\safety_heuristics.py:?` | - | Complexity:5|Assertions:0|Lines:52 | 🟢 PROFUNDO |
-| `src_local\agents\Support\safety_navigator.py:?` | - | Complexity:3|Assertions:0|Lines:33 | 🟢 PROFUNDO |
-| `src_local\agents\Support\safe_context_judge.py:?` | - | Complexity:3|Assertions:0|Lines:38 | 🟢 PROFUNDO |
-| `src_local\agents\Support\score_calculator.py:?` | - | Complexity:4|Assertions:0|Lines:46 | 🟢 PROFUNDO |
-| `src_local\agents\Support\score_calculator.ts:?` | - | Complexity:5|Assertions:1|Lines:50 | 🟢 PROFUNDO |
-| `src_local\agents\Support\scoring_metrics_engine.py:?` | - | Complexity:4|Assertions:0|Lines:48 | 🟢 PROFUNDO |
-| `src_local\agents\Support\scoring_metrics_engine.ts:?` | - | Complexity:5|Assertions:0|Lines:58 | 🟢 PROFUNDO |
-| `src_local\agents\Support\semantic_context_analyst.py:?` | - | Complexity:4|Assertions:0|Lines:45 | 🟢 PROFUNDO |
-| `src_local\agents\Support\silent_error_detector.py:?` | - | Complexity:4|Assertions:0|Lines:42 | 🟢 PROFUNDO |
-| `src_local\agents\Support\source_code_parser.py:?` | - | Complexity:8|Assertions:0|Lines:86 | 🟢 PROFUNDO |
-| `src_local\agents\Support\source_code_parser.ts:?` | - | Complexity:9|Assertions:5|Lines:91 | 🟢 PROFUNDO |
-| `src_local\agents\Support\structural_analyst.py:?` | - | Complexity:17|Assertions:0|Lines:170 | 🟢 PROFUNDO |
-| `src_local\agents\Support\structural_analyst.ts:?` | - | Complexity:8|Assertions:2|Lines:82 | 🟢 PROFUNDO |
-| `src_local\agents\Support\task_executor.py:?` | - | Complexity:3|Assertions:0|Lines:38 | 🟢 PROFUNDO |
-| `src_local\agents\Support\telemetry_intent_judge.py:?` | - | Complexity:5|Assertions:0|Lines:56 | 🟢 PROFUNDO |
-| `src_local\agents\Support\telemetry_maturity_logic.py:?` | - | Complexity:4|Assertions:0|Lines:42 | 🟢 PROFUNDO |
-| `src_local\agents\Support\testify_persona.ts:?` | - | Complexity:6|Assertions:2|Lines:68 | 🟢 PROFUNDO |
-| `src_local\agents\Support\test_discovery_logic.py:?` | - | Complexity:2|Assertions:0|Lines:24 | 🟢 PROFUNDO |
-| `src_local\agents\Support\test_navigator.py:?` | - | Complexity:3|Assertions:3|Lines:36 | 🟢 PROFUNDO |
-| `src_local\agents\Support\test_refiner.py:?` | - | Complexity:5|Assertions:0|Lines:54 | 🟢 PROFUNDO |
-| `src_local\agents\Support\test_runner.py:?` | - | Complexity:11|Assertions:0|Lines:117 | 🟢 PROFUNDO |
-| `src_local\agents\Support\test_runner.ts:?` | - | Complexity:5|Assertions:1|Lines:56 | 🟢 PROFUNDO |
-| `src_local\agents\Support\validation_agent.ts:?` | - | Complexity:4|Assertions:2|Lines:42 | 🟢 PROFUNDO |
-| `src_local\agents\Support\veto_criteria_engine.py:?` | - | Complexity:4|Assertions:0|Lines:46 | 🟢 PROFUNDO |
-| `src_local\agents\Support\veto_rules.py:?` | - | Complexity:3|Assertions:0|Lines:33 | 🟢 PROFUNDO |
-| `src_local\agents\Support\veto_structural_engine.py:?` | - | Complexity:3|Assertions:0|Lines:34 | 🟢 PROFUNDO |
-| `src_local\agents\Support\vulnerability_heuristic.py:?` | - | Complexity:3|Assertions:0|Lines:32 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\Audit\bolt.ts:?` | - | Complexity:6|Assertions:3|Lines:68 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\Audit\metric.ts:?` | - | Complexity:6|Assertions:2|Lines:62 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\Audit\nebula.ts:?` | - | Complexity:6|Assertions:3|Lines:64 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\Audit\probe.ts:?` | - | Complexity:6|Assertions:2|Lines:63 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\Audit\scale.ts:?` | - | Complexity:6|Assertions:5|Lines:67 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\Audit\scope.ts:?` | - | Complexity:6|Assertions:3|Lines:64 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\Audit\strict.ts:?` | - | Complexity:7|Assertions:10|Lines:71 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\Audit\testify.ts:?` | - | Complexity:7|Assertions:7|Lines:79 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\Content\echo.ts:?` | - | Complexity:6|Assertions:2|Lines:62 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\Content\forge.ts:?` | - | Complexity:6|Assertions:2|Lines:62 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\Content\generic.ts:?` | - | Complexity:6|Assertions:2|Lines:61 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\Content\globe.ts:?` | - | Complexity:6|Assertions:2|Lines:60 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\Content\hype.ts:?` | - | Complexity:6|Assertions:9|Lines:66 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\Content\mantra.ts:?` | - | Complexity:7|Assertions:8|Lines:72 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\Content\palette.ts:?` | - | Complexity:6|Assertions:2|Lines:61 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\Content\scribe.ts:?` | - | Complexity:6|Assertions:5|Lines:68 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\Strategic\decorator.ts:?` | - | Complexity:6|Assertions:2|Lines:61 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\Strategic\sentinel.ts:?` | - | Complexity:6|Assertions:2|Lines:62 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\Strategic\vault.ts:?` | - | Complexity:6|Assertions:2|Lines:61 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\Strategic\voyager.ts:?` | - | Complexity:6|Assertions:2|Lines:63 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\Strategic\warden.ts:?` | - | Complexity:6|Assertions:2|Lines:62 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\System\bridge.ts:?` | - | Complexity:6|Assertions:3|Lines:61 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\System\cache.ts:?` | - | Complexity:6|Assertions:2|Lines:61 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\System\enum.ts:?` | - | Complexity:6|Assertions:3|Lines:61 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\System\flow.ts:?` | - | Complexity:6|Assertions:2|Lines:61 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\System\hermes.ts:?` | - | Complexity:6|Assertions:2|Lines:61 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\System\neural.ts:?` | - | Complexity:6|Assertions:3|Lines:64 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\System\nexus.ts:?` | - | Complexity:6|Assertions:2|Lines:61 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\System\spark.ts:?` | - | Complexity:6|Assertions:2|Lines:60 | 🟢 PROFUNDO |
-| `src_local\agents\TypeScript\System\stream.ts:?` | - | Complexity:6|Assertions:2|Lines:62 | 🟢 PROFUNDO |
-| `src_local\core\audit_engine.ts:?` | - | Complexity:10|Assertions:5|Lines:105 | 🟢 PROFUNDO |
-| `src_local\core\bridge_orchestrator.py:?` | - | Complexity:16|Assertions:1|Lines:168 | 🟢 PROFUNDO |
-| `src_local\core\diagnostic_finalizer.ts:?` | - | Complexity:4|Assertions:2|Lines:43 | 🟢 PROFUNDO |
-| `src_local\core\diagnostic_pipeline.ts:?` | - | Complexity:8|Assertions:4|Lines:80 | 🟢 PROFUNDO |
-| `src_local\core\orchestrator.py:?` | - | Complexity:6|Assertions:1|Lines:60 | 🟢 PROFUNDO |
-| `src_local\core\orchestrator.ts:?` | - | Complexity:13|Assertions:2|Lines:132 | 🟢 PROFUNDO |
-| `src_local\core\path_utils.ts:?` | - | Complexity:6|Assertions:1|Lines:63 | 🟢 PROFUNDO |
-| `src_local\core\task_orchestrator.ts:?` | - | Complexity:7|Assertions:7|Lines:71 | 🟢 PROFUNDO |
-| `src_local\utils\ast_intelligence.ts:?` | - | Complexity:9|Assertions:12|Lines:98 | 🟢 PROFUNDO |
-| `src_local\utils\behavior_analyst.py:?` | - | Complexity:22|Assertions:0|Lines:222 | 🟢 PROFUNDO |
-| `src_local\utils\cache_manager.ts:?` | - | Complexity:7|Assertions:3|Lines:71 | 🟢 PROFUNDO |
-| `src_local\utils\cognitive_engine.py:?` | - | Complexity:10|Assertions:0|Lines:104 | 🟢 PROFUNDO |
-| `src_local\utils\cognitive_engine.ts:?` | - | Complexity:6|Assertions:2|Lines:65 | 🟢 PROFUNDO |
-| `src_local\utils\context_engine.ts:?` | - | Complexity:12|Assertions:10|Lines:126 | 🟢 PROFUNDO |
-| `src_local\utils\context_iterator.ts:?` | - | Complexity:5|Assertions:6|Lines:58 | 🟢 PROFUNDO |
-| `src_local\utils\context_mapping_logic.ts:?` | - | Complexity:4|Assertions:0|Lines:48 | 🟢 PROFUNDO |
-| `src_local\utils\file_system_scanner.ts:?` | - | Complexity:8|Assertions:9|Lines:88 | 🟢 PROFUNDO |
-| `src_local\utils\finding_deduplicator.ts:?` | - | Complexity:6|Assertions:5|Lines:64 | 🟢 PROFUNDO |
-| `src_local\utils\history_agent.py:?` | - | Complexity:14|Assertions:0|Lines:146 | 🟢 PROFUNDO |
-| `src_local\utils\history_agent.ts:?` | - | Complexity:12|Assertions:2|Lines:122 | 🟢 PROFUNDO |
-| `src_local\utils\logging_config.py:?` | - | Complexity:4|Assertions:0|Lines:45 | 🟢 PROFUNDO |
-| `src_local\utils\logging_config.ts:?` | - | Complexity:3|Assertions:0|Lines:39 | 🟢 PROFUNDO |
-| `src_local\utils\parallel_test_executor.py:?` | - | Complexity:6|Assertions:0|Lines:66 | 🟢 PROFUNDO |
-| `src_local\utils\persona_loader.py:?` | - | Complexity:4|Assertions:0|Lines:48 | 🟢 PROFUNDO |
-| `src_local\utils\persona_registry.ts:?` | - | Complexity:9|Assertions:6|Lines:97 | 🟢 PROFUNDO |
-| `src_local\utils\resource_governor.py:?` | - | Complexity:9|Assertions:0|Lines:90 | 🟢 PROFUNDO |
-| `src_local\utils\stability_ledger.ts:?` | - | Complexity:10|Assertions:7|Lines:102 | 🟢 PROFUNDO |
-| `src_local\utils\system_sentinel.py:?` | - | Complexity:13|Assertions:0|Lines:130 | 🟢 PROFUNDO |
-| `src_local\utils\task_executor.ts:?` | - | Complexity:1|Assertions:1|Lines:18 | 🟢 PROFUNDO |
-| `src_local\utils\veto_engine.ts:?` | - | Complexity:6|Assertions:5|Lines:67 | 🟢 PROFUNDO |
-| `src_local\utils\voice_engine.py:?` | - | Complexity:5|Assertions:0|Lines:55 | 🟢 PROFUNDO |
-| `tests\test_briefing_agent.py:?` | - | Complexity:1|Assertions:1|Lines:14 | 🟢 PROFUNDO |
-| `tests\test_code_inspector_agent.py:?` | - | Complexity:2|Assertions:4|Lines:23 | 🟢 PROFUNDO |
-| `tests\test_core_depth.py:?` | - | Complexity:9|Assertions:12|Lines:96 | 🟢 PROFUNDO |
-| `tests\test_discovery_agent.py:?` | - | Complexity:1|Assertions:1|Lines:13 | 🟢 PROFUNDO |
-| `tests\test_history_agent.py:?` | - | Complexity:1|Assertions:1|Lines:16 | 🟢 PROFUNDO |
-| `tests\test_markdown_structure_agent.py:?` | - | Complexity:1|Assertions:2|Lines:14 | 🟢 PROFUNDO |
-| `tests\test_memory_pruning_agent.py:?` | - | Complexity:2|Assertions:1|Lines:22 | 🟢 PROFUNDO |
-| `tests\test_score_calculator.py:?` | - | Complexity:4|Assertions:4|Lines:43 | 🟢 PROFUNDO |
-| `tests\test_security_sentinel.py:?` | - | Complexity:1|Assertions:2|Lines:15 | 🟢 PROFUNDO |
-| `tests\test_security_sentinel_agent.py:?` | - | Complexity:1|Assertions:1|Lines:15 | 🟢 PROFUNDO |
-| `tests\test_topology_graph_agent.py:?` | - | Complexity:1|Assertions:1|Lines:16 | 🟢 PROFUNDO |
-| `tests\test_update_agent_submodule.py:?` | - | Complexity:1|Assertions:1|Lines:19 | 🟢 PROFUNDO |
-| `tests\test_utils_engines.py:?` | - | Complexity:13|Assertions:19|Lines:138 | 🟢 PROFUNDO |
-| `tests\test_utils_interface.py:?` | - | Complexity:5|Assertions:6|Lines:55 | 🟢 PROFUNDO |
-| `tests\test_validation_agent.py:?` | - | Complexity:1|Assertions:1|Lines:13 | 🟢 PROFUNDO |
-| `tests\test_web_insight_agent.py:?` | - | Complexity:1|Assertions:2|Lines:19 | 🟢 PROFUNDO |
-| `src_local/agents/Bun/Content/hype.ts:32` | - | Captura de erro silenciosa detectada (Try/Catch... | 🟢 PROFUNDO |
-| `src_local/agents/TypeScript/Audit/strict.ts:38` | - | Captura de erro silenciosa detectada (Try/Catch... | 🟢 PROFUNDO |
-| `src_local/agents/TypeScript/Content/hype.ts:37` | - | Captura de erro silenciosa detectada (Try/Catch... | 🟢 PROFUNDO |
-| `scripts\cleanup_obfuscation.py:4` | - | Concatenação Suspeita | 🟢 PROFUNDO |
-| `src_local\agents\Python\Content\echo.py:31` | - | Concatenação Suspeita | 🟢 PROFUNDO |
-| `src_local\agents\Support\integrity_guardian.py:54` | - | Concatenação Suspeita | 🟢 PROFUNDO |
+| `shadow_tray_legacy.py` | 38 | 0 | 🔴 FRÁGIL |
+| `scripts\shadow_tray.py` | 36 | 2 | 🔴 FRÁGIL |
+| `src_local\core\bridge_orchestrator.py` | 28 | 0 | 🔴 FRÁGIL |
+| `cognitive_engine_legacy_v2.py` | 20 | 0 | 🔴 FRÁGIL |
+| `scripts\git_doctor.py` | 16 | 4 | 🟢 PROFUNDO |
+| `quality_analyst_legacy.py` | 14 | 0 | 🔴 FRÁGIL |
+| `src_local\agents\base.py` | 14 | 11 | 🟢 PROFUNDO |
+| `src_local\agents\Python\Strategic\voyager.py` | 14 | 4 | 🟢 PROFUNDO |
+| `scripts\cleanup_obfuscation.py` | 12 | 5 | 🟢 PROFUNDO |
+| `src_local\agents\Python\Strategic\director.py` | 11 | 6 | 🟢 PROFUNDO |
+| `scripts\lint_rule_engine.py` | 10 | 2 | 🟢 PROFUNDO |
+| `src_local\core\orchestrator.py` | 10 | 9 | 🟢 PROFUNDO |
+| `cognitive_engine_legacy.py` | 9 | 0 | 🔴 FRÁGIL |
+| `scripts\diagnose_blind_spots.py` | 9 | 4 | 🟢 PROFUNDO |
+| `scripts\lint_heading_logic.py` | 8 | 2 | 🟢 PROFUNDO |
+| `pyramid_analyst_legacy.py` | 7 | 0 | 🔴 FRÁGIL |
+| `scripts\persona_manager.py` | 6 | 2 | 🟢 PROFUNDO |
+| `scripts\verify_cognitive.py` | 6 | 0 | 🔴 FRÁGIL |
+| `src_local\interface\components\health_gauge.py` | 6 | 5 | 🟢 PROFUNDO |
+| `cli_legacy.py` | 5 | 0 | 🔴 FRÁGIL |
+| `health_gauge_legacy.py` | 5 | 0 | 🔴 FRÁGIL |
+| `scripts\analyze_external.py` | 5 | 2 | 🟢 PROFUNDO |
+| `scripts\install_hooks.py` | 5 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Python\Content\forge.py` | 5 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Python\Content\scribe.py` | 5 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Python\System\cache.py` | 5 | 2 | 🟢 PROFUNDO |
+| `src_local\interface\cli.py` | 5 | 3 | 🟢 PROFUNDO |
+| `scripts\update_agent_submodule.py` | 4 | 1 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\Content\scribe.py` | 4 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\Strategic\vault.py` | 4 | 3 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\System\spark.py` | 4 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\System\stream.py` | 4 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Python\Content\echo.py` | 4 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Python\Content\mantra.py` | 4 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Python\Strategic\warden.py` | 4 | 2 | 🟢 PROFUNDO |
+| `tmp_bolt_sample.py` | 4 | 0 | 🔴 FRÁGIL |
+| `src_local\agents\Flutter\Content\globe.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\Content\forge.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\Content\mantra.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\Strategic\vault.py` | 3 | 3 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\Strategic\voyager.py` | 3 | 4 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\Strategic\warden.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\System\spark.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\System\stream.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\Content\forge.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\Content\mantra.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\Content\hype.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\Content\scribe.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\Content\palette.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\Strategic\sentinel.py` | 3 | 3 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\Strategic\voyager.py` | 3 | 4 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\Strategic\warden.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\System\hermes.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\System\neural.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Python\Content\globe.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Python\Strategic\sentinel.py` | 3 | 3 | 🟢 PROFUNDO |
+| `src_local\agents\Python\System\flow.py` | 3 | 2 | 🟢 PROFUNDO |
+| `src_local\interface\components\sidebar.py` | 3 | 4 | 🟢 PROFUNDO |
+| `tmp_nebula_flutter_sample.py` | 3 | 0 | 🔴 FRÁGIL |
+| `scripts\launch_api.py` | 2 | 4 | 🟢 PROFUNDO |
+| `scripts\launch_dashboard.py` | 2 | 0 | 🔴 FRÁGIL |
+| `src_local\agents\Flutter\Content\echo.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\Content\hype.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\Content\palette.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\Strategic\sentinel.py` | 2 | 3 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\System\cache.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\System\bridge.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\System\flow.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\System\hermes.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\System\neural.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\System\nexus.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\Content\echo.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\Content\globe.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\System\bridge.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\System\cache.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\System\flow.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\System\nexus.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Python\Content\hype.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Python\Strategic\vault.py` | 2 | 3 | 🟢 PROFUNDO |
+| `src_local\agents\Python\System\bridge.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Python\System\hermes.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Python\System\neural.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Python\System\nexus.py` | 2 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Python\System\stream.py` | 2 | 2 | 🟢 PROFUNDO |
+| `dashboard_legacy.py` | 1 | 0 | 🔴 FRÁGIL |
+| `activate-phase.ts` | 1 | 0 | 🔴 FRÁGIL |
+| `index.ts` | 1 | 3 | 🟢 PROFUNDO |
+| `extract_personas.ts` | 1 | 0 | 🔴 FRÁGIL |
+| `scripts\deep_disparity_scanner.ts` | 1 | 0 | 🔴 FRÁGIL |
+| `scripts\disparity_scanner.ts` | 1 | 0 | 🔴 FRÁGIL |
+| `scripts\project_cartographer.ts` | 1 | 0 | 🔴 FRÁGIL |
+| `scripts\parity_scanner.ts` | 1 | 0 | 🔴 FRÁGIL |
+| `scripts\verify_phase_18.ts` | 1 | 0 | 🔴 FRÁGIL |
+| `scripts\verify_phase_19.ts` | 1 | 0 | 🔴 FRÁGIL |
+| `scripts\verify_phase_17.ts` | 1 | 0 | 🔴 FRÁGIL |
+| `src_local\agents\base.ts` | 1 | 11 | 🟢 PROFUNDO |
+| `src_local\agents\base_persona.ts` | 1 | 0 | 🔴 FRÁGIL |
+| `src_local\agents\Bun\Content\globe.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Bun\Content\echo.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Bun\Content\forge.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Bun\Content\hype.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Bun\Content\scribe.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Bun\Content\palette.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Bun\Content\mantra.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Bun\Strategic\vault.ts` | 1 | 3 | 🟢 PROFUNDO |
+| `src_local\agents\Bun\Strategic\sentinel.ts` | 1 | 3 | 🟢 PROFUNDO |
+| `src_local\agents\Bun\Strategic\voyager.ts` | 1 | 4 | 🟢 PROFUNDO |
+| `src_local\agents\Bun\Content\sqlite.ts` | 1 | 0 | 🔴 FRÁGIL |
+| `src_local\agents\Bun\Strategic\warden.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Bun\Strategic\worker.ts` | 1 | 0 | 🔴 FRÁGIL |
+| `src_local\agents\Bun\System\neural.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Bun\System\hermes.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Bun\System\cache.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Bun\System\nexus.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Bun\System\flow.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Bun\System\plugin.ts` | 1 | 0 | 🔴 FRÁGIL |
+| `src_local\agents\Bun\System\spark.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Bun\System\bridge.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Bun\System\stream.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\Content\echo.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\Content\forge.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\Content\globe.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\Content\mantra.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\Content\hype.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\Content\palette.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\Content\scribe.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\Strategic\sentinel.ts` | 1 | 3 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\Strategic\vault.ts` | 1 | 3 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\Strategic\voyager.ts` | 1 | 4 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\System\bridge.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\Strategic\warden.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\System\cache.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\System\flow.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\System\hermes.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\System\neural.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\System\nexus.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\System\stream.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Flutter\System\spark.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\Content\globe.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\Content\forge.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\Content\mantra.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\Content\palette.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\Content\echo.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\Content\scribe.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\Strategic\sentinel.ts` | 1 | 3 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\Content\hype.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\Strategic\warden.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\Strategic\vault.ts` | 1 | 3 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\System\bridge.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\Strategic\voyager.ts` | 1 | 4 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\System\cache.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\System\flow.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\System\hermes.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\System\neural.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\System\nexus.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\System\stream.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Kotlin\System\spark.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Python\Content\palette.py` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Python\System\spark.py` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Support\battle_plan_formatter.ts` | 1 | 9 | 🟢 PROFUNDO |
+| `src_local\agents\Support\briefing_agent.ts` | 1 | 1 | 🟢 PROFUNDO |
+| `src_local\agents\Support\battle_plan_sections_engine.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\schema_persona.ts` | 1 | 0 | 🔴 FRÁGIL |
+| `src_local\agents\Support\connectivity_mapper.ts` | 1 | 3 | 🟢 PROFUNDO |
+| `src_local\agents\Support\component_classifier.ts` | 1 | 7 | 🟢 PROFUNDO |
+| `src_local\agents\Support\cognitive_analyst.ts` | 1 | 10 | 🟢 PROFUNDO |
+| `src_local\agents\Support\discovery_agent.ts` | 1 | 1 | 🟢 PROFUNDO |
+| `src_local\agents\Support\dna_profiler.ts` | 1 | 4 | 🟢 PROFUNDO |
+| `src_local\agents\Support\director.ts` | 1 | 6 | 🟢 PROFUNDO |
+| `src_local\agents\Support\doc_gen_agent.ts` | 1 | 0 | 🔴 FRÁGIL |
+| `src_local\agents\Support\healer.ts` | 1 | 5 | 🟢 PROFUNDO |
+| `src_local\agents\Support\healer_persona.ts` | 1 | 0 | 🔴 FRÁGIL |
+| `src_local\agents\Support\health_synthesizer.ts` | 1 | 4 | 🟢 PROFUNDO |
+| `src_local\agents\Support\infrastructure_assembler.ts` | 1 | 1 | 🟢 PROFUNDO |
+| `src_local\agents\Support\integrity_guardian.ts` | 1 | 4 | 🟢 PROFUNDO |
+| `src_local\agents\Support\markdown_structure_agent.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Support\obfuscation_hunter.ts` | 1 | 6 | 🟢 PROFUNDO |
+| `src_local\agents\Support\memory_persistence.ts` | 1 | 1 | 🟢 PROFUNDO |
+| `src_local\agents\Support\maturity_evaluator.ts` | 1 | 6 | 🟢 PROFUNDO |
+| `src_local\agents\Support\obfuscation_logic_engine.ts` | 1 | 3 | 🟢 PROFUNDO |
+| `src_local\agents\Support\parity_analyst.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Support\pyramid_analyst.ts` | 1 | 4 | 🟢 PROFUNDO |
+| `src_local\agents\Support\penalty_engine.ts` | 1 | 3 | 🟢 PROFUNDO |
+| `src_local\agents\Support\scoring_metrics_engine.ts` | 1 | 6 | 🟢 PROFUNDO |
+| `src_local\agents\Support\quality_analyst.ts` | 1 | 9 | 🟢 PROFUNDO |
+| `src_local\agents\Support\security_sentinel_agent.ts` | 1 | 1 | 🟢 PROFUNDO |
+| `src_local\agents\Support\safety_definitions.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\Support\structural_analyst.ts` | 1 | 4 | 🟢 PROFUNDO |
+| `src_local\agents\Support\source_code_parser.ts` | 1 | 8 | 🟢 PROFUNDO |
+| `src_local\agents\Support\score_calculator.ts` | 1 | 4 | 🟢 PROFUNDO |
+| `src_local\agents\Support\topology_graph_agent.ts` | 1 | 1 | 🟢 PROFUNDO |
+| `src_local\agents\Support\validation_agent.ts` | 1 | 1 | 🟢 PROFUNDO |
+| `src_local\agents\TypeScript\Content\globe.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\TypeScript\Content\generic.ts` | 1 | 0 | 🔴 FRÁGIL |
+| `src_local\agents\TypeScript\Content\forge.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\TypeScript\Content\echo.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\TypeScript\Content\hype.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\TypeScript\Content\palette.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\TypeScript\Content\mantra.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\TypeScript\Content\scribe.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\TypeScript\Strategic\sentinel.ts` | 1 | 3 | 🟢 PROFUNDO |
+| `src_local\agents\TypeScript\Strategic\decorator.ts` | 1 | 0 | 🔴 FRÁGIL |
+| `src_local\agents\TypeScript\Strategic\director.ts` | 1 | 6 | 🟢 PROFUNDO |
+| `src_local\agents\TypeScript\Strategic\vault.ts` | 1 | 3 | 🟢 PROFUNDO |
+| `src_local\agents\TypeScript\Strategic\warden.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\TypeScript\Strategic\voyager.ts` | 1 | 4 | 🟢 PROFUNDO |
+| `src_local\agents\TypeScript\System\bridge.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\TypeScript\System\cache.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\TypeScript\System\enum.ts` | 1 | 0 | 🔴 FRÁGIL |
+| `src_local\agents\TypeScript\System\neural.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\TypeScript\System\flow.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\TypeScript\System\hermes.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\TypeScript\System\spark.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\TypeScript\System\stream.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\agents\TypeScript\System\nexus.ts` | 1 | 2 | 🟢 PROFUNDO |
+| `src_local\core\language_persona_orchestrator.ts` | 1 | 0 | 🔴 FRÁGIL |
+| `src_local\core\orchestrator.ts` | 1 | 9 | 🟢 PROFUNDO |
+| `src_local\core\reflex_engine.ts` | 1 | 5 | 🟢 PROFUNDO |
+| `src_local\core\task_orchestrator.ts` | 1 | 5 | 🟢 PROFUNDO |
+| `src_local\core\validator.ts` | 1 | 3 | 🟢 PROFUNDO |
+| `src_local\core\path_utils.ts` | 1 | 0 | 🔴 FRÁGIL |
+| `tray_legacy.py` | 1 | 0 | 🔴 FRÁGIL |
+| `update-git.ts` | 1 | 0 | 🔴 FRÁGIL |
 
+## 🎯 PLANO DE BATALHA: DIRETRIZES DE ENGENHARIA
+
+### 📊 RESUMO DE INTERVENÇÕES
+
+| Severidade | Quantidade |
+| :--- | :---: |
+| CRITICAL | 205 |
+| HIGH | 2 |
+| MEDIUM | 551 |
+| STRATEGIC | 66 |
+
+---
+
+## 🚩 NÍVEL: CRITICAL
+
+### 📂 Alvo: `src_local/agents/Flutter/Audit/metric.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/Audit/metric.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/Audit/metric_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/Audit/probe.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/Audit/probe.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/Audit/probe_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/Audit/nebula.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/Audit/nebula.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/Audit/nebula_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/Audit/scale.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/Audit/scale.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/Audit/scale_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/Audit/scope.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/Audit/scope.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/Audit/scope_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/Audit/testify.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/Audit/testify.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/Audit/testify_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/Content/echo.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/Content/echo.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/Content/echo_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/Content/forge.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/Content/forge.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/Content/forge_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/Content/globe.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/Content/globe.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/Content/globe_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/Content/hype.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/Content/hype.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/Content/hype_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/Content/mantra.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/Content/mantra.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/Content/mantra_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/Content/scribe.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/Content/scribe.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/Content/scribe_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/Audit/bolt.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/Audit/bolt.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/Audit/bolt_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/Content/palette.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/Content/palette.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/Content/palette_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/Strategic/voyager.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/Strategic/voyager.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/Strategic/voyager_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/Strategic/vault.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/Strategic/vault.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/Strategic/vault_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/Strategic/warden.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/Strategic/warden.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/Strategic/warden_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/System/bridge.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/System/bridge.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/System/bridge_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/Strategic/sentinel.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/Strategic/sentinel.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/Strategic/sentinel_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/System/flow.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/System/flow.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/System/flow_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/System/hermes.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/System/hermes.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/System/hermes_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/System/neural.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/System/neural.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/System/neural_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/System/nexus.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/System/nexus.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/System/nexus_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/System/cache.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/System/cache.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/System/cache_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/System/stream.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/System/stream.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/System/stream_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Flutter/System/spark.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Flutter/System/spark.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Flutter/System/spark_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/Audit/bolt.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/Audit/bolt.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/Audit/bolt_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/Audit/metric.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/Audit/metric.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/Audit/metric_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/Audit/nebula.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/Audit/nebula.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/Audit/nebula_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/Audit/scope.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/Audit/scope.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/Audit/scope_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/Audit/scale.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/Audit/scale.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/Audit/scale_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/Audit/testify.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/Audit/testify.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/Audit/testify_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/Audit/probe.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/Audit/probe.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/Audit/probe_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/Content/echo.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/Content/echo.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/Content/echo_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/Content/globe.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/Content/globe.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/Content/globe_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/Content/forge.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/Content/forge.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/Content/forge_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/Content/hype.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/Content/hype.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/Content/hype_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/Content/palette.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/Content/palette.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/Content/palette_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/Content/mantra.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/Content/mantra.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/Content/mantra_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/Content/scribe.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/Content/scribe.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/Content/scribe_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/Strategic/vault.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/Strategic/vault.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/Strategic/vault_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/Strategic/sentinel.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/Strategic/sentinel.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/Strategic/sentinel_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/Strategic/voyager.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/Strategic/voyager.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/Strategic/voyager_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/System/bridge.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/System/bridge.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/System/bridge_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/Strategic/warden.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/Strategic/warden.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/Strategic/warden_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/System/flow.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/System/flow.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/System/flow_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/System/hermes.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/System/hermes.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/System/hermes_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/System/nexus.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/System/nexus.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/System/nexus_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/System/cache.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/System/cache.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/System/cache_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/System/neural.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/System/neural.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/System/neural_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/System/stream.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/System/stream.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/System/stream_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Kotlin/System/spark.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Kotlin/System/spark.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Kotlin/System/spark_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/Audit/bolt.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/Audit/bolt.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/Audit/bolt_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/Audit/metric.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/Audit/metric.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/Audit/metric_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/Audit/probe.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/Audit/probe.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/Audit/probe_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/Audit/nebula.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/Audit/nebula.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/Audit/nebula_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/Audit/scale.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/Audit/scale.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/Audit/scale_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/Audit/scope.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/Audit/scope.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/Audit/scope_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/Audit/testify.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/Audit/testify.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/Audit/testify_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/Content/echo.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/Content/echo.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/Content/echo_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/Content/forge.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/Content/forge.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/Content/forge_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/Content/hype.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/Content/hype.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/Content/hype_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/Content/mantra.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/Content/mantra.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/Content/mantra_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/Content/globe.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/Content/globe.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/Content/globe_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/Content/palette.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/Content/palette.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/Content/palette_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/Content/scribe.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/Content/scribe.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/Content/scribe_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/Strategic/director.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/Strategic/director.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/Strategic/director_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/Strategic/vault.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/Strategic/vault.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/Strategic/vault_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/Strategic/sentinel.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/Strategic/sentinel.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/Strategic/sentinel_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/Strategic/voyager.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/Strategic/voyager.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/Strategic/voyager_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/Strategic/warden.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/Strategic/warden.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/Strategic/warden_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/System/bridge.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/System/bridge.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/System/bridge_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/System/flow.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/System/flow.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/System/flow_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/System/neural.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/System/neural.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/System/neural_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/System/cache.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/System/cache.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/System/cache_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/System/hermes.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/System/hermes.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/System/hermes_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/System/nexus.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/System/nexus.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/System/nexus_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/System/spark.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/System/spark.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/System/spark_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/ast_navigator.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/ast_navigator.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/ast_navigator_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/audit_engine.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/audit_engine.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/audit_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/ast_node_inspector.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/ast_node_inspector.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/ast_node_inspector_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/ast_traversal_logic.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/ast_traversal_logic.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/ast_traversal_logic_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/diagnostic_strategist.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/diagnostic_strategist.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/diagnostic_strategist_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/audit_risk_engine.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/audit_risk_engine.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/audit_risk_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/audit_scanner_engine.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/audit_scanner_engine.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/audit_scanner_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/battle_plan_formatter.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/battle_plan_formatter.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/battle_plan_formatter_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/battle_plan_sections_engine.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/battle_plan_sections_engine.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/battle_plan_sections_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/briefing_agent.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/briefing_agent.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/briefing_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/call_safety_judge.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/call_safety_judge.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/call_safety_judge_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Python/System/stream.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Python/System/stream.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Python/System/stream_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/code_inspector_agent.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/code_inspector_agent.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/code_inspector_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/parity_analyst.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/parity_analyst.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/parity_analyst_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/discovery_agent.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/discovery_agent.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/discovery_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/component_classifier.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/component_classifier.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/component_classifier_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/connectivity_mapper.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/connectivity_mapper.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/connectivity_mapper_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/dna_profiler.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/dna_profiler.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/dna_profiler_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/coverage_auditor.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/coverage_auditor.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/coverage_auditor_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/doc_gen_agent.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/doc_gen_agent.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/doc_gen_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/semantic_context_analyst.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/semantic_context_analyst.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/semantic_context_analyst_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/git_automaton.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/git_automaton.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/git_automaton_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/penalty_engine.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/penalty_engine.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/penalty_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/healer.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/healer.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/healer_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/test_navigator.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/test_navigator.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/test_navigator_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/pyramid_analyst.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/pyramid_analyst.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/pyramid_analyst_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/health_synthesizer.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/health_synthesizer.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/health_synthesizer_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/quality_analyst.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/quality_analyst.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/quality_analyst_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/silent_error_detector.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/silent_error_detector.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/silent_error_detector_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/infrastructure_assembler.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/infrastructure_assembler.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/infrastructure_assembler_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/registry_compiler.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/registry_compiler.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/registry_compiler_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/source_code_parser.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/source_code_parser.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/source_code_parser_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/integrity_guardian.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/integrity_guardian.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/integrity_guardian_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/report_formatter.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/report_formatter.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/report_formatter_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/test_refiner.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/test_refiner.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/test_refiner_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/report_sections_engine.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/report_sections_engine.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/report_sections_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/test_runner.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/test_runner.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/test_runner_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/structural_analyst.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/structural_analyst.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/structural_analyst_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/topology_graph_agent.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/topology_graph_agent.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/topology_graph_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/rule_definition_judge.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/rule_definition_judge.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/rule_definition_judge_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/task_executor.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/task_executor.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/task_executor_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/validation_agent.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/validation_agent.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/validation_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/safe_context_judge.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/safe_context_judge.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/safe_context_judge_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/veto_criteria_engine.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/veto_criteria_engine.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/veto_criteria_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/telemetry_intent_judge.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/telemetry_intent_judge.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/telemetry_intent_judge_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/veto_rules.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/veto_rules.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/veto_rules_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/safety_assignment_engine.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/safety_assignment_engine.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/safety_assignment_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/telemetry_maturity_logic.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/telemetry_maturity_logic.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/telemetry_maturity_logic_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/veto_structural_engine.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/veto_structural_engine.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/veto_structural_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/vulnerability_heuristic.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/vulnerability_heuristic.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/vulnerability_heuristic_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/test_architect_agent.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/test_architect_agent.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/test_architect_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/safety_definitions.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/safety_definitions.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/safety_definitions_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/test_discovery_logic.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/test_discovery_logic.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/test_discovery_logic_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/safety_heuristics.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/safety_heuristics.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/safety_heuristics_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/intent_heuristics_engine.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/intent_heuristics_engine.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/intent_heuristics_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/safety_navigator.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/safety_navigator.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/safety_navigator_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/line_veto.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/line_veto.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/line_veto_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/score_calculator.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/score_calculator.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/score_calculator_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/scoring_metrics_engine.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/scoring_metrics_engine.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/scoring_metrics_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/logic_auditor.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/logic_auditor.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/logic_auditor_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/logic_node_auditor.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/logic_node_auditor.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/logic_node_auditor_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/markdown_sanitizer.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/markdown_sanitizer.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/markdown_sanitizer_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/base.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/base.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/base_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/markdown_structure_agent.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/markdown_structure_agent.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/markdown_structure_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/web_insight_agent.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/web_insight_agent.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/web_insight_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/maturity_evaluator.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/maturity_evaluator.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/maturity_evaluator_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/security_sentinel_agent.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/security_sentinel_agent.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/security_sentinel_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/memory_persistence.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/memory_persistence.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/memory_persistence_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/meta_analysis_detector.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/meta_analysis_detector.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/meta_analysis_detector_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/obfuscation_hunter.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/obfuscation_hunter.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/obfuscation_hunter_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/obfuscation_logic_engine.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/obfuscation_logic_engine.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/obfuscation_logic_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/core/task_orchestrator.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo core/task_orchestrator.py existe no legado mas está AUSENTE no atual [ID: src_local/core/task_orchestrator_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/core/orchestrator.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo core/orchestrator.py existe no legado mas está AUSENTE no atual [ID: src_local/core/orchestrator_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/core/diagnostic_pipeline.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo core/diagnostic_pipeline.py existe no legado mas está AUSENTE no atual [ID: src_local/core/diagnostic_pipeline_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/core/compiler.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo core/compiler.py existe no legado mas está AUSENTE no atual [ID: src_local/core/compiler_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/core/audit_engine.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo core/audit_engine.py existe no legado mas está AUSENTE no atual [ID: src_local/core/audit_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/core/diagnostic_finalizer.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo core/diagnostic_finalizer.py existe no legado mas está AUSENTE no atual [ID: src_local/core/diagnostic_finalizer_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/interface/components/health_gauge.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo interface/components/health_gauge.py existe no legado mas está AUSENTE no atual [ID: src_local/interface/components/health_gauge_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/core/validator.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo core/validator.py existe no legado mas está AUSENTE no atual [ID: src_local/core/validator_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/interface/cli.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo interface/cli.py existe no legado mas está AUSENTE no atual [ID: src_local/interface/cli_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/obfuscation_cleaner_engine.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/obfuscation_cleaner_engine.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/obfuscation_cleaner_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/interface/controllers/ui_controller.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo interface/controllers/ui_controller.py existe no legado mas está AUSENTE no atual [ID: src_local/interface/controllers/ui_controller_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/interface/gui_native.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo interface/gui_native.py existe no legado mas está AUSENTE no atual [ID: src_local/interface/gui_native_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/interface/views/findings_view.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo interface/views/findings_view.py existe no legado mas está AUSENTE no atual [ID: src_local/interface/views/findings_view_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/interface/views/dashboard_view.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo interface/views/dashboard_view.py existe no legado mas está AUSENTE no atual [ID: src_local/interface/views/dashboard_view_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/interface/views/chat_view.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo interface/views/chat_view.py existe no legado mas está AUSENTE no atual [ID: src_local/interface/views/chat_view_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/analysis_engine_phd.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/analysis_engine_phd.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/analysis_engine_phd_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/behavior_analyst.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/behavior_analyst.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/behavior_analyst_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/cognitive_analyst.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/cognitive_analyst.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/cognitive_analyst_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/cache_manager.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/cache_manager.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/cache_manager_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/agents/Support/metrics_assembler.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo agents/Support/metrics_assembler.py existe no legado mas está AUSENTE no atual [ID: src_local/agents/Support/metrics_assembler_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/compliance_standard.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/compliance_standard.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/compliance_standard_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/cognitive_engine.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/cognitive_engine.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/cognitive_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/conflict_policy_phd.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/conflict_policy_phd.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/conflict_policy_phd_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/interface/components/sidebar.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo interface/components/sidebar.py existe no legado mas está AUSENTE no atual [ID: src_local/interface/components/sidebar_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/context_engine.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/context_engine.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/context_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/finding_deduplicator.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/finding_deduplicator.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/finding_deduplicator_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/logging_config.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/logging_config.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/logging_config_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/git_client.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/git_client.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/git_client_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/history_agent.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/history_agent.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/history_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/context_iterator.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/context_iterator.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/context_iterator_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/voice_engine.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/voice_engine.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/voice_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/git_operations_phd.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/git_operations_phd.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/git_operations_phd_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/maintenance_engine_phd.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/maintenance_engine_phd.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/maintenance_engine_phd_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/context_mapping_logic.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/context_mapping_logic.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/context_mapping_logic_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/file_system_scanner.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/file_system_scanner.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/file_system_scanner_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/dependency_auditor.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/dependency_auditor.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/dependency_auditor_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/indexer.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/indexer.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/indexer_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/topology_engine_phd.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/topology_engine_phd.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/topology_engine_phd_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/markdown_processor.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/markdown_processor.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/markdown_processor_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/system_sentinel.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/system_sentinel.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/system_sentinel_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/test_mapper.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/test_mapper.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/test_mapper_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/semantic_search_agent.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/semantic_search_agent.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/semantic_search_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/update_transaction.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/update_transaction.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/update_transaction_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/submodule_sync_logic.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/submodule_sync_logic.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/submodule_sync_logic_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/stability_ledger.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/stability_ledger.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/stability_ledger_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/veto_rules_phd.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/veto_rules_phd.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/veto_rules_phd_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/markdown_util.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/markdown_util.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/markdown_util_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/memory_engine.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/memory_engine.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/memory_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/parallel_test_executor.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/parallel_test_executor.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/parallel_test_executor_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/reflex_engine_phd.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/reflex_engine_phd.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/reflex_engine_phd_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/persona_loader.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/persona_loader.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/persona_loader_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/memory_pruning_agent.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/memory_pruning_agent.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/memory_pruning_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/resource_governor.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/resource_governor.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/resource_governor_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `src_local/utils/scoring_engine_phd.py` [CRITICAL]
+
+#### 🔴 Item N/A: Arquivo utils/scoring_engine_phd.py existe no legado mas está AUSENTE no atual [ID: src_local/utils/scoring_engine_phd_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+### 📂 Alvo: `legacy_restore\tests\test_security_sentinel.py` [CRITICAL]
+
+#### 🔴 Item N/A: Segredo Exposto: OpenAI API Key [ID: legacy_restore/tests/test_security_sentinel_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+#### 🔴 Item N/A: Segredo Exposto: Generic Secret [ID: legacy_restore/tests/test_security_sentinel_py_N/A]
+
+- **Diretriz:** Padrão soberano de critical
+
+## 🚩 NÍVEL: HIGH
+
+### 📂 Alvo: `src_local/agents/TypeScript/Audit/strict.ts` [HIGH]
+
+#### 🔴 Item 38: Captura de erro silenciosa detectada (Try/Catch vazio ou suprimido) [ID: src_local/agents/TypeScript/Audit/strict_ts_38]
+
+- **Diretriz:** Padrão soberano de high
+
+### 📂 Alvo: `src_local/agents/TypeScript/Content/hype.ts` [HIGH]
+
+#### 🔴 Item 37: Captura de erro silenciosa detectada (Try/Catch vazio ou suprimido) [ID: src_local/agents/TypeScript/Content/hype_ts_37]
+
+- **Diretriz:** Padrão soberano de high
+
+## 🚩 NÍVEL: MEDIUM
+
+### 📂 Alvo: `legacy_restore\scripts\build_exe.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/scripts/build_exe_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\scripts\analyze_external.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/scripts/analyze_external_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\scripts\benchmark_tests.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/scripts/benchmark_tests_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\scripts\debug_test_hang.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/scripts/debug_test_hang_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\scripts\diagnose_blind_spots.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/scripts/diagnose_blind_spots_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\scripts\cleanup_obfuscation.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/scripts/cleanup_obfuscation_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 4:  [ID: legacy_restore/scripts/cleanup_obfuscation_py_4]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\scripts\generate_tests.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/scripts/generate_tests_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\scripts\git_doctor.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/scripts/git_doctor_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\scripts\lint_heading_logic.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/scripts/lint_heading_logic_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\scripts\lint_rule_engine.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/scripts/lint_rule_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\scripts\install_hooks.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/scripts/install_hooks_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\scripts\run_diagnostic.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/scripts/run_diagnostic_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\scripts\launch_api.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/scripts/launch_api_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\scripts\fast_diagnostic.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/scripts/fast_diagnostic_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\scripts\shadow_tray.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/scripts/shadow_tray_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\scripts\update_agent_submodule.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/scripts/update_agent_submodule_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\scripts\launch_dashboard.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/scripts/launch_dashboard_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\scripts\verify_cognitive.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/scripts/verify_cognitive_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\scripts\verify_report_lint.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/scripts/verify_report_lint_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\base.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/base_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\scripts\persona_manager.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/scripts/persona_manager_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\Audit\metric.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/Audit/metric_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\Audit\bolt.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/Audit/bolt_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\Audit\nebula.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/Audit/nebula_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\Audit\probe.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/Audit/probe_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\Audit\scale.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/Audit/scale_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\Audit\testify.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/Audit/testify_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\Audit\scope.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/Audit/scope_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\Content\echo.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/Content/echo_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\Content\forge.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/Content/forge_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\Content\globe.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/Content/globe_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\Content\hype.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/Content/hype_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\Content\palette.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/Content/palette_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\Content\mantra.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/Content/mantra_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\Content\scribe.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/Content/scribe_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\Strategic\sentinel.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/Strategic/sentinel_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\Strategic\vault.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/Strategic/vault_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\System\bridge.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/System/bridge_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\Strategic\voyager.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/Strategic/voyager_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\Strategic\warden.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/Strategic/warden_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\System\cache.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/System/cache_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\System\flow.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/System/flow_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\System\hermes.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/System/hermes_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\System\neural.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/System/neural_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\System\nexus.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/System/nexus_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\System\spark.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/System/spark_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Flutter\System\stream.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Flutter/System/stream_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\Audit\bolt.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/Audit/bolt_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\Audit\nebula.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/Audit/nebula_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\Audit\metric.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/Audit/metric_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\Audit\scale.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/Audit/scale_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\Audit\scope.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/Audit/scope_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\Audit\probe.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/Audit/probe_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\Content\forge.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/Content/forge_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\Content\echo.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/Content/echo_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\Audit\testify.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/Audit/testify_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\Content\globe.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/Content/globe_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\Content\hype.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/Content/hype_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\Content\palette.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/Content/palette_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\Content\scribe.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/Content/scribe_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\Content\mantra.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/Content/mantra_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\Strategic\vault.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/Strategic/vault_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\Strategic\sentinel.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/Strategic/sentinel_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\Strategic\voyager.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/Strategic/voyager_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\Strategic\warden.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/Strategic/warden_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\System\flow.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/System/flow_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\System\bridge.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/System/bridge_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\System\hermes.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/System/hermes_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\System\cache.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/System/cache_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\System\neural.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/System/neural_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\System\spark.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/System/spark_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\System\nexus.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/System/nexus_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Kotlin\System\stream.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Kotlin/System/stream_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\Audit\probe.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/Audit/probe_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\Audit\nebula.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/Audit/nebula_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\Audit\bolt.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/Audit/bolt_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\Audit\scale.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/Audit/scale_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\Audit\scope.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/Audit/scope_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\Audit\testify.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/Audit/testify_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\Audit\metric.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/Audit/metric_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\Content\echo.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/Content/echo_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 31:  [ID: legacy_restore/src_local/agents/Python/Content/echo_py_31]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\Content\mantra.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/Content/mantra_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\Content\forge.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/Content/forge_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\Content\globe.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/Content/globe_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\Content\hype.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/Content/hype_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\Content\scribe.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/Content/scribe_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\Content\palette.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/Content/palette_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\Strategic\vault.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/Strategic/vault_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\Strategic\director.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/Strategic/director_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\Strategic\sentinel.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/Strategic/sentinel_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\Strategic\voyager.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/Strategic/voyager_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\System\bridge.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/System/bridge_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\System\flow.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/System/flow_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\System\cache.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/System/cache_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\System\nexus.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/System/nexus_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\System\neural.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/System/neural_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\System\spark.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/System/spark_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\Strategic\warden.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/Strategic/warden_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\System\stream.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/System/stream_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\ast_navigator.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/ast_navigator_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Python\System\hermes.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Python/System/hermes_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\ast_node_inspector.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/ast_node_inspector_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\ast_traversal_logic.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/ast_traversal_logic_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\audit_engine.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/audit_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\audit_scanner_engine.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/audit_scanner_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\audit_risk_engine.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/audit_risk_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\battle_plan_formatter.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/battle_plan_formatter_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\battle_plan_sections_engine.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/battle_plan_sections_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\briefing_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/briefing_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\component_classifier.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/component_classifier_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\code_inspector_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/code_inspector_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\call_safety_judge.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/call_safety_judge_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\coverage_auditor.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/coverage_auditor_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\discovery_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/discovery_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\connectivity_mapper.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/connectivity_mapper_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\dna_profiler.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/dna_profiler_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\diagnostic_strategist.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/diagnostic_strategist_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\doc_gen_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/doc_gen_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\healer.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/healer_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\git_automaton.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/git_automaton_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\health_synthesizer.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/health_synthesizer_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\infrastructure_assembler.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/infrastructure_assembler_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\intent_heuristics_engine.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/intent_heuristics_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\integrity_guardian.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/integrity_guardian_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 54:  [ID: legacy_restore/src_local/agents/Support/integrity_guardian_py_54]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\logic_node_auditor.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/logic_node_auditor_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\markdown_sanitizer.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/markdown_sanitizer_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\logic_auditor.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/logic_auditor_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\line_veto.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/line_veto_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\markdown_structure_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/markdown_structure_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\memory_persistence.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/memory_persistence_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\maturity_evaluator.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/maturity_evaluator_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\meta_analysis_detector.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/meta_analysis_detector_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\metrics_assembler.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/metrics_assembler_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\obfuscation_hunter.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/obfuscation_hunter_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\obfuscation_cleaner_engine.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/obfuscation_cleaner_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\pyramid_analyst.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/pyramid_analyst_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\obfuscation_logic_engine.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/obfuscation_logic_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\penalty_engine.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/penalty_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\quality_analyst.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/quality_analyst_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\registry_compiler.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/registry_compiler_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\report_sections_engine.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/report_sections_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\rule_definition_judge.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/rule_definition_judge_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\report_formatter.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/report_formatter_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\parity_analyst.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/parity_analyst_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\safety_assignment_engine.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/safety_assignment_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\safety_definitions.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/safety_definitions_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\safety_navigator.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/safety_navigator_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\safety_heuristics.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/safety_heuristics_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\safe_context_judge.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/safe_context_judge_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\scoring_metrics_engine.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/scoring_metrics_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\score_calculator.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/score_calculator_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\silent_error_detector.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/silent_error_detector_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\semantic_context_analyst.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/semantic_context_analyst_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\security_sentinel_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/security_sentinel_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\structural_analyst.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/structural_analyst_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\source_code_parser.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/source_code_parser_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\task_executor.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/task_executor_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\telemetry_intent_judge.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/telemetry_intent_judge_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\test_architect_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/test_architect_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\test_discovery_logic.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/test_discovery_logic_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\telemetry_maturity_logic.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/telemetry_maturity_logic_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\test_navigator.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/test_navigator_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\test_refiner.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/test_refiner_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\test_runner.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/test_runner_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\topology_graph_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/topology_graph_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\validation_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/validation_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\veto_criteria_engine.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/veto_criteria_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\veto_rules.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/veto_rules_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\veto_structural_engine.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/veto_structural_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\core\audit_engine.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/core/audit_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\web_insight_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/web_insight_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\agents\Support\vulnerability_heuristic.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/agents/Support/vulnerability_heuristic_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\core\diagnostic_finalizer.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/core/diagnostic_finalizer_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\core\diagnostic_pipeline.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/core/diagnostic_pipeline_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\core\compiler.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/core/compiler_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\core\orchestrator.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/core/orchestrator_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\core\task_orchestrator.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/core/task_orchestrator_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\core\validator.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/core/validator_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\analysis_engine_phd.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/analysis_engine_phd_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\behavior_analyst.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/behavior_analyst_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\cache_manager.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/cache_manager_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\compliance_standard.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/compliance_standard_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\cognitive_engine.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/cognitive_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\conflict_policy_phd.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/conflict_policy_phd_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\cognitive_analyst.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/cognitive_analyst_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\context_engine.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/context_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\context_iterator.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/context_iterator_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\context_mapping_logic.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/context_mapping_logic_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\dependency_auditor.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/dependency_auditor_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\file_system_scanner.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/file_system_scanner_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\finding_deduplicator.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/finding_deduplicator_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\git_client.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/git_client_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\git_operations_phd.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/git_operations_phd_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\history_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/history_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\indexer.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/indexer_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\logging_config.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/logging_config_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\maintenance_engine_phd.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/maintenance_engine_phd_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\markdown_processor.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/markdown_processor_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\markdown_util.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/markdown_util_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\reflex_engine_phd.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/reflex_engine_phd_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\parallel_test_executor.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/parallel_test_executor_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\memory_pruning_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/memory_pruning_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\memory_engine.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/memory_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\persona_loader.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/persona_loader_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\resource_governor.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/resource_governor_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\scoring_engine_phd.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/scoring_engine_phd_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\semantic_search_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/semantic_search_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\submodule_sync_logic.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/submodule_sync_logic_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\stability_ledger.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/stability_ledger_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\system_sentinel.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/system_sentinel_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\test_mapper.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/test_mapper_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\voice_engine.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/voice_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\update_transaction.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/update_transaction_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\topology_engine_phd.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/topology_engine_phd_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\src_local\utils\veto_rules_phd.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/src_local/utils/veto_rules_phd_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\tests\test_code_inspector_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/tests/test_code_inspector_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\tests\test_core_depth.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/tests/test_core_depth_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\tests\test_discovery_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/tests/test_discovery_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\tests\test_markdown_structure_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/tests/test_markdown_structure_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\tests\test_score_calculator.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/tests/test_score_calculator_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\tests\test_security_sentinel.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/tests/test_security_sentinel_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\tests\test_utils_interface.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/tests/test_utils_interface_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\tests\test_update_agent_submodule.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/tests/test_update_agent_submodule_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\tests\test_utils_engines.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/tests/test_utils_engines_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `legacy_restore\tests\test_validation_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: legacy_restore/tests/test_validation_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\analyze_external.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/analyze_external_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\benchmark_tests.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/benchmark_tests_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\build_exe.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/build_exe_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\cleanup_obfuscation.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/cleanup_obfuscation_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 4:  [ID: scripts/cleanup_obfuscation_py_4]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\debug_logic.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/debug_logic_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\deep_disparity_scanner.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/deep_disparity_scanner_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\debug_test_hang.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/debug_test_hang_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\diagnose_blind_spots.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/diagnose_blind_spots_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\disparity_scanner.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/disparity_scanner_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\fast_diagnostic.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/fast_diagnostic_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\generate_tests.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/generate_tests_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\install_hooks.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/install_hooks_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\git_doctor.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/git_doctor_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\launch_api.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/launch_api_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\launch_dashboard.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/launch_dashboard_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\lint_heading_logic.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/lint_heading_logic_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\lint_rule_engine.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/lint_rule_engine_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\persona_manager.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/persona_manager_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\project_cartographer.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/project_cartographer_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\parity_scanner.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/parity_scanner_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\run_diagnostic.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/run_diagnostic_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\shadow_tray.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/shadow_tray_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\update_agent_submodule.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/update_agent_submodule_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\verify_cognitive.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/verify_cognitive_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\verify_phase_18.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/verify_phase_18_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\verify_phase_19.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/verify_phase_19_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\verify_phase_17.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/verify_phase_17_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `scripts\verify_report_lint.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: scripts/verify_report_lint_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\base.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/base_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\base.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/base_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\base_persona.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/base_persona_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\Audit\bolt.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/Audit/bolt_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\Audit\scale.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/Audit/scale_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\Audit\metric.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/Audit/metric_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\Audit\macro.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/Audit/macro_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\Audit\nebula.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/Audit/nebula_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\Audit\scope.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/Audit/scope_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\Audit\probe.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/Audit/probe_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\Content\globe.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/Content/globe_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\Audit\testify.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/Audit/testify_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\Content\echo.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/Content/echo_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\Content\forge.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/Content/forge_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\Content\hype.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/Content/hype_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\Content\scribe.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/Content/scribe_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\Content\palette.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/Content/palette_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\Content\mantra.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/Content/mantra_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\Strategic\vault.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/Strategic/vault_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\Strategic\sentinel.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/Strategic/sentinel_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\Strategic\voyager.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/Strategic/voyager_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\Content\sqlite.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/Content/sqlite_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\Strategic\warden.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/Strategic/warden_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\Strategic\worker.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/Strategic/worker_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\System\neural.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/System/neural_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\System\hermes.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/System/hermes_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\System\cache.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/System/cache_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\System\nexus.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/System/nexus_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\System\flow.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/System/flow_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\System\plugin.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/System/plugin_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\System\spark.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/System/spark_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\System\bridge.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/System/bridge_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Audit\bolt.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Audit/bolt_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Bun\System\stream.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Bun/System/stream_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Audit\nebula.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Audit/nebula_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Audit\bolt.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Audit/bolt_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Audit\metric.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Audit/metric_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Audit\metric.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Audit/metric_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Audit\nebula.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Audit/nebula_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Audit\scale.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Audit/scale_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Audit\probe.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Audit/probe_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Audit\probe.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Audit/probe_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Audit\scope.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Audit/scope_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Audit\scale.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Audit/scale_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Audit\testify.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Audit/testify_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Audit\testify.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Audit/testify_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Audit\scope.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Audit/scope_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Content\echo.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Content/echo_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Content\forge.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Content/forge_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Content\echo.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Content/echo_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Content\globe.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Content/globe_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Content\globe.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Content/globe_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Content\forge.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Content/forge_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Content\hype.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Content/hype_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Content\mantra.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Content/mantra_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Content\hype.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Content/hype_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Content\mantra.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Content/mantra_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Content\palette.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Content/palette_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Content\palette.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Content/palette_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Content\scribe.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Content/scribe_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Content\scribe.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Content/scribe_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Strategic\vault.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Strategic/vault_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Strategic\sentinel.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Strategic/sentinel_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Strategic\sentinel.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Strategic/sentinel_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Strategic\vault.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Strategic/vault_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Strategic\voyager.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Strategic/voyager_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Strategic\voyager.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Strategic/voyager_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Strategic\warden.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Strategic/warden_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\System\bridge.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/System/bridge_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\Strategic\warden.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/Strategic/warden_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\System\cache.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/System/cache_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\System\bridge.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/System/bridge_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\System\cache.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/System/cache_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\System\flow.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/System/flow_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\System\flow.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/System/flow_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\System\hermes.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/System/hermes_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\System\neural.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/System/neural_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\System\hermes.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/System/hermes_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\System\neural.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/System/neural_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\System\nexus.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/System/nexus_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\System\nexus.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/System/nexus_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\System\spark.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/System/spark_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\System\stream.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/System/stream_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\System\stream.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/System/stream_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Audit\metric.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Audit/metric_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Audit\bolt.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Audit/bolt_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Audit\bolt.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Audit/bolt_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Flutter\System\spark.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Flutter/System/spark_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Audit\nebula.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Audit/nebula_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Audit\metric.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Audit/metric_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Audit\probe.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Audit/probe_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Audit\nebula.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Audit/nebula_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Audit\probe.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Audit/probe_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Audit\scale.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Audit/scale_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Audit\scope.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Audit/scope_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Audit\scale.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Audit/scale_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Audit\scope.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Audit/scope_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Audit\testify.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Audit/testify_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Content\echo.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Content/echo_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Audit\testify.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Audit/testify_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Content\globe.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Content/globe_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Content\forge.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Content/forge_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Content\globe.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Content/globe_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Content\forge.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Content/forge_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Content\mantra.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Content/mantra_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Content\mantra.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Content/mantra_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Content\hype.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Content/hype_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Content\palette.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Content/palette_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Content\scribe.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Content/scribe_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Content\palette.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Content/palette_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Content\echo.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Content/echo_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Strategic\sentinel.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Strategic/sentinel_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Content\scribe.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Content/scribe_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Strategic\sentinel.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Strategic/sentinel_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Content\hype.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Content/hype_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Strategic\vault.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Strategic/vault_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Strategic\voyager.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Strategic/voyager_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Strategic\warden.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Strategic/warden_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Strategic\warden.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Strategic/warden_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Strategic\vault.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Strategic/vault_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\System\bridge.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/System/bridge_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\System\bridge.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/System/bridge_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\Strategic\voyager.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/Strategic/voyager_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\System\cache.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/System/cache_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\System\cache.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/System/cache_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\System\flow.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/System/flow_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\System\flow.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/System/flow_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\System\hermes.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/System/hermes_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\System\hermes.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/System/hermes_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\System\neural.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/System/neural_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\System\neural.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/System/neural_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\System\nexus.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/System/nexus_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\System\nexus.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/System/nexus_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\System\spark.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/System/spark_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\System\stream.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/System/stream_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\System\stream.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/System/stream_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Kotlin\System\spark.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Kotlin/System/spark_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\Audit\bolt.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/Audit/bolt_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\Audit\metric.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/Audit/metric_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\Audit\nebula.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/Audit/nebula_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\Audit\probe.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/Audit/probe_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\Audit\scale.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/Audit/scale_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\Audit\scope.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/Audit/scope_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\Content\forge.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/Content/forge_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\Audit\testify.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/Audit/testify_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\Content\echo.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/Content/echo_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\Content\hype.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/Content/hype_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\Content\globe.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/Content/globe_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\Content\scribe.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/Content/scribe_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\Content\mantra.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/Content/mantra_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\Content\palette.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/Content/palette_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\Strategic\director.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/Strategic/director_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\Strategic\vault.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/Strategic/vault_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\Strategic\sentinel.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/Strategic/sentinel_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\Strategic\voyager.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/Strategic/voyager_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\System\bridge.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/System/bridge_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\Strategic\warden.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/Strategic/warden_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\System\cache.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/System/cache_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\System\flow.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/System/flow_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\System\hermes.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/System/hermes_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\System\neural.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/System/neural_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\System\nexus.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/System/nexus_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\System\stream.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/System/stream_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Python\System\spark.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Python/System/spark_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\battle_plan_formatter.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/battle_plan_formatter_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\briefing_agent.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/briefing_agent_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\battle_plan_sections_engine.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/battle_plan_sections_engine_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\schema_persona.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/schema_persona_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\connectivity_mapper.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/connectivity_mapper_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\diagnostic_strategist.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/diagnostic_strategist_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\component_classifier.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/component_classifier_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\cognitive_analyst.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/cognitive_analyst_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\discovery_agent.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/discovery_agent_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\coverage_auditor.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/coverage_auditor_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\dna_profiler.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/dna_profiler_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\director.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/director_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\doc_gen_agent.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/doc_gen_agent_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\healer.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/healer_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\healer_persona.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/healer_persona_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\health_synthesizer.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/health_synthesizer_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\infrastructure_assembler.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/infrastructure_assembler_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\integrity_guardian.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/integrity_guardian_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\logic_auditor.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/logic_auditor_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\markdown_structure_agent.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/markdown_structure_agent_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\markdown_auditor.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/markdown_auditor_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\obfuscation_hunter.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/obfuscation_hunter_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\memory_persistence.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/memory_persistence_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\maturity_evaluator.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/maturity_evaluator_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\obfuscation_logic_engine.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/obfuscation_logic_engine_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\parity_analyst.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/parity_analyst_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\pyramid_analyst.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/pyramid_analyst_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\penalty_engine.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/penalty_engine_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\scoring_metrics_engine.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/scoring_metrics_engine_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\quality_analyst.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/quality_analyst_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\security_sentinel_agent.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/security_sentinel_agent_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\safety_definitions.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/safety_definitions_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 46:  [ID: src_local/agents/Support/safety_definitions_ts_46]
+
+- **Diretriz:** Padrão soberano de medium
+
+#### 🔴 Item 47:  [ID: src_local/agents/Support/safety_definitions_ts_47]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\structural_analyst.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/structural_analyst_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\testify_persona.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/testify_persona_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\source_code_parser.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/source_code_parser_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\test_architect_agent.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/test_architect_agent_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\score_calculator.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/score_calculator_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\test_runner.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/test_runner_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\test_refiner.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/test_refiner_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\topology_graph_agent.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/topology_graph_agent_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\Audit\metric.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/Audit/metric_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\Support\validation_agent.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/Support/validation_agent_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\Audit\bolt.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/Audit/bolt_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\Audit\nebula.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/Audit/nebula_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\Audit\probe.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/Audit/probe_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\Audit\scale.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/Audit/scale_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\Audit\testify.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/Audit/testify_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\Audit\scope.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/Audit/scope_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\Audit\strict.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/Audit/strict_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\Content\globe.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/Content/globe_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\Content\generic.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/Content/generic_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\Content\forge.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/Content/forge_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\Content\echo.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/Content/echo_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\Content\hype.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/Content/hype_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\Content\palette.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/Content/palette_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\Content\mantra.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/Content/mantra_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\Content\scribe.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/Content/scribe_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\Strategic\sentinel.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/Strategic/sentinel_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\Strategic\decorator.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/Strategic/decorator_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\Strategic\director.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/Strategic/director_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\Strategic\vault.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/Strategic/vault_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\Strategic\warden.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/Strategic/warden_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\Strategic\voyager.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/Strategic/voyager_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\System\bridge.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/System/bridge_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\System\cache.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/System/cache_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\System\enum.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/System/enum_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\System\neural.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/System/neural_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\System\flow.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/System/flow_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\System\hermes.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/System/hermes_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\System\spark.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/System/spark_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\System\stream.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/System/stream_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\agents\TypeScript\System\nexus.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/agents/TypeScript/System/nexus_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\core\orchestrator.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/core/orchestrator_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\core\audit_engine.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/core/audit_engine_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\core\diagnostic_pipeline.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/core/diagnostic_pipeline_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\core\bridge_orchestrator.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/core/bridge_orchestrator_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\core\language_persona_orchestrator.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/core/language_persona_orchestrator_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\core\diagnostic_finalizer.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/core/diagnostic_finalizer_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\core\orchestrator.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/core/orchestrator_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\core\reflex_engine.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/core/reflex_engine_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\core\task_orchestrator.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/core/task_orchestrator_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\core\validator.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/core/validator_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\core\path_utils.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/core/path_utils_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\ast_intelligence.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/ast_intelligence_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\behavior_analyst.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/behavior_analyst_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\cognitive_engine.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/cognitive_engine_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\cache_manager.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/cache_manager_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\context_engine.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/context_engine_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\context_iterator.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/context_iterator_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\conflict_policy.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/conflict_policy_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\file_system_scanner.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/file_system_scanner_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\context_mapping_logic.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/context_mapping_logic_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\git_client.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/git_client_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\finding_deduplicator.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/finding_deduplicator_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\dependency_auditor.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/dependency_auditor_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\history_agent.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/history_agent_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\maintenance_engine_phd.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/maintenance_engine_phd_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\go_discovery_adapter.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/go_discovery_adapter_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\logging_config.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/logging_config_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\markdown_processor.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/markdown_processor_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\memory_engine.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/memory_engine_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\markdown_util.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/markdown_util_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\memory_pruning_agent.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/memory_pruning_agent_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\persona_registry.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/persona_registry_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\submodule_sync_logic.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/submodule_sync_logic_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\task_executor.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/task_executor_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\system_sentinel.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/system_sentinel_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\stability_ledger.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/stability_ledger_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\update_transaction.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/update_transaction_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\task_queue.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/task_queue_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\task_worker.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/task_worker_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `src_local\utils\veto_engine.ts` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: src_local/utils/veto_engine_ts_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `tests\test_briefing_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: tests/test_briefing_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `tests\test_code_inspector_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: tests/test_code_inspector_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `tests\test_core_depth.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: tests/test_core_depth_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `tests\test_discovery_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: tests/test_discovery_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `tests\test_history_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: tests/test_history_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `tests\test_markdown_structure_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: tests/test_markdown_structure_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `tests\test_memory_pruning_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: tests/test_memory_pruning_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `tests\test_score_calculator.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: tests/test_score_calculator_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `tests\test_security_sentinel.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: tests/test_security_sentinel_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `tests\test_security_sentinel_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: tests/test_security_sentinel_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `tests\test_topology_graph_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: tests/test_topology_graph_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `tests\test_update_agent_submodule.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: tests/test_update_agent_submodule_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `tests\test_utils_engines.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: tests/test_utils_engines_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `tests\test_utils_interface.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: tests/test_utils_interface_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `tests\test_validation_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: tests/test_validation_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+### 📂 Alvo: `tests\test_web_insight_agent.py` [MEDIUM]
+
+#### 🔴 Item N/A: Metric Collection [ID: tests/test_web_insight_agent_py_N/A]
+
+- **Diretriz:** Padrão soberano de medium
+
+## 🚩 NÍVEL: STRATEGIC
+
+### 📂 Alvo: `run-diagnostic.ts` [STRATEGIC]
+
+#### 🔴 Item 74: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: run-diagnostic_ts_74]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `scripts/debug_logic.ts` [STRATEGIC]
+
+#### 🔴 Item 7: Meta-análise detectada (Uso de TypeScript Compiler API) [ID: scripts/debug_logic_ts_7]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `scripts/parity_scanner.ts` [STRATEGIC]
+
+#### 🔴 Item 93: Meta-análise detectada (Uso de TypeScript Compiler API) [ID: scripts/parity_scanner_ts_93]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 99: Meta-análise detectada (Uso de TypeScript Compiler API) [ID: scripts/parity_scanner_ts_99]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 100: Meta-análise detectada (Uso de TypeScript Compiler API) [ID: scripts/parity_scanner_ts_100]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 103: Meta-análise detectada (Uso de TypeScript Compiler API) [ID: scripts/parity_scanner_ts_103]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 107: Meta-análise detectada (Uso de TypeScript Compiler API) [ID: scripts/parity_scanner_ts_107]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/base.ts` [STRATEGIC]
+
+#### 🔴 Item 135: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/base_ts_135]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 142: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/base_ts_142]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 148: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/base_ts_148]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/Flutter/Content/forge.ts` [STRATEGIC]
+
+#### 🔴 Item 8: Meta-análise detectada (Execução dinâmica de código) [ID: src_local/agents/Flutter/Content/forge_ts_8]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 25: Meta-análise detectada (Execução dinâmica de código) [ID: src_local/agents/Flutter/Content/forge_ts_25]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 26: Meta-análise detectada (Execução dinâmica de código) [ID: src_local/agents/Flutter/Content/forge_ts_26]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/Support/logic_auditor.ts` [STRATEGIC]
+
+#### 🔴 Item 11: Meta-análise detectada (Uso de TypeScript Compiler API) [ID: src_local/agents/Support/logic_auditor_ts_11]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 18: Meta-análise detectada (Uso de TypeScript Compiler API) [ID: src_local/agents/Support/logic_auditor_ts_18]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 25: Meta-análise detectada (Uso de TypeScript Compiler API) [ID: src_local/agents/Support/logic_auditor_ts_25]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 50: Meta-análise detectada (Uso de TypeScript Compiler API) [ID: src_local/agents/Support/logic_auditor_ts_50]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 52: Meta-análise detectada (Uso de TypeScript Compiler API) [ID: src_local/agents/Support/logic_auditor_ts_52]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 60: Meta-análise detectada (Uso de TypeScript Compiler API) [ID: src_local/agents/Support/logic_auditor_ts_60]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 63: Meta-análise detectada (Uso de TypeScript Compiler API) [ID: src_local/agents/Support/logic_auditor_ts_63]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 97: Meta-análise detectada (Uso de TypeScript Compiler API) [ID: src_local/agents/Support/logic_auditor_ts_97]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 100: Meta-análise detectada (Uso de TypeScript Compiler API) [ID: src_local/agents/Support/logic_auditor_ts_100]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 120: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/Support/logic_auditor_ts_120]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 146: Meta-análise detectada (Uso de TypeScript Compiler API) [ID: src_local/agents/Support/logic_auditor_ts_146]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 151: Meta-análise detectada (Uso de TypeScript Compiler API) [ID: src_local/agents/Support/logic_auditor_ts_151]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 155: Meta-análise detectada (Execução dinâmica de código) [ID: src_local/agents/Support/logic_auditor_ts_155]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 165: Meta-análise detectada (Uso de TypeScript Compiler API) [ID: src_local/agents/Support/logic_auditor_ts_165]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 166: Meta-análise detectada (Uso de TypeScript Compiler API) [ID: src_local/agents/Support/logic_auditor_ts_166]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 167: Meta-análise detectada (Uso de TypeScript Compiler API) [ID: src_local/agents/Support/logic_auditor_ts_167]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 171: Meta-análise detectada (Uso de TypeScript Compiler API) [ID: src_local/agents/Support/logic_auditor_ts_171]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 185: Meta-análise detectada (Uso de TypeScript Compiler API) [ID: src_local/agents/Support/logic_auditor_ts_185]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 188: Meta-análise detectada (Uso de TypeScript Compiler API) [ID: src_local/agents/Support/logic_auditor_ts_188]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/Support/parity_analyst.ts` [STRATEGIC]
+
+#### 🔴 Item 484: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/Support/parity_analyst_ts_484]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/Audit/metric.ts` [STRATEGIC]
+
+#### 🔴 Item 43: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/Audit/metric_ts_43]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/Audit/bolt.ts` [STRATEGIC]
+
+#### 🔴 Item 43: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/Audit/bolt_ts_43]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/Audit/nebula.ts` [STRATEGIC]
+
+#### 🔴 Item 45: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/Audit/nebula_ts_45]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/Audit/probe.ts` [STRATEGIC]
+
+#### 🔴 Item 44: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/Audit/probe_ts_44]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/Audit/scale.ts` [STRATEGIC]
+
+#### 🔴 Item 47: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/Audit/scale_ts_47]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/Audit/testify.ts` [STRATEGIC]
+
+#### 🔴 Item 60: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/Audit/testify_ts_60]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/Audit/scope.ts` [STRATEGIC]
+
+#### 🔴 Item 44: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/Audit/scope_ts_44]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/Audit/strict.ts` [STRATEGIC]
+
+#### 🔴 Item 52: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/Audit/strict_ts_52]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/Content/globe.ts` [STRATEGIC]
+
+#### 🔴 Item 41: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/Content/globe_ts_41]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/Content/generic.ts` [STRATEGIC]
+
+#### 🔴 Item 42: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/Content/generic_ts_42]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/Content/forge.ts` [STRATEGIC]
+
+#### 🔴 Item 10: Meta-análise detectada (Execução dinâmica de código) [ID: src_local/agents/TypeScript/Content/forge_ts_10]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 19: Meta-análise detectada (Execução dinâmica de código) [ID: src_local/agents/TypeScript/Content/forge_ts_19]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 23: Meta-análise detectada (Execução dinâmica de código) [ID: src_local/agents/TypeScript/Content/forge_ts_23]
+
+- **Diretriz:** Padrão soberano de strategic
+
+#### 🔴 Item 43: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/Content/forge_ts_43]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/Content/echo.ts` [STRATEGIC]
+
+#### 🔴 Item 43: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/Content/echo_ts_43]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/Content/hype.ts` [STRATEGIC]
+
+#### 🔴 Item 47: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/Content/hype_ts_47]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/Content/palette.ts` [STRATEGIC]
+
+#### 🔴 Item 42: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/Content/palette_ts_42]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/Content/mantra.ts` [STRATEGIC]
+
+#### 🔴 Item 46: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/Content/mantra_ts_46]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/Content/scribe.ts` [STRATEGIC]
+
+#### 🔴 Item 47: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/Content/scribe_ts_47]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/Strategic/sentinel.ts` [STRATEGIC]
+
+#### 🔴 Item 43: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/Strategic/sentinel_ts_43]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/Strategic/decorator.ts` [STRATEGIC]
+
+#### 🔴 Item 42: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/Strategic/decorator_ts_42]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/Strategic/director.ts` [STRATEGIC]
+
+#### 🔴 Item 47: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/Strategic/director_ts_47]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/Strategic/vault.ts` [STRATEGIC]
+
+#### 🔴 Item 42: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/Strategic/vault_ts_42]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/Strategic/warden.ts` [STRATEGIC]
+
+#### 🔴 Item 43: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/Strategic/warden_ts_43]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/Strategic/voyager.ts` [STRATEGIC]
+
+#### 🔴 Item 44: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/Strategic/voyager_ts_44]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/System/bridge.ts` [STRATEGIC]
+
+#### 🔴 Item 42: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/System/bridge_ts_42]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/System/cache.ts` [STRATEGIC]
+
+#### 🔴 Item 42: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/System/cache_ts_42]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/System/neural.ts` [STRATEGIC]
+
+#### 🔴 Item 45: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/System/neural_ts_45]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/System/flow.ts` [STRATEGIC]
+
+#### 🔴 Item 42: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/System/flow_ts_42]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/System/hermes.ts` [STRATEGIC]
+
+#### 🔴 Item 42: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/System/hermes_ts_42]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/System/spark.ts` [STRATEGIC]
+
+#### 🔴 Item 41: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/System/spark_ts_41]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/System/stream.ts` [STRATEGIC]
+
+#### 🔴 Item 43: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/System/stream_ts_43]
+
+- **Diretriz:** Padrão soberano de strategic
+
+### 📂 Alvo: `src_local/agents/TypeScript/System/nexus.ts` [STRATEGIC]
+
+#### 🔴 Item 42: Telemetria manual detectada. Use o sistema de logs padronizado do Orquestrador. [Severity: STRATEGIC] [ID: src_local/agents/TypeScript/System/nexus_ts_42]
+
+- **Diretriz:** Padrão soberano de strategic
 ---
 ## 💀 Risco Existencial
 

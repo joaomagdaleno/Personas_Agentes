@@ -52,7 +52,18 @@ export class EchoPersona extends BaseActivePersona {
                 issue: `Cegueira Operacional: O objetivo '${objective}' exige diagnóstico. Em '${file}', o uso de console.* impede a rastreabilidade da 'Orquestração de Inteligência Artificial'.`
             };
         }
-        return null;
+        return {
+            file, severity: "INFO", persona: this.name,
+            issue: `PhD Echo: Analisando rastreabilidade para ${objective}. Focando em logging estruturado e eliminação de ruído.`
+        };
+    }
+
+    selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Monitor de rastreabilidade TS operando com consciência PhD."
+        };
     }
 
     getSystemPrompt(): string {

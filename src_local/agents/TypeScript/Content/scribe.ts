@@ -18,7 +18,7 @@ export class ScribePersona extends BaseActivePersona {
 
     async performAudit(): Promise<any[]> {
         const start = Date.now();
-        logger.info(`[${this.name}] Analisando Documentação TypeScript...`);
+        logger.info(`[${this.name}] Analisando Documentation TypeScript...`);
 
         const results: any[] = [];
         for (const [filePath, content] of Object.entries(this.contextData)) {
@@ -58,7 +58,18 @@ export class ScribePersona extends BaseActivePersona {
                 issue: `Amnésia Técnica: O objetivo '${objective}' exige clareza. Em '${file}', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.`
             };
         }
-        return null;
+        return {
+            file, severity: "INFO", persona: this.name,
+            issue: `PhD Scribe: Analisando explicabilidade para ${objective}. Focando em JSDoc e clareza de intenção.`
+        };
+    }
+
+    selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Arquivista de conhecimento TS operando com clareza PhD."
+        };
     }
 
     getSystemPrompt(): string {

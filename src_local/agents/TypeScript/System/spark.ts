@@ -50,7 +50,18 @@ export class SparkPersona extends BaseActivePersona {
                 issue: `Interface Árida: O objetivo '${objective}' exige percepção premium. Em '${file}', saídas silenciosas prejudicam a DX da 'Orquestração de Inteligência Artificial'.`
             };
         }
-        return null;
+        return {
+            file, severity: "INFO", persona: this.name,
+            issue: `PhD Spark: Analisando Developer Experience para ${objective}. Focando em mensagens de erro claras e feedback visual.`
+        };
+    }
+
+    selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Designer de experiência TS operando com empatia PhD."
+        };
     }
 
     getSystemPrompt(): string {

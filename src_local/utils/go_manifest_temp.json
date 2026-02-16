@@ -1,0 +1,242 @@
+[
+    {
+        "id": "Go_Audit_bolt",
+        "name": "bolt",
+        "emoji": "⚡",
+        "role": "PhD Performance Architect",
+        "stack": "Go",
+        "category": "Audit"
+    },
+    {
+        "id": "Go_Audit_metric",
+        "name": "metric",
+        "emoji": "📊",
+        "role": "PhD Metric Architect",
+        "stack": "Go",
+        "category": "Audit"
+    },
+    {
+        "id": "Go_Audit_nebula",
+        "name": "nebula",
+        "emoji": "🌌",
+        "role": "PhD Cloud Specialist",
+        "stack": "Go",
+        "category": "Audit"
+    },
+    {
+        "id": "Go_Audit_probe",
+        "name": "🔍",
+        "emoji": "🔍",
+        "role": "PhD Observability Expert",
+        "stack": "Go",
+        "category": "Audit"
+    },
+    {
+        "id": "Go_Audit_scale",
+        "name": "⚖️",
+        "emoji": "⚖️",
+        "role": "PhD Concurrency Specialist",
+        "stack": "Go",
+        "category": "Audit"
+    },
+    {
+        "id": "Go_Audit_scope",
+        "name": "🎯",
+        "emoji": "🎯",
+        "role": "PhD Module Architect",
+        "stack": "Go",
+        "category": "Audit"
+    },
+    {
+        "id": "Go_Audit_testify",
+        "name": "testify",
+        "emoji": "🧪",
+        "role": "PhD Verification Specialist",
+        "stack": "Go",
+        "category": "Audit"
+    },
+    {
+        "id": "Go_Audit_strict",
+        "name": "strict",
+        "emoji": "📏",
+        "role": "PhD Typing Auditor",
+        "stack": "Go",
+        "category": "Audit"
+    },
+    {
+        "id": "Go_Content_echo",
+        "name": "echo",
+        "emoji": "🗣️",
+        "role": "PhD Telemetry Specialist",
+        "stack": "Go",
+        "category": "Content"
+    },
+    {
+        "id": "Go_Content_forge",
+        "name": "forge",
+        "emoji": "🔨",
+        "role": "PhD Codegen Specialist",
+        "stack": "Go",
+        "category": "Content"
+    },
+    {
+        "id": "Go_Content_globe",
+        "name": "globe",
+        "emoji": "🌐",
+        "role": "PhD i18n Specialist",
+        "stack": "Go",
+        "category": "Content"
+    },
+    {
+        "id": "Go_Content_hype",
+        "name": "hype",
+        "emoji": "📢",
+        "role": "PhD Branding Expert",
+        "stack": "Go",
+        "category": "Content"
+    },
+    {
+        "id": "Go_Content_mantra",
+        "name": "mantra",
+        "emoji": "🧘",
+        "role": "PhD Quality Guardian",
+        "stack": "Go",
+        "category": "Content"
+    },
+    {
+        "id": "Go_Content_palette",
+        "name": "palette",
+        "emoji": "🎨",
+        "role": "PhD UX Specialist",
+        "stack": "Go",
+        "category": "Content"
+    },
+    {
+        "id": "Go_Content_scribe",
+        "name": "scribe",
+        "emoji": "📜",
+        "role": "PhD Documentation Specialist",
+        "stack": "Go",
+        "category": "Content"
+    },
+    {
+        "id": "Go_Content_fragment",
+        "name": "fragment",
+        "emoji": "🧩",
+        "role": "PhD Refactoring Expert",
+        "stack": "Go",
+        "category": "Content"
+    },
+    {
+        "id": "Go_Strategic_director",
+        "name": "director",
+        "emoji": "🏛️",
+        "role": "Director",
+        "stack": "Go",
+        "category": "Strategic"
+    },
+    {
+        "id": "Go_Strategic_sentinel",
+        "name": "sentinel",
+        "emoji": "🛡️",
+        "role": "PhD Security Auditor",
+        "stack": "Go",
+        "category": "Strategic"
+    },
+    {
+        "id": "Go_Strategic_vault",
+        "name": "vault",
+        "emoji": "🔐",
+        "role": "PhD Crypto Specialist",
+        "stack": "Go",
+        "category": "Strategic"
+    },
+    {
+        "id": "Go_Strategic_voyager",
+        "name": "voyager",
+        "emoji": "🧭",
+        "role": "PhD API Architect",
+        "stack": "Go",
+        "category": "Strategic"
+    },
+    {
+        "id": "Go_Strategic_warden",
+        "name": "warden",
+        "emoji": "⚖️",
+        "role": "PhD Lifecycle Architect",
+        "stack": "Go",
+        "category": "Strategic"
+    },
+    {
+        "id": "Go_Strategic_vortex",
+        "name": "vortex",
+        "emoji": "🌀",
+        "role": "PhD Innovation Strategist",
+        "stack": "Go",
+        "category": "Strategic"
+    },
+    {
+        "id": "Go_System_bridge",
+        "name": "bridge",
+        "emoji": "🌉",
+        "role": "PhD Integration Expert",
+        "stack": "Go",
+        "category": "System"
+    },
+    {
+        "id": "Go_System_cache",
+        "name": "cache",
+        "emoji": "💾",
+        "role": "PhD Data Specialist",
+        "stack": "Go",
+        "category": "System"
+    },
+    {
+        "id": "Go_System_flow",
+        "name": "flow",
+        "emoji": "🌊",
+        "role": "PhD Stream Architect",
+        "stack": "Go",
+        "category": "System"
+    },
+    {
+        "id": "Go_System_hermes",
+        "name": "hermes",
+        "emoji": "🚀",
+        "role": "PhD SRE Specialist",
+        "stack": "Go",
+        "category": "System"
+    },
+    {
+        "id": "Go_System_neural",
+        "name": "neural",
+        "emoji": "🧠",
+        "role": "PhD AI Specialist",
+        "stack": "Go",
+        "category": "System"
+    },
+    {
+        "id": "Go_System_nexus",
+        "name": "nexus",
+        "emoji": "🔗",
+        "role": "PhD Orchestration Architect",
+        "stack": "Go",
+        "category": "System"
+    },
+    {
+        "id": "Go_System_spark",
+        "name": "spark",
+        "emoji": "✨",
+        "role": "PhD Engagement Expert",
+        "stack": "Go",
+        "category": "System"
+    },
+    {
+        "id": "Go_System_stream",
+        "name": "stream",
+        "emoji": "📻",
+        "role": "PhD Reactivity Expert",
+        "stack": "Go",
+        "category": "System"
+    }
+]

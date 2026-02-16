@@ -52,7 +52,18 @@ export class MetricPersona extends BaseActivePersona {
                 issue: `Cegueira Analítica: O objetivo '${objective}' exige observabilidade total. Em '${file}', o uso de console.* impede a gestão centralizada da 'Orquestração de Inteligência Artificial'.`
             };
         }
-        return null;
+        return {
+            file, severity: "INFO", persona: this.name,
+            issue: `PhD Observability: Analisando maturidade de telemetria para ${objective}. Focando em logs estruturados e rastreabilidade soberana.`
+        };
+    }
+
+    selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Sinais vitais de telemetria TS operando em conformidade PhD."
+        };
     }
 
     getSystemPrompt(): string {

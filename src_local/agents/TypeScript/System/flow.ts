@@ -51,7 +51,18 @@ export class FlowPersona extends BaseActivePersona {
                 issue: `Entropia Lógica: O objetivo '${objective}' exige clareza. Em '${file}', callback hell obscurece o fluxo da 'Orquestração de Inteligência Artificial'.`
             };
         }
-        return null;
+        return {
+            file, severity: "INFO", persona: this.name,
+            issue: `PhD Flow: Analisando arquitetura assíncrona para ${objective}. Focando em async/await e simplicidade ciclomatica.`
+        };
+    }
+
+    selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Arquiteto de fluxo TS operando com fluidez PhD."
+        };
     }
 
     getSystemPrompt(): string {

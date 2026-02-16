@@ -59,6 +59,23 @@ export class HistoryAgent {
             )
         `);
         this.db.run(`
+            CREATE TABLE IF NOT EXISTS user_activity (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                app_name TEXT,
+                category TEXT,
+                duration_seconds INTEGER
+            )
+        `);
+        this.db.run(`
+            CREATE TABLE IF NOT EXISTS memory_baseline (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                ram_percent FLOAT,
+                is_idle BOOLEAN
+            )
+        `);
+        this.db.run(`
             CREATE TABLE IF NOT EXISTS system_settings (
                 key TEXT PRIMARY KEY,
                 value TEXT

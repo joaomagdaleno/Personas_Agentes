@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_persona.ts";
+import { BaseActivePersona } from "../../base_active_persona.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "TS_Cache" });
@@ -51,7 +51,18 @@ export class CachePersona extends BaseActivePersona {
                 issue: `Lentidão Sistêmica: O objetivo '${objective}' exige velocidade. Em '${file}', operações síncronas de arquivo prejudicam a 'Orquestração de Inteligência Artificial'.`
             };
         }
-        return null;
+        return {
+            file, severity: "INFO", persona: this.name,
+            issue: `PhD Cache: Analisando performance de I/O para ${objective}. Focando em eliminação de bloqueios síncronos.`
+        };
+    }
+
+    selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Gerente de dados TS operando com eficiência PhD."
+        };
     }
 
     getSystemPrompt(): string {

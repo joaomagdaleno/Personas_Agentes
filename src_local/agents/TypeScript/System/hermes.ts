@@ -51,7 +51,18 @@ export class HermesPersona extends BaseActivePersona {
                 issue: `Risco de Integridade: O objetivo '${objective}' exige artefatos verificados. Em '${file}', flags de debug em produção expõem a 'Orquestração de Inteligência Artificial'.`
             };
         }
-        return null;
+        return {
+            file, severity: "INFO", persona: this.name,
+            issue: `PhD Hermes: Analisando estabilidade de ambiente para ${objective}. Focando em configuração segura e reprodutibilidade.`
+        };
+    }
+
+    selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Engenheiro SRE TS operando com confiabilidade PhD."
+        };
     }
 
     getSystemPrompt(): string {

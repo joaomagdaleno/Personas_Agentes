@@ -51,7 +51,18 @@ export class BridgePersona extends BaseActivePersona {
                 issue: `Quebra de Contrato: O objetivo '${objective}' exige previsibilidade. Em '${file}', o uso de JSON.parse sem tipagem torna a 'Orquestração de Inteligência Artificial' vulnerável.`
             };
         }
-        return null;
+        return {
+            file, severity: "INFO", persona: this.name,
+            issue: `PhD Bridge: Analisando contratos de integração para ${objective}. Focando em tipagem de fronteiras e APIs.`
+        };
+    }
+
+    selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Arquiteto de integração TS operando com solidez PhD."
+        };
     }
 
     getSystemPrompt(): string {

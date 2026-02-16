@@ -1,8 +1,8 @@
 import winston from "winston";
 import { FindingDeduplicator } from "../utils/finding_deduplicator.ts";
 import { Path } from "./path_utils.ts";
-import { DiscoveryAgent } from "../agents/Support/discovery_agent.ts";
-import { ValidationAgent } from "../agents/Support/validation_agent.ts";
+import { DiscoveryAgent } from "../agents/Support/Analysis/discovery_agent.ts";
+import { ValidationAgent } from "../agents/Support/Automation/validation_agent.ts";
 import { DiagnosticFinalizer } from "./diagnostic_finalizer.ts";
 
 const logger = winston.child({ module: "DiagnosticPipeline" });
@@ -40,6 +40,18 @@ export class DiagnosticPipeline {
 
         const discoveryAgent = new DiscoveryAgent(this.orc);
         let [ctx, findings] = await discoveryAgent.runDiscoveryPhase();
+
+        // 🏛️ PhD Census & Cognitive Audit (100% Deep)
+        logger.info("🏛️ [Pipeline] Validando Censo PhD e Saúde Cognitiva...");
+        const census = await this.orc.director.validatePhDCensus();
+
+        const { QualityAnalyst } = await import("../agents/Support/Diagnostics/quality_analyst.ts");
+        const qa = new QualityAnalyst();
+        const cognitive = await qa.runCognitiveAudit();
+
+        // Inject into context for reporting
+        ctx.census = census;
+        ctx.cognitive = cognitive;
 
         if (autoHeal) {
             logger.info("🩹 [Pipeline] Iniciando Ciclo de Auto-Cura Ativa...");

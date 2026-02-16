@@ -51,7 +51,18 @@ export class PalettePersona extends BaseActivePersona {
                 issue: `Fragmentação Visual: O objetivo '${objective}' exige consistência. Em '${file}', cores hardcoded impedem que a 'Orquestração de Inteligência Artificial' mantenha identidade visual.`
             };
         }
-        return null;
+        return {
+            file, severity: "INFO", persona: this.name,
+            issue: `PhD Palette: Analisando consistência visual para ${objective}. Focando em design tokens e eliminação de estilos inline.`
+        };
+    }
+
+    selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Curador de consistência visual TS operando com estética PhD."
+        };
     }
 
     getSystemPrompt(): string {

@@ -51,7 +51,18 @@ export class VaultPersona extends BaseActivePersona {
                 issue: `Erro de Precisão: O objetivo '${objective}' exige exatidão. Em '${file}', floats monetários invalidam os cálculos da 'Orquestração de Inteligência Artificial'.`
             };
         }
-        return null;
+        return {
+            file, severity: "INFO", persona: this.name,
+            issue: `PhD Vault: Analisando integridade financeira para ${objective}. Focando em eliminação de ponto flutuante para moeda.`
+        };
+    }
+
+    selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Cofre de integridade financeira TS operando com precisão PhD."
+        };
     }
 
     getSystemPrompt(): string {

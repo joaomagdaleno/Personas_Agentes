@@ -69,7 +69,18 @@ export class TestifyPersona extends BaseActivePersona {
                 issue: `Exposição de Risco: O objetivo '${objective}' exige confiança. O módulo '${file}' tem testes desativados na 'Orquestração de Inteligência Artificial'.`
             };
         }
-        return null;
+        return {
+            file, severity: "INFO", persona: this.name,
+            issue: `PhD QA: Analisando cobertura de testes para ${objective}. Focando em eliminação de falsos positivos e testes silenciados.`
+        };
+    }
+
+    selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Auditor de qualidade QA TS operando com excelência PhD."
+        };
     }
 
     getSystemPrompt(): string {

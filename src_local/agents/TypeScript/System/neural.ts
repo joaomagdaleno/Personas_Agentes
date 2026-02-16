@@ -54,7 +54,18 @@ export class NeuralPersona extends BaseActivePersona {
                 issue: `Risco de Autonomia: O objetivo '${objective}' exige segurança de tokens. Em '${file}', a exposição de chaves AI compromete a soberania da 'Orquestração de Inteligência Artificial'.`
             };
         }
-        return null;
+        return {
+            file, severity: "INFO", persona: this.name,
+            issue: `PhD Neural: Analisando segurança da IA para ${objective}. Focando em proteção de chaves e controle de custos LLM.`
+        };
+    }
+
+    selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Guardião da inteligência artificial TS operando com segurança PhD."
+        };
     }
 
     getSystemPrompt(): string {

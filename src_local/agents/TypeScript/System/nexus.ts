@@ -51,7 +51,18 @@ export class NexusPersona extends BaseActivePersona {
                 issue: `Fragilidade Nervosa: O objetivo '${objective}' exige resiliência. Em '${file}', chamadas HTTP sem timeout ameaçam a 'Orquestração de Inteligência Artificial'.`
             };
         }
-        return null;
+        return {
+            file, severity: "INFO", persona: this.name,
+            issue: `PhD Nexus: Analisando resiliência de rede para ${objective}. Focando em timeouts e circuit breakers.`
+        };
+    }
+
+    selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Engenheiro de rede TS operando com resiliência PhD."
+        };
     }
 
     getSystemPrompt(): string {

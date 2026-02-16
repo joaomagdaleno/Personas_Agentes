@@ -5,9 +5,17 @@ import { ContextEngine } from "../utils/context_engine.ts";
 import { CacheManager } from "../utils/cache_manager.ts";
 import { TaskExecutor } from "../utils/task_executor.ts";
 import { AuditEngine } from "./audit_engine.ts";
-import { DirectorPersona } from "../agents/Support/director.ts";
+import { DirectorPersona } from "../agents/TypeScript/Strategic/director.ts";
 import { StabilityLedger } from "../utils/stability_ledger.ts";
 import { HistoryAgent } from "../utils/history_agent.ts";
+import { TaskQueue } from "../utils/task_queue.ts";
+import { MemoryEngine } from "../utils/memory_engine.ts";
+import { ReflexEngine } from "./reflex_engine.ts";
+import { UpdateTransaction } from "../utils/update_transaction.ts";
+import { SystemSentinel } from "../utils/system_sentinel.ts";
+import { BehaviorAnalyst } from "../utils/behavior_analyst.ts";
+import { TaskWorker } from "../utils/task_worker.ts";
+import { MemoryPruningAgent } from "../utils/memory_pruning_agent.ts";
 
 const logger = winston.child({ module: "Orchestrator" });
 
@@ -30,6 +38,14 @@ export class Orchestrator {
     coreValidator: any;
     syntax: any;
     synthesizer: any; // HealthSynthesizer;
+    taskQueue: TaskQueue;
+    memoryEngine: MemoryEngine;
+    reflexEngine: ReflexEngine;
+    updateTransaction: UpdateTransaction;
+    sentinel: SystemSentinel;
+    behaviorAnalyst: BehaviorAnalyst;
+    worker: TaskWorker;
+    pruningAgent: MemoryPruningAgent;
 
     constructor(projectRoot: string) {
         this.projectRoot = new Path(projectRoot);
@@ -40,6 +56,14 @@ export class Orchestrator {
         this.director = new DirectorPersona(this.projectRoot.toString());
         this.stabilityLedger = new StabilityLedger(this.projectRoot.toString());
         this.historyAgent = new HistoryAgent(this.projectRoot.toString());
+        this.taskQueue = new TaskQueue(this.projectRoot.toString());
+        this.memoryEngine = new MemoryEngine(this.projectRoot.toString());
+        this.reflexEngine = new ReflexEngine(this);
+        this.updateTransaction = new UpdateTransaction();
+        this.sentinel = new SystemSentinel();
+        this.behaviorAnalyst = new BehaviorAnalyst(this.projectRoot.toString());
+        this.worker = new TaskWorker(this);
+        this.pruningAgent = new MemoryPruningAgent(this.projectRoot.toString());
 
         // Lazy loaded synthesizer below or in _initTools
         this._initEngines();
@@ -67,7 +91,7 @@ export class Orchestrator {
         this.synthesizer = {
             getTopologyIssues: (ctx: any) => [],
             synthesize360: async (ctx: any, m_orc: any, personas: any, ledger: any, qa: any) => {
-                const { HealthSynthesizer } = await import("../agents/Support/health_synthesizer.ts");
+                const { HealthSynthesizer } = await import("../agents/Support/Diagnostics/health_synthesizer.ts");
                 const syn = new HealthSynthesizer();
                 return syn.synthesize360(ctx, m_orc, personas, ledger, qa);
             }
@@ -87,13 +111,21 @@ export class Orchestrator {
         return findings;
     }
 
+    async runStagedAudit(options: { dryRun?: boolean }) {
+        logger.info("Auditoria Staged: Acionando AuditEngine...");
+        const context = { identity: { stacks: new Set(["TypeScript", "Python"]) } };
+        const [findings, startT] = await this.auditEngine.runStagedAudit(context, options.dryRun);
+        this._logPerformance(startT, "Auditoria Staged");
+        return findings;
+    }
+
     async runObfuscationScan() {
         logger.info("Scan de Ofuscação: Acionando AuditEngine...");
         return await this.auditEngine.runObfuscationScan(null);
     }
 
     async runAutoHealing(findings: any[]) {
-        const { HealerPersona } = await import("../agents/Support/healer.ts");
+        const { HealerPersona } = await import("../agents/Support/Core/healer.ts");
         const healer = new HealerPersona(this.projectRoot.toString());
         let healedCount = 0;
 
@@ -113,9 +145,37 @@ export class Orchestrator {
     }
 
     async getSystemHealth360(ctx: any, health: any, findings: any[]) {
-        // Now using the real synthesizer through the orchestrator's proxy
-        const qaData = { pyramid: {}, execution: {}, matrix: [] }; // Mock QA for now or fetch from pipeline
+        const { PyramidAnalyst } = await import("../agents/Support/Analysis/pyramid_analyst.ts");
+        const { QualityAnalyst } = await import("../agents/Support/Diagnostics/quality_analyst.ts");
+        const { TopologyGraphAgent } = await import("../agents/Support/Automation/topology_graph_agent.ts");
+
+        const pyramid = new PyramidAnalyst();
+        const quality = new QualityAnalyst();
+        const topology = new TopologyGraphAgent();
+
+        const qaData = {
+            pyramid: await pyramid.analyze(ctx.map || {}, async (p: string) => {
+                const f = this.projectRoot.join(p);
+                return await Bun.file(f.toString()).text();
+            }),
+            execution: {},
+            matrix: quality.calculateConfidenceMatrix(ctx.map || {}),
+            topology_graph: topology.generateMermaidGraph(ctx.map || {}),
+            depth_audit: ctx.depthAudit // Transferindo auditoria de profundidade para o snapshot
+        };
         return await this.synthesizer.synthesize360(ctx, this.metrics, this.personas, this.stabilityLedger, qaData);
+    }
+
+    async generateMorningBriefing() {
+        const { BriefingAgent } = await import("../agents/Support/Reporting/briefing_agent.ts");
+        const briefing = new BriefingAgent(this.projectRoot.toString());
+        return await briefing.generateMorningReport();
+    }
+
+    async runMaintenance() {
+        logger.info("🔧 Iniciando manutenção do sistema...");
+        this.pruningAgent.pruneOldLogs(30); // Prune logs older than 30 days
+        // Add more maintenance tasks here if needed
     }
 
     async generateFullDiagnostic(options: { autoHeal: boolean, dryRun?: boolean }): Promise<Path> {

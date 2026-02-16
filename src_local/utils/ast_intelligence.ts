@@ -32,6 +32,9 @@ export class ASTIntelligence {
         // 3. Dentro de uma definição técnica (Constantes de Regras, etc)
         if (this.isMetadataContext(node)) return true;
 
+        // 4. Contexto Matemático/Técnico
+        if (this.isMathContext(node)) return true;
+
         return false;
     }
 
@@ -39,11 +42,15 @@ export class ASTIntelligence {
      * Verifica se o nó é parte de uma definição de metadados/regras.
      */
     static isMetadataContext(node: ts.Node): boolean {
-        let parent = node.parent;
+        let parent: ts.Node | undefined = node.parent;
         while (parent) {
             if (ts.isVariableDeclaration(parent)) {
                 const name = parent.name.getText();
-                if (/rules|patterns|regex|manifest|metadata/i.test(name)) return true;
+                if (/rules|patterns|regex|manifest|metadata|diretriz|heuristics/i.test(name)) return true;
+            }
+            if (ts.isPropertyAssignment(parent)) {
+                const name = parent.name.getText();
+                if (/rules|patterns|regex|manifest|metadata|diretriz|heuristics/i.test(name)) return true;
             }
             parent = parent.parent;
         }
@@ -51,14 +58,30 @@ export class ASTIntelligence {
     }
 
     /**
+     * Verifica se o nó está em um contexto matemático/técnico seguro.
+     */
+    static isMathContext(node: ts.Node): boolean {
+        const techKeywords = ['alpha', 'progress', 'offset', 'dp', 'sp', 'x', 'y', 'width', 'height', 'radius', 'velocity', 'phase', 'lerp', 'sin', 'cos', 'tan', 'atan'];
+
+        let curr: ts.Node | undefined = node;
+        for (let i = 0; i < 3 && curr; i++) {
+            const currText = curr.getText().toLowerCase();
+            if (techKeywords.some(kw => new RegExp(`\\b${kw}\\b`).test(currText))) return true;
+            curr = curr.parent;
+        }
+
+        return false;
+    }
+
+    /**
      * Verifica se o nó está dentro de uma chamada de log/telemetria.
      */
     static isObservabilityContext(node: ts.Node): boolean {
-        let parent = node.parent;
+        let parent: ts.Node | undefined = node.parent;
         while (parent) {
             if (ts.isCallExpression(parent)) {
                 const expression = parent.expression.getText();
-                if (/logger|log|console|telemetry/i.test(expression)) return true;
+                if (/logger|log|console|telemetry|startMetrics|endMetrics|logPerformance/i.test(expression)) return true;
             }
             parent = parent.parent;
         }
@@ -80,6 +103,15 @@ export class ASTIntelligence {
         if (text.includes("Bun.spawn") || text.includes("Bun.$")) return true;
 
         return false;
+    }
+
+    /**
+     * Verifica se um nó é uma chamada para um dos identificadores fornecidos.
+     */
+    static isCallTo(node: ts.Node, keywords: string[]): boolean {
+        if (!ts.isCallExpression(node)) return false;
+        const expression = node.expression.getText();
+        return keywords.some(kw => expression === kw || expression.endsWith("." + kw));
     }
 
     /**

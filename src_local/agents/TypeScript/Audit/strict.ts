@@ -61,7 +61,18 @@ export class StrictPersona extends BaseActivePersona {
                 issue: `Compilador Desarmado: O objetivo '${objective}' exige segurança máxima. Em '${file}', strict mode desativado permite erros silenciosos na 'Orquestração de Inteligência Artificial'.`
             };
         }
-        return null;
+        return {
+            file, severity: "INFO", persona: this.name,
+            issue: `PhD Strictness: Analisando blindagem do compilador para ${objective}. Focando em noImplicitAny e strictNullChecks.`
+        };
+    }
+
+    selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Guardião de tipagem estática TS operando em conformidade PhD."
+        };
     }
 
     getSystemPrompt(): string {

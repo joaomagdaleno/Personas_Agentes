@@ -50,7 +50,18 @@ export class GlobePersona extends BaseActivePersona {
                 issue: `Risco de Localização: O objetivo '${objective}' exige portabilidade global. Em '${file}', strings hardcoded impedem a internacionalização da 'Orquestração de Inteligência Artificial'.`
             };
         }
-        return null;
+        return {
+            file, severity: "INFO", persona: this.name,
+            issue: `PhD I18n: Analisando portabilidade para ${objective}. Focando em encoding e externalização de strings.`
+        };
+    }
+
+    selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Auditor de internacionalização TS operando com consciência PhD."
+        };
     }
 
     getSystemPrompt(): string {

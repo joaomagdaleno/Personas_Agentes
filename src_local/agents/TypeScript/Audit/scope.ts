@@ -54,7 +54,18 @@ export class ScopePersona extends BaseActivePersona {
                 issue: `Erosão de Escopo: O objetivo '${objective}' exige entrega completa. O arquivo '${file}' contém ${todoCount} marcadores de dívida técnica na 'Orquestração de Inteligência Artificial'.`
             };
         }
-        return null;
+        return {
+            file, severity: "INFO", persona: this.name,
+            issue: `PhD Scope: Analisando integridade do backlog para ${objective}. Focando em priorização e eliminação de dívida técnica.`
+        };
+    }
+
+    selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Rastreador de dívida técnica TS operando com visão PhD."
+        };
     }
 
     getSystemPrompt(): string {

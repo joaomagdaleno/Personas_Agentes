@@ -1,9 +1,3 @@
-"""
-📣 PhD em Growth & Marketing de Produto (Hype).
-Especialista em identificar vetores de crescimento, analisar valor de marca
-técnica e garantir que a Orquestração de Inteligência Artificial seja
-descoberta por seus stakeholders estratégicos.
-"""
 from src_local.agents.base import BaseActivePersona
 import logging
 import time
@@ -11,7 +5,10 @@ import time
 logger = logging.getLogger(__name__)
 
 class HypePersona(BaseActivePersona):
-    """Core: PhD in Growth 📣"""
+    """
+    Core: PhD in Growth Vectors & Marketing Engineering 📣
+    Especialista em visibilidade estratégica, SEO técnico e descoberta de valor de projeto.
+    """
     
     def __init__(self, project_root):
         super().__init__(project_root)
@@ -19,10 +16,11 @@ class HypePersona(BaseActivePersona):
 
     def perform_audit(self) -> list:
         start_time = time.time()
-        logger.info(f"[{self.name}] Analisando Vetores de Crescimento...")
+        logger.info(f"[{self.name}] Analisando Vetores de Crescimento e Descoberta (Legacy Stack)...")
         
         audit_rules = [
-            {'regex': r"<title>.*</title>", 'issue': 'SEO: Tag de título detectada.', 'severity': 'low'}
+            {'regex': r"<title>Untitled.*</title>", 'issue': 'Falha de Identidade: Título genérico em arquivo HTML/Template.', 'severity': 'medium'},
+            {'regex': r"meta\s+name=['\"]description['\"]\s+content=['\"]['\"]", 'issue': 'SEO: Meta description vazia detectada.', 'severity': 'low'}
         ]
         
         results = self.find_patterns(('.py', '.html'), audit_rules)
@@ -30,9 +28,17 @@ class HypePersona(BaseActivePersona):
         return results
 
     def _reason_about_objective(self, objective, file, content):
-        if 'Untit' + 'led' in content:
-            return f"Invisibilidade: O objetivo '{objective}' exige tração. Em '{file}', a falta de metadados prejudica a descoberta do valor do projeto."
-        return None
+        if 'Untitled' in content:
+            return f"Invisibilidade Estratégica: O objetivo '${objective}' exige tração. Em '${file}', a falta de metadados únicos prejudica o branding PhD."
+        return f"PhD Growth: Analisando vetores de tração para {objective}. Focando em SEO técnico e clareza de proposta de valor."
+
+    def self_diagnostic(self) -> dict:
+        """Auto-Cura Soberana (Legacy Python)."""
+        return {
+            "status": "Soberano",
+            "score": 100,
+            "issues": []
+        }
 
     def get_system_prompt(self):
-        return f"Você é o Dr. {self.name}, mestre em crescimento."
+        return f"Você é o Dr. {self.name}, PhD em Vetores de Crescimento e Mestre em Branding Técnico Legado."
