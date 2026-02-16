@@ -52,9 +52,16 @@ export class HealthSynthesizer {
         logger.debug(`- Security: ${security}`);
         logger.debug(`- Excellence: ${excellence}`);
 
+        const vitals = metricsEngine.getVitals(mapData);
+
         return {
             health_score: score,
+            health_breakdown: breakdown, // Alias para compatibilidade com ReportSectionsEngine
             breakdown: breakdown,
+            dark_matter: vitals.dark_matter,
+            brittle_points: vitals.brittle_points,
+            entropy_map: mapData,
+            confidence_matrix: qaData?.matrix || {},
             objective: context.identity?.core_mission || "Manutenção de Integridade",
             timestamp: new Date().toISOString(),
             status: score > 80 ? "HEALTHY" : (score > 50 ? "WARNING" : "CRITICAL")

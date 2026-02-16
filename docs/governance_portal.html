@@ -1,0 +1,740 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏛️ PhD Governance Sentinel | Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sidebar-width: 280px;
+            --bg-deep: #06090f;
+            --bg-surface: #0d1117;
+            --bg-card: rgba(22, 27, 34, 0.7);
+            --accent: #58a6ff;
+            --accent-glow: rgba(88, 166, 255, 0.3);
+            --success: #3fb950;
+            --warning: #d29922;
+            --danger: #f85149;
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --border: rgba(255, 255, 255, 0.1);
+            --glass: blur(12px);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bg-surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            z-index: 100;
+        }
+
+        .brand {
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 48px;
+        }
+
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-link {
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-link:hover {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-link.active {
+            color: var(--accent);
+            background-color: rgba(88, 166, 255, 0.1);
+            border: 1px solid var(--border);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--success);
+            box-shadow: 0 0 10px var(--success);
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            padding: 48px;
+            overflow-y: auto;
+            background: linear-gradient(135deg, var(--bg-deep) 0%, #0a0d14 100%);
+        }
+
+        .screen {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .screen.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Glass Cards */
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        h1, h2, h3 { color: white; margin-top: 0; }
+        h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 32px; }
+        h2 { font-size: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-top: 40px; }
+
+        /* Tables & Lists */
+        table { width: 100%; border-collapse: collapse; margin: 24px 0; }
+        th { text-align: left; color: var(--text-secondary); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; padding: 12px; border-bottom: 1px solid var(--border); }
+        td { padding: 16px 12px; border-bottom: 1px solid var(--border); font-size: 0.93rem; }
+        code { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; background: rgba(88, 166, 255, 0.1); color: var(--accent); padding: 3px 6px; border-radius: 4px; }
+
+        /* Specialized components */
+        .grid-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-bottom: 48px; }
+        .stat-box { background: var(--bg-card); border: 1px solid var(--border); padding: 24px; border-radius: 12px; text-align: center; }
+        .stat-value { font-size: 2rem; font-weight: 800; color: white; }
+        .stat-label { font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; }
+
+        blockquote { border-left: 4px solid var(--accent); background: rgba(88, 166, 255, 0.05); margin: 24px 0; padding: 16px 24px; border-radius: 0 12px 12px 0; }
+        
+        /* Hide MD elements we'll swap locally */
+        #md-source { display: none; }
+
+        /* Typography */
+        p { color: var(--text-secondary); line-height: 1.7; }
+        li { margin-bottom: 12px; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #484f58; }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="status-dot"></div>
+            SENTINEL PHD
+        </div>
+        <nav class="nav-items">
+            <a class="nav-link active" onclick="showScreen('dashboard')">📊 Dashboard</a>
+            <a class="nav-link" onclick="showScreen('governance')">⚖️ Governança</a>
+            <a class="nav-link" onclick="showScreen('findings')">🚩 Achados</a>
+            <a class="nav-link" onclick="showScreen('topology')">🗺️ Topologia</a>
+        </nav>
+        <div style="flex:1"></div>
+        <div style="font-size: 0.7rem; color: var(--text-secondary); opacity: 0.5;">
+            v1.4.0-SOVEREIGN<br>
+            BUN SIMD ACCEL
+        </div>
+    </aside>
+
+    <main class="main">
+        <!-- Root for MD parser -->
+        <div id="md-source"><h1>🏛️ RELATÓRIO SISTÊMICO</h1>
+<blockquote>
+<p><strong>Status Operacional:</strong> 🔴 <code>CRÍTICO</code>
+<strong>Ambiente:</strong> <code>TS-MASTER-CONTROL</code></p>
+<p>💀 <code>SITUAÇÃO: COLAPSO DE INTEGRIDADE</code></p>
+</blockquote>
+<hr />
+<h2>🧬 SINCRONIA DE IDENTIDADE</h2>
+<table>
+<thead>
+<tr><th align="left">Métrica</th><th align="center">Dashboard Visual</th><th align="left">Status Operacional</th></tr>
+</thead>
+<tbody>
+<tr><td align="left"><strong>Integridade Geral</strong></td><td align="center"><code>░░░░░░░░░░░░░░░ 0%</code></td><td align="left">🔴 <code>CRÍTICO</code></td></tr>
+<tr><td align="left"><strong>Alertas Ativos</strong></td><td align="center"><code>139 Achados</code></td><td align="left">🔵 <code>MONITORADO</code></td></tr>
+<tr><td align="left"><strong>Último Check</strong></td><td align="center"><code>16:19:39</code></td><td align="left">🟢 <code>ATIVA</code></td></tr>
+</tbody>
+</table>
+<h3>📊 DECOMPOSIÇÃO DA SAÚDE (PILARES)</h3>
+<table>
+<thead>
+<tr><th align="left">Pilar</th><th align="center">Score</th><th align="left">Máx</th><th align="left">Status</th></tr>
+</thead>
+<tbody>
+<tr><td align="left">Stability</td><td align="center"><code>0</code></td><td align="left">40</td><td align="left">🟡 <code>ATENÇÃO</code></td></tr>
+<tr><td align="left">Purity</td><td align="center"><code>0</code></td><td align="left">20</td><td align="left">🟡 <code>ATENÇÃO</code></td></tr>
+<tr><td align="left">Observability</td><td align="center"><code>7</code></td><td align="left">15</td><td align="left">🟡 <code>ATENÇÃO</code></td></tr>
+<tr><td align="left">Security</td><td align="center"><code>15</code></td><td align="left">15</td><td align="left">🟢 <code>ESTÁVEL</code></td></tr>
+<tr><td align="left">Excellence</td><td align="center"><code>10</code></td><td align="left">10</td><td align="left">🟢 <code>ESTÁVEL</code></td></tr>
+</tbody>
+</table>
+<h3>⚖️ DIRETRIZES DE GOVERNANÇA PHD</h3>
+<table>
+<thead>
+<tr><th align="left">Ativo</th><th align="center">Nível de Compliance</th><th align="left">Status de Veto</th></tr>
+</thead>
+<tbody>
+<tr><td align="left"><code>SISTEMA-ALFA</code></td><td align="center">💎 <code>SOVEREIGN</code></td><td align="left">✅ <code>LIBERADO</code></td></tr>
+</tbody>
+</table>
+<p><strong>Diretrizes Ativas:</strong></p>
+<ul>
+<li>Manter paridade absoluta</li>
+<li>Zero débito técnico</li>
+</ul>
+<h2>🩺 SINAIS VITAIS DO PRODUTO</h2>
+<blockquote>
+<table>
+<thead>
+<tr><th align="left">Métrica</th><th align="center">Valor</th><th align="left">Status</th></tr>
+</thead>
+<tbody>
+<tr><td align="left">Pontos Cegos</td><td align="center">50 Arq.</td><td align="left">🔴 <code>CRÍTICO</code></td></tr>
+<tr><td align="left">Fragilidades</td><td align="center">19 Pts.</td><td align="left">🔴 <code>RISCO</code></td></tr>
+<tr><td align="left">Integridade</td><td align="center">COLAPSO</td><td align="left">⚙️ <code>SISTEMA</code></td></tr>
+</tbody>
+</table>
+</blockquote>
+<h3>🗺️ ROADMAP PARA 100% (REQUISITOS)</h3>
+<ul>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled><strong>Injetar Telemetria</strong>: Universalizar <code>log_performance</code> em utilitários e scripts.</li>
+</ul>
+<h2>🗺️ TOPOLOGIA DE SINCRONIA (NEURAL BRIDGE)</h2>
+<table>
+<thead>
+<tr><th align="left">Segmento</th><th align="center">Identificador</th><th align="left">Bridge Status</th></tr>
+</thead>
+<tbody>
+<tr><td align="left"><strong>Active Branch</strong></td><td align="center"><code>main</code></td><td align="left">🟢 <code>SYNC-OK</code></td></tr>
+<tr><td align="left"><strong>Upstream</strong></td><td align="center"><code>origin/main</code></td><td align="left">🔗 <code>CONECTADO</code></td></tr>
+<tr><td align="left"><strong>Phased Sync</strong></td><td align="center"><code>LUCID-DREAMING</code></td><td align="left">⚡ <code>ACTIVE</code></td></tr>
+</tbody>
+</table>
+<h2>🌪️ MAPA DE ENTROPIA &amp; ACOPLAMENTO</h2>
+<blockquote>
+<table>
+<thead>
+<tr><th align="left">Componente</th><th align="center">Complex.</th><th align="left">Instabilidade (Prob.)</th></tr>
+</thead>
+<tbody>
+<tr><td align="left"><code>parity_utils.ts</code></td><td align="center"><code>54</code></td><td align="left"><code>███░░ 50%</code></td></tr>
+<tr><td align="left"><code>report_sections_engine.ts</code></td><td align="center"><code>50</code></td><td align="left"><code>███░░ 50%</code></td></tr>
+<tr><td align="left"><code>phd_governance_system.ts</code></td><td align="center"><code>50</code></td><td align="left"><code>█████ 100%</code></td></tr>
+<tr><td align="left"><code>parity_analyst.ts</code></td><td align="center"><code>48</code></td><td align="left"><code>████░ 75%</code></td></tr>
+<tr><td align="left"><code>source_code_parser.ts</code></td><td align="center"><code>47</code></td><td align="left"><code>██░░░ 33%</code></td></tr>
+<tr><td align="left"><code>deep_disparity_scanner.ts</code></td><td align="center"><code>44</code></td><td align="left"><code>█████ 100%</code></td></tr>
+<tr><td align="left"><code>discovery_agent.ts</code></td><td align="center"><code>40</code></td><td align="left"><code>████░ 88%</code></td></tr>
+<tr><td align="left"><code>audit_expert_engine.ts</code></td><td align="center"><code>40</code></td><td align="left"><code>███░░ 50%</code></td></tr>
+<tr><td align="left"><code>ast_intelligence.ts</code></td><td align="center"><code>38</code></td><td align="left"><code>██░░░ 33%</code></td></tr>
+<tr><td align="left"><code>depth_intelligence.ts</code></td><td align="center"><code>38</code></td><td align="left"><code>████░ 75%</code></td></tr>
+<tr><td align="left"><code>shadow_tray.py</code></td><td align="center"><code>36</code></td><td align="left"><code>█████ 100%</code></td></tr>
+<tr><td align="left"><code>audit_engine.ts</code></td><td align="center"><code>36</code></td><td align="left"><code>███░░ 67%</code></td></tr>
+<tr><td align="left"><code>logic_auditor.ts</code></td><td align="center"><code>33</code></td><td align="left"><code>████░ 75%</code></td></tr>
+<tr><td align="left"><code>markdown_sanitizer.ts</code></td><td align="center"><code>33</code></td><td align="left"><code>███░░ 67%</code></td></tr>
+<tr><td align="left"><code>base.ts</code></td><td align="center"><code>28</code></td><td align="left"><code>░░░░░ 2%</code></td></tr>
+</tbody>
+</table>
+</blockquote>
+<h2>🧪 MATRIZ DE CONFIANÇA</h2>
+<table>
+<thead>
+<tr><th align="left">Componente</th><th align="center">Entropia</th><th align="left">Asserções</th><th align="left">Status de Teste</th></tr>
+</thead>
+<tbody>
+<tr><td align="left"><code>parity_utils.ts</code></td><td align="center"><code>54</code></td><td align="left"><code>0</code></td><td align="left">🔴 <code>FRÁGIL</code></td></tr>
+<tr><td align="left"><code>report_sections_engine.ts</code></td><td align="center"><code>50</code></td><td align="left"><code>2</code></td><td align="left">🔴 <code>FRÁGIL</code></td></tr>
+<tr><td align="left"><code>phd_governance_system.ts</code></td><td align="center"><code>50</code></td><td align="left"><code>0</code></td><td align="left">🔴 <code>FRÁGIL</code></td></tr>
+<tr><td align="left"><code>parity_analyst.ts</code></td><td align="center"><code>48</code></td><td align="left"><code>2</code></td><td align="left">🔴 <code>FRÁGIL</code></td></tr>
+<tr><td align="left"><code>source_code_parser.ts</code></td><td align="center"><code>47</code></td><td align="left"><code>32</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>deep_disparity_scanner.ts</code></td><td align="center"><code>44</code></td><td align="left"><code>0</code></td><td align="left">🔴 <code>FRÁGIL</code></td></tr>
+<tr><td align="left"><code>discovery_agent.ts</code></td><td align="center"><code>40</code></td><td align="left"><code>1</code></td><td align="left">🔴 <code>FRÁGIL</code></td></tr>
+<tr><td align="left"><code>audit_expert_engine.ts</code></td><td align="center"><code>40</code></td><td align="left"><code>0</code></td><td align="left">🔴 <code>FRÁGIL</code></td></tr>
+<tr><td align="left"><code>ast_intelligence.ts</code></td><td align="center"><code>38</code></td><td align="left"><code>0</code></td><td align="left">🔴 <code>FRÁGIL</code></td></tr>
+<tr><td align="left"><code>depth_intelligence.ts</code></td><td align="center"><code>38</code></td><td align="left"><code>0</code></td><td align="left">🔴 <code>FRÁGIL</code></td></tr>
+<tr><td align="left"><code>shadow_tray.py</code></td><td align="center"><code>36</code></td><td align="left"><code>2</code></td><td align="left">🔴 <code>FRÁGIL</code></td></tr>
+<tr><td align="left"><code>audit_engine.ts</code></td><td align="center"><code>36</code></td><td align="left"><code>3</code></td><td align="left">🔴 <code>FRÁGIL</code></td></tr>
+<tr><td align="left"><code>logic_auditor.ts</code></td><td align="center"><code>33</code></td><td align="left"><code>4</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>markdown_sanitizer.ts</code></td><td align="center"><code>33</code></td><td align="left"><code>11</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>base.ts</code></td><td align="center"><code>28</code></td><td align="left"><code>11</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>bridge_orchestrator.py</code></td><td align="center"><code>28</code></td><td align="left"><code>0</code></td><td align="left">🔴 <code>FRÁGIL</code></td></tr>
+<tr><td align="left"><code>system_sentinel.ts</code></td><td align="center"><code>27</code></td><td align="left"><code>0</code></td><td align="left">🔴 <code>FRÁGIL</code></td></tr>
+<tr><td align="left"><code>battle_plan_formatter.ts</code></td><td align="center"><code>26</code></td><td align="left"><code>9</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>context_engine.ts</code></td><td align="center"><code>26</code></td><td align="left"><code>27</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>file_system_scanner.ts</code></td><td align="center"><code>26</code></td><td align="left"><code>13</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>maintenance_engine_phd.ts</code></td><td align="center"><code>26</code></td><td align="left"><code>6</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>update_imports.ts</code></td><td align="center"><code>26</code></td><td align="left"><code>0</code></td><td align="left">🔴 <code>FRÁGIL</code></td></tr>
+<tr><td align="left"><code>silent_error_detector.ts</code></td><td align="center"><code>23</code></td><td align="left"><code>5</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>structural_analyst.ts</code></td><td align="center"><code>23</code></td><td align="left"><code>16</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>director.ts</code></td><td align="center"><code>23</code></td><td align="left"><code>6</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>voyager.ts</code></td><td align="center"><code>23</code></td><td align="left"><code>4</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>healer.ts</code></td><td align="center"><code>22</code></td><td align="left"><code>5</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>markdown_auditor.ts</code></td><td align="center"><code>22</code></td><td align="left"><code>0</code></td><td align="left">🔴 <code>FRÁGIL</code></td></tr>
+<tr><td align="left"><code>dependency_auditor.ts</code></td><td align="center"><code>22</code></td><td align="left"><code>9</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>structural_auditor_supreme.ts</code></td><td align="center"><code>21</code></td><td align="left"><code>0</code></td><td align="left">🔴 <code>FRÁGIL</code></td></tr>
+<tr><td align="left"><code>language_persona_orchestrator.ts</code></td><td align="center"><code>20</code></td><td align="left"><code>0</code></td><td align="left">🔴 <code>FRÁGIL</code></td></tr>
+<tr><td align="left"><code>obfuscation_cleaner_engine.ts</code></td><td align="center"><code>19</code></td><td align="left"><code>2</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>strict.ts</code></td><td align="center"><code>19</code></td><td align="left"><code>0</code></td><td align="left">🔴 <code>FRÁGIL</code></td></tr>
+<tr><td align="left"><code>activate-phase.ts</code></td><td align="center"><code>18</code></td><td align="left"><code>0</code></td><td align="left">🔴 <code>FRÁGIL</code></td></tr>
+<tr><td align="left"><code>safety_supreme_judge.ts</code></td><td align="center"><code>18</code></td><td align="left"><code>0</code></td><td align="left">🔴 <code>FRÁGIL</code></td></tr>
+<tr><td align="left"><code>html_portal_generator.ts</code></td><td align="center"><code>18</code></td><td align="left"><code>0</code></td><td align="left">🔴 <code>FRÁGIL</code></td></tr>
+<tr><td align="left"><code>topology_engine.ts</code></td><td align="center"><code>18</code></td><td align="left"><code>9</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>run-diagnostic.ts</code></td><td align="center"><code>17</code></td><td align="left"><code>0</code></td><td align="left">🔴 <code>FRÁGIL</code></td></tr>
+<tr><td align="left"><code>audit_risk_engine.ts</code></td><td align="center"><code>17</code></td><td align="left"><code>5</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>quality_analyst.ts</code></td><td align="center"><code>17</code></td><td align="left"><code>9</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>probe.ts</code></td><td align="center"><code>17</code></td><td align="left"><code>2</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>hype.ts</code></td><td align="center"><code>17</code></td><td align="left"><code>2</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>scribe.ts</code></td><td align="center"><code>17</code></td><td align="left"><code>2</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>stability_ledger.ts</code></td><td align="center"><code>17</code></td><td align="left"><code>8</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>healer_persona.ts</code></td><td align="center"><code>16</code></td><td align="left"><code>0</code></td><td align="left">🔴 <code>FRÁGIL</code></td></tr>
+<tr><td align="left"><code>validator.ts</code></td><td align="center"><code>16</code></td><td align="left"><code>3</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>finding_deduplicator.ts</code></td><td align="center"><code>16</code></td><td align="left"><code>4</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>hype.ts</code></td><td align="center"><code>15</code></td><td align="left"><code>2</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+<tr><td align="left"><code>topology_graph_agent.ts</code></td><td align="center"><code>15</code></td><td align="left"><code>1</code></td><td align="left">🔴 <code>FRÁGIL</code></td></tr>
+<tr><td align="left"><code>penalty_engine.ts</code></td><td align="center"><code>15</code></td><td align="left"><code>3</code></td><td align="left">🟢 <code>PROFUNDO</code></td></tr>
+</tbody>
+</table>
+<h2>🎯 PLANO DE BATALHA: DIRETRIZES DE ENGENHARIA</h2>
+<table>
+<thead>
+<tr><th align="left">Severidade</th><th align="center">Qtd.</th><th align="left">Impacto Estratégico</th><th align="left">Status de Resposta</th></tr>
+</thead>
+<tbody>
+<tr><td align="left"><strong>CRITICAL</strong></td><td align="center"><code>0</code></td><td align="left">🔴 <code>BLOQUEANTE</code></td><td align="left">🟢 <code>LIVRE</code></td></tr>
+<tr><td align="left"><strong>HIGH</strong></td><td align="center"><code>83</code></td><td align="left">🟡 <code>RISCO ALTO</code></td><td align="left">🟡 <code>PRIORIDADE</code></td></tr>
+<tr><td align="left"><strong>MEDIUM</strong></td><td align="center"><code>14</code></td><td align="left">🔵 <code>DÉBITO TÉC.</code></td><td align="left">🔵 <code>EM FILA</code></td></tr>
+</tbody>
+</table>
+<hr />
+<h2>🚩 ACHADOS DETALHADOS</h2>
+<blockquote>
+<h3>🔵 <code>NEUTRO</code> [1] <code>System/bridge.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/System/bridge.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'bridge.py' para 'bridge.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [2] <code>System/flow.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/System/flow.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'flow.py' para 'flow.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [3] <code>Audit/testify.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/Audit/testify.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'testify.py' para 'testify.ts' está SHALLOW. Faltam 6 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [4] <code>System/cache.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/System/cache.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'cache.py' para 'cache.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [5] <code>Audit/nebula.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/Audit/nebula.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'nebula.py' para 'nebula.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [6] <code>Audit/bolt.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/Audit/bolt.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'bolt.py' para 'bolt.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [7] <code>System/hermes.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/System/hermes.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'hermes.py' para 'hermes.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [8] <code>Audit/metric.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/Audit/metric.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'metric.py' para 'metric.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [9] <code>System/neural.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/System/neural.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'neural.py' para 'neural.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [10] <code>System/nexus.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/System/nexus.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'nexus.py' para 'nexus.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [11] <code>Audit/probe.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/Audit/probe.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'probe.py' para 'probe.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [12] <code>System/spark.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/System/spark.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'spark.py' para 'spark.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [13] <code>Audit/scale.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/Audit/scale.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'scale.py' para 'scale.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [14] <code>Audit/scope.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/Audit/scope.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'scope.py' para 'scope.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [15] <code>System/stream.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/System/stream.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'stream.py' para 'stream.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [16] <code>Content/mantra.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/Content/mantra.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'mantra.py' para 'mantra.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [17] <code>Strategic/warden.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/Strategic/warden.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'warden.py' para 'warden.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [18] <code>Content/palette.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/Content/palette.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'palette.py' para 'palette.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [19] <code>Content/echo.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/Content/echo.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'echo.py' para 'echo.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [20] <code>Content/scribe.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/Content/scribe.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'scribe.py' para 'scribe.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [21] <code>Strategic/sentinel.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/Strategic/sentinel.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'sentinel.py' para 'sentinel.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [22] <code>Content/forge.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/Content/forge.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'forge.py' para 'forge.ts' está SHALLOW. Faltam 4 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [23] <code>Strategic/vault.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/Strategic/vault.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'vault.py' para 'vault.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [24] <code>Content/globe.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/Content/globe.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'globe.py' para 'globe.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [25] <code>Strategic/voyager.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/Strategic/voyager.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'voyager.py' para 'voyager.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [26] <code>Content/hype.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/Content/hype.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'hype.py' para 'hype.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [27] <code>Audit/metric.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/Audit/metric.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'metric.py' para 'metric.ts' está SHALLOW. Faltam 4 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [28] <code>Audit/testify.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/Audit/testify.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'testify.py' para 'testify.ts' está SHALLOW. Faltam 7 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [29] <code>Strategic/director.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Go/Strategic/director.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'director.py' para 'director.ts' está SHALLOW. Faltam 5 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [30] <code>Strategic/voyager.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Bun/Strategic/voyager.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'voyager.py' para 'voyager.ts' está SHALLOW. Faltam 5 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [31] <code>core/audit_engine.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/core/audit_engine.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'audit_engine.py' para 'audit_engine.ts' está PARITY_GAPS. Faltam 1 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [32] <code>Diagnostics/audit_risk_engine.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Support/Diagnostics/audit_risk_engine.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'audit_risk_engine.py' para 'audit_risk_engine.ts' está SHALLOW. Faltam 2 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [33] <code>utils/audit_expert_engine.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/utils/audit_expert_engine.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'audit_scanner_engine.py' para 'audit_expert_engine.ts' está SHALLOW. Faltam 6 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [34] <code>Reporting/battle_plan_sections_engine.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Support/Reporting/battle_plan_sections_engine.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'battle_plan_sections_engine.py' para 'battle_plan_sections_engine.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [35] <code>Security/safety_supreme_judge.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Support/Security/safety_supreme_judge.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'call_safety_judge.py' para 'safety_supreme_judge.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [36] <code>Reporting/battle_plan_formatter.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Support/Reporting/battle_plan_formatter.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'battle_plan_formatter.py' para 'battle_plan_formatter.ts' está SHALLOW. Faltam 5 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [37] <code>tests/test_briefing_agent.py</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>tests\test_briefing_agent.py</code></li>
+<li><strong>Causa:</strong> Arquivo 'briefing_agent.py' reconhecido como arquivado/manutenção em 'tests\test_briefing_agent.py'.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [38] <code>Analysis/coverage_auditor.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Support/Analysis/coverage_auditor.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'coverage_auditor.py' para 'coverage_auditor.ts' está PARITY_GAPS. Faltam 1 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [39] <code>Analysis/component_classifier.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Support/Analysis/component_classifier.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'component_classifier.py' para 'component_classifier.ts' está SHALLOW. Faltam 8 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [40] <code>Analysis/connectivity_mapper.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Support/Analysis/connectivity_mapper.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'connectivity_mapper.py' para 'connectivity_mapper.ts' está PARITY_GAPS. Faltam 1 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [41] <code>Analysis/structural_auditor_supreme.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Support/Analysis/structural_auditor_supreme.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'code_inspector_agent.py' para 'structural_auditor_supreme.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [42] <code>Diagnostics/diagnostic_strategist.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Support/Diagnostics/diagnostic_strategist.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'diagnostic_strategist.py' para 'diagnostic_strategist.ts' está SHALLOW. Faltam 2 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [43] <code>Automation/infrastructure_assembler.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Support/Automation/infrastructure_assembler.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'infrastructure_assembler.py' para 'infrastructure_assembler.ts' está SHALLOW. Faltam 2 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [44] <code>tests/test_discovery_agent.py</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>tests\test_discovery_agent.py</code></li>
+<li><strong>Causa:</strong> Arquivo 'discovery_agent.py' reconhecido como arquivado/manutenção em 'tests\test_discovery_agent.py'.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [45] <code>Analysis/dna_profiler.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Support/Analysis/dna_profiler.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'dna_profiler.py' para 'dna_profiler.ts' está PARITY_GAPS. Faltam 1 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [46] <code>utils/git_client.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/utils/git_client.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'git_automaton.py' para 'git_client.ts' está SHALLOW. Faltam 4 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [47] <code>Core/healer.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Support/Core/healer.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'healer.py' para 'healer.ts' está SHALLOW. Faltam 4 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [48] <code>Diagnostics/health_synthesizer.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Support/Diagnostics/health_synthesizer.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'health_synthesizer.py' para 'health_synthesizer.ts' está SHALLOW. Faltam 8 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [49] <code>Reporting/markdown_sanitizer.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Support/Reporting/markdown_sanitizer.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'markdown_sanitizer.py' para 'markdown_sanitizer.ts' está SHALLOW. Faltam 3 unidades.</li>
+</ul>
+<h3>🔵 <code>NEUTRO</code> [50] <code>Analysis/logic_auditor.ts</code></h3>
+<ul>
+<li><strong>Local:</strong> <code>src_local/agents/Support/Analysis/logic_auditor.ts</code></li>
+<li><strong>Causa:</strong> A migração de 'logic_auditor.py' para 'logic_auditor.ts' está SHALLOW. Faltam 4 unidades.</li>
+</ul>
+<p>... e mais 89 achados omitidos para densidade.</p>
+</blockquote>
+<h2>💀 Risco Existencial</h2>
+<blockquote>
+<p>Autoconsciência nativa ativa. Governança PhD em vigor.</p>
+</blockquote>
+</div>
+
+        <!-- Dashboard Screen -->
+        <section id="dashboard" class="screen active">
+            <h1>Visão Geral do Sistema</h1>
+            <div class="grid-stats">
+                <div class="stat-box">
+                    <div id="health-val" class="stat-value">--</div>
+                    <div class="stat-label">SAÚDE SISTÊMICA</div>
+                </div>
+                <div class="stat-box">
+                    <div id="findings-count" class="stat-value">--</div>
+                    <div class="stat-label">ALERTAS ATIVOS</div>
+                </div>
+                <div class="stat-box">
+                    <div id="compliance-level" class="stat-value" style="color:var(--accent)">--</div>
+                    <div class="stat-label">COMPLIANCE PHD</div>
+                </div>
+            </div>
+            
+            <div class="card" id="main-metrics-root">
+                <!-- Swapped via JS from MD -->
+            </div>
+        </section>
+
+        <!-- Governance Screen -->
+        <section id="governance" class="screen">
+            <h1>Diretrizes & Governança</h1>
+            <div id="governance-root"></div>
+        </section>
+
+        <!-- Findings Screen -->
+        <section id="findings" class="screen">
+            <h1>Audit Log & Achados</h1>
+            <div id="findings-root"></div>
+        </section>
+
+        <!-- Topology Screen -->
+        <section id="topology" class="screen">
+            <h1>Topology & Sync Status</h1>
+            <div id="topology-root"></div>
+        </section>
+    </main>
+
+    <script>
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // 🧠 Dynamic Data Extraction from SIMD-rendered Markdown
+        function bootstrap() {
+            const source = document.getElementById('md-source');
+            
+            // Extract Metrics
+            const h1 = source.querySelector('h1');
+            const metricsTable = source.querySelector('table');
+            if (metricsTable) {
+                document.getElementById('main-metrics-root').appendChild(metricsTable.cloneNode(true));
+                const healthTd = Array.from(metricsTable.querySelectorAll('td')).find(td => td.innerText.includes('Integridade Geral'));
+                if (healthTd) {
+                    const next = healthTd.nextElementSibling;
+                    document.getElementById('health-val').innerText = next.innerText.split(' ').pop();
+                }
+                const findingsTd = Array.from(metricsTable.querySelectorAll('td')).find(td => td.innerText.includes('Alertas Ativos'));
+                if (findingsTd) {
+                    document.getElementById('findings-count').innerText = findingsTd.nextElementSibling.innerText.split(' ')[0];
+                }
+            }
+
+            // Extract Governance
+            const govHeaders = Array.from(source.querySelectorAll('h3')).filter(h => h.innerText.includes('DIRETRIZES'));
+            if (govHeaders.length) {
+                const root = document.getElementById('governance-root');
+                govHeaders.forEach(h => {
+                    let next = h.nextElementSibling;
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.appendChild(h.cloneNode(true));
+                    while(next && next.tagName !== 'H2' && next.tagName !== 'H3') {
+                        card.appendChild(next.cloneNode(true));
+                        next = next.nextElementSibling;
+                    }
+                    root.appendChild(card);
+                });
+            }
+
+            // Extract Findings
+            const findingsHeader = Array.from(source.querySelectorAll('h2')).find(h => h.innerText.includes('ACHADOS'));
+            if (findingsHeader) {
+                const root = document.getElementById('findings-root');
+                let next = findingsHeader.nextElementSibling;
+                while(next && next.tagName !== 'H2') {
+                    if (next.tagName === 'BLOCKQUOTE') {
+                        const card = document.createElement('div');
+                        card.className = 'card';
+                        card.style.padding = '20px';
+                        card.appendChild(next.cloneNode(true));
+                        root.appendChild(card);
+                    }
+                    next = next.nextElementSibling;
+                }
+            }
+
+            // Extract Topology
+            const topologyHeader = Array.from(source.querySelectorAll('h2')).find(h => h.innerText.includes('TOPOLOGIA'));
+            if (topologyHeader) {
+                const root = document.getElementById('topology-root');
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.appendChild(topologyHeader.cloneNode(true));
+                let next = topologyHeader.nextElementSibling;
+                while(next && next.tagName !== 'H2') {
+                    card.appendChild(next.cloneNode(true));
+                    next = next.nextElementSibling;
+                }
+                root.appendChild(card);
+            }
+
+            // Auto-populate compliance
+            const compTd = Array.from(source.querySelectorAll('td')).find(td => td.innerText.includes('Compliance'));
+            if (compTd) {
+                document.getElementById('compliance-level').innerText = compTd.nextElementSibling.innerText.split(' ').pop();
+            }
+        }
+
+        window.onload = bootstrap;
+    </script>
+</body>
+</html>
+        

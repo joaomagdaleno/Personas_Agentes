@@ -45,6 +45,7 @@ func analyzeFile(path string, root string, isLegacy bool) (FileAnalysis, error) 
 	analysis := FileAnalysis{
 		Path:   rel,
 		Exists: true,
+		Units:  []AtomicUnit{},
 	}
 
 	scanner := bufio.NewScanner(file)
@@ -101,14 +102,17 @@ func main() {
 	legacyPtr := flag.Bool("legacy", false, "Scan as legacy Python files")
 	flag.Parse()
 
-	var results []FileAnalysis
+	var results = []FileAnalysis{}
 	var mu sync.Mutex
 	var wg sync.WaitGroup
 
 	err := filepath.Walk(*dirPtr, func(path string, info os.FileInfo, err error) error {
 		if err != nil || info.IsDir() {
-			if info != nil && (info.Name() == "node_modules" || info.Name() == "__pycache__" || strings.HasPrefix(info.Name(), ".")) {
-				return filepath.SkipDir
+			if info != nil {
+				name := info.Name()
+				if name == "node_modules" || name == "__pycache__" || (strings.HasPrefix(name, ".") && name != ".") {
+					return filepath.SkipDir
+				}
 			}
 			return nil
 		}

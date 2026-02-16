@@ -54,4 +54,27 @@ export class ScoringMetricsEngine {
         const score = (kdoc / Math.max(1, total)) * 10;
         return [score, kdoc];
     }
+
+    /**
+     * Identifica Pontos Cegos (Dark Matter) e Fragilidades.
+     */
+    getVitals(mapData: Record<string, any>): { dark_matter: string[], brittle_points: string[] } {
+        const coreTypes = ["AGENT", "CORE", "LOGIC", "UTIL"];
+        const dark_matter: string[] = [];
+        const brittle_points: string[] = [];
+
+        for (const [file, info] of Object.entries(mapData)) {
+            const isRelevant = coreTypes.includes(info.component_type) || 
+                               (info.complexity > 1 && !["DOC", "INTERFACE", "TEST"].includes(info.component_type));
+            
+            if (isRelevant && !info.has_test) {
+                dark_matter.push(file);
+                if (info.complexity > 10) {
+                    brittle_points.push(file);
+                }
+            }
+        }
+
+        return { dark_matter, brittle_points };
+    }
 }

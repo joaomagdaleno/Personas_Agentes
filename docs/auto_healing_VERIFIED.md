@@ -1,456 +1,400 @@
 # 🏛️ RELATÓRIO SISTÊMICO
 
-## Resumo
+> **Status Operacional:** 🔴 `CRÍTICO`
+> **Ambiente:** `TS-MASTER-CONTROL`
+>
+> 💀 `SITUAÇÃO: COLAPSO DE INTEGRIDADE`
 
-Score: 0%
-Achados: 429
+---
 
-## Saúde
+## 🧬 SINCRONIA DE IDENTIDADE
 
-```json
-{
-  "health_score": 0,
-  "breakdown": {
-    "Stability (Coverage)": 0,
-    "Purity (Complexity)": 0,
-    "Observability (Telemetry)": 6.6,
-    "Security (Vulnerabilities)": 15,
-    "Excellence (Documentation)": 10
-  },
-  "objective": "Manutenção de Integridade",
-  "timestamp": "2026-02-16T15:32:15.753Z",
-  "status": "CRITICAL"
-}
-```
+| Métrica | Dashboard Visual | Status Operacional |
+| :--- | :--- | :--- |
+| **Integridade Geral** | `0%` | 🔴 `CRÍTICO` |
+| **Alertas Ativos** | `139 Achados` | 🔵 `MONITORADO` |
+| **Último Check** | `16:37:22` | 🟢 `ATIVA` |
 
-## Achados Detalhados
+### 📊 DECOMPOSIÇÃO DA SAÚDE (PILARES)
 
-- [CRITICAL] **src_local/legacy_archive/6dec891_main_gui.py**: Arquivo legacy_archive/6dec891_main_gui.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/legacy_archive/6dec891_parallel_test.py**: Arquivo legacy_archive/6dec891_parallel_test.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/legacy_archive/chat_view_legacy.py**: Arquivo legacy_archive/chat_view_legacy.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/legacy_archive/cli_legacy.py**: Arquivo legacy_archive/cli_legacy.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/legacy_archive/6dec891_gui.py**: Arquivo legacy_archive/6dec891_gui.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/legacy_archive/dashboard_legacy.py**: Arquivo legacy_archive/dashboard_legacy.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/legacy_archive/dashboard_view_legacy.py**: Arquivo legacy_archive/dashboard_view_legacy.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/legacy_archive/cognitive_engine_legacy.py**: Arquivo legacy_archive/cognitive_engine_legacy.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/legacy_archive/health_gauge_legacy.py**: Arquivo legacy_archive/health_gauge_legacy.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/legacy_archive/gui_legacy.py**: Arquivo legacy_archive/gui_legacy.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/legacy_archive/cognitive_engine_legacy_v2.py**: Arquivo legacy_archive/cognitive_engine_legacy_v2.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/scripts/benchmark_tests.py**: Arquivo scripts/benchmark_tests.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/legacy_archive/gui_native_legacy.py**: Arquivo legacy_archive/gui_native_legacy.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/legacy_archive/test_runner_legacy.py**: Arquivo legacy_archive/test_runner_legacy.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/legacy_archive/tray_legacy.py**: Arquivo legacy_archive/tray_legacy.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/legacy_archive/restored_maintenance_engine_phd.py**: Arquivo legacy_archive/restored_maintenance_engine_phd.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/legacy_archive/ui_controller_legacy.py**: Arquivo legacy_archive/ui_controller_legacy.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/legacy_archive/quality_analyst_legacy.py**: Arquivo legacy_archive/quality_analyst_legacy.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/legacy_archive/main_gui.py**: Arquivo legacy_archive/main_gui.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/scripts/analyze_external.py**: Arquivo scripts/analyze_external.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/legacy_archive/pyramid_analyst_legacy.py**: Arquivo legacy_archive/pyramid_analyst_legacy.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/scripts/diagnose_blind_spots.py**: Arquivo scripts/diagnose_blind_spots.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/scripts/launch_api.py**: Arquivo scripts/launch_api.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/legacy_archive/shadow_tray_legacy.py**: Arquivo legacy_archive/shadow_tray_legacy.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/scripts/build_exe.py**: Arquivo scripts/build_exe.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/scripts/cleanup_obfuscation.py**: Arquivo scripts/cleanup_obfuscation.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/scripts/debug_test_hang.py**: Arquivo scripts/debug_test_hang.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/scripts/git_doctor.py**: Arquivo scripts/git_doctor.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/scripts/fast_diagnostic.py**: Arquivo scripts/fast_diagnostic.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/scripts/generate_tests.py**: Arquivo scripts/generate_tests.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/scripts/install_hooks.py**: Arquivo scripts/install_hooks.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/scripts/persona_manager.py**: Arquivo scripts/persona_manager.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/scripts/lint_heading_logic.py**: Arquivo scripts/lint_heading_logic.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/scripts/lint_rule_engine.py**: Arquivo scripts/lint_rule_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/scripts/launch_dashboard.py**: Arquivo scripts/launch_dashboard.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/scripts/verify_report_lint.py**: Arquivo scripts/verify_report_lint.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/scripts/update_agent_submodule.py**: Arquivo scripts/update_agent_submodule.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/scripts/verify_cognitive.py**: Arquivo scripts/verify_cognitive.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/Audit/metric.py**: Arquivo src_local/agents/Flutter/Audit/metric.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/scripts/shadow_tray.py**: Arquivo scripts/shadow_tray.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/scripts/run_diagnostic.py**: Arquivo scripts/run_diagnostic.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/Audit/bolt.py**: Arquivo src_local/agents/Flutter/Audit/bolt.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/Audit/scale.py**: Arquivo src_local/agents/Flutter/Audit/scale.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/Audit/probe.py**: Arquivo src_local/agents/Flutter/Audit/probe.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/Audit/nebula.py**: Arquivo src_local/agents/Flutter/Audit/nebula.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/Audit/scope.py**: Arquivo src_local/agents/Flutter/Audit/scope.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/Content/echo.py**: Arquivo src_local/agents/Flutter/Content/echo.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/Audit/testify.py**: Arquivo src_local/agents/Flutter/Audit/testify.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/Content/forge.py**: Arquivo src_local/agents/Flutter/Content/forge.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/Content/globe.py**: Arquivo src_local/agents/Flutter/Content/globe.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/Content/hype.py**: Arquivo src_local/agents/Flutter/Content/hype.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/Content/mantra.py**: Arquivo src_local/agents/Flutter/Content/mantra.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/Content/palette.py**: Arquivo src_local/agents/Flutter/Content/palette.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/Content/scribe.py**: Arquivo src_local/agents/Flutter/Content/scribe.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/Strategic/sentinel.py**: Arquivo src_local/agents/Flutter/Strategic/sentinel.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/Strategic/vault.py**: Arquivo src_local/agents/Flutter/Strategic/vault.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/Strategic/voyager.py**: Arquivo src_local/agents/Flutter/Strategic/voyager.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/Strategic/warden.py**: Arquivo src_local/agents/Flutter/Strategic/warden.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/System/bridge.py**: Arquivo src_local/agents/Flutter/System/bridge.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/System/cache.py**: Arquivo src_local/agents/Flutter/System/cache.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/System/neural.py**: Arquivo src_local/agents/Flutter/System/neural.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/System/nexus.py**: Arquivo src_local/agents/Flutter/System/nexus.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/System/flow.py**: Arquivo src_local/agents/Flutter/System/flow.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/System/hermes.py**: Arquivo src_local/agents/Flutter/System/hermes.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/System/spark.py**: Arquivo src_local/agents/Flutter/System/spark.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Flutter/System/stream.py**: Arquivo src_local/agents/Flutter/System/stream.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/Audit/bolt.py**: Arquivo src_local/agents/Kotlin/Audit/bolt.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/Audit/metric.py**: Arquivo src_local/agents/Kotlin/Audit/metric.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/Audit/scale.py**: Arquivo src_local/agents/Kotlin/Audit/scale.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/Audit/nebula.py**: Arquivo src_local/agents/Kotlin/Audit/nebula.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/Audit/probe.py**: Arquivo src_local/agents/Kotlin/Audit/probe.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/Audit/testify.py**: Arquivo src_local/agents/Kotlin/Audit/testify.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/Audit/scope.py**: Arquivo src_local/agents/Kotlin/Audit/scope.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/Content/echo.py**: Arquivo src_local/agents/Kotlin/Content/echo.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/Content/globe.py**: Arquivo src_local/agents/Kotlin/Content/globe.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/Content/forge.py**: Arquivo src_local/agents/Kotlin/Content/forge.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/Content/mantra.py**: Arquivo src_local/agents/Kotlin/Content/mantra.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/Content/hype.py**: Arquivo src_local/agents/Kotlin/Content/hype.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/Content/palette.py**: Arquivo src_local/agents/Kotlin/Content/palette.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/Content/scribe.py**: Arquivo src_local/agents/Kotlin/Content/scribe.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/Strategic/sentinel.py**: Arquivo src_local/agents/Kotlin/Strategic/sentinel.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/Strategic/vault.py**: Arquivo src_local/agents/Kotlin/Strategic/vault.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/Strategic/voyager.py**: Arquivo src_local/agents/Kotlin/Strategic/voyager.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/Strategic/warden.py**: Arquivo src_local/agents/Kotlin/Strategic/warden.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/System/bridge.py**: Arquivo src_local/agents/Kotlin/System/bridge.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/System/cache.py**: Arquivo src_local/agents/Kotlin/System/cache.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/System/flow.py**: Arquivo src_local/agents/Kotlin/System/flow.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/System/hermes.py**: Arquivo src_local/agents/Kotlin/System/hermes.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/System/nexus.py**: Arquivo src_local/agents/Kotlin/System/nexus.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/System/neural.py**: Arquivo src_local/agents/Kotlin/System/neural.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/System/spark.py**: Arquivo src_local/agents/Kotlin/System/spark.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Kotlin/System/stream.py**: Arquivo src_local/agents/Kotlin/System/stream.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/Audit/bolt.py**: Arquivo src_local/agents/Python/Audit/bolt.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/Audit/metric.py**: Arquivo src_local/agents/Python/Audit/metric.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/Audit/nebula.py**: Arquivo src_local/agents/Python/Audit/nebula.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/Audit/scale.py**: Arquivo src_local/agents/Python/Audit/scale.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/Audit/probe.py**: Arquivo src_local/agents/Python/Audit/probe.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/Audit/scope.py**: Arquivo src_local/agents/Python/Audit/scope.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/Audit/testify.py**: Arquivo src_local/agents/Python/Audit/testify.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/Content/echo.py**: Arquivo src_local/agents/Python/Content/echo.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/Content/forge.py**: Arquivo src_local/agents/Python/Content/forge.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/Content/globe.py**: Arquivo src_local/agents/Python/Content/globe.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/Content/hype.py**: Arquivo src_local/agents/Python/Content/hype.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/Content/mantra.py**: Arquivo src_local/agents/Python/Content/mantra.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/Content/palette.py**: Arquivo src_local/agents/Python/Content/palette.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/Content/scribe.py**: Arquivo src_local/agents/Python/Content/scribe.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/Strategic/sentinel.py**: Arquivo src_local/agents/Python/Strategic/sentinel.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/Strategic/director.py**: Arquivo src_local/agents/Python/Strategic/director.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/Strategic/vault.py**: Arquivo src_local/agents/Python/Strategic/vault.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/Strategic/voyager.py**: Arquivo src_local/agents/Python/Strategic/voyager.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/Strategic/warden.py**: Arquivo src_local/agents/Python/Strategic/warden.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/System/bridge.py**: Arquivo src_local/agents/Python/System/bridge.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/System/cache.py**: Arquivo src_local/agents/Python/System/cache.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/System/flow.py**: Arquivo src_local/agents/Python/System/flow.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/System/hermes.py**: Arquivo src_local/agents/Python/System/hermes.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/System/neural.py**: Arquivo src_local/agents/Python/System/neural.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/System/nexus.py**: Arquivo src_local/agents/Python/System/nexus.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/System/spark.py**: Arquivo src_local/agents/Python/System/spark.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Python/System/stream.py**: Arquivo src_local/agents/Python/System/stream.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/ast_navigator.py**: Arquivo src_local/agents/Support/ast_navigator.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/ast_node_inspector.py**: Arquivo src_local/agents/Support/ast_node_inspector.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/ast_traversal_logic.py**: Arquivo src_local/agents/Support/ast_traversal_logic.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/audit_engine.py**: Arquivo src_local/agents/Support/audit_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/audit_risk_engine.py**: Arquivo src_local/agents/Support/audit_risk_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/battle_plan_formatter.py**: Arquivo src_local/agents/Support/battle_plan_formatter.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/audit_scanner_engine.py**: Arquivo src_local/agents/Support/audit_scanner_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/battle_plan_sections_engine.py**: Arquivo src_local/agents/Support/battle_plan_sections_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/briefing_agent.py**: Arquivo src_local/agents/Support/briefing_agent.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/component_classifier.py**: Arquivo src_local/agents/Support/component_classifier.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/code_inspector_agent.py**: Arquivo src_local/agents/Support/code_inspector_agent.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/connectivity_mapper.py**: Arquivo src_local/agents/Support/connectivity_mapper.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/coverage_auditor.py**: Arquivo src_local/agents/Support/coverage_auditor.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/call_safety_judge.py**: Arquivo src_local/agents/Support/call_safety_judge.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/dna_profiler.py**: Arquivo src_local/agents/Support/dna_profiler.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/doc_gen_agent.py**: Arquivo src_local/agents/Support/doc_gen_agent.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/git_automaton.py**: Arquivo src_local/agents/Support/git_automaton.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/diagnostic_strategist.py**: Arquivo src_local/agents/Support/diagnostic_strategist.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/infrastructure_assembler.py**: Arquivo src_local/agents/Support/infrastructure_assembler.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/intent_heuristics_engine.py**: Arquivo src_local/agents/Support/intent_heuristics_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/discovery_agent.py**: Arquivo src_local/agents/Support/discovery_agent.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/healer.py**: Arquivo src_local/agents/Support/healer.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/markdown_sanitizer.py**: Arquivo src_local/agents/Support/markdown_sanitizer.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/integrity_guardian.py**: Arquivo src_local/agents/Support/integrity_guardian.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/line_veto.py**: Arquivo src_local/agents/Support/line_veto.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/health_synthesizer.py**: Arquivo src_local/agents/Support/health_synthesizer.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/memory_persistence.py**: Arquivo src_local/agents/Support/memory_persistence.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/maturity_evaluator.py**: Arquivo src_local/agents/Support/maturity_evaluator.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/logic_auditor.py**: Arquivo src_local/agents/Support/logic_auditor.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/markdown_structure_agent.py**: Arquivo src_local/agents/Support/markdown_structure_agent.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/logic_node_auditor.py**: Arquivo src_local/agents/Support/logic_node_auditor.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/metrics_assembler.py**: Arquivo src_local/agents/Support/metrics_assembler.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/meta_analysis_detector.py**: Arquivo src_local/agents/Support/meta_analysis_detector.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/obfuscation_cleaner_engine.py**: Arquivo src_local/agents/Support/obfuscation_cleaner_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/obfuscation_hunter.py**: Arquivo src_local/agents/Support/obfuscation_hunter.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/obfuscation_logic_engine.py**: Arquivo src_local/agents/Support/obfuscation_logic_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/parity_analyst.py**: Arquivo src_local/agents/Support/parity_analyst.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/pyramid_analyst.py**: Arquivo src_local/agents/Support/pyramid_analyst.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/penalty_engine.py**: Arquivo src_local/agents/Support/penalty_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/registry_compiler.py**: Arquivo src_local/agents/Support/registry_compiler.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/quality_analyst.py**: Arquivo src_local/agents/Support/quality_analyst.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/report_sections_engine.py**: Arquivo src_local/agents/Support/report_sections_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/rule_definition_judge.py**: Arquivo src_local/agents/Support/rule_definition_judge.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/safe_context_judge.py**: Arquivo src_local/agents/Support/safe_context_judge.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/report_formatter.py**: Arquivo src_local/agents/Support/report_formatter.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/safety_assignment_engine.py**: Arquivo src_local/agents/Support/safety_assignment_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/safety_definitions.py**: Arquivo src_local/agents/Support/safety_definitions.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/safety_heuristics.py**: Arquivo src_local/agents/Support/safety_heuristics.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/safety_navigator.py**: Arquivo src_local/agents/Support/safety_navigator.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/scoring_metrics_engine.py**: Arquivo src_local/agents/Support/scoring_metrics_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/score_calculator.py**: Arquivo src_local/agents/Support/score_calculator.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/semantic_context_analyst.py**: Arquivo src_local/agents/Support/semantic_context_analyst.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/security_sentinel_agent.py**: Arquivo src_local/agents/Support/security_sentinel_agent.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/source_code_parser.py**: Arquivo src_local/agents/Support/source_code_parser.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/structural_analyst.py**: Arquivo src_local/agents/Support/structural_analyst.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/silent_error_detector.py**: Arquivo src_local/agents/Support/silent_error_detector.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/task_executor.py**: Arquivo src_local/agents/Support/task_executor.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/telemetry_intent_judge.py**: Arquivo src_local/agents/Support/telemetry_intent_judge.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/test_architect_agent.py**: Arquivo src_local/agents/Support/test_architect_agent.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/telemetry_maturity_logic.py**: Arquivo src_local/agents/Support/telemetry_maturity_logic.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/test_discovery_logic.py**: Arquivo src_local/agents/Support/test_discovery_logic.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/test_navigator.py**: Arquivo src_local/agents/Support/test_navigator.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/test_refiner.py**: Arquivo src_local/agents/Support/test_refiner.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/test_runner.py**: Arquivo src_local/agents/Support/test_runner.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/topology_graph_agent.py**: Arquivo src_local/agents/Support/topology_graph_agent.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/validation_agent.py**: Arquivo src_local/agents/Support/validation_agent.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/veto_criteria_engine.py**: Arquivo src_local/agents/Support/veto_criteria_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/vulnerability_heuristic.py**: Arquivo src_local/agents/Support/vulnerability_heuristic.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/veto_structural_engine.py**: Arquivo src_local/agents/Support/veto_structural_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/web_insight_agent.py**: Arquivo src_local/agents/Support/web_insight_agent.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/Support/veto_rules.py**: Arquivo src_local/agents/Support/veto_rules.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/agents/base.py**: Arquivo src_local/agents/base.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/core/diagnostic_finalizer.py**: Arquivo src_local/core/diagnostic_finalizer.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/core/compiler.py**: Arquivo src_local/core/compiler.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/core/diagnostic_pipeline.py**: Arquivo src_local/core/diagnostic_pipeline.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/core/task_orchestrator.py**: Arquivo src_local/core/task_orchestrator.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/core/audit_engine.py**: Arquivo src_local/core/audit_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/core/orchestrator.py**: Arquivo src_local/core/orchestrator.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/core/validator.py**: Arquivo src_local/core/validator.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/interface/cli.py**: Arquivo src_local/interface/cli.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/interface/components/health_gauge.py**: Arquivo src_local/interface/components/health_gauge.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/interface/components/sidebar.py**: Arquivo src_local/interface/components/sidebar.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/interface/controllers/ui_controller.py**: Arquivo src_local/interface/controllers/ui_controller.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/interface/gui_native.py**: Arquivo src_local/interface/gui_native.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/interface/views/chat_view.py**: Arquivo src_local/interface/views/chat_view.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/interface/views/dashboard_view.py**: Arquivo src_local/interface/views/dashboard_view.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/interface/views/findings_view.py**: Arquivo src_local/interface/views/findings_view.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/analysis_engine_phd.py**: Arquivo src_local/utils/analysis_engine_phd.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/cache_manager.py**: Arquivo src_local/utils/cache_manager.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/behavior_analyst.py**: Arquivo src_local/utils/behavior_analyst.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/cognitive_analyst.py**: Arquivo src_local/utils/cognitive_analyst.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/compliance_standard.py**: Arquivo src_local/utils/compliance_standard.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/cognitive_engine.py**: Arquivo src_local/utils/cognitive_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/conflict_policy_phd.py**: Arquivo src_local/utils/conflict_policy_phd.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/context_iterator.py**: Arquivo src_local/utils/context_iterator.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/dependency_auditor.py**: Arquivo src_local/utils/dependency_auditor.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/finding_deduplicator.py**: Arquivo src_local/utils/finding_deduplicator.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/context_mapping_logic.py**: Arquivo src_local/utils/context_mapping_logic.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/context_engine.py**: Arquivo src_local/utils/context_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/indexer.py**: Arquivo src_local/utils/indexer.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/file_system_scanner.py**: Arquivo src_local/utils/file_system_scanner.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/maintenance_engine_phd.py**: Arquivo src_local/utils/maintenance_engine_phd.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/git_client.py**: Arquivo src_local/utils/git_client.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/logging_config.py**: Arquivo src_local/utils/logging_config.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/git_operations_phd.py**: Arquivo src_local/utils/git_operations_phd.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/markdown_processor.py**: Arquivo src_local/utils/markdown_processor.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/memory_pruning_agent.py**: Arquivo src_local/utils/memory_pruning_agent.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/history_agent.py**: Arquivo src_local/utils/history_agent.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/markdown_util.py**: Arquivo src_local/utils/markdown_util.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/reflex_engine_phd.py**: Arquivo src_local/utils/reflex_engine_phd.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/memory_engine.py**: Arquivo src_local/utils/memory_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/persona_loader.py**: Arquivo src_local/utils/persona_loader.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/parallel_test_executor.py**: Arquivo src_local/utils/parallel_test_executor.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/scoring_engine_phd.py**: Arquivo src_local/utils/scoring_engine_phd.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/resource_governor.py**: Arquivo src_local/utils/resource_governor.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/submodule_sync_logic.py**: Arquivo src_local/utils/submodule_sync_logic.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/stability_ledger.py**: Arquivo src_local/utils/stability_ledger.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/semantic_search_agent.py**: Arquivo src_local/utils/semantic_search_agent.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/topology_engine_phd.py**: Arquivo src_local/utils/topology_engine_phd.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/system_sentinel.py**: Arquivo src_local/utils/system_sentinel.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/update_transaction.py**: Arquivo src_local/utils/update_transaction.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/test_mapper.py**: Arquivo src_local/utils/test_mapper.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/veto_rules_phd.py**: Arquivo src_local/utils/veto_rules_phd.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/src_local/utils/voice_engine.py**: Arquivo src_local/utils/voice_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_ai_infra.py**: Arquivo tests/test_ai_infra.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_analysis_engine_phd.py**: Arquivo tests/test_analysis_engine_phd.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_analyze_external.py**: Arquivo tests/test_analyze_external.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_ast_node_inspector.py**: Arquivo tests/test_ast_node_inspector.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_ast_navigator.py**: Arquivo tests/test_ast_navigator.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_ast_traversal_logic.py**: Arquivo tests/test_ast_traversal_logic.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_audit_engine.py**: Arquivo tests/test_audit_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_audit_risk_engine.py**: Arquivo tests/test_audit_risk_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_audit_scanner_engine.py**: Arquivo tests/test_audit_scanner_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_base_deep.py**: Arquivo tests/test_base_deep.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_battle_plan_sections_engine.py**: Arquivo tests/test_battle_plan_sections_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_battle_plan_formatter_deep.py**: Arquivo tests/test_battle_plan_formatter_deep.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_bolt.py**: Arquivo tests/test_bolt.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_cache.py**: Arquivo tests/test_cache.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_bridge.py**: Arquivo tests/test_bridge.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_bolt_persona.py**: Arquivo tests/test_bolt_persona.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_cache_manager.py**: Arquivo tests/test_cache_manager.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_call_safety_judge.py**: Arquivo tests/test_call_safety_judge.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_cache_manager_system.py**: Arquivo tests/test_cache_manager_system.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_cli.py**: Arquivo tests/test_cli.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_cognitive_analyst.py**: Arquivo tests/test_cognitive_analyst.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_code_inspector_agent.py**: Arquivo tests/test_code_inspector_agent.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_compliance.py**: Arquivo tests/test_compliance.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_cli_system.py**: Arquivo tests/test_cli_system.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_cleanup_obfuscation.py**: Arquivo tests/test_cleanup_obfuscation.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_components_smoke.py**: Arquivo tests/test_components_smoke.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_cognitive_engine.py**: Arquivo tests/test_cognitive_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_compiler.py**: Arquivo tests/test_compiler.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_compliance_standard.py**: Arquivo tests/test_compliance_standard.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_component_classifier_deep.py**: Arquivo tests/test_component_classifier_deep.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_connectivity_mapper.py**: Arquivo tests/test_connectivity_mapper.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_conflict_policy_phd.py**: Arquivo tests/test_conflict_policy_phd.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_context_engine_deep.py**: Arquivo tests/test_context_engine_deep.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_context_engine_system.py**: Arquivo tests/test_context_engine_system.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_coverage_auditor.py**: Arquivo tests/test_coverage_auditor.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_context_sovereignty.py**: Arquivo tests/test_context_sovereignty.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_context_iterator.py**: Arquivo tests/test_context_iterator.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_context_mapping_logic.py**: Arquivo tests/test_context_mapping_logic.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_core_depth.py**: Arquivo tests/test_core_depth.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_dashboard_view.py**: Arquivo tests/test_dashboard_view.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_debug_relevance.py**: Arquivo tests/test_debug_relevance.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_dependency_auditor_deep.py**: Arquivo tests/test_dependency_auditor_deep.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_diagnose_blind_spots.py**: Arquivo tests/test_diagnose_blind_spots.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_dependency_auditor_system.py**: Arquivo tests/test_dependency_auditor_system.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_delegation_engines.py**: Arquivo tests/test_delegation_engines.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_diagnostic_finalizer.py**: Arquivo tests/test_diagnostic_finalizer.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_diagnostic_pipeline.py**: Arquivo tests/test_diagnostic_pipeline.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_diagnostic_strategist.py**: Arquivo tests/test_diagnostic_strategist.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_director_system.py**: Arquivo tests/test_director_system.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_director_persona.py**: Arquivo tests/test_director_persona.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_echo.py**: Arquivo tests/test_echo.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_discovery_agent.py**: Arquivo tests/test_discovery_agent.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_dna_profiler.py**: Arquivo tests/test_dna_profiler.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_file_system_scanner.py**: Arquivo tests/test_file_system_scanner.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_flow.py**: Arquivo tests/test_flow.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_final_check.py**: Arquivo tests/test_final_check.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_flutter_sentinel.py**: Arquivo tests/test_flutter_sentinel.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_flutter_vault.py**: Arquivo tests/test_flutter_vault.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_finding_deduplicator.py**: Arquivo tests/test_finding_deduplicator.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_forge.py**: Arquivo tests/test_forge.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_git_client.py**: Arquivo tests/test_git_client.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_git_logic.py**: Arquivo tests/test_git_logic.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_git_operations_phd.py**: Arquivo tests/test_git_operations_phd.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_globe.py**: Arquivo tests/test_globe.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_git_doctor.py**: Arquivo tests/test_git_doctor.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_healer.py**: Arquivo tests/test_healer.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_hermes.py**: Arquivo tests/test_hermes.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_health_gauge.py**: Arquivo tests/test_health_gauge.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_health_synthesizer_deep.py**: Arquivo tests/test_health_synthesizer_deep.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_hype.py**: Arquivo tests/test_hype.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_indexer_system.py**: Arquivo tests/test_indexer_system.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_indexer.py**: Arquivo tests/test_indexer.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_infrastructure_assembler.py**: Arquivo tests/test_infrastructure_assembler.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_install_hooks.py**: Arquivo tests/test_install_hooks.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_intent_heuristics_engine.py**: Arquivo tests/test_intent_heuristics_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_integrity_guardian.py**: Arquivo tests/test_integrity_guardian.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_kotlin_flow.py**: Arquivo tests/test_kotlin_flow.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_kotlin_hermes.py**: Arquivo tests/test_kotlin_hermes.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_kotlin_sentinel.py**: Arquivo tests/test_kotlin_sentinel.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_launch_api.py**: Arquivo tests/test_launch_api.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_launch_dashboard.py**: Arquivo tests/test_launch_dashboard.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_line_veto_deep.py**: Arquivo tests/test_line_veto_deep.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_lint_heading_logic.py**: Arquivo tests/test_lint_heading_logic.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_lint_rule_engine.py**: Arquivo tests/test_lint_rule_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_lint_engines.py**: Arquivo tests/test_lint_engines.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_logic_auditor_deep.py**: Arquivo tests/test_logic_auditor_deep.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_logging_config.py**: Arquivo tests/test_logging_config.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_logic_node_auditor.py**: Arquivo tests/test_logic_node_auditor.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_maintenance_engine_phd.py**: Arquivo tests/test_maintenance_engine_phd.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_markdown_processor.py**: Arquivo tests/test_markdown_processor.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_mantra.py**: Arquivo tests/test_mantra.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_markdown_sanitizer.py**: Arquivo tests/test_markdown_sanitizer.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_markdown_structure_agent.py**: Arquivo tests/test_markdown_structure_agent.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_markdown_util.py**: Arquivo tests/test_markdown_util.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_maturity_evaluator.py**: Arquivo tests/test_maturity_evaluator.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_memory_engine.py**: Arquivo tests/test_memory_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_memory_persistence.py**: Arquivo tests/test_memory_persistence.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_memory_pruning.py**: Arquivo tests/test_memory_pruning.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_metric.py**: Arquivo tests/test_metric.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_meta_analysis_detector.py**: Arquivo tests/test_meta_analysis_detector.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_metrics_assembler.py**: Arquivo tests/test_metrics_assembler.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_nebula.py**: Arquivo tests/test_nebula.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_neural.py**: Arquivo tests/test_neural.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_nexus.py**: Arquivo tests/test_nexus.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_obfuscation_hunter.py**: Arquivo tests/test_obfuscation_hunter.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_obfuscation_logic_engine.py**: Arquivo tests/test_obfuscation_logic_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_orchestrator.py**: Arquivo tests/test_orchestrator.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_obfuscation_cleaner_engine.py**: Arquivo tests/test_obfuscation_cleaner_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_package_integrity.py**: Arquivo tests/test_package_integrity.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_palette.py**: Arquivo tests/test_palette.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_parity_analyst.py**: Arquivo tests/test_parity_analyst.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_penalty_engine.py**: Arquivo tests/test_penalty_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_persona_loader.py**: Arquivo tests/test_persona_loader.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_persona_manager.py**: Arquivo tests/test_persona_manager.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_phd_helpers.py**: Arquivo tests/test_phd_helpers.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_probe.py**: Arquivo tests/test_probe.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_pyramid_analyst.py**: Arquivo tests/test_pyramid_analyst.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_reflex_engine_phd.py**: Arquivo tests/test_reflex_engine_phd.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_python_personas.py**: Arquivo tests/test_python_personas.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_quality_analyst.py**: Arquivo tests/test_quality_analyst.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_report_formatter.py**: Arquivo tests/test_report_formatter.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_report_sections_engine.py**: Arquivo tests/test_report_sections_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_registry_compiler.py**: Arquivo tests/test_registry_compiler.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_resource_governor.py**: Arquivo tests/test_resource_governor.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_run_diagnostic.py**: Arquivo tests/test_run_diagnostic.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_rule_definition_judge.py**: Arquivo tests/test_rule_definition_judge.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_safe_context_judge.py**: Arquivo tests/test_safe_context_judge.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_safety_assignment_engine.py**: Arquivo tests/test_safety_assignment_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_safety_definitions.py**: Arquivo tests/test_safety_definitions.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_safety_heuristics.py**: Arquivo tests/test_safety_heuristics.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_safety_navigator.py**: Arquivo tests/test_safety_navigator.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_score_calculator.py**: Arquivo tests/test_score_calculator.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_scale.py**: Arquivo tests/test_scale.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_scope.py**: Arquivo tests/test_scope.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_scoring_metrics_engine.py**: Arquivo tests/test_scoring_metrics_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_scribe.py**: Arquivo tests/test_scribe.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_scoring_engine_phd.py**: Arquivo tests/test_scoring_engine_phd.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_security_sentinel.py**: Arquivo tests/test_security_sentinel.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_sentinel.py**: Arquivo tests/test_sentinel.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_self_awareness.py**: Arquivo tests/test_self_awareness.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_sentinel_persona.py**: Arquivo tests/test_sentinel_persona.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_semantic_context_analyst.py**: Arquivo tests/test_semantic_context_analyst.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_source_code_parser.py**: Arquivo tests/test_source_code_parser.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_sovereign_sync_forensics.py**: Arquivo tests/test_sovereign_sync_forensics.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_spark.py**: Arquivo tests/test_spark.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_source_code_parser_deep.py**: Arquivo tests/test_source_code_parser_deep.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_silent_error_detector.py**: Arquivo tests/test_silent_error_detector.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_stream.py**: Arquivo tests/test_stream.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_sidebar.py**: Arquivo tests/test_sidebar.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_stability_ledger_deep.py**: Arquivo tests/test_stability_ledger_deep.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_support_complexity_fix.py**: Arquivo tests/test_support_complexity_fix.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_structural_analyst.py**: Arquivo tests/test_structural_analyst.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_structural_analyst_deep.py**: Arquivo tests/test_structural_analyst_deep.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_submodule_sync_logic.py**: Arquivo tests/test_submodule_sync_logic.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_sync_engine_mocks.py**: Arquivo tests/test_sync_engine_mocks.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_system_intelligence.py**: Arquivo tests/test_system_intelligence.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_system_health.py**: Arquivo tests/test_system_health.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_task_executor.py**: Arquivo tests/test_task_executor.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_task_orchestrator.py**: Arquivo tests/test_task_orchestrator.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_telemetry_maturity_logic.py**: Arquivo tests/test_telemetry_maturity_logic.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_telemetry_intent_judge.py**: Arquivo tests/test_telemetry_intent_judge.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_test_discovery_logic.py**: Arquivo tests/test_test_discovery_logic.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_test_navigator.py**: Arquivo tests/test_test_navigator.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_testify.py**: Arquivo tests/test_testify.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_test_runner.py**: Arquivo tests/test_test_runner.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_topology_engine_phd.py**: Arquivo tests/test_topology_engine_phd.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_update_agent_submodule.py**: Arquivo tests/test_update_agent_submodule.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_ui_controller.py**: Arquivo tests/test_ui_controller.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_update_transaction.py**: Arquivo tests/test_update_transaction.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_utils_interface.py**: Arquivo tests/test_utils_interface.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_validation_agent.py**: Arquivo tests/test_validation_agent.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_validator.py**: Arquivo tests/test_validator.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_utils_engines.py**: Arquivo tests/test_utils_engines.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_validator_deep.py**: Arquivo tests/test_validator_deep.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_vault.py**: Arquivo tests/test_vault.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_vault_persona.py**: Arquivo tests/test_vault_persona.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_verify_cognitive.py**: Arquivo tests/test_verify_cognitive.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_verify_report_lint.py**: Arquivo tests/test_verify_report_lint.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_veto_criteria_engine.py**: Arquivo tests/test_veto_criteria_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_veto_rules_phd.py**: Arquivo tests/test_veto_rules_phd.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_veto_structural_engine.py**: Arquivo tests/test_veto_structural_engine.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_voyager.py**: Arquivo tests/test_voyager.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_vulnerability_heuristic_deep.py**: Arquivo tests/test_vulnerability_heuristic_deep.py existe no legado mas está AUSENTE no atual.
-- [CRITICAL] **src_local/tests/test_warden.py**: Arquivo tests/test_warden.py existe no legado mas está AUSENTE no atual.
-- [UNKNOWN] **src_local\agents\Support\Security\safety_definitions.ts**: {"line":46,"evidence":"Concatenação Suspeita","reconstruction":"pass","keyword":"pass","file":"src_local\\agents\\Support\\Security\\safety_definitions.ts"}
-- [UNKNOWN] **src_local\agents\Support\Security\safety_definitions.ts**: {"line":47,"evidence":"Concatenação Suspeita","reconstruction":"api_key","keyword":"api_key","file":"src_local\\agents\\Support\\Security\\safety_definitions.ts"}
+| Pilar | Score | Máx | Status |
+| :--- | :---: | :---: | :--- |
+| Stability | `0` | 40 | 🟡 `ATENÇÃO` |
+| Purity | `0` | 20 | 🟡 `ATENÇÃO` |
+| Observability | `7` | 15 | 🟡 `ATENÇÃO` |
+| Security | `15` | 15 | 🟢 `ESTÁVEL` |
+| Excellence | `10` | 10 | 🟢 `ESTÁVEL` |
+
+### ⚖️ DIRETRIZES DE GOVERNANÇA PHD
+
+| Ativo | Nível de Compliance | Status de Veto |
+| :--- | :--- | :--- |
+| `SISTEMA-ALFA` | 💎 `SOVEREIGN` | ✅ `LIBERADO` |
+
+**Diretrizes Ativas:**
+
+- Manter paridade absoluta
+- Zero débito técnico
+
+## 🩺 SINAIS VITAIS DO PRODUTO
+
+> | Métrica | Valor | Status |
+> | :--- | :--- | :--- |
+> | Pontos Cegos | 51 Arq. | 🔴 `CRÍTICO` |
+> | Fragilidades | 19 Pts. | 🔴 `RISCO` |
+> | Integridade | COLAPSO | ⚙️ `SISTEMA` |
+
+### 🗺️ ROADMAP PARA 100% (REQUISITOS)
+
+- [ ] **Injetar Telemetria**: Universalizar `log_performance` em utilitários e scripts.
+
+## 🗺️ TOPOLOGIA DE SINCRONIA (NEURAL BRIDGE)
+
+| Segmento | Identificador | Bridge Status |
+| :--- | :--- | :--- |
+| **Active Branch** | `main` | 🟢 `SYNC-OK` |
+| **Upstream** | `origin/main` | 🔗 `CONECTADO` |
+| **Phased Sync** | `LUCID-DREAMING` | ⚡ `ACTIVE` |
+
+## 🌪️ MAPA DE ENTROPIA & ACOPLAMENTO
+
+> | Componente | Complex. | Instabilidade (Prob.) |
+> | :--- | :---: | :--- |
+> | `parity_utils.ts` | `54` | `50%` |
+> | `report_sections_engine.ts` | `50` | `50%` |
+> | `phd_governance_system.ts` | `50` | `100%` |
+> | `parity_analyst.ts` | `48` | `75%` |
+> | `source_code_parser.ts` | `47` | `33%` |
+> | `deep_disparity_scanner.ts` | `44` | `100%` |
+> | `discovery_agent.ts` | `40` | `88%` |
+> | `audit_expert_engine.ts` | `40` | `50%` |
+> | `ast_intelligence.ts` | `38` | `33%` |
+> | `depth_intelligence.ts` | `38` | `75%` |
+> | `shadow_tray.py` | `36` | `100%` |
+> | `audit_engine.ts` | `36` | `67%` |
+> | `logic_auditor.ts` | `33` | `75%` |
+> | `markdown_sanitizer.ts` | `33` | `67%` |
+> | `base.ts` | `28` | `2%` |
+
+## 🧪 MATRIZ DE CONFIANÇA
+
+| Componente | Entropia | Asserções | Status de Teste |
+| :--- | :---: | :---: | :--- |
+| `parity_utils.ts` | `54` | `0` | 🔴 `FRÁGIL` |
+| `report_sections_engine.ts` | `50` | `2` | 🔴 `FRÁGIL` |
+| `phd_governance_system.ts` | `50` | `0` | 🔴 `FRÁGIL` |
+| `parity_analyst.ts` | `48` | `2` | 🔴 `FRÁGIL` |
+| `source_code_parser.ts` | `47` | `32` | 🟢 `PROFUNDO` |
+| `deep_disparity_scanner.ts` | `44` | `0` | 🔴 `FRÁGIL` |
+| `discovery_agent.ts` | `40` | `1` | 🔴 `FRÁGIL` |
+| `audit_expert_engine.ts` | `40` | `0` | 🔴 `FRÁGIL` |
+| `ast_intelligence.ts` | `38` | `0` | 🔴 `FRÁGIL` |
+| `depth_intelligence.ts` | `38` | `0` | 🔴 `FRÁGIL` |
+| `shadow_tray.py` | `36` | `2` | 🔴 `FRÁGIL` |
+| `audit_engine.ts` | `36` | `3` | 🔴 `FRÁGIL` |
+| `logic_auditor.ts` | `33` | `4` | 🟢 `PROFUNDO` |
+| `markdown_sanitizer.ts` | `33` | `11` | 🟢 `PROFUNDO` |
+| `base.ts` | `28` | `11` | 🟢 `PROFUNDO` |
+| `bridge_orchestrator.py` | `28` | `0` | 🔴 `FRÁGIL` |
+| `system_sentinel.ts` | `27` | `0` | 🔴 `FRÁGIL` |
+| `battle_plan_formatter.ts` | `26` | `9` | 🟢 `PROFUNDO` |
+| `context_engine.ts` | `26` | `27` | 🟢 `PROFUNDO` |
+| `file_system_scanner.ts` | `26` | `13` | 🟢 `PROFUNDO` |
+| `maintenance_engine_phd.ts` | `26` | `6` | 🟢 `PROFUNDO` |
+| `update_imports.ts` | `26` | `0` | 🔴 `FRÁGIL` |
+| `silent_error_detector.ts` | `23` | `5` | 🟢 `PROFUNDO` |
+| `structural_analyst.ts` | `23` | `16` | 🟢 `PROFUNDO` |
+| `director.ts` | `23` | `6` | 🟢 `PROFUNDO` |
+| `voyager.ts` | `23` | `4` | 🟢 `PROFUNDO` |
+| `healer.ts` | `22` | `5` | 🟢 `PROFUNDO` |
+| `markdown_auditor.ts` | `22` | `0` | 🔴 `FRÁGIL` |
+| `dependency_auditor.ts` | `22` | `9` | 🟢 `PROFUNDO` |
+| `structural_auditor_supreme.ts` | `21` | `0` | 🔴 `FRÁGIL` |
+| `language_persona_orchestrator.ts` | `20` | `0` | 🔴 `FRÁGIL` |
+| `obfuscation_cleaner_engine.ts` | `19` | `2` | 🟢 `PROFUNDO` |
+| `strict.ts` | `19` | `0` | 🔴 `FRÁGIL` |
+| `activate-phase.ts` | `18` | `0` | 🔴 `FRÁGIL` |
+| `safety_supreme_judge.ts` | `18` | `0` | 🔴 `FRÁGIL` |
+| `html_portal_generator.ts` | `18` | `0` | 🔴 `FRÁGIL` |
+| `topology_engine.ts` | `18` | `9` | 🟢 `PROFUNDO` |
+| `run-diagnostic.ts` | `17` | `0` | 🔴 `FRÁGIL` |
+| `audit_risk_engine.ts` | `17` | `5` | 🟢 `PROFUNDO` |
+| `quality_analyst.ts` | `17` | `9` | 🟢 `PROFUNDO` |
+| `probe.ts` | `17` | `2` | 🟢 `PROFUNDO` |
+| `hype.ts` | `17` | `2` | 🟢 `PROFUNDO` |
+| `scribe.ts` | `17` | `2` | 🟢 `PROFUNDO` |
+| `stability_ledger.ts` | `17` | `8` | 🟢 `PROFUNDO` |
+| `healer_persona.ts` | `16` | `0` | 🔴 `FRÁGIL` |
+| `validator.ts` | `16` | `3` | 🟢 `PROFUNDO` |
+| `finding_deduplicator.ts` | `16` | `4` | 🟢 `PROFUNDO` |
+| `hype.ts` | `15` | `2` | 🟢 `PROFUNDO` |
+| `topology_graph_agent.ts` | `15` | `1` | 🔴 `FRÁGIL` |
+| `penalty_engine.ts` | `15` | `3` | 🟢 `PROFUNDO` |
+
+## 🎯 PLANO DE BATALHA: DIRETRIZES DE ENGENHARIA
+
+| Severidade | Qtd. | Impacto Estratégico | Status de Resposta |
+| :--- | :---: | :--- | :--- |
+| **CRITICAL** | `0` | 🔴 `BLOQUEANTE` | 🟢 `LIVRE` |
+| **HIGH** | `79` | 🟡 `RISCO ALTO` | 🟡 `PRIORIDADE` |
+| **MEDIUM** | `15` | 🔵 `DÉBITO TÉC.` | 🔵 `EM FILA` |
+
+---
+
+## 🚩 ACHADOS DETALHADOS
+
+> ### 🔵 `NEUTRO` [1] `Audit/metric.ts`
+>
+> - **Local:** `src_local/agents/Bun/Audit/metric.ts`
+> - **Causa:** A migração de 'metric.py' para 'metric.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [2] `Audit/bolt.ts`
+>
+> - **Local:** `src_local/agents/Bun/Audit/bolt.ts`
+> - **Causa:** A migração de 'bolt.py' para 'bolt.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [3] `Audit/scale.ts`
+>
+> - **Local:** `src_local/agents/Bun/Audit/scale.ts`
+> - **Causa:** A migração de 'scale.py' para 'scale.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [4] `Audit/nebula.ts`
+>
+> - **Local:** `src_local/agents/Bun/Audit/nebula.ts`
+> - **Causa:** A migração de 'nebula.py' para 'nebula.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [5] `Audit/probe.ts`
+>
+> - **Local:** `src_local/agents/Bun/Audit/probe.ts`
+> - **Causa:** A migração de 'probe.py' para 'probe.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [6] `Audit/testify.ts`
+>
+> - **Local:** `src_local/agents/Bun/Audit/testify.ts`
+> - **Causa:** A migração de 'testify.py' para 'testify.ts' está SHALLOW. Faltam 6 unidades.
+>
+> ### 🔵 `NEUTRO` [7] `Content/echo.ts`
+>
+> - **Local:** `src_local/agents/Bun/Content/echo.ts`
+> - **Causa:** A migração de 'echo.py' para 'echo.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [8] `Content/forge.ts`
+>
+> - **Local:** `src_local/agents/Bun/Content/forge.ts`
+> - **Causa:** A migração de 'forge.py' para 'forge.ts' está SHALLOW. Faltam 4 unidades.
+>
+> ### 🔵 `NEUTRO` [9] `Audit/scope.ts`
+>
+> - **Local:** `src_local/agents/Bun/Audit/scope.ts`
+> - **Causa:** A migração de 'scope.py' para 'scope.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [10] `Content/globe.ts`
+>
+> - **Local:** `src_local/agents/Bun/Content/globe.ts`
+> - **Causa:** A migração de 'globe.py' para 'globe.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [11] `Content/palette.ts`
+>
+> - **Local:** `src_local/agents/Bun/Content/palette.ts`
+> - **Causa:** A migração de 'palette.py' para 'palette.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [12] `Content/hype.ts`
+>
+> - **Local:** `src_local/agents/Bun/Content/hype.ts`
+> - **Causa:** A migração de 'hype.py' para 'hype.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [13] `Content/scribe.ts`
+>
+> - **Local:** `src_local/agents/Bun/Content/scribe.ts`
+> - **Causa:** A migração de 'scribe.py' para 'scribe.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [14] `Strategic/sentinel.ts`
+>
+> - **Local:** `src_local/agents/Bun/Strategic/sentinel.ts`
+> - **Causa:** A migração de 'sentinel.py' para 'sentinel.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [15] `Strategic/voyager.ts`
+>
+> - **Local:** `src_local/agents/Bun/Strategic/voyager.ts`
+> - **Causa:** A migração de 'voyager.py' para 'voyager.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [16] `Strategic/vault.ts`
+>
+> - **Local:** `src_local/agents/Bun/Strategic/vault.ts`
+> - **Causa:** A migração de 'vault.py' para 'vault.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [17] `Strategic/warden.ts`
+>
+> - **Local:** `src_local/agents/Bun/Strategic/warden.ts`
+> - **Causa:** A migração de 'warden.py' para 'warden.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [18] `System/bridge.ts`
+>
+> - **Local:** `src_local/agents/Bun/System/bridge.ts`
+> - **Causa:** A migração de 'bridge.py' para 'bridge.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [19] `System/cache.ts`
+>
+> - **Local:** `src_local/agents/Bun/System/cache.ts`
+> - **Causa:** A migração de 'cache.py' para 'cache.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [20] `System/flow.ts`
+>
+> - **Local:** `src_local/agents/Bun/System/flow.ts`
+> - **Causa:** A migração de 'flow.py' para 'flow.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [21] `System/neural.ts`
+>
+> - **Local:** `src_local/agents/Bun/System/neural.ts`
+> - **Causa:** A migração de 'neural.py' para 'neural.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [22] `System/nexus.ts`
+>
+> - **Local:** `src_local/agents/Bun/System/nexus.ts`
+> - **Causa:** A migração de 'nexus.py' para 'nexus.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [23] `System/hermes.ts`
+>
+> - **Local:** `src_local/agents/Flutter/System/hermes.ts`
+> - **Causa:** A migração de 'hermes.py' para 'hermes.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [24] `System/spark.ts`
+>
+> - **Local:** `src_local/agents/Bun/System/spark.ts`
+> - **Causa:** A migração de 'spark.py' para 'spark.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [25] `System/stream.ts`
+>
+> - **Local:** `src_local/agents/Bun/System/stream.ts`
+> - **Causa:** A migração de 'stream.py' para 'stream.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [26] `Content/mantra.ts`
+>
+> - **Local:** `src_local/agents/Bun/Content/mantra.ts`
+> - **Causa:** A migração de 'mantra.py' para 'mantra.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [27] `Audit/metric.ts`
+>
+> - **Local:** `src_local/agents/Bun/Audit/metric.ts`
+> - **Causa:** A migração de 'metric.py' para 'metric.ts' está SHALLOW. Faltam 4 unidades.
+>
+> ### 🔵 `NEUTRO` [28] `Audit/testify.ts`
+>
+> - **Local:** `src_local/agents/Bun/Audit/testify.ts`
+> - **Causa:** A migração de 'testify.py' para 'testify.ts' está SHALLOW. Faltam 7 unidades.
+>
+> ### 🔵 `NEUTRO` [29] `Strategic/director.ts`
+>
+> - **Local:** `src_local/agents/Go/Strategic/director.ts`
+> - **Causa:** A migração de 'director.py' para 'director.ts' está SHALLOW. Faltam 5 unidades.
+>
+> ### 🔵 `NEUTRO` [30] `Strategic/voyager.ts`
+>
+> - **Local:** `src_local/agents/Bun/Strategic/voyager.ts`
+> - **Causa:** A migração de 'voyager.py' para 'voyager.ts' está SHALLOW. Faltam 5 unidades.
+>
+> ### 🔵 `NEUTRO` [31] `core/audit_engine.ts`
+>
+> - **Local:** `src_local/core/audit_engine.ts`
+> - **Causa:** A migração de 'audit_engine.py' para 'audit_engine.ts' está PARITY_GAPS. Faltam 1 unidades.
+>
+> ### 🔵 `NEUTRO` [32] `utils/audit_expert_engine.ts`
+>
+> - **Local:** `src_local/utils/audit_expert_engine.ts`
+> - **Causa:** A migração de 'audit_risk_engine.py' para 'audit_expert_engine.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [33] `utils/audit_expert_engine.ts`
+>
+> - **Local:** `src_local/utils/audit_expert_engine.ts`
+> - **Causa:** A migração de 'audit_scanner_engine.py' para 'audit_expert_engine.ts' está SHALLOW. Faltam 6 unidades.
+>
+> ### 🔵 `NEUTRO` [34] `Reporting/battle_plan_formatter.ts`
+>
+> - **Local:** `src_local/agents/Support/Reporting/battle_plan_formatter.ts`
+> - **Causa:** A migração de 'battle_plan_formatter.py' para 'battle_plan_formatter.ts' está SHALLOW. Faltam 5 unidades.
+>
+> ### 🔵 `NEUTRO` [35] `Reporting/battle_plan_sections_engine.ts`
+>
+> - **Local:** `src_local/agents/Support/Reporting/battle_plan_sections_engine.ts`
+> - **Causa:** A migração de 'battle_plan_sections_engine.py' para 'battle_plan_sections_engine.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [36] `tests/test_briefing_agent.py`
+>
+> - **Local:** `tests\test_briefing_agent.py`
+> - **Causa:** Arquivo 'briefing_agent.py' reconhecido como arquivado/manutenção em 'tests\test_briefing_agent.py'.
+>
+> ### 🔵 `NEUTRO` [37] `Analysis/structural_auditor_supreme.ts`
+>
+> - **Local:** `src_local/agents/Support/Analysis/structural_auditor_supreme.ts`
+> - **Causa:** A migração de 'code_inspector_agent.py' para 'structural_auditor_supreme.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [38] `Security/safety_supreme_judge.ts`
+>
+> - **Local:** `src_local/agents/Support/Security/safety_supreme_judge.ts`
+> - **Causa:** A migração de 'call_safety_judge.py' para 'safety_supreme_judge.ts' está SHALLOW. Faltam 3 unidades.
+>
+> ### 🔵 `NEUTRO` [39] `Analysis/connectivity_mapper.ts`
+>
+> - **Local:** `src_local/agents/Support/Analysis/connectivity_mapper.ts`
+> - **Causa:** A migração de 'connectivity_mapper.py' para 'connectivity_mapper.ts' está PARITY_GAPS. Faltam 1 unidades.
+>
+> ### 🔵 `NEUTRO` [40] `Analysis/component_classifier.ts`
+>
+> - **Local:** `src_local/agents/Support/Analysis/component_classifier.ts`
+> - **Causa:** A migração de 'component_classifier.py' para 'component_classifier.ts' está SHALLOW. Faltam 8 unidades.
+>
+> ### 🔵 `NEUTRO` [41] `Analysis/coverage_auditor.ts`
+>
+> - **Local:** `src_local/agents/Support/Analysis/coverage_auditor.ts`
+> - **Causa:** A migração de 'coverage_auditor.py' para 'coverage_auditor.ts' está PARITY_GAPS. Faltam 1 unidades.
+>
+> ### 🔵 `NEUTRO` [42] `Diagnostics/diagnostic_strategist.ts`
+>
+> - **Local:** `src_local/agents/Support/Diagnostics/diagnostic_strategist.ts`
+> - **Causa:** A migração de 'diagnostic_strategist.py' para 'diagnostic_strategist.ts' está SHALLOW. Faltam 2 unidades.
+>
+> ### 🔵 `NEUTRO` [43] `Analysis/dna_profiler.ts`
+>
+> - **Local:** `src_local/agents/Support/Analysis/dna_profiler.ts`
+> - **Causa:** A migração de 'dna_profiler.py' para 'dna_profiler.ts' está PARITY_GAPS. Faltam 1 unidades.
+>
+> ### 🔵 `NEUTRO` [44] `tests/test_discovery_agent.py`
+>
+> - **Local:** `tests\test_discovery_agent.py`
+> - **Causa:** Arquivo 'discovery_agent.py' reconhecido como arquivado/manutenção em 'tests\test_discovery_agent.py'.
+>
+> ### 🔵 `NEUTRO` [45] `Automation/infrastructure_assembler.ts`
+>
+> - **Local:** `src_local/agents/Support/Automation/infrastructure_assembler.ts`
+> - **Causa:** A migração de 'infrastructure_assembler.py' para 'infrastructure_assembler.ts' está SHALLOW. Faltam 2 unidades.
+>
+> ### 🔵 `NEUTRO` [46] `utils/telemetry_excellence_engine.ts`
+>
+> - **Local:** `src_local/utils/telemetry_excellence_engine.ts`
+> - **Causa:** A migração de 'intent_heuristics_engine.py' para 'telemetry_excellence_engine.ts' está SHALLOW. Faltam 4 unidades.
+>
+> ### 🔵 `NEUTRO` [47] `Core/integrity_guardian.ts`
+>
+> - **Local:** `src_local/agents/Support/Core/integrity_guardian.ts`
+> - **Causa:** A migração de 'integrity_guardian.py' para 'integrity_guardian.ts' está SHALLOW. Faltam 5 unidades.
+>
+> ### 🔵 `NEUTRO` [48] `utils/git_client.ts`
+>
+> - **Local:** `src_local/utils/git_client.ts`
+> - **Causa:** A migração de 'git_automaton.py' para 'git_client.ts' está SHALLOW. Faltam 4 unidades.
+>
+> ### 🔵 `NEUTRO` [49] `Analysis/logic_auditor.ts`
+>
+> - **Local:** `src_local/agents/Support/Analysis/logic_auditor.ts`
+> - **Causa:** A migração de 'logic_auditor.py' para 'logic_auditor.ts' está SHALLOW. Faltam 4 unidades.
+>
+> ### 🔵 `NEUTRO` [50] `Core/healer.ts`
+>
+> - **Local:** `src_local/agents/Support/Core/healer.ts`
+> - **Causa:** A migração de 'healer.py' para 'healer.ts' está SHALLOW. Faltam 4 unidades.
+>
+> ... e mais 89 achados omitidos para densidade.
+
+## 💀 Risco Existencial
+
+> Autoconsciência nativa ativa. Governança PhD em vigor.

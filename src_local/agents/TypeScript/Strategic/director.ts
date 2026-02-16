@@ -1,5 +1,6 @@
 import { BaseActivePersona } from "../../base_active_persona.ts";
 import winston from "winston";
+import { ReportSectionsEngine } from "../../Support/Reporting/report_sections_engine.ts";
 
 const logger = winston.child({ module: "TS_Director" });
 
@@ -8,13 +9,15 @@ const logger = winston.child({ module: "TS_Director" });
  * O Diretor Soberano, responsável por coordenar a inteligência coletiva dos agentes e garantir a integridade do Plano de Batalha.
  */
 export class DirectorPersona extends BaseActivePersona {
+    private sectionsEngine: ReportSectionsEngine;
+
     constructor(projectRoot: string | null = null) {
         super(projectRoot);
         this.name = "Director";
         this.emoji = "🏛️";
         this.role = "Master Orchestrator";
         this.stack = "TypeScript";
-        // Mission logic would go here
+        this.sectionsEngine = new ReportSectionsEngine();
     }
 
     async performAudit(): Promise<any[]> {
@@ -75,29 +78,99 @@ export class DirectorPersona extends BaseActivePersona {
     format360Report(snapshot: any, findings: any): string {
         logger.info(`[${this.name}] Formatting 360 report...`);
 
+        const isCollapse = snapshot.health_score === 0;
+        const statusEmoji = snapshot.health_score > 80 ? "OK" : (snapshot.health_score > 50 ? "ALERTA" : "CRÍTICO");
+        const statusBadge = this.sectionsEngine["_getStatusBadge"](statusEmoji);
+
         let report = `# 🏛️ RELATÓRIO SISTÊMICO
-## Resumo
-Score: ${snapshot.health_score}%
-Achados: ${findings.length}
 
-## Saúde
-\`\`\`json
-${JSON.stringify(snapshot, null, 2)}
-\`\`\`
+> **Status Operacional:** ${statusBadge}
+> **Ambiente:** \`TS-MASTER-CONTROL\`
+> 
+> ${isCollapse ? "💀 `SITUAÇÃO: COLAPSO DE INTEGRIDADE`" : "💎 `SITUAÇÃO: SOBERANIA TÉCNICA`"}
 
-## Achados Detalhados
+---
+
+## 🧬 SINCRONIA DE IDENTIDADE
+
+| Métrica | Dashboard Visual | Status Operacional |
+| :--- | :--- | :--- |
+| **Integridade Geral** | \`${Math.round(snapshot.health_score || 0)}%\` | ${statusBadge} |
+| **Alertas Ativos** | \`${findings.length} Achados\` | 🔵 \`MONITORADO\` |
+| **Último Check** | \`${new Date().toLocaleTimeString()}\` | 🟢 \`ATIVA\` |
+
+${this.sectionsEngine.formatGovernanceSection(snapshot)}
+
+## 🩺 SINAIS VITAIS DO PRODUTO
+
+${this.sectionsEngine.formatVitalsTable(snapshot, "Integridade", isCollapse ? "COLAPSO" : snapshot.status)}
+
+${this.sectionsEngine.formatRoadmap(snapshot)}
+
+## 🗺️ TOPOLOGIA DE SINCRONIA (NEURAL BRIDGE)
+
+${this.sectionsEngine.formatTopologyMap(snapshot)}
+
+## 🌪️ MAPA DE ENTROPIA & ACOPLAMENTO
+
+${this.sectionsEngine.formatEntropyMap(snapshot.entropy_map || {}, 15)}
+
+## 🧪 MATRIZ DE CONFIANÇA
+
+| Componente | Entropia | Asserções | Status de Teste |
+| :--- | :---: | :---: | :--- |
+`;
+
+        const matrix = snapshot.confidence_matrix || [];
+        for (const entry of matrix.slice(0, 50)) {
+            const statusIcon = entry.test_status === "DEEP" ? "🟢 `PROFUNDO`" : "🔴 `FRÁGIL`";
+            const basename = entry.file.split(/[\\/]/).pop() || entry.file;
+            report += `| \`${basename}\` | \`${entry.complexity}\` | \`${entry.assertions}\` | ${statusIcon} |\n`;
+        }
+
+        report += `
+## 🎯 PLANO DE BATALHA: DIRETRIZES DE ENGENHARIA
+
+| Severidade | Qtd. | Impacto Estratégico | Status de Resposta |
+| :--- | :---: | :--- | :--- |
+| **CRITICAL** | \`${findings.filter((f: any) => f.severity === "CRITICAL").length}\` | 🔴 \`BLOQUEANTE\` | ${findings.some((f: any) => f.severity === "CRITICAL") ? "🔴 `INTERVENÇÃO`" : "🟢 `LIVRE`"} |
+| **HIGH** | \`${findings.filter((f: any) => f.severity === "HIGH").length}\` | 🟡 \`RISCO ALTO\` | ${findings.some((f: any) => f.severity === "HIGH") ? "🟡 `PRIORIDADE`" : "🟢 `LIVRE`"} |
+| **MEDIUM** | \`${findings.filter((f: any) => f.severity === "MEDIUM").length}\` | 🔵 \`DÉBITO TÉC.\` | ${findings.some((f: any) => f.severity === "MEDIUM") ? "🔵 `EM FILA`" : "🟢 `LIVRE`"} |
+
+
+
+
+---
+
+## 🚩 ACHADOS DETALHADOS
 `;
 
         if (Array.isArray(findings)) {
-            for (const finding of findings) {
+            let fIdx = 1;
+            for (const finding of findings.slice(0, 50)) {
                 const severity = finding.severity || "UNKNOWN";
                 const file = finding.file || "N/A";
                 const issue = finding.issue || finding.message || JSON.stringify(finding);
-                report += `- [${severity}] **${file}**: ${issue}\n`;
+                const badge = this.sectionsEngine["_getStatusBadge"](severity);
+                const parts = file.split(/[\\/]/);
+                const basename = parts.pop() || file;
+                const parent = parts.pop() || "";
+                const context = parent ? `${parent}/${basename}` : basename;
+
+                report += `> ### ${badge} [${fIdx++}] \`${context}\`\n> - **Local:** \`${file}\`\n> - **Causa:** ${issue}\n>\n`;
             }
+            if (findings.length > 50) report += `> ... e mais ${findings.length - 50} achados omitidos para densidade.\n`;
         } else {
             report += "Formato de achados inválido.";
         }
+
+
+
+        report += `
+## 💀 Risco Existencial
+
+> Autoconsciência nativa ativa. Governança PhD em vigor.
+`;
 
         return report;
     }
@@ -111,6 +184,7 @@ ${JSON.stringify(snapshot, null, 2)}
     }
 
     getSystemPrompt(): string {
-        return `Você é o Diretor PhD 🏛️, mestre da orquestração sistêmica.Sua missão é garantir a excelência do projeto via governança PhD.`;
+        return `Você é o Diretor PhD 🏛️, mestre da orquestração sistêmica. Sua missão é garantir a excelência do projeto via governança PhD.`;
     }
 }
+

@@ -11,6 +11,7 @@ const logger = winston.child({ module: "MarkdownSanitizer" });
  * 1. Performance otimizada usando manipulação de strings Bun.
  * 2. Proteção contra BOM (Byte Order Mark).
  * 3. Fallback inteligente para relatórios sem título.
+ * 4. [PhD Update] Suporte a Markdown aninhado (Blockquotes) para MD022 e MD032.
  */
 export class MarkdownSanitizer {
     /**
@@ -74,21 +75,28 @@ export class MarkdownSanitizer {
         const result: string[] = [];
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i]!;
-            const isHeading = line.trim().startsWith("#");
+            const clean = line.replace(/^>\s*/, "").trim();
+            const prefix = line.match(/^>\s*/)?.[0] || "";
+            const isHeading = clean.startsWith("#");
 
             if (isHeading) {
                 // Ensure blank line before (unless first line)
                 if (result.length > 0) {
-                    const prev = result[result.length - 1]!.trim();
-                    if (prev !== "") {
-                        result.push("");
+                    const prev = result[result.length - 1]!;
+                    const prevClean = prev.replace(/^>\s*/, "").trim();
+                    if (prevClean !== "") {
+                        result.push(prefix.trimEnd());
                     }
                 }
                 result.push(line);
 
                 // Ensure blank line after
-                if (i + 1 < lines.length && lines[i + 1]!.trim() !== "") {
-                    result.push("");
+                if (i + 1 < lines.length) {
+                    const next = lines[i + 1]!;
+                    const nextClean = next.replace(/^>\s*/, "").trim();
+                    if (nextClean !== "") {
+                        result.push(prefix.trimEnd());
+                    }
                 }
             } else {
                 result.push(line);
@@ -99,18 +107,20 @@ export class MarkdownSanitizer {
 
     private ensureBlanksAroundLists(lines: string[]): string[] {
         const result: string[] = [];
-        // Regex mais robusto para listas (captura -, *, 1. e espaços)
-        const isList = (l: string) => /^\s*([-*]|\d+\.)\s+/.test(l);
-        const isHorizontalRule = (l: string) => /^\s*-{3,}\s*$/.test(l);
+        const isList = (l: string) => /^\s*([-*]|\d+\.)\s+/.test(l.replace(/^>\s*/, ""));
+        const isHorizontalRule = (l: string) => /^\s*-{3,}\s*$/.test(l.replace(/^>\s*/, ""));
 
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i]!;
+            const prefix = line.match(/^>\s*/)?.[0] || "";
             const prev = i > 0 ? lines[i - 1]! : "";
+            const clean = line.replace(/^>\s*/, "").trim();
 
             // MD032: Blank line BEFORE list
-            if (isList(line) && !isList(prev) && prev.trim() !== "") {
-                if (result.length > 0 && result[result.length - 1]!.trim() !== "") {
-                    result.push("");
+            const prevClean = prev.replace(/^>\s*/, "").trim();
+            if (isList(line) && !isList(prev) && prevClean !== "") {
+                if (result.length > 0 && result[result.length - 1]!.replace(/^>\s*/, "").trim() !== "") {
+                    result.push(prefix.trimEnd());
                 }
             }
 
@@ -118,11 +128,11 @@ export class MarkdownSanitizer {
 
             // MD032: Blank line AFTER list
             const next = i + 1 < lines.length ? lines[i + 1]! : "";
-            // Se a próxima linha NÃO for lista e NÃO for vazia -> insere blank.
-            // Tratamento especial para Horizontal Rule (---) que conta como bloco diferente.
-            if (isList(line) && !isList(next) && (next.trim() !== "" || isHorizontalRule(next))) {
-                if (next.trim() !== "") { // Avoid double blank if next is already blank
-                    result.push("");
+            const nextClean = next.replace(/^>\s*/, "").trim();
+
+            if (isList(line) && !isList(next) && (nextClean !== "" || isHorizontalRule(next))) {
+                if (nextClean !== "") {
+                    result.push(prefix.trimEnd());
                 }
             }
         }

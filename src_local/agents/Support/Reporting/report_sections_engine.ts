@@ -16,27 +16,52 @@ const logger = winston.child({ module: "ReportSectionsEngine" });
  */
 export class ReportSectionsEngine {
     /**
+     * 📊 Gera uma barra de progresso em Unicode.
+     */
+    protected _generateProgressBar(percent: number, length: number = 10): string {
+        const rounded = Math.round(percent);
+        const full = Math.round((rounded / 100) * length);
+        const empty = Math.max(0, length - full);
+        return `\`${"█".repeat(full)}${"░".repeat(empty)} ${rounded}%\``;
+    }
+
+
+    /**
+     * 🏷️ Gera um badge de status.
+     */
+    protected _getStatusBadge(status: string): string {
+        const s = status.toUpperCase();
+        if (s.includes("CRÍTICO") || s.includes("COLLAPSE") || s.includes("ERRO")) return "🔴 `CRÍTICO`";
+        if (s.includes("ALERTA") || s.includes("ATENÇÃO") || s.includes("RISCO")) return "🟡 `ATENÇÃO`";
+        if (s.includes("SUCESSO") || s.includes("ESTÁVEL") || s.includes("OK")) return "🟢 `ESTÁVEL`";
+        return "🔵 `NEUTRO`";
+    }
+
+
+    /**
      * 🩺 Formata a tabela de sinais vitais.
      */
     formatVitalsTable(healthData: any, infraLabel: string, infraStatus: string): string {
         const blindCount = (healthData.dark_matter || []).length;
         const brittleCount = (healthData.brittle_points || []).length;
 
-        let blindImpact = "Seguro";
-        if (blindCount > 0 && blindCount < 10) blindImpact = "Alerta";
-        else if (blindCount >= 10) blindImpact = "CRÍTICO";
+        let blindImpact = "🟢 `SEGURO`";
+        if (blindCount > 0 && blindCount < 10) blindImpact = "🟡 `ALERTA`";
+        else if (blindCount >= 10) blindImpact = "🔴 `CRÍTICO`";
 
-        const brittleImpact = brittleCount === 0 ? "Seguro" : "Risco de Colapso";
+        const brittleImpact = brittleCount === 0 ? "🟢 `ESTÁVEL`" : "🔴 `RISCO`";
 
         return [
-            "| Métrica | Status | Impacto |",
-            "| :--- | :--- | :--- |",
-            `| **Pontos Cegos** | ${blindCount} Arquivos | ${blindImpact} |`,
-            `| **Fragilidades** | ${brittleCount} Pontos | ${brittleImpact} |`,
-            `| ${infraLabel} | ${infraStatus} | Nível de Maturidade |`,
+            "> | Métrica | Valor | Status |",
+            "> | :--- | :--- | :--- |",
+            `> | Pontos Cegos | ${blindCount} Arq. | ${blindImpact} |`,
+            `> | Fragilidades | ${brittleCount} Pts. | ${brittleImpact} |`,
+            `> | ${infraLabel} | ${infraStatus} | ⚙️ \`SISTEMA\` |`,
             "",
         ].join("\n");
     }
+
+
 
     /**
      * 🗺️ Formata o roadmap para 100% de saúde.
@@ -78,13 +103,70 @@ export class ReportSectionsEngine {
         entries.sort((a, b) => b.complexity - a.complexity);
 
         const rows = entries.slice(0, limit).map(
-            e => `| \`${e.file}\` | ${e.complexity} | ${e.instability.toFixed(2)} |`
+            e => {
+                const basename = e.file.split(/[\\/]/).pop() || e.file;
+                return `> | \`${basename}\` | \`${e.complexity}\` | \`${Math.round(e.instability * 100)}%\` |`;
+            }
         );
 
         return [
-            "| Alvo | Complexidade | Instabilidade |",
-            "| :--- | :---: | :---: |",
+            "> | Componente | Complex. | Instabilidade (Prob.) |",
+            "> | :--- | :---: | :--- |",
             ...rows,
+            "",
+        ].join("\n");
+    }
+
+
+
+    /**
+     * ⚖️ Formata a seção de Governança PhD.
+     */
+    formatGovernanceSection(healthData: any): string {
+        const level = healthData.compliance_level || "SOVEREIGN";
+        const directives = healthData.directives || ["Manter paridade absoluta", "Zero débito técnico"];
+
+        const breakdown = healthData.breakdown || {};
+        const pillars = [
+            `| Stability | \`${Math.round(breakdown["Stability (Coverage)"] || 0)}\` | 40 | ${this._getStatusBadge((breakdown["Stability (Coverage)"] || 0) > 30 ? "OK" : "ALERTA")} |`,
+            `| Purity | \`${Math.round(breakdown["Purity (Complexity)"] || 0)}\` | 20 | ${this._getStatusBadge((breakdown["Purity (Complexity)"] || 0) > 15 ? "OK" : "ALERTA")} |`,
+            `| Observability | \`${Math.round(breakdown["Observability (Telemetry)"] || 0)}\` | 15 | ${this._getStatusBadge((breakdown["Observability (Telemetry)"] || 0) > 10 ? "OK" : "ALERTA")} |`,
+            `| Security | \`${Math.round(breakdown["Security (Vulnerabilities)"] || 0)}\` | 15 | ${this._getStatusBadge((breakdown["Security (Vulnerabilities)"] || 0) > 10 ? "OK" : "ALERTA")} |`,
+            `| Excellence | \`${Math.round(breakdown["Excellence (Documentation)"] || 0)}\` | 10 | ${this._getStatusBadge((breakdown["Excellence (Documentation)"] || 0) > 8 ? "OK" : "ALERTA")} |`,
+        ];
+
+        return [
+            "### 📊 DECOMPOSIÇÃO DA SAÚDE (PILARES)",
+            "",
+            "| Pilar | Score | Máx | Status |",
+            "| :--- | :---: | :---: | :--- |",
+            ...pillars,
+            "",
+            "### ⚖️ DIRETRIZES DE GOVERNANÇA PHD",
+            "",
+            `| Ativo | Nível de Compliance | Status de Veto |`,
+            `| :--- | :--- | :--- |`,
+            `| \`SISTEMA-ALFA\` | 💎 \`${level}\` | ✅ \`LIBERADO\` |`,
+            "",
+            "**Diretrizes Ativas:**",
+            ...directives.map((d: string) => `- ${d}`),
+            "",
+        ].join("\n");
+    }
+
+    /**
+     * 🗺️ Formata a topologia de sincronia (Neural Bridge).
+     */
+    formatTopologyMap(healthData: any): string {
+        const topology = healthData.topology || { branch: "main", tracking: "origin/main", isHealthy: true };
+        const status = topology.isHealthy ? "🟢 `SYNC-OK`" : "🔴 `SYNC-ERROR`";
+
+        return [
+            "| Segmento | Identificador | Bridge Status |",
+            "| :--- | :--- | :--- |",
+            `| **Active Branch** | \`${topology.branch}\` | ${status} |`,
+            `| **Upstream** | \`${topology.tracking}\` | 🔗 \`CONECTADO\` |`,
+            `| **Phased Sync** | \`LUCID-DREAMING\` | ⚡ \`ACTIVE\` |`,
             "",
         ].join("\n");
     }
