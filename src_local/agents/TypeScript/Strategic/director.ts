@@ -74,14 +74,32 @@ export class DirectorPersona extends BaseActivePersona {
      */
     format360Report(snapshot: any, findings: any): string {
         logger.info(`[${this.name}] Formatting 360 report...`);
-        // Simulate report formatting
-        return `# 🏛️ RELATÓRIO SISTÊMICO
+
+        let report = `# 🏛️ RELATÓRIO SISTÊMICO
 ## Resumo
 Score: ${snapshot.health_score}%
 Achados: ${findings.length}
 
 ## Saúde
-${JSON.stringify(snapshot, null, 2)}`;
+\`\`\`json
+${JSON.stringify(snapshot, null, 2)}
+\`\`\`
+
+## Achados Detalhados
+`;
+
+        if (Array.isArray(findings)) {
+            for (const finding of findings) {
+                const severity = finding.severity || "UNKNOWN";
+                const file = finding.file || "N/A";
+                const issue = finding.issue || finding.message || JSON.stringify(finding);
+                report += `- [${severity}] **${file}**: ${issue}\n`;
+            }
+        } else {
+            report += "Formato de achados inválido.";
+        }
+
+        return report;
     }
 
     selfDiagnostic(): any {
@@ -93,6 +111,6 @@ ${JSON.stringify(snapshot, null, 2)}`;
     }
 
     getSystemPrompt(): string {
-        return `Você é o Diretor PhD 🏛️, mestre da orquestração sistêmica. Sua missão é garantir a excelência do projeto via governança PhD.`;
+        return `Você é o Diretor PhD 🏛️, mestre da orquestração sistêmica.Sua missão é garantir a excelência do projeto via governança PhD.`;
     }
 }
