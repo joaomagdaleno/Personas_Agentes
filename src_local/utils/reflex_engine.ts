@@ -59,4 +59,4 @@ export class ReflexEngine {
 }
 
 /** Parity: ReflexEnginePhd — Legacy alias for ReflexEngine. */
-export const ReflexEnginePhd = ReflexEngine;
+export class ReflexEnginePhd extends ReflexEngine { }

@@ -43,8 +43,8 @@ export const TRIVIAL_COMPARE_KEYWORDS = [
 // Dangerous keywords for obfuscation detection
 export const DANGEROUS_KEYWORDS = new Set([
     "eval", "exec", "shell=True", "system", "popen",
-    "importlib", "__import__", "subprocess", "pa" + "ss", "exce" + "pt",
-    "global", "asyncio", "run", "api_" + "key", "AK" + "IA",
+    "importlib", "__import__", "subprocess", "pass", "except",
+    "global", "asyncio", "run", "api_key", "AKIA",
     "storePassword", "InAppPurchase",
     "findViewById", "ANDROID_ID", "Double", "dynamic",
     "callbackFlow", "awaitClose", "http", "debuggable",

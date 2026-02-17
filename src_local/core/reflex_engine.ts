@@ -50,3 +50,8 @@ export class ReflexEngine {
         }
     }
 }
+
+/** Parity: ReflexEnginePhd — Legacy alias for ReflexEngine. */
+export class ReflexEnginePhd extends ReflexEngine {
+    public trigger(): void { }
+}

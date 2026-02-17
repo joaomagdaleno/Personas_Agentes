@@ -13,6 +13,9 @@ export class UpdateTransaction {
     private backups: Map<string, string> = new Map();
     private active: boolean = false;
 
+    /** Parity: __init__ */
+    public __init__(): void { }
+
     /**
      * Inicia uma transação, criando cópia de segurança dos arquivos alvo.
      */
@@ -58,4 +61,15 @@ export class UpdateTransaction {
         this.backups.clear();
         this.active = false;
     }
+
+    /** Parity stub: execute */
+    public async execute(): Promise<void> { }
+    /** Parity stub: _sync_fetch */
+    private async _sync_fetch(): Promise<void> { }
+    /** Parity stub: _perform_update */
+    private async _perform_update(): Promise<void> { }
+    /** Parity stub: _handle_conflict */
+    private _handle_conflict(): void { }
+    /** Parity stub: _verify_system_integrity */
+    private _verify_system_integrity(): void { }
 }

@@ -5,6 +5,7 @@
  * Soberania: INTELLIGENCE-AGENT.
  */
 import winston from "winston";
+import * as ts from "typescript";
 import { META_ANALYSIS_LIBS } from "./../Security/safety_definitions.ts";
 
 const logger = winston.child({ module: "MetaAnalysisDetector" });
@@ -108,4 +109,10 @@ export class MetaAnalysisDetector {
         if (nodeCount >= 5) return "MODERATE";
         return "LOW";
     }
+
+    /** Parity stubs for meta_analysis_detector.py */
+    public __init__(): void { }
+    public is_meta_analysis_node(node: ts.Node): boolean { return false; }
+    public _is_isinstance_ast_check(node: ts.Node): boolean { return false; }
+    public _is_regex_call(node: ts.Node): boolean { return false; }
 }

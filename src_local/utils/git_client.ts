@@ -164,4 +164,19 @@ export class GitClient {
             logger.warn(`🚨 [Git] ${conflicted.length} conflitos detectados. Tentando resolução básica...`);
         }
     }
+
+    /** Parity: is_clean_state — Checks if the working directory is clean. */
+    public async is_clean_state(): Promise<boolean> {
+        const res = await this.run(["status", "--porcelain"]);
+        return res.stdout.trim() === "";
+    }
+
+    /** Parity: _run_git — Internal git runner stub. */
+    private async _run_git(args: string[]): Promise<string> {
+        const res = await this.run(args);
+        return res.stdout;
+    }
 }
+
+/** Parity: GitAutomaton — Legacy alias for GitClient. */
+export class GitAutomaton extends GitClient { }

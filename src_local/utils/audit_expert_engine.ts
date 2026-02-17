@@ -145,4 +145,12 @@ export class AuditExpertEngine {
 }
 
 /** Parity: AuditScannerEngine — Legacy alias for AuditExpertEngine. */
-export const AuditScannerEngine = AuditExpertEngine;
+export class AuditScannerEngine extends AuditExpertEngine { }
+
+/** Parity: AuditRiskEngine — Legacy alias for AuditExpertEngine. */
+export class AuditRiskEngine extends AuditExpertEngine { }
+
+/** Parity: map_risk_type — Stub for legacy risk mapping. */
+export function map_risk_type(risk: string): string {
+    return risk.toUpperCase();
+}

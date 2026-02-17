@@ -4,13 +4,7 @@
  */
 
 import winston from 'winston';
-import { formatDate } from './date_utils.ts'; // We'll create this
-
-function formatDate(date: Date): string {
-    const pad = (num: number) => num.toString().padStart(2, '0');
-    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ` +
-        `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}.${date.getMilliseconds().toString().padStart(3, '0')}`;
-}
+import { formatDate } from './date_utils.ts';
 
 export function configureLogging(level: string = "info") {
     // Configure Winston logging
@@ -20,7 +14,7 @@ export function configureLogging(level: string = "info") {
                 winston.format.colorize(),
                 winston.format.timestamp(),
                 winston.format.printf(({ timestamp, level, message, metadata }) => {
-                    const timeStr = formatDate(new Date(timestamp));
+                    const timeStr = formatDate(new Date(timestamp as string | number | Date));
                     return `[${timeStr}] [${level}] ${message}${metadata ? ` ${JSON.stringify(metadata)}` : ''}`;
                 })
             ),
@@ -98,3 +92,14 @@ export class SovereigntyLogger {
 }
 
 export const logger = SovereigntyLogger.getInstance();
+
+/** Parity stub: setup_logging */
+export function setup_logging(): void { configureLogging(); }
+
+/** Parity stub: log_performance */
+export function log_performance(msg: string): void { logger.log({ level: "INFO", persona: "System", message: msg }); }
+
+/** Parity: SimpleFormatter — Legacy alias for Winston formatting. */
+export class SimpleFormatter {
+    public format(record: any): string { return record.message; }
+}

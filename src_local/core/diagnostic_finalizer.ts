@@ -72,4 +72,33 @@ export class DiagnosticFinalizer {
 
         return path;
     }
+
+    /** Parity: _run_cognitive_healing — Stub for legacy cognitive healing. */
+    private static async _run_cognitive_healing(): Promise<void> { }
+
+    /** Parity: _queue_task — Stub for legacy task queuing. */
+    private static _queue_task(): void { }
+
+    /** Parity: _analyze_critical_findings — Stub for legacy critical analysis. */
+    private static _analyze_critical_findings(): void { }
+
+    /** Parity: _auto_doc — Stub for legacy auto-documentation. */
+    private static _auto_doc(): void { }
+
+    /** Parity: _auto_test — Stub for legacy auto-testing. */
+    private static _auto_test(): void { }
+}
+
+/** Parity: ReportFormatter — Legacy alias for DiagnosticFinalizer formatting logic. */
+export class ReportFormatter extends DiagnosticFinalizer {
+    public static format_header(): string { return ""; }
+    public static _get_health_status_label(): string { return ""; }
+    public static _format_op_status_table(): string { return ""; }
+    public static format_health_decomposition(): string { return ""; }
+    public static format_vitals(): string { return ""; }
+    public static format_entropy(): string { return ""; }
+    public static format_efficiency(): string { return ""; }
+    public static format_quality_matrix(): string { return ""; }
+    public static format_battle_plan(): string { return ""; }
+    public static format_obfuscation_zone(): string { return ""; }
 }

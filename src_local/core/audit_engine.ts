@@ -220,5 +220,13 @@ export class AuditEngine {
         const duration = (Date.now() - startTime) / 1000;
         logger.info(`⏱️ [AuditEngine] ${operation}: ${duration.toFixed(4)}s (${count} items)`);
     }
+
+    /** Parity: _scan_single_file — Audits a single file and returns findings. */
+    public async _scan_single_file(filePath: string, context: any): Promise<any[]> {
+        const fullPath = this.root.join(filePath);
+        if (!await Bun.file(fullPath.toString()).exists()) return [];
+        const content = await Bun.file(fullPath.toString()).text();
+        return await this.scan_content(content, filePath);
+    }
 }
 

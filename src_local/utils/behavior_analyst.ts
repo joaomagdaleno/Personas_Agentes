@@ -109,4 +109,18 @@ export class BehaviorAnalyst {
             // Tabela pode não existir se HistoryAgent não a criou
         }
     }
+
+    /** Parity stub: _init_db */
+    public _init_db(): void { }
+    /** Parity stub: get_active_window_info */
+    public get_active_window_info(): any { return this.getActiveWindow(); }
+    /** Parity stub: record_memory_state */
+    public record_memory_state(): void { }
+    /** Parity stub: get_smart_memory_limit */
+    public get_smart_memory_limit(): number { return 1024; }
+    /** Parity stub: _save_to_db */
+    public _save_to_db(): void { }
 }
+
+/** Parity: DigitalBehaviorAnalyst — Legacy alias for BehaviorAnalyst. */
+export class DigitalBehaviorAnalyst extends BehaviorAnalyst { }

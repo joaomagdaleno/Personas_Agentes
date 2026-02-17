@@ -38,6 +38,12 @@ for (let i = 0; i < lines.length; i++) {
         lastMissingCount = parseInt(match?.[1] || "0");
     }
 
+    if (line.includes("SHALLOW") && line.includes("Faltam")) {
+        const match = line.match(/Faltam (\d+)/);
+        lastLevel = "SHALLOW";
+        lastMissingCount = parseInt(match?.[1] || "0");
+    }
+
     if (line.includes("Ausentes")) {
         collectingMissing = true;
         continue;

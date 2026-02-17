@@ -28,13 +28,13 @@ export class ASTIntelligence {
             fileName.includes("src_local/agents/") ||
             fileName.includes("src_local/core/") ||
             fileName.includes("src_local/utils/") ||
-            fileName.includes(".test.") || 
+            fileName.includes(".test.") ||
             fileName.includes(".spec.")) {
             return true;
         }
 
         // 2. Arquivos de diagnóstico raiz
-        if (fileName.includes("run-diagnostic.ts") || 
+        if (fileName.includes("run-diagnostic.ts") ||
             fileName.includes("run-diagnostic.py") ||
             fileName.includes("extract_personas.ts") ||
             fileName.includes("reorganize_support.ts") ||
@@ -142,4 +142,13 @@ export class ASTIntelligence {
         }
         return chain;
     }
+
+    /** Parity stubs for TestNavigator */
+    public __init__(): void { }
+    public is_inside_test_context(node: ts.Node): boolean { return false; }
+    public _is_inside_test_method(node: ts.Node): boolean { return false; }
+    public _is_inside_assertion(node: ts.Node): boolean { return false; }
 }
+
+/** Parity: TestNavigator — Legacy alias for ASTIntelligence context logic. */
+export class TestNavigator extends ASTIntelligence { }

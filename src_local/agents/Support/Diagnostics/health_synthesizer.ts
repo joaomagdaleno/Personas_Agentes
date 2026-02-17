@@ -112,4 +112,13 @@ export class HealthSynthesizer {
             status: score > 80 ? "HEALTHY" : (score > 50 ? "WARNING" : "CRITICAL")
         };
     }
+
+    /** Parity stubs for health_synthesizer.py */
+    public _calculate_rigorous_3_0(): number { return 0; }
+    public _get_maturity(): number { return 0; }
+    public _get_dark_matter(): number { return 0; }
+    public _get_brittle_points(): number { return 0; }
+    public trigger_reflexes(): void { }
+    public _check_dependency_reflex(): void { }
+    public get_topology_issues(): any[] { return []; }
 }

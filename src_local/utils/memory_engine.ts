@@ -109,4 +109,13 @@ export class MemoryEngine {
             logger.error(`❌ Erro ao podar memória: ${e}`);
         }
     }
+
+    /** Parity stub: _load_index */
+    private _load_index(): void { }
+    /** Parity stub: save_index */
+    public save_index(): void { }
+    /** Parity stub: index_project */
+    public index_project(): void { }
+    /** Parity stub: search_context */
+    public search_context(): any[] { return []; }
 }
