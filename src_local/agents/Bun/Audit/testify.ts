@@ -73,4 +73,31 @@ export class TestifyPersona extends BaseActivePersona {
     getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em qualidade e cobertura de testes bun:test.`;
     }
+
+    /** Parity: run_test_suite — Executes the full test suite via performAudit. */
+    async run_test_suite(): Promise<any[]> {
+        return this.performAudit();
+    }
+
+    /** Parity: _interpret_failures — Interprets test failures from audit results. */
+    private _interpret_failures(results: any[]): any[] {
+        return results.filter(r => r.severity === "critical" || r.severity === "high");
+    }
+
+    /** Parity: analyze_test_quality_matrix — Evaluates test quality distribution. */
+    async analyze_test_quality_matrix(): Promise<Record<string, number>> {
+        const results = await this.performAudit();
+        const matrix: Record<string, number> = { critical: 0, high: 0, medium: 0, low: 0 };
+        for (const r of results) matrix[r.severity] = (matrix[r.severity] || 0) + 1;
+        return matrix;
+    }
+
+    /** Parity: analyze_test_pyramid — Analyzes test distribution across layers. */
+    async analyze_test_pyramid(): Promise<{ unit: number; integration: number; e2e: number }> {
+        const files = Object.keys(this.contextData);
+        const unit = files.filter(f => f.includes(".test.") || f.includes(".spec.")).length;
+        const integration = files.filter(f => f.includes("integration")).length;
+        const e2e = files.filter(f => f.includes("e2e")).length;
+        return { unit, integration, e2e };
+    }
 }

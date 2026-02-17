@@ -54,4 +54,17 @@ export class ContextMappingLogic {
             rel_path: relPath
         };
     }
+
+    /** Parity: _pre_read_files — Pre-reads a list of files into a content cache. */
+    async _pre_read_files(filePaths: string[]): Promise<Record<string, string>> {
+        const cache: Record<string, string> = {};
+        await Promise.all(filePaths.map(async (fp) => {
+            try {
+                cache[fp] = await Bun.file(fp).text();
+            } catch {
+                logger.warn(`⚠️ [ContextMappingLogic] Falha ao pré-ler: ${fp}`);
+            }
+        }));
+        return cache;
+    }
 }

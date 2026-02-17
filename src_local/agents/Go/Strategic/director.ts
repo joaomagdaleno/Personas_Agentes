@@ -73,4 +73,25 @@ export class DirectorPersona extends BaseActivePersona {
     public override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, PhD em Direção Estratégica Go. Sua missão é garantir a soberania absoluta do sistema.`;
     }
+
+    /** Parity: _deduplicate_results — Removes duplicate findings by file+issue key. */
+    private _deduplicate_results(results: AuditFinding[]): AuditFinding[] {
+        const seen = new Set<string>();
+        return results.filter(r => {
+            const key = `${r.file}:${r.issue}`;
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        });
+    }
+
+    /** Parity: format_360_report — Formats findings into a strategic summary. */
+    public format_360_report(results: AuditFinding[]): string {
+        const deduped = this._deduplicate_results(results);
+        const lines = [`## 🏛️ Go Director 360° Report`, `Total Findings: ${deduped.length}`, ""];
+        for (const r of deduped) {
+            lines.push(`- [${r.severity}] ${r.file}: ${r.issue}`);
+        }
+        return lines.join("\n");
+    }
 }

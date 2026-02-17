@@ -60,4 +60,25 @@ Inclua imports necessários e assertions claras.`;
             return "// Falha na geração do teste.";
         }
     }
+
+    /** Parity: perform_audit — No-op audit (TestRefiner is not an auditor). */
+    async perform_audit(): Promise<any[]> {
+        logger.info(`🧠 [TestRefiner] perform_audit não aplicável; TestRefiner é cognitivo.`);
+        return [];
+    }
+
+    /** Parity: _reason_about_objective — Uses CognitiveEngine to reason about an objective. */
+    async _reason_about_objective(objective: string, file: string, content: string): Promise<string | null> {
+        const prompt = `Analise o objetivo '${objective}' no contexto do arquivo '${file}' (${content.length} chars). Sugira melhorias.`;
+        try {
+            return await this.brain.reason(prompt);
+        } catch {
+            return null;
+        }
+    }
+
+    /** Parity: get_system_prompt — Returns the system prompt for TestRefiner. */
+    get_system_prompt(): string {
+        return "Você é o TestRefiner, especialista cognitivo em qualidade de testes e análise de falhas.";
+    }
 }

@@ -107,6 +107,36 @@ export class TelemetryIntentJudge {
         return /time\.time|Date\.now|performance\.now|process\.hrtime|Bun\.nanoseconds/.test(line)
             || TELEMETRY_KEYWORDS.some(k => line.toLowerCase().includes(k));
     }
+
+    /** Parity: _check_definition_and_obs — Checks if line is a definition or observability pattern. */
+    private _check_definition_and_obs(codeLine: string, ctx: string): TelemetryJudgment | null {
+        if (this._isRuleDefinition(codeLine)) {
+            return { isSafe: true, severity: "STRATEGIC", reason: "Definição técnica de padrão de telemetria." };
+        }
+        if (this._isInsideCriticalReport(ctx)) {
+            return { isSafe: false, severity: "HIGH", reason: "Telemetria manual em fluxo de erro crítico." };
+        }
+        return null;
+    }
+
+    /** Parity: _check_observability_context — Checks if inside an observability/log context. */
+    private _check_observability_context(ctx: string): TelemetryJudgment | null {
+        if (this._isInsideLogCall(ctx)) {
+            return { isSafe: false, severity: "STRATEGIC", reason: "Telemetria manual em Log. Sugestão: migrar para _log_performance." };
+        }
+        return null;
+    }
+
+    /** Parity: _check_logic_and_standard — Checks for logic-level telemetry patterns. */
+    private _check_logic_and_standard(codeLine: string): TelemetryJudgment | null {
+        if (this.maturity.isSimpleTimeSubtraction(codeLine)) {
+            return { isSafe: false, severity: "STRATEGIC", reason: "Telemetria manual detectada. Sugestão: Migrar para _log_performance." };
+        }
+        if (this.maturity.isTelemetryName(codeLine)) {
+            return { isSafe: false, severity: "STRATEGIC", reason: "Cálculo de duração manual para Log futuro." };
+        }
+        return null;
+    }
 }
 
 /**

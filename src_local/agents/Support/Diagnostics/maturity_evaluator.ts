@@ -48,6 +48,7 @@ export class MaturityEvaluator {
             stack,
             files_analyzed: fileCount,
             maturity_index: Number(normalizedScore),
+            status: Number(normalizedScore) >= 3 ? "GOLD" : (Number(normalizedScore) >= 2 ? "STABLE" : "FRAGILE"),
             details
         };
     }

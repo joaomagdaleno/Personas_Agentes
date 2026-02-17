@@ -34,11 +34,12 @@ const FONTS = {
 
 const deepClean = (text: any): string => {
     if (typeof text !== 'string') return String(text || "");
-    // v7.0 High-Intensity Sanitization: Decisively strips all leading artifacts including commas and dots
+    // v7.1.2 Atomic Sanitization: Decisively kills ANY formatting artifacts
     return text
-        .replace(/^[>\s|,\.:;]+/, "")
-        .replace(/[>|]{1,}/g, "")
-        .replace(/[`*]/g, "")
+        .replace(/^[>\s|,\.:;]+/, "") // Leading
+        .replace(/[`*]/g, "")        // Styling
+        .replace(/[>|]{1,}/g, "")    // MD Pipes
+        .replace(/[,%]/g, "")        // Strips ALL commas and percent signs for numeric extraction
         .replace(/:---/g, "")
         .trim();
 };
@@ -309,19 +310,20 @@ const IntelligenceView = ({ data }: any) => {
             </div>
             <div style={{ gridColumn: "span 7" }}>
                 <Card title="Mapa de Entropia" icon="🌪️">
-                    <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "10px", maxHeight: "600px", overflowY: "auto", paddingRight: "10px" }}>
                         {entropy.map((e: any, i: number) => {
                             const complexValue = e['Complex.'] || e.Complex || e.Complexity || "0";
-                            const complex = parseInt(String(complexValue).replace(/[`*]/g, '')) || 0;
-                            const probValue = e['Instabilidade (Prob.)'] || "0";
-                            const prob = deepClean(probValue);
+                            // Deep extraction: remove everything non-numeric
+                            const complex = parseInt(deepClean(complexValue).replace(/[^0-9]/g, "")) || 0;
+                            // Normalize complexity for visual bar (Scale: 0-200+)
+                            const visualScore = Math.min(100, Math.round((complex / 250) * 100));
                             return (
                                 <div key={i} style={{ padding: "12px 16px", background: "rgba(255,255,255,0.01)", borderRadius: "8px", border: `1px solid ${COLORS.border}` }}>
                                     <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
                                         <Typo variant="mono">{e.Componente}</Typo>
-                                        <Badge status={parseInt(prob) > 70 ? "CRÍTICO" : "MONITORADO"}>Prob: {prob}</Badge>
+                                        <Badge status={complex > 100 ? "CRÍTICO" : "MONITORADO"}>Complex: {complex}%</Badge>
                                     </div>
-                                    <ProgressBar value={complex * 1.5} color={complex > 40 ? COLORS.danger : COLORS.success} height="3px" />
+                                    <ProgressBar value={visualScore} color={complex > 150 ? COLORS.danger : (complex > 80 ? COLORS.warning : COLORS.success)} height="3px" />
                                 </div>
                             );
                         })}
@@ -336,28 +338,30 @@ const ReliabilityView = ({ data }: any) => {
     const matrix = useMemo(() => parseTable(data), [data]);
     return (
         <Card title="Matriz de Confiança Atômica" icon="🧪">
-            <div style={{ overflowX: "auto" }}>
-                <table style={{ width: "100%", borderCollapse: "collapse", minWidth: "800px" }}>
-                    <thead>
-                        <tr style={{ background: "rgba(255,255,255,0.03)" }}>
-                            {['Componente', 'Entropia', 'Asserções', 'Status'].map(h => (
-                                <th key={h} style={{ textAlign: "left", padding: "16px", borderBottom: `1px solid ${COLORS.border}` }}>
-                                    <Typo variant="label">{h}</Typo>
-                                </th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {matrix.map((row: any, i: number) => (
-                            <tr key={i} style={{ borderBottom: "1px solid rgba(255,255,255,0.02)" }}>
-                                <td style={{ padding: "16px" }}><Typo variant="mono">{row.Componente}</Typo></td>
-                                <td style={{ padding: "16px", fontWeight: 900, color: "white" }}>{row.Entropia || row.Complex}</td>
-                                <td style={{ padding: "16px" }}><Badge status="NEUTRO">{row.Asserções}</Badge></td>
-                                <td style={{ padding: "16px" }}><Badge status={row['Status de Teste']}>{row['Status de Teste']}</Badge></td>
+            <div style={{ maxHeight: "700px", overflowY: "auto", paddingRight: "10px" }}>
+                <div style={{ overflowX: "auto" }}>
+                    <table style={{ width: "100%", borderCollapse: "collapse", minWidth: "800px" }}>
+                        <thead>
+                            <tr style={{ background: "rgba(255,255,255,0.03)" }}>
+                                {['Componente', 'Entropia', 'Asserções', 'Status'].map(h => (
+                                    <th key={h} style={{ textAlign: "left", padding: "16px", borderBottom: `1px solid ${COLORS.border}` }}>
+                                        <Typo variant="label">{h}</Typo>
+                                    </th>
+                                ))}
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {matrix.map((row: any, i: number) => (
+                                <tr key={i} style={{ borderBottom: "1px solid rgba(255,255,255,0.02)" }}>
+                                    <td style={{ padding: "16px" }}><Typo variant="mono">{row.Componente}</Typo></td>
+                                    <td style={{ padding: "16px", fontWeight: 900, color: "white" }}>{row.Entropia || row.Complex}</td>
+                                    <td style={{ padding: "16px" }}><Badge status="NEUTRO">{row.Asserções}</Badge></td>
+                                    <td style={{ padding: "16px" }}><Badge status={row['Status de Teste']}>{row['Status de Teste']}</Badge></td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </Card>
     );
@@ -401,7 +405,7 @@ const AuditView = ({ data, findingsText }: any) => {
             </Card>
 
             <Card title="Audit Finder (Log Detalhado)" icon="🚩">
-                <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "16px", maxHeight: "800px", overflowY: "auto", paddingRight: "10px" }}>
                     {findings.map((f: any, i: number) => (
                         <div key={i} style={{ background: "rgba(255,255,255,0.02)", padding: "24px", borderRadius: "16px", border: `1px solid ${COLORS.border}`, position: "relative", overflow: "hidden" }}>
                             <div style={{ position: "absolute", top: 0, left: 0, width: "3px", height: "100%", background: f.title.includes('🔴') ? COLORS.danger : (f.title.includes('🟡') ? COLORS.warning : COLORS.accent) }}></div>
@@ -468,7 +472,7 @@ const App = ({ mdContent }: { mdContent: string }) => {
             }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "12px", padding: "0 10px" }}>
                     <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: COLORS.accent, boxShadow: `0 0 10px ${COLORS.accent}` }}></div>
-                    <Typo variant="label" style={{ color: "white", fontSize: "0.85rem", letterSpacing: "0.05em" }}>Sovereign v7.0</Typo>
+                    <Typo variant="label" style={{ color: "white", fontSize: "0.85rem", letterSpacing: "0.05em" }}>Sovereign v7.1</Typo>
                 </div>
 
                 <nav style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
@@ -556,8 +560,10 @@ const App = ({ mdContent }: { mdContent: string }) => {
                 __html: `
                 @keyframes appSlideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
                 body { margin: 0; overflow: hidden; background: #06090f; }
-                ::-webkit-scrollbar { width: 6px; }
-                ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.05); border-radius: 10px; }
+                ::-webkit-scrollbar { width: 6px; height: 6px; }
+                ::-webkit-scrollbar-track { background: transparent; }
+                ::-webkit-scrollbar-thumb { background: rgba(88, 166, 255, 0.2); border-radius: 10px; }
+                ::-webkit-scrollbar-thumb:hover { background: rgba(88, 166, 255, 0.4); }
                 * { box-sizing: border-box; }
             `}} />
         </div>

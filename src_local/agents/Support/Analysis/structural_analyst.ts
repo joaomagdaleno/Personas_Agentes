@@ -42,7 +42,7 @@ export class StructuralAnalyst {
             logger.error(`❌ [StructuralAnalyst] Failed to load LogicAuditor: ${error}`);
             this.logicAuditor = null;
         }
-        
+
         // Placeholder for inspector
         this.inspector = { scanFileLogic: () => [] };
     }
@@ -131,7 +131,7 @@ export class StructuralAnalyst {
      */
     analyze_logic_flaws(content: string, filename: string): any[] {
         if (!this.logicAuditor) return [];
-        
+
         try {
             const ts = require("typescript");
             const sourceFile = ts.createSourceFile(filename, content, ts.ScriptTarget.Latest, true);
@@ -156,6 +156,13 @@ export class StructuralAnalyst {
             logger.error(`❌ [StructuralAnalyst] Failed to analyze file logic in ${filename}: ${error}`);
             return { complexity: 1, dependencies: [] };
         }
+    }
+
+    /** Parity: analyze_intent — Classifies the primary intent of a file (logic, metadata, observability). */
+    analyze_intent(content: string, filename: string): string {
+        if (/export\s+(type|interface|enum)\s+/.test(content)) return "METADATA";
+        if (/logger\.(info|warn|error|debug)/.test(content)) return "OBSERVABILITY";
+        return "LOGIC";
     }
 }
 

@@ -17,11 +17,19 @@ export class CoverageAuditor {
 
         const nameStem = filePath.name().split('.')[0]!.toLowerCase();
 
-        // Rigor PhD: Busca Semântica
+        // Rigor PhD: Busca Semântica (Pythonic 'test_' OR TypeScript '*.test.ts' / '*.spec.ts')
         for (const fileName of allFiles) {
             const lowName = fileName.toLowerCase();
+
+            // Legacy Python Style
             if (lowName.startsWith("test_") && lowName.includes(nameStem)) {
-                logger.debug(`Test match found: ${fileName}`);
+                logger.debug(`Test match found (legacy): ${fileName}`);
+                return true;
+            }
+
+            // TypeScript Standard Style
+            if ((lowName.endsWith(".test.ts") || lowName.endsWith(".spec.ts")) && lowName.includes(nameStem)) {
+                logger.debug(`Test match found (ts-standard): ${fileName}`);
                 return true;
             }
         }

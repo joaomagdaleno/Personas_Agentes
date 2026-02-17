@@ -57,4 +57,12 @@ export class ForgePersona extends BaseActivePersona {
     getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em segurança de compilação e build Bun.`;
     }
+
+    /** Parity: validate_code_safety — Validates if code has dangerous execution patterns. */
+    validate_code_safety(content: string, filePath: string): { safe: boolean; issues: string[] } {
+        const issues: string[] = [];
+        if (/\beval\s*\(/.test(content)) issues.push(`eval() detected in ${filePath}`);
+        if (/new\s+Function\s*\(/.test(content)) issues.push(`new Function() detected in ${filePath}`);
+        return { safe: issues.length === 0, issues };
+    }
 }

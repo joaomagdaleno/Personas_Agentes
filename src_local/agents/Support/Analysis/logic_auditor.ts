@@ -9,9 +9,34 @@ const logger = winston.child({ module: "LogicAuditor" });
  * Auditor de Lógica: Identifica anti-padrões e falhas estruturais.
  */
 export class LogicAuditor {
+    /** Parity: __init__ */
+    constructor() {
+        // No state needed — all methods are static.
+    }
+
     /**
-     * Varre um arquivo em busca de erros lógicos silenciados (try/catch vazio).
+     * Parity: scan_flaws — Delegates to scanFile for full audit.
      */
+    static scan_flaws(sourceFile: ts.SourceFile): any[] {
+        return this.scanFile(sourceFile);
+    }
+
+    /**
+     * Parity: _audit_nodes — Internal node-level audit (observability + meta-analysis).
+     */
+    static _audit_nodes(sourceFile: ts.SourceFile): any[] {
+        const issues: any[] = [];
+        function visitor(node: ts.Node) {
+            const obsCheck = LogicAuditor.auditObservability(node, sourceFile);
+            if (!obsCheck.isSafe) {
+                issues.push({ file: sourceFile.fileName, line: sourceFile.getLineAndCharacterOfPosition(node.getStart()).line + 1, issue: obsCheck.reason, severity: "strategic", context: "LogicAuditor" });
+            }
+            ts.forEachChild(node, visitor);
+        }
+        ts.forEachChild(sourceFile, visitor);
+        return issues;
+    }
+
     /**
      * Realiza uma auditoria completa no arquivo (Silent Errors, Telemetria, Meta-Análise).
      */

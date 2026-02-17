@@ -179,4 +179,17 @@ export class SystemSentinel {
             await new Promise(resolve => setTimeout(resolve, 5000));
         }
     }
+
+    /** Parity: analyze_and_kill_bloatware — Identifies heavy processes and suggests termination. */
+    analyze_and_kill_bloatware(): { process: string, mem_mb: string, action: string }[] {
+        const heavy = this.getHeavyProcesses();
+        const KNOWN_BLOAT = ["SearchIndexer.exe", "MsMpEng.exe", "OneDrive.exe", "Teams.exe"];
+        return heavy
+            .filter((p: any) => KNOWN_BLOAT.some(b => p.name?.toLowerCase().includes(b.toLowerCase())))
+            .map((p: any) => ({
+                process: p.name,
+                mem_mb: p.mem_mb,
+                action: this.isAdmin ? "KILL_ELIGIBLE" : "REQUIRES_ADMIN"
+            }));
+    }
 }

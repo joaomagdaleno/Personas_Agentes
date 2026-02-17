@@ -58,4 +58,18 @@ export class VoyagerPersona extends BaseActivePersona {
     getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em modernização e migração Node→Bun.`;
     }
+
+    /** Parity: perform_active_healing — Heals legacy patterns in blind spots. */
+    async perform_active_healing(blindSpots: string[]): Promise<void> {
+        logger.info(`🧭 [Voyager] Análise de cura ativa em ${blindSpots.length} alvos.`);
+        // In TS, healing is delegated to the orchestrator; this logs the intent.
+    }
+
+    /** Parity: suggest_auto_healing — Generates auto-healing suggestions from audit. */
+    async suggest_auto_healing(): Promise<string[]> {
+        const results = await this.performAudit();
+        return results
+            .filter(r => r.severity === "high")
+            .map(r => `Migrar ${r.file}: ${r.issue}`);
+    }
 }

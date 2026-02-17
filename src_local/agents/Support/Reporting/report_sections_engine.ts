@@ -61,7 +61,27 @@ export class ReportSectionsEngine {
         ].join("\n");
     }
 
+    /**
+     * 🧩 Formata o Painel de Paridade Atômica.
+     */
+    formatParityBoard(stats: any): string {
+        const s = stats || { total_atoms: 0, shallow: 0, deep: 0, gaps: 0, evolution: 0 };
+        const purityRate = s.total_atoms > 0 ? Math.round((s.deep / s.total_atoms) * 100) : 0;
 
+        return [
+            "### 🧩 PARIDADE ATÔMICA (DENSIDADE REAL)",
+            "",
+            "| Dimensão | Qtd. | Densidade | Status |",
+            "| :--- | :---: | :---: | :--- |",
+            `| 💎 **Deep Parity** | \`${s.deep}\` | \`${purityRate}%\` | 🟢 \`ATÔMICO\` |`,
+            `| 🚧 **Shallow** | \`${s.shallow}\` | \`${s.total_atoms > 0 ? Math.round((s.shallow / s.total_atoms) * 100) : 0}%\` | 🟡 \`ADAPTADO\` |`,
+            `| 🧨 **Gaps** | \`${s.gaps}\` | \`${s.total_atoms > 0 ? Math.round((s.gaps / s.total_atoms) * 100) : 0}%\` | ${s.gaps > 0 ? "🔴 `CRÍTICO`" : "🟢 `ZERO`"} |`,
+            `| 🚀 **Evolution** | \`${s.evolution}\` | N/A | 🔵 \`POSITIVO\` |`,
+            "",
+            `> **Total de Átomos:** \`${s.total_atoms}\` | **Taxa de Soberania:** \`${purityRate}%\``,
+            ""
+        ].join("\n");
+    }
 
     /**
      * 🗺️ Formata o roadmap para 100% de saúde.
@@ -85,7 +105,7 @@ export class ReportSectionsEngine {
     /**
      * 🌪️ Formata o mapa de entropia (top N).
      */
-    formatEntropyMap(mapData: Record<string, any>, limit: number = 10): string {
+    formatEntropyMap(mapData: Record<string, any>, limit: number = 200): string {
         const entries: Array<{ file: string; complexity: number; instability: number }> = [];
 
         for (const [f, info] of Object.entries(mapData)) {
@@ -181,6 +201,7 @@ export class ReportSectionsEngine {
     private _addStabilityPoints(b: any, data: any, points: string[]): void {
         const drain = 40 - (b["Stability (Coverage)"] || 40);
         if (drain > 0.05) {
+            const pointsList = []; // Fixed scoping issue if any
             const blinds = (data.dark_matter || []).length;
             const brittle = (data.brittle_points || []).filter((f: string) => !(data.dark_matter || []).includes(f)).length;
             points.push(`- [ ] **Expandir Cobertura**: ${blinds} ativos sem teste e ${brittle} ativos frágeis drenam ${Math.round(drain * 10) / 10} pts.`);

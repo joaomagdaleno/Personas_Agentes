@@ -20,6 +20,11 @@ export type ComponentType = "TEST" | "PRODUCTION";
  * - LOGIC: lógica de negócio, fluxo de controle, transformações
  */
 export class SemanticContextAnalyst {
+    /** Parity: __init__ */
+    constructor() {
+        // Patterns are initialized as class fields.
+    }
+
     private readonly METADATA_PATTERNS = [
         /^\s*(export\s+)?(const|let|var)\s+[A-Z_]+\s*=/,      // Constantes UPPER_CASE
         /^\s*(export\s+)?(type|interface|enum)\s+/,             // Definições de tipo

@@ -118,4 +118,22 @@ export class SafetySupremeJudge {
 
         return false;
     }
+
+    /** Parity: is_dangerous_call — Checks if a call expression is dangerous. */
+    public is_dangerous_call(node: ts.Node): boolean {
+        return this.isDangerousExecution(node);
+    }
+
+    /** Parity: is_meta_analysis_node — Detects meta-analysis patterns. */
+    public is_meta_analysis_node(node: ts.Node, sourceFile: ts.SourceFile): boolean {
+        const text = node.getText();
+        return text.includes("ts.createSourceFile") || text.includes("ts.forEachChild") ||
+            text.includes("eval(") || text.includes("new Function(");
+    }
 }
+
+/** Parity: SafeContextJudge — Legacy alias for SafetySupremeJudge. */
+export const SafeContextJudge = SafetySupremeJudge;
+
+/** Parity: SafetyHeuristics — Legacy alias for SafetySupremeJudge. */
+export const SafetyHeuristics = SafetySupremeJudge;

@@ -1,5 +1,5 @@
 import winston from "winston";
-import { HealthSynthesizer } from "./agents/Support/Diagnostics/health_synthesizer.ts";
+import { HealthSynthesizer } from "../agents/Support/Diagnostics/health_synthesizer.ts";
 
 const logger = winston.child({ module: "ReflexEngine" });
 
@@ -57,3 +57,6 @@ export class ReflexEngine {
         logger.info("⚡ [Reflex] Ciclo de reflexos concluído.");
     }
 }
+
+/** Parity: ReflexEnginePhd — Legacy alias for ReflexEngine. */
+export const ReflexEnginePhd = ReflexEngine;

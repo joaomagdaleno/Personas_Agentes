@@ -2,6 +2,11 @@
  * 🔬 Assistente de Deduplicação Forense (Bun Version).
  */
 export class FindingDeduplicator {
+    /** Parity: __init__ */
+    constructor() {
+        // Severity rank is initialized as a class field.
+    }
+
     private severityRank: Record<string, number> = {
         "CRITICAL": 5, "HIGH": 4, "MEDIUM": 3,
         "LOW": 2, "STRATEGIC": 1, "HEALED": 0

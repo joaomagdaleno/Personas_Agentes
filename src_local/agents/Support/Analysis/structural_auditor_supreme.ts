@@ -131,4 +131,13 @@ export class StructuralAuditorSupreme {
             snippet: node.getText().slice(0, 150)
         };
     }
+
+    /** Parity: _is_single_line_docstring — Checks if a node is a single-line JSDoc/docstring. */
+    private _is_single_line_docstring(node: ts.Node): boolean {
+        const text = node.getText().trim();
+        return (text.startsWith("/**") && text.endsWith("*/") && !text.includes("\n"));
+    }
 }
+
+/** Parity: VetoStructuralEngine — Legacy alias for StructuralAuditorSupreme. */
+export const VetoStructuralEngine = StructuralAuditorSupreme;

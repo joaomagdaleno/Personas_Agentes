@@ -270,4 +270,9 @@ export class ParityAnalyst {
         if (report.overallParity >= 80) return `${report.overallParity}% Parcial`;
         return `${report.overallParity}% Crítica`;
     }
+
+    /** Parity: _detect_gaps — Extracts gap entries from agent parity results. */
+    private _detect_gaps(results: any[]): any[] {
+        return results.filter(r => r.depth === "PARITY_GAP" || r.depth === "SHALLOW");
+    }
 }

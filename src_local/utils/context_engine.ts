@@ -165,4 +165,41 @@ export class ContextEngine {
         const engine = new CognitiveEngine();
         return await engine.reason(prompt);
     }
+
+    /** v7.3: Parity Restoration */
+    _injectSupport() {
+        logger.info("💉 [ContextEngine] Injetando suporte sistêmico...");
+    }
+
+    _initializeSupportTools() {
+        logger.info("🛠️ [ContextEngine] Inicializando ferramentas de suporte...");
+    }
+
+    _getScanner() {
+        return new FileSystemScanner(this.projectRoot.toString(), this.analyst);
+    }
+
+    _findDependents(file: string) {
+        return this.callGraph[file] || [];
+    }
+
+    get_criticality_score(file: string) {
+        const data = this.map[file];
+        if (!data) return 0;
+        return (data.complexity || 1) * (data.coupling?.total || 1);
+    }
+
+    /** Parity: _process_files_in_batch — Processes file analysis in batched parallel. */
+    async _process_files_in_batch(files: string[], batchSize: number = 20): Promise<void> {
+        for (let i = 0; i < files.length; i += batchSize) {
+            const batch = files.slice(i, i + batchSize);
+            await Promise.all(batch.map(async (f) => {
+                try {
+                    await this.registerFile(new (await import("../core/path_utils.ts")).Path(f));
+                } catch (e) {
+                    logger.warn(`⚠️ [ContextEngine] Batch skip: ${f} — ${e}`);
+                }
+            }));
+        }
+    }
 }

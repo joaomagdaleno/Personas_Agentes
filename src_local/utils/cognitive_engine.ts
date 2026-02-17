@@ -120,4 +120,34 @@ export class CognitiveEngine {
     public get model(): string | null {
         return this.activeModel;
     }
+
+    /** Parity: __new__ (Singleton) — Returns the singleton instance. */
+    static getInstance(): CognitiveEngine {
+        if (!CognitiveEngine.instance) {
+            CognitiveEngine.instance = new CognitiveEngine();
+        }
+        return CognitiveEngine.instance;
+    }
+
+    /** Parity: load_model — Pre-loads (warms up) the model by sending a dummy request. */
+    async load_model(modelName?: string): Promise<boolean> {
+        if (modelName) this.modelName = modelName;
+        this.logger.info(`🧠 [Cognitive] Carregando modelo '${this.modelName}'...`);
+        try {
+            const response = await fetch(this.endpoint, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ model: this.modelName, prompt: "ping", stream: false, options: { num_predict: 1 } })
+            });
+            if (response.ok) {
+                this.activeModel = this.modelName;
+                this.logger.info(`✅ [Cognitive] Modelo '${this.modelName}' carregado.`);
+                return true;
+            }
+            return false;
+        } catch {
+            this.logger.warn(`⚠️ [Cognitive] Falha ao pré-carregar modelo.`);
+            return false;
+        }
+    }
 }

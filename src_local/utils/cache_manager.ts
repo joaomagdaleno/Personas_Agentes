@@ -18,6 +18,12 @@ export class CacheManager {
         this.currentCache = this.load();
     }
 
+    async updateAll() {
+        /** 🔄 Persistência em massa de todos os hashes. */
+        logger.info("💾 [Cache] Persistindo todos os hashes em massa...");
+        this.save();
+    }
+
     private load(): Record<string, string> {
         if (existsSync(this.cacheFile.toString())) {
             try {

@@ -9,7 +9,9 @@
  */
 import winston from "winston";
 import * as path from "node:path";
-import { readFile, existsSync } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
+import { InfrastructureAssembler } from "./Support/Automation/infrastructure_assembler.ts";
 
 const logger = winston.child({ module: "BaseActivePersona" });
 
@@ -49,6 +51,13 @@ export abstract class BaseActivePersona {
     contextData: Record<string, any> = {};
     projectDna: Record<string, any> = {};
     ignoredFiles: string[] = ["auto_healing_mission.md", "strategic_mission.txt"];
+
+    // Support Tools (Neural Bridge)
+    protected auditEngine: any;
+    protected structuralAnalyst: any;
+    protected integrityGuardian: any;
+    protected cognitive: any;
+    protected maturityEvaluator: any;
 
     private auditStartTime: number = 0;
 
@@ -176,11 +185,54 @@ export abstract class BaseActivePersona {
     /** Auditoria técnica com regras regex específicas do domínio. */
     abstract performAudit(): AuditFinding[];
 
-    /** Raciocínio contextual: analisa um finding à luz do objetivo estratégico. */
+    /** Raciocínio contextual: analisa um finding à luz do objective estratégico. */
     abstract reasonAboutObjective(objective: string, file: string, content: string): StrategicFinding | string | null;
 
     /** Identidade de persona para interação com LLM. */
     abstract getSystemPrompt(): string;
+
+    /** v7.3: Parity Restoration */
+    protected _initializeSupportTools() {
+        if (!this.projectRoot) return;
+
+        logger.info(`🛠️ [${this.name}] Inicializando ferramentas de suporte (Via Assembler)...`);
+
+        try {
+            const support = InfrastructureAssembler.assembleCoreSupport(this.projectRoot);
+            const tools = InfrastructureAssembler.assembleOrchestratorTools(this.projectRoot);
+
+            this.auditEngine = support.auditEngine;
+            this.structuralAnalyst = support.analyst;
+            this.integrityGuardian = support.guardian;
+
+            // Cognitive Engine might be lazy loaded or part of tools
+            // For now, we link what we have
+            this.maturityEvaluator = tools.maturity;
+
+            logger.info(`✅ [${this.name}] Neural Bridge Ativa: Audit, Analyst, Guardian, Maturity.`);
+        } catch (e: any) {
+            logger.error(`❌ [${this.name}] Falha na ponte neural: ${e.message}`);
+        }
+    }
+
+    public analyzeLogic(filePath: string) {
+        if (this.structuralAnalyst && this.projectRoot) {
+            return this.structuralAnalyst.analyzeFileLogic(filePath, this.projectRoot, this.ignoredFiles, this.name);
+        }
+        logger.warn(`⚠️ [${this.name}] StructuralAnalyst inativo. Retornando auditoria padrão.`);
+        return this.performAudit();
+    }
+
+    public getMaturityMetrics() {
+        if (this.maturityEvaluator && this.projectRoot) {
+            return this.maturityEvaluator.evaluatePersona(this.projectRoot, this.stack, this.name);
+        }
+        return { score: 0, status: "DISCONNECTED" };
+    }
+
+    public reason(objective: string, file: string, content: string) {
+        return this.reasonAboutObjective(objective, file, content);
+    }
 
     /**
      * Protótipo de cura ativa: o agente pode sugerir correções automáticas.

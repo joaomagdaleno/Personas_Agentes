@@ -105,6 +105,8 @@ ${this.sectionsEngine.formatGovernanceSection(snapshot)}
 
 ${this.sectionsEngine.formatVitalsTable(snapshot, "Integridade", isCollapse ? "COLAPSO" : snapshot.status)}
 
+${this.sectionsEngine.formatParityBoard(snapshot.parity_stats)}
+
 ${this.sectionsEngine.formatRoadmap(snapshot)}
 
 ## 🗺️ TOPOLOGIA DE SINCRONIA (NEURAL BRIDGE)
@@ -113,7 +115,7 @@ ${this.sectionsEngine.formatTopologyMap(snapshot)}
 
 ## 🌪️ MAPA DE ENTROPIA & ACOPLAMENTO
 
-${this.sectionsEngine.formatEntropyMap(snapshot.entropy_map || {}, 15)}
+${this.sectionsEngine.formatEntropyMap(snapshot.entropy_map || {}, 500)}
 
 ## 🧪 MATRIZ DE CONFIANÇA
 
@@ -122,7 +124,7 @@ ${this.sectionsEngine.formatEntropyMap(snapshot.entropy_map || {}, 15)}
 `;
 
         const matrix = snapshot.confidence_matrix || [];
-        for (const entry of matrix.slice(0, 50)) {
+        for (const entry of matrix) {
             const statusIcon = entry.test_status === "DEEP" ? "🟢 `PROFUNDO`" : "🔴 `FRÁGIL`";
             const basename = entry.file.split(/[\\/]/).pop() || entry.file;
             report += `| \`${basename}\` | \`${entry.complexity}\` | \`${entry.assertions}\` | ${statusIcon} |\n`;
@@ -147,7 +149,7 @@ ${this.sectionsEngine.formatEntropyMap(snapshot.entropy_map || {}, 15)}
 
         if (Array.isArray(findings)) {
             let fIdx = 1;
-            for (const finding of findings.slice(0, 50)) {
+            for (const finding of findings) {
                 const severity = finding.severity || "UNKNOWN";
                 const file = finding.file || "N/A";
                 const issue = finding.issue || finding.message || JSON.stringify(finding);
@@ -157,9 +159,24 @@ ${this.sectionsEngine.formatEntropyMap(snapshot.entropy_map || {}, 15)}
                 const parent = parts.pop() || "";
                 const context = parent ? `${parent}/${basename}` : basename;
 
-                report += `> ### ${badge} [${fIdx++}] \`${context}\`\n> - **Local:** \`${file}\`\n> - **Causa:** ${issue}\n>\n`;
+                report += `> ### ${badge} [${fIdx++}] \`${context}\`\n> - **Local:** \`${file}\`\n> - **Causa:** ${issue}\n`;
+
+                if (finding.meta) {
+                    if (finding.meta.missing && finding.meta.missing.length > 0) {
+                        report += `> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**\n`;
+                        for (const unit of finding.meta.missing) {
+                            report += `>   - \`${unit}\`\n`;
+                        }
+                    }
+                    if (finding.meta.added && finding.meta.added.length > 0) {
+                        report += `> - **🚀 Novas Unidades Atômicas (Evolução):**\n`;
+                        for (const unit of finding.meta.added) {
+                            report += `>   - \`${unit}\`\n`;
+                        }
+                    }
+                }
+                report += `>\n`;
             }
-            if (findings.length > 50) report += `> ... e mais ${findings.length - 50} achados omitidos para densidade.\n`;
         } else {
             report += "Formato de achados inválido.";
         }

@@ -124,6 +124,27 @@ export class Orchestrator {
         return await this.auditEngine.runObfuscationScan(null);
     }
 
+    /** v7.3: Parity Restoration */
+    setThinkingDepth(level: number) {
+        logger.info(`🧠 [Orchestrator] Definindo profundidade de pensamento: ${level}`);
+        this.memoryEngine.setDepth(level);
+    }
+
+    async _syncAndLedger() {
+        logger.info("⚖️ [Orchestrator] Sincronizando Stability Ledger...");
+        await this.stabilityLedger.sync();
+    }
+
+    async _updateCache() {
+        logger.info("💾 [Orchestrator] Atualizando cache de arquivos...");
+        await this.cacheManager.updateAll();
+    }
+
+    _buildAuditReportQueue(findings: any[]) {
+        logger.info(`📋 [Orchestrator] Construindo fila de relatório com ${findings.length} achados.`);
+        return findings.sort((a, b) => (b.severity === "CRITICAL" ? 1 : -1));
+    }
+
     async runAutoHealing(findings: any[]) {
         const { HealerPersona } = await import("../agents/Support/Core/healer.ts");
         const healer = new HealerPersona(this.projectRoot.toString());
@@ -153,6 +174,35 @@ export class Orchestrator {
         const quality = new QualityAnalyst();
         const topology = new TopologyGraphAgent();
 
+        // 🌪️ Enriquecimento de Alta Resolução (PhD Depth)
+        if (ctx.depthAudit?.metrics) {
+            const mapKeys = Object.keys(ctx.map || {});
+
+            for (const metric of ctx.depthAudit.metrics) {
+                const normPath = metric.path.replace(/\\/g, "/");
+
+                let found = false;
+                for (const mapKey of mapKeys) {
+                    if (mapKey.replace(/\\/g, "/") === normPath) {
+                        ctx.map[mapKey].complexity = metric.tsDepth;
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    const base = normPath.split('/').pop();
+                    for (const mapKey of mapKeys) {
+                        if (mapKey.replace(/\\/g, "/").endsWith(base || "INVALID")) {
+                            ctx.map[mapKey].complexity = metric.tsDepth;
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
         const qaData = {
             pyramid: await pyramid.analyze(ctx.map || {}, async (p: string) => {
                 const f = this.projectRoot.join(p);
@@ -161,15 +211,15 @@ export class Orchestrator {
             execution: {},
             matrix: quality.calculateConfidenceMatrix(ctx.map || {}),
             topology_graph: topology.generateMermaidGraph(ctx.map || {}),
-            depth_audit: ctx.depthAudit // Transferindo auditoria de profundidade para o snapshot
+            depth_audit: ctx.depthAudit
         };
-        
+
         // Pass findings to synthesize360 by adding them to context as alerts
         const contextWithAlerts = {
             ...ctx,
             alerts: findings
         };
-        
+
         return await this.synthesizer.synthesize360(contextWithAlerts, this.metrics, this.personas, this.stabilityLedger, qaData);
     }
 

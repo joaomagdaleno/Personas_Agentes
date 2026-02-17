@@ -136,4 +136,26 @@ export class DependencyAuditor {
             }
         }
     }
+
+    /** Parity: _get_topology — Returns submodule topology (path, remote, branch). */
+    async _get_topology(): Promise<{ path: string, remote: string | null, branch: string | null }[]> {
+        try {
+            const remote = await this.git.discoverRemote();
+            const branch = await this.git.getCurrentBranch();
+            return [{ path: this.agentPath.toString(), remote, branch }];
+        } catch {
+            return [{ path: this.agentPath.toString(), remote: null, branch: null }];
+        }
+    }
+
+    /** Parity: _validate_pre_conditions — Checks if sync pre-conditions are met. */
+    async _validate_pre_conditions(): Promise<{ ready: boolean, reason: string }> {
+        if (!(await this.agentPath.exists())) {
+            return { ready: false, reason: "Agent path does not exist." };
+        }
+        if (await this.syncLogic.isLocked(this.lockFile.toString())) {
+            return { ready: false, reason: "Submodule is locked by another process." };
+        }
+        return { ready: true, reason: "OK" };
+    }
 }

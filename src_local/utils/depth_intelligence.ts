@@ -104,7 +104,7 @@ export class DepthIntelligence {
                 const pyDepthPromises = pySources.map(p => this.getPythonDepth(p, atomicUnits));
                 const pyDepths = await Promise.all(pyDepthPromises);
                 const pyDepth = pyDepths.reduce((acc, d) => acc + d, 0);
-                
+
                 const tsDepth = await this.getTsDepth(sovPath, atomicUnits);
 
                 let status: DepthMetric["status"] = "⚠️ MAINTAINED";
@@ -159,14 +159,14 @@ export class DepthIntelligence {
         logicKeywords.forEach(kw => {
             const escaped = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
             const count = (content.match(new RegExp(escaped, "g")) || []).length;
-            score += count * 5;
+            score += count * 20; // Increased from 5 to 20 for PhD resolution
         });
 
         const functional = [".match(", "ast.", "re.", "@property", "lambda", "yield"];
         functional.forEach(kw => {
             const escaped = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
             const count = (content.match(new RegExp(escaped, "g")) || []).length;
-            score += count * 3;
+            score += count * 15; // Increased from 3 to 15
         });
 
         score += this.getAtomicPoints(filePath, atomicUnits);
@@ -176,25 +176,41 @@ export class DepthIntelligence {
     private static async getTsDepth(filePath: string, atomicUnits: FileAnalysis[]): Promise<number> {
         if (!await exists(filePath)) return 0;
         const content = await readFile(filePath, "utf-8");
-        const sourceFile = ts.createSourceFile(filePath, content, ts.ScriptTarget.Latest, true);
+
+        // v7.2 PhD Upgrade: Detect script kind for proper JSX/TSX parsing
+        const isTsx = filePath.endsWith(".tsx") || filePath.endsWith(".jsx");
+        const sourceFile = ts.createSourceFile(
+            filePath,
+            content,
+            ts.ScriptTarget.Latest,
+            true,
+            isTsx ? ts.ScriptKind.TSX : ts.ScriptKind.TS
+        );
+
         let score = 0;
 
         const walk = (node: ts.Node) => {
             if (ts.isIfStatement(node) || ts.isForOfStatement(node) || ts.isForInStatement(node) || ts.isSwitchStatement(node) || ts.isTryStatement(node)) {
-                score += 10;
+                score += 30; // High Resolution Logic
             }
-            if (ts.isMethodDeclaration(node) || ts.isArrowFunction(node) || ts.isClassDeclaration(node)) {
-                score += 8;
+            if (ts.isMethodDeclaration(node) || ts.isArrowFunction(node) || ts.isClassDeclaration(node) || ts.isFunctionDeclaration(node)) {
+                score += 25; // High Resolution Atomics
             }
             if (ts.isInterfaceDeclaration(node) || ts.isTypeAliasDeclaration(node) || ts.isTypeReferenceNode(node) || ts.isEnumDeclaration(node)) {
-                score += 5;
+                score += 15; // Type complexity
             }
+
+            // v7.2: JSX Depth (Aggressive UI weight)
+            if (ts.isJsxElement(node) || ts.isJsxSelfClosingElement(node)) {
+                score += 10;
+            }
+
             const text = node.getText();
             if (text.includes("SyntaxKind") || text.includes("this.ast") || text.includes("ts.Node")) {
-                score += 4;
+                score += 15;
             }
             if (text.includes("shouldSkip") || text.includes("isSafe") || text.includes("veto") || text.includes("audit")) {
-                score += 2;
+                score += 10;
             }
             ts.forEachChild(node, walk);
         };
@@ -205,7 +221,14 @@ export class DepthIntelligence {
     }
 
     private static getAtomicPoints(filePath: string, atomicUnits: FileAnalysis[]): number {
-        const fileData = atomicUnits.find(f => path.resolve(f.path) === path.resolve(filePath));
-        return fileData ? fileData.units.length * 15 : 0;
+        // v7.2: Hybrid Resolve (Absolute vs Relative vs Cross-Platform)
+        const targetAbs = path.resolve(filePath).toLowerCase().replace(/\\/g, "/");
+
+        const fileData = atomicUnits.find(f => {
+            const fAbs = path.resolve(f.path).toLowerCase().replace(/\\/g, "/");
+            return fAbs === targetAbs || targetAbs.endsWith(f.path.toLowerCase().replace(/\\/g, "/"));
+        });
+
+        return fileData ? fileData.units.length * 40 : 0;
     }
 }

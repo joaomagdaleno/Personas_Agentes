@@ -130,4 +130,19 @@ export class AuditExpertEngine {
         const combined = (current + next).toLowerCase();
         return combined.includes("logger.error") || combined.includes("logger.exception") || combined.includes("console.error");
     }
+
+    /** Parity: _validate_risk_level — Validates a risk level string. */
+    public _validate_risk_level(level: string): string {
+        const valid = ["CRITICAL", "HIGH", "MEDIUM", "LOW", "STRATEGIC"];
+        const upper = (level || "MEDIUM").toUpperCase();
+        return valid.includes(upper) ? upper : "MEDIUM";
+    }
+
+    /** Parity: _parse_severity — Parses severity from pattern metadata. */
+    public _parse_severity(pattern: { severity?: string }): string {
+        return this._validate_risk_level(pattern.severity || "MEDIUM");
+    }
 }
+
+/** Parity: AuditScannerEngine — Legacy alias for AuditExpertEngine. */
+export const AuditScannerEngine = AuditExpertEngine;

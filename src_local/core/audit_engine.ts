@@ -214,5 +214,11 @@ export class AuditEngine {
             phd: "AuditEngine"
         };
     }
+
+    /** Parity: _log_perf — Logs performance metrics for audit operations. */
+    private _log_perf(operation: string, startTime: number, count: number): void {
+        const duration = (Date.now() - startTime) / 1000;
+        logger.info(`⏱️ [AuditEngine] ${operation}: ${duration.toFixed(4)}s (${count} items)`);
+    }
 }
 

@@ -11,10 +11,16 @@ const logger = winston.child({ module: "MemoryEngine" });
  */
 export class MemoryEngine {
     private db: Database;
+    private thinkingDepth: number = 7;
 
     constructor(projectRoot: string) {
         const dbPath = new Path(projectRoot).join("system_vault.db").toString();
         this.db = new Database(dbPath);
+    }
+
+    setDepth(level: number) {
+        this.thinkingDepth = level;
+        logger.info(`🧪 [Memory] Profundidade de pensamento ajustada para: ${level}`);
     }
 
     /**

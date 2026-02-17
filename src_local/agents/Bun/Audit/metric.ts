@@ -57,4 +57,9 @@ export class MetricPersona extends BaseActivePersona {
     getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em telemetria e observabilidade nativa Bun.`;
     }
+
+    /** Parity: perform_audit_rules — Delegates to performAudit. */
+    async perform_audit_rules(): Promise<any[]> {
+        return this.performAudit();
+    }
 }

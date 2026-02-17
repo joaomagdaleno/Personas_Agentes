@@ -70,9 +70,9 @@ export class SourceCodeParser {
         try {
             const functions = [...content.matchAll(/function\s+(\w+)/g)].map(m => m[1] || '');
             const arrows = [...content.matchAll(/const\s+(\w+)\s*=\s*(?:async\s*)?(?:\([^)]*\)|[\w]+)\s*=>/g)].map(m => m[1] || '');
-            const methods = [...content.matchAll(/(?:public|private|protected|static|async)\s+(\w+)\s*\(/g)].map(m => m[1] || '');
+            const methods = [...content.matchAll(/(?:(public|private|protected|static|async)\s+)?(\w+)\s*\(/g)].map(m => m[2] || '');
             const classes = [...content.matchAll(/class\s+(\w+)/g)].map(m => m[1] || '');
-            
+
             // Extract constructor methods separately
             const constructors = [...content.matchAll(/constructor\s*\(/g)].map(() => 'constructor');
 
@@ -127,7 +127,7 @@ export class SourceCodeParser {
             // Optimized regex for Python complexity calculation
             const complexityPattern = /\b(if|while|for|except|with)\b|\band\b|\bor\b/g;
             const matches = [...content.matchAll(complexityPattern)];
-            
+
             const duration = (Date.now() - startComp) / 1000;
             logger.debug(`⏱️ [SourceParser] Complexidade calculada in ${duration.toFixed(4)}s`);
 
@@ -147,7 +147,7 @@ export class SourceCodeParser {
             const lines = content.split('\n');
             for (const line of lines) {
                 const trimmedLine = line.trim();
-                
+
                 // Skip empty lines and comments
                 if (!trimmedLine || trimmedLine.startsWith('#')) {
                     continue;

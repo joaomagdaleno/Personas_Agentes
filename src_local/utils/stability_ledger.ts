@@ -21,6 +21,12 @@ export class StabilityLedger {
         this.ledger = this.persistence.loadLedger();
     }
 
+    async sync() {
+        /** 🔄 Sincronização explícita com o disco. */
+        logger.info("💾 [Ledger] Sincronizando livro de estabilidade com armazenamento...");
+        this.persistence.saveLedger(this.ledger);
+    }
+
     update(auditResults: any[], contextMap: Record<string, any> = {}): Record<string, any> {
         /** 📈 Sincroniza os achados da auditoria com a memória persistente. */
         const currentErrorFiles = new Set<string>();

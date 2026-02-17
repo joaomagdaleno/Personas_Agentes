@@ -24,6 +24,16 @@ export interface SilentErrorIssue {
  * e padrões de supressão de erro que podem esconder bugs críticos.
  */
 export class SilentErrorDetector {
+    /** Parity: __init__ */
+    constructor() {
+        // Patterns are initialized as class fields.
+    }
+
+    /** Parity: _is_silent_except — Checks if a catch block is a suppressed exception. */
+    private _is_silent_except(block: string): boolean {
+        return this.SILENT_PATTERNS.some(p => p.test(block)) && !this._isSafeContext(block);
+    }
+
     private readonly SILENT_PATTERNS = [
         /catch\s*\([^)]*\)\s*\{\s*\}/,                          // catch vazio: catch(e) {}
         /catch\s*\([^)]*\)\s*\{\s*\/\/.*\s*\}/,                 // catch com apenas comentário

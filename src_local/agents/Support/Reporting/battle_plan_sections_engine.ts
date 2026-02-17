@@ -50,4 +50,12 @@ export class BattlePlanSectionsEngine {
             return true;
         });
     }
+
+    /** Parity: format_item_entry — Formats a single audit finding as a markdown entry. */
+    format_item_entry(item: any, sev: string): string {
+        const icon = sev === "CRITICAL" ? "🔴" : sev === "HIGH" ? "🟠" : sev === "MEDIUM" ? "🟡" : "🟢";
+        const file = item?.file || "Global";
+        const issue = item?.issue || String(item);
+        return `- ${icon} **[${sev}]** \`${file}\`: ${issue}\n`;
+    }
 }

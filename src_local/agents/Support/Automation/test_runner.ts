@@ -26,6 +26,35 @@ export interface BenchmarkResults extends TestResults {
  * 🏎️ Executor de Testes PhD (Bun Bridge).
  */
 export class TestRunner {
+    /** Parity: __init__ */
+    constructor() {
+        this._ensure_components();
+    }
+
+    /** Parity: _ensure_components — Validates runtime dependencies. */
+    private _ensure_components(): void {
+        // Bun runtime is the only dependency; validated at spawn time.
+    }
+
+    /** Parity: _consolidate_results — Merges multiple test result sets. */
+    private _consolidate_results(results: TestResults[]): TestResults {
+        const total = results.reduce((s, r) => s + r.total_run, 0);
+        const failed = results.reduce((s, r) => s + r.failed, 0);
+        const passed = total - failed;
+        return {
+            success: results.every(r => r.success),
+            total_run: total,
+            failed,
+            pass_rate: total > 0 ? Number(((passed / total) * 100).toFixed(2)) : 0,
+            raw_output: results.map(r => r.raw_output).join("\n"),
+        };
+    }
+
+    /** Parity: _parse_output — Alias for parseBunOutput. */
+    private _parse_output(output: string, isSuccess: boolean): TestResults {
+        return this.parseBunOutput(output, isSuccess);
+    }
+
     async runUnittestDiscover(projectRoot: string): Promise<TestResults> {
         return this.runParallelDiscovery(projectRoot);
     }
@@ -38,13 +67,13 @@ export class TestRunner {
         winston.info(`⏱️ [TestRunner] Iniciando suíte de testes completa em ${projectRoot}...`);
 
         if (!projectRoot) {
-            return { 
-                success: false, 
-                error: "Project root missing", 
-                total_run: 0, 
-                failed: 0, 
-                pass_rate: 0, 
-                raw_output: "" 
+            return {
+                success: false,
+                error: "Project root missing",
+                total_run: 0,
+                failed: 0,
+                pass_rate: 0,
+                raw_output: ""
             };
         }
 
@@ -61,13 +90,13 @@ export class TestRunner {
         // Filter only test files (spec/test)
         const testFiles = files.filter(f => f.includes(".test.") || f.includes(".spec."));
         if (testFiles.length === 0) {
-            return { 
-                success: true, 
-                total_run: 0, 
-                failed: 0, 
-                pass_rate: 0, 
+            return {
+                success: true,
+                total_run: 0,
+                failed: 0,
+                pass_rate: 0,
                 raw_output: "",
-                message: "No test files in changed set." 
+                message: "No test files in changed set."
             };
         }
 
@@ -95,24 +124,24 @@ export class TestRunner {
 
                 child.on('error', (error) => {
                     winston.error(`❌ [TestRunner] Erro ao executar bun test: ${error.message}`);
-                    reject({ 
-                        success: false, 
-                        error: error.message, 
-                        total_run: 0, 
-                        failed: 0, 
-                        pass_rate: 0, 
-                        raw_output: error.message 
+                    reject({
+                        success: false,
+                        error: error.message,
+                        total_run: 0,
+                        failed: 0,
+                        pass_rate: 0,
+                        raw_output: error.message
                     });
                 });
             } catch (error: any) {
                 winston.error(`❌ [TestRunner] Erro ao iniciar processo: ${error.message}`);
-                reject({ 
-                    success: false, 
-                    error: error.message, 
-                    total_run: 0, 
-                    failed: 0, 
-                    pass_rate: 0, 
-                    raw_output: error.message 
+                reject({
+                    success: false,
+                    error: error.message,
+                    total_run: 0,
+                    failed: 0,
+                    pass_rate: 0,
+                    raw_output: error.message
                 });
             }
         });

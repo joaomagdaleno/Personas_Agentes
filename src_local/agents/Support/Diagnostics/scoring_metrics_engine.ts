@@ -64,9 +64,9 @@ export class ScoringMetricsEngine {
         const brittle_points: string[] = [];
 
         for (const [file, info] of Object.entries(mapData)) {
-            const isRelevant = coreTypes.includes(info.component_type) || 
-                               (info.complexity > 1 && !["DOC", "INTERFACE", "TEST"].includes(info.component_type));
-            
+            const isRelevant = coreTypes.includes(info.component_type) ||
+                (info.complexity > 1 && !["DOC", "INTERFACE", "TEST"].includes(info.component_type));
+
             if (isRelevant && !info.has_test) {
                 dark_matter.push(file);
                 if (info.complexity > 10) {
@@ -74,7 +74,6 @@ export class ScoringMetricsEngine {
                 }
             }
         }
-
         return { dark_matter, brittle_points };
     }
 }
