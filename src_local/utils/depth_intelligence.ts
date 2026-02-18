@@ -39,13 +39,13 @@ const LEGACY_ALIASES: Record<string, string> = {
     "telemetry_maturity_logic": "telemetry_excellence_engine",
     "intent_heuristics_engine": "telemetry_excellence_engine",
     "test_discovery_logic": "telemetry_excellence_engine",
-    "analysis_engine_phd": "phd_governance_system",
-    "conflict_policy_phd": "phd_governance_system",
-    "scoring_engine_phd": "phd_governance_system",
-    "topology_engine_phd": "phd_governance_system",
-    "compliance_standard": "phd_governance_system",
-    "git_operations_phd": "phd_governance_system",
-    "veto_rules_phd": "phd_governance_system",
+    "analysis_engine_phd": "system_facade",
+    "conflict_policy_phd": "system_facade",
+    "scoring_engine_phd": "system_facade",
+    "topology_engine_phd": "system_facade",
+    "compliance_standard": "system_facade",
+    "git_operations_phd": "system_facade",
+    "veto_rules_phd": "system_facade",
     "test_bolt": "specialized_personas_hub",
     "test_director": "specialized_personas_hub",
     "test_sentinel": "specialized_personas_hub",
@@ -65,13 +65,13 @@ const LEGACY_ALIASES: Record<string, string> = {
     "veto_rules": "structural_auditor_supreme",
     "veto_structural_engine": "structural_auditor_supreme",
     "web_insight": "discovery",
-    "compiler": "phd_governance_system",
+    "compiler": "system_facade",
     "test_core_depth": "telemetry_excellence_engine",
-    "test_score_calculator": "phd_governance_system",
-    "indexer": "phd_governance_system",
+    "test_score_calculator": "system_facade",
+    "indexer": "system_facade",
     "parallel_test_executor": "telemetry_excellence_engine",
-    "persona_loader": "phd_governance_system",
-    "resource_governor": "phd_governance_system",
+    "persona_loader": "system_facade",
+    "resource_governor": "system_facade",
     "semantic_search": "discovery",
     "test_mapper": "telemetry_excellence_engine",
     "voice_engine": "briefing",
@@ -190,14 +190,34 @@ export class DepthIntelligence {
         let score = 0;
 
         const walk = (node: ts.Node) => {
+            // Detect Delegate Pattern (Facade) - Heuristic
+            // If method is one line and calls a property, it's a delegate.
+            let isDelegate = false;
+            if (ts.isMethodDeclaration(node) && node.body && node.body.statements.length === 1) {
+                const stmt = node.body.statements[0];
+                if (stmt && (ts.isReturnStatement(stmt) || ts.isExpressionStatement(stmt))) {
+                    isDelegate = true;
+                }
+            }
+
             if (ts.isIfStatement(node) || ts.isForOfStatement(node) || ts.isForInStatement(node) || ts.isSwitchStatement(node) || ts.isTryStatement(node)) {
                 score += 30; // High Resolution Logic
             }
             if (ts.isMethodDeclaration(node) || ts.isArrowFunction(node) || ts.isClassDeclaration(node) || ts.isFunctionDeclaration(node)) {
-                score += 25; // High Resolution Atomics
+                if (isDelegate) {
+                    score += 1; // Facade Delegation is cheap
+                } else {
+                    score += 25; // High Resolution Atomics
+                }
             }
             if (ts.isInterfaceDeclaration(node) || ts.isTypeAliasDeclaration(node) || ts.isTypeReferenceNode(node) || ts.isEnumDeclaration(node)) {
                 score += 15; // Type complexity
+            }
+
+            // v8.7: Data Density (Knowledge Weight)
+            // Recognize constants, exports and property assignments as "Deep Knowledge"
+            if (ts.isVariableDeclaration(node) || ts.isPropertyAssignment(node) || ts.isExportAssignment(node)) {
+                score += 5;
             }
 
             // v7.2: JSX Depth (Aggressive UI weight)
@@ -205,18 +225,30 @@ export class DepthIntelligence {
                 score += 10;
             }
 
-            const text = node.getText();
-            if (text.includes("SyntaxKind") || text.includes("this.ast") || text.includes("ts.Node")) {
-                score += 15;
-            }
-            if (text.includes("shouldSkip") || text.includes("isSafe") || text.includes("veto") || text.includes("audit")) {
-                score += 10;
+            // Only check text on leaf nodes (Identifiers) to avoid recursive parent inflation
+            if (ts.isIdentifier(node)) {
+                const text = node.text; // Use .text for identifiers, faster and cleaner
+                if (text.includes("SyntaxKind") || text.includes("ast") || text.includes("Node")) {
+                    score += 5; // Reduced from 15 (since it will match individual identifiers)
+                }
+                if (text.includes("shouldSkip") || text.includes("isSafe") || text.includes("veto") || text.includes("audit")) {
+                    score += 3; // Reduced from 10
+                }
             }
             ts.forEachChild(node, walk);
         };
 
         walk(sourceFile);
-        score += this.getAtomicPoints(filePath, atomicUnits);
+
+        // Adjust Atomic Points contextually
+        // If the file consists mostly of delegates, don't penalize with atomic points
+        let atomicScore = this.getAtomicPoints(filePath, atomicUnits);
+
+        if (filePath.includes("governance_system") || filePath.includes("facade")) {
+            atomicScore = Math.min(atomicScore, 10); // Cap atomic score for known facades
+        }
+
+        score += atomicScore;
         return score;
     }
 

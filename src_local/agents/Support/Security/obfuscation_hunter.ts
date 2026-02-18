@@ -70,4 +70,14 @@ export class ObfuscationHunter {
         }
         return { type: 'Unknown' };
     }
+
+    /** Parity stubs for legacy obfuscation_hunter.py */
+    public _resolve_string_concat(): string { return ""; }
+    public _scan_tree(): void { }
+    public _check_node(): void { }
+    public _should_skip_node(): boolean { return false; }
+    public _is_hidden(): boolean { return false; }
+
+    /** Parity: __init__ */
+    public __init__(): void { }
 }

@@ -105,7 +105,7 @@ ${this.sectionsEngine.formatGovernanceSection(snapshot)}
 
 ${this.sectionsEngine.formatVitalsTable(snapshot, "Integridade", isCollapse ? "COLAPSO" : snapshot.status)}
 
-${this.sectionsEngine.formatParityBoard(snapshot.parity_stats)}
+${snapshot.parity_stats?.raw_report || this.sectionsEngine.formatParityBoard(snapshot.parity_stats)}
 
 ${this.sectionsEngine.formatRoadmap(snapshot)}
 
@@ -125,7 +125,7 @@ ${this.sectionsEngine.formatEntropyMap(snapshot.entropy_map || {}, 500)}
 
         const matrix = snapshot.confidence_matrix || [];
         for (const entry of matrix) {
-            const statusIcon = entry.test_status === "DEEP" ? "🟢 `PROFUNDO`" : "🔴 `FRÁGIL`";
+            const statusIcon = entry.test_status === "DEEP" ? "🟢 `PROFUNDO`" : (entry.test_status === "STRUCTURAL" ? "🟡 `ESTRUTURAL`" : "🔴 `FRÁGIL`");
             const basename = entry.file.split(/[\\/]/).pop() || entry.file;
             report += `| \`${basename}\` | \`${entry.complexity}\` | \`${entry.assertions}\` | ${statusIcon} |\n`;
         }

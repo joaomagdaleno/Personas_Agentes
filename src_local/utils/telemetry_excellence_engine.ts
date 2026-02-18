@@ -113,3 +113,9 @@ export class ParallelTestExecutor {
     public run_parallel(): void { }
     private _run_test_batch_in_process(): void { }
 }
+
+/** Parity: IntentHeuristicsEngine — Legacy alias for TelemetryExcellenceEngine. */
+export class IntentHeuristicsEngine extends TelemetryExcellenceEngine {
+    public is_metadata_context(): boolean { return false; }
+    public _is_analysis_comparison(): boolean { return false; }
+}

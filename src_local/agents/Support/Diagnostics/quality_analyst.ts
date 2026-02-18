@@ -8,6 +8,35 @@ import type { CognitiveHealthReport } from "../../../utils/cognitive_validator";
  */
 export class QualityAnalyst {
     /**
+     * 🧠 Classifica a natureza estrutural de um arquivo.
+     * Retorna "STRUCTURAL" (barrel/constants/types), "FACADE" (delegação pura), ou "LOGIC" (lógica real).
+     */
+    private classifyStructure(file: string, info: any): "STRUCTURAL" | "FACADE" | "LOGIC" {
+        const compType = info.component_type || "";
+        const complexity = info.complexity || 0;
+
+        // Tier 1: STRUCTURAL — Arquivos sem lógica testável
+        // Barrels, package markers, configs, interfaces, type definitions
+        if (["PACKAGE_MARKER", "CONFIG", "INTERFACE"].includes(compType)) {
+            return "STRUCTURAL";
+        }
+
+        // Arquivos com complexidade mínima (≤ 5) são estruturais
+        // Isso cobre: barrels (index.ts), constantes (theme.ts), definições (safety_definitions.ts)
+        if (complexity <= 5) {
+            return "STRUCTURAL";
+        }
+
+        // Tier 2: FACADE — Complexidade baixa, apenas delegação
+        if (complexity <= 15) {
+            return "FACADE";
+        }
+
+        // Tier 3: LOGIC — Tudo o resto precisa de cobertura profunda
+        return "LOGIC";
+    }
+
+    /**
      * Correlaciona entropia de produção com cobertura de asserções via busca flexível.
      */
     calculateConfidenceMatrix(mapData: Record<string, any>): any[] {
@@ -43,16 +72,27 @@ export class QualityAnalyst {
                 assertions = testInfo.test_depth?.assertion_count || 0;
             }
 
-            // Ratio calculation - More realistic thresholds
+            // 🧠 Structural Intelligence: Adaptive thresholds based on file classification
+            const structure = this.classifyStructure(file, info);
             const ratio = (assertions * 5) / complexity;
             let status: string;
-            
-            if (assertions === 0) {
-                status = "SHALLOW";
-            } else if (ratio >= 0.5) {
-                status = "DEEP";
+
+            if (structure === "STRUCTURAL") {
+                // Arquivos estruturais de complexidade mínima (≤1): auto-pass (nada a testar)
+                // Arquivos estruturais com alguma lógica (2-5): precisam de smoke test
+                status = (complexity <= 1 || assertions >= 1) ? "STRUCTURAL" : "SHALLOW";
+            } else if (structure === "FACADE") {
+                // Facades: precisam de validação de wiring (≥ 3 asserções)
+                status = assertions >= 3 ? "DEEP" : (assertions >= 1 ? "STRUCTURAL" : "SHALLOW");
             } else {
-                status = "SHALLOW";
+                // Lógica real: ratio-based (mantém comportamento original)
+                if (assertions === 0) {
+                    status = "SHALLOW";
+                } else if (ratio >= 0.5) {
+                    status = "DEEP";
+                } else {
+                    status = "SHALLOW";
+                }
             }
 
             matrix.push({

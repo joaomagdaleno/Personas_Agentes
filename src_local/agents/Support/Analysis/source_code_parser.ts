@@ -21,6 +21,22 @@ export interface KotlinAnalysis {
 }
 
 /**
+ * Go analysis results interface
+ */
+export interface GoAnalysis {
+    functions: string[];
+    classes: string[]; // Structs in Go
+}
+
+/**
+ * Dart/Flutter analysis results interface
+ */
+export interface DartAnalysis {
+    functions: string[];
+    classes: string[];
+}
+
+/**
  * TypeScript/JavaScript analysis results interface
  */
 export interface TypeScriptAnalysis {
@@ -37,14 +53,13 @@ export interface TypeScriptAnalysis {
 export class SourceCodeParser {
     analyzePy(content: string): PythonAnalysis {
         try {
-            // Regex-based heuristics for speed in TypeScript
             const functions = [...content.matchAll(/def\s+(\w+)\s*\(/g)].map(m => m[1] || '');
             const classes = [...content.matchAll(/class\s+(\w+)\s*[:\(]/g)].map(m => m[1] || '');
 
             return {
                 functions,
                 classes,
-                tree: true // Placeholder for AST tree
+                tree: true
             };
         } catch (error) {
             logger.error(`❌ [SourceCodeParser] Failed to analyze Python code: ${error}`);
@@ -57,12 +72,37 @@ export class SourceCodeParser {
             const lines = content.split('\n');
             return {
                 imports: lines.filter(l => l.startsWith('import ')).map(l => l.split(/\s+/)[1] || ''),
-                functions: [...content.matchAll(/fun\s+(\w+)\s*\(/g)].map(m => m[1] || ''),
+                functions: [...content.matchAll(/fun\s+(\w+)/g)].map(m => m[1] || ''),
                 classes: [...content.matchAll(/class\s+(\w+)/g)].map(m => m[1] || '')
             };
         } catch (error) {
             logger.error(`❌ [SourceCodeParser] Failed to analyze Kotlin code: ${error}`);
             return { imports: [], functions: [], classes: [] };
+        }
+    }
+
+    analyzeGo(content: string): GoAnalysis {
+        try {
+            const functions = [...content.matchAll(/func\s+(?:\([^)]+\)\s+)?(\w+)\s*\(/g)].map(m => m[1] || '');
+            const structs = [...content.matchAll(/type\s+(\w+)\s+struct/g)].map(m => m[1] || '');
+            return { functions, classes: structs };
+        } catch (error) {
+            logger.error(`❌ [SourceCodeParser] Failed to analyze Go code: ${error}`);
+            return { functions: [], classes: [] };
+        }
+    }
+
+    analyzeDart(content: string): DartAnalysis {
+        try {
+            const classes = [...content.matchAll(/class\s+(\w+)/g)].map(m => m[1] || '');
+            const functions = [...content.matchAll(/(\w+)\s+\w+\s*\(.*?\)\s*{/g)].map(m => {
+                const parts = m[0].split(/\s+/);
+                return (parts[1] || "").replace('(', '');
+            }).filter(f => f !== "");
+            return { functions: functions.filter(f => f && f !== 'if' && f !== 'for'), classes };
+        } catch (error) {
+            logger.error(`❌ [SourceCodeParser] Failed to analyze Dart code: ${error}`);
+            return { functions: [], classes: [] };
         }
     }
 
@@ -72,8 +112,6 @@ export class SourceCodeParser {
             const arrows = [...content.matchAll(/const\s+(\w+)\s*=\s*(?:async\s*)?(?:\([^)]*\)|[\w]+)\s*=>/g)].map(m => m[1] || '');
             const methods = [...content.matchAll(/(?:(public|private|protected|static|async)\s+)?(\w+)\s*\(/g)].map(m => m[2] || '');
             const classes = [...content.matchAll(/class\s+(\w+)/g)].map(m => m[1] || '');
-
-            // Extract constructor methods separately
             const constructors = [...content.matchAll(/constructor\s*\(/g)].map(() => 'constructor');
 
             return {
@@ -97,10 +135,16 @@ export class SourceCodeParser {
 
     calculateTsComplexity(content: string): number {
         try {
-            // Optimized regex for TypeScript complexity calculation
-            const complexityPattern = /\b(if|while|for|catch|switch)\b|\?\.(map|forEach)|\&\&|\|\|/g;
-            const matches = [...content.matchAll(complexityPattern)];
-            return 1 + matches.length;
+            // 1. Branching Complexity (Cyclomatic approximation)
+            const branchingPattern = /\b(if|while|for|catch|switch)\b|\?\.(map|forEach)|\&\&|\|\|/g;
+            const branchingMatches = [...content.matchAll(branchingPattern)];
+
+            // 2. Data Density Complexity (Accounting for constants, exports, and metadata)
+            // We give 0.2 points for each export/assignment to recognize "knowledge density"
+            const dataPattern = /\b(export|const|let|var)\s+\w+\b|[:=]\s*[\[\{]/g;
+            const dataMatches = [...content.matchAll(dataPattern)];
+
+            return Math.ceil(1 + branchingMatches.length + (dataMatches.length * 0.2));
         } catch (error) {
             logger.error(`❌ [SourceCodeParser] Failed to calculate TypeScript complexity: ${error}`);
             return 1;
@@ -122,15 +166,9 @@ export class SourceCodeParser {
     }
 
     calculatePyComplexity(content: string): number {
-        const startComp = Date.now();
         try {
-            // Optimized regex for Python complexity calculation
             const complexityPattern = /\b(if|while|for|except|with)\b|\band\b|\bor\b/g;
             const matches = [...content.matchAll(complexityPattern)];
-
-            const duration = (Date.now() - startComp) / 1000;
-            logger.debug(`⏱️ [SourceParser] Complexidade calculada in ${duration.toFixed(4)}s`);
-
             return 1 + matches.length;
         } catch (error) {
             logger.error(`❌ [SourceCodeParser] Failed to calculate Python complexity: ${error}`);
@@ -139,46 +177,27 @@ export class SourceCodeParser {
     }
 
     extractPyImports(content: string): string[] {
-        const startImp = Date.now();
         try {
             const imports: string[] = [];
-
-            // Process each line separately for better accuracy
             const lines = content.split('\n');
             for (const line of lines) {
                 const trimmedLine = line.trim();
+                if (!trimmedLine || trimmedLine.startsWith('#')) continue;
 
-                // Skip empty lines and comments
-                if (!trimmedLine || trimmedLine.startsWith('#')) {
-                    continue;
-                }
-
-                // Direct imports: import os, sys
                 if (trimmedLine.startsWith('import ')) {
                     const importPart = trimmedLine.substring('import '.length);
-                    // Remove trailing semicolon
                     const cleanImport = importPart.endsWith(';') ? importPart.slice(0, -1) : importPart;
-                    // Split by commas and extract module names
                     cleanImport.split(',').forEach(s => {
                         const module = s.trim().split('.')[0];
-                        if (module) {
-                            imports.push(module);
-                        }
+                        if (module) imports.push(module);
                     });
                 }
-
-                // From imports: from os import path
                 if (trimmedLine.startsWith('from ')) {
                     const match = trimmedLine.match(/^from\s+([\w.]+)\s+import/);
-                    if (match && match[1]) {
-                        imports.push(match[1].split('.')[0]);
-                    }
+                    const modName = match?.[1]?.split('.')[0];
+                    if (modName) imports.push(modName);
                 }
             }
-
-            const duration = (Date.now() - startImp) / 1000;
-            logger.debug(`⏱️ [SourceParser] Extração concluída in ${duration.toFixed(4)}s`);
-
             return [...new Set(imports)];
         } catch (error) {
             logger.error(`❌ [SourceCodeParser] Failed to extract Python imports: ${error}`);
@@ -191,7 +210,8 @@ export class SourceCodeParser {
             const keywords = ['if ', 'for ', 'while ', 'when ', 'catch ', '?.let', '?.also', '?.run'];
             let count = 1;
             for (const kw of keywords) {
-                const matches = content.match(new RegExp(kw.replace('?', '\\?'), 'g'));
+                const safeKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const matches = content.match(new RegExp(safeKw, 'g'));
                 if (matches) count += matches.length;
             }
             return count;

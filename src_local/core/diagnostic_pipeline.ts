@@ -18,12 +18,15 @@ export class DiagnosticPipeline {
     }
 
     async execute(options: { skipTests?: boolean, autoHeal?: boolean, dryRun?: boolean } = {}): Promise<Path> {
+        console.log("DiagnosticPipeline.execute called");
         if (DiagnosticPipeline._isRunning) {
+            console.log("DiagnosticPipeline is already running!");
             return new Path("recursion_prevented.md");
         }
 
         DiagnosticPipeline._isRunning = true;
         try {
+            console.log("Calling runAtomicPipeline...");
             return await this.runAtomicPipeline(
                 options.skipTests || false,
                 options.autoHeal || false,

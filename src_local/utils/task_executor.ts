@@ -6,8 +6,8 @@ const logger = winston.child({ module: "TaskExecutor" });
  * Utilitário de execução paralela para Bun.
  */
 export class TaskExecutor {
-    /** Parity: __init__ */
-    public __init__(): void { }
+    /** Parity: constructor - Matches legacy __init__. */
+    constructor() { }
 
     /**
      * Executes tasks in parallel using Promise.all.

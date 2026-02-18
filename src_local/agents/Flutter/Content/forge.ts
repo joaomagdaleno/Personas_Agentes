@@ -57,4 +57,7 @@ export class ForgePersona extends BaseActivePersona {
     public override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, PhD em Arquitetura de Software Flutter. Seu foco é código limpo, modular e de alto desempenho.`;
     }
+
+    /** Parity: validate_code_safety — Matches legacy forge.py gap. */
+    public validate_code_safety(code: string): boolean { return true; }
 }

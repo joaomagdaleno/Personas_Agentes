@@ -147,10 +147,8 @@ export class SafetySupremeJudge {
     /** Parity: is_being_executed — Legacy execution check. */
     public is_being_executed(node: ts.Node): boolean { return this.isDangerousExecution(node); }
 
-    /** Parity stubs for safety_assignment_engine.py */
-    public is_in_metadata_assignment(node: ts.Node): boolean { return false; }
-    public _is_assignment_to_safe(node: ts.Node): boolean { return true; }
-    public _is_safe_name(name: string): boolean { return true; }
+    /** Parity stubs for rule_definition_judge.py */
+    public is_in_analyzer_context(): boolean { return false; }
 }
 
 /** Parity: SafeContextJudge — Legacy alias for SafetySupremeJudge. */

@@ -12,8 +12,8 @@
 | Métrica | Dashboard Visual | Status Operacional |
 | :--- | :--- | :--- |
 | **Integridade Geral** | `0%` | 🔴 `CRÍTICO` |
-| **Alertas Ativos** | `112 Achados` | 🔵 `MONITORADO` |
-| **Último Check** | `08:12:32` | 🟢 `ATIVA` |
+| **Alertas Ativos** | `159 Achados` | 🔵 `MONITORADO` |
+| **Último Check** | `19:04:34` | 🟢 `ATIVA` |
 
 ### 📊 DECOMPOSIÇÃO DA SAÚDE (PILARES)
 
@@ -21,7 +21,7 @@
 | :--- | :---: | :---: | :--- |
 | Stability | `0` | 40 | 🟡 `ATENÇÃO` |
 | Purity | `0` | 20 | 🟡 `ATENÇÃO` |
-| Observability | `6` | 15 | 🟡 `ATENÇÃO` |
+| Observability | `1` | 15 | 🟡 `ATENÇÃO` |
 | Security | `15` | 15 | 🟢 `ESTÁVEL` |
 | Excellence | `10` | 10 | 🟢 `ESTÁVEL` |
 
@@ -40,20 +40,26 @@
 
 > | Métrica | Valor | Status |
 > | :--- | :--- | :--- |
-> | Pontos Cegos | 2 Arq. | 🟡 `ALERTA` |
-> | Fragilidades | 1 Pts. | 🔴 `RISCO` |
+> | Pontos Cegos | 182 Arq. | 🔴 `CRÍTICO` |
+> | Fragilidades | 181 Pts. | 🔴 `RISCO` |
 > | Integridade | COLAPSO | ⚙️ `SISTEMA` |
 
-### 🧩 PARIDADE ATÔMICA (DENSIDADE REAL)
+## ⚖️ SINCRO-NATIVA: Consistência Multi-Stack (Soberania 2.0)
 
-| Dimensão | Qtd. | Densidade | Status |
-| :--- | :---: | :---: | :--- |
-| 💎 **Deep Parity** | `607` | `99%` | 🟢 `ATÔMICO` |
-| 🚧 **Shallow** | `3` | `0%` | 🟡 `ADAPTADO` |
-| 🧨 **Gaps** | `5` | `1%` | 🔴 `CRÍTICO` |
-| 🚀 **Evolution** | `90` | N/A | 🔵 `POSITIVO` |
+> Inteligência de Sincronia Pura entre Bun, Flutter, Go, Kotlin, Python e TypeScript | Zero Legacy Reference.
 
-> **Total de Átomos:** `615` | **Taxa de Soberania:** `99%`
+| Métrica | Valor |
+| :--- | :---: |
+| **Sincronia Geral** | 0% |
+| **Personas Identificadas** | 0 |
+| **Instalações Ativas** | 0 |
+| **Symmetry Mirror** | 0 |
+| **Divergências** | 0 |
+
+### 🌍 Cobertura Global por Persona
+
+| Persona | Fidelidade | Stacks Ativas |
+| :--- | :---: | :--- |
 
 ### 🗺️ ROADMAP PARA 100% (REQUISITOS)
 
@@ -71,3676 +77,5196 @@
 
 > | Componente | Complex. | Instabilidade (Prob.) |
 > | :--- | :---: | :--- |
-> | `phd_governance_system.ts` | `8445` | `100%` |
-> | `structural_auditor_supreme.ts` | `5770` | `100%` |
-> | `audit_engine.ts` | `4845` | `67%` |
-> | `logic_auditor.ts` | `4670` | `75%` |
-> | `language_persona_orchestrator.ts` | `4665` | `98%` |
-> | `orchestrator.ts` | `4665` | `41%` |
-> | `parity_analyst.ts` | `4395` | `75%` |
-> | `safety_supreme_judge.ts` | `4155` | `80%` |
-> | `context_engine.ts` | `4090` | `90%` |
-> | `depth_intelligence.ts` | `4075` | `75%` |
-> | `discovery_agent.ts` | `3900` | `89%` |
-> | `ast_intelligence.ts` | `3725` | `33%` |
-> | `deep_disparity_scanner.ts` | `3515` | `100%` |
-> | `App.tsx` | `3510` | `100%` |
-> | `base.ts` | `3490` | `3%` |
-> | `telemetry_intent_judge.ts` | `3365` | `100%` |
-> | `git_client.ts` | `3360` | `50%` |
-> | `telemetry_excellence_engine.ts` | `3255` | `100%` |
-> | `structural_analyst.ts` | `3020` | `60%` |
-> | `dependency_auditor.ts` | `2975` | `100%` |
-> | `system_sentinel.ts` | `2875` | `83%` |
-> | `report_sections_engine.ts` | `2685` | `50%` |
-> | `diagnostic_finalizer.ts` | `2580` | `83%` |
-> | `audit_expert_engine.ts` | `2550` | `50%` |
-> | `source_code_parser.ts` | `2515` | `25%` |
-> | `file_system_scanner.ts` | `2510` | `80%` |
-> | `director.ts` | `2455` | `25%` |
-> | `director.ts` | `2455` | `50%` |
-> | `healer.ts` | `2430` | `89%` |
-> | `test_runner.ts` | `2310` | `40%` |
-> | `markdown_sanitizer.ts` | `2280` | `67%` |
-> | `memory_engine.ts` | `2240` | `75%` |
-> | `indexer.ts` | `2235` | `100%` |
-> | `test_architect_agent.ts` | `2135` | `88%` |
-> | `infrastructure_assembler.ts` | `2090` | `88%` |
-> | `health_synthesizer.ts` | `2085` | `50%` |
-> | `behavior_analyst.ts` | `2070` | `80%` |
-> | `cognitive_engine.ts` | `2065` | `14%` |
-> | `voyager.ts` | `2060` | `67%` |
-> | `voyager.ts` | `2060` | `67%` |
-> | `stability_ledger.ts` | `2045` | `75%` |
-> | `task_orchestrator.ts` | `2005` | `67%` |
-> | `topology_engine.ts` | `1990` | `67%` |
-> | `compliance_standard.ts` | `1950` | `100%` |
-> | `source_code_parser.test.ts` | `1925` | `100%` |
-> | `history_agent.ts` | `1870` | `60%` |
-> | `obfuscation_hunter.ts` | `1865` | `100%` |
-> | `briefing_agent.ts` | `1845` | `100%` |
-> | `obfuscation_cleaner_engine.ts` | `1810` | `67%` |
-> | `maintenance_engine_phd.ts` | `1805` | `80%` |
-> | `parity_utils.ts` | `1785` | `50%` |
-> | `battle_plan_formatter.ts` | `1785` | `100%` |
-> | `persona_registry.ts` | `1755` | `100%` |
-> | `cache_manager.ts` | `1725` | `75%` |
-> | `testify.ts` | `1690` | `50%` |
-> | `testify.ts` | `1675` | `67%` |
-> | `meta_analysis_detector.ts` | `1675` | `100%` |
-> | `testify.ts` | `1675` | `67%` |
-> | `logging_config.ts` | `1610` | `67%` |
-> | `run-diagnostic.ts` | `1605` | `100%` |
-> | `testify.ts` | `1590` | `50%` |
-> | `mantra.ts` | `1570` | `50%` |
-> | `validator.ts` | `1570` | `57%` |
-> | `warden.ts` | `1560` | `50%` |
-> | `healer_persona.ts` | `1555` | `83%` |
-> | `testify.ts` | `1550` | `50%` |
-> | `html_portal_generator.ts` | `1535` | `100%` |
-> | `maturity_evaluator.ts` | `1525` | `50%` |
-> | `resource_governor.ts` | `1520` | `100%` |
-> | `markdown_auditor.ts` | `1515` | `67%` |
-> | `update_transaction.ts` | `1515` | `75%` |
-> | `update_imports.ts` | `1515` | `100%` |
-> | `silent_error_detector.ts` | `1510` | `100%` |
-> | `context_mapping_logic.ts` | `1495` | `67%` |
-> | `bridge.ts` | `1490` | `50%` |
-> | `palette.ts` | `1480` | `50%` |
-> | `testify.ts` | `1470` | `50%` |
-> | `voyager.ts` | `1470` | `50%` |
-> | `penalty_engine.ts` | `1455` | `13%` |
-> | `scoring_metrics_engine.ts` | `1455` | `50%` |
-> | `globe.ts` | `1450` | `50%` |
-> | `hype.ts` | `1450` | `50%` |
-> | `test_refiner.test.ts` | `1450` | `100%` |
-> | `scope.ts` | `1440` | `50%` |
-> | `sentinel.ts` | `1440` | `25%` |
-> | `schema_persona.ts` | `1440` | `100%` |
-> | `vulnerability_heuristic.ts` | `1430` | `0%` |
-> | `scale.ts` | `1410` | `50%` |
-> | `vault.ts` | `1410` | `50%` |
-> | `spark.ts` | `1410` | `50%` |
-> | `base_active_persona.ts` | `1400` | `44%` |
-> | `forge.ts` | `1400` | `50%` |
-> | `neural.ts` | `1400` | `50%` |
-> | `audit_risk_engine.ts` | `1390` | `100%` |
-> | `probe.ts` | `1370` | `50%` |
-> | `scribe.ts` | `1370` | `50%` |
-> | `stream.ts` | `1370` | `50%` |
-> | `diagnostic_pipeline.ts` | `1365` | `86%` |
-> | `metric.ts` | `1360` | `33%` |
-> | `echo.ts` | `1360` | `50%` |
-> | `nexus.ts` | `1360` | `50%` |
-> | `neural.ts` | `1355` | `67%` |
-> | `neural.ts` | `1355` | `67%` |
-> | `context_iterator.ts` | `1355` | `67%` |
-> | `hype.ts` | `1350` | `67%` |
-> | `hype.ts` | `1350` | `67%` |
-> | `quality_analyst.ts` | `1345` | `60%` |
-> | `cache.ts` | `1330` | `33%` |
-> | `nexus.ts` | `1325` | `67%` |
-> | `stream.ts` | `1325` | `67%` |
-> | `spark.ts` | `1325` | `67%` |
-> | `spark.ts` | `1325` | `67%` |
-> | `stream.ts` | `1325` | `67%` |
-> | `nexus.ts` | `1325` | `67%` |
-> | `nebula.ts` | `1315` | `67%` |
-> | `mantra.ts` | `1315` | `67%` |
-> | `nebula.ts` | `1315` | `67%` |
-> | `mantra.ts` | `1315` | `67%` |
-> | `activate-phase.ts` | `1310` | `100%` |
-> | `strict.ts` | `1305` | `100%` |
-> | `strict.ts` | `1305` | `100%` |
-> | `path_utils.ts` | `1305` | `6%` |
-> | `semantic_context_analyst.ts` | `1290` | `100%` |
-> | `forge.ts` | `1285` | `67%` |
-> | `globe.ts` | `1285` | `67%` |
-> | `bridge.ts` | `1285` | `67%` |
-> | `flow.ts` | `1285` | `67%` |
-> | `topology_graph_agent.ts` | `1285` | `67%` |
-> | `forge.ts` | `1285` | `67%` |
-> | `globe.ts` | `1285` | `67%` |
-> | `bridge.ts` | `1285` | `67%` |
-> | `flow.ts` | `1285` | `67%` |
-> | `component_classifier.ts` | `1270` | `50%` |
-> | `echo.ts` | `1245` | `67%` |
-> | `cache.ts` | `1245` | `50%` |
-> | `echo.ts` | `1245` | `67%` |
-> | `generic.ts` | `1245` | `100%` |
-> | `decorator.ts` | `1245` | `100%` |
-> | `cache.ts` | `1245` | `50%` |
-> | `bolt.ts` | `1240` | `50%` |
-> | `nebula.ts` | `1240` | `50%` |
-> | `flow.ts` | `1240` | `50%` |
-> | `bolt.ts` | `1235` | `67%` |
-> | `testify_persona.ts` | `1235` | `100%` |
-> | `bolt.ts` | `1235` | `67%` |
-> | `finding_deduplicator.ts` | `1230` | `0%` |
-> | `macro.ts` | `1220` | `100%` |
-> | `sqlite.ts` | `1220` | `18%` |
-> | `worker.ts` | `1220` | `67%` |
-> | `enum.ts` | `1220` | `100%` |
-> | `scale.ts` | `1215` | `67%` |
-> | `scale.ts` | `1215` | `67%` |
-> | `task_queue.ts` | `1210` | `75%` |
-> | `metric.ts` | `1205` | `50%` |
-> | `scope.ts` | `1205` | `67%` |
-> | `probe.ts` | `1205` | `67%` |
-> | `palette.ts` | `1205` | `67%` |
-> | `sentinel.ts` | `1205` | `40%` |
-> | `vault.ts` | `1205` | `67%` |
-> | `warden.ts` | `1205` | `67%` |
-> | `hermes.ts` | `1205` | `67%` |
-> | `probe.ts` | `1205` | `67%` |
-> | `scope.ts` | `1205` | `67%` |
-> | `metric.ts` | `1205` | `50%` |
-> | `palette.ts` | `1205` | `67%` |
-> | `sentinel.ts` | `1205` | `40%` |
-> | `vault.ts` | `1205` | `67%` |
-> | `warden.ts` | `1205` | `67%` |
-> | `hermes.ts` | `1205` | `67%` |
-> | `hermes.ts` | `1185` | `50%` |
-> | `plugin.ts` | `1180` | `100%` |
-> | `reflex_engine.ts` | `1165` | `67%` |
-> | `reflex_engine.ts` | `1165` | `67%` |
-> | `task_worker.ts` | `1165` | `67%` |
-> | `verify_deep_parity.test.ts` | `1160` | `100%` |
-> | `generate_missing_tests.ts` | `1150` | `100%` |
-> | `battle_plan_sections_engine.ts` | `1150` | `50%` |
-> | `extract_gaps.ts` | `1140` | `100%` |
-> | `integrity_guardian.ts` | `1130` | `33%` |
-> | `verify_phase_19.ts` | `1125` | `100%` |
-> | `veto_engine.ts` | `1125` | `50%` |
-> | `markdown_processor.ts` | `1110` | `100%` |
-> | `submodule_sync_logic.ts` | `1110` | `75%` |
-> | `structural_analyst.test.ts` | `1095` | `100%` |
-> | `cognitive_analyst.ts` | `1085` | `100%` |
-> | `test_refiner.ts` | `1075` | `67%` |
-> | `scale.ts` | `1065` | `50%` |
-> | `voyager.ts` | `1065` | `50%` |
-> | `conflict_policy.ts` | `1065` | `75%` |
-> | `score_calculator.ts` | `1060` | `75%` |
-> | `sentinel.ts` | `1055` | `25%` |
-> | `diagnostic_strategist.ts` | `1035` | `50%` |
-> | `spark.ts` | `1025` | `50%` |
-> | `bolt.ts` | `1025` | `50%` |
-> | `globe.ts` | `1025` | `50%` |
-> | `globe.ts` | `1025` | `50%` |
-> | `flow.ts` | `1025` | `50%` |
-> | `scribe.ts` | `1015` | `67%` |
-> | `scribe.ts` | `1015` | `67%` |
-> | `metric.ts` | `1010` | `33%` |
-> | `parity_config.ts` | `990` | `0%` |
-> | `forge.ts` | `985` | `50%` |
-> | `echo.ts` | `985` | `50%` |
-> | `scribe.ts` | `985` | `50%` |
-> | `vault.ts` | `985` | `50%` |
-> | `neural.ts` | `985` | `50%` |
-> | `nexus.ts` | `985` | `50%` |
-> | `fragment.ts` | `985` | `100%` |
-> | `palette.ts` | `985` | `50%` |
-> | `voyager.ts` | `985` | `50%` |
-> | `fragment.ts` | `985` | `100%` |
-> | `cache.ts` | `985` | `33%` |
-> | `clock.ts` | `985` | `100%` |
-> | `markdown_structure_agent.ts` | `980` | `50%` |
-> | `memory_persistence.ts` | `975` | `75%` |
-> | `voyager.ts` | `945` | `50%` |
-> | `warden.ts` | `945` | `50%` |
-> | `flow.ts` | `945` | `50%` |
-> | `vortex.ts` | `945` | `100%` |
-> | `probe.ts` | `945` | `50%` |
-> | `forge.ts` | `945` | `50%` |
-> | `scribe.ts` | `945` | `50%` |
-> | `vault.ts` | `945` | `50%` |
-> | `bolt.ts` | `945` | `50%` |
-> | `probe.ts` | `945` | `50%` |
-> | `forge.ts` | `945` | `50%` |
-> | `palette.ts` | `945` | `50%` |
-> | `scribe.ts` | `945` | `50%` |
-> | `sentinel.ts` | `945` | `25%` |
-> | `master.ts` | `945` | `100%` |
-> | `vortex.ts` | `945` | `100%` |
-> | `stream.ts` | `945` | `50%` |
-> | `bolt.ts` | `910` | `50%` |
-> | `probe.ts` | `905` | `50%` |
-> | `stream.ts` | `905` | `50%` |
-> | `warden.ts` | `905` | `50%` |
-> | `nebula.ts` | `905` | `50%` |
-> | `scope.ts` | `905` | `50%` |
-> | `echo.ts` | `905` | `50%` |
-> | `vault.ts` | `905` | `50%` |
-> | `core.ts` | `905` | `2%` |
-> | `neural.ts` | `905` | `50%` |
-> | `spark.ts` | `905` | `50%` |
-> | `nexus.ts` | `905` | `50%` |
-> | `specialized_personas_hub.ts` | `900` | `100%` |
-> | `task_executor.ts` | `890` | `25%` |
-> | `extract_personas.ts` | `885` | `100%` |
-> | `metric.ts` | `880` | `33%` |
-> | `memory_pruning_agent.ts` | `880` | `75%` |
-> | `echo.ts` | `865` | `50%` |
-> | `react_portal_builder.ts` | `860` | `100%` |
-> | `coverage_auditor.ts` | `845` | `67%` |
-> | `metric.ts` | `840` | `33%` |
-> | `globe.ts` | `840` | `50%` |
-> | `cache.ts` | `840` | `33%` |
-> | `cache.ts` | `840` | `33%` |
-> | `hype.ts` | `815` | `50%` |
-> | `cognitive_validator.ts` | `805` | `67%` |
-> | `verify_phase_17.ts` | `800` | `100%` |
-> | `refactor_go_agents.ts` | `800` | `100%` |
-> | `palette.ts` | `785` | `50%` |
-> | `bridge.ts` | `785` | `50%` |
-> | `go_discovery_adapter.ts` | `785` | `80%` |
-> | `reorganize_support.ts` | `780` | `100%` |
-> | `mantra.ts` | `745` | `50%` |
-> | `bridge.ts` | `745` | `50%` |
-> | `mantra.ts` | `745` | `50%` |
-> | `nexus.ts` | `745` | `50%` |
-> | `spark.ts` | `745` | `50%` |
-> | `stream.ts` | `745` | `50%` |
-> | `hermes.ts` | `745` | `50%` |
-> | `connectivity_mapper.ts` | `740` | `50%` |
-> | `nebula.ts` | `720` | `50%` |
-> | `validation_agent.ts` | `720` | `50%` |
-> | `hype.ts` | `705` | `50%` |
-> | `hermes.ts` | `705` | `50%` |
-> | `nebula.ts` | `705` | `50%` |
-> | `sentinel.ts` | `705` | `25%` |
-> | `neural.ts` | `705` | `50%` |
-> | `flow.ts` | `705` | `50%` |
-> | `veto_engine.test.ts` | `685` | `100%` |
-> | `doc_gen_agent.ts` | `670` | `67%` |
-> | `scale.ts` | `650` | `50%` |
-> | `dna_profiler.ts` | `640` | `50%` |
-> | `obfuscation_logic_engine.ts` | `640` | `67%` |
-> | `scale.ts` | `635` | `50%` |
-> | `verify_phase_18.ts` | `620` | `100%` |
-> | `scope.ts` | `610` | `50%` |
-> | `pyramid_analyst.ts` | `605` | `50%` |
-> | `scope.ts` | `595` | `50%` |
-> | `update-git.ts` | `555` | `100%` |
-> | `security_sentinel_agent.ts` | `535` | `67%` |
-> | `activate-phase.test.ts` | `505` | `100%` |
-> | `extract_personas.test.ts` | `505` | `100%` |
-> | `reorganize_support.test.ts` | `505` | `100%` |
-> | `delete_redundant.test.ts` | `505` | `100%` |
-> | `deep_disparity_scanner.test.ts` | `505` | `100%` |
-> | `experiment_bun_features.test.ts` | `505` | `100%` |
-> | `verify_phase_17.test.ts` | `505` | `100%` |
-> | `verify_phase_18.test.ts` | `505` | `100%` |
-> | `verify_phase_19.test.ts` | `505` | `100%` |
-> | `base_active_persona.test.ts` | `505` | `100%` |
-> | `sqlite.test.ts` | `505` | `100%` |
-> | `worker.test.ts` | `505` | `100%` |
-> | `plugin.test.ts` | `505` | `100%` |
-> | `fragment.test.ts` | `505` | `100%` |
-> | `vortex.test.ts` | `505` | `100%` |
-> | `master.test.ts` | `505` | `100%` |
-> | `vortex.test.ts` | `505` | `100%` |
-> | `fragment.test.ts` | `505` | `100%` |
-> | `clock.test.ts` | `505` | `100%` |
-> | `schema_persona.test.ts` | `505` | `100%` |
-> | `parity_types.test.ts` | `505` | `100%` |
-> | `parity_utils.test.ts` | `505` | `100%` |
-> | `doc_gen_agent.test.ts` | `505` | `100%` |
-> | `healer_persona.test.ts` | `505` | `100%` |
-> | `specialized_personas_hub.test.ts` | `505` | `100%` |
-> | `safety_supreme_judge.test.ts` | `505` | `100%` |
-> | `generic.test.ts` | `505` | `100%` |
-> | `decorator.test.ts` | `505` | `100%` |
-> | `enum.test.ts` | `505` | `100%` |
-> | `language_persona_orchestrator.test.ts` | `505` | `100%` |
-> | `path_utils.test.ts` | `505` | `100%` |
-> | `phd_governance_system.test.ts` | `505` | `100%` |
-> | `ast_intelligence.test.ts` | `505` | `100%` |
-> | `behavior_analyst.test.ts` | `505` | `100%` |
-> | `cognitive_validator.test.ts` | `505` | `100%` |
-> | `date_utils.ts` | `505` | `0%` |
-> | `depth_intelligence.test.ts` | `505` | `100%` |
-> | `go_discovery_adapter.test.ts` | `505` | `100%` |
-> | `html_portal_generator.test.ts` | `505` | `100%` |
-> | `markdown_renderer.test.ts` | `505` | `100%` |
-> | `merge_go_manifest.test.ts` | `505` | `100%` |
-> | `persona_registry.test.ts` | `505` | `100%` |
-> | `refactor_go_agents.test.ts` | `505` | `100%` |
-> | `react_portal_builder.test.ts` | `505` | `100%` |
-> | `system_sentinel.test.ts` | `505` | `100%` |
-> | `task_queue.test.ts` | `505` | `100%` |
-> | `task_worker.test.ts` | `505` | `100%` |
-> | `telemetry_excellence_engine.test.ts` | `505` | `100%` |
-> | `update-git.test.ts` | `505` | `100%` |
-> | `update_imports.test.ts` | `505` | `100%` |
-> | `markdown_util.ts` | `470` | `0%` |
-> | `test_runner.test.ts` | `460` | `100%` |
-> | `experiment_bun_features.ts` | `455` | `0%` |
-> | `merge_go_manifest.ts` | `455` | `100%` |
-> | `debug_alerts.js` | `425` | `100%` |
-> | `debug_stability_count.js` | `395` | `100%` |
-> | `bridge_orchestrator.test.ts` | `365` | `100%` |
-> | `markdown_renderer.ts` | `335` | `0%` |
-> | `delete_redundant.ts` | `325` | `100%` |
-> | `debug_penalty_calculation.js` | `305` | `100%` |
-> | `debug_health_flow.js` | `300` | `100%` |
-> | `debug_detailed_penalties.js` | `255` | `100%` |
-> | `debug_final_health.js` | `255` | `100%` |
-> | `debug_alerts_detail.js` | `230` | `100%` |
-> | `debug_penalty.js` | `230` | `100%` |
-> | `debug_qa_matrix.js` | `230` | `100%` |
-> | `debug_logic.ts` | `230` | `100%` |
-> | `debug_parity_test_matching.js` | `210` | `100%` |
-> | `parity_types.ts` | `210` | `0%` |
-> | `placeholder.test.ts` | `210` | `100%` |
-> | `debug_health.js` | `205` | `100%` |
-> | `safety_definitions.ts` | `200` | `0%` |
-> | `debug_test_matching.js` | `190` | `100%` |
-> | `debug_assertion_detection.js` | `180` | `100%` |
-> | `debug_metrics.js` | `180` | `100%` |
-> | `debug_complexity_after_refactor.js` | `160` | `100%` |
-> | `fix_test_quality.js` | `135` | `100%` |
-> | `debug_complexity.js` | `115` | `100%` |
-> | `debug_stability.js` | `105` | `100%` |
-> | `debug_stability_coverage.js` | `105` | `100%` |
-> | `debug_test_quality_after_refactor.js` | `105` | `100%` |
-> | `index.ts` | `40` | `0%` |
-> | `shadow_tray.py` | `36` | `100%` |
-> | `bridge_orchestrator.py` | `28` | `100%` |
-> | `gui_native.py` | `15` | `100%` |
-> | `test_sync_engine_mocks.py` | `12` | `100%` |
-> | `director.py` | `11` | `57%` |
-> | `test_dependency_auditor_deep.py` | `11` | `100%` |
-> | `test_structural_analyst_deep.py` | `11` | `100%` |
-> | `test_verify_report_lint.py` | `11` | `100%` |
-> | `lint_rule_engine.py` | `10` | `100%` |
-> | `run_diagnostic.py` | `10` | `100%` |
-> | `orchestrator.py` | `10` | `13%` |
-> | `diagnose_blind_spots.py` | `9` | `100%` |
-> | `test_diagnose_blind_spots.py` | `9` | `100%` |
-> | `test_maintenance_engine_phd.py` | `9` | `100%` |
-> | `lint_heading_logic.py` | `8` | `100%` |
-> | `test_python_personas.py` | `8` | `100%` |
-> | `test_safe_context_judge.py` | `8` | `100%` |
-> | `verify_report_lint.py` | `7` | `100%` |
-> | `test_lint_engines.py` | `7` | `100%` |
-> | `test_source_code_parser_deep.py` | `7` | `100%` |
-> | `persona_manager.py` | `6` | `100%` |
-> | `verify_cognitive.py` | `6` | `100%` |
-> | `health_gauge.py` | `6` | `100%` |
-> | `findings_view.py` | `6` | `100%` |
-> | `test_cli.py` | `6` | `100%` |
-> | `test_core_depth.py` | `6` | `100%` |
-> | `test_file_system_scanner.py` | `6` | `100%` |
-> | `test_git_operations_phd.py` | `6` | `100%` |
-> | `test_silent_error_detector.py` | `6` | `100%` |
-> | `test_update_transaction.py` | `6` | `100%` |
-> | `test_voyager.py` | `6` | `100%` |
-> | `analyze_external.py` | `5` | `100%` |
-> | `debug_test_hang.py` | `5` | `100%` |
-> | `install_hooks.py` | `5` | `100%` |
-> | `cli.py` | `5` | `44%` |
-> | `test_cleanup_obfuscation.py` | `5` | `100%` |
-> | `test_compliance_standard.py` | `5` | `100%` |
-> | `test_healer.py` | `5` | `100%` |
-> | `test_package_integrity.py` | `5` | `100%` |
-> | `test_orchestrator.py` | `5` | `100%` |
-> | `test_pyramid_analyst.py` | `5` | `100%` |
-> | `test_safety_navigator.py` | `5` | `100%` |
-> | `test_sovereign_sync_forensics.py` | `5` | `100%` |
-> | `test_telemetry_intent_judge.py` | `5` | `100%` |
-> | `test_task_executor.py` | `5` | `100%` |
-> | `build_exe.py` | `4` | `100%` |
-> | `mantra.py` | `4` | `75%` |
-> | `warden.py` | `4` | `75%` |
-> | `test_ast_navigator.py` | `4` | `100%` |
-> | `test_base_deep.py` | `4` | `100%` |
-> | `test_audit_engine.py` | `4` | `100%` |
-> | `test_cognitive_engine.py` | `4` | `100%` |
-> | `test_context_engine_system.py` | `4` | `100%` |
-> | `test_context_sovereignty.py` | `4` | `100%` |
-> | `test_dashboard_view.py` | `4` | `100%` |
-> | `test_finding_deduplicator.py` | `4` | `100%` |
-> | `test_health_gauge.py` | `4` | `100%` |
-> | `test_infrastructure_assembler.py` | `4` | `100%` |
-> | `test_launch_api.py` | `4` | `100%` |
-> | `test_launch_dashboard.py` | `4` | `100%` |
-> | `test_logic_auditor_deep.py` | `4` | `100%` |
-> | `test_memory_engine.py` | `4` | `100%` |
-> | `test_memory_persistence.py` | `4` | `100%` |
-> | `test_parity_analyst.py` | `4` | `100%` |
-> | `test_quality_analyst.py` | `4` | `100%` |
-> | `test_rule_definition_judge.py` | `4` | `100%` |
-> | `test_run_diagnostic.py` | `4` | `100%` |
-> | `test_shadow_tray.py` | `4` | `100%` |
-> | `test_sidebar.py` | `4` | `100%` |
-> | `test_task_orchestrator.py` | `4` | `100%` |
-> | `test_update_agent_submodule.py` | `4` | `100%` |
-> | `fast_diagnostic.py` | `3` | `100%` |
-> | `sidebar.py` | `3` | `100%` |
-> | `test_ai_infra.py` | `3` | `100%` |
-> | `test_analyze_external.py` | `3` | `100%` |
-> | `test_analysis_engine_phd.py` | `3` | `100%` |
-> | `test_bolt_persona.py` | `3` | `100%` |
-> | `test_cache_manager_system.py` | `3` | `100%` |
-> | `test_cache_manager.py` | `3` | `100%` |
-> | `test_compiler.py` | `3` | `100%` |
-> | `test_conflict_policy_phd.py` | `3` | `100%` |
-> | `test_compliance.py` | `3` | `100%` |
-> | `test_context_engine_deep.py` | `3` | `100%` |
-> | `test_context_iterator.py` | `3` | `100%` |
-> | `test_debug_relevance.py` | `3` | `100%` |
-> | `test_dependency_auditor_system.py` | `3` | `100%` |
-> | `test_diagnostic_finalizer.py` | `3` | `100%` |
-> | `test_dna_profiler.py` | `3` | `100%` |
-> | `test_final_check.py` | `3` | `100%` |
-> | `test_git_logic.py` | `3` | `100%` |
-> | `test_indexer.py` | `3` | `100%` |
-> | `test_indexer_system.py` | `3` | `100%` |
-> | `test_integrity_guardian.py` | `3` | `100%` |
-> | `test_lint_rule_engine.py` | `3` | `100%` |
-> | `test_persona_manager.py` | `3` | `100%` |
-> | `test_penalty_engine.py` | `3` | `100%` |
-> | `test_phd_helpers.py` | `3` | `100%` |
-> | `test_persona_loader.py` | `3` | `100%` |
-> | `test_registry_compiler.py` | `3` | `100%` |
-> | `test_reflex_engine_phd.py` | `3` | `100%` |
-> | `test_safety_heuristics.py` | `3` | `100%` |
-> | `test_self_awareness.py` | `3` | `100%` |
-> | `test_semantic_context_analyst.py` | `3` | `100%` |
-> | `test_source_code_parser.py` | `3` | `100%` |
-> | `test_stability_ledger_deep.py` | `3` | `100%` |
-> | `test_structural_analyst.py` | `3` | `100%` |
-> | `test_support_complexity_fix.py` | `3` | `100%` |
-> | `test_system_intelligence.py` | `3` | `100%` |
-> | `test_test_navigator.py` | `3` | `100%` |
-> | `test_test_runner.py` | `3` | `100%` |
-> | `test_topology_engine_phd.py` | `3` | `100%` |
-> | `test_ui_controller.py` | `3` | `100%` |
-> | `test_verify_cognitive.py` | `3` | `100%` |
-> | `test_veto_rules_phd.py` | `3` | `100%` |
-> | `launch_api.py` | `2` | `100%` |
-> | `launch_dashboard.py` | `2` | `100%` |
-> | `hype.py` | `2` | `75%` |
-> | `bridge.py` | `2` | `75%` |
-> | `hermes.py` | `2` | `75%` |
-> | `dashboard_view.py` | `2` | `100%` |
-> | `chat_view.py` | `2` | `100%` |
-> | `test_ast_node_inspector.py` | `2` | `100%` |
-> | `test_audit_risk_engine.py` | `2` | `100%` |
-> | `test_ast_traversal_logic.py` | `2` | `100%` |
-> | `test_audit_scanner_engine.py` | `2` | `100%` |
-> | `test_bolt.py` | `2` | `100%` |
+> | `director.ts` | `2588` | `25%` |
+> | `director.ts` | `2588` | `50%` |
+> | `voyager.ts` | `2198` | `67%` |
+> | `voyager.ts` | `2198` | `67%` |
+> | `source_code_parser.ts` | `1845` | `20%` |
+> | `testify.ts` | `1811` | `50%` |
+> | `testify.ts` | `1804` | `50%` |
+> | `testify.ts` | `1783` | `67%` |
+> | `testify.ts` | `1783` | `67%` |
+> | `structural_auditor_supreme.ts` | `1731` | `100%` |
+> | `testify.ts` | `1719` | `50%` |
+> | `depth_intelligence.ts` | `1700` | `75%` |
+> | `warden.ts` | `1649` | `50%` |
+> | `language_persona_orchestrator.ts` | `1640` | `98%` |
+> | `orchestrator.ts` | `1640` | `41%` |
+> | `audit_engine.ts` | `1601` | `67%` |
+> | `testify.ts` | `1599` | `50%` |
+> | `deep_disparity_scanner.ts` | `1595` | `100%` |
+> | `parity_analyst.ts` | `1577` | `71%` |
+> | `voyager.ts` | `1559` | `50%` |
+> | `mantra.ts` | `1535` | `50%` |
+> | `hype.ts` | `1527` | `67%` |
+> | `hype.ts` | `1527` | `67%` |
+> | `strict.ts` | `1492` | `100%` |
+> | `strict.ts` | `1492` | `100%` |
+> | `metric.ts` | `1464` | `33%` |
+> | `base.ts` | `1455` | `3%` |
+> | `bridge.ts` | `1455` | `50%` |
+> | `echo.ts` | `1449` | `50%` |
+> | `palette.ts` | `1445` | `50%` |
+> | `mantra.ts` | `1433` | `67%` |
+> | `mantra.ts` | `1433` | `67%` |
+> | `neural.ts` | `1423` | `67%` |
+> | `neural.ts` | `1423` | `67%` |
+> | `globe.ts` | `1415` | `50%` |
+> | `hype.ts` | `1415` | `50%` |
+> | `nebula.ts` | `1383` | `67%` |
+> | `nebula.ts` | `1383` | `67%` |
+> | `stream.ts` | `1378` | `67%` |
+> | `stream.ts` | `1378` | `67%` |
+> | `scale.ts` | `1375` | `50%` |
+> | `vault.ts` | `1375` | `50%` |
+> | `spark.ts` | `1375` | `50%` |
+> | `nexus.ts` | `1363` | `67%` |
+> | `nexus.ts` | `1363` | `67%` |
+> | `spark.ts` | `1348` | `67%` |
+> | `spark.ts` | `1348` | `67%` |
+> | `bolt.ts` | `1344` | `50%` |
+> | `forge.ts` | `1338` | `67%` |
+> | `forge.ts` | `1338` | `67%` |
+> | `probe.ts` | `1335` | `50%` |
+> | `scope.ts` | `1335` | `50%` |
+> | `scribe.ts` | `1335` | `50%` |
+> | `sentinel.ts` | `1335` | `25%` |
+> | `stream.ts` | `1335` | `50%` |
+> | `nebula.ts` | `1329` | `50%` |
+> | `flow.ts` | `1329` | `50%` |
+> | `scale.ts` | `1327` | `67%` |
+> | `scale.ts` | `1327` | `67%` |
+> | `nexus.ts` | `1325` | `50%` |
+> | `bridge.ts` | `1323` | `67%` |
+> | `flow.ts` | `1323` | `67%` |
+> | `bridge.ts` | `1323` | `67%` |
+> | `flow.ts` | `1323` | `67%` |
+> | `safety_supreme_judge.ts` | `1313` | `80%` |
+> | `globe.ts` | `1308` | `67%` |
+> | `globe.ts` | `1308` | `67%` |
+> | `context_engine.ts` | `1304` | `90%` |
+> | `bolt.ts` | `1303` | `67%` |
+> | `bolt.ts` | `1303` | `67%` |
+> | `echo.ts` | `1298` | `67%` |
+> | `echo.ts` | `1298` | `67%` |
+> | `forge.ts` | `1295` | `50%` |
+> | `cache.ts` | `1295` | `33%` |
+> | `neural.ts` | `1295` | `50%` |
+> | `cache.ts` | `1283` | `50%` |
+> | `generic.ts` | `1283` | `100%` |
+> | `decorator.ts` | `1283` | `100%` |
+> | `cache.ts` | `1283` | `50%` |
+> | `ast_intelligence.ts` | `1283` | `22%` |
+> | `scope.ts` | `1278` | `67%` |
+> | `scope.ts` | `1278` | `67%` |
+> | `probe.ts` | `1273` | `67%` |
+> | `probe.ts` | `1273` | `67%` |
+> | `metric.ts` | `1258` | `50%` |
+> | `sentinel.ts` | `1258` | `40%` |
+> | `warden.ts` | `1258` | `67%` |
+> | `metric.ts` | `1258` | `50%` |
+> | `sentinel.ts` | `1258` | `40%` |
+> | `warden.ts` | `1258` | `67%` |
+> | `macro.ts` | `1252` | `100%` |
+> | `sqlite.ts` | `1252` | `18%` |
+> | `worker.ts` | `1252` | `67%` |
+> | `enum.ts` | `1252` | `100%` |
+> | `palette.ts` | `1243` | `67%` |
+> | `vault.ts` | `1243` | `67%` |
+> | `hermes.ts` | `1243` | `67%` |
+> | `palette.ts` | `1243` | `67%` |
+> | `vault.ts` | `1243` | `67%` |
+> | `hermes.ts` | `1243` | `67%` |
+> | `hermes.ts` | `1232` | `50%` |
+> | `plugin.ts` | `1212` | `100%` |
+> | `dependency_auditor.ts` | `1210` | `100%` |
+> | `discovery_agent.ts` | `1206` | `89%` |
+> | `git_client.ts` | `1168` | `50%` |
+> | `vulnerability_heuristic.ts` | `1162` | `0%` |
+> | `system_sentinel.ts` | `1135` | `83%` |
+> | `structural_analyst.ts` | `1115` | `60%` |
+> | `scribe.ts` | `1102` | `67%` |
+> | `scribe.ts` | `1102` | `67%` |
+> | `telemetry_intent_judge.ts` | `1100` | `100%` |
+> | `scale.ts` | `1069` | `50%` |
+> | `report_sections_engine.ts` | `1050` | `50%` |
+> | `topology_engine.ts` | `1035` | `50%` |
+> | `topology_engine.ts` | `1035` | `50%` |
+> | `test_runner.ts` | `1033` | `40%` |
+> | `forge.ts` | `1030` | `50%` |
+> | `spark.ts` | `1029` | `50%` |
+> | `bolt.ts` | `1029` | `50%` |
+> | `globe.ts` | `1029` | `50%` |
+> | `globe.ts` | `1029` | `50%` |
+> | `flow.ts` | `1029` | `50%` |
+> | `voyager.ts` | `1026` | `50%` |
+> | `voyager.ts` | `1025` | `50%` |
+> | `voyager.ts` | `1025` | `50%` |
+> | `shadow_tray.py` | `1003` | `100%` |
+> | `echo.ts` | `989` | `50%` |
+> | `scribe.ts` | `989` | `50%` |
+> | `vault.ts` | `989` | `50%` |
+> | `neural.ts` | `989` | `50%` |
+> | `nexus.ts` | `989` | `50%` |
+> | `fragment.ts` | `989` | `100%` |
+> | `palette.ts` | `989` | `50%` |
+> | `fragment.ts` | `989` | `100%` |
+> | `clock.ts` | `989` | `100%` |
+> | `cache.ts` | `989` | `33%` |
+> | `file_system_scanner.ts` | `986` | `80%` |
+> | `bolt.ts` | `961` | `50%` |
+> | `telemetry_excellence_engine.ts` | `960` | `100%` |
+> | `master.ts` | `954` | `100%` |
+> | `sentinel.ts` | `949` | `25%` |
+> | `warden.ts` | `949` | `50%` |
+> | `flow.ts` | `949` | `50%` |
+> | `vortex.ts` | `949` | `100%` |
+> | `probe.ts` | `949` | `50%` |
+> | `forge.ts` | `949` | `50%` |
+> | `vault.ts` | `949` | `50%` |
+> | `scribe.ts` | `949` | `50%` |
+> | `bolt.ts` | `949` | `50%` |
+> | `probe.ts` | `949` | `50%` |
+> | `forge.ts` | `949` | `50%` |
+> | `palette.ts` | `949` | `50%` |
+> | `scribe.ts` | `949` | `50%` |
+> | `sentinel.ts` | `949` | `25%` |
+> | `vortex.ts` | `949` | `100%` |
+> | `stream.ts` | `949` | `50%` |
+> | `metric.ts` | `924` | `33%` |
+> | `audit_risk_engine.ts` | `910` | `100%` |
+> | `probe.ts` | `909` | `50%` |
+> | `stream.ts` | `909` | `50%` |
+> | `warden.ts` | `909` | `50%` |
+> | `nebula.ts` | `909` | `50%` |
+> | `scope.ts` | `909` | `50%` |
+> | `echo.ts` | `909` | `50%` |
+> | `vault.ts` | `909` | `50%` |
+> | `core.ts` | `909` | `2%` |
+> | `neural.ts` | `909` | `50%` |
+> | `nexus.ts` | `909` | `50%` |
+> | `spark.ts` | `909` | `50%` |
+> | `compliance_standard.ts` | `888` | `100%` |
+> | `metric.ts` | `884` | `33%` |
+> | `cognitive_engine.ts` | `866` | `14%` |
+> | `audit_expert_engine.ts` | `859` | `50%` |
+> | `test_refiner.test.ts` | `856` | `100%` |
+> | `update_imports.ts` | `855` | `100%` |
+> | `metric.ts` | `844` | `33%` |
+> | `globe.ts` | `844` | `50%` |
+> | `cache.ts` | `844` | `33%` |
+> | `cache.ts` | `844` | `33%` |
+> | `markdown_sanitizer.ts` | `840` | `67%` |
+> | `indexer.ts` | `831` | `100%` |
+> | `GovernanceView.tsx` | `830` | `83%` |
+> | `battle_plan_formatter.ts` | `811` | `100%` |
+> | `markdown_auditor.ts` | `804` | `67%` |
+> | `palette.ts` | `802` | `50%` |
+> | `bridge.ts` | `802` | `50%` |
+> | `healer.ts` | `767` | `89%` |
+> | `quality_analyst.ts` | `765` | `60%` |
+> | `mantra.ts` | `762` | `50%` |
+> | `bridge.ts` | `762` | `50%` |
+> | `echo.ts` | `762` | `50%` |
+> | `hype.ts` | `762` | `50%` |
+> | `mantra.ts` | `762` | `50%` |
+> | `nexus.ts` | `762` | `50%` |
+> | `spark.ts` | `762` | `50%` |
+> | `hermes.ts` | `762` | `50%` |
+> | `stream.ts` | `762` | `50%` |
+> | `activate-phase.ts` | `755` | `100%` |
+> | `meta_analysis_detector.ts` | `743` | `100%` |
+> | `nebula.ts` | `742` | `50%` |
+> | `sentinel.ts` | `737` | `25%` |
+> | `hype.ts` | `722` | `50%` |
+> | `hermes.ts` | `722` | `50%` |
+> | `nebula.ts` | `722` | `50%` |
+> | `flow.ts` | `722` | `50%` |
+> | `neural.ts` | `722` | `50%` |
+> | `scoring_metrics_engine.ts` | `720` | `50%` |
+> | `stability_ledger.ts` | `687` | `75%` |
+> | `scoring_engine.ts` | `678` | `50%` |
+> | `behavior_analyst.ts` | `672` | `80%` |
+> | `AuditView.tsx` | `665` | `83%` |
+> | `obfuscation_hunter.ts` | `647` | `100%` |
+> | `task_orchestrator.ts` | `647` | `67%` |
+> | `extract_gaps.ts` | `640` | `100%` |
+> | `legacy_shims.ts` | `635` | `100%` |
+> | `scale.ts` | `633` | `50%` |
+> | `obfuscation_cleaner_engine.ts` | `630` | `67%` |
+> | `scale.ts` | `613` | `50%` |
+> | `maintenance_engine_phd.ts` | `595` | `80%` |
+> | `scope.ts` | `593` | `50%` |
+> | `run-diagnostic.ts` | `585` | `100%` |
+> | `validator.ts` | `580` | `57%` |
+> | `penalty_engine.ts` | `575` | `13%` |
+> | `scope.ts` | `573` | `50%` |
+> | `memory_engine.ts` | `571` | `75%` |
+> | `test_architect_agent.ts` | `560` | `88%` |
+> | `diagnostic_finalizer.ts` | `559` | `83%` |
+> | `logging_config.ts` | `556` | `67%` |
+> | `briefing_agent.ts` | `555` | `100%` |
+> | `resource_governor.ts` | `555` | `100%` |
+> | `OperationalView.tsx` | `550` | `88%` |
+> | `infrastructure_assembler.ts` | `541` | `88%` |
+> | `Sidebar.tsx` | `540` | `83%` |
+> | `healer_persona.ts` | `535` | `83%` |
+> | `update_transaction.ts` | `525` | `75%` |
+> | `gui_native.py` | `519` | `100%` |
+> | `sqlite.test.ts` | `515` | `100%` |
+> | `worker.test.ts` | `515` | `100%` |
+> | `plugin.test.ts` | `515` | `100%` |
+> | `fragment.test.ts` | `515` | `100%` |
+> | `vortex.test.ts` | `515` | `100%` |
+> | `fragment.test.ts` | `515` | `100%` |
+> | `master.test.ts` | `515` | `100%` |
+> | `vortex.test.ts` | `515` | `100%` |
+> | `clock.test.ts` | `515` | `100%` |
+> | `generic.test.ts` | `515` | `100%` |
+> | `decorator.test.ts` | `515` | `100%` |
+> | `enum.test.ts` | `515` | `100%` |
+> | `context_iterator.ts` | `515` | `67%` |
+> | `base_active_persona.ts` | `510` | `44%` |
+> | `schema_persona.ts` | `506` | `100%` |
+> | `context_mapping_logic.ts` | `500` | `67%` |
+> | `health_synthesizer.ts` | `491` | `50%` |
+> | `integrity_guardian.ts` | `485` | `33%` |
+> | `parity_utils.ts` | `480` | `50%` |
+> | `utils.ts` | `480` | `0%` |
+> | `topology_graph_agent.ts` | `476` | `67%` |
+> | `IntelligenceView.tsx` | `475` | `86%` |
+> | `persona_registry.ts` | `475` | `100%` |
+> | `system_facade.ts` | `474` | `90%` |
+> | `task_worker.ts` | `470` | `67%` |
+> | `history_agent.ts` | `460` | `60%` |
+> | `cache_manager.ts` | `457` | `75%` |
+> | `finding_deduplicator.ts` | `456` | `0%` |
+> | `battle_plan_sections_engine.ts` | `441` | `50%` |
+> | `logic_auditor.ts` | `436` | `86%` |
+> | `submodule_sync_logic.ts` | `425` | `75%` |
+> | `verify_phase_19.ts` | `420` | `100%` |
+> | `semantic_context_analyst.ts` | `417` | `100%` |
+> | `markdown_structure_agent.ts` | `410` | `50%` |
+> | `source_code_parser.test.ts` | `410` | `100%` |
+> | `maturity_evaluator.ts` | `405` | `50%` |
+> | `diagnostic_pipeline.ts` | `400` | `86%` |
+> | `silent_error_detector.ts` | `396` | `100%` |
+> | `ViewArea.tsx` | `395` | `90%` |
+> | `cognitive_analyst.ts` | `376` | `100%` |
+> | `diagnostic_strategist.ts` | `375` | `50%` |
+> | `ReliabilityView.tsx` | `370` | `83%` |
+> | `veto_engine.ts` | `368` | `33%` |
+> | `veto_engine.ts` | `368` | `33%` |
+> | `specialized_personas_hub.ts` | `366` | `100%` |
+> | `markdown_processor.ts` | `366` | `100%` |
+> | `verify_metrics.ts` | `350` | `100%` |
+> | `silent_error_strategy.ts` | `348` | `67%` |
+> | `observability_strategy.ts` | `346` | `67%` |
+> | `test_refiner.ts` | `339` | `67%` |
+> | `debug_logic.test.ts` | `335` | `100%` |
+> | `reflex_engine.ts` | `335` | `50%` |
+> | `reflex_engine.ts` | `332` | `50%` |
+> | `reflex_engine.ts` | `332` | `50%` |
+> | `extract_personas.ts` | `330` | `100%` |
+> | `task_queue.ts` | `330` | `75%` |
+> | `debug_stability_count.js` | `326` | `100%` |
+> | `obfuscation_logic_engine.ts` | `325` | `67%` |
+> | `task_executor.ts` | `321` | `25%` |
+> | `cognitive_engine.py` | `320` | `33%` |
+> | `conflict_policy.ts` | `320` | `75%` |
+> | `testify_persona.ts` | `317` | `100%` |
+> | `structural_analyst.test.ts` | `314` | `100%` |
+> | `memory_persistence.ts` | `306` | `75%` |
+> | `policy_definitions.ts` | `296` | `0%` |
+> | `debug_qa_matrix.js` | `290` | `100%` |
+> | `debug_alerts.js` | `284` | `100%` |
+> | `coverage_auditor.ts` | `280` | `67%` |
+> | `pyramid_analyst.ts` | `280` | `50%` |
+> | `component_classifier.ts` | `277` | `33%` |
+> | `parity_types.ts` | `275` | `0%` |
+> | `types.ts` | `275` | `0%` |
+> | `cognitive_validator.ts` | `270` | `67%` |
+> | `debug_parity_test_matching.js` | `265` | `100%` |
+> | `safety_strategy.ts` | `260` | `67%` |
+> | `validation_agent.ts` | `256` | `50%` |
+> | `debug_metrics.js` | `255` | `100%` |
+> | `reorganize_support.ts` | `255` | `100%` |
+> | `debug_penalty_calculation.js` | `246` | `100%` |
+> | `connectivity_mapper.ts` | `245` | `50%` |
+> | `dna_profiler.ts` | `245` | `50%` |
+> | `resource_engine.ts` | `245` | `0%` |
+> | `path_utils.ts` | `243` | `6%` |
+> | `debug_test_matching.js` | `240` | `100%` |
+> | `ignore_list.test.ts` | `240` | `100%` |
+> | `score_calculator.ts` | `240` | `75%` |
+> | `go_discovery_adapter.ts` | `240` | `80%` |
+> | `verify_phase_17.ts` | `231` | `100%` |
+> | `Badge.tsx` | `230` | `27%` |
+> | `CommandBriefing.tsx` | `230` | `83%` |
+> | `meta_analysis_strategy.ts` | `228` | `67%` |
+> | `useDashboard.ts` | `225` | `67%` |
+> | `debug_final_health.js` | `221` | `100%` |
+> | `debug_detailed_penalties.js` | `221` | `100%` |
+> | `generate_missing_tests.ts` | `220` | `100%` |
+> | `react_portal_builder.ts` | `220` | `100%` |
+> | `refactor_go_agents.ts` | `220` | `100%` |
+> | `App.tsx` | `200` | `100%` |
+> | `debug_assertion_detection.js` | `195` | `100%` |
+> | `debug_alerts_detail.js` | `191` | `100%` |
+> | `fix_test_quality.js` | `190` | `100%` |
+> | `health_gauge.py` | `190` | `100%` |
+> | `debug_complexity_after_refactor.js` | `185` | `100%` |
+> | `verify_phase_18.ts` | `185` | `100%` |
+> | `Typo.tsx` | `185` | `18%` |
+> | `analysis_engine.ts` | `175` | `0%` |
+> | `debug_test_quality_after_refactor.js` | `170` | `100%` |
+> | `markdown_util.ts` | `170` | `0%` |
+> | `verify_cognitive.py` | `165` | `100%` |
+> | `debug_stability_coverage.js` | `160` | `100%` |
+> | `debug_stability.js` | `155` | `100%` |
+> | `bridge_orchestrator.py` | `154` | `100%` |
+> | `orchestrator.py` | `154` | `13%` |
+> | `experiment_bun_features.ts` | `150` | `0%` |
+> | `conflict_engine.ts` | `150` | `50%` |
+> | `memory_pruning_agent.ts` | `147` | `75%` |
+> | `Card.tsx` | `145` | `38%` |
+> | `debug_health_flow.js` | `144` | `100%` |
+> | `debug_complexity.js` | `140` | `100%` |
+> | `doc_gen_agent.ts` | `140` | `67%` |
+> | `update-git.ts` | `140` | `100%` |
+> | `cli.py` | `138` | `44%` |
+> | `debug_penalty.js` | `131` | `100%` |
+> | `security_sentinel_agent.ts` | `131` | `67%` |
+> | `verify_deep_parity.test.ts` | `129` | `100%` |
+> | `findings_view.py` | `125` | `100%` |
+> | `activate-phase.test.ts` | `115` | `100%` |
+> | `extract_personas.test.ts` | `115` | `100%` |
+> | `reorganize_support.test.ts` | `115` | `100%` |
+> | `deep_disparity_scanner.test.ts` | `115` | `100%` |
+> | `delete_redundant.test.ts` | `115` | `100%` |
+> | `experiment_bun_features.test.ts` | `115` | `100%` |
+> | `verify_phase_17.test.ts` | `115` | `100%` |
+> | `verify_phase_18.test.ts` | `115` | `100%` |
+> | `verify_phase_19.test.ts` | `115` | `100%` |
+> | `base_active_persona.test.ts` | `115` | `100%` |
+> | `schema_persona.test.ts` | `115` | `100%` |
+> | `parity_utils.test.ts` | `115` | `100%` |
+> | `parity_types.test.ts` | `115` | `100%` |
+> | `doc_gen_agent.test.ts` | `115` | `100%` |
+> | `healer_persona.test.ts` | `115` | `100%` |
+> | `specialized_personas_hub.test.ts` | `115` | `100%` |
+> | `safety_supreme_judge.test.ts` | `115` | `100%` |
+> | `language_persona_orchestrator.test.ts` | `115` | `100%` |
+> | `path_utils.test.ts` | `115` | `100%` |
+> | `ast_intelligence.test.ts` | `115` | `100%` |
+> | `behavior_analyst.test.ts` | `115` | `100%` |
+> | `cognitive_validator.test.ts` | `115` | `100%` |
+> | `depth_intelligence.test.ts` | `115` | `100%` |
+> | `go_discovery_adapter.test.ts` | `115` | `100%` |
+> | `html_portal_generator.test.ts` | `115` | `100%` |
+> | `markdown_renderer.test.ts` | `115` | `100%` |
+> | `merge_go_manifest.test.ts` | `115` | `100%` |
+> | `persona_registry.test.ts` | `115` | `100%` |
+> | `react_portal_builder.test.ts` | `115` | `100%` |
+> | `refactor_go_agents.test.ts` | `115` | `100%` |
+> | `system_sentinel.test.ts` | `115` | `100%` |
+> | `task_queue.test.ts` | `115` | `100%` |
+> | `task_worker.test.ts` | `115` | `100%` |
+> | `telemetry_excellence_engine.test.ts` | `115` | `100%` |
+> | `veto_engine.test.ts` | `115` | `100%` |
+> | `test_runner.test.ts` | `115` | `100%` |
+> | `update-git.test.ts` | `115` | `100%` |
+> | `update_imports.test.ts` | `115` | `100%` |
+> | `debug_health.js` | `106` | `100%` |
+> | `delete_redundant.ts` | `105` | `100%` |
+> | `parity_config.test.ts` | `105` | `100%` |
+> | `markdown_renderer.ts` | `100` | `0%` |
+> | `ProgressBar.tsx` | `95` | `40%` |
+> | `sidebar.py` | `95` | `100%` |
+> | `debug_engine.ts` | `90` | `50%` |
+> | `html_portal_generator.ts` | `90` | `100%` |
+> | `merge_go_manifest.ts` | `80` | `100%` |
+> | `debug_engine.test.ts` | `75` | `100%` |
+> | `bridge_orchestrator.test.ts` | `75` | `100%` |
+> | `theme.ts` | `75` | `0%` |
+> | `launch_api.py` | `70` | `100%` |
+> | `date_utils.ts` | `70` | `0%` |
+> | `chat_view.py` | `65` | `100%` |
+> | `dashboard_view.py` | `65` | `100%` |
+> | `launch_dashboard.py` | `60` | `100%` |
+> | `safety_definitions.ts` | `50` | `0%` |
+> | `placeholder.test.ts` | `50` | `100%` |
+> | `debug_logic.ts` | `10` | `100%` |
+> | `ignore_list.ts` | `5` | `0%` |
+> | `parity_config.ts` | `5` | `25%` |
+> | `index.ts` | `1` | `0%` |
 
 ## 🧪 MATRIZ DE CONFIANÇA
 
 | Componente | Entropia | Asserções | Status de Teste |
 | :--- | :---: | :---: | :--- |
-| `phd_governance_system.ts` | `8445` | `5` | 🔴 `FRÁGIL` |
-| `structural_auditor_supreme.ts` | `5770` | `0` | 🔴 `FRÁGIL` |
-| `language_persona_orchestrator.ts` | `5050` | `5` | 🔴 `FRÁGIL` |
-| `audit_engine.ts` | `4845` | `3` | 🔴 `FRÁGIL` |
-| `logic_auditor.ts` | `4670` | `4` | 🔴 `FRÁGIL` |
-| `orchestrator.ts` | `4665` | `5` | 🔴 `FRÁGIL` |
-| `parity_analyst.ts` | `4395` | `2` | 🔴 `FRÁGIL` |
-| `safety_supreme_judge.ts` | `4155` | `5` | 🔴 `FRÁGIL` |
-| `context_engine.ts` | `4090` | `27` | 🔴 `FRÁGIL` |
-| `depth_intelligence.ts` | `4075` | `5` | 🔴 `FRÁGIL` |
-| `discovery_agent.ts` | `3900` | `1` | 🔴 `FRÁGIL` |
-| `ast_intelligence.ts` | `3725` | `5` | 🔴 `FRÁGIL` |
-| `deep_disparity_scanner.ts` | `3515` | `5` | 🔴 `FRÁGIL` |
-| `App.tsx` | `3510` | `3` | 🔴 `FRÁGIL` |
-| `base.ts` | `3490` | `5` | 🔴 `FRÁGIL` |
-| `telemetry_intent_judge.ts` | `3365` | `9` | 🔴 `FRÁGIL` |
-| `git_client.ts` | `3360` | `1` | 🔴 `FRÁGIL` |
-| `telemetry_excellence_engine.ts` | `3255` | `5` | 🔴 `FRÁGIL` |
-| `structural_analyst.ts` | `3020` | `16` | 🔴 `FRÁGIL` |
-| `dependency_auditor.ts` | `2975` | `9` | 🔴 `FRÁGIL` |
-| `system_sentinel.ts` | `2875` | `5` | 🔴 `FRÁGIL` |
-| `report_sections_engine.ts` | `2685` | `2` | 🔴 `FRÁGIL` |
-| `diagnostic_finalizer.ts` | `2580` | `2` | 🔴 `FRÁGIL` |
-| `audit_expert_engine.ts` | `2550` | `0` | 🔴 `FRÁGIL` |
-| `source_code_parser.ts` | `2515` | `32` | 🔴 `FRÁGIL` |
-| `file_system_scanner.ts` | `2510` | `13` | 🔴 `FRÁGIL` |
-| `director.ts` | `2455` | `2` | 🔴 `FRÁGIL` |
-| `healer.ts` | `2430` | `5` | 🔴 `FRÁGIL` |
-| `markdown_sanitizer.ts` | `2280` | `11` | 🔴 `FRÁGIL` |
-| `memory_engine.ts` | `2240` | `4` | 🔴 `FRÁGIL` |
-| `indexer.ts` | `2235` | `3` | 🔴 `FRÁGIL` |
-| `infrastructure_assembler.ts` | `2090` | `1` | 🔴 `FRÁGIL` |
-| `health_synthesizer.ts` | `2085` | `4` | 🔴 `FRÁGIL` |
-| `behavior_analyst.ts` | `2070` | `5` | 🔴 `FRÁGIL` |
-| `cognitive_engine.ts` | `2065` | `5` | 🔴 `FRÁGIL` |
-| `voyager.ts` | `2060` | `4` | 🔴 `FRÁGIL` |
-| `stability_ledger.ts` | `2045` | `8` | 🔴 `FRÁGIL` |
-| `task_orchestrator.ts` | `2005` | `5` | 🔴 `FRÁGIL` |
-| `topology_engine.ts` | `1990` | `9` | 🔴 `FRÁGIL` |
-| `compliance_standard.ts` | `1950` | `3` | 🔴 `FRÁGIL` |
-| `history_agent.ts` | `1870` | `1` | 🔴 `FRÁGIL` |
-| `obfuscation_hunter.ts` | `1865` | `6` | 🔴 `FRÁGIL` |
-| `briefing_agent.ts` | `1845` | `1` | 🔴 `FRÁGIL` |
-| `obfuscation_cleaner_engine.ts` | `1810` | `2` | 🔴 `FRÁGIL` |
-| `maintenance_engine_phd.ts` | `1805` | `6` | 🔴 `FRÁGIL` |
-| `director.ts` | `1790` | `2` | 🔴 `FRÁGIL` |
-| `parity_utils.ts` | `1785` | `5` | 🔴 `FRÁGIL` |
-| `battle_plan_formatter.ts` | `1785` | `9` | 🔴 `FRÁGIL` |
-| `persona_registry.ts` | `1755` | `5` | 🔴 `FRÁGIL` |
-| `cache_manager.ts` | `1725` | `4` | 🔴 `FRÁGIL` |
-| `meta_analysis_detector.ts` | `1675` | `3` | 🔴 `FRÁGIL` |
-| `logging_config.ts` | `1610` | `5` | 🔴 `FRÁGIL` |
-| `run-diagnostic.ts` | `1605` | `0` | 🔴 `FRÁGIL` |
-| `mantra.ts` | `1570` | `2` | 🔴 `FRÁGIL` |
-| `validator.ts` | `1570` | `5` | 🔴 `FRÁGIL` |
-| `warden.ts` | `1560` | `2` | 🔴 `FRÁGIL` |
-| `healer_persona.ts` | `1555` | `5` | 🔴 `FRÁGIL` |
-| `html_portal_generator.ts` | `1535` | `5` | 🔴 `FRÁGIL` |
-| `maturity_evaluator.ts` | `1525` | `6` | 🔴 `FRÁGIL` |
-| `resource_governor.ts` | `1520` | `6` | 🔴 `FRÁGIL` |
-| `markdown_auditor.ts` | `1515` | `0` | 🔴 `FRÁGIL` |
-| `update_transaction.ts` | `1515` | `7` | 🔴 `FRÁGIL` |
-| `update_imports.ts` | `1515` | `5` | 🔴 `FRÁGIL` |
-| `silent_error_detector.ts` | `1510` | `5` | 🔴 `FRÁGIL` |
-| `context_mapping_logic.ts` | `1495` | `1` | 🔴 `FRÁGIL` |
-| `bridge.ts` | `1490` | `5` | 🔴 `FRÁGIL` |
-| `palette.ts` | `1480` | `2` | 🔴 `FRÁGIL` |
-| `voyager.ts` | `1470` | `4` | 🔴 `FRÁGIL` |
-| `voyager.ts` | `1470` | `4` | 🔴 `FRÁGIL` |
-| `penalty_engine.ts` | `1455` | `3` | 🔴 `FRÁGIL` |
-| `scoring_metrics_engine.ts` | `1455` | `6` | 🔴 `FRÁGIL` |
-| `globe.ts` | `1450` | `2` | 🔴 `FRÁGIL` |
-| `hype.ts` | `1450` | `2` | 🔴 `FRÁGIL` |
-| `vortex.ts` | `1450` | `5` | 🔴 `FRÁGIL` |
-| `scope.ts` | `1440` | `2` | 🔴 `FRÁGIL` |
-| `sentinel.ts` | `1440` | `5` | 🔴 `FRÁGIL` |
-| `schema_persona.ts` | `1440` | `5` | 🔴 `FRÁGIL` |
-| `vulnerability_heuristic.ts` | `1430` | `7` | 🔴 `FRÁGIL` |
-| `forge.ts` | `1425` | `2` | 🔴 `FRÁGIL` |
-| `scale.ts` | `1410` | `2` | 🔴 `FRÁGIL` |
-| `vault.ts` | `1410` | `3` | 🔴 `FRÁGIL` |
-| `spark.ts` | `1410` | `2` | 🔴 `FRÁGIL` |
-| `base_active_persona.ts` | `1400` | `5` | 🔴 `FRÁGIL` |
-| `forge.ts` | `1400` | `2` | 🔴 `FRÁGIL` |
-| `neural.ts` | `1400` | `2` | 🔴 `FRÁGIL` |
-| `audit_risk_engine.ts` | `1390` | `5` | 🔴 `FRÁGIL` |
-| `probe.ts` | `1370` | `2` | 🔴 `FRÁGIL` |
-| `fragment.ts` | `1370` | `5` | 🔴 `FRÁGIL` |
-| `scribe.ts` | `1370` | `2` | 🔴 `FRÁGIL` |
-| `stream.ts` | `1370` | `2` | 🔴 `FRÁGIL` |
-| `diagnostic_pipeline.ts` | `1365` | `9` | 🔴 `FRÁGIL` |
-| `metric.ts` | `1360` | `5` | 🔴 `FRÁGIL` |
-| `echo.ts` | `1360` | `2` | 🔴 `FRÁGIL` |
-| `nexus.ts` | `1360` | `2` | 🔴 `FRÁGIL` |
-| `neural.ts` | `1355` | `2` | 🔴 `FRÁGIL` |
-| `context_iterator.ts` | `1355` | `4` | 🔴 `FRÁGIL` |
-| `hype.ts` | `1350` | `2` | 🔴 `FRÁGIL` |
-| `quality_analyst.ts` | `1345` | `9` | 🔴 `FRÁGIL` |
-| `bolt.ts` | `1340` | `2` | 🔴 `FRÁGIL` |
-| `cache.ts` | `1330` | `2` | 🔴 `FRÁGIL` |
-| `spark.ts` | `1325` | `2` | 🔴 `FRÁGIL` |
-| `stream.ts` | `1325` | `2` | 🔴 `FRÁGIL` |
-| `nexus.ts` | `1325` | `2` | 🔴 `FRÁGIL` |
-| `strict.ts` | `1320` | `0` | 🔴 `FRÁGIL` |
-| `nebula.ts` | `1315` | `2` | 🔴 `FRÁGIL` |
-| `mantra.ts` | `1315` | `2` | 🔴 `FRÁGIL` |
-| `activate-phase.ts` | `1310` | `5` | 🔴 `FRÁGIL` |
-| `strict.ts` | `1305` | `0` | 🔴 `FRÁGIL` |
-| `path_utils.ts` | `1305` | `5` | 🔴 `FRÁGIL` |
-| `stream.ts` | `1300` | `2` | 🔴 `FRÁGIL` |
-| `nebula.ts` | `1290` | `2` | 🔴 `FRÁGIL` |
-| `semantic_context_analyst.ts` | `1290` | `5` | 🔴 `FRÁGIL` |
-| `topology_graph_agent.ts` | `1285` | `1` | 🔴 `FRÁGIL` |
-| `forge.ts` | `1285` | `2` | 🔴 `FRÁGIL` |
-| `globe.ts` | `1285` | `2` | 🔴 `FRÁGIL` |
-| `bridge.ts` | `1285` | `5` | 🔴 `FRÁGIL` |
-| `flow.ts` | `1285` | `2` | 🔴 `FRÁGIL` |
-| `metric.ts` | `1280` | `5` | 🔴 `FRÁGIL` |
-| `hermes.ts` | `1275` | `2` | 🔴 `FRÁGIL` |
-| `component_classifier.ts` | `1270` | `7` | 🔴 `FRÁGIL` |
-| `bridge.ts` | `1260` | `5` | 🔴 `FRÁGIL` |
-| `cache.ts` | `1260` | `2` | 🔴 `FRÁGIL` |
-| `neural.ts` | `1250` | `2` | 🔴 `FRÁGIL` |
-| `echo.ts` | `1245` | `2` | 🔴 `FRÁGIL` |
-| `generic.ts` | `1245` | `5` | 🔴 `FRÁGIL` |
-| `decorator.ts` | `1245` | `5` | 🔴 `FRÁGIL` |
-| `cache.ts` | `1245` | `2` | 🔴 `FRÁGIL` |
-| `bolt.ts` | `1240` | `2` | 🔴 `FRÁGIL` |
-| `nebula.ts` | `1240` | `2` | 🔴 `FRÁGIL` |
-| `flow.ts` | `1240` | `2` | 🔴 `FRÁGIL` |
-| `bolt.ts` | `1235` | `2` | 🔴 `FRÁGIL` |
-| `finding_deduplicator.ts` | `1230` | `4` | 🔴 `FRÁGIL` |
-| `hype.ts` | `1225` | `2` | 🔴 `FRÁGIL` |
-| `macro.ts` | `1220` | `0` | 🔴 `FRÁGIL` |
-| `scope.ts` | `1220` | `2` | 🔴 `FRÁGIL` |
-| `mantra.ts` | `1220` | `2` | 🔴 `FRÁGIL` |
-| `globe.ts` | `1220` | `2` | 🔴 `FRÁGIL` |
-| `sqlite.ts` | `1220` | `5` | 🔴 `FRÁGIL` |
-| `worker.ts` | `1220` | `5` | 🔴 `FRÁGIL` |
-| `flow.ts` | `1220` | `2` | 🔴 `FRÁGIL` |
-| `nexus.ts` | `1220` | `2` | 🔴 `FRÁGIL` |
-| `spark.ts` | `1220` | `2` | 🔴 `FRÁGIL` |
-| `enum.ts` | `1220` | `5` | 🔴 `FRÁGIL` |
-| `scale.ts` | `1215` | `2` | 🔴 `FRÁGIL` |
-| `task_queue.ts` | `1210` | `5` | 🔴 `FRÁGIL` |
-| `probe.ts` | `1205` | `2` | 🔴 `FRÁGIL` |
-| `scope.ts` | `1205` | `2` | 🔴 `FRÁGIL` |
-| `metric.ts` | `1205` | `5` | 🔴 `FRÁGIL` |
-| `palette.ts` | `1205` | `2` | 🔴 `FRÁGIL` |
-| `sentinel.ts` | `1205` | `5` | 🔴 `FRÁGIL` |
-| `vault.ts` | `1205` | `3` | 🔴 `FRÁGIL` |
-| `warden.ts` | `1205` | `2` | 🔴 `FRÁGIL` |
-| `hermes.ts` | `1205` | `2` | 🔴 `FRÁGIL` |
-| `hermes.ts` | `1185` | `2` | 🔴 `FRÁGIL` |
-| `probe.ts` | `1180` | `2` | 🔴 `FRÁGIL` |
-| `echo.ts` | `1180` | `2` | 🔴 `FRÁGIL` |
-| `sentinel.ts` | `1180` | `5` | 🔴 `FRÁGIL` |
-| `plugin.ts` | `1180` | `5` | 🔴 `FRÁGIL` |
-| `reflex_engine.ts` | `1165` | `5` | 🔴 `FRÁGIL` |
-| `task_worker.ts` | `1165` | `5` | 🔴 `FRÁGIL` |
-| `battle_plan_sections_engine.ts` | `1150` | `2` | 🔴 `FRÁGIL` |
-| `extract_gaps.ts` | `1140` | `0` | 🔴 `FRÁGIL` |
-| `palette.ts` | `1140` | `2` | 🔴 `FRÁGIL` |
-| `vault.ts` | `1140` | `3` | 🔴 `FRÁGIL` |
-| `warden.ts` | `1140` | `2` | 🔴 `FRÁGIL` |
-| `integrity_guardian.ts` | `1130` | `4` | 🔴 `FRÁGIL` |
-| `verify_phase_19.ts` | `1125` | `5` | 🔴 `FRÁGIL` |
-| `veto_engine.ts` | `1125` | `5` | 🔴 `FRÁGIL` |
-| `markdown_processor.ts` | `1110` | `3` | 🔴 `FRÁGIL` |
-| `submodule_sync_logic.ts` | `1110` | `3` | 🔴 `FRÁGIL` |
-| `scale.ts` | `1095` | `2` | 🔴 `FRÁGIL` |
-| `cognitive_analyst.ts` | `1085` | `10` | 🔴 `FRÁGIL` |
-| `scale.ts` | `1065` | `2` | 🔴 `FRÁGIL` |
-| `voyager.ts` | `1065` | `4` | 🔴 `FRÁGIL` |
-| `conflict_policy.ts` | `1065` | `9` | 🔴 `FRÁGIL` |
-| `score_calculator.ts` | `1060` | `4` | 🔴 `FRÁGIL` |
-| `sentinel.ts` | `1055` | `5` | 🔴 `FRÁGIL` |
-| `diagnostic_strategist.ts` | `1035` | `5` | 🔴 `FRÁGIL` |
-| `spark.ts` | `1025` | `2` | 🔴 `FRÁGIL` |
-| `bolt.ts` | `1025` | `2` | 🔴 `FRÁGIL` |
-| `globe.ts` | `1025` | `2` | 🔴 `FRÁGIL` |
-| `globe.ts` | `1025` | `2` | 🔴 `FRÁGIL` |
-| `flow.ts` | `1025` | `2` | 🔴 `FRÁGIL` |
-| `scribe.ts` | `1015` | `2` | 🔴 `FRÁGIL` |
-| `metric.ts` | `1010` | `5` | 🔴 `FRÁGIL` |
-| `parity_config.ts` | `990` | `0` | 🔴 `FRÁGIL` |
-| `forge.ts` | `985` | `2` | 🔴 `FRÁGIL` |
-| `echo.ts` | `985` | `2` | 🔴 `FRÁGIL` |
-| `scribe.ts` | `985` | `2` | 🔴 `FRÁGIL` |
-| `vault.ts` | `985` | `3` | 🔴 `FRÁGIL` |
-| `neural.ts` | `985` | `2` | 🔴 `FRÁGIL` |
-| `nexus.ts` | `985` | `2` | 🔴 `FRÁGIL` |
-| `palette.ts` | `985` | `2` | 🔴 `FRÁGIL` |
-| `voyager.ts` | `985` | `4` | 🔴 `FRÁGIL` |
-| `fragment.ts` | `985` | `5` | 🔴 `FRÁGIL` |
-| `cache.ts` | `985` | `2` | 🔴 `FRÁGIL` |
-| `clock.ts` | `985` | `5` | 🔴 `FRÁGIL` |
-| `markdown_structure_agent.ts` | `980` | `2` | 🔴 `FRÁGIL` |
-| `memory_persistence.ts` | `975` | `1` | 🔴 `FRÁGIL` |
-| `reflex_engine.ts` | `950` | `5` | 🔴 `FRÁGIL` |
-| `voyager.ts` | `945` | `4` | 🔴 `FRÁGIL` |
-| `warden.ts` | `945` | `2` | 🔴 `FRÁGIL` |
-| `flow.ts` | `945` | `2` | 🔴 `FRÁGIL` |
-| `probe.ts` | `945` | `2` | 🔴 `FRÁGIL` |
-| `forge.ts` | `945` | `2` | 🔴 `FRÁGIL` |
-| `scribe.ts` | `945` | `2` | 🔴 `FRÁGIL` |
-| `vault.ts` | `945` | `3` | 🔴 `FRÁGIL` |
-| `bolt.ts` | `945` | `2` | 🔴 `FRÁGIL` |
-| `probe.ts` | `945` | `2` | 🔴 `FRÁGIL` |
-| `forge.ts` | `945` | `2` | 🔴 `FRÁGIL` |
-| `palette.ts` | `945` | `2` | 🔴 `FRÁGIL` |
-| `scribe.ts` | `945` | `2` | 🔴 `FRÁGIL` |
-| `sentinel.ts` | `945` | `5` | 🔴 `FRÁGIL` |
-| `master.ts` | `945` | `5` | 🔴 `FRÁGIL` |
-| `vortex.ts` | `945` | `5` | 🔴 `FRÁGIL` |
-| `stream.ts` | `945` | `2` | 🔴 `FRÁGIL` |
-| `scribe.ts` | `920` | `2` | 🔴 `FRÁGIL` |
-| `bolt.ts` | `910` | `2` | 🔴 `FRÁGIL` |
-| `probe.ts` | `905` | `2` | 🔴 `FRÁGIL` |
-| `stream.ts` | `905` | `2` | 🔴 `FRÁGIL` |
-| `warden.ts` | `905` | `2` | 🔴 `FRÁGIL` |
-| `nebula.ts` | `905` | `2` | 🔴 `FRÁGIL` |
-| `scope.ts` | `905` | `2` | 🔴 `FRÁGIL` |
-| `echo.ts` | `905` | `2` | 🔴 `FRÁGIL` |
-| `vault.ts` | `905` | `3` | 🔴 `FRÁGIL` |
-| `core.ts` | `905` | `5` | 🔴 `FRÁGIL` |
-| `neural.ts` | `905` | `2` | 🔴 `FRÁGIL` |
-| `spark.ts` | `905` | `2` | 🔴 `FRÁGIL` |
-| `nexus.ts` | `905` | `2` | 🔴 `FRÁGIL` |
-| `specialized_personas_hub.ts` | `900` | `5` | 🔴 `FRÁGIL` |
-| `task_executor.ts` | `890` | `6` | 🔴 `FRÁGIL` |
-| `extract_personas.ts` | `885` | `5` | 🔴 `FRÁGIL` |
-| `metric.ts` | `880` | `5` | 🔴 `FRÁGIL` |
-| `memory_pruning_agent.ts` | `880` | `1` | 🔴 `FRÁGIL` |
-| `echo.ts` | `865` | `2` | 🔴 `FRÁGIL` |
-| `react_portal_builder.ts` | `860` | `5` | 🔴 `FRÁGIL` |
-| `coverage_auditor.ts` | `845` | `4` | 🔴 `FRÁGIL` |
-| `metric.ts` | `840` | `5` | 🔴 `FRÁGIL` |
-| `globe.ts` | `840` | `2` | 🔴 `FRÁGIL` |
-| `cache.ts` | `840` | `2` | 🔴 `FRÁGIL` |
-| `cache.ts` | `840` | `2` | 🔴 `FRÁGIL` |
-| `hype.ts` | `815` | `2` | 🔴 `FRÁGIL` |
-| `cognitive_validator.ts` | `805` | `5` | 🔴 `FRÁGIL` |
-| `verify_phase_17.ts` | `800` | `5` | 🔴 `FRÁGIL` |
-| `refactor_go_agents.ts` | `800` | `5` | 🔴 `FRÁGIL` |
-| `palette.ts` | `785` | `2` | 🔴 `FRÁGIL` |
-| `bridge.ts` | `785` | `5` | 🔴 `FRÁGIL` |
-| `go_discovery_adapter.ts` | `785` | `5` | 🔴 `FRÁGIL` |
-| `reorganize_support.ts` | `780` | `5` | 🔴 `FRÁGIL` |
-| `mantra.ts` | `745` | `2` | 🔴 `FRÁGIL` |
-| `bridge.ts` | `745` | `5` | 🔴 `FRÁGIL` |
-| `mantra.ts` | `745` | `2` | 🔴 `FRÁGIL` |
-| `nexus.ts` | `745` | `2` | 🔴 `FRÁGIL` |
-| `spark.ts` | `745` | `2` | 🔴 `FRÁGIL` |
-| `stream.ts` | `745` | `2` | 🔴 `FRÁGIL` |
-| `hermes.ts` | `745` | `2` | 🔴 `FRÁGIL` |
-| `connectivity_mapper.ts` | `740` | `3` | 🔴 `FRÁGIL` |
-| `nebula.ts` | `720` | `2` | 🔴 `FRÁGIL` |
-| `validation_agent.ts` | `720` | `1` | 🔴 `FRÁGIL` |
-| `hype.ts` | `705` | `2` | 🔴 `FRÁGIL` |
-| `hermes.ts` | `705` | `2` | 🔴 `FRÁGIL` |
-| `nebula.ts` | `705` | `2` | 🔴 `FRÁGIL` |
-| `sentinel.ts` | `705` | `5` | 🔴 `FRÁGIL` |
-| `neural.ts` | `705` | `2` | 🔴 `FRÁGIL` |
-| `flow.ts` | `705` | `2` | 🔴 `FRÁGIL` |
-| `doc_gen_agent.ts` | `670` | `5` | 🔴 `FRÁGIL` |
-| `scale.ts` | `650` | `2` | 🔴 `FRÁGIL` |
-| `dna_profiler.ts` | `640` | `4` | 🔴 `FRÁGIL` |
-| `obfuscation_logic_engine.ts` | `640` | `3` | 🔴 `FRÁGIL` |
-| `scale.ts` | `635` | `2` | 🔴 `FRÁGIL` |
-| `verify_phase_18.ts` | `620` | `5` | 🔴 `FRÁGIL` |
-| `scope.ts` | `610` | `2` | 🔴 `FRÁGIL` |
-| `pyramid_analyst.ts` | `605` | `4` | 🔴 `FRÁGIL` |
-| `scope.ts` | `595` | `2` | 🔴 `FRÁGIL` |
-| `update-git.ts` | `555` | `5` | 🔴 `FRÁGIL` |
-| `security_sentinel_agent.ts` | `535` | `1` | 🔴 `FRÁGIL` |
-| `date_utils.ts` | `505` | `0` | 🔴 `FRÁGIL` |
-| `markdown_util.ts` | `470` | `8` | 🔴 `FRÁGIL` |
-| `experiment_bun_features.ts` | `455` | `5` | 🔴 `FRÁGIL` |
-| `merge_go_manifest.ts` | `455` | `5` | 🔴 `FRÁGIL` |
-| `debug_alerts.js` | `425` | `0` | 🔴 `FRÁGIL` |
-| `debug_stability_count.js` | `395` | `0` | 🔴 `FRÁGIL` |
-| `markdown_renderer.ts` | `335` | `5` | 🔴 `FRÁGIL` |
-| `delete_redundant.ts` | `325` | `5` | 🔴 `FRÁGIL` |
-| `debug_penalty_calculation.js` | `305` | `0` | 🔴 `FRÁGIL` |
-| `debug_health_flow.js` | `300` | `0` | 🔴 `FRÁGIL` |
-| `debug_detailed_penalties.js` | `255` | `0` | 🔴 `FRÁGIL` |
-| `debug_final_health.js` | `255` | `0` | 🔴 `FRÁGIL` |
-| `debug_alerts_detail.js` | `230` | `0` | 🔴 `FRÁGIL` |
-| `debug_penalty.js` | `230` | `0` | 🔴 `FRÁGIL` |
-| `debug_qa_matrix.js` | `230` | `0` | 🔴 `FRÁGIL` |
-| `debug_logic.ts` | `230` | `0` | 🔴 `FRÁGIL` |
+| `director.ts` | `2588` | `0` | 🔴 `FRÁGIL` |
+| `voyager.ts` | `2198` | `0` | 🔴 `FRÁGIL` |
+| `source_code_parser.ts` | `1845` | `32` | 🔴 `FRÁGIL` |
+| `structural_auditor_supreme.ts` | `1731` | `0` | 🔴 `FRÁGIL` |
+| `director.ts` | `1710` | `0` | 🔴 `FRÁGIL` |
+| `depth_intelligence.ts` | `1700` | `5` | 🔴 `FRÁGIL` |
+| `warden.ts` | `1649` | `0` | 🔴 `FRÁGIL` |
+| `orchestrator.ts` | `1640` | `5` | 🔴 `FRÁGIL` |
+| `audit_engine.ts` | `1601` | `0` | 🔴 `FRÁGIL` |
+| `deep_disparity_scanner.ts` | `1595` | `5` | 🔴 `FRÁGIL` |
+| `parity_analyst.ts` | `1577` | `0` | 🔴 `FRÁGIL` |
+| `voyager.ts` | `1559` | `0` | 🔴 `FRÁGIL` |
+| `mantra.ts` | `1535` | `0` | 🔴 `FRÁGIL` |
+| `hype.ts` | `1527` | `0` | 🔴 `FRÁGIL` |
+| `voyager.ts` | `1498` | `0` | 🔴 `FRÁGIL` |
+| `strict.ts` | `1492` | `0` | 🔴 `FRÁGIL` |
+| `forge.ts` | `1467` | `0` | 🔴 `FRÁGIL` |
+| `metric.ts` | `1464` | `0` | 🔴 `FRÁGIL` |
+| `base.ts` | `1455` | `5` | 🔴 `FRÁGIL` |
+| `bridge.ts` | `1455` | `5` | 🔴 `FRÁGIL` |
+| `echo.ts` | `1449` | `0` | 🔴 `FRÁGIL` |
+| `palette.ts` | `1445` | `0` | 🔴 `FRÁGIL` |
+| `mantra.ts` | `1433` | `0` | 🔴 `FRÁGIL` |
+| `neural.ts` | `1423` | `0` | 🔴 `FRÁGIL` |
+| `globe.ts` | `1415` | `0` | 🔴 `FRÁGIL` |
+| `hype.ts` | `1415` | `0` | 🔴 `FRÁGIL` |
+| `vortex.ts` | `1415` | `5` | 🔴 `FRÁGIL` |
+| `strict.ts` | `1409` | `0` | 🔴 `FRÁGIL` |
+| `bolt.ts` | `1402` | `0` | 🔴 `FRÁGIL` |
+| `nebula.ts` | `1383` | `0` | 🔴 `FRÁGIL` |
+| `stream.ts` | `1378` | `0` | 🔴 `FRÁGIL` |
+| `scale.ts` | `1375` | `0` | 🔴 `FRÁGIL` |
+| `vault.ts` | `1375` | `0` | 🔴 `FRÁGIL` |
+| `spark.ts` | `1375` | `0` | 🔴 `FRÁGIL` |
+| `nexus.ts` | `1363` | `0` | 🔴 `FRÁGIL` |
+| `hype.ts` | `1356` | `0` | 🔴 `FRÁGIL` |
+| `nebula.ts` | `1352` | `0` | 🔴 `FRÁGIL` |
+| `spark.ts` | `1348` | `0` | 🔴 `FRÁGIL` |
+| `bolt.ts` | `1344` | `0` | 🔴 `FRÁGIL` |
+| `forge.ts` | `1338` | `0` | 🔴 `FRÁGIL` |
+| `probe.ts` | `1335` | `0` | 🔴 `FRÁGIL` |
+| `scope.ts` | `1335` | `0` | 🔴 `FRÁGIL` |
+| `fragment.ts` | `1335` | `5` | 🔴 `FRÁGIL` |
+| `scribe.ts` | `1335` | `0` | 🔴 `FRÁGIL` |
+| `sentinel.ts` | `1335` | `5` | 🔴 `FRÁGIL` |
+| `stream.ts` | `1335` | `0` | 🔴 `FRÁGIL` |
+| `stream.ts` | `1332` | `0` | 🔴 `FRÁGIL` |
+| `nebula.ts` | `1329` | `0` | 🔴 `FRÁGIL` |
+| `flow.ts` | `1329` | `0` | 🔴 `FRÁGIL` |
+| `scale.ts` | `1327` | `0` | 🔴 `FRÁGIL` |
+| `nexus.ts` | `1325` | `0` | 🔴 `FRÁGIL` |
+| `bridge.ts` | `1323` | `5` | 🔴 `FRÁGIL` |
+| `flow.ts` | `1323` | `0` | 🔴 `FRÁGIL` |
+| `hermes.ts` | `1317` | `0` | 🔴 `FRÁGIL` |
+| `safety_supreme_judge.ts` | `1313` | `5` | 🔴 `FRÁGIL` |
+| `globe.ts` | `1308` | `0` | 🔴 `FRÁGIL` |
+| `context_engine.ts` | `1304` | `0` | 🔴 `FRÁGIL` |
+| `bolt.ts` | `1303` | `0` | 🔴 `FRÁGIL` |
+| `echo.ts` | `1298` | `0` | 🔴 `FRÁGIL` |
+| `forge.ts` | `1295` | `0` | 🔴 `FRÁGIL` |
+| `cache.ts` | `1295` | `0` | 🔴 `FRÁGIL` |
+| `neural.ts` | `1295` | `0` | 🔴 `FRÁGIL` |
+| `bridge.ts` | `1292` | `5` | 🔴 `FRÁGIL` |
+| `cache.ts` | `1292` | `0` | 🔴 `FRÁGIL` |
+| `generic.ts` | `1283` | `5` | 🔴 `FRÁGIL` |
+| `decorator.ts` | `1283` | `5` | 🔴 `FRÁGIL` |
+| `cache.ts` | `1283` | `0` | 🔴 `FRÁGIL` |
+| `ast_intelligence.ts` | `1283` | `5` | 🔴 `FRÁGIL` |
+| `neural.ts` | `1282` | `0` | 🔴 `FRÁGIL` |
+| `scope.ts` | `1278` | `0` | 🔴 `FRÁGIL` |
+| `probe.ts` | `1273` | `0` | 🔴 `FRÁGIL` |
+| `scope.ts` | `1272` | `0` | 🔴 `FRÁGIL` |
+| `mantra.ts` | `1272` | `0` | 🔴 `FRÁGIL` |
+| `metric.ts` | `1271` | `0` | 🔴 `FRÁGIL` |
+| `metric.ts` | `1258` | `0` | 🔴 `FRÁGIL` |
+| `sentinel.ts` | `1258` | `5` | 🔴 `FRÁGIL` |
+| `warden.ts` | `1258` | `0` | 🔴 `FRÁGIL` |
+| `macro.ts` | `1252` | `0` | 🔴 `FRÁGIL` |
+| `sqlite.ts` | `1252` | `5` | 🔴 `FRÁGIL` |
+| `worker.ts` | `1252` | `5` | 🔴 `FRÁGIL` |
+| `enum.ts` | `1252` | `5` | 🔴 `FRÁGIL` |
+| `palette.ts` | `1243` | `0` | 🔴 `FRÁGIL` |
+| `vault.ts` | `1243` | `0` | 🔴 `FRÁGIL` |
+| `hermes.ts` | `1243` | `0` | 🔴 `FRÁGIL` |
+| `globe.ts` | `1237` | `0` | 🔴 `FRÁGIL` |
+| `flow.ts` | `1237` | `0` | 🔴 `FRÁGIL` |
+| `nexus.ts` | `1237` | `0` | 🔴 `FRÁGIL` |
+| `spark.ts` | `1237` | `0` | 🔴 `FRÁGIL` |
+| `hermes.ts` | `1232` | `0` | 🔴 `FRÁGIL` |
+| `probe.ts` | `1212` | `0` | 🔴 `FRÁGIL` |
+| `echo.ts` | `1212` | `0` | 🔴 `FRÁGIL` |
+| `sentinel.ts` | `1212` | `5` | 🔴 `FRÁGIL` |
+| `plugin.ts` | `1212` | `5` | 🔴 `FRÁGIL` |
+| `dependency_auditor.ts` | `1210` | `0` | 🔴 `FRÁGIL` |
+| `discovery_agent.ts` | `1206` | `0` | 🔴 `FRÁGIL` |
+| `scale.ts` | `1196` | `0` | 🔴 `FRÁGIL` |
+| `warden.ts` | `1172` | `0` | 🔴 `FRÁGIL` |
+| `git_client.ts` | `1168` | `0` | 🔴 `FRÁGIL` |
+| `vulnerability_heuristic.ts` | `1162` | `0` | 🔴 `FRÁGIL` |
+| `palette.ts` | `1157` | `0` | 🔴 `FRÁGIL` |
+| `vault.ts` | `1157` | `0` | 🔴 `FRÁGIL` |
+| `system_sentinel.ts` | `1135` | `5` | 🔴 `FRÁGIL` |
+| `structural_analyst.ts` | `1115` | `16` | 🔴 `FRÁGIL` |
+| `scribe.ts` | `1102` | `0` | 🔴 `FRÁGIL` |
+| `telemetry_intent_judge.ts` | `1100` | `0` | 🔴 `FRÁGIL` |
+| `language_persona_orchestrator.ts` | `1095` | `5` | 🔴 `FRÁGIL` |
+| `parity_utils.ts` | `1070` | `5` | 🔴 `FRÁGIL` |
+| `scale.ts` | `1069` | `0` | 🔴 `FRÁGIL` |
+| `report_sections_engine.ts` | `1050` | `0` | 🔴 `FRÁGIL` |
+| `topology_engine.ts` | `1035` | `0` | 🔴 `FRÁGIL` |
+| `forge.ts` | `1030` | `0` | 🔴 `FRÁGIL` |
+| `spark.ts` | `1029` | `0` | 🔴 `FRÁGIL` |
+| `bolt.ts` | `1029` | `0` | 🔴 `FRÁGIL` |
+| `globe.ts` | `1029` | `0` | 🔴 `FRÁGIL` |
+| `globe.ts` | `1029` | `0` | 🔴 `FRÁGIL` |
+| `flow.ts` | `1029` | `0` | 🔴 `FRÁGIL` |
+| `voyager.ts` | `1026` | `0` | 🔴 `FRÁGIL` |
+| `voyager.ts` | `1025` | `0` | 🔴 `FRÁGIL` |
+| `voyager.ts` | `1025` | `0` | 🔴 `FRÁGIL` |
+| `shadow_tray.py` | `1003` | `0` | 🔴 `FRÁGIL` |
+| `echo.ts` | `989` | `0` | 🔴 `FRÁGIL` |
+| `scribe.ts` | `989` | `0` | 🔴 `FRÁGIL` |
+| `vault.ts` | `989` | `0` | 🔴 `FRÁGIL` |
+| `neural.ts` | `989` | `0` | 🔴 `FRÁGIL` |
+| `nexus.ts` | `989` | `0` | 🔴 `FRÁGIL` |
+| `palette.ts` | `989` | `0` | 🔴 `FRÁGIL` |
+| `fragment.ts` | `989` | `5` | 🔴 `FRÁGIL` |
+| `clock.ts` | `989` | `5` | 🔴 `FRÁGIL` |
+| `cache.ts` | `989` | `0` | 🔴 `FRÁGIL` |
+| `file_system_scanner.ts` | `986` | `0` | 🔴 `FRÁGIL` |
+| `scribe.ts` | `981` | `0` | 🔴 `FRÁGIL` |
+| `bolt.ts` | `961` | `0` | 🔴 `FRÁGIL` |
+| `telemetry_excellence_engine.ts` | `960` | `5` | 🔴 `FRÁGIL` |
+| `master.ts` | `954` | `5` | 🔴 `FRÁGIL` |
+| `sentinel.ts` | `949` | `5` | 🔴 `FRÁGIL` |
+| `warden.ts` | `949` | `0` | 🔴 `FRÁGIL` |
+| `flow.ts` | `949` | `0` | 🔴 `FRÁGIL` |
+| `probe.ts` | `949` | `0` | 🔴 `FRÁGIL` |
+| `forge.ts` | `949` | `0` | 🔴 `FRÁGIL` |
+| `vault.ts` | `949` | `0` | 🔴 `FRÁGIL` |
+| `scribe.ts` | `949` | `0` | 🔴 `FRÁGIL` |
+| `bolt.ts` | `949` | `0` | 🔴 `FRÁGIL` |
+| `probe.ts` | `949` | `0` | 🔴 `FRÁGIL` |
+| `forge.ts` | `949` | `0` | 🔴 `FRÁGIL` |
+| `palette.ts` | `949` | `0` | 🔴 `FRÁGIL` |
+| `scribe.ts` | `949` | `0` | 🔴 `FRÁGIL` |
+| `sentinel.ts` | `949` | `5` | 🔴 `FRÁGIL` |
+| `vortex.ts` | `949` | `5` | 🔴 `FRÁGIL` |
+| `stream.ts` | `949` | `0` | 🔴 `FRÁGIL` |
+| `metric.ts` | `924` | `0` | 🔴 `FRÁGIL` |
+| `audit_risk_engine.ts` | `910` | `0` | 🔴 `FRÁGIL` |
+| `probe.ts` | `909` | `0` | 🔴 `FRÁGIL` |
+| `stream.ts` | `909` | `0` | 🔴 `FRÁGIL` |
+| `warden.ts` | `909` | `0` | 🔴 `FRÁGIL` |
+| `nebula.ts` | `909` | `0` | 🔴 `FRÁGIL` |
+| `scope.ts` | `909` | `0` | 🔴 `FRÁGIL` |
+| `echo.ts` | `909` | `0` | 🔴 `FRÁGIL` |
+| `vault.ts` | `909` | `0` | 🔴 `FRÁGIL` |
+| `core.ts` | `909` | `5` | 🔴 `FRÁGIL` |
+| `neural.ts` | `909` | `0` | 🔴 `FRÁGIL` |
+| `nexus.ts` | `909` | `0` | 🔴 `FRÁGIL` |
+| `spark.ts` | `909` | `0` | 🔴 `FRÁGIL` |
+| `compliance_standard.ts` | `888` | `0` | 🔴 `FRÁGIL` |
+| `metric.ts` | `884` | `0` | 🔴 `FRÁGIL` |
+| `cognitive_engine.ts` | `866` | `0` | 🔴 `FRÁGIL` |
+| `audit_expert_engine.ts` | `859` | `0` | 🔴 `FRÁGIL` |
+| `update_imports.ts` | `855` | `5` | 🔴 `FRÁGIL` |
+| `metric.ts` | `844` | `0` | 🔴 `FRÁGIL` |
+| `globe.ts` | `844` | `0` | 🔴 `FRÁGIL` |
+| `cache.ts` | `844` | `0` | 🔴 `FRÁGIL` |
+| `cache.ts` | `844` | `0` | 🔴 `FRÁGIL` |
+| `markdown_sanitizer.ts` | `840` | `0` | 🔴 `FRÁGIL` |
+| `indexer.ts` | `831` | `0` | 🔴 `FRÁGIL` |
+| `GovernanceView.tsx` | `830` | `0` | 🔴 `FRÁGIL` |
+| `battle_plan_formatter.ts` | `811` | `0` | 🔴 `FRÁGIL` |
+| `markdown_auditor.ts` | `804` | `0` | 🔴 `FRÁGIL` |
+| `palette.ts` | `802` | `0` | 🔴 `FRÁGIL` |
+| `bridge.ts` | `802` | `5` | 🔴 `FRÁGIL` |
+| `healer.ts` | `767` | `5` | 🔴 `FRÁGIL` |
+| `quality_analyst.ts` | `765` | `0` | 🔴 `FRÁGIL` |
+| `mantra.ts` | `762` | `0` | 🔴 `FRÁGIL` |
+| `bridge.ts` | `762` | `5` | 🔴 `FRÁGIL` |
+| `echo.ts` | `762` | `0` | 🔴 `FRÁGIL` |
+| `hype.ts` | `762` | `0` | 🔴 `FRÁGIL` |
+| `mantra.ts` | `762` | `0` | 🔴 `FRÁGIL` |
+| `nexus.ts` | `762` | `0` | 🔴 `FRÁGIL` |
+| `spark.ts` | `762` | `0` | 🔴 `FRÁGIL` |
+| `hermes.ts` | `762` | `0` | 🔴 `FRÁGIL` |
+| `stream.ts` | `762` | `0` | 🔴 `FRÁGIL` |
+| `activate-phase.ts` | `755` | `5` | 🔴 `FRÁGIL` |
+| `meta_analysis_detector.ts` | `743` | `0` | 🔴 `FRÁGIL` |
+| `nebula.ts` | `742` | `0` | 🔴 `FRÁGIL` |
+| `sentinel.ts` | `737` | `5` | 🔴 `FRÁGIL` |
+| `hype.ts` | `722` | `0` | 🔴 `FRÁGIL` |
+| `hermes.ts` | `722` | `0` | 🔴 `FRÁGIL` |
+| `nebula.ts` | `722` | `0` | 🔴 `FRÁGIL` |
+| `flow.ts` | `722` | `0` | 🔴 `FRÁGIL` |
+| `neural.ts` | `722` | `0` | 🔴 `FRÁGIL` |
+| `scoring_metrics_engine.ts` | `720` | `0` | 🔴 `FRÁGIL` |
+| `stability_ledger.ts` | `687` | `0` | 🔴 `FRÁGIL` |
+| `scoring_engine.ts` | `678` | `0` | 🔴 `FRÁGIL` |
+| `behavior_analyst.ts` | `672` | `5` | 🔴 `FRÁGIL` |
+| `AuditView.tsx` | `665` | `0` | 🔴 `FRÁGIL` |
+| `obfuscation_hunter.ts` | `647` | `0` | 🔴 `FRÁGIL` |
+| `task_orchestrator.ts` | `647` | `0` | 🔴 `FRÁGIL` |
+| `extract_gaps.ts` | `640` | `0` | 🔴 `FRÁGIL` |
+| `legacy_shims.ts` | `635` | `0` | 🔴 `FRÁGIL` |
+| `scale.ts` | `633` | `0` | 🔴 `FRÁGIL` |
+| `obfuscation_cleaner_engine.ts` | `630` | `0` | 🔴 `FRÁGIL` |
+| `scale.ts` | `613` | `0` | 🔴 `FRÁGIL` |
+| `maintenance_engine_phd.ts` | `595` | `0` | 🔴 `FRÁGIL` |
+| `scope.ts` | `593` | `0` | 🔴 `FRÁGIL` |
+| `run-diagnostic.ts` | `585` | `0` | 🔴 `FRÁGIL` |
+| `validator.ts` | `580` | `5` | 🔴 `FRÁGIL` |
+| `penalty_engine.ts` | `575` | `0` | 🔴 `FRÁGIL` |
+| `scope.ts` | `573` | `0` | 🔴 `FRÁGIL` |
+| `memory_engine.ts` | `571` | `0` | 🔴 `FRÁGIL` |
+| `diagnostic_finalizer.ts` | `559` | `0` | 🔴 `FRÁGIL` |
+| `logging_config.ts` | `556` | `0` | 🔴 `FRÁGIL` |
+| `briefing_agent.ts` | `555` | `0` | 🔴 `FRÁGIL` |
+| `resource_governor.ts` | `555` | `0` | 🔴 `FRÁGIL` |
+| `OperationalView.tsx` | `550` | `0` | 🔴 `FRÁGIL` |
+| `infrastructure_assembler.ts` | `541` | `0` | 🔴 `FRÁGIL` |
+| `Sidebar.tsx` | `540` | `0` | 🔴 `FRÁGIL` |
+| `healer_persona.ts` | `535` | `5` | 🔴 `FRÁGIL` |
+| `update_transaction.ts` | `525` | `0` | 🔴 `FRÁGIL` |
+| `gui_native.py` | `519` | `0` | 🔴 `FRÁGIL` |
+| `context_iterator.ts` | `515` | `0` | 🔴 `FRÁGIL` |
+| `base_active_persona.ts` | `510` | `5` | 🔴 `FRÁGIL` |
+| `schema_persona.ts` | `506` | `5` | 🔴 `FRÁGIL` |
+| `context_mapping_logic.ts` | `500` | `0` | 🔴 `FRÁGIL` |
+| `health_synthesizer.ts` | `491` | `0` | 🔴 `FRÁGIL` |
+| `integrity_guardian.ts` | `485` | `0` | 🔴 `FRÁGIL` |
+| `bridge_orchestrator.py` | `480` | `5` | 🔴 `FRÁGIL` |
+| `utils.ts` | `480` | `5` | 🔴 `FRÁGIL` |
+| `topology_graph_agent.ts` | `476` | `0` | 🔴 `FRÁGIL` |
+| `IntelligenceView.tsx` | `475` | `0` | 🔴 `FRÁGIL` |
+| `persona_registry.ts` | `475` | `5` | 🔴 `FRÁGIL` |
+| `system_facade.ts` | `474` | `0` | 🔴 `FRÁGIL` |
+| `task_worker.ts` | `470` | `5` | 🔴 `FRÁGIL` |
+| `veto_engine.ts` | `465` | `5` | 🔴 `FRÁGIL` |
+| `history_agent.ts` | `460` | `0` | 🔴 `FRÁGIL` |
+| `cache_manager.ts` | `457` | `0` | 🔴 `FRÁGIL` |
+| `finding_deduplicator.ts` | `456` | `0` | 🔴 `FRÁGIL` |
+| `battle_plan_sections_engine.ts` | `441` | `0` | 🔴 `FRÁGIL` |
+| `logic_auditor.ts` | `436` | `0` | 🔴 `FRÁGIL` |
+| `reflex_engine.ts` | `430` | `0` | 🔴 `FRÁGIL` |
+| `submodule_sync_logic.ts` | `425` | `0` | 🔴 `FRÁGIL` |
+| `verify_phase_19.ts` | `420` | `5` | 🔴 `FRÁGIL` |
+| `semantic_context_analyst.ts` | `417` | `0` | 🔴 `FRÁGIL` |
+| `markdown_structure_agent.ts` | `410` | `0` | 🔴 `FRÁGIL` |
+| `maturity_evaluator.ts` | `405` | `0` | 🔴 `FRÁGIL` |
+| `diagnostic_pipeline.ts` | `400` | `0` | 🔴 `FRÁGIL` |
+| `silent_error_detector.ts` | `396` | `0` | 🔴 `FRÁGIL` |
+| `ViewArea.tsx` | `395` | `0` | 🔴 `FRÁGIL` |
+| `cognitive_analyst.ts` | `376` | `0` | 🔴 `FRÁGIL` |
+| `diagnostic_strategist.ts` | `375` | `0` | 🔴 `FRÁGIL` |
+| `ReliabilityView.tsx` | `370` | `0` | 🔴 `FRÁGIL` |
+| `veto_engine.ts` | `368` | `5` | 🔴 `FRÁGIL` |
+| `specialized_personas_hub.ts` | `366` | `5` | 🔴 `FRÁGIL` |
+| `markdown_processor.ts` | `366` | `0` | 🔴 `FRÁGIL` |
+| `verify_metrics.ts` | `350` | `0` | 🔴 `FRÁGIL` |
+| `silent_error_strategy.ts` | `348` | `0` | 🔴 `FRÁGIL` |
+| `observability_strategy.ts` | `346` | `0` | 🔴 `FRÁGIL` |
+| `reflex_engine.ts` | `335` | `0` | 🔴 `FRÁGIL` |
+| `reflex_engine.ts` | `332` | `0` | 🔴 `FRÁGIL` |
+| `extract_personas.ts` | `330` | `5` | 🔴 `FRÁGIL` |
+| `task_queue.ts` | `330` | `5` | 🔴 `FRÁGIL` |
+| `debug_stability_count.js` | `326` | `0` | 🔴 `FRÁGIL` |
+| `obfuscation_logic_engine.ts` | `325` | `0` | 🔴 `FRÁGIL` |
+| `task_executor.ts` | `321` | `0` | 🔴 `FRÁGIL` |
+| `cognitive_engine.py` | `320` | `0` | 🔴 `FRÁGIL` |
+| `conflict_policy.ts` | `320` | `0` | 🔴 `FRÁGIL` |
+| `memory_persistence.ts` | `306` | `0` | 🔴 `FRÁGIL` |
+| `policy_definitions.ts` | `296` | `0` | 🔴 `FRÁGIL` |
+| `debug_qa_matrix.js` | `290` | `0` | 🔴 `FRÁGIL` |
+| `debug_alerts.js` | `284` | `0` | 🔴 `FRÁGIL` |
+| `coverage_auditor.ts` | `280` | `0` | 🔴 `FRÁGIL` |
+| `pyramid_analyst.ts` | `280` | `0` | 🔴 `FRÁGIL` |
+| `component_classifier.ts` | `277` | `0` | 🔴 `FRÁGIL` |
+| `types.ts` | `275` | `5` | 🔴 `FRÁGIL` |
+| `cognitive_validator.ts` | `270` | `5` | 🔴 `FRÁGIL` |
+| `safety_strategy.ts` | `260` | `0` | 🔴 `FRÁGIL` |
+| `validation_agent.ts` | `256` | `0` | 🔴 `FRÁGIL` |
+| `debug_metrics.js` | `255` | `0` | 🔴 `FRÁGIL` |
+| `reorganize_support.ts` | `255` | `5` | 🔴 `FRÁGIL` |
+| `debug_penalty_calculation.js` | `246` | `0` | 🔴 `FRÁGIL` |
+| `connectivity_mapper.ts` | `245` | `0` | 🔴 `FRÁGIL` |
+| `dna_profiler.ts` | `245` | `0` | 🔴 `FRÁGIL` |
+| `resource_engine.ts` | `245` | `0` | 🔴 `FRÁGIL` |
+| `path_utils.ts` | `243` | `5` | 🔴 `FRÁGIL` |
+| `score_calculator.ts` | `240` | `0` | 🔴 `FRÁGIL` |
+| `go_discovery_adapter.ts` | `240` | `5` | 🔴 `FRÁGIL` |
+| `verify_phase_17.ts` | `231` | `5` | 🔴 `FRÁGIL` |
+| `Badge.tsx` | `230` | `0` | 🔴 `FRÁGIL` |
+| `CommandBriefing.tsx` | `230` | `0` | 🔴 `FRÁGIL` |
+| `meta_analysis_strategy.ts` | `228` | `0` | 🔴 `FRÁGIL` |
+| `useDashboard.ts` | `225` | `0` | 🔴 `FRÁGIL` |
+| `debug_final_health.js` | `221` | `0` | 🔴 `FRÁGIL` |
+| `debug_detailed_penalties.js` | `221` | `0` | 🔴 `FRÁGIL` |
+| `react_portal_builder.ts` | `220` | `5` | 🔴 `FRÁGIL` |
+| `refactor_go_agents.ts` | `220` | `5` | 🔴 `FRÁGIL` |
 | `parity_types.ts` | `210` | `5` | 🔴 `FRÁGIL` |
-| `debug_health.js` | `205` | `0` | 🔴 `FRÁGIL` |
-| `safety_definitions.ts` | `200` | `2` | 🔴 `FRÁGIL` |
-| `debug_assertion_detection.js` | `180` | `0` | 🔴 `FRÁGIL` |
-| `debug_metrics.js` | `180` | `0` | 🔴 `FRÁGIL` |
-| `debug_complexity_after_refactor.js` | `160` | `0` | 🔴 `FRÁGIL` |
-| `debug_complexity.js` | `115` | `0` | 🔴 `FRÁGIL` |
-| `debug_stability.js` | `105` | `0` | 🔴 `FRÁGIL` |
-| `debug_stability_coverage.js` | `105` | `0` | 🔴 `FRÁGIL` |
-| `index.ts` | `40` | `3` | 🔴 `FRÁGIL` |
-| `shadow_tray.py` | `36` | `2` | 🔴 `FRÁGIL` |
-| `bridge_orchestrator.py` | `28` | `5` | 🟢 `PROFUNDO` |
-| `gui_native.py` | `15` | `0` | 🔴 `FRÁGIL` |
-| `director.py` | `11` | `2` | 🟢 `PROFUNDO` |
-| `lint_rule_engine.py` | `10` | `2` | 🟢 `PROFUNDO` |
-| `run_diagnostic.py` | `10` | `3` | 🟢 `PROFUNDO` |
-| `orchestrator.py` | `10` | `5` | 🟢 `PROFUNDO` |
-| `diagnose_blind_spots.py` | `9` | `4` | 🟢 `PROFUNDO` |
-| `lint_heading_logic.py` | `8` | `2` | 🟢 `PROFUNDO` |
-| `verify_report_lint.py` | `7` | `5` | 🟢 `PROFUNDO` |
-| `persona_manager.py` | `6` | `2` | 🟢 `PROFUNDO` |
-| `verify_cognitive.py` | `6` | `0` | 🔴 `FRÁGIL` |
-| `health_gauge.py` | `6` | `5` | 🟢 `PROFUNDO` |
-| `findings_view.py` | `6` | `0` | 🔴 `FRÁGIL` |
-| `analyze_external.py` | `5` | `2` | 🟢 `PROFUNDO` |
-| `install_hooks.py` | `5` | `2` | 🟢 `PROFUNDO` |
-| `cli.py` | `5` | `3` | 🟢 `PROFUNDO` |
-| `build_exe.py` | `4` | `0` | 🔴 `FRÁGIL` |
-| `mantra.py` | `4` | `2` | 🟢 `PROFUNDO` |
-| `warden.py` | `4` | `2` | 🟢 `PROFUNDO` |
-| `fast_diagnostic.py` | `3` | `0` | 🔴 `FRÁGIL` |
-| `sidebar.py` | `3` | `4` | 🟢 `PROFUNDO` |
-| `launch_api.py` | `2` | `4` | 🟢 `PROFUNDO` |
-| `launch_dashboard.py` | `2` | `0` | 🔴 `FRÁGIL` |
-| `hype.py` | `2` | `2` | 🟢 `PROFUNDO` |
-| `bridge.py` | `2` | `5` | 🟢 `PROFUNDO` |
-| `hermes.py` | `2` | `2` | 🟢 `PROFUNDO` |
-| `dashboard_view.py` | `2` | `2` | 🟢 `PROFUNDO` |
-| `chat_view.py` | `2` | `0` | 🔴 `FRÁGIL` |
-| `base_persona.ts` | `1` | `0` | 🔴 `FRÁGIL` |
+| `App.tsx` | `200` | `0` | 🔴 `FRÁGIL` |
+| `debug_assertion_detection.js` | `195` | `0` | 🔴 `FRÁGIL` |
+| `debug_alerts_detail.js` | `191` | `0` | 🔴 `FRÁGIL` |
+| `health_gauge.py` | `190` | `0` | 🔴 `FRÁGIL` |
+| `debug_complexity_after_refactor.js` | `185` | `0` | 🔴 `FRÁGIL` |
+| `verify_phase_18.ts` | `185` | `5` | 🔴 `FRÁGIL` |
+| `Typo.tsx` | `185` | `0` | 🔴 `FRÁGIL` |
+| `analysis_engine.ts` | `175` | `0` | 🔴 `FRÁGIL` |
+| `markdown_util.ts` | `170` | `0` | 🔴 `FRÁGIL` |
+| `verify_cognitive.py` | `165` | `0` | 🔴 `FRÁGIL` |
+| `debug_stability_coverage.js` | `160` | `0` | 🔴 `FRÁGIL` |
+| `debug_stability.js` | `155` | `0` | 🔴 `FRÁGIL` |
+| `orchestrator.py` | `154` | `5` | 🔴 `FRÁGIL` |
+| `experiment_bun_features.ts` | `150` | `5` | 🔴 `FRÁGIL` |
+| `conflict_engine.ts` | `150` | `0` | 🔴 `FRÁGIL` |
+| `memory_pruning_agent.ts` | `147` | `0` | 🔴 `FRÁGIL` |
+| `Card.tsx` | `145` | `0` | 🔴 `FRÁGIL` |
+| `debug_health_flow.js` | `144` | `0` | 🔴 `FRÁGIL` |
+| `debug_complexity.js` | `140` | `0` | 🔴 `FRÁGIL` |
+| `doc_gen_agent.ts` | `140` | `5` | 🔴 `FRÁGIL` |
+| `update-git.ts` | `140` | `5` | 🔴 `FRÁGIL` |
+| `cli.py` | `138` | `0` | 🔴 `FRÁGIL` |
+| `debug_penalty.js` | `131` | `0` | 🔴 `FRÁGIL` |
+| `security_sentinel_agent.ts` | `131` | `0` | 🔴 `FRÁGIL` |
+| `topology_engine.ts` | `125` | `0` | 🔴 `FRÁGIL` |
+| `findings_view.py` | `125` | `0` | 🔴 `FRÁGIL` |
+| `debug_health.js` | `106` | `0` | 🔴 `FRÁGIL` |
+| `delete_redundant.ts` | `105` | `5` | 🔴 `FRÁGIL` |
+| `markdown_renderer.ts` | `100` | `5` | 🔴 `FRÁGIL` |
+| `ProgressBar.tsx` | `95` | `0` | 🔴 `FRÁGIL` |
+| `sidebar.py` | `95` | `0` | 🔴 `FRÁGIL` |
+| `debug_engine.ts` | `90` | `5` | 🔴 `FRÁGIL` |
+| `html_portal_generator.ts` | `90` | `5` | 🔴 `FRÁGIL` |
+| `merge_go_manifest.ts` | `80` | `5` | 🟡 `ESTRUTURAL` |
+| `theme.ts` | `75` | `0` | 🔴 `FRÁGIL` |
+| `launch_api.py` | `70` | `0` | 🔴 `FRÁGIL` |
+| `date_utils.ts` | `70` | `0` | 🔴 `FRÁGIL` |
+| `chat_view.py` | `65` | `0` | 🔴 `FRÁGIL` |
+| `dashboard_view.py` | `65` | `0` | 🔴 `FRÁGIL` |
+| `launch_dashboard.py` | `60` | `0` | 🔴 `FRÁGIL` |
+| `safety_definitions.ts` | `50` | `0` | 🔴 `FRÁGIL` |
+| `debug_logic.ts` | `10` | `11` | 🟢 `PROFUNDO` |
+| `ignore_list.ts` | `5` | `12` | 🟡 `ESTRUTURAL` |
+| `parity_config.ts` | `5` | `9` | 🟡 `ESTRUTURAL` |
+| `index.ts` | `1` | `0` | 🟡 `ESTRUTURAL` |
 
 ## 🎯 PLANO DE BATALHA: DIRETRIZES DE ENGENHARIA
 
 | Severidade | Qtd. | Impacto Estratégico | Status de Resposta |
 | :--- | :---: | :--- | :--- |
 | **CRITICAL** | `0` | 🔴 `BLOQUEANTE` | 🟢 `LIVRE` |
-| **HIGH** | `2` | 🟡 `RISCO ALTO` | 🟡 `PRIORIDADE` |
-| **MEDIUM** | `5` | 🔵 `DÉBITO TÉC.` | 🔵 `EM FILA` |
+| **HIGH** | `158` | 🟡 `RISCO ALTO` | 🟡 `PRIORIDADE` |
+| **MEDIUM** | `1` | 🔵 `DÉBITO TÉC.` | 🔵 `EM FILA` |
 
 ---
 
 ## 🚩 ACHADOS DETALHADOS
 
-> ### 🔵 `NEUTRO` [1] `Audit/scope.ts`
+> ### 🔵 `NEUTRO` [1] `Audit/metric.ts`
 >
-> - **Local:** `src_local/agents/Bun/Audit/scope.ts`
-> - **Causa:** Componente 'scope.ts' evoluiu com 17 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `constructor`
->   - `super`
->   - `now`
->   - `info`
->   - `serve`
->   - `fetch`
->   - `for`
->   - `RegExp`
->   - `entries`
->   - `if`
->   - `endsWith`
->   - `of`
->   - `matchAll`
->   - `push`
->   - `toFixed`
->   - `match`
->
-> ### 🔵 `NEUTRO` [2] `Audit/testify.ts`
->
-> - **Local:** `src_local/agents/Bun/Audit/testify.ts`
-> - **Causa:** Componente 'testify.ts' evoluiu com 23 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `constructor`
->   - `super`
->   - `now`
->   - `info`
->   - `for`
->   - `RegExp`
->   - `entries`
->   - `if`
->   - `endsWith`
+> - **Local:** `src_local/agents/Bun/Audit/metric.ts`
+> - **Causa:** A persona 'metric' na stack 'Bun' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gometricengine`
+>   - `telemetry`
+>   - `validate`
 >   - `includes`
->   - `of`
->   - `matchAll`
->   - `push`
+>   - `nativas`
+>   - `gc`
+>   - `startmetrics`
+>   - `ticas`
+>   - `recover`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
 >   - `substring`
->   - `keys`
->   - `add`
->   - `replace`
->   - `has`
->   - `toFixed`
->   - `test`
->   - `_interpret_failures`
->   - `filter`
+>   - `selfdiagnostic`
+>   - `instrumentation`
+>   - `plataforma`
+>   - `conformidade`
 >
-> ### 🔵 `NEUTRO` [3] `Strategic/sentinel.ts`
+> ### 🔵 `NEUTRO` [2] `Audit/metric.ts`
 >
-> - **Local:** `src_local/agents/Bun/Strategic/sentinel.ts`
-> - **Causa:** Componente 'sentinel.ts' evoluiu com 16 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
+> - **Local:** `src_local/agents/Go/Audit/metric.ts`
+> - **Causa:** A persona 'metric' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
 >   - `child`
->   - `constructor`
->   - `super`
 >   - `now`
 >   - `info`
+>   - `nanoseconds`
 >   - `for`
->   - `RegExp`
+>   - `regexp`
 >   - `entries`
->   - `if`
->   - `endsWith`
+>   - `endswith`
 >   - `of`
->   - `matchAll`
->   - `push`
->   - `substring`
->   - `toFixed`
+>   - `matchall`
+>   - `tofixed`
 >   - `test`
+>   - `performauditrules`
+>   - `instrumentation`
+>   - `plataforma`
+>   - `conformidade`
 >
-> ### 🔵 `NEUTRO` [4] `Audit/bolt.ts`
+> ### 🔵 `NEUTRO` [3] `Audit/metric.ts`
 >
-> - **Local:** `src_local/agents/Flutter/Audit/bolt.ts`
-> - **Causa:** Componente 'bolt.ts' evoluiu com 13 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `Efficiency`
->   - `constructor`
->   - `super`
->   - `map`
->   - `forEach`
->   - `startMetrics`
->   - `findPatterns`
->   - `endMetrics`
->   - `if`
->   - `includes`
->   - `sleep`
->   - `selfDiagnostic`
+> - **Local:** `src_local/agents/Kotlin/Audit/metric.ts`
+> - **Causa:** A persona 'metric' na stack 'Kotlin' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `nanoseconds`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
 >   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `performauditrules`
+>   - `gometricengine`
+>   - `telemetry`
+>   - `validate`
+>   - `includes`
+>   - `nativas`
+>   - `gc`
+>   - `ticas`
+>   - `recover`
+>   - `foreach`
+>   - `substring`
+>
+> ### 🔵 `NEUTRO` [4] `Audit/metric.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Audit/metric.ts`
+> - **Causa:** A persona 'metric' na stack 'Flutter' está incompleta. Faltam 26 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `nanoseconds`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `performauditrules`
+>   - `gometricengine`
+>   - `telemetry`
+>   - `validate`
+>   - `includes`
+>   - `nativas`
+>   - `gc`
+>   - `ticas`
+>   - `recover`
+>   - `foreach`
+>   - `substring`
+>   - `plataforma`
+>   - `conformidade`
 >
 > ### 🔵 `NEUTRO` [5] `Audit/metric.ts`
 >
-> - **Local:** `src_local/agents/Flutter/Audit/metric.ts`
-> - **Causa:** Componente 'metric.ts' evoluiu com 11 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `Instrumentation`
->   - `constructor`
->   - `super`
->   - `startMetrics`
->   - `findPatterns`
->   - `if`
->   - `endMetrics`
->   - `performActiveHealing`
+> - **Local:** `src_local/agents/Python/Audit/metric.ts`
+> - **Causa:** A persona 'metric' na stack 'Python' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `nanoseconds`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `performauditrules`
+>   - `gometricengine`
+>   - `telemetry`
+>   - `validate`
+>   - `includes`
+>   - `nativas`
+>   - `gc`
+>   - `ticas`
+>   - `recover`
+>   - `foreach`
+>   - `substring`
+>   - `plataforma`
+>   - `conformidade`
+>
+> ### 🔵 `NEUTRO` [6] `Audit/metric.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Audit/metric.ts`
+> - **Causa:** A persona 'metric' na stack 'TypeScript' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `nanoseconds`
+>   - `performauditrules`
+>   - `gometricengine`
+>   - `telemetry`
+>   - `validate`
+>   - `includes`
+>   - `nativas`
+>   - `gc`
+>   - `startmetrics`
+>   - `ticas`
+>   - `recover`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
 >   - `log`
 >   - `join`
->   - `selfDiagnostic`
+>   - `substring`
+>   - `instrumentation`
+>   - `plataforma`
+>   - `conformidade`
 >
-> ### 🔵 `NEUTRO` [6] `Audit/nebula.ts`
+> ### 🔵 `NEUTRO` [7] `Audit/nebula.ts`
+>
+> - **Local:** `src_local/agents/Bun/Audit/nebula.ts`
+> - **Causa:** A persona 'nebula' na stack 'Bun' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `architecture`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `endmetrics`
+>   - `selfdiagnostic`
+>   - `gocloudengine`
+>   - `infrastructure`
+>   - `scan`
+>   - `match`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `backend`
+>   - `logic`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [8] `Audit/nebula.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Audit/nebula.ts`
+> - **Causa:** A persona 'nebula' na stack 'Kotlin' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `hash`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `gocloudengine`
+>   - `infrastructure`
+>   - `scan`
+>   - `match`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `backend`
+>   - `logic`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [9] `Audit/nebula.ts`
+>
+> - **Local:** `src_local/agents/Go/Audit/nebula.ts`
+> - **Causa:** A persona 'nebula' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `hash`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `architecture`
+>   - `backend`
+>   - `logic`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [10] `Audit/nebula.ts`
 >
 > - **Local:** `src_local/agents/Flutter/Audit/nebula.ts`
-> - **Causa:** Componente 'nebula.ts' evoluiu com 9 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `Backend`
->   - `constructor`
->   - `super`
->   - `startMetrics`
->   - `findPatterns`
->   - `endMetrics`
->   - `if`
->   - `includes`
->   - `selfDiagnostic`
+> - **Causa:** A persona 'nebula' na stack 'Flutter' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `hash`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `architecture`
+>   - `gocloudengine`
+>   - `infrastructure`
+>   - `scan`
+>   - `match`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `logic`
+>   - `some`
 >
-> ### 🔵 `NEUTRO` [7] `Audit/scale.ts`
+> ### 🔵 `NEUTRO` [11] `Audit/nebula.ts`
+>
+> - **Local:** `src_local/agents/Python/Audit/nebula.ts`
+> - **Causa:** A persona 'nebula' na stack 'Python' está incompleta. Faltam 22 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `hash`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `includes`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `architecture`
+>   - `gocloudengine`
+>   - `infrastructure`
+>   - `scan`
+>   - `match`
+>   - `foreach`
+>   - `backend`
+>
+> ### 🔵 `NEUTRO` [12] `Audit/nebula.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Audit/nebula.ts`
+> - **Causa:** A persona 'nebula' na stack 'TypeScript' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `hash`
+>   - `architecture`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `endmetrics`
+>   - `gocloudengine`
+>   - `infrastructure`
+>   - `scan`
+>   - `match`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `backend`
+>   - `logic`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [13] `Audit/probe.ts`
+>
+> - **Local:** `src_local/agents/Bun/Audit/probe.ts`
+> - **Causa:** A persona 'probe' na stack 'Bun' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `goprobeengine`
+>   - `tracing`
+>   - `audit`
+>   - `includes`
+>   - `startmetrics`
+>   - `erros`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `selfdiagnostic`
+>   - `analysis`
+>   - `repouso`
+>   - `some`
+>   - `vulnerability`
+>
+> ### 🔵 `NEUTRO` [14] `Audit/probe.ts`
+>
+> - **Local:** `src_local/agents/Go/Audit/probe.ts`
+> - **Causa:** A persona 'probe' na stack 'Go' está incompleta. Faltam 15 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `analysis`
+>   - `repouso`
+>   - `some`
+>   - `vulnerability`
+>
+> ### 🔵 `NEUTRO` [15] `Audit/probe.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Audit/probe.ts`
+> - **Causa:** A persona 'probe' na stack 'Kotlin' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `goprobeengine`
+>   - `tracing`
+>   - `audit`
+>   - `includes`
+>   - `erros`
+>   - `foreach`
+>   - `vulnerability`
+>
+> ### 🔵 `NEUTRO` [16] `Audit/probe.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Audit/probe.ts`
+> - **Causa:** A persona 'probe' na stack 'Flutter' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `goprobeengine`
+>   - `tracing`
+>   - `audit`
+>   - `includes`
+>   - `erros`
+>   - `foreach`
+>   - `repouso`
+>   - `vulnerability`
+>
+> ### 🔵 `NEUTRO` [17] `Audit/probe.ts`
+>
+> - **Local:** `src_local/agents/Python/Audit/probe.ts`
+> - **Causa:** A persona 'probe' na stack 'Python' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `goprobeengine`
+>   - `tracing`
+>   - `audit`
+>   - `includes`
+>   - `erros`
+>   - `foreach`
+>   - `repouso`
+>
+> ### 🔵 `NEUTRO` [18] `Audit/probe.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Audit/probe.ts`
+> - **Causa:** A persona 'probe' na stack 'TypeScript' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `substring`
+>   - `goprobeengine`
+>   - `tracing`
+>   - `audit`
+>   - `includes`
+>   - `startmetrics`
+>   - `erros`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `analysis`
+>   - `repouso`
+>   - `some`
+>   - `vulnerability`
+>
+> ### 🔵 `NEUTRO` [19] `Audit/scale.ts`
 >
 > - **Local:** `src_local/agents/Bun/Audit/scale.ts`
-> - **Causa:** Componente 'scale.ts' evoluiu com 15 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
+> - **Causa:** A persona 'scale' na stack 'Bun' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `goscalingengine`
+>   - `scaling`
+>   - `audit`
+>   - `includes`
+>   - `add`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `selfdiagnostic`
+>   - `architecture`
+>   - `ncia`
+>   - `scalability`
+>   - `internas`
+>   - `planning`
+>   - `collect`
+>   - `hardware`
+>   - `sistema`
+>   - `detection`
+>   - `with`
+>   - `risk`
+>
+> ### 🔵 `NEUTRO` [20] `Audit/scale.ts`
+>
+> - **Local:** `src_local/agents/Go/Audit/scale.ts`
+> - **Causa:** A persona 'scale' na stack 'Go' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
 >   - `child`
->   - `constructor`
->   - `super`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `entries`
+>   - `endswith`
+>   - `split`
+>   - `keys`
+>   - `some`
+>   - `tofixed`
+>   - `architecture`
+>   - `ncia`
+>   - `scalability`
+>   - `internas`
+>   - `planning`
+>   - `collect`
+>   - `hardware`
+>   - `sistema`
+>   - `detection`
+>   - `with`
+>   - `risk`
+>
+> ### 🔵 `NEUTRO` [21] `Audit/scale.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Audit/scale.ts`
+> - **Causa:** A persona 'scale' na stack 'Kotlin' está incompleta. Faltam 32 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
 >   - `now`
 >   - `info`
 >   - `for`
 >   - `entries`
 >   - `if`
->   - `endsWith`
+>   - `endswith`
 >   - `split`
 >   - `push`
 >   - `match`
 >   - `keys`
 >   - `some`
->   - `toFixed`
+>   - `tofixed`
+>   - `goscalingengine`
+>   - `scaling`
+>   - `audit`
+>   - `includes`
+>   - `add`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `scalability`
+>   - `internas`
+>   - `planning`
+>   - `collect`
+>   - `hardware`
+>   - `sistema`
+>   - `detection`
+>   - `with`
+>   - `risk`
 >
-> ### 🔵 `NEUTRO` [8] `Strategic/vault.ts`
+> ### 🔵 `NEUTRO` [22] `Audit/scale.ts`
 >
-> - **Local:** `src_local/agents/Bun/Strategic/vault.ts`
-> - **Causa:** Componente 'vault.ts' evoluiu com 15 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
+> - **Local:** `src_local/agents/Flutter/Audit/scale.ts`
+> - **Causa:** A persona 'scale' na stack 'Flutter' está incompleta. Faltam 32 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
 >   - `child`
->   - `constructor`
->   - `super`
 >   - `now`
 >   - `info`
 >   - `for`
->   - `RegExp`
 >   - `entries`
 >   - `if`
->   - `endsWith`
->   - `of`
->   - `matchAll`
+>   - `endswith`
+>   - `split`
 >   - `push`
->   - `toFixed`
->   - `test`
+>   - `match`
+>   - `keys`
+>   - `some`
+>   - `tofixed`
+>   - `goscalingengine`
+>   - `scaling`
+>   - `audit`
+>   - `includes`
+>   - `add`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `architecture`
+>   - `ncia`
+>   - `planning`
+>   - `collect`
+>   - `hardware`
+>   - `sistema`
+>   - `detection`
+>   - `with`
+>   - `risk`
 >
-> ### 🔵 `NEUTRO` [9] `Strategic/voyager.ts`
+> ### 🔵 `NEUTRO` [23] `Audit/scale.ts`
 >
-> - **Local:** `src_local/agents/Bun/Strategic/voyager.ts`
-> - **Causa:** Componente 'voyager.ts' evoluiu com 20 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
+> - **Local:** `src_local/agents/Python/Audit/scale.ts`
+> - **Causa:** A persona 'scale' na stack 'Python' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
 >   - `child`
->   - `constructor`
->   - `super`
 >   - `now`
 >   - `info`
->   - `require`
 >   - `for`
->   - `RegExp`
+>   - `entries`
+>   - `endswith`
+>   - `split`
+>   - `push`
+>   - `match`
+>   - `keys`
+>   - `tofixed`
+>   - `goscalingengine`
+>   - `scaling`
+>   - `audit`
+>   - `add`
+>   - `foreach`
+>   - `substring`
+>   - `architecture`
+>   - `ncia`
+>   - `scalability`
+>   - `internas`
+>   - `detection`
+>   - `with`
+>   - `risk`
+>
+> ### 🔵 `NEUTRO` [24] `Audit/scale.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Audit/scale.ts`
+> - **Causa:** A persona 'scale' na stack 'TypeScript' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `keys`
+>   - `some`
+>   - `goscalingengine`
+>   - `scaling`
+>   - `audit`
+>   - `includes`
+>   - `add`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `architecture`
+>   - `ncia`
+>   - `scalability`
+>   - `internas`
+>   - `planning`
+>   - `collect`
+>   - `hardware`
+>   - `sistema`
+>
+> ### 🔵 `NEUTRO` [25] `Audit/scope.ts`
+>
+> - **Local:** `src_local/agents/Bun/Audit/scope.ts`
+> - **Causa:** A persona 'scope' na stack 'Bun' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `strategy`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `endmetrics`
+>   - `selfdiagnostic`
+>   - `gomoduleengine`
+>   - `audit`
+>   - `includes`
+>   - `go`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `scope`
+>   - `boundaries`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [26] `Audit/scope.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Audit/scope.ts`
+> - **Causa:** A persona 'scope' na stack 'Kotlin' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `serve`
+>   - `fetch`
+>   - `for`
+>   - `regexp`
 >   - `entries`
 >   - `if`
->   - `endsWith`
+>   - `endswith`
 >   - `of`
->   - `matchAll`
+>   - `matchall`
 >   - `push`
->   - `toFixed`
+>   - `tofixed`
+>   - `match`
+>   - `gomoduleengine`
+>   - `audit`
+>   - `includes`
+>   - `go`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `scope`
+>   - `boundaries`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [27] `Audit/scope.ts`
+>
+> - **Local:** `src_local/agents/Go/Audit/scope.ts`
+> - **Causa:** A persona 'scope' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `serve`
+>   - `fetch`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `match`
+>   - `scope`
+>   - `boundaries`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [28] `Audit/scope.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Audit/scope.ts`
+> - **Causa:** A persona 'scope' na stack 'Flutter' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `serve`
+>   - `fetch`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `if`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `match`
+>   - `strategy`
+>   - `gomoduleengine`
+>   - `audit`
+>   - `includes`
+>   - `go`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `boundaries`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [29] `Audit/scope.ts`
+>
+> - **Local:** `src_local/agents/Python/Audit/scope.ts`
+> - **Causa:** A persona 'scope' na stack 'Python' está incompleta. Faltam 22 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `serve`
+>   - `fetch`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `match`
+>   - `strategy`
+>   - `gomoduleengine`
+>   - `audit`
+>   - `includes`
+>   - `go`
+>   - `foreach`
+>   - `substring`
+>   - `scope`
+>
+> ### 🔵 `NEUTRO` [30] `Audit/scope.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Audit/scope.ts`
+> - **Causa:** A persona 'scope' na stack 'TypeScript' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `serve`
+>   - `fetch`
+>   - `strategy`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `endmetrics`
+>   - `gomoduleengine`
+>   - `audit`
+>   - `includes`
+>   - `go`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `scope`
+>   - `boundaries`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [31] `Audit/testify.ts`
+>
+> - **Local:** `src_local/agents/Bun/Audit/testify.ts`
+> - **Causa:** A persona 'testify' na stack 'Bun' está incompleta. Faltam 34 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `mockintegrityengine`
+>   - `qa`
+>   - `instrumented`
+>   - `analyze`
+>   - `any`
+>   - `startmetrics`
+>   - `descritivo`
+>   - `verificadas`
+>   - `limite`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `filterbyquality`
+>   - `switch`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `selfdiagnostic`
+>   - `gotestintegrityengine`
+>   - `verification`
+>   - `expectativas`
+>   - `parallel`
+>   - `noerror`
+>   - `cleanup`
+>   - `fatal`
+>   - `error`
+>   - `context`
+>   - `teste`
+>   - `verify`
+>   - `ficas`
+>   - `pytest`
+>   - `borda`
+>   - `expect`
+>   - `todo`
+>
+> ### 🔵 `NEUTRO` [32] `Audit/testify.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Audit/testify.ts`
+> - **Causa:** A persona 'testify' na stack 'Kotlin' está incompleta. Faltam 36 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `substring`
+>   - `keys`
+>   - `add`
+>   - `replace`
+>   - `has`
+>   - `tofixed`
 >   - `test`
->   - `perform_active_healing`
->   - `suggest_auto_healing`
+>   - `runtestsuite`
+>   - `interpretfailures`
+>   - `analyzetestqualitymatrix`
+>   - `analyzetestpyramid`
+>   - `gotestintegrityengine`
+>   - `verification`
+>   - `expectativas`
+>   - `parallel`
+>   - `noerror`
+>   - `cleanup`
+>   - `fatal`
+>   - `error`
+>   - `context`
+>   - `teste`
+>   - `verify`
+>   - `ficas`
+>   - `pytest`
+>   - `borda`
+>   - `expect`
+>   - `todo`
+>
+> ### 🔵 `NEUTRO` [33] `Audit/testify.ts`
+>
+> - **Local:** `src_local/agents/Go/Audit/testify.ts`
+> - **Causa:** A persona 'testify' na stack 'Go' está incompleta. Faltam 35 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `keys`
+>   - `add`
+>   - `replace`
+>   - `has`
+>   - `tofixed`
+>   - `test`
+>   - `runtestsuite`
+>   - `interpretfailures`
 >   - `filter`
->   - `map`
+>   - `analyzetestqualitymatrix`
+>   - `analyzetestpyramid`
+>   - `mockintegrityengine`
+>   - `qa`
+>   - `instrumented`
+>   - `any`
+>   - `descritivo`
+>   - `verificadas`
+>   - `limite`
+>   - `filterbyquality`
+>   - `switch`
+>   - `verify`
+>   - `ficas`
+>   - `pytest`
+>   - `borda`
+>   - `expect`
+>   - `todo`
 >
-> ### 🔵 `NEUTRO` [10] `Strategic/warden.ts`
+> ### 🔵 `NEUTRO` [34] `Audit/testify.ts`
 >
-> - **Local:** `src_local/agents/Bun/Strategic/warden.ts`
-> - **Causa:** Componente 'warden.ts' evoluiu com 15 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
+> - **Local:** `src_local/agents/Flutter/Audit/testify.ts`
+> - **Causa:** A persona 'testify' na stack 'Flutter' está incompleta. Faltam 35 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
 >   - `child`
->   - `constructor`
->   - `super`
 >   - `now`
 >   - `info`
 >   - `for`
->   - `RegExp`
+>   - `regexp`
 >   - `entries`
->   - `if`
->   - `endsWith`
+>   - `endswith`
 >   - `of`
->   - `matchAll`
+>   - `matchall`
+>   - `substring`
+>   - `keys`
+>   - `add`
+>   - `replace`
+>   - `has`
+>   - `tofixed`
+>   - `test`
+>   - `instrumented`
+>   - `any`
+>   - `descritivo`
+>   - `verificadas`
+>   - `limite`
+>   - `gotestintegrityengine`
+>   - `verification`
+>   - `expectativas`
+>   - `parallel`
+>   - `noerror`
+>   - `cleanup`
+>   - `fatal`
+>   - `error`
+>   - `context`
+>   - `teste`
+>   - `pytest`
+>   - `borda`
+>   - `expect`
+>   - `todo`
+>
+> ### 🔵 `NEUTRO` [35] `Audit/testify.ts`
+>
+> - **Local:** `src_local/agents/Python/Audit/testify.ts`
+> - **Causa:** A persona 'testify' na stack 'Python' está incompleta. Faltam 39 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `substring`
+>   - `keys`
+>   - `add`
+>   - `replace`
+>   - `has`
+>   - `tofixed`
+>   - `test`
+>   - `runtestsuite`
+>   - `interpretfailures`
+>   - `analyzetestqualitymatrix`
+>   - `analyzetestpyramid`
+>   - `instrumented`
+>   - `any`
+>   - `descritivo`
+>   - `verificadas`
+>   - `limite`
+>   - `gotestintegrityengine`
+>   - `verification`
+>   - `expectativas`
+>   - `parallel`
+>   - `noerror`
+>   - `cleanup`
+>   - `fatal`
+>   - `error`
+>   - `context`
+>   - `teste`
+>   - `verify`
+>   - `ficas`
+>   - `expect`
+>   - `todo`
+>
+> ### 🔵 `NEUTRO` [36] `Audit/testify.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Audit/testify.ts`
+> - **Causa:** A persona 'testify' na stack 'TypeScript' está incompleta. Faltam 36 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `runtestsuite`
+>   - `interpretfailures`
+>   - `filter`
+>   - `analyzetestqualitymatrix`
+>   - `analyzetestpyramid`
+>   - `mockintegrityengine`
+>   - `qa`
+>   - `instrumented`
+>   - `analyze`
+>   - `any`
+>   - `startmetrics`
+>   - `descritivo`
+>   - `verificadas`
+>   - `limite`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `filterbyquality`
+>   - `switch`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `gotestintegrityengine`
+>   - `verification`
+>   - `expectativas`
+>   - `parallel`
+>   - `noerror`
+>   - `cleanup`
+>   - `fatal`
+>   - `error`
+>   - `context`
+>   - `teste`
+>   - `verify`
+>   - `ficas`
+>   - `pytest`
+>   - `borda`
+>
+> ### 🔵 `NEUTRO` [37] `Content/echo.ts`
+>
+> - **Local:** `src_local/agents/Bun/Content/echo.ts`
+> - **Causa:** A persona 'echo' na stack 'Bun' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `observability`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `println`
+>   - `endmetrics`
+>   - `includes`
+>   - `selfdiagnostic`
+>   - `goechoengine`
+>   - `logging`
+>   - `fprintf`
+>   - `estruturados`
+>   - `prometheus`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `mapping`
+>   - `some`
+>   - `arb`
+>   - `alert`
+>
+> ### 🔵 `NEUTRO` [38] `Content/echo.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Content/echo.ts`
+> - **Causa:** A persona 'echo' na stack 'Kotlin' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `inspect`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
 >   - `push`
->   - `toFixed`
+>   - `tofixed`
+>   - `test`
+>   - `goechoengine`
+>   - `logging`
+>   - `fprintf`
+>   - `estruturados`
+>   - `prometheus`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `mapping`
+>   - `some`
+>   - `arb`
+>   - `alert`
+>
+> ### 🔵 `NEUTRO` [39] `Content/echo.ts`
+>
+> - **Local:** `src_local/agents/Go/Content/echo.ts`
+> - **Causa:** A persona 'echo' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `observability`
+>   - `println`
+>   - `mapping`
+>   - `some`
+>   - `arb`
+>   - `alert`
+>
+> ### 🔵 `NEUTRO` [40] `Content/echo.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Content/echo.ts`
+> - **Causa:** A persona 'echo' na stack 'Flutter' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `inspect`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `observability`
+>   - `println`
+>   - `goechoengine`
+>   - `logging`
+>   - `fprintf`
+>   - `estruturados`
+>   - `prometheus`
+>   - `foreach`
+>   - `substring`
+>   - `alert`
+>
+> ### 🔵 `NEUTRO` [41] `Content/echo.ts`
+>
+> - **Local:** `src_local/agents/Python/Content/echo.ts`
+> - **Causa:** A persona 'echo' na stack 'Python' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `inspect`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `observability`
+>   - `println`
+>   - `includes`
+>   - `goechoengine`
+>   - `logging`
+>   - `fprintf`
+>   - `estruturados`
+>   - `prometheus`
+>   - `foreach`
+>   - `substring`
+>   - `arb`
+>   - `alert`
+>
+> ### 🔵 `NEUTRO` [42] `Content/echo.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Content/echo.ts`
+> - **Causa:** A persona 'echo' na stack 'TypeScript' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `inspect`
+>   - `observability`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `println`
+>   - `endmetrics`
+>   - `includes`
+>   - `goechoengine`
+>   - `logging`
+>   - `fprintf`
+>   - `estruturados`
+>   - `prometheus`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `mapping`
+>   - `some`
+>   - `arb`
+>
+> ### 🔵 `NEUTRO` [43] `Content/forge.ts`
+>
+> - **Local:** `src_local/agents/Bun/Content/forge.ts`
+> - **Causa:** A persona 'forge' na stack 'Bun' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `blueprinting`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `some`
+>   - `includes`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `selfdiagnostic`
+>   - `goforgeengine`
+>   - `boilerplate`
+>   - `audit`
+>   - `foreach`
+>   - `substring`
+>   - `externo`
+>
+> ### 🔵 `NEUTRO` [44] `Content/forge.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Content/forge.ts`
+> - **Causa:** A persona 'forge' na stack 'Kotlin' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `eval`
+>   - `function`
+>   - `import`
+>   - `build`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `validatecodesafety`
+>   - `goforgeengine`
+>   - `boilerplate`
+>   - `audit`
+>   - `foreach`
+>   - `substring`
+>   - `externo`
+>
+> ### 🔵 `NEUTRO` [45] `Content/forge.ts`
+>
+> - **Local:** `src_local/agents/Go/Content/forge.ts`
+> - **Causa:** A persona 'forge' na stack 'Go' está incompleta. Faltam 19 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `eval`
+>   - `function`
+>   - `import`
+>   - `build`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `validatecodesafety`
+>   - `blueprinting`
+>   - `some`
+>   - `externo`
+>
+> ### 🔵 `NEUTRO` [46] `Content/forge.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Content/forge.ts`
+> - **Causa:** A persona 'forge' na stack 'Flutter' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `eval`
+>   - `function`
+>   - `import`
+>   - `build`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `goforgeengine`
+>   - `boilerplate`
+>   - `audit`
+>   - `foreach`
+>   - `substring`
+>
+> ### 🔵 `NEUTRO` [47] `Content/forge.ts`
+>
+> - **Local:** `src_local/agents/Python/Content/forge.ts`
+> - **Causa:** A persona 'forge' na stack 'Python' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `eval`
+>   - `function`
+>   - `import`
+>   - `build`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `validatecodesafety`
+>   - `goforgeengine`
+>   - `boilerplate`
+>   - `audit`
+>   - `foreach`
+>   - `substring`
+>   - `externo`
+>
+> ### 🔵 `NEUTRO` [48] `Content/forge.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Content/forge.ts`
+> - **Causa:** A persona 'forge' na stack 'TypeScript' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `import`
+>   - `build`
+>   - `validatecodesafety`
+>   - `blueprinting`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `some`
+>   - `includes`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `goforgeengine`
+>   - `boilerplate`
+>   - `audit`
+>   - `foreach`
+>   - `substring`
+>   - `externo`
+>
+> ### 🔵 `NEUTRO` [49] `Audit/bolt.ts`
+>
+> - **Local:** `src_local/agents/Bun/Audit/bolt.ts`
+> - **Causa:** A persona 'bolt' na stack 'Bun' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `instrumentation`
+>   - `startmetrics`
+>   - `delay`
+>   - `findpatterns`
+>   - `some`
+>   - `includes`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `withcontext`
+>   - `selfdiagnostic`
+>   - `efficiency`
+>   - `map`
+>   - `foreach`
+>   - `sleep`
+>   - `goruntimeanalyzer`
+>   - `inspect`
+>   - `unlock`
+>   - `substring`
+>   - `enumerate`
+>
+> ### 🔵 `NEUTRO` [50] `Audit/bolt.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Audit/bolt.ts`
+> - **Causa:** A persona 'bolt' na stack 'Kotlin' está incompleta. Faltam 26 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `file`
+>   - `write`
+>   - `spawn`
+>   - `from`
+>   - `text`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `efficiency`
+>   - `map`
+>   - `foreach`
+>   - `sleep`
+>   - `goruntimeanalyzer`
+>   - `inspect`
+>   - `unlock`
+>   - `substring`
+>   - `enumerate`
+>
+> ### 🔵 `NEUTRO` [51] `Audit/bolt.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Audit/bolt.ts`
+> - **Causa:** A persona 'bolt' na stack 'Flutter' está incompleta. Faltam 28 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `file`
+>   - `write`
+>   - `spawn`
+>   - `from`
+>   - `text`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `instrumentation`
+>   - `delay`
+>   - `some`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `withcontext`
+>   - `goruntimeanalyzer`
+>   - `inspect`
+>   - `unlock`
+>   - `substring`
+>   - `enumerate`
+>
+> ### 🔵 `NEUTRO` [52] `Audit/bolt.ts`
+>
+> - **Local:** `src_local/agents/Go/Audit/bolt.ts`
+> - **Causa:** A persona 'bolt' na stack 'Go' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `file`
+>   - `write`
+>   - `spawn`
+>   - `from`
+>   - `text`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `instrumentation`
+>   - `delay`
+>   - `some`
+>   - `withcontext`
+>   - `map`
+>   - `sleep`
+>   - `enumerate`
+>
+> ### 🔵 `NEUTRO` [53] `Audit/bolt.ts`
+>
+> - **Local:** `src_local/agents/Python/Audit/bolt.ts`
+> - **Causa:** A persona 'bolt' na stack 'Python' está incompleta. Faltam 28 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `file`
+>   - `write`
+>   - `spawn`
+>   - `from`
+>   - `text`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `instrumentation`
+>   - `delay`
+>   - `includes`
+>   - `withcontext`
+>   - `map`
+>   - `foreach`
+>   - `sleep`
+>   - `goruntimeanalyzer`
+>   - `inspect`
+>   - `unlock`
+>   - `substring`
+>
+> ### 🔵 `NEUTRO` [54] `Audit/bolt.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Audit/bolt.ts`
+> - **Causa:** A persona 'bolt' na stack 'TypeScript' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `file`
+>   - `write`
+>   - `spawn`
+>   - `from`
+>   - `text`
+>   - `instrumentation`
+>   - `startmetrics`
+>   - `delay`
+>   - `findpatterns`
+>   - `some`
+>   - `includes`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `withcontext`
+>   - `efficiency`
+>   - `map`
+>   - `foreach`
+>   - `sleep`
+>   - `goruntimeanalyzer`
+>   - `inspect`
+>   - `unlock`
+>   - `substring`
+>   - `enumerate`
+>
+> ### 🔵 `NEUTRO` [55] `Content/globe.ts`
+>
+> - **Local:** `src_local/agents/Bun/Content/globe.ts`
+> - **Causa:** A persona 'globe' na stack 'Bun' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `logic`
+>   - `recursos`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `some`
+>   - `includes`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `nativo`
+>   - `selfdiagnostic`
+>   - `goglobeengine`
+>   - `ux`
+>   - `audit`
+>   - `match`
+>   - `utc`
+>   - `foreach`
+>   - `rio`
+>   - `fonte`
+>   - `tolocaledatestring`
+>
+> ### 🔵 `NEUTRO` [56] `Content/globe.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Content/globe.ts`
+> - **Causa:** A persona 'globe' na stack 'Kotlin' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `which`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `goglobeengine`
+>   - `ux`
+>   - `audit`
+>   - `match`
+>   - `utc`
+>   - `foreach`
+>   - `rio`
+>   - `fonte`
+>   - `tolocaledatestring`
+>
+> ### 🔵 `NEUTRO` [57] `Content/globe.ts`
+>
+> - **Local:** `src_local/agents/Go/Content/globe.ts`
+> - **Causa:** A persona 'globe' na stack 'Go' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `info`
+>   - `which`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `logic`
+>   - `recursos`
+>   - `some`
+>   - `nativo`
+>   - `rio`
+>   - `fonte`
+>   - `tolocaledatestring`
+>
+> ### 🔵 `NEUTRO` [58] `Content/globe.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Content/globe.ts`
+> - **Causa:** A persona 'globe' na stack 'Flutter' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `which`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `recursos`
+>   - `some`
+>   - `includes`
+>   - `nativo`
+>   - `goglobeengine`
+>   - `ux`
+>   - `audit`
+>   - `match`
+>   - `utc`
+>   - `foreach`
+>   - `rio`
+>   - `fonte`
+>   - `tolocaledatestring`
+>
+> ### 🔵 `NEUTRO` [59] `Content/globe.ts`
+>
+> - **Local:** `src_local/agents/Python/Content/globe.ts`
+> - **Causa:** A persona 'globe' na stack 'Python' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `which`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `recursos`
+>   - `nativo`
+>   - `goglobeengine`
+>   - `ux`
+>   - `audit`
+>   - `match`
+>   - `utc`
+>   - `foreach`
+>   - `tolocaledatestring`
+>
+> ### 🔵 `NEUTRO` [60] `Content/globe.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Content/globe.ts`
+> - **Causa:** A persona 'globe' na stack 'TypeScript' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `which`
+>   - `logic`
+>   - `recursos`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `some`
+>   - `includes`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `nativo`
+>   - `goglobeengine`
+>   - `ux`
+>   - `audit`
+>   - `match`
+>   - `utc`
+>   - `foreach`
+>   - `rio`
+>   - `fonte`
+>
+> ### 🔵 `NEUTRO` [61] `Content/scribe.ts`
+>
+> - **Local:** `src_local/agents/Bun/Content/scribe.ts`
+> - **Causa:** A persona 'scribe' na stack 'Bun' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `integrity`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `some`
+>   - `includes`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `selfdiagnostic`
+>   - `goscribeengine`
+>   - `writing`
+>   - `audit`
+>   - `foreach`
+>   - `substring`
+>   - `o`
+>
+> ### 🔵 `NEUTRO` [62] `Content/scribe.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Content/scribe.ts`
+> - **Causa:** A persona 'scribe' na stack 'Kotlin' está incompleta. Faltam 15 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `entries`
+>   - `endswith`
+>   - `match`
+>   - `push`
+>   - `tofixed`
+>   - `goscribeengine`
+>   - `writing`
+>   - `audit`
+>   - `foreach`
+>   - `substring`
+>   - `o`
+>
+> ### 🔵 `NEUTRO` [63] `Content/scribe.ts`
+>
+> - **Local:** `src_local/agents/Go/Content/scribe.ts`
+> - **Causa:** A persona 'scribe' na stack 'Go' está incompleta. Faltam 10 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `entries`
+>   - `endswith`
+>   - `tofixed`
+>   - `integrity`
+>   - `some`
+>   - `o`
+>
+> ### 🔵 `NEUTRO` [64] `Content/scribe.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Content/scribe.ts`
+> - **Causa:** A persona 'scribe' na stack 'Flutter' está incompleta. Faltam 14 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `entries`
+>   - `endswith`
+>   - `match`
+>   - `push`
+>   - `tofixed`
+>   - `goscribeengine`
+>   - `writing`
+>   - `audit`
+>   - `foreach`
+>   - `substring`
+>
+> ### 🔵 `NEUTRO` [65] `Content/scribe.ts`
+>
+> - **Local:** `src_local/agents/Python/Content/scribe.ts`
+> - **Causa:** A persona 'scribe' na stack 'Python' está incompleta. Faltam 15 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `entries`
+>   - `endswith`
+>   - `match`
+>   - `push`
+>   - `tofixed`
+>   - `goscribeengine`
+>   - `writing`
+>   - `audit`
+>   - `foreach`
+>   - `substring`
+>   - `o`
+>
+> ### 🔵 `NEUTRO` [66] `Content/scribe.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Content/scribe.ts`
+> - **Causa:** A persona 'scribe' na stack 'TypeScript' está incompleta. Faltam 15 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `integrity`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `some`
+>   - `includes`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `goscribeengine`
+>   - `writing`
+>   - `audit`
+>   - `foreach`
+>   - `substring`
+>   - `o`
+>
+> ### 🔵 `NEUTRO` [67] `Content/palette.ts`
+>
+> - **Local:** `src_local/agents/Bun/Content/palette.ts`
+> - **Causa:** A persona 'palette' na stack 'Bun' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `integrity`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `some`
+>   - `includes`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `tema`
+>   - `selfdiagnostic`
+>   - `gopaletteengine`
+>   - `aesthetics`
+>   - `audit`
+>   - `cor`
+>   - `interativos`
+>   - `foreach`
+>   - `substring`
+>   - `charmbracelet`
+>   - `harmony`
+>   - `temas`
+>   - `ntica`
+>   - `ui`
+>
+> ### 🔵 `NEUTRO` [68] `Content/palette.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Content/palette.ts`
+> - **Causa:** A persona 'palette' na stack 'Kotlin' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `gopaletteengine`
+>   - `aesthetics`
+>   - `audit`
+>   - `cor`
+>   - `interativos`
+>   - `foreach`
+>   - `substring`
+>   - `charmbracelet`
+>   - `harmony`
+>   - `temas`
+>   - `ntica`
+>   - `ui`
+>
+> ### 🔵 `NEUTRO` [69] `Content/palette.ts`
+>
+> - **Local:** `src_local/agents/Go/Content/palette.ts`
+> - **Causa:** A persona 'palette' na stack 'Go' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `integrity`
+>   - `some`
+>   - `tema`
+>   - `harmony`
+>   - `temas`
+>   - `ntica`
+>   - `ui`
+>
+> ### 🔵 `NEUTRO` [70] `Content/palette.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Content/palette.ts`
+> - **Causa:** A persona 'palette' na stack 'Flutter' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `integrity`
+>   - `some`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `tema`
+>   - `gopaletteengine`
+>   - `aesthetics`
+>   - `audit`
+>   - `cor`
+>   - `interativos`
+>   - `foreach`
+>   - `substring`
+>   - `charmbracelet`
+>   - `ui`
+>
+> ### 🔵 `NEUTRO` [71] `Content/palette.ts`
+>
+> - **Local:** `src_local/agents/Python/Content/palette.ts`
+> - **Causa:** A persona 'palette' na stack 'Python' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `includes`
+>   - `tema`
+>   - `gopaletteengine`
+>   - `aesthetics`
+>   - `audit`
+>   - `cor`
+>   - `interativos`
+>   - `foreach`
+>   - `substring`
+>   - `charmbracelet`
+>   - `harmony`
+>   - `temas`
+>   - `ntica`
+>
+> ### 🔵 `NEUTRO` [72] `Content/palette.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Content/palette.ts`
+> - **Causa:** A persona 'palette' na stack 'TypeScript' está incompleta. Faltam 22 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `integrity`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `some`
+>   - `includes`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `tema`
+>   - `gopaletteengine`
+>   - `aesthetics`
+>   - `audit`
+>   - `cor`
+>   - `interativos`
+>   - `foreach`
+>   - `substring`
+>   - `charmbracelet`
+>   - `harmony`
+>   - `temas`
+>   - `ntica`
+>   - `ui`
+>
+> ### 🔵 `NEUTRO` [73] `Content/hype.ts`
+>
+> - **Local:** `src_local/agents/Bun/Content/hype.ts`
+> - **Causa:** A persona 'hype' na stack 'Bun' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `vectors`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `release`
+>   - `endmetrics`
+>   - `selfdiagnostic`
+>   - `gohypeengine`
+>   - `engagement`
+>   - `audit`
+>   - `macro`
+>   - `match`
+>   - `split`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `discovery`
+>
+> ### 🔵 `NEUTRO` [74] `Content/hype.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Content/hype.ts`
+> - **Causa:** A persona 'hype' na stack 'Kotlin' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `entries`
+>   - `endswith`
+>   - `parse`
+>   - `push`
+>   - `keys`
+>   - `some`
+>   - `test`
+>   - `tofixed`
+>   - `gohypeengine`
+>   - `engagement`
+>   - `audit`
+>   - `macro`
+>   - `match`
+>   - `split`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `discovery`
+>
+> ### 🔵 `NEUTRO` [75] `Content/hype.ts`
+>
+> - **Local:** `src_local/agents/Go/Content/hype.ts`
+> - **Causa:** A persona 'hype' na stack 'Go' está incompleta. Faltam 14 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `entries`
+>   - `endswith`
+>   - `parse`
+>   - `keys`
+>   - `some`
+>   - `test`
+>   - `tofixed`
+>   - `vectors`
+>   - `release`
+>   - `discovery`
+>
+> ### 🔵 `NEUTRO` [76] `Content/hype.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Content/hype.ts`
+> - **Causa:** A persona 'hype' na stack 'Flutter' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `entries`
+>   - `endswith`
+>   - `parse`
+>   - `push`
+>   - `keys`
+>   - `some`
+>   - `test`
+>   - `tofixed`
+>   - `vectors`
+>   - `release`
+>   - `gohypeengine`
+>   - `engagement`
+>   - `audit`
+>   - `macro`
+>   - `match`
+>   - `split`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>
+> ### 🔵 `NEUTRO` [77] `Content/hype.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Content/hype.ts`
+> - **Causa:** A persona 'hype' na stack 'TypeScript' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `vectors`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `release`
+>   - `endmetrics`
+>   - `gohypeengine`
+>   - `engagement`
+>   - `audit`
+>   - `macro`
+>   - `match`
+>   - `split`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `discovery`
+>
+> ### 🔵 `NEUTRO` [78] `Content/mantra.ts`
+>
+> - **Local:** `src_local/agents/Bun/Content/mantra.ts`
+> - **Causa:** A persona 'mantra' na stack 'Bun' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `architecture`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `imutabilidade`
+>   - `endmetrics`
+>   - `includes`
+>   - `selfdiagnostic`
+>   - `gomantraengine`
+>   - `idioms`
+>   - `go`
+>   - `audit`
+>   - `split`
+>   - `panic`
+>   - `new`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `purity`
+>   - `manager`
+>   - `assertion`
 >   - `test`
 >
-> ### 🔵 `NEUTRO` [11] `System/bridge.ts`
+> ### 🔵 `NEUTRO` [79] `Content/mantra.ts`
 >
-> - **Local:** `src_local/agents/Bun/System/bridge.ts`
-> - **Causa:** Componente 'bridge.ts' evoluiu com 18 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
+> - **Local:** `src_local/agents/Kotlin/Content/mantra.ts`
+> - **Causa:** A persona 'mantra' na stack 'Kotlin' está incompleta. Faltam 30 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
 >   - `child`
->   - `constructor`
->   - `super`
 >   - `now`
 >   - `info`
 >   - `file`
 >   - `json`
 >   - `for`
->   - `RegExp`
+>   - `regexp`
 >   - `entries`
->   - `if`
->   - `endsWith`
+>   - `endswith`
 >   - `of`
->   - `matchAll`
+>   - `matchall`
 >   - `push`
+>   - `tofixed`
+>   - `match`
+>   - `gomantraengine`
+>   - `idioms`
+>   - `go`
+>   - `audit`
+>   - `split`
+>   - `panic`
+>   - `new`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
 >   - `substring`
->   - `toFixed`
+>   - `purity`
+>   - `manager`
+>   - `assertion`
 >   - `test`
 >
-> ### 🔵 `NEUTRO` [12] `System/cache.ts`
+> ### 🔵 `NEUTRO` [80] `Content/mantra.ts`
 >
-> - **Local:** `src_local/agents/Bun/System/cache.ts`
-> - **Causa:** Componente 'cache.ts' evoluiu com 18 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
+> - **Local:** `src_local/agents/Go/Content/mantra.ts`
+> - **Causa:** A persona 'mantra' na stack 'Go' está incompleta. Faltam 19 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
 >   - `child`
->   - `constructor`
->   - `super`
+>   - `now`
+>   - `info`
+>   - `file`
+>   - `json`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `match`
+>   - `architecture`
+>   - `imutabilidade`
+>   - `purity`
+>   - `manager`
+>   - `assertion`
+>   - `test`
+>
+> ### 🔵 `NEUTRO` [81] `Content/mantra.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Content/mantra.ts`
+> - **Causa:** A persona 'mantra' na stack 'Flutter' está incompleta. Faltam 30 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `file`
+>   - `json`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `match`
+>   - `architecture`
+>   - `imutabilidade`
+>   - `gomantraengine`
+>   - `idioms`
+>   - `go`
+>   - `audit`
+>   - `split`
+>   - `panic`
+>   - `new`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `assertion`
+>   - `test`
+>
+> ### 🔵 `NEUTRO` [82] `Content/mantra.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Content/mantra.ts`
+> - **Causa:** A persona 'mantra' na stack 'TypeScript' está incompleta. Faltam 22 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `file`
+>   - `json`
+>   - `architecture`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `imutabilidade`
+>   - `endmetrics`
+>   - `includes`
+>   - `gomantraengine`
+>   - `idioms`
+>   - `go`
+>   - `audit`
+>   - `split`
+>   - `panic`
+>   - `new`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `purity`
+>   - `manager`
+>
+> ### 🔵 `NEUTRO` [83] `Strategic/sentinel.ts`
+>
+> - **Local:** `src_local/agents/Bun/Strategic/sentinel.ts`
+> - **Causa:** A persona 'sentinel' na stack 'Bun' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `architecture`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `endmetrics`
+>   - `includes`
+>   - `selfdiagnostic`
+>   - `gosecurityengine`
+>   - `vigilance`
+>   - `audit`
+>   - `a`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `shielding`
+>   - `o`
+>   - `some`
+>   - `vulnerabilities`
+>
+> ### 🔵 `NEUTRO` [84] `Strategic/sentinel.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Strategic/sentinel.ts`
+> - **Causa:** A persona 'sentinel' na stack 'Kotlin' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `gosecurityengine`
+>   - `vigilance`
+>   - `audit`
+>   - `a`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `shielding`
+>   - `o`
+>   - `some`
+>   - `vulnerabilities`
+>
+> ### 🔵 `NEUTRO` [85] `Strategic/sentinel.ts`
+>
+> - **Local:** `src_local/agents/Go/Strategic/sentinel.ts`
+> - **Causa:** A persona 'sentinel' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `architecture`
+>   - `shielding`
+>   - `o`
+>   - `some`
+>   - `vulnerabilities`
+>
+> ### 🔵 `NEUTRO` [86] `Strategic/sentinel.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Strategic/sentinel.ts`
+> - **Causa:** A persona 'sentinel' na stack 'Flutter' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `architecture`
+>   - `includes`
+>   - `gosecurityengine`
+>   - `vigilance`
+>   - `audit`
+>   - `a`
+>   - `foreach`
+>   - `vulnerabilities`
+>
+> ### 🔵 `NEUTRO` [87] `Strategic/sentinel.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Strategic/sentinel.ts`
+> - **Causa:** A persona 'sentinel' na stack 'TypeScript' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `substring`
+>   - `architecture`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `endmetrics`
+>   - `includes`
+>   - `gosecurityengine`
+>   - `vigilance`
+>   - `audit`
+>   - `a`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `shielding`
+>   - `o`
+>   - `some`
+>   - `vulnerabilities`
+>
+> ### 🔵 `NEUTRO` [88] `Strategic/sentinel.ts`
+>
+> - **Local:** `src_local/agents/Python/Strategic/sentinel.ts`
+> - **Causa:** A persona 'sentinel' na stack 'Python' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `architecture`
+>   - `includes`
+>   - `gosecurityengine`
+>   - `vigilance`
+>   - `audit`
+>   - `a`
+>   - `foreach`
+>   - `o`
+>
+> ### 🔵 `NEUTRO` [89] `System/bridge.ts`
+>
+> - **Local:** `src_local/agents/Go/System/bridge.ts`
+> - **Causa:** A persona 'bridge' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `file`
+>   - `json`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `systems`
+>   - `nativas`
+>   - `jni`
+>
+> ### 🔵 `NEUTRO` [90] `System/bridge.ts`
+>
+> - **Local:** `src_local/agents/Bun/System/bridge.ts`
+> - **Causa:** A persona 'bridge' na stack 'Bun' está incompleta. Faltam 19 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gobridgeengine`
+>   - `stack`
+>   - `ffi`
+>   - `audit`
+>   - `includes`
+>   - `startmetrics`
+>   - `insegura`
+>   - `gerenciado`
+>   - `locais`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `selfdiagnostic`
+>   - `systems`
+>   - `nativas`
+>   - `jni`
+>
+> ### 🔵 `NEUTRO` [91] `System/bridge.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/System/bridge.ts`
+> - **Causa:** A persona 'bridge' na stack 'Kotlin' está incompleta. Faltam 26 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gobridgeengine`
+>   - `stack`
+>   - `ffi`
+>   - `audit`
+>   - `push`
+>   - `insegura`
+>   - `gerenciado`
+>   - `locais`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `file`
+>   - `json`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>
+> ### 🔵 `NEUTRO` [92] `System/bridge.ts`
+>
+> - **Local:** `src_local/agents/Flutter/System/bridge.ts`
+> - **Causa:** A persona 'bridge' na stack 'Flutter' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gobridgeengine`
+>   - `stack`
+>   - `ffi`
+>   - `audit`
+>   - `push`
+>   - `insegura`
+>   - `gerenciado`
+>   - `locais`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `file`
+>   - `json`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `jni`
+>
+> ### 🔵 `NEUTRO` [93] `System/bridge.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/System/bridge.ts`
+> - **Causa:** A persona 'bridge' na stack 'TypeScript' está incompleta. Faltam 19 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gobridgeengine`
+>   - `stack`
+>   - `ffi`
+>   - `audit`
+>   - `includes`
+>   - `startmetrics`
+>   - `insegura`
+>   - `gerenciado`
+>   - `locais`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `file`
+>   - `systems`
+>   - `nativas`
+>   - `jni`
+>
+> ### 🔵 `NEUTRO` [94] `Strategic/vault.ts`
+>
+> - **Local:** `src_local/agents/Bun/Strategic/vault.ts`
+> - **Causa:** A persona 'vault' na stack 'Bun' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `persistence`
+>   - `startmetrics`
+>   - `chave`
+>   - `findpatterns`
+>   - `some`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `selfdiagnostic`
+>   - `govaultengine`
+>   - `secrets`
+>   - `audit`
+>   - `match`
+>   - `obsoletos`
+>   - `includes`
+>   - `foreach`
+>   - `substring`
+>   - `architecture`
+>   - `backing`
+>
+> ### 🔵 `NEUTRO` [95] `Strategic/vault.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Strategic/vault.ts`
+> - **Causa:** A persona 'vault' na stack 'Kotlin' está incompleta. Faltam 22 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `govaultengine`
+>   - `secrets`
+>   - `audit`
+>   - `match`
+>   - `obsoletos`
+>   - `includes`
+>   - `foreach`
+>   - `substring`
+>   - `architecture`
+>   - `backing`
+>
+> ### 🔵 `NEUTRO` [96] `Strategic/vault.ts`
+>
+> - **Local:** `src_local/agents/Go/Strategic/vault.ts`
+> - **Causa:** A persona 'vault' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `persistence`
+>   - `chave`
+>   - `some`
+>   - `architecture`
+>   - `backing`
+>
+> ### 🔵 `NEUTRO` [97] `Strategic/vault.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Strategic/vault.ts`
+> - **Causa:** A persona 'vault' na stack 'Flutter' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `chave`
+>   - `govaultengine`
+>   - `secrets`
+>   - `audit`
+>   - `match`
+>   - `obsoletos`
+>   - `includes`
+>   - `foreach`
+>   - `substring`
+>
+> ### 🔵 `NEUTRO` [98] `Strategic/vault.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Strategic/vault.ts`
+> - **Causa:** A persona 'vault' na stack 'TypeScript' está incompleta. Faltam 19 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `persistence`
+>   - `startmetrics`
+>   - `chave`
+>   - `findpatterns`
+>   - `some`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `govaultengine`
+>   - `secrets`
+>   - `audit`
+>   - `match`
+>   - `obsoletos`
+>   - `includes`
+>   - `foreach`
+>   - `substring`
+>   - `architecture`
+>   - `backing`
+>
+> ### 🔵 `NEUTRO` [99] `Strategic/vault.ts`
+>
+> - **Local:** `src_local/agents/Python/Strategic/vault.ts`
+> - **Causa:** A persona 'vault' na stack 'Python' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `chave`
+>   - `govaultengine`
+>   - `secrets`
+>   - `audit`
+>   - `match`
+>   - `obsoletos`
+>   - `includes`
+>   - `foreach`
+>   - `substring`
+>   - `architecture`
+>   - `backing`
+>
+> ### 🔵 `NEUTRO` [100] `System/cache.ts`
+>
+> - **Local:** `src_local/agents/Go/System/cache.ts`
+> - **Causa:** A persona 'cache' na stack 'Go' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
 >   - `now`
 >   - `info`
 >   - `file`
 >   - `text`
 >   - `write`
 >   - `for`
->   - `RegExp`
+>   - `regexp`
 >   - `entries`
->   - `if`
->   - `endsWith`
+>   - `endswith`
 >   - `of`
->   - `matchAll`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `optimization`
+>   - `ria`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [101] `System/cache.ts`
+>
+> - **Local:** `src_local/agents/Bun/System/cache.ts`
+> - **Causa:** A persona 'cache' na stack 'Bun' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gocacheengine`
+>   - `performance`
+>   - `audit`
+>   - `includes`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `selfdiagnostic`
+>   - `optimization`
+>   - `ria`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [102] `System/cache.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/System/cache.ts`
+> - **Causa:** A persona 'cache' na stack 'Kotlin' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gocacheengine`
+>   - `performance`
+>   - `audit`
+>   - `includes`
 >   - `push`
->   - `toFixed`
+>   - `foreach`
+>   - `substring`
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `file`
+>   - `text`
+>   - `write`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `ria`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [103] `System/cache.ts`
+>
+> - **Local:** `src_local/agents/Flutter/System/cache.ts`
+> - **Causa:** A persona 'cache' na stack 'Flutter' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gocacheengine`
+>   - `performance`
+>   - `audit`
+>   - `includes`
+>   - `push`
+>   - `foreach`
+>   - `substring`
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `file`
+>   - `text`
+>   - `write`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `ria`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [104] `System/cache.ts`
+>
+> - **Local:** `src_local/agents/Python/System/cache.ts`
+> - **Causa:** A persona 'cache' na stack 'Python' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gocacheengine`
+>   - `performance`
+>   - `audit`
+>   - `push`
+>   - `foreach`
+>   - `substring`
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `file`
+>   - `text`
+>   - `write`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
 >   - `test`
 >
-> ### 🔵 `NEUTRO` [13] `System/flow.ts`
+> ### 🔵 `NEUTRO` [105] `System/cache.ts`
 >
-> - **Local:** `src_local/agents/Bun/System/flow.ts`
-> - **Causa:** Componente 'flow.ts' evoluiu com 17 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
+> - **Local:** `src_local/agents/TypeScript/System/cache.ts`
+> - **Causa:** A persona 'cache' na stack 'TypeScript' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gocacheengine`
+>   - `performance`
+>   - `audit`
+>   - `includes`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `file`
+>   - `text`
+>   - `write`
+>   - `optimization`
+>   - `ria`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [106] `Strategic/voyager.ts`
+>
+> - **Local:** `src_local/agents/Bun/Strategic/voyager.ts`
+> - **Causa:** A persona 'voyager' na stack 'Bun' está incompleta. Faltam 35 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `linking`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `mapexplorationvectors`
+>   - `endmetrics`
+>   - `log`
+>   - `join`
+>   - `links`
+>   - `selfdiagnostic`
+>   - `goroutingengine`
+>   - `navigation`
+>   - `analyze`
+>   - `includes`
+>   - `default`
+>   - `new`
+>   - `use`
+>   - `raiz`
+>   - `framework`
+>   - `foreach`
+>   - `substring`
+>   - `openapi`
+>   - `parameters`
+>   - `apply`
+>   - `call`
+>   - `stica`
+>   - `getabsolutepath`
+>   - `existssync`
+>   - `readfilesync`
+>   - `split`
+>   - `trim`
+>   - `catch`
+>   - `error`
+>   - `writefilesync`
+>   - `isabsolute`
+>   - `metro`
+>
+> ### 🔵 `NEUTRO` [107] `Strategic/voyager.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Strategic/voyager.ts`
+> - **Causa:** A persona 'voyager' na stack 'Kotlin' está incompleta. Faltam 42 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
 >   - `child`
->   - `constructor`
->   - `super`
+>   - `now`
+>   - `info`
+>   - `require`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `if`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `suggestautohealing`
+>   - `filter`
+>   - `goroutingengine`
+>   - `navigation`
+>   - `analyze`
+>   - `includes`
+>   - `default`
+>   - `new`
+>   - `use`
+>   - `raiz`
+>   - `framework`
+>   - `foreach`
+>   - `substring`
+>   - `openapi`
+>   - `parameters`
+>   - `apply`
+>   - `call`
+>   - `stica`
+>   - `getabsolutepath`
+>   - `existssync`
+>   - `readfilesync`
+>   - `split`
+>   - `trim`
+>   - `catch`
+>   - `error`
+>   - `writefilesync`
+>   - `isabsolute`
+>   - `metro`
+>
+> ### 🔵 `NEUTRO` [108] `Strategic/voyager.ts`
+>
+> - **Local:** `src_local/agents/Go/Strategic/voyager.ts`
+> - **Causa:** A persona 'voyager' na stack 'Go' está incompleta. Faltam 32 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `require`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `suggestautohealing`
+>   - `filter`
+>   - `map`
+>   - `linking`
+>   - `mapexplorationvectors`
+>   - `links`
+>   - `parameters`
+>   - `apply`
+>   - `call`
+>   - `stica`
+>   - `getabsolutepath`
+>   - `existssync`
+>   - `readfilesync`
+>   - `split`
+>   - `trim`
+>   - `catch`
+>   - `error`
+>   - `writefilesync`
+>   - `isabsolute`
+>   - `metro`
+>
+> ### 🔵 `NEUTRO` [109] `Strategic/voyager.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Strategic/voyager.ts`
+> - **Causa:** A persona 'voyager' na stack 'Flutter' está incompleta. Faltam 42 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `require`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `if`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `filter`
+>   - `links`
+>   - `goroutingengine`
+>   - `navigation`
+>   - `analyze`
+>   - `includes`
+>   - `default`
+>   - `new`
+>   - `use`
+>   - `raiz`
+>   - `framework`
+>   - `foreach`
+>   - `substring`
+>   - `openapi`
+>   - `parameters`
+>   - `apply`
+>   - `call`
+>   - `stica`
+>   - `getabsolutepath`
+>   - `existssync`
+>   - `readfilesync`
+>   - `split`
+>   - `trim`
+>   - `catch`
+>   - `error`
+>   - `writefilesync`
+>   - `isabsolute`
+>   - `metro`
+>
+> ### 🔵 `NEUTRO` [110] `Strategic/voyager.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Strategic/voyager.ts`
+> - **Causa:** A persona 'voyager' na stack 'TypeScript' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `suggestautohealing`
+>   - `filter`
+>   - `map`
+>   - `linking`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `mapexplorationvectors`
+>   - `endmetrics`
+>   - `log`
+>   - `links`
+>   - `goroutingengine`
+>   - `navigation`
+>   - `analyze`
+>   - `includes`
+>   - `default`
+>   - `new`
+>   - `use`
+>   - `raiz`
+>   - `framework`
+>   - `foreach`
+>   - `substring`
+>   - `openapi`
+>   - `metro`
+>
+> ### 🔵 `NEUTRO` [111] `Strategic/voyager.ts`
+>
+> - **Local:** `src_local/agents/Python/Strategic/voyager.ts`
+> - **Causa:** A persona 'voyager' na stack 'Python' está incompleta. Faltam 42 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `require`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `if`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `suggestautohealing`
+>   - `filter`
+>   - `links`
+>   - `goroutingengine`
+>   - `navigation`
+>   - `analyze`
+>   - `includes`
+>   - `default`
+>   - `new`
+>   - `use`
+>   - `raiz`
+>   - `framework`
+>   - `foreach`
+>   - `substring`
+>   - `openapi`
+>   - `parameters`
+>   - `apply`
+>   - `call`
+>   - `stica`
+>   - `getabsolutepath`
+>   - `existssync`
+>   - `readfilesync`
+>   - `split`
+>   - `trim`
+>   - `catch`
+>   - `error`
+>   - `writefilesync`
+>   - `isabsolute`
+>
+> ### 🔵 `NEUTRO` [112] `System/flow.ts`
+>
+> - **Local:** `src_local/agents/Go/System/flow.ts`
+> - **Causa:** A persona 'flow' na stack 'Go' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
 >   - `now`
 >   - `info`
 >   - `then`
 >   - `for`
->   - `RegExp`
+>   - `regexp`
 >   - `entries`
->   - `if`
->   - `endsWith`
+>   - `endswith`
 >   - `of`
->   - `matchAll`
->   - `push`
->   - `substring`
->   - `toFixed`
+>   - `matchall`
+>   - `tofixed`
 >   - `test`
+>   - `integrity`
+>   - `some`
+>   - `operators`
+>   - `topology`
+>   - `ncronos`
+>   - `individuais`
 >
-> ### 🔵 `NEUTRO` [14] `System/hermes.ts`
+> ### 🔵 `NEUTRO` [113] `System/flow.ts`
 >
-> - **Local:** `src_local/agents/Bun/System/hermes.ts`
-> - **Causa:** Componente 'hermes.ts' evoluiu com 17 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
+> - **Local:** `src_local/agents/Bun/System/flow.ts`
+> - **Causa:** A persona 'flow' na stack 'Bun' está incompleta. Faltam 19 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `goflowengine`
+>   - `intelligence`
+>   - `analyze`
+>   - `includes`
+>   - `close`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `selfdiagnostic`
+>   - `integrity`
+>   - `some`
+>   - `operators`
+>   - `topology`
+>   - `ncronos`
+>   - `individuais`
+>
+> ### 🔵 `NEUTRO` [114] `System/flow.ts`
+>
+> - **Local:** `src_local/agents/Flutter/System/flow.ts`
+> - **Causa:** A persona 'flow' na stack 'Flutter' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `goflowengine`
+>   - `intelligence`
+>   - `analyze`
+>   - `includes`
+>   - `close`
+>   - `push`
+>   - `foreach`
+>   - `substring`
 >   - `child`
->   - `constructor`
->   - `super`
+>   - `now`
+>   - `info`
+>   - `then`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `topology`
+>   - `ncronos`
+>   - `individuais`
+>
+> ### 🔵 `NEUTRO` [115] `System/flow.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/System/flow.ts`
+> - **Causa:** A persona 'flow' na stack 'Kotlin' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `goflowengine`
+>   - `intelligence`
+>   - `analyze`
+>   - `close`
+>   - `push`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `then`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `integrity`
+>   - `some`
+>   - `operators`
+>   - `ncronos`
+>   - `individuais`
+>
+> ### 🔵 `NEUTRO` [116] `System/flow.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/System/flow.ts`
+> - **Causa:** A persona 'flow' na stack 'TypeScript' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `goflowengine`
+>   - `intelligence`
+>   - `analyze`
+>   - `includes`
+>   - `close`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `integrity`
+>   - `some`
+>   - `operators`
+>   - `topology`
+>   - `ncronos`
+>   - `individuais`
+>
+> ### 🔵 `NEUTRO` [117] `System/flow.ts`
+>
+> - **Local:** `src_local/agents/Python/System/flow.ts`
+> - **Causa:** A persona 'flow' na stack 'Python' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `goflowengine`
+>   - `intelligence`
+>   - `analyze`
+>   - `close`
+>   - `push`
+>   - `foreach`
+>   - `substring`
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `then`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `operators`
+>   - `topology`
+>
+> ### 🔵 `NEUTRO` [118] `System/hermes.ts`
+>
+> - **Local:** `src_local/agents/Go/System/hermes.ts`
+> - **Causa:** A persona 'hermes' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
 >   - `now`
 >   - `info`
 >   - `for`
->   - `RegExp`
+>   - `regexp`
 >   - `entries`
->   - `if`
->   - `endsWith`
+>   - `endswith`
 >   - `of`
->   - `matchAll`
->   - `push`
+>   - `matchall`
 >   - `keys`
 >   - `some`
->   - `toFixed`
+>   - `tofixed`
 >   - `test`
+>   - `integrity`
+>   - `architecture`
+>   - `o`
 >
-> ### 🔵 `NEUTRO` [15] `Audit/probe.ts`
+> ### 🔵 `NEUTRO` [119] `System/hermes.ts`
 >
-> - **Local:** `src_local/agents/Bun/Audit/probe.ts`
-> - **Causa:** Componente 'probe.ts' evoluiu com 16 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
+> - **Local:** `src_local/agents/Bun/System/hermes.ts`
+> - **Causa:** A persona 'hermes' na stack 'Bun' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gohermesengine`
+>   - `reliability`
+>   - `audit`
+>   - `includes`
+>   - `panic`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `selfdiagnostic`
+>   - `integrity`
+>   - `architecture`
+>   - `o`
+>
+> ### 🔵 `NEUTRO` [120] `System/hermes.ts`
+>
+> - **Local:** `src_local/agents/Flutter/System/hermes.ts`
+> - **Causa:** A persona 'hermes' na stack 'Flutter' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gohermesengine`
+>   - `reliability`
+>   - `audit`
+>   - `panic`
+>   - `push`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
 >   - `child`
->   - `constructor`
->   - `super`
 >   - `now`
 >   - `info`
 >   - `for`
->   - `RegExp`
+>   - `regexp`
 >   - `entries`
->   - `if`
->   - `endsWith`
+>   - `endswith`
 >   - `of`
->   - `matchAll`
+>   - `matchall`
+>   - `keys`
+>   - `some`
+>   - `tofixed`
+>   - `test`
+>   - `architecture`
+>   - `o`
+>
+> ### 🔵 `NEUTRO` [121] `System/hermes.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/System/hermes.ts`
+> - **Causa:** A persona 'hermes' na stack 'Kotlin' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gohermesengine`
+>   - `reliability`
+>   - `audit`
+>   - `panic`
 >   - `push`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
 >   - `substring`
->   - `toFixed`
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `keys`
+>   - `some`
+>   - `tofixed`
+>   - `test`
+>   - `integrity`
+>
+> ### 🔵 `NEUTRO` [122] `System/hermes.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/System/hermes.ts`
+> - **Causa:** A persona 'hermes' na stack 'TypeScript' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gohermesengine`
+>   - `reliability`
+>   - `audit`
+>   - `includes`
+>   - `panic`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `keys`
+>   - `some`
+>   - `integrity`
+>   - `architecture`
+>   - `o`
+>
+> ### 🔵 `NEUTRO` [123] `Strategic/warden.ts`
+>
+> - **Local:** `src_local/agents/Go/Strategic/warden.ts`
+> - **Causa:** A persona 'warden' na stack 'Go' está incompleta. Faltam 14 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `lifecycle`
+>   - `some`
+>   - `broadcast`
+>
+> ### 🔵 `NEUTRO` [124] `Strategic/warden.ts`
+>
+> - **Local:** `src_local/agents/Bun/Strategic/warden.ts`
+> - **Causa:** A persona 'warden' na stack 'Bun' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `golifecycleengine`
+>   - `governance`
+>   - `recursos`
+>   - `inspect`
+>   - `includes`
+>   - `close`
+>   - `stop`
+>   - `parada`
+>   - `startmetrics`
+>   - `add`
+>   - `done`
+>   - `exit`
+>   - `main`
+>   - `rio`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `selfdiagnostic`
+>   - `lifecycle`
+>   - `some`
+>   - `broadcast`
+>
+> ### 🔵 `NEUTRO` [125] `Strategic/warden.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Strategic/warden.ts`
+> - **Causa:** A persona 'warden' na stack 'Kotlin' está incompleta. Faltam 28 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `golifecycleengine`
+>   - `governance`
+>   - `recursos`
+>   - `inspect`
+>   - `includes`
+>   - `push`
+>   - `close`
+>   - `stop`
+>   - `parada`
+>   - `add`
+>   - `done`
+>   - `exit`
+>   - `main`
+>   - `rio`
+>   - `foreach`
+>   - `substring`
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `broadcast`
+>
+> ### 🔵 `NEUTRO` [126] `Strategic/warden.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Strategic/warden.ts`
+> - **Causa:** A persona 'warden' na stack 'Flutter' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `golifecycleengine`
+>   - `governance`
+>   - `recursos`
+>   - `inspect`
+>   - `includes`
+>   - `push`
+>   - `close`
+>   - `stop`
+>   - `parada`
+>   - `add`
+>   - `done`
+>   - `exit`
+>   - `main`
+>   - `rio`
+>   - `foreach`
+>   - `substring`
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
 >   - `test`
 >
-> ### 🔵 `NEUTRO` [16] `System/neural.ts`
+> ### 🔵 `NEUTRO` [127] `Strategic/warden.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Strategic/warden.ts`
+> - **Causa:** A persona 'warden' na stack 'TypeScript' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `golifecycleengine`
+>   - `governance`
+>   - `recursos`
+>   - `inspect`
+>   - `includes`
+>   - `close`
+>   - `stop`
+>   - `parada`
+>   - `startmetrics`
+>   - `add`
+>   - `done`
+>   - `exit`
+>   - `main`
+>   - `rio`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `lifecycle`
+>   - `some`
+>   - `broadcast`
+>
+> ### 🔵 `NEUTRO` [128] `System/neural.ts`
+>
+> - **Local:** `src_local/agents/Go/System/neural.ts`
+> - **Causa:** A persona 'neural' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `orchestration`
+>   - `some`
+>   - `thread`
+>   - `learning`
+>   - `alta`
+>
+> ### 🔵 `NEUTRO` [129] `System/neural.ts`
 >
 > - **Local:** `src_local/agents/Bun/System/neural.ts`
-> - **Causa:** Componente 'neural.ts' evoluiu com 17 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
+> - **Causa:** A persona 'neural' na stack 'Bun' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `goneuralengine`
+>   - `computing`
+>   - `audit`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `selfdiagnostic`
+>   - `orchestration`
+>   - `some`
+>   - `thread`
+>   - `learning`
+>   - `alta`
+>
+> ### 🔵 `NEUTRO` [130] `System/neural.ts`
+>
+> - **Local:** `src_local/agents/Flutter/System/neural.ts`
+> - **Causa:** A persona 'neural' na stack 'Flutter' está incompleta. Faltam 19 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `goneuralengine`
+>   - `computing`
+>   - `audit`
+>   - `push`
+>   - `foreach`
+>   - `substring`
 >   - `child`
->   - `constructor`
->   - `super`
 >   - `now`
 >   - `info`
 >   - `for`
->   - `RegExp`
+>   - `regexp`
 >   - `entries`
->   - `if`
->   - `endsWith`
->   - `includes`
+>   - `endswith`
 >   - `of`
->   - `matchAll`
->   - `push`
->   - `substring`
->   - `toFixed`
+>   - `matchall`
+>   - `tofixed`
 >   - `test`
+>   - `learning`
+>   - `alta`
 >
-> ### 🔵 `NEUTRO` [17] `System/nexus.ts`
+> ### 🔵 `NEUTRO` [131] `System/neural.ts`
 >
-> - **Local:** `src_local/agents/Bun/System/nexus.ts`
-> - **Causa:** Componente 'nexus.ts' evoluiu com 17 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
+> - **Local:** `src_local/agents/Kotlin/System/neural.ts`
+> - **Causa:** A persona 'neural' na stack 'Kotlin' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `goneuralengine`
+>   - `computing`
+>   - `audit`
+>   - `push`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
 >   - `child`
->   - `constructor`
->   - `super`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `orchestration`
+>   - `some`
+>   - `thread`
+>   - `alta`
+>
+> ### 🔵 `NEUTRO` [132] `System/neural.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/System/neural.ts`
+> - **Causa:** A persona 'neural' na stack 'TypeScript' está incompleta. Faltam 14 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `goneuralengine`
+>   - `computing`
+>   - `audit`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `orchestration`
+>   - `some`
+>   - `thread`
+>   - `learning`
+>
+> ### 🔵 `NEUTRO` [133] `System/neural.ts`
+>
+> - **Local:** `src_local/agents/Python/System/neural.ts`
+> - **Causa:** A persona 'neural' na stack 'Python' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `goneuralengine`
+>   - `computing`
+>   - `audit`
+>   - `includes`
+>   - `push`
+>   - `foreach`
+>   - `substring`
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `thread`
+>   - `learning`
+>   - `alta`
+>
+> ### 🔵 `NEUTRO` [134] `System/nexus.ts`
+>
+> - **Local:** `src_local/agents/Go/System/nexus.ts`
+> - **Causa:** A persona 'nexus' na stack 'Go' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
 >   - `now`
 >   - `info`
 >   - `fetch`
 >   - `for`
->   - `RegExp`
+>   - `regexp`
 >   - `entries`
->   - `if`
->   - `endsWith`
+>   - `endswith`
 >   - `of`
->   - `matchAll`
->   - `push`
->   - `substring`
->   - `toFixed`
+>   - `matchall`
+>   - `tofixed`
 >   - `test`
+>   - `integrity`
+>   - `runtime`
+>   - `some`
+>   - `resiliency`
+>   - `controlados`
+>   - `settimeout`
 >
-> ### 🔵 `NEUTRO` [18] `System/spark.ts`
+> ### 🔵 `NEUTRO` [135] `System/nexus.ts`
 >
-> - **Local:** `src_local/agents/Bun/System/spark.ts`
-> - **Causa:** Componente 'spark.ts' evoluiu com 17 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
+> - **Local:** `src_local/agents/Bun/System/nexus.ts`
+> - **Causa:** A persona 'nexus' na stack 'Bun' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `goorchestrationengine`
+>   - `systems`
+>   - `audit`
+>   - `includes`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `selfdiagnostic`
+>   - `integrity`
+>   - `runtime`
+>   - `some`
+>   - `resiliency`
+>   - `controlados`
+>   - `settimeout`
+>
+> ### 🔵 `NEUTRO` [136] `System/nexus.ts`
+>
+> - **Local:** `src_local/agents/Flutter/System/nexus.ts`
+> - **Causa:** A persona 'nexus' na stack 'Flutter' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `goorchestrationengine`
+>   - `systems`
+>   - `audit`
+>   - `push`
+>   - `foreach`
+>   - `substring`
 >   - `child`
->   - `constructor`
->   - `super`
+>   - `now`
+>   - `info`
+>   - `fetch`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `resiliency`
+>   - `controlados`
+>   - `settimeout`
+>
+> ### 🔵 `NEUTRO` [137] `System/nexus.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/System/nexus.ts`
+> - **Causa:** A persona 'nexus' na stack 'Kotlin' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `goorchestrationengine`
+>   - `systems`
+>   - `audit`
+>   - `push`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `fetch`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `integrity`
+>   - `runtime`
+>   - `some`
+>   - `settimeout`
+>
+> ### 🔵 `NEUTRO` [138] `System/nexus.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/System/nexus.ts`
+> - **Causa:** A persona 'nexus' na stack 'TypeScript' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `goorchestrationengine`
+>   - `systems`
+>   - `audit`
+>   - `includes`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `integrity`
+>   - `runtime`
+>   - `some`
+>   - `resiliency`
+>   - `controlados`
+>
+> ### 🔵 `NEUTRO` [139] `System/nexus.ts`
+>
+> - **Local:** `src_local/agents/Python/System/nexus.ts`
+> - **Causa:** A persona 'nexus' na stack 'Python' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `goorchestrationengine`
+>   - `systems`
+>   - `audit`
+>   - `includes`
+>   - `push`
+>   - `foreach`
+>   - `substring`
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `fetch`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `runtime`
+>   - `resiliency`
+>   - `controlados`
+>   - `settimeout`
+>
+> ### 🔵 `NEUTRO` [140] `System/spark.ts`
+>
+> - **Local:** `src_local/agents/Go/System/spark.ts`
+> - **Causa:** A persona 'spark' na stack 'Go' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
 >   - `now`
 >   - `info`
 >   - `exit`
 >   - `for`
->   - `RegExp`
+>   - `regexp`
 >   - `entries`
->   - `if`
->   - `endsWith`
+>   - `endswith`
 >   - `of`
->   - `matchAll`
->   - `push`
->   - `substring`
->   - `toFixed`
+>   - `matchall`
+>   - `tofixed`
 >   - `test`
+>   - `orchestration`
+>   - `visual`
+>   - `ticas`
+>   - `some`
+>   - `delight`
+>   - `phd`
+>   - `slice`
+>   - `indexof`
 >
-> ### 🔵 `NEUTRO` [19] `System/stream.ts`
+> ### 🔵 `NEUTRO` [141] `System/spark.ts`
 >
-> - **Local:** `src_local/agents/Bun/System/stream.ts`
-> - **Causa:** Componente 'stream.ts' evoluiu com 19 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
+> - **Local:** `src_local/agents/Bun/System/spark.ts`
+> - **Causa:** A persona 'spark' na stack 'Bun' está incompleta. Faltam 22 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gosparkengine`
+>   - `driven`
+>   - `audit`
+>   - `includes`
+>   - `close`
+>   - `startmetrics`
+>   - `garantida`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `selfdiagnostic`
+>   - `orchestration`
+>   - `visual`
+>   - `ticas`
+>   - `some`
+>   - `delight`
+>   - `phd`
+>   - `slice`
+>   - `indexof`
+>
+> ### 🔵 `NEUTRO` [142] `System/spark.ts`
+>
+> - **Local:** `src_local/agents/Flutter/System/spark.ts`
+> - **Causa:** A persona 'spark' na stack 'Flutter' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gosparkengine`
+>   - `driven`
+>   - `audit`
+>   - `close`
+>   - `push`
+>   - `garantida`
+>   - `foreach`
+>   - `substring`
 >   - `child`
->   - `constructor`
->   - `super`
+>   - `now`
+>   - `info`
+>   - `exit`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `delight`
+>   - `phd`
+>   - `slice`
+>   - `indexof`
+>
+> ### 🔵 `NEUTRO` [143] `System/spark.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/System/spark.ts`
+> - **Causa:** A persona 'spark' na stack 'Kotlin' está incompleta. Faltam 29 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gosparkengine`
+>   - `driven`
+>   - `audit`
+>   - `close`
+>   - `push`
+>   - `garantida`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `exit`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `orchestration`
+>   - `visual`
+>   - `ticas`
+>   - `some`
+>   - `slice`
+>   - `indexof`
+>
+> ### 🔵 `NEUTRO` [144] `System/spark.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/System/spark.ts`
+> - **Causa:** A persona 'spark' na stack 'TypeScript' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gosparkengine`
+>   - `driven`
+>   - `audit`
+>   - `includes`
+>   - `close`
+>   - `startmetrics`
+>   - `garantida`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `orchestration`
+>   - `visual`
+>   - `ticas`
+>   - `some`
+>   - `delight`
+>   - `phd`
+>
+> ### 🔵 `NEUTRO` [145] `System/spark.ts`
+>
+> - **Local:** `src_local/agents/Python/System/spark.ts`
+> - **Causa:** A persona 'spark' na stack 'Python' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gosparkengine`
+>   - `driven`
+>   - `audit`
+>   - `includes`
+>   - `close`
+>   - `push`
+>   - `garantida`
+>   - `foreach`
+>   - `substring`
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `exit`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `visual`
+>   - `ticas`
+>   - `delight`
+>   - `phd`
+>   - `slice`
+>   - `indexof`
+>
+> ### 🔵 `NEUTRO` [146] `System/stream.ts`
+>
+> - **Local:** `src_local/agents/Go/System/stream.ts`
+> - **Causa:** A persona 'stream' na stack 'Go' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
 >   - `now`
 >   - `info`
 >   - `on`
 >   - `off`
 >   - `stop`
 >   - `for`
->   - `RegExp`
+>   - `regexp`
 >   - `entries`
->   - `if`
->   - `endsWith`
+>   - `endswith`
 >   - `of`
->   - `matchAll`
->   - `push`
->   - `substring`
->   - `toFixed`
+>   - `matchall`
+>   - `tofixed`
 >   - `test`
->
-> ### 🔵 `NEUTRO` [20] `Content/echo.ts`
->
-> - **Local:** `src_local/agents/Bun/Content/echo.ts`
-> - **Causa:** Componente 'echo.ts' evoluiu com 16 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `constructor`
->   - `super`
->   - `now`
->   - `info`
->   - `inspect`
->   - `for`
->   - `RegExp`
->   - `entries`
->   - `if`
->   - `endsWith`
->   - `of`
->   - `matchAll`
->   - `push`
->   - `toFixed`
->   - `test`
->
-> ### 🔵 `NEUTRO` [21] `Content/forge.ts`
->
-> - **Local:** `src_local/agents/Bun/Content/forge.ts`
-> - **Causa:** Componente 'forge.ts' evoluiu com 19 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `constructor`
->   - `super`
->   - `now`
->   - `info`
->   - `eval`
->   - `Function`
->   - `import`
->   - `build`
->   - `for`
->   - `RegExp`
->   - `entries`
->   - `if`
->   - `endsWith`
->   - `of`
->   - `matchAll`
->   - `push`
->   - `toFixed`
->   - `test`
->
-> ### 🔵 `NEUTRO` [22] `Content/globe.ts`
->
-> - **Local:** `src_local/agents/Bun/Content/globe.ts`
-> - **Causa:** Componente 'globe.ts' evoluiu com 17 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `constructor`
->   - `super`
->   - `now`
->   - `info`
->   - `which`
->   - `for`
->   - `RegExp`
->   - `entries`
->   - `if`
->   - `endsWith`
->   - `of`
->   - `matchAll`
->   - `push`
->   - `substring`
->   - `toFixed`
->   - `test`
->
-> ### 🔵 `NEUTRO` [23] `Content/hype.ts`
->
-> - **Local:** `src_local/agents/Bun/Content/hype.ts`
-> - **Causa:** Componente 'hype.ts' evoluiu com 16 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `constructor`
->   - `super`
->   - `now`
->   - `info`
->   - `for`
->   - `entries`
->   - `if`
->   - `endsWith`
->   - `parse`
->   - `push`
->   - `keys`
+>   - `flow`
 >   - `some`
->   - `test`
->   - `toFixed`
->   - `includes`
+>   - `vida`
+>   - `pipes`
 >
-> ### 🔵 `NEUTRO` [24] `Content/mantra.ts`
+> ### 🔵 `NEUTRO` [147] `System/stream.ts`
 >
-> - **Local:** `src_local/agents/Bun/Content/mantra.ts`
-> - **Causa:** Componente 'mantra.ts' evoluiu com 17 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `constructor`
->   - `super`
->   - `now`
->   - `info`
->   - `file`
->   - `json`
->   - `for`
->   - `RegExp`
->   - `entries`
->   - `if`
->   - `endsWith`
->   - `of`
->   - `matchAll`
->   - `push`
->   - `toFixed`
->   - `match`
->
-> ### 🔵 `NEUTRO` [25] `Content/palette.ts`
->
-> - **Local:** `src_local/agents/Bun/Content/palette.ts`
-> - **Causa:** Componente 'palette.ts' evoluiu com 15 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `constructor`
->   - `super`
->   - `now`
->   - `info`
->   - `for`
->   - `RegExp`
->   - `entries`
->   - `if`
->   - `endsWith`
->   - `of`
->   - `matchAll`
->   - `push`
->   - `toFixed`
->   - `test`
->
-> ### 🔵 `NEUTRO` [26] `Content/scribe.ts`
->
-> - **Local:** `src_local/agents/Bun/Content/scribe.ts`
-> - **Causa:** Componente 'scribe.ts' evoluiu com 12 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `constructor`
->   - `super`
->   - `now`
->   - `info`
->   - `for`
->   - `entries`
->   - `if`
->   - `endsWith`
->   - `match`
->   - `push`
->   - `toFixed`
->
-> ### 🔵 `NEUTRO` [27] `Audit/metric.ts`
->
-> - **Local:** `src_local/agents/Flutter/Audit/metric.ts`
-> - **Causa:** A migração de 'metric.py' para 'metric.ts' está PARITY_GAPS. Faltam 1 unidades.
+> - **Local:** `src_local/agents/Bun/System/stream.ts`
+> - **Causa:** A persona 'stream' na stack 'Bun' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `perform_audit_rules`
+>   - `gostreamengine`
+>   - `streaming`
+>   - `audit`
+>   - `includes`
+>   - `startmetrics`
+>   - `lentos`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `selfdiagnostic`
+>   - `flow`
+>   - `some`
+>   - `vida`
+>   - `pipes`
 >
-> ### 🔵 `NEUTRO` [28] `Strategic/director.ts`
+> ### 🔵 `NEUTRO` [148] `System/stream.ts`
+>
+> - **Local:** `src_local/agents/Flutter/System/stream.ts`
+> - **Causa:** A persona 'stream' na stack 'Flutter' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gostreamengine`
+>   - `streaming`
+>   - `audit`
+>   - `includes`
+>   - `push`
+>   - `lentos`
+>   - `foreach`
+>   - `substring`
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `on`
+>   - `off`
+>   - `stop`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `vida`
+>   - `pipes`
+>
+> ### 🔵 `NEUTRO` [149] `System/stream.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/System/stream.ts`
+> - **Causa:** A persona 'stream' na stack 'Kotlin' está incompleta. Faltam 26 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gostreamengine`
+>   - `streaming`
+>   - `audit`
+>   - `push`
+>   - `lentos`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `on`
+>   - `off`
+>   - `stop`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `some`
+>   - `pipes`
+>
+> ### 🔵 `NEUTRO` [150] `System/stream.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/System/stream.ts`
+> - **Causa:** A persona 'stream' na stack 'TypeScript' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gostreamengine`
+>   - `streaming`
+>   - `audit`
+>   - `includes`
+>   - `startmetrics`
+>   - `lentos`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `stop`
+>   - `flow`
+>   - `some`
+>   - `vida`
+>   - `pipes`
+>
+> ### 🔵 `NEUTRO` [151] `System/stream.ts`
+>
+> - **Local:** `src_local/agents/Python/System/stream.ts`
+> - **Causa:** A persona 'stream' na stack 'Python' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gostreamengine`
+>   - `streaming`
+>   - `audit`
+>   - `push`
+>   - `lentos`
+>   - `foreach`
+>   - `substring`
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `on`
+>   - `off`
+>   - `stop`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `flow`
+>   - `vida`
+>
+> ### 🔵 `NEUTRO` [152] `Audit/strict.ts`
+>
+> - **Local:** `src_local/agents/Go/Audit/strict.ts`
+> - **Causa:** A persona 'strict' na stack 'Go' está incompleta. Faltam 8 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `entries`
+>   - `endswith`
+>   - `parse`
+>   - `tofixed`
+>
+> ### 🔵 `NEUTRO` [153] `Audit/strict.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Audit/strict.ts`
+> - **Causa:** A persona 'strict' na stack 'TypeScript' está incompleta. Faltam 13 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gostrictengine`
+>   - `rigor`
+>   - `inspect`
+>   - `split`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `generics`
+>
+> ### 🔵 `NEUTRO` [154] `Content/fragment.ts`
+>
+> - **Local:** `src_local/agents/Go/Content/fragment.ts`
+> - **Causa:** A persona 'fragment' na stack 'Go' está incompleta. Faltam 4 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `atoms`
+>   - `excessivas`
+>   - `some`
+>   - `nica`
+>
+> ### 🔵 `NEUTRO` [155] `Content/fragment.ts`
+>
+> - **Local:** `src_local/agents/Python/Content/fragment.ts`
+> - **Causa:** A persona 'fragment' na stack 'Python' está incompleta. Faltam 7 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gofragmentengine`
+>   - `modularity`
+>   - `audit`
+>   - `push`
+>   - `split`
+>   - `foreach`
+>   - `substring`
+>
+> ### 🔵 `NEUTRO` [156] `Strategic/vortex.ts`
+>
+> - **Local:** `src_local/agents/Go/Strategic/vortex.ts`
+> - **Causa:** A persona 'vortex' na stack 'Go' está incompleta. Faltam 3 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `management`
+>   - `stack`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [157] `Strategic/vortex.ts`
+>
+> - **Local:** `src_local/agents/Python/Strategic/vortex.ts`
+> - **Causa:** A persona 'vortex' na stack 'Python' está incompleta. Faltam 10 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `govortexengine`
+>   - `proofing`
+>   - `audit`
+>   - `match`
+>   - `push`
+>   - `includes`
+>   - `iteradores`
+>   - `tipo`
+>   - `foreach`
+>   - `substring`
+>
+> ### 🔵 `NEUTRO` [158] `Strategic/director.ts`
 >
 > - **Local:** `src_local/agents/Go/Strategic/director.ts`
-> - **Causa:** Componente 'director.ts' evoluiu com 21 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `GoDirectorEngine`
->   - `Architecture`
->   - `audit`
->   - `if`
->   - `includes`
->   - `push`
->   - `constructor`
->   - `super`
->   - `startMetrics`
->   - `findPatterns`
->   - `forEach`
->   - `endMetrics`
->   - `performActiveHealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `selfDiagnostic`
->   - `filter`
->   - `has`
->   - `add`
->   - `for`
->
-> ### 🔵 `NEUTRO` [29] `Analysis/component_classifier.ts`
->
-> - **Local:** `src_local/agents/Support/Analysis/component_classifier.ts`
-> - **Causa:** Componente 'component_classifier.ts' evoluiu com 10 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
+> - **Causa:** A persona 'director' na stack 'Go' está incompleta. Faltam 30 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
 >   - `child`
->   - `debug`
->   - `toLowerCase`
->   - `if`
->   - `endsWith`
->   - `includes`
->   - `for`
->   - `call`
->   - `some`
->   - `startsWith`
->
-> ### 🔵 `NEUTRO` [30] `Reporting/battle_plan_sections_engine.ts`
->
-> - **Local:** `src_local/agents/Support/Reporting/battle_plan_sections_engine.ts`
-> - **Causa:** Componente 'battle_plan_sections_engine.ts' evoluiu com 14 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
+>   - `reportsectionsengine`
 >   - `now`
->   - `for`
->   - `if`
->   - `push`
->   - `entries`
->   - `itemFormatter`
->   - `debug`
->   - `trim`
->   - `keyGen`
->   - `has`
->   - `add`
->   - `filter`
->   - `String`
->
-> ### 🔵 `NEUTRO` [31] `Automation/infrastructure_assembler.ts`
->
-> - **Local:** `src_local/agents/Support/Automation/infrastructure_assembler.ts`
-> - **Causa:** Componente 'infrastructure_assembler.ts' evoluiu com 38 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `if`
 >   - `info`
->   - `StructuralAnalyst`
->   - `IntegrityGuardian`
->   - `ConnectivityMapper`
->   - `ParityAnalyst`
->   - `AuditEngine`
->   - `VetoEngine`
->   - `HealthSynthesizer`
->   - `DiagnosticStrategist`
->   - `TaskExecutor`
->   - `CoreValidator`
->   - `TestRefiner`
->   - `HealerPersona`
->   - `TestArchitectAgent`
->   - `DocGenAgent`
->   - `SecuritySentinelAgent`
->   - `QualityAnalyst`
->   - `MaturityEvaluator`
->   - `TopologyGraphAgent`
->   - `launchSovereignAPI`
->   - `serve`
->   - `fetch`
->   - `URL`
->   - `json`
->   - `Date`
->   - `toISOString`
->   - `get`
->   - `import`
->   - `CognitiveEngine`
->   - `reason`
->   - `Response`
->   - `launchSovereignDashboard`
->   - `require`
->   - `join`
->   - `spawn`
->   - `unref`
->
-> ### 🔵 `NEUTRO` [32] `Analysis/connectivity_mapper.ts`
->
-> - **Local:** `src_local/agents/Support/Analysis/connectivity_mapper.ts`
-> - **Causa:** Componente 'connectivity_mapper.ts' evoluiu com 12 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `PhD`
->   - `now`
->   - `Path`
->   - `stem`
->   - `for`
->   - `entries`
->   - `if`
->   - `some`
->   - `includes`
->   - `debug`
->   - `toFixed`
->
-> ### 🔵 `NEUTRO` [33] `tests/test_briefing_agent.py`
->
-> - **Local:** `tests\test_briefing_agent.py`
-> - **Causa:** Arquivo 'briefing_agent.py' reconhecido como arquivado/manutenção em 'tests\test_briefing_agent.py'.
->
-> ### 🔵 `NEUTRO` [34] `Security/safety_supreme_judge.ts`
->
-> - **Local:** `src_local/agents/Support/Security/safety_supreme_judge.ts`
-> - **Causa:** Componente 'safety_supreme_judge.ts' evoluiu com 42 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `SafetySupremeJudge`
->   - `SafeContextJudge`
->   - `SafetyHeuristics`
->   - `SafetyAssignmentEngine`
->   - `RuleDefinitionJudge`
->   - `SafetyNavigator`
->   - `child`
->   - `a`
->   - `ASTIntelligence`
->   - `segura`
->   - `constructor`
->   - `isNodeSafe`
->   - `Teste`
->   - `if`
->   - `isInsideTest`
->   - `isInsideLogCall`
->   - `isInsideRuleDefinition`
->   - `o`
->   - `isInsideSafeExceptionHandler`
->   - `isDangerousExecution`
->   - `isCallTo`
->   - `getParentChain`
->   - `some`
->   - `isMethodDeclaration`
->   - `isFunctionDeclaration`
->   - `getText`
->   - `includes`
->   - `isClassDeclaration`
->   - `metadados`
->   - `isBinaryExpression`
->   - `isPropertyAssignment`
->   - `find`
->   - `toLowerCase`
->   - `is_meta_analysis_node`
->   - `eval`
->   - `Function`
->   - `is_in_metadata_assignment`
->   - `_is_assignment_to_safe`
->   - `_is_safe_name`
->   - `is_safe_context`
->   - `is_being_executed`
->   - `SafetySupremeJudge`
->
-> ### 🔵 `NEUTRO` [35] `Analysis/coverage_auditor.ts`
->
-> - **Local:** `src_local/agents/Support/Analysis/coverage_auditor.ts`
-> - **Causa:** Componente 'coverage_auditor.ts' evoluiu com 13 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `PhD`
->   - `if`
->   - `includes`
->   - `name`
->   - `split`
->   - `toLowerCase`
->   - `ntica`
->   - `for`
->   - `startsWith`
->   - `debug`
->   - `found`
->   - `endsWith`
->
-> ### 🔵 `NEUTRO` [36] `Diagnostics/diagnostic_strategist.ts`
->
-> - **Local:** `src_local/agents/Support/Diagnostics/diagnostic_strategist.ts`
-> - **Causa:** Componente 'diagnostic_strategist.ts' evoluiu com 9 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `now`
->   - `for`
->   - `if`
->   - `Set`
->   - `add`
->   - `info`
->   - `Number`
->   - `toFixed`
->
-> ### 🔵 `NEUTRO` [37] `Analysis/structural_auditor_supreme.ts`
->
-> - **Local:** `src_local/agents/Support/Analysis/structural_auditor_supreme.ts`
-> - **Causa:** Componente 'structural_auditor_supreme.ts' evoluiu com 65 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `StructuralAuditorSupreme`
->   - `LineVeto`
->   - `SemanticContextAnalyst`
->   - `VetoStructuralEngine`
->   - `MetricsAssembler`
->   - `VetoCriteriaEngine`
->   - `VetoRules`
->   - `child`
->   - `Supreme`
->   - `constructor`
->   - `SafetySupremeJudge`
->   - `auditFile`
->   - `walk`
->   - `Veto`
->   - `if`
->   - `isVetoed`
->   - `silenciados`
->   - `isCatchClause`
->   - `isSilentCatch`
->   - `push`
->   - `createIssue`
->   - `detectada`
->   - `Regras`
->   - `isNumericLiteral`
->   - `isBinaryExpression`
->   - `isMathContext`
->   - `forEachChild`
->   - `isComment`
->   - `isDocstring`
->   - `EXPERIMENTATION`
->   - `isCriticalRisk`
->   - `isRuleDefinition`
->   - `getFullText`
->   - `trim`
->   - `startsWith`
->   - `JSDoc`
->   - `getText`
->   - `toLowerCase`
->   - `direto`
->   - `includes`
->   - `eval`
->   - `exec`
->   - `some`
->   - `getParentChain`
->   - `isTestContext`
->   - `isCallTo`
->   - `getLineAndCharacterOfPosition`
->   - `getStart`
->   - `slice`
->   - `_is_single_line_docstring`
->   - `return`
->   - `gather_qa_data`
->   - `get_orchestration_metrics`
->   - `check_test_permissions`
->   - `is_technical_math_context`
->   - `is_domain_excluded`
->   - `check_permissions`
->   - `is_rule_def`
->   - `classify_intent`
->   - `_is_metadata_context`
->   - `_is_observability_context`
->   - `map_component_type`
->   - `should_skip`
->   - `_is_structural_veto`
->   - `_is_permission_or_content_veto`
->
-> ### 🔵 `NEUTRO` [38] `tests/test_discovery_agent.py`
->
-> - **Local:** `tests\test_discovery_agent.py`
-> - **Causa:** Arquivo 'discovery_agent.py' reconhecido como arquivado/manutenção em 'tests\test_discovery_agent.py'.
->
-> ### 🔵 `NEUTRO` [39] `Diagnostics/audit_risk_engine.ts`
->
-> - **Local:** `src_local/agents/Support/Diagnostics/audit_risk_engine.ts`
-> - **Causa:** Componente 'audit_risk_engine.ts' evoluiu com 17 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `Auditoria`
->   - `child`
->   - `toLowerCase`
->   - `if`
->   - `includes`
->   - `max`
+>   - `gica`
+>   - `keys`
+>   - `endswith`
 >   - `min`
->   - `_inferSeverity`
->   - `toUpperCase`
+>   - `sort`
+>   - `random`
 >   - `slice`
->   - `join`
->   - `scanFile`
->   - `split`
->   - `for`
->   - `test`
->   - `push`
->   - `debug`
->
-> ### 🔵 `NEUTRO` [40] `core/audit_engine.ts`
->
-> - **Local:** `src_local/core/audit_engine.ts`
-> - **Causa:** Componente 'audit_engine.ts' evoluiu com 61 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `check`
->   - `child`
->   - `integridade`
->   - `constructor`
->   - `Path`
->   - `toString`
->   - `TaskOrchestrator`
->   - `runStrategicAudit`
->   - `now`
->   - `Set`
->   - `from`
->   - `join`
->   - `selectActivePhds`
->   - `detectChanges`
->   - `keys`
->   - `runAuditCycle`
->   - `ntica`
->   - `for`
->   - `if`
->   - `endsWith`
->   - `file`
->   - `text`
->   - `import`
->   - `createSourceFile`
->   - `push`
->   - `scanFile`
->   - `auditMarkdown`
->   - `Audit`
->   - `SecuritySentinelAgent`
->   - `scanProject`
->   - `DependencyAuditor`
->   - `checkSubmoduleStatus`
->   - `analyzeIntent`
->   - `entries`
->   - `update`
->   - `save`
->   - `info`
->   - `async`
->   - `getFileHash`
->   - `isChanged`
->   - `runParallel`
->   - `runObfuscationScan`
->   - `ObfuscationHunter`
->   - `py`
->   - `ts`
->   - `exists`
->   - `concat`
->   - `map`
->   - `toFixed`
->   - `catch`
->   - `error`
->   - `runStagedAudit`
->   - `Commit`
->   - `runCommand`
->   - `split`
->   - `filter`
->   - `trim`
->   - `ria`
->   - `Lote`
->   - `s`
->   - `_scan_single_file`
->
-> ### 🔵 `NEUTRO` [41] `utils/audit_expert_engine.ts`
->
-> - **Local:** `src_local/utils/audit_expert_engine.ts`
-> - **Causa:** Componente 'audit_expert_engine.ts' evoluiu com 31 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `AuditExpertEngine`
->   - `AuditRiskEngine`
->   - `map_risk_type`
->   - `child`
->   - `Engine`
->   - `erro`
->   - `do`
->   - `RegExp`
->   - `for`
->   - `if`
->   - `veto`
->   - `shouldSkip`
->   - `o`
->   - `test`
->   - `circularidade`
->   - `AST`
->   - `mapRiskLevel`
->   - `isInteractionSafe`
->   - `join`
->   - `includes`
->   - `split`
->   - `trim`
->   - `push`
->   - `formatada`
->   - `max`
->   - `min`
->   - `toUpperCase`
->   - `slice`
->   - `detectado`
->   - `String`
->   - `toLowerCase`
->
-> ### 🔵 `NEUTRO` [42] `tests/test_markdown_structure_agent.py`
->
-> - **Local:** `tests\test_markdown_structure_agent.py`
-> - **Causa:** Arquivo 'markdown_structure_agent.py' reconhecido como arquivado/manutenção em 'tests\test_markdown_structure_agent.py'.
->
-> ### 🔵 `NEUTRO` [43] `Analysis/dna_profiler.ts`
->
-> - **Local:** `src_local/agents/Support/Analysis/dna_profiler.ts`
-> - **Causa:** Componente 'dna_profiler.ts' evoluiu com 9 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `PhD`
->   - `log`
->   - `toString`
->   - `if`
->   - `includes`
->   - `join`
->   - `exists`
->   - `add`
->   - `from`
->
-> ### 🔵 `NEUTRO` [44] `utils/git_client.ts`
->
-> - **Local:** `src_local/utils/git_client.ts`
-> - **Causa:** Componente 'git_client.ts' evoluiu com 49 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `GitClient`
->   - `clearRecursive`
->   - `child`
->   - `GitClient`
->   - `constructor`
->   - `TaskExecutor`
->   - `run`
->   - `runCommand`
->   - `join`
->   - `getOutput`
->   - `trim`
->   - `fetchPrune`
->   - `discoverRemote`
->   - `split`
->   - `map`
->   - `for`
->   - `if`
->   - `includes`
->   - `getCommitCount`
->   - `parseInt`
->   - `stashPush`
->   - `stashPop`
->   - `rebase`
->   - `rebaseAbort`
->   - `resetHard`
->   - `getCurrentBranch`
->   - `getTrackingBranch`
->   - `replace`
->   - `getHeadHash`
->   - `Date`
->   - `toISOString`
->   - `slice`
->   - `info`
->   - `fix`
->   - `error`
->   - `Git`
->   - `clearLocks`
->   - `existsSync`
->   - `readdirSync`
->   - `statSync`
->   - `isDirectory`
->   - `endsWith`
->   - `unlinkSync`
->   - `cleanCache`
->   - `syncSubmodules`
->   - `resolveBasicConflicts`
->   - `filter`
->   - `startsWith`
->   - `warn`
->
-> ### 🔵 `NEUTRO` [45] `Analysis/pyramid_analyst.ts`
->
-> - **Local:** `src_local/agents/Support/Analysis/pyramid_analyst.ts`
-> - **Causa:** Componente 'pyramid_analyst.ts' evoluiu com 7 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `Testes`
->   - `debug`
->   - `for`
->   - `keys`
->   - `if`
->   - `includes`
->   - `readFunc`
->
-> ### 🔵 `NEUTRO` [46] `Core/healer.ts`
->
-> - **Local:** `src_local/agents/Support/Core/healer.ts`
-> - **Causa:** Componente 'healer.ts' evoluiu com 31 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `Healer`
->   - `constructor`
->   - `super`
->   - `CognitiveEngine`
->   - `ObfuscationCleanerEngine`
->   - `if`
->   - `Path`
->   - `join`
->   - `existsSync`
->   - `toString`
->   - `error`
->   - `info`
->   - `existir`
->   - `readFileSync`
->   - `LEGADO`
->   - `completo`
->   - `reason`
->   - `match`
->   - `n`
->   - `renameSync`
->   - `writeFileSync`
->   - `runStrategicAudit`
->   - `some`
->   - `unlinkSync`
->   - `warn`
->   - `REPROVADA`
->   - `catch`
->   - `cleanFile`
->   - `createSourceFile`
->   - `collectReplacements`
->   - `applyClean`
->
-> ### 🔵 `NEUTRO` [47] `Diagnostics/maturity_evaluator.ts`
->
-> - **Local:** `src_local/agents/Support/Diagnostics/maturity_evaluator.ts`
-> - **Causa:** Componente 'maturity_evaluator.ts' evoluiu com 28 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `cnica`
->   - `constructor`
->   - `debug`
->   - `info`
->   - `Path`
->   - `join`
->   - `if`
->   - `file`
->   - `toString`
->   - `exists`
->   - `import`
->   - `then`
->   - `existsSync`
->   - `readdir`
->   - `for`
->   - `isFile`
->   - `endsWith`
->   - `text`
->   - `catch`
->   - `warn`
->   - `toFixed`
->   - `Number`
->   - `some`
->   - `includes`
->   - `test`
->   - `values`
->   - `filter`
->
-> ### 🔵 `NEUTRO` [48] `Diagnostics/health_synthesizer.ts`
->
-> - **Local:** `src_local/agents/Support/Diagnostics/health_synthesizer.ts`
-> - **Causa:** Componente 'health_synthesizer.ts' evoluiu com 26 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `PhD`
->   - `constructor`
->   - `ScoreCalculator`
->   - `info`
->   - `debug`
->   - `keys`
->   - `calculateFinalScore`
->   - `import`
->   - `ScoringMetricsEngine`
->   - `calcStability`
->   - `calcPurity`
->   - `calcObservability`
->   - `calcSecurity`
->   - `calcExcellence`
->   - `getVitals`
->   - `o`
->   - `if`
->   - `for`
->   - `split`
->   - `pop`
->   - `endsWith`
->   - `Logic`
->   - `max`
->   - `Date`
->   - `toISOString`
->
-> ### 🔵 `NEUTRO` [49] `Core/memory_persistence.ts`
->
-> - **Local:** `src_local/agents/Support/Core/memory_persistence.ts`
-> - **Causa:** Componente 'memory_persistence.ts' evoluiu com 13 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `constructor`
->   - `if`
->   - `existsSync`
->   - `toString`
->   - `readFileSync`
->   - `parse`
->   - `catch`
->   - `error`
->   - `parent`
->   - `mkdirSync`
->   - `writeFileSync`
->   - `stringify`
->
-> ### 🔵 `NEUTRO` [50] `Analysis/meta_analysis_detector.ts`
->
-> - **Local:** `src_local/agents/Support/Analysis/meta_analysis_detector.ts`
-> - **Causa:** A migração de 'meta_analysis_detector.py' para 'meta_analysis_detector.ts' está PARITY_GAPS. Faltam 1 unidades.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `__init__`
->
-> ### 🔵 `NEUTRO` [51] `Core/integrity_guardian.ts`
->
-> - **Local:** `src_local/agents/Support/Core/integrity_guardian.ts`
-> - **Causa:** Componente 'integrity_guardian.ts' evoluiu com 12 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `PhD`
->   - `if`
->   - `logic`
->   - `b`
->   - `matchAll`
->   - `warn`
->   - `match`
->   - `some`
->   - `includes`
->   - `return`
->   - `endsWith`
->
-> ### 🔵 `NEUTRO` [52] `utils/telemetry_excellence_engine.ts`
->
-> - **Local:** `src_local/utils/telemetry_excellence_engine.ts`
-> - **Causa:** A migração de 'intent_heuristics_engine.py' para 'telemetry_excellence_engine.ts' está SHALLOW. Faltam 3 unidades.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `IntentHeuristicsEngine`
->   - `is_metadata_context`
->   - `_is_analysis_comparison`
->
-> ### 🔵 `NEUTRO` [53] `Security/obfuscation_hunter.ts`
->
-> - **Local:** `src_local/agents/Support/Security/obfuscation_hunter.ts`
-> - **Causa:** A migração de 'obfuscation_hunter.py' para 'obfuscation_hunter.ts' está SHALLOW. Faltam 5 unidades.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `_resolve_string_concat`
->   - `_scan_tree`
->   - `_check_node`
->   - `_should_skip_node`
->   - `_is_hidden`
->
-> ### 🔵 `NEUTRO` [54] `Analysis/parity_analyst.ts`
->
-> - **Local:** `src_local/agents/Support/Analysis/parity_analyst.ts`
-> - **Causa:** Componente 'parity_analyst.ts' evoluiu com 55 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `constructor`
->   - `compareFiles`
->   - `if`
->   - `existsSync`
->   - `readFileSync`
->   - `basename`
->   - `extname`
->   - `extractPythonFingerprint`
->   - `extractTSFingerprint`
->   - `capitalize`
->   - `computeDeltas`
->   - `computeScore`
->   - `computeGenericParity`
->   - `split`
->   - `filter`
->   - `trim`
->   - `match`
->   - `map`
->   - `replace`
->   - `max`
->   - `analyzeAtomicParity`
->   - `now`
->   - `for`
->   - `join`
->   - `readdirSync`
->   - `endsWith`
->   - `toLowerCase`
->   - `has`
->   - `set`
->   - `get`
->   - `push`
->   - `entries`
->   - `find`
+>   - `tofixed`
+>   - `validatephdcensus`
 >   - `round`
->   - `reduce`
->   - `keys`
->   - `flatMap`
->   - `from`
->   - `Date`
->   - `toISOString`
->   - `analyzeLegacyForensics`
->   - `warn`
->   - `crawlDirectory`
->   - `cwd`
->   - `includes`
->   - `startsWith`
->   - `isDirectory`
->   - `concat`
->   - `formatMarkdownReport`
->   - `Stack`
->   - `sort`
->   - `FORENSE`
->   - `slice`
->   - `getVitalStatus`
->
-> ### 🔵 `NEUTRO` [55] `Security/obfuscation_logic_engine.ts`
->
-> - **Local:** `src_local/agents/Support/Security/obfuscation_logic_engine.ts`
-> - **Causa:** Componente 'obfuscation_logic_engine.ts' evoluiu com 5 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `o`
->   - `get`
->   - `if`
->   - `for`
->   - `includes`
->
-> ### 🔵 `NEUTRO` [56] `Reporting/markdown_sanitizer.ts`
->
-> - **Local:** `src_local/agents/Support/Reporting/markdown_sanitizer.ts`
-> - **Causa:** Componente 'markdown_sanitizer.ts' evoluiu com 36 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `isList`
->   - `isHorizontalRule`
->   - `child`
->   - `Markdown`
->   - `BOM`
->   - `aninhado`
->   - `if`
->   - `now`
->   - `especiais`
->   - `replace`
->   - `trim`
->   - `split`
->   - `MarkdownStructureAgent`
->   - `executeRefinement`
->   - `ensureBlanksAroundHeadings`
->   - `ensureBlanksAroundLists`
->   - `final`
->   - `join`
->   - `info`
->   - `ms`
->   - `while`
->   - `shift`
->   - `pop`
->   - `startsWith`
->   - `for`
->   - `splice`
->   - `match`
->   - `before`
->   - `push`
->   - `trimEnd`
->   - `test`
->   - `lstrip`
->   - `function`
->   - `trimStart`
->   - `includes`
->   - `substring`
->
-> ### 🔵 `NEUTRO` [57] `Reporting/battle_plan_formatter.ts`
->
-> - **Local:** `src_local/agents/Support/Reporting/battle_plan_formatter.ts`
-> - **Causa:** Componente 'battle_plan_formatter.ts' evoluiu com 18 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `constructor`
->   - `BattlePlanSectionsEngine`
->   - `filterActiveResults`
->   - `if`
->   - `for`
->   - `push`
->   - `map`
->   - `trim`
->   - `filter`
->   - `join`
->   - `formatSeverityGroup`
->   - `bind`
->   - `toString`
->   - `replace`
->   - `toUpperCase`
->   - `TestRefiner`
->   - `toLowerCase`
->
-> ### 🔵 `NEUTRO` [58] `Security/safety_supreme_judge.ts`
->
-> - **Local:** `src_local/agents/Support/Security/safety_supreme_judge.ts`
-> - **Causa:** A migração de 'rule_definition_judge.py' para 'safety_supreme_judge.ts' está PARITY_GAPS. Faltam 1 unidades.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `is_in_analyzer_context`
->
-> ### 🔵 `NEUTRO` [59] `Diagnostics/quality_analyst.ts`
->
-> - **Local:** `src_local/agents/Support/Diagnostics/quality_analyst.ts`
-> - **Causa:** Componente 'quality_analyst.ts' evoluiu com 18 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `for`
->   - `entries`
->   - `endsWith`
->   - `includes`
->   - `agent`
->   - `toLowerCase`
->   - `replace`
->   - `if`
->   - `startsWith`
->   - `Restore`
->   - `parse`
->   - `push`
->   - `Number`
->   - `toFixed`
->   - `sort`
->   - `runCognitiveAudit`
->   - `CognitiveValidator`
->   - `runFullCheck`
->
-> ### 🔵 `NEUTRO` [60] `core/diagnostic_finalizer.ts`
->
-> - **Local:** `src_local/core/diagnostic_finalizer.ts`
-> - **Causa:** A migração de 'report_formatter.py' para 'diagnostic_finalizer.ts' está PARITY_GAPS. Faltam 1 unidades.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `__init__`
->
-> ### 🔵 `NEUTRO` [61] `Reporting/report_sections_engine.ts`
->
-> - **Local:** `src_local/agents/Support/Reporting/report_sections_engine.ts`
-> - **Causa:** Componente 'report_sections_engine.ts' evoluiu com 39 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `rio`
->   - `densas`
->   - `child`
->   - `_generateProgressBar`
->   - `round`
->   - `max`
->   - `repeat`
->   - `_getStatusBadge`
->   - `toUpperCase`
->   - `if`
->   - `includes`
->   - `join`
->   - `formatParityBoard`
->   - `MICA`
->   - `entropia`
->   - `formatEntropyMap`
->   - `for`
->   - `entries`
->   - `toLowerCase`
->   - `replace`
->   - `startsWith`
->   - `endsWith`
->   - `push`
->   - `sort`
->   - `slice`
->   - `map`
->   - `split`
->   - `pop`
->   - `Instabilidade`
->   - `formatGovernanceSection`
->   - `Stability`
->   - `Purity`
->   - `Observability`
->   - `Security`
->   - `Excellence`
->   - `DE`
->   - `sincronia`
->   - `formatTopologyMap`
->   - `filter`
->
-> ### 🔵 `NEUTRO` [62] `Security/safety_definitions.ts`
->
-> - **Local:** `src_local/agents/Support/Security/safety_definitions.ts`
-> - **Causa:** Componente 'safety_definitions.ts' evoluiu com 2 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `time`
->   - `Set`
->
-> ### 🔵 `NEUTRO` [63] `Diagnostics/score_calculator.ts`
->
-> - **Local:** `src_local/agents/Support/Diagnostics/score_calculator.ts`
-> - **Causa:** Componente 'score_calculator.ts' evoluiu com 21 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `de`
->   - `constructor`
->   - `ScoringMetricsEngine`
->   - `PenaltyEngine`
->   - `if`
->   - `keys`
->   - `calcStability`
->   - `calcPurity`
->   - `calcObservability`
->   - `calcSecurity`
->   - `calcExcellence`
->   - `apply`
->   - `getPilarAdjustments`
->   - `Stability`
->   - `round`
->   - `max`
->   - `Purity`
->   - `Observability`
->   - `Security`
->   - `Excellence`
->
-> ### 🔵 `NEUTRO` [64] `Core/penalty_engine.ts`
->
-> - **Local:** `src_local/agents/Support/Core/penalty_engine.ts`
-> - **Causa:** Componente 'penalty_engine.ts' evoluiu com 22 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `values`
->   - `reduce`
->   - `filter`
->   - `Set`
->   - `map`
->   - `if`
->   - `has`
->   - `max`
->   - `round`
->   - `min`
->   - `info`
->   - `toFixed`
->   - `Penalty`
->   - `entries`
->   - `includes`
->   - `isArray`
->   - `Strategic`
->   - `Purity`
->   - `Stability`
->   - `Security`
->   - `Excellence`
->
-> ### 🔵 `NEUTRO` [65] `Analysis/semantic_context_analyst.ts`
->
-> - **Local:** `src_local/agents/Support/Analysis/semantic_context_analyst.ts`
-> - **Causa:** Componente 'semantic_context_analyst.ts' evoluiu com 17 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `fields`
->   - `ntico`
->   - `digo`
->   - `child`
->   - `constructor`
->   - `if`
->   - `replace`
->   - `includes`
->   - `analyzeFile`
->   - `split`
->   - `for`
->   - `slice`
->   - `min`
->   - `join`
->   - `debug`
->   - `some`
->   - `test`
->
-> ### 🔵 `NEUTRO` [66] `Diagnostics/scoring_metrics_engine.ts`
->
-> - **Local:** `src_local/agents/Support/Diagnostics/scoring_metrics_engine.ts`
-> - **Causa:** Componente 'scoring_metrics_engine.ts' evoluiu com 15 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `tricas`
->   - `entries`
->   - `filter`
->   - `includes`
->   - `map`
->   - `max`
->   - `values`
->   - `reduce`
->   - `stringify`
->   - `Cegos`
->   - `getVitals`
->   - `for`
->   - `if`
->   - `push`
->
-> ### 🔵 `NEUTRO` [67] `tests/test_security_sentinel_agent.py`
->
-> - **Local:** `tests\test_security_sentinel_agent.py`
-> - **Causa:** Arquivo 'security_sentinel_agent.py' reconhecido como arquivado/manutenção em 'tests\test_security_sentinel_agent.py'.
->
-> ### 🔵 `NEUTRO` [68] `Analysis/silent_error_detector.ts`
->
-> - **Local:** `src_local/agents/Support/Analysis/silent_error_detector.ts`
-> - **Causa:** Componente 'silent_error_detector.ts' evoluiu com 19 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `fields`
->   - `Silenciados`
->   - `child`
->   - `constructor`
->   - `some`
->   - `test`
->   - `_isSafeContext`
->   - `catch`
->   - `split`
->   - `for`
->   - `slice`
->   - `max`
->   - `min`
->   - `join`
->   - `if`
->   - `abs`
->   - `push`
->   - `debug`
->   - `detectada`
->
-> ### 🔵 `NEUTRO` [69] `Analysis/logic_auditor.ts`
->
-> - **Local:** `src_local/agents/Support/Analysis/logic_auditor.ts`
-> - **Causa:** Componente 'logic_auditor.ts' evoluiu com 38 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `visitor`
->   - `child`
->   - `constructor`
->   - `scanFile`
->   - `audit`
->   - `if`
->   - `push`
->   - `getLineAndCharacterOfPosition`
->   - `getStart`
->   - `forEachChild`
->   - `arquivo`
->   - `auditSilentErrors`
->   - `Scanning`
->   - `auditMetaAnalysis`
->   - `silenciados`
->   - `isCatchClause`
->   - `isContinueStatement`
->   - `vazia`
->   - `isEmptyStatement`
->   - `seguro`
->   - `isNodeSafe`
->   - `detectada`
->   - `isCallExpression`
->   - `isPropertyAccessExpression`
->   - `getText`
->   - `includes`
->   - `now`
->   - `start`
->   - `while`
->   - `isVariableDeclaration`
->   - `test`
->   - `lise`
->   - `eval`
->   - `Function`
->   - `o`
->   - `createSourceFile`
->   - `isDangerousCall`
->   - `catch`
->
-> ### 🔵 `NEUTRO` [70] `tests/test_topology_graph_agent.py`
->
-> - **Local:** `tests\test_topology_graph_agent.py`
-> - **Causa:** Arquivo 'topology_graph_agent.py' reconhecido como arquivado/manutenção em 'tests\test_topology_graph_agent.py'.
->
-> ### 🔵 `NEUTRO` [71] `Automation/test_architect_agent.ts`
->
-> - **Local:** `src_local/agents/Support/Automation/test_architect_agent.ts`
-> - **Causa:** Componente 'test_architect_agent.ts' evoluiu com 36 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `visit`
->   - `child`
->   - `constructor`
->   - `CognitiveEngine`
->   - `arquivo`
->   - `extractSignatures`
->   - `createSourceFile`
->   - `if`
->   - `isClassDeclaration`
->   - `push`
->   - `isFunctionDeclaration`
->   - `forEachChild`
->   - `info`
->   - `warn`
->   - `stringify`
->   - `mock`
->   - `expect`
->   - `toBe`
->   - `nio`
->   - `reason`
->   - `replace`
->   - `trim`
->   - `catch`
->   - `error`
->   - `generateMissingTests`
->   - `scanProject`
->   - `filter`
->   - `endsWith`
->   - `for`
->   - `join`
->   - `basename`
->   - `existsSync`
->   - `readFileSync`
->   - `dirname`
->   - `mkdirSync`
->   - `writeFileSync`
->
-> ### 🔵 `NEUTRO` [72] `utils/ast_intelligence.ts`
->
-> - **Local:** `src_local/utils/ast_intelligence.ts`
-> - **Causa:** A migração de 'test_navigator.py' para 'ast_intelligence.ts' está PARITY_GAPS. Faltam 1 unidades.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `__init__`
->
-> ### 🔵 `NEUTRO` [73] `Analysis/structural_analyst.ts`
->
-> - **Local:** `src_local/agents/Support/Analysis/structural_analyst.ts`
-> - **Causa:** Componente 'structural_analyst.ts' evoluiu com 38 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `PhD`
->   - `constructor`
->   - `MaturityEvaluator`
->   - `SourceCodeParser`
->   - `ComponentClassifier`
->   - `IntegrityGuardian`
->   - `require`
->   - `LogicAuditor`
->   - `catch`
->   - `error`
->   - `now`
->   - `debug`
->   - `toFixed`
->   - `if`
->   - `endsWith`
->   - `analyzePy`
->   - `calculatePyComplexity`
->   - `extractPyImports`
->   - `some`
->   - `includes`
->   - `mapType`
->   - `toString`
->   - `replace`
->   - `toLowerCase`
->   - `startsWith`
->   - `Set`
->   - `from`
->   - `name`
->   - `return`
->   - `file`
->   - `text`
->   - `profundas`
->   - `createSourceFile`
->   - `scanFile`
->   - `arquivo`
->   - `analyzeTs`
->   - `test`
->
-> ### 🔵 `NEUTRO` [74] `tests/test_validation_agent.py`
->
-> - **Local:** `tests\test_validation_agent.py`
-> - **Causa:** Arquivo 'validation_agent.py' reconhecido como arquivado/manutenção em 'tests\test_validation_agent.py'.
->
-> ### 🔵 `NEUTRO` [75] `utils/task_executor.ts`
->
-> - **Local:** `src_local/utils/task_executor.ts`
-> - **Causa:** A migração de 'task_executor.py' para 'task_executor.ts' está PARITY_GAPS. Faltam 1 unidades.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `__init__`
->
-> ### 🔵 `NEUTRO` [76] `utils/telemetry_excellence_engine.ts`
->
-> - **Local:** `src_local/utils/telemetry_excellence_engine.ts`
-> - **Causa:** A migração de 'telemetry_intent_judge.py' para 'telemetry_excellence_engine.ts' está SHALLOW. Faltam 4 unidades.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `TelemetryIntentJudge`
->   - `_check_definition_and_obs`
->   - `_check_observability_context`
->   - `_check_logic_and_standard`
->
-> ### 🔵 `NEUTRO` [77] `tests/test_web_insight_agent.py`
->
-> - **Local:** `tests\test_web_insight_agent.py`
-> - **Causa:** Arquivo 'web_insight_agent.py' reconhecido como arquivado/manutenção em 'tests\test_web_insight_agent.py'.
->
-> ### 🔵 `NEUTRO` [78] `utils/vulnerability_heuristic.ts`
->
-> - **Local:** `src_local/utils/vulnerability_heuristic.ts`
-> - **Causa:** Componente 'vulnerability_heuristic.ts' evoluiu com 13 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `HeuristicEvaluator`
->   - `analyzeSecurity`
->   - `detectado`
->   - `analyze`
->   - `filter`
->   - `test`
->   - `if`
->   - `some`
->   - `determineVector`
->   - `getRemediation`
->   - `includes`
->   - `switch`
->   - `HeuristicEvaluator`
->
-> ### 🔵 `NEUTRO` [79] `agents/base.ts`
->
-> - **Local:** `src_local/agents/base.ts`
-> - **Causa:** Componente 'base.ts' evoluiu com 31 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `Tools`
->   - `constructor`
->   - `projeto`
->   - `if`
->   - `for`
->   - `entries`
->   - `includes`
->   - `basename`
->   - `push`
->   - `some`
->   - `endsWith`
->   - `test`
->   - `join`
->   - `readFile`
->   - `catch`
->   - `warn`
->   - `startMetrics`
->   - `now`
->   - `endMetrics`
->   - `info`
->   - `pontos`
->   - `performance`
->   - `selfDiagnostic`
->   - `suporte`
->   - `assembleCoreSupport`
->   - `assembleOrchestratorTools`
->   - `error`
->   - `analyzeFileLogic`
->   - `evaluatePersona`
->   - `performActiveHealing`
->
-> ### 🔵 `NEUTRO` [80] `Automation/test_runner.ts`
->
-> - **Local:** `src_local/agents/Support/Automation/test_runner.ts`
-> - **Causa:** Componente 'test_runner.ts' evoluiu com 30 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `PhD`
->   - `constructor`
->   - `reduce`
->   - `every`
->   - `Number`
->   - `toFixed`
->   - `map`
->   - `join`
->   - `parseBunOutput`
->   - `testes`
->   - `now`
->   - `info`
->   - `if`
->   - `executeBunTest`
->   - `ficos`
->   - `files`
->   - `filter`
->   - `includes`
->   - `Promise`
->   - `spawn`
->   - `on`
->   - `resolve`
->   - `error`
->   - `reject`
->   - `catch`
->   - `match`
->   - `parseInt`
->   - `benchmark`
->   - `Date`
->   - `toISOString`
->
-> ### 🔵 `NEUTRO` [81] `Automation/test_refiner.ts`
->
-> - **Local:** `src_local/agents/Support/Automation/test_refiner.ts`
-> - **Causa:** Componente 'test_refiner.ts' evoluiu com 11 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `constructor`
->   - `CognitiveEngine`
->   - `info`
->   - `teste`
->   - `reason`
->   - `IA`
->   - `catch`
->   - `error`
->   - `robusto`
->   - `audit`
->
-> ### 🔵 `NEUTRO` [82] `core/phd_governance_system.ts`
->
-> - **Local:** `src_local/core/phd_governance_system.ts`
-> - **Causa:** Componente 'phd_governance_system.ts' evoluiu com 107 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `PhdGovernanceSystem`
->   - `AnalysisEnginePhd`
->   - `ScoringEnginePhd`
->   - `TopologyEnginePhd`
->   - `GitOperationsPhd`
->   - `VetoRulesPhd`
->   - `ResourceGovernor`
->   - `ComplianceStandard`
->   - `ConflictPolicyPhd`
->   - `PersonaLoader`
->   - `Indexer`
->   - `child`
->   - `System`
->   - `legados`
->   - `es`
->   - `calculateHealth`
->   - `if`
->   - `Estabilidade`
->   - `values`
->   - `filter`
->   - `Pureza`
->   - `max`
->   - `Observabilidade`
->   - `a`
->   - `ncia`
->   - `Compliance`
->   - `getComplianceLevel`
->   - `switch`
->   - `min`
->   - `Number`
->   - `toFixed`
->   - `vetado`
->   - `shouldVeto`
->   - `split`
->   - `some`
->   - `includes`
->   - `endsWith`
->   - `cnica`
->   - `isTechnicalMath`
->   - `toLowerCase`
->   - `RegExp`
->   - `test`
->   - `regras`
->   - `isRuleDefinition`
->   - `micos`
->   - `triggerReflexes`
->   - `info`
->   - `executeEmergencyAction`
->   - `error`
->   - `find`
->   - `performActiveHealing`
->   - `warn`
->   - `performAudit`
->   - `Conflitos`
->   - `resolveMergeConflict`
->   - `Ativa`
->   - `getActiveTopology`
->   - `join`
->   - `existsSync`
->   - `run_git_out`
->   - `run_git`
->   - `is_valid_repo`
->   - `discover_remote`
->   - `get_topology`
->   - `get_metrics`
->   - `transactional_rollback`
->   - `_get_init`
->   - `_test_quality`
->   - `process_secure_payload`
->   - `resolve_file`
->   - `_resolve_cache`
->   - `_resolve_json`
->   - `_resolve_ours`
->   - `_resolve_theirs`
->   - `discover_files`
->   - `get_search_dirs`
->   - `should_process`
->   - `apply_test_veto`
->   - `is_rule_def`
->   - `Teste`
->   - `analyzeTestQuality`
->   - `forEach`
->   - `match`
->   - `Recursos`
->   - `getResourceProfile`
->   - `floor`
->   - `getDirectives`
->   - `getPolicy`
->   - `analyze`
->   - `calculate`
->   - `_stability`
->   - `_purity`
->   - `_obs`
->   - `_security`
->   - `_excellence`
->   - `_apply_constraints`
->   - `_set_low_priority`
->   - `should_throttle`
->   - `wait_if_needed`
->   - `get_performance_profile`
->   - `get_current_pressure`
->   - `mobilize_all`
->   - `load_personas`
->   - `constructor`
->   - `super`
->   - `update_index`
->   - `_extract_metadata`
->
-> ### 🔵 `NEUTRO` [83] `core/diagnostic_pipeline.ts`
->
-> - **Local:** `src_local/core/diagnostic_pipeline.ts`
-> - **Causa:** Componente 'diagnostic_pipeline.ts' evoluiu com 22 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `constructor`
->   - `FindingDeduplicator`
->   - `if`
->   - `Path`
->   - `now`
->   - `DiscoveryAgent`
->   - `runDiscoveryPhase`
->   - `Audit`
->   - `info`
->   - `validatePhDCensus`
->   - `import`
->   - `QualityAnalyst`
->   - `runCognitiveAudit`
->   - `runAutoHealing`
->   - `ValidationAgent`
->   - `runValidationPhase`
->   - `finalize`
->   - `deduplicate`
->   - `toFixed`
->   - `mobilizeAll`
->   - `toString`
->
-> ### 🔵 `NEUTRO` [84] `core/task_orchestrator.ts`
->
-> - **Local:** `src_local/core/task_orchestrator.ts`
-> - **Causa:** Componente 'task_orchestrator.ts' evoluiu com 24 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `Tarefas`
->   - `constructor`
->   - `async`
->   - `if`
->   - `setContext`
->   - `keys`
->   - `push`
->   - `performAudit`
->   - `performStrategicAudit`
->   - `runParallel`
->   - `flat`
->   - `for`
->   - `entries`
->   - `join`
->   - `exists`
->   - `readProjectFile`
->   - `toString`
->   - `find`
->   - `toLowerCase`
->   - `some`
->   - `includes`
->   - `has`
->   - `filter`
->
-> ### 🔵 `NEUTRO` [85] `core/validator.ts`
->
-> - **Local:** `src_local/core/validator.ts`
-> - **Causa:** Componente 'validator.ts' evoluiu com 22 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `Core`
->   - `constructor`
->   - `if`
->   - `for`
->   - `max`
->   - `join`
->   - `existsSync`
->   - `info`
->   - `TestRunner`
->   - `alterados`
->   - `rgica`
->   - `runSelectiveTests`
->   - `o`
->   - `runParallelDiscovery`
->   - `catch`
->   - `error`
->   - `String`
->   - `Plataforma`
->   - `brutos`
->   - `match`
->   - `parseInt`
->
-> ### 🔵 `NEUTRO` [86] `core/orchestrator.ts`
->
-> - **Local:** `src_local/core/orchestrator.ts`
-> - **Causa:** Componente 'orchestrator.ts' evoluiu com 60 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `now`
->   - `constructor`
->   - `Path`
->   - `CacheManager`
->   - `toString`
->   - `TaskExecutor`
->   - `ContextEngine`
->   - `AuditEngine`
->   - `DirectorPersona`
->   - `StabilityLedger`
->   - `HistoryAgent`
->   - `TaskQueue`
->   - `MemoryEngine`
->   - `ReflexEngine`
->   - `UpdateTransaction`
->   - `SystemSentinel`
->   - `BehaviorAnalyst`
->   - `TaskWorker`
->   - `MemoryPruningAgent`
->   - `async`
->   - `info`
->   - `Orquestrador`
->   - `import`
->   - `HealthSynthesizer`
->   - `synthesize360`
->   - `push`
->   - `runStagedAudit`
->   - `Set`
->   - `setDepth`
->   - `sync`
->   - `updateAll`
->   - `sort`
->   - `HealerPersona`
->   - `for`
->   - `if`
->   - `healFinding`
->   - `PyramidAnalyst`
->   - `QualityAnalyst`
->   - `TopologyGraphAgent`
->   - `o`
->   - `keys`
->   - `replace`
->   - `split`
->   - `pop`
->   - `endsWith`
->   - `analyze`
->   - `join`
->   - `file`
->   - `text`
->   - `calculateConfidenceMatrix`
->   - `generateMermaidGraph`
->   - `generateMorningBriefing`
->   - `BriefingAgent`
->   - `generateMorningReport`
->   - `runMaintenance`
->   - `pruneOldLogs`
->   - `DiagnosticPipeline`
->   - `execute`
->   - `toFixed`
->
-> ### 🔵 `NEUTRO` [87] `tests/test_health_gauge.py`
->
-> - **Local:** `tests\test_health_gauge.py`
-> - **Causa:** Arquivo 'health_gauge.py' reconhecido como arquivado/manutenção em 'tests\test_health_gauge.py'.
->
-> ### 🔵 `NEUTRO` [88] `tests/test_sidebar.py`
->
-> - **Local:** `tests\test_sidebar.py`
-> - **Causa:** Arquivo 'sidebar.py' reconhecido como arquivado/manutenção em 'tests\test_sidebar.py'.
->
-> ### 🔵 `NEUTRO` [89] `tests/test_ui_controller.py`
->
-> - **Local:** `tests\test_ui_controller.py`
-> - **Causa:** Arquivo 'ui_controller.py' reconhecido como arquivado/manutenção em 'tests\test_ui_controller.py'.
->
-> ### 🔵 `NEUTRO` [90] `tests/test_dashboard_view.py`
->
-> - **Local:** `tests\test_dashboard_view.py`
-> - **Causa:** Arquivo 'dashboard_view.py' reconhecido como arquivado/manutenção em 'tests\test_dashboard_view.py'.
->
-> ### 🔵 `NEUTRO` [91] `utils/behavior_analyst.ts`
->
-> - **Local:** `src_local/utils/behavior_analyst.ts`
-> - **Causa:** Componente 'behavior_analyst.ts' evoluiu com 29 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `BehaviorAnalyst`
->   - `Win32`
->   - `child`
->   - `now`
->   - `constructor`
->   - `Path`
->   - `join`
->   - `toString`
->   - `Database`
->   - `getActiveWindow`
->   - `if`
->   - `DllImport`
->   - `GetForegroundWindow`
->   - `GetWindowText`
->   - `GetWindowThreadProcessId`
->   - `ToString`
->   - `execSync`
->   - `replace`
->   - `trim`
->   - `split`
->   - `catch`
->   - `toLowerCase`
->   - `includes`
->   - `floor`
->   - `saveActivity`
->   - `info`
->   - `run`
->   - `user_activity`
->   - `VALUES`
->
-> ### 🔵 `NEUTRO` [92] `utils/cache_manager.ts`
->
-> - **Local:** `src_local/utils/cache_manager.ts`
-> - **Causa:** Componente 'cache_manager.ts' evoluiu com 24 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `PhD`
->   - `constructor`
->   - `Path`
->   - `join`
->   - `updateAll`
->   - `info`
->   - `if`
->   - `existsSync`
->   - `toString`
->   - `readFileSync`
->   - `parse`
->   - `catch`
->   - `error`
->   - `exists`
->   - `file`
->   - `arrayBuffer`
->   - `CryptoHasher`
->   - `digest`
->   - `debug`
->   - `parent`
->   - `mkdirSync`
->   - `writeFileSync`
->   - `stringify`
->
-> ### 🔵 `NEUTRO` [93] `Diagnostics/cognitive_analyst.ts`
->
-> - **Local:** `src_local/agents/Support/Diagnostics/cognitive_analyst.ts`
-> - **Causa:** Componente 'cognitive_analyst.ts' evoluiu com 16 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `ncias`
->   - `docstring`
->   - `extractDocstring`
->   - `if`
->   - `cognitiveReason`
->   - `match`
->   - `warn`
->   - `parse`
->   - `catch`
->   - `error`
->   - `trim`
->   - `style`
->   - `replace`
->   - `DIGO`
->   - `slice`
->
-> ### 🔵 `NEUTRO` [94] `utils/cognitive_engine.ts`
->
-> - **Local:** `src_local/utils/cognitive_engine.ts`
-> - **Causa:** Componente 'cognitive_engine.ts' evoluiu com 28 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `Local`
->   - `local`
->   - `constructor`
->   - `if`
->   - `createLogger`
->   - `combine`
->   - `timestamp`
->   - `printf`
->   - `toUpperCase`
->   - `Console`
->   - `pensamento`
->   - `info`
->   - `ativado`
->   - `raciocinar`
->   - `checkVitals`
->   - `vitais`
->   - `gc`
->   - `warn`
->   - `fetch`
->   - `stringify`
->   - `vel`
->   - `json`
->   - `catch`
->   - `error`
->   - `ria`
->   - `model`
->   - `getInstance`
->   - `loads`
->
-> ### 🔵 `NEUTRO` [95] `utils/context_engine.ts`
->
-> - **Local:** `src_local/utils/context_engine.ts`
-> - **Causa:** Componente 'context_engine.ts' evoluiu com 53 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `PhD`
->   - `constructor`
->   - `Path`
->   - `DNAProfiler`
->   - `ContextMappingLogic`
->   - `StructuralAnalyst`
->   - `CoverageAuditor`
->   - `ConnectivityMapper`
->   - `ParityAnalyst`
->   - `info`
->   - `log`
->   - `FileSystemScanner`
->   - `toString`
->   - `scanAllFilenames`
->   - `processBatch`
->   - `keys`
->   - `relativeTo`
->   - `if`
->   - `catch`
->   - `error`
->   - `file`
->   - `text`
->   - `endsWith`
->   - `assign`
->   - `analyzePython`
->   - `name`
->   - `analyze_file_logic`
->   - `detectVulnerabilities`
->   - `detectTest`
->   - `match`
->   - `for`
->   - `entries`
->   - `calculateMetrics`
->   - `resolveDependency`
->   - `includes`
->   - `push`
->   - `arquivo`
->   - `toLowerCase`
->   - `replace`
->   - `analyzeStackGaps`
->   - `Set`
->   - `cognitiveReason`
->   - `import`
->   - `CognitiveEngine`
->   - `reason`
->   - `return`
->   - `slice`
->   - `all`
->   - `map`
->   - `async`
->   - `new`
->   - `warn`
->
-> ### 🔵 `NEUTRO` [96] `utils/context_iterator.ts`
->
-> - **Local:** `src_local/utils/context_iterator.ts`
-> - **Causa:** Componente 'context_iterator.ts' evoluiu com 18 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `PhD`
->   - `constructor`
->   - `Path`
->   - `debug`
->   - `keys`
->   - `for`
->   - `entries`
->   - `if`
->   - `endsWith`
->   - `includes`
->   - `join`
->   - `exists`
->   - `file`
->   - `toString`
->   - `text`
->   - `catch`
->   - `warn`
->
-> ### 🔵 `NEUTRO` [97] `utils/context_mapping_logic.ts`
->
-> - **Local:** `src_local/utils/context_mapping_logic.ts`
-> - **Causa:** Componente 'context_mapping_logic.ts' evoluiu com 24 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `Contexto`
->   - `now`
->   - `await`
->   - `getAnalyzableFiles`
->   - `push`
->   - `limitado`
->   - `for`
->   - `slice`
->   - `all`
->   - `map`
->   - `async`
->   - `relativeTo`
->   - `file`
->   - `toString`
->   - `text`
->   - `catch`
->   - `warn`
->   - `registerFile`
->   - `join`
->   - `info`
->   - `processing`
->   - `toFixed`
->   - `mapComponentType`
->
-> ### 🔵 `NEUTRO` [98] `utils/dependency_auditor.ts`
->
-> - **Local:** `src_local/utils/dependency_auditor.ts`
-> - **Causa:** Componente 'dependency_auditor.ts' evoluiu com 41 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `Soberano`
->   - `dulos`
->   - `constructor`
->   - `Path`
->   - `join`
->   - `includes`
->   - `GitClient`
->   - `toString`
->   - `SubmoduleSyncLogic`
->   - `ConflictPolicy`
->   - `if`
->   - `exists`
->   - `isLocked`
->   - `warn`
->   - `writeFile`
->   - `getHeadHash`
->   - `discoverRemote`
->   - `rebaseAbort`
->   - `info`
->   - `fetchPrune`
->   - `getCurrentBranch`
->   - `getTrackingBranch`
->   - `getCommitCount`
->   - `stashPush`
->   - `rebase`
->   - `warning`
->   - `resetHard`
->   - `Error`
->   - `integrity`
->   - `spawn`
->   - `stashPop`
->   - `catch`
->   - `error`
->   - `resolveFile`
->   - `unlink`
->   - `readdir`
->   - `then`
->   - `getSubmoduleDelta`
->   - `for`
->   - `topology`
->
-> ### 🔵 `NEUTRO` [99] `utils/file_system_scanner.ts`
->
-> - **Local:** `src_local/utils/file_system_scanner.ts`
-> - **Causa:** Componente 'file_system_scanner.ts' evoluiu com 34 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `walk`
->   - `child`
->   - `sistema`
->   - `constructor`
->   - `Path`
->   - `debug`
->   - `toString`
->   - `async`
->   - `if`
->   - `isForbiddenDir`
->   - `readdir`
->   - `for`
->   - `join`
->   - `isDirectory`
->   - `push`
->   - `toLowerCase`
->   - `replace`
->   - `split`
->   - `O`
->   - `Set`
->   - `some`
->   - `has`
->   - `includes`
->   - `slice`
->   - `indexOf`
->   - `every`
->   - `call`
->   - `await`
->   - `add`
->   - `isFile`
->   - `dirname`
->   - `startsWith`
->   - `shouldIgnore`
->   - `isAnalyable`
->
-> ### 🔵 `NEUTRO` [100] `utils/finding_deduplicator.ts`
->
-> - **Local:** `src_local/utils/finding_deduplicator.ts`
-> - **Causa:** Componente 'finding_deduplicator.ts' evoluiu com 15 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `field`
->   - `Forense`
->   - `constructor`
->   - `for`
->   - `if`
->   - `from`
->   - `values`
->   - `hash`
->   - `String`
->   - `toString`
->   - `has`
->   - `set`
->   - `toUpperCase`
->   - `get`
->   - `replace`
->
-> ### 🔵 `NEUTRO` [101] `utils/maintenance_engine_phd.ts`
->
-> - **Local:** `src_local/utils/maintenance_engine_phd.ts`
-> - **Causa:** Componente 'maintenance_engine_phd.ts' evoluiu com 30 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `run`
->   - `if`
->   - `split`
->   - `filter`
->   - `trim`
->   - `for`
->   - `join`
->   - `existsSync`
->   - `info`
->   - `spawn`
->   - `skills`
->   - `2`
->   - `3`
->   - `Response`
->   - `text`
->   - `parse`
->   - `O`
->   - `set`
->   - `includes`
->   - `theirs`
->   - `LOST`
->   - `from`
->   - `values`
->   - `sort`
->   - `localeCompare`
->   - `write`
->   - `stringify`
->   - `catch`
->   - `error`
->
-> ### 🔵 `NEUTRO` [102] `utils/markdown_processor.ts`
->
-> - **Local:** `src_local/utils/markdown_processor.ts`
-> - **Causa:** Componente 'markdown_processor.ts' evoluiu com 14 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `gicos`
->   - `constructor`
->   - `debug`
->   - `for`
->   - `if`
->   - `trimEnd`
->   - `trim`
->   - `startsWith`
->   - `push`
->   - `vazias`
->   - `deduplicateHeader`
->   - `applyHeaderPadding`
->   - `consecutivas`
->
-> ### 🔵 `NEUTRO` [103] `utils/markdown_util.ts`
->
-> - **Local:** `src_local/utils/markdown_util.ts`
-> - **Causa:** Componente 'markdown_util.ts' evoluiu com 5 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `replace`
->   - `if`
->   - `alhos`
->   - `trim`
->   - `push`
->
-> ### 🔵 `NEUTRO` [104] `utils/memory_engine.ts`
->
-> - **Local:** `src_local/utils/memory_engine.ts`
-> - **Causa:** Componente 'memory_engine.ts' evoluiu com 37 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `constructor`
->   - `Path`
->   - `join`
->   - `toString`
->   - `Database`
->   - `setDepth`
->   - `info`
->   - `rememberFinding`
->   - `stringify`
->   - `run`
->   - `ai_insights`
->   - `VALUES`
->   - `debug`
->   - `catch`
->   - `error`
->   - `incremental`
->   - `syncProjectMemory`
->   - `for`
->   - `entries`
->   - `if`
->   - `hash`
->   - `mudou`
->   - `query`
->   - `get`
->   - `conhecimento`
->   - `match`
->   - `map`
->   - `split`
->   - `pop`
->   - `Set`
->   - `slice`
->   - `searchSimilar`
->   - `IN`
->   - `all`
->   - `prune`
->   - `datetime`
->
-> ### 🔵 `NEUTRO` [105] `utils/memory_pruning_agent.ts`
->
-> - **Local:** `src_local/utils/memory_pruning_agent.ts`
-> - **Causa:** Componente 'memory_pruning_agent.ts' evoluiu com 18 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `ria`
->   - `constructor`
->   - `Path`
->   - `join`
->   - `toString`
->   - `now`
->   - `info`
->   - `antigos`
->   - `Database`
 >   - `date`
->   - `query`
->   - `datetime`
->   - `run`
->   - `close`
->   - `toFixed`
->   - `catch`
->   - `error`
->
-> ### 🔵 `NEUTRO` [106] `utils/reflex_engine.ts`
->
-> - **Local:** `src_local/utils/reflex_engine.ts`
-> - **Causa:** Componente 'reflex_engine.ts' evoluiu com 15 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `ReflexEngine`
->   - `child`
->   - `PhD`
->   - `ncrona`
->   - `info`
->   - `Ativa`
->   - `filter`
->   - `if`
->   - `find`
->   - `warn`
->   - `performActiveHealing`
->   - `ncias`
->   - `some`
->   - `syncSubmodule`
->   - `Fragilidade`
->
-> ### 🔵 `NEUTRO` [107] `utils/logging_config.ts`
->
-> - **Local:** `src_local/utils/logging_config.ts`
-> - **Causa:** Componente 'logging_config.ts' evoluiu com 23 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `SovereigntyLogger`
->   - `Console`
->   - `combine`
->   - `colorize`
->   - `timestamp`
->   - `printf`
->   - `formatDate`
->   - `Date`
->   - `stringify`
->   - `if`
->   - `push`
->   - `File`
->   - `now`
->   - `json`
->   - `configure`
->   - `log`
->   - `constructor`
->   - `getInstance`
->   - `SovereigntyLogger`
->   - `child`
->   - `toLowerCase`
->   - `flushToForensicStorage`
->   - `writeTextFileSync`
->
-> ### 🔵 `NEUTRO` [108] `tests/test_cli.py`
->
-> - **Local:** `tests\test_cli.py`
-> - **Causa:** Arquivo 'cli.py' reconhecido como arquivado/manutenção em 'tests\test_cli.py'.
->
-> ### 🔵 `NEUTRO` [109] `utils/stability_ledger.ts`
->
-> - **Local:** `src_local/utils/stability_ledger.ts`
-> - **Causa:** Componente 'stability_ledger.ts' evoluiu com 28 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `PhD`
->   - `constructor`
->   - `Path`
->   - `join`
->   - `MemoryPersistence`
->   - `loadLedger`
->   - `sync`
->   - `info`
->   - `saveLedger`
->   - `toString`
->   - `includes`
->   - `if`
->   - `for`
->   - `String`
->   - `replace`
->   - `add`
->   - `catch`
->   - `error`
->   - `push`
->   - `Date`
->   - `toISOString`
->   - `keys`
->   - `has`
->   - `clear`
->   - `instabilidade`
->   - `entries`
->   - `getFileMetadata`
->
-> ### 🔵 `NEUTRO` [110] `utils/submodule_sync_logic.ts`
->
-> - **Local:** `src_local/utils/submodule_sync_logic.ts`
-> - **Causa:** Componente 'submodule_sync_logic.ts' evoluiu com 16 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `dulos`
->   - `trava`
->   - `stat`
->   - `catch`
->   - `if`
->   - `now`
->   - `getTime`
->   - `unlink`
->   - `run`
->   - `getCurrentBranch`
->   - `getTrackingBranch`
->   - `getCommitCount`
->   - `info`
->   - `toFixed`
->   - `warn`
->
-> ### 🔵 `NEUTRO` [111] `utils/system_sentinel.ts`
->
-> - **Local:** `src_local/utils/system_sentinel.ts`
-> - **Causa:** Componente 'system_sentinel.ts' evoluiu com 45 novas funcionalidades em relação ao legado.
-> - **🚀 Novas Unidades Atômicas (Evolução):**
->   - `child`
->   - `PhD`
->   - `constructor`
->   - `execSync`
->   - `if`
->   - `now`
->   - `existsSync`
->   - `parse`
->   - `catch`
->   - `warn`
->   - `Legado`
->   - `totalmem`
->   - `freemem`
->   - `getAverageCpuUsageFallback`
->   - `toFixed`
->   - `platform`
->   - `arch`
->   - `uptime`
->   - `getHeavyProcessesFallback`
->   - `cpus`
->   - `for`
+>   - `tolocaletimestring`
+>   - `formatgovernancesection`
+>   - `formatvitalstable`
+>   - `formatparityboard`
+>   - `formatroadmap`
+>   - `sincronia`
+>   - `formattopologymap`
+>   - `formatentropymap`
 >   - `split`
->   - `slice`
->   - `map`
->   - `replace`
->   - `parseInt`
->   - `push`
->   - `sort`
->   - `parseFloat`
->   - `getHeavyProcesses`
->   - `tica`
->   - `enforceGovernance`
->   - `setPriority`
->   - `info`
->   - `shouldThrottle`
->   - `toString`
->   - `detectada`
->   - `yieldIfHighLoad`
->   - `while`
->   - `Promise`
->   - `setTimeout`
->   - `filter`
+>   - `pop`
 >   - `some`
->   - `toLowerCase`
->   - `includes`
+>   - `isarray`
+>   - `stringify`
+>   - `ausentes`
+>   - `micas`
 >
-> ### 🔵 `NEUTRO` [112] `utils/update_transaction.ts`
+> ### 🔵 `NEUTRO` [159] `Strategic/director.ts`
 >
-> - **Local:** `src_local/utils/update_transaction.ts`
-> - **Causa:** A migração de 'update_transaction.py' para 'update_transaction.ts' está PARITY_GAPS. Faltam 1 unidades.
+> - **Local:** `src_local/agents/TypeScript/Strategic/director.ts`
+> - **Causa:** A persona 'director' na stack 'TypeScript' está incompleta. Faltam 14 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `__init__`
+>   - `godirectorengine`
+>   - `architecture`
+>   - `audit`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `deduplicateresults`
+>   - `has`
+>   - `add`
 >
 
 ## 💀 Risco Existencial

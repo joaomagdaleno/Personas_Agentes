@@ -74,33 +74,24 @@ export class HealthSynthesizer {
             }
         }
 
-        // 🧬 Parity Counter Logic (v7.6)
-        const parityStats = {
-            total_atoms: Object.keys(mapData).length,
-            shallow: 0,
-            gaps: 0,
-            evolution: 0,
-            deep: 0
-        };
+        // 🧬 Parity Counter Logic (Native Sovereignty v8.0)
+        const { ParityAnalyst } = await import("../Analysis/parity_analyst");
+        const analyst = new ParityAnalyst(context.projectRoot || ".");
+        const nativeReport = analyst.analyzeAtomicParity();
 
-        for (const f of allAlerts) {
-            if (f.type === "EVOLUTION") {
-                parityStats.evolution++;
-            } else if (f.type === "DISPARITY") {
-                if (f.meta?.level === "SHALLOW") {
-                    parityStats.shallow++;
-                } else if (f.severity !== "INFO") {
-                    parityStats.gaps++;
-                }
-            }
-        }
-        // Deep Parity = Total atoms minus those with active disparity issues
-        // We assume one finding per file for simplicity in this visualization
-        parityStats.deep = Math.max(0, parityStats.total_atoms - (parityStats.shallow + parityStats.gaps));
+        const parityStats = {
+            total_atoms: nativeReport.totalAgents,
+            shallow: 0,
+            gaps: nativeReport.divergentCount,
+            evolution: 0,
+            deep: nativeReport.symmetricCount,
+            native_sync: nativeReport.overallParity,
+            raw_report: analyst.formatMarkdownReport(nativeReport)
+        };
 
         return {
             health_score: score,
-            health_breakdown: breakdown, // Alias para compatibilidade com ReportSectionsEngine
+            health_breakdown: breakdown,
             breakdown: breakdown,
             dark_matter: vitals.dark_matter,
             brittle_points: vitals.brittle_points,

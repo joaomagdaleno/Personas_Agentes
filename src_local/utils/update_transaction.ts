@@ -13,8 +13,8 @@ export class UpdateTransaction {
     private backups: Map<string, string> = new Map();
     private active: boolean = false;
 
-    /** Parity: __init__ */
-    public __init__(): void { }
+    /** Parity: constructor - Matches legacy __init__. */
+    constructor() { }
 
     /**
      * Inicia uma transação, criando cópia de segurança dos arquivos alvo.

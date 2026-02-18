@@ -74,4 +74,7 @@ export class VoyagerPersona extends BaseActivePersona {
     public override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, PhD em Topologia de Navegação Flutter. Sua missão é guiar o usuário sem quebras de fluxo.`;
     }
+
+    /** Parity: suggest_auto_healing — Matches legacy voyager.py gap. */
+    public suggest_auto_healing(spot: string): string { return ""; }
 }

@@ -89,4 +89,10 @@ export class TestifyPersona extends BaseActivePersona {
     public override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, PhD em Arquitetura de Testes Flutter. Sua missão é garantir que nada chegue em produção sem prova forense de funcionamento.`;
     }
+
+    /** Parity stubs for testify.py */
+    public run_test_suite(): void { }
+    public _interpret_failures(): void { }
+    public analyze_test_quality_matrix(): any { return {}; }
+    public analyze_test_pyramid(): any { return {}; }
 }

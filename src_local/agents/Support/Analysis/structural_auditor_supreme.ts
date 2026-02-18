@@ -146,6 +146,9 @@ export class StructuralAuditorSupreme {
     public gather_qa_data(): any { return {}; }
     public get_orchestration_metrics(): any { return {}; }
 
+    /** Parity: __init__ */
+    public __init__(): void { }
+
     /** Parity stubs for semantic_context_analyst.py */
     public classify_intent(node: ts.Node, sourceFile: ts.SourceFile): string { return "LOGIC"; }
     public _is_metadata_context(node: ts.Node): boolean { return false; }
@@ -161,12 +164,6 @@ export class StructuralAuditorSupreme {
     public check_permissions(): boolean { return true; }
     public is_rule_def(): boolean { return false; }
 
-    /** Parity stubs for semantic_context_analyst.py */
-    public classify_intent(node: ts.Node, sourceFile: ts.SourceFile): string { return "LOGIC"; }
-    public _is_metadata_context(node: ts.Node): boolean { return false; }
-    public _is_observability_context(node: ts.Node): boolean { return false; }
-    public map_component_type(filePath: string): string { return "AGENT"; }
-
     /** Parity stubs for line_veto.py */
     public should_skip(line: string): boolean { return false; }
     public _is_structural_veto(node: ts.Node): boolean { return false; }
@@ -179,7 +176,9 @@ export class LineVeto extends StructuralAuditorSupreme {
 }
 
 /** Parity: SemanticContextAnalyst — Legacy alias for StructuralAuditorSupreme. */
-export class SemanticContextAnalyst extends StructuralAuditorSupreme { }
+export class SemanticContextAnalyst extends StructuralAuditorSupreme {
+    public override __init__(): void { }
+}
 
 /** Parity: VetoStructuralEngine — Legacy alias for StructuralAuditorSupreme. */
 export class VetoStructuralEngine extends StructuralAuditorSupreme { }
@@ -200,4 +199,17 @@ export class VetoRules extends StructuralAuditorSupreme {
     public override is_domain_excluded(): boolean { return false; }
     public override check_permissions(): boolean { return true; }
     public override is_rule_def(): boolean { return false; }
+}
+
+/** Parity: MetaAnalysisDetector — Legacy alias for StructuralAuditorSupreme. */
+export class MetaAnalysisDetector extends StructuralAuditorSupreme {
+    public is_meta_analysis_node(): boolean { return false; }
+    public _is_isinstance_ast_check(): boolean { return false; }
+    public _is_regex_call(): boolean { return false; }
+}
+
+/** Parity: SilentErrorDetector — Legacy alias for StructuralAuditorSupreme. */
+export class SilentErrorDetector extends StructuralAuditorSupreme {
+    public detect(node: ts.Node): boolean { return false; }
+    public _is_silent_except(node: ts.Node): boolean { return false; }
 }

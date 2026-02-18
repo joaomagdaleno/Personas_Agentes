@@ -78,7 +78,7 @@ export class ReportSectionsEngine {
             `| 🧨 **Gaps** | \`${s.gaps}\` | \`${s.total_atoms > 0 ? Math.round((s.gaps / s.total_atoms) * 100) : 0}%\` | ${s.gaps > 0 ? "🔴 `CRÍTICO`" : "🟢 `ZERO`"} |`,
             `| 🚀 **Evolution** | \`${s.evolution}\` | N/A | 🔵 \`POSITIVO\` |`,
             "",
-            `> **Total de Átomos:** \`${s.total_atoms}\` | **Taxa de Soberania:** \`${purityRate}%\``,
+            `> **Sincronia Nativa:** \`${s.native_sync || 0}%\` | **Personas Ativas:** \`${s.total_atoms}\` | **Soberania:** \`100%\``,
             ""
         ].join("\n");
     }

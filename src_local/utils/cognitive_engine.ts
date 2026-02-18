@@ -14,6 +14,18 @@ export class CognitiveEngine {
     private memoryLimit: number = 85;
     private activeModel: string | null = null;
 
+    /**
+     * 🏰 Metadata API for Sovereignty Reports.
+     */
+    public getMetadata(): Record<string, any> {
+        return {
+            id: "infrastructure.cognitive",
+            model: this.modelName,
+            endpoint: this.endpoint,
+            status: this.activeModel ? "READY" : "IDLE"
+        };
+    }
+
     constructor() {
         if (CognitiveEngine.instance) return CognitiveEngine.instance;
 

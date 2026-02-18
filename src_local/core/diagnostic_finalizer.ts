@@ -87,6 +87,9 @@ export class DiagnosticFinalizer {
 
     /** Parity: _auto_test — Stub for legacy auto-testing. */
     private static _auto_test(): void { }
+
+    /** Parity: constructor - Matches legacy __init__. */
+    constructor() { }
 }
 
 /** Parity: ReportFormatter — Legacy alias for DiagnosticFinalizer formatting logic. */

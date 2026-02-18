@@ -144,7 +144,8 @@ export class ASTIntelligence {
     }
 
     /** Parity stubs for TestNavigator */
-    public __init__(): void { }
+    /** Parity: constructor - Matches legacy __init__. */
+    constructor() { }
     public is_inside_test_context(node: ts.Node): boolean { return false; }
     public _is_inside_test_method(node: ts.Node): boolean { return false; }
     public _is_inside_assertion(node: ts.Node): boolean { return false; }

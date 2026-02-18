@@ -15,16 +15,18 @@ import { UpdateTransaction } from "../utils/update_transaction.ts";
 import { SystemSentinel } from "../utils/system_sentinel.ts";
 import { BehaviorAnalyst } from "../utils/behavior_analyst.ts";
 import { TaskWorker } from "../utils/task_worker.ts";
-import { MemoryPruningAgent } from "../utils/memory_pruning_agent.ts";
+import type { IAgent, SovereignState, DiagnosticFinding, SystemHealth360 } from "./types.ts";
+import { MemoryPruningAgent } from "../agents/Support/Maintenance/memory_pruning_agent.ts";
 
 const logger = winston.child({ module: "Orchestrator" });
 
 export class Orchestrator {
+    private state: SovereignState;
     projectRoot: Path;
     lastDetectedChanges: string[] = [];
     metrics: any = { files_scanned: 0, health_score: 100, start_time: Date.now(), efficiency: {} };
     personas: any[] = [];
-    jobQueue: any[] = [];
+    private agentRegistry: Map<string, IAgent> = new Map();
 
     // Core Engines
     contextEngine: ContextEngine;
@@ -49,6 +51,11 @@ export class Orchestrator {
 
     constructor(projectRoot: string) {
         this.projectRoot = new Path(projectRoot);
+        this.state = {
+            root: projectRoot,
+            metrics: { files_scanned: 0, start_time: Date.now() },
+            identity: { core_mission: "Integrity Maintenance", stacks: ["TypeScript", "Python"] }
+        };
         this.cacheManager = new CacheManager(this.projectRoot.toString());
         this.executor = new TaskExecutor();
         this.contextEngine = new ContextEngine(this.projectRoot.toString());
@@ -65,9 +72,25 @@ export class Orchestrator {
         this.worker = new TaskWorker(this);
         this.pruningAgent = new MemoryPruningAgent(this.projectRoot.toString());
 
-        // Lazy loaded synthesizer below or in _initTools
+        this._registerAgents();
         this._initEngines();
         this._initTools();
+    }
+
+    private _registerAgents() {
+        this.agentRegistry.set(this.pruningAgent.id, this.pruningAgent);
+        // More agents can be registered here as they are refactored to IAgent
+    }
+
+    async dispatch(agentId: string, context: any = {}): Promise<any> {
+        const agent = this.agentRegistry.get(agentId);
+        if (!agent) {
+            logger.warn(`⚠️ [Orchestrator] Agent ${agentId} não encontrado no registro.`);
+            return null;
+        }
+
+        if (agent.initialize) await agent.initialize();
+        return await agent.execute(context);
     }
 
     _initEngines() {
@@ -230,9 +253,8 @@ export class Orchestrator {
     }
 
     async runMaintenance() {
-        logger.info("🔧 Iniciando manutenção do sistema...");
-        this.pruningAgent.pruneOldLogs(30); // Prune logs older than 30 days
-        // Add more maintenance tasks here if needed
+        logger.info("🔧 [Orchestrator] Iniciando manutenção do sistema...");
+        await this.pruningAgent.execute({ days: 30 });
     }
 
     async generateFullDiagnostic(options: { autoHeal: boolean, dryRun?: boolean }): Promise<Path> {

@@ -60,9 +60,11 @@ async function main() {
 
     try {
         orchestrator = new Orchestrator(projectRootStr);
+        console.log("Orchestrator created.");
 
         // Mobilizando PhDs
         orchestrator.addPersona(new DirectorPersona(projectRootStr));
+        console.log("DirectorPersona added. Running diagnostic...");
 
         const reportResult = await (args.values.staged
             ? orchestrator.runStagedAudit({ dryRun: !!args.values["dry-run"] })

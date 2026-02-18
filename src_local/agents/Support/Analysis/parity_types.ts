@@ -21,7 +21,7 @@ export interface AgentDelta {
     dimension: string;
     legacy: string;
     current: string;
-    severity: "INFO" | "MEDIUM" | "HIGH" | "CRITICAL";
+    severity: "INFO" | "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
     context: string;
 }
 

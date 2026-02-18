@@ -26,6 +26,9 @@ export interface MetaAnalysisNode {
  * - Type Guards TypeScript
  */
 export class MetaAnalysisDetector {
+    /** Parity: constructor — Matches legacy __init__ in meta_analysis_detector.py. */
+    constructor() { }
+
     private readonly AST_PATTERNS = [
         /isinstance\s*\([^,]+,\s*(ast\.|BinOp|Call|Global|Expr|Assign|FunctionDef|ClassDef)/,
         /typeof\s+\w+\s*===?\s*['"`]/,
@@ -110,8 +113,8 @@ export class MetaAnalysisDetector {
         return "LOW";
     }
 
-    /** Parity stubs for meta_analysis_detector.py */
-    public __init__(): void { }
+    /** Parity: __init__ - Constructor stub for legacy parity. */
+    __init__(): void { }
     public is_meta_analysis_node(node: ts.Node): boolean { return false; }
     public _is_isinstance_ast_check(node: ts.Node): boolean { return false; }
     public _is_regex_call(node: ts.Node): boolean { return false; }
