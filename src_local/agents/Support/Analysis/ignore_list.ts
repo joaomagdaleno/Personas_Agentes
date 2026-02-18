@@ -1,4 +1,4 @@
-export const IGNORE_LIST = [
+const LEGACY_FILES = [
     "ast_navigator.py",
     "ast_node_inspector.py",
     "ast_traversal_logic.py",
@@ -250,3 +250,6 @@ export const IGNORE_LIST = [
     "test_warden.py",
     "test_web_insight_agent.py"
 ];
+
+const IGNORE_META = "aggressive";
+export const IGNORE_LIST = [...LEGACY_FILES];

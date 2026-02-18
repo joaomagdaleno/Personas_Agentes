@@ -13,7 +13,7 @@
 | :--- | :--- | :--- |
 | **Integridade Geral** | `0%` | 🔴 `CRÍTICO` |
 | **Alertas Ativos** | `159 Achados` | 🔵 `MONITORADO` |
-| **Último Check** | `19:04:34` | 🟢 `ATIVA` |
+| **Último Check** | `00:15:47` | 🟢 `ATIVA` |
 
 ### 📊 DECOMPOSIÇÃO DA SAÚDE (PILARES)
 
@@ -40,7 +40,7 @@
 
 > | Métrica | Valor | Status |
 > | :--- | :--- | :--- |
-> | Pontos Cegos | 182 Arq. | 🔴 `CRÍTICO` |
+> | Pontos Cegos | 181 Arq. | 🔴 `CRÍTICO` |
 > | Fragilidades | 181 Pts. | 🔴 `RISCO` |
 > | Integridade | COLAPSO | ⚙️ `SISTEMA` |
 
@@ -90,7 +90,6 @@
 > | `testify.ts` | `1719` | `50%` |
 > | `depth_intelligence.ts` | `1700` | `75%` |
 > | `warden.ts` | `1649` | `50%` |
-> | `language_persona_orchestrator.ts` | `1640` | `98%` |
 > | `orchestrator.ts` | `1640` | `41%` |
 > | `audit_engine.ts` | `1601` | `67%` |
 > | `testify.ts` | `1599` | `50%` |
@@ -168,7 +167,7 @@
 > | `sentinel.ts` | `1258` | `40%` |
 > | `warden.ts` | `1258` | `67%` |
 > | `macro.ts` | `1252` | `100%` |
-> | `sqlite.ts` | `1252` | `18%` |
+> | `sqlite.ts` | `1252` | `20%` |
 > | `worker.ts` | `1252` | `67%` |
 > | `enum.ts` | `1252` | `100%` |
 > | `palette.ts` | `1243` | `67%` |
@@ -188,10 +187,11 @@
 > | `scribe.ts` | `1102` | `67%` |
 > | `scribe.ts` | `1102` | `67%` |
 > | `telemetry_intent_judge.ts` | `1100` | `100%` |
+> | `language_persona_orchestrator.ts` | `1095` | `98%` |
 > | `scale.ts` | `1069` | `50%` |
 > | `report_sections_engine.ts` | `1050` | `50%` |
-> | `topology_engine.ts` | `1035` | `50%` |
-> | `topology_engine.ts` | `1035` | `50%` |
+> | `topology_engine.ts` | `1035` | `40%` |
+> | `topology_engine.ts` | `1035` | `40%` |
 > | `test_runner.ts` | `1033` | `40%` |
 > | `forge.ts` | `1030` | `50%` |
 > | `spark.ts` | `1029` | `50%` |
@@ -202,7 +202,6 @@
 > | `voyager.ts` | `1026` | `50%` |
 > | `voyager.ts` | `1025` | `50%` |
 > | `voyager.ts` | `1025` | `50%` |
-> | `shadow_tray.py` | `1003` | `100%` |
 > | `echo.ts` | `989` | `50%` |
 > | `scribe.ts` | `989` | `50%` |
 > | `vault.ts` | `989` | `50%` |
@@ -211,26 +210,26 @@
 > | `fragment.ts` | `989` | `100%` |
 > | `palette.ts` | `989` | `50%` |
 > | `fragment.ts` | `989` | `100%` |
-> | `clock.ts` | `989` | `100%` |
 > | `cache.ts` | `989` | `33%` |
+> | `clock.ts` | `989` | `100%` |
 > | `file_system_scanner.ts` | `986` | `80%` |
 > | `bolt.ts` | `961` | `50%` |
 > | `telemetry_excellence_engine.ts` | `960` | `100%` |
 > | `master.ts` | `954` | `100%` |
-> | `sentinel.ts` | `949` | `25%` |
 > | `warden.ts` | `949` | `50%` |
+> | `sentinel.ts` | `949` | `25%` |
 > | `flow.ts` | `949` | `50%` |
 > | `vortex.ts` | `949` | `100%` |
 > | `probe.ts` | `949` | `50%` |
 > | `forge.ts` | `949` | `50%` |
-> | `vault.ts` | `949` | `50%` |
 > | `scribe.ts` | `949` | `50%` |
+> | `vault.ts` | `949` | `50%` |
 > | `bolt.ts` | `949` | `50%` |
 > | `probe.ts` | `949` | `50%` |
 > | `forge.ts` | `949` | `50%` |
 > | `palette.ts` | `949` | `50%` |
-> | `scribe.ts` | `949` | `50%` |
 > | `sentinel.ts` | `949` | `25%` |
+> | `scribe.ts` | `949` | `50%` |
 > | `vortex.ts` | `949` | `100%` |
 > | `stream.ts` | `949` | `50%` |
 > | `metric.ts` | `924` | `33%` |
@@ -242,8 +241,8 @@
 > | `scope.ts` | `909` | `50%` |
 > | `echo.ts` | `909` | `50%` |
 > | `vault.ts` | `909` | `50%` |
-> | `core.ts` | `909` | `2%` |
 > | `neural.ts` | `909` | `50%` |
+> | `core.ts` | `909` | `2%` |
 > | `nexus.ts` | `909` | `50%` |
 > | `spark.ts` | `909` | `50%` |
 > | `compliance_standard.ts` | `888` | `100%` |
@@ -267,12 +266,12 @@
 > | `quality_analyst.ts` | `765` | `60%` |
 > | `mantra.ts` | `762` | `50%` |
 > | `bridge.ts` | `762` | `50%` |
-> | `echo.ts` | `762` | `50%` |
-> | `hype.ts` | `762` | `50%` |
 > | `mantra.ts` | `762` | `50%` |
+> | `hype.ts` | `762` | `50%` |
+> | `echo.ts` | `762` | `50%` |
+> | `hermes.ts` | `762` | `50%` |
 > | `nexus.ts` | `762` | `50%` |
 > | `spark.ts` | `762` | `50%` |
-> | `hermes.ts` | `762` | `50%` |
 > | `stream.ts` | `762` | `50%` |
 > | `activate-phase.ts` | `755` | `100%` |
 > | `meta_analysis_detector.ts` | `743` | `100%` |
@@ -312,7 +311,6 @@
 > | `Sidebar.tsx` | `540` | `83%` |
 > | `healer_persona.ts` | `535` | `83%` |
 > | `update_transaction.ts` | `525` | `75%` |
-> | `gui_native.py` | `519` | `100%` |
 > | `sqlite.test.ts` | `515` | `100%` |
 > | `worker.test.ts` | `515` | `100%` |
 > | `plugin.test.ts` | `515` | `100%` |
@@ -342,7 +340,7 @@
 > | `cache_manager.ts` | `457` | `75%` |
 > | `finding_deduplicator.ts` | `456` | `0%` |
 > | `battle_plan_sections_engine.ts` | `441` | `50%` |
-> | `logic_auditor.ts` | `436` | `86%` |
+> | `logic_auditor.ts` | `436` | `100%` |
 > | `submodule_sync_logic.ts` | `425` | `75%` |
 > | `verify_phase_19.ts` | `420` | `100%` |
 > | `semantic_context_analyst.ts` | `417` | `100%` |
@@ -359,7 +357,6 @@
 > | `veto_engine.ts` | `368` | `33%` |
 > | `specialized_personas_hub.ts` | `366` | `100%` |
 > | `markdown_processor.ts` | `366` | `100%` |
-> | `verify_metrics.ts` | `350` | `100%` |
 > | `silent_error_strategy.ts` | `348` | `67%` |
 > | `observability_strategy.ts` | `346` | `67%` |
 > | `test_refiner.ts` | `339` | `67%` |
@@ -405,8 +402,8 @@
 > | `CommandBriefing.tsx` | `230` | `83%` |
 > | `meta_analysis_strategy.ts` | `228` | `67%` |
 > | `useDashboard.ts` | `225` | `67%` |
-> | `debug_final_health.js` | `221` | `100%` |
 > | `debug_detailed_penalties.js` | `221` | `100%` |
+> | `debug_final_health.js` | `221` | `100%` |
 > | `generate_missing_tests.ts` | `220` | `100%` |
 > | `react_portal_builder.ts` | `220` | `100%` |
 > | `refactor_go_agents.ts` | `220` | `100%` |
@@ -414,7 +411,6 @@
 > | `debug_assertion_detection.js` | `195` | `100%` |
 > | `debug_alerts_detail.js` | `191` | `100%` |
 > | `fix_test_quality.js` | `190` | `100%` |
-> | `health_gauge.py` | `190` | `100%` |
 > | `debug_complexity_after_refactor.js` | `185` | `100%` |
 > | `verify_phase_18.ts` | `185` | `100%` |
 > | `Typo.tsx` | `185` | `18%` |
@@ -434,24 +430,21 @@
 > | `debug_complexity.js` | `140` | `100%` |
 > | `doc_gen_agent.ts` | `140` | `67%` |
 > | `update-git.ts` | `140` | `100%` |
-> | `cli.py` | `138` | `44%` |
 > | `debug_penalty.js` | `131` | `100%` |
 > | `security_sentinel_agent.ts` | `131` | `67%` |
 > | `verify_deep_parity.test.ts` | `129` | `100%` |
-> | `findings_view.py` | `125` | `100%` |
 > | `activate-phase.test.ts` | `115` | `100%` |
 > | `extract_personas.test.ts` | `115` | `100%` |
 > | `reorganize_support.test.ts` | `115` | `100%` |
 > | `deep_disparity_scanner.test.ts` | `115` | `100%` |
-> | `delete_redundant.test.ts` | `115` | `100%` |
 > | `experiment_bun_features.test.ts` | `115` | `100%` |
 > | `verify_phase_17.test.ts` | `115` | `100%` |
 > | `verify_phase_18.test.ts` | `115` | `100%` |
 > | `verify_phase_19.test.ts` | `115` | `100%` |
 > | `base_active_persona.test.ts` | `115` | `100%` |
 > | `schema_persona.test.ts` | `115` | `100%` |
-> | `parity_utils.test.ts` | `115` | `100%` |
 > | `parity_types.test.ts` | `115` | `100%` |
+> | `parity_utils.test.ts` | `115` | `100%` |
 > | `doc_gen_agent.test.ts` | `115` | `100%` |
 > | `healer_persona.test.ts` | `115` | `100%` |
 > | `specialized_personas_hub.test.ts` | `115` | `100%` |
@@ -463,9 +456,6 @@
 > | `cognitive_validator.test.ts` | `115` | `100%` |
 > | `depth_intelligence.test.ts` | `115` | `100%` |
 > | `go_discovery_adapter.test.ts` | `115` | `100%` |
-> | `html_portal_generator.test.ts` | `115` | `100%` |
-> | `markdown_renderer.test.ts` | `115` | `100%` |
-> | `merge_go_manifest.test.ts` | `115` | `100%` |
 > | `persona_registry.test.ts` | `115` | `100%` |
 > | `react_portal_builder.test.ts` | `115` | `100%` |
 > | `refactor_go_agents.test.ts` | `115` | `100%` |
@@ -477,29 +467,49 @@
 > | `test_runner.test.ts` | `115` | `100%` |
 > | `update-git.test.ts` | `115` | `100%` |
 > | `update_imports.test.ts` | `115` | `100%` |
+> | `verify_metrics.ts` | `110` | `100%` |
 > | `debug_health.js` | `106` | `100%` |
-> | `delete_redundant.ts` | `105` | `100%` |
 > | `parity_config.test.ts` | `105` | `100%` |
-> | `markdown_renderer.ts` | `100` | `0%` |
-> | `ProgressBar.tsx` | `95` | `40%` |
-> | `sidebar.py` | `95` | `100%` |
-> | `debug_engine.ts` | `90` | `50%` |
-> | `html_portal_generator.ts` | `90` | `100%` |
-> | `merge_go_manifest.ts` | `80` | `100%` |
-> | `debug_engine.test.ts` | `75` | `100%` |
+> | `index.test.ts` | `100` | `100%` |
+> | `safety_definitions.test.ts` | `100` | `100%` |
+> | `safety_identifiers.test.ts` | `100` | `100%` |
+> | `safety_patterns.test.ts` | `100` | `100%` |
+> | `theme.test.ts` | `100` | `100%` |
+> | `ProgressBar_shadow.tsx` | `95` | `50%` |
+> | `date_utils.test.ts` | `80` | `100%` |
+> | `date_utils_shadow.ts` | `80` | `0%` |
+> | `markdown_renderer.test.ts` | `80` | `100%` |
+> | `index.ts` | `75` | `0%` |
 > | `bridge_orchestrator.test.ts` | `75` | `100%` |
-> | `theme.ts` | `75` | `0%` |
-> | `launch_api.py` | `70` | `100%` |
-> | `date_utils.ts` | `70` | `0%` |
-> | `chat_view.py` | `65` | `100%` |
-> | `dashboard_view.py` | `65` | `100%` |
-> | `launch_dashboard.py` | `60` | `100%` |
-> | `safety_definitions.ts` | `50` | `0%` |
+> | `html_portal_generator.test.ts` | `75` | `100%` |
+> | `merge_go_manifest.test.ts` | `75` | `100%` |
+> | `portal_engine.ts` | `75` | `33%` |
+> | `debug_engine.test.ts` | `55` | `100%` |
+> | `delete_redundant.test.ts` | `50` | `100%` |
+> | `ProgressBar.test.tsx` | `50` | `100%` |
+> | `delete_redundant.test.ts` | `50` | `100%` |
 > | `placeholder.test.ts` | `50` | `100%` |
+> | `renderer_shadow.ts` | `46` | `0%` |
+> | `portal_shadow.ts` | `45` | `75%` |
+> | `debug_shadow.ts` | `41` | `0%` |
+> | `refresh_map.ts` | `40` | `100%` |
+> | `theme_shadow.ts` | `40` | `0%` |
+> | `merge_shadow.ts` | `35` | `50%` |
+> | `delete_shadow.ts` | `30` | `50%` |
+> | `delete_redundant.ts` | `15` | `50%` |
+> | `debug_engine.ts` | `15` | `25%` |
+> | `ignore_list.ts` | `15` | `0%` |
+> | `parity_config.ts` | `15` | `25%` |
+> | `safety_definitions.ts` | `15` | `0%` |
+> | `safety_identifiers.ts` | `15` | `0%` |
+> | `safety_patterns.ts` | `15` | `0%` |
+> | `ProgressBar.tsx` | `15` | `20%` |
+> | `theme.ts` | `15` | `7%` |
+> | `date_utils.ts` | `15` | `33%` |
+> | `html_portal_generator.ts` | `15` | `50%` |
+> | `markdown_renderer.ts` | `15` | `50%` |
+> | `merge_go_manifest.ts` | `15` | `50%` |
 > | `debug_logic.ts` | `10` | `100%` |
-> | `ignore_list.ts` | `5` | `0%` |
-> | `parity_config.ts` | `5` | `25%` |
-> | `index.ts` | `1` | `0%` |
 
 ## 🧪 MATRIZ DE CONFIANÇA
 
@@ -546,8 +556,8 @@
 | `bolt.ts` | `1344` | `0` | 🔴 `FRÁGIL` |
 | `forge.ts` | `1338` | `0` | 🔴 `FRÁGIL` |
 | `probe.ts` | `1335` | `0` | 🔴 `FRÁGIL` |
-| `scope.ts` | `1335` | `0` | 🔴 `FRÁGIL` |
 | `fragment.ts` | `1335` | `5` | 🔴 `FRÁGIL` |
+| `scope.ts` | `1335` | `0` | 🔴 `FRÁGIL` |
 | `scribe.ts` | `1335` | `0` | 🔴 `FRÁGIL` |
 | `sentinel.ts` | `1335` | `5` | 🔴 `FRÁGIL` |
 | `stream.ts` | `1335` | `0` | 🔴 `FRÁGIL` |
@@ -567,8 +577,8 @@
 | `forge.ts` | `1295` | `0` | 🔴 `FRÁGIL` |
 | `cache.ts` | `1295` | `0` | 🔴 `FRÁGIL` |
 | `neural.ts` | `1295` | `0` | 🔴 `FRÁGIL` |
-| `bridge.ts` | `1292` | `5` | 🔴 `FRÁGIL` |
 | `cache.ts` | `1292` | `0` | 🔴 `FRÁGIL` |
+| `bridge.ts` | `1292` | `5` | 🔴 `FRÁGIL` |
 | `generic.ts` | `1283` | `5` | 🔴 `FRÁGIL` |
 | `decorator.ts` | `1283` | `5` | 🔴 `FRÁGIL` |
 | `cache.ts` | `1283` | `0` | 🔴 `FRÁGIL` |
@@ -624,7 +634,6 @@
 | `voyager.ts` | `1026` | `0` | 🔴 `FRÁGIL` |
 | `voyager.ts` | `1025` | `0` | 🔴 `FRÁGIL` |
 | `voyager.ts` | `1025` | `0` | 🔴 `FRÁGIL` |
-| `shadow_tray.py` | `1003` | `0` | 🔴 `FRÁGIL` |
 | `echo.ts` | `989` | `0` | 🔴 `FRÁGIL` |
 | `scribe.ts` | `989` | `0` | 🔴 `FRÁGIL` |
 | `vault.ts` | `989` | `0` | 🔴 `FRÁGIL` |
@@ -632,26 +641,26 @@
 | `nexus.ts` | `989` | `0` | 🔴 `FRÁGIL` |
 | `palette.ts` | `989` | `0` | 🔴 `FRÁGIL` |
 | `fragment.ts` | `989` | `5` | 🔴 `FRÁGIL` |
-| `clock.ts` | `989` | `5` | 🔴 `FRÁGIL` |
 | `cache.ts` | `989` | `0` | 🔴 `FRÁGIL` |
+| `clock.ts` | `989` | `5` | 🔴 `FRÁGIL` |
 | `file_system_scanner.ts` | `986` | `0` | 🔴 `FRÁGIL` |
 | `scribe.ts` | `981` | `0` | 🔴 `FRÁGIL` |
 | `bolt.ts` | `961` | `0` | 🔴 `FRÁGIL` |
 | `telemetry_excellence_engine.ts` | `960` | `5` | 🔴 `FRÁGIL` |
 | `master.ts` | `954` | `5` | 🔴 `FRÁGIL` |
-| `sentinel.ts` | `949` | `5` | 🔴 `FRÁGIL` |
 | `warden.ts` | `949` | `0` | 🔴 `FRÁGIL` |
+| `sentinel.ts` | `949` | `5` | 🔴 `FRÁGIL` |
 | `flow.ts` | `949` | `0` | 🔴 `FRÁGIL` |
 | `probe.ts` | `949` | `0` | 🔴 `FRÁGIL` |
 | `forge.ts` | `949` | `0` | 🔴 `FRÁGIL` |
-| `vault.ts` | `949` | `0` | 🔴 `FRÁGIL` |
 | `scribe.ts` | `949` | `0` | 🔴 `FRÁGIL` |
+| `vault.ts` | `949` | `0` | 🔴 `FRÁGIL` |
 | `bolt.ts` | `949` | `0` | 🔴 `FRÁGIL` |
 | `probe.ts` | `949` | `0` | 🔴 `FRÁGIL` |
 | `forge.ts` | `949` | `0` | 🔴 `FRÁGIL` |
 | `palette.ts` | `949` | `0` | 🔴 `FRÁGIL` |
-| `scribe.ts` | `949` | `0` | 🔴 `FRÁGIL` |
 | `sentinel.ts` | `949` | `5` | 🔴 `FRÁGIL` |
+| `scribe.ts` | `949` | `0` | 🔴 `FRÁGIL` |
 | `vortex.ts` | `949` | `5` | 🔴 `FRÁGIL` |
 | `stream.ts` | `949` | `0` | 🔴 `FRÁGIL` |
 | `metric.ts` | `924` | `0` | 🔴 `FRÁGIL` |
@@ -663,8 +672,8 @@
 | `scope.ts` | `909` | `0` | 🔴 `FRÁGIL` |
 | `echo.ts` | `909` | `0` | 🔴 `FRÁGIL` |
 | `vault.ts` | `909` | `0` | 🔴 `FRÁGIL` |
-| `core.ts` | `909` | `5` | 🔴 `FRÁGIL` |
 | `neural.ts` | `909` | `0` | 🔴 `FRÁGIL` |
+| `core.ts` | `909` | `5` | 🔴 `FRÁGIL` |
 | `nexus.ts` | `909` | `0` | 🔴 `FRÁGIL` |
 | `spark.ts` | `909` | `0` | 🔴 `FRÁGIL` |
 | `compliance_standard.ts` | `888` | `0` | 🔴 `FRÁGIL` |
@@ -687,12 +696,12 @@
 | `quality_analyst.ts` | `765` | `0` | 🔴 `FRÁGIL` |
 | `mantra.ts` | `762` | `0` | 🔴 `FRÁGIL` |
 | `bridge.ts` | `762` | `5` | 🔴 `FRÁGIL` |
-| `echo.ts` | `762` | `0` | 🔴 `FRÁGIL` |
-| `hype.ts` | `762` | `0` | 🔴 `FRÁGIL` |
 | `mantra.ts` | `762` | `0` | 🔴 `FRÁGIL` |
+| `hype.ts` | `762` | `0` | 🔴 `FRÁGIL` |
+| `echo.ts` | `762` | `0` | 🔴 `FRÁGIL` |
+| `hermes.ts` | `762` | `0` | 🔴 `FRÁGIL` |
 | `nexus.ts` | `762` | `0` | 🔴 `FRÁGIL` |
 | `spark.ts` | `762` | `0` | 🔴 `FRÁGIL` |
-| `hermes.ts` | `762` | `0` | 🔴 `FRÁGIL` |
 | `stream.ts` | `762` | `0` | 🔴 `FRÁGIL` |
 | `activate-phase.ts` | `755` | `5` | 🔴 `FRÁGIL` |
 | `meta_analysis_detector.ts` | `743` | `0` | 🔴 `FRÁGIL` |
@@ -731,7 +740,6 @@
 | `Sidebar.tsx` | `540` | `0` | 🔴 `FRÁGIL` |
 | `healer_persona.ts` | `535` | `5` | 🔴 `FRÁGIL` |
 | `update_transaction.ts` | `525` | `0` | 🔴 `FRÁGIL` |
-| `gui_native.py` | `519` | `0` | 🔴 `FRÁGIL` |
 | `context_iterator.ts` | `515` | `0` | 🔴 `FRÁGIL` |
 | `base_active_persona.ts` | `510` | `5` | 🔴 `FRÁGIL` |
 | `schema_persona.ts` | `506` | `5` | 🔴 `FRÁGIL` |
@@ -766,7 +774,6 @@
 | `veto_engine.ts` | `368` | `5` | 🔴 `FRÁGIL` |
 | `specialized_personas_hub.ts` | `366` | `5` | 🔴 `FRÁGIL` |
 | `markdown_processor.ts` | `366` | `0` | 🔴 `FRÁGIL` |
-| `verify_metrics.ts` | `350` | `0` | 🔴 `FRÁGIL` |
 | `silent_error_strategy.ts` | `348` | `0` | 🔴 `FRÁGIL` |
 | `observability_strategy.ts` | `346` | `0` | 🔴 `FRÁGIL` |
 | `reflex_engine.ts` | `335` | `0` | 🔴 `FRÁGIL` |
@@ -803,15 +810,14 @@
 | `CommandBriefing.tsx` | `230` | `0` | 🔴 `FRÁGIL` |
 | `meta_analysis_strategy.ts` | `228` | `0` | 🔴 `FRÁGIL` |
 | `useDashboard.ts` | `225` | `0` | 🔴 `FRÁGIL` |
-| `debug_final_health.js` | `221` | `0` | 🔴 `FRÁGIL` |
 | `debug_detailed_penalties.js` | `221` | `0` | 🔴 `FRÁGIL` |
+| `debug_final_health.js` | `221` | `0` | 🔴 `FRÁGIL` |
 | `react_portal_builder.ts` | `220` | `5` | 🔴 `FRÁGIL` |
 | `refactor_go_agents.ts` | `220` | `5` | 🔴 `FRÁGIL` |
 | `parity_types.ts` | `210` | `5` | 🔴 `FRÁGIL` |
 | `App.tsx` | `200` | `0` | 🔴 `FRÁGIL` |
 | `debug_assertion_detection.js` | `195` | `0` | 🔴 `FRÁGIL` |
 | `debug_alerts_detail.js` | `191` | `0` | 🔴 `FRÁGIL` |
-| `health_gauge.py` | `190` | `0` | 🔴 `FRÁGIL` |
 | `debug_complexity_after_refactor.js` | `185` | `0` | 🔴 `FRÁGIL` |
 | `verify_phase_18.ts` | `185` | `5` | 🔴 `FRÁGIL` |
 | `Typo.tsx` | `185` | `0` | 🔴 `FRÁGIL` |
@@ -829,30 +835,36 @@
 | `debug_complexity.js` | `140` | `0` | 🔴 `FRÁGIL` |
 | `doc_gen_agent.ts` | `140` | `5` | 🔴 `FRÁGIL` |
 | `update-git.ts` | `140` | `5` | 🔴 `FRÁGIL` |
-| `cli.py` | `138` | `0` | 🔴 `FRÁGIL` |
 | `debug_penalty.js` | `131` | `0` | 🔴 `FRÁGIL` |
 | `security_sentinel_agent.ts` | `131` | `0` | 🔴 `FRÁGIL` |
 | `topology_engine.ts` | `125` | `0` | 🔴 `FRÁGIL` |
-| `findings_view.py` | `125` | `0` | 🔴 `FRÁGIL` |
+| `verify_metrics.ts` | `110` | `0` | 🔴 `FRÁGIL` |
 | `debug_health.js` | `106` | `0` | 🔴 `FRÁGIL` |
-| `delete_redundant.ts` | `105` | `5` | 🔴 `FRÁGIL` |
-| `markdown_renderer.ts` | `100` | `5` | 🔴 `FRÁGIL` |
-| `ProgressBar.tsx` | `95` | `0` | 🔴 `FRÁGIL` |
-| `sidebar.py` | `95` | `0` | 🔴 `FRÁGIL` |
-| `debug_engine.ts` | `90` | `5` | 🔴 `FRÁGIL` |
-| `html_portal_generator.ts` | `90` | `5` | 🔴 `FRÁGIL` |
-| `merge_go_manifest.ts` | `80` | `5` | 🟡 `ESTRUTURAL` |
-| `theme.ts` | `75` | `0` | 🔴 `FRÁGIL` |
-| `launch_api.py` | `70` | `0` | 🔴 `FRÁGIL` |
-| `date_utils.ts` | `70` | `0` | 🔴 `FRÁGIL` |
-| `chat_view.py` | `65` | `0` | 🔴 `FRÁGIL` |
-| `dashboard_view.py` | `65` | `0` | 🔴 `FRÁGIL` |
-| `launch_dashboard.py` | `60` | `0` | 🔴 `FRÁGIL` |
-| `safety_definitions.ts` | `50` | `0` | 🔴 `FRÁGIL` |
+| `ProgressBar_shadow.tsx` | `95` | `0` | 🔴 `FRÁGIL` |
+| `date_utils_shadow.ts` | `80` | `0` | 🔴 `FRÁGIL` |
+| `index.ts` | `75` | `7` | 🔴 `FRÁGIL` |
+| `portal_engine.ts` | `75` | `0` | 🔴 `FRÁGIL` |
+| `renderer_shadow.ts` | `46` | `0` | 🔴 `FRÁGIL` |
+| `portal_shadow.ts` | `45` | `0` | 🔴 `FRÁGIL` |
+| `debug_shadow.ts` | `41` | `0` | 🔴 `FRÁGIL` |
+| `refresh_map.ts` | `40` | `0` | 🔴 `FRÁGIL` |
+| `theme_shadow.ts` | `40` | `0` | 🔴 `FRÁGIL` |
+| `merge_shadow.ts` | `35` | `0` | 🔴 `FRÁGIL` |
+| `delete_shadow.ts` | `30` | `0` | 🔴 `FRÁGIL` |
+| `delete_redundant.ts` | `15` | `5` | 🟢 `PROFUNDO` |
+| `debug_engine.ts` | `15` | `3` | 🟢 `PROFUNDO` |
+| `ignore_list.ts` | `15` | `12` | 🟢 `PROFUNDO` |
+| `parity_config.ts` | `15` | `9` | 🟡 `ESTRUTURAL` |
+| `safety_definitions.ts` | `15` | `10` | 🟢 `PROFUNDO` |
+| `safety_identifiers.ts` | `15` | `12` | 🟢 `PROFUNDO` |
+| `safety_patterns.ts` | `15` | `9` | 🟢 `PROFUNDO` |
+| `ProgressBar.tsx` | `15` | `3` | 🟢 `PROFUNDO` |
+| `theme.ts` | `15` | `8` | 🟢 `PROFUNDO` |
+| `date_utils.ts` | `15` | `5` | 🟢 `PROFUNDO` |
+| `html_portal_generator.ts` | `15` | `7` | 🟢 `PROFUNDO` |
+| `markdown_renderer.ts` | `15` | `5` | 🟢 `PROFUNDO` |
+| `merge_go_manifest.ts` | `15` | `5` | 🟡 `ESTRUTURAL` |
 | `debug_logic.ts` | `10` | `11` | 🟢 `PROFUNDO` |
-| `ignore_list.ts` | `5` | `12` | 🟡 `ESTRUTURAL` |
-| `parity_config.ts` | `5` | `9` | 🟡 `ESTRUTURAL` |
-| `index.ts` | `1` | `0` | 🟡 `ESTRUTURAL` |
 
 ## 🎯 PLANO DE BATALHA: DIRETRIZES DE ENGENHARIA
 
@@ -866,180 +878,12 @@
 
 ## 🚩 ACHADOS DETALHADOS
 
-> ### 🔵 `NEUTRO` [1] `Audit/metric.ts`
->
-> - **Local:** `src_local/agents/Bun/Audit/metric.ts`
-> - **Causa:** A persona 'metric' na stack 'Bun' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `gometricengine`
->   - `telemetry`
->   - `validate`
->   - `includes`
->   - `nativas`
->   - `gc`
->   - `startmetrics`
->   - `ticas`
->   - `recover`
->   - `findpatterns`
->   - `foreach`
->   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `selfdiagnostic`
->   - `instrumentation`
->   - `plataforma`
->   - `conformidade`
->
-> ### 🔵 `NEUTRO` [2] `Audit/metric.ts`
->
-> - **Local:** `src_local/agents/Go/Audit/metric.ts`
-> - **Causa:** A persona 'metric' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `nanoseconds`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
->   - `performauditrules`
->   - `instrumentation`
->   - `plataforma`
->   - `conformidade`
->
-> ### 🔵 `NEUTRO` [3] `Audit/metric.ts`
->
-> - **Local:** `src_local/agents/Kotlin/Audit/metric.ts`
-> - **Causa:** A persona 'metric' na stack 'Kotlin' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `nanoseconds`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `push`
->   - `tofixed`
->   - `test`
->   - `performauditrules`
->   - `gometricengine`
->   - `telemetry`
->   - `validate`
->   - `includes`
->   - `nativas`
->   - `gc`
->   - `ticas`
->   - `recover`
->   - `foreach`
->   - `substring`
->
-> ### 🔵 `NEUTRO` [4] `Audit/metric.ts`
->
-> - **Local:** `src_local/agents/Flutter/Audit/metric.ts`
-> - **Causa:** A persona 'metric' na stack 'Flutter' está incompleta. Faltam 26 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `nanoseconds`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `push`
->   - `tofixed`
->   - `test`
->   - `performauditrules`
->   - `gometricengine`
->   - `telemetry`
->   - `validate`
->   - `includes`
->   - `nativas`
->   - `gc`
->   - `ticas`
->   - `recover`
->   - `foreach`
->   - `substring`
->   - `plataforma`
->   - `conformidade`
->
-> ### 🔵 `NEUTRO` [5] `Audit/metric.ts`
->
-> - **Local:** `src_local/agents/Python/Audit/metric.ts`
-> - **Causa:** A persona 'metric' na stack 'Python' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `nanoseconds`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `push`
->   - `tofixed`
->   - `test`
->   - `performauditrules`
->   - `gometricengine`
->   - `telemetry`
->   - `validate`
->   - `includes`
->   - `nativas`
->   - `gc`
->   - `ticas`
->   - `recover`
->   - `foreach`
->   - `substring`
->   - `plataforma`
->   - `conformidade`
->
-> ### 🔵 `NEUTRO` [6] `Audit/metric.ts`
->
-> - **Local:** `src_local/agents/TypeScript/Audit/metric.ts`
-> - **Causa:** A persona 'metric' na stack 'TypeScript' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `nanoseconds`
->   - `performauditrules`
->   - `gometricengine`
->   - `telemetry`
->   - `validate`
->   - `includes`
->   - `nativas`
->   - `gc`
->   - `startmetrics`
->   - `ticas`
->   - `recover`
->   - `findpatterns`
->   - `foreach`
->   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `instrumentation`
->   - `plataforma`
->   - `conformidade`
->
-> ### 🔵 `NEUTRO` [7] `Audit/nebula.ts`
+> ### 🔵 `NEUTRO` [1] `Audit/nebula.ts`
 >
 > - **Local:** `src_local/agents/Bun/Audit/nebula.ts`
 > - **Causa:** A persona 'nebula' na stack 'Bun' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `architecture`
+>   - `backend`
 >   - `startmetrics`
 >   - `findpatterns`
 >   - `endmetrics`
@@ -1052,64 +896,11 @@
 >   - `performactivehealing`
 >   - `log`
 >   - `join`
->   - `backend`
->   - `logic`
->   - `some`
->
-> ### 🔵 `NEUTRO` [8] `Audit/nebula.ts`
->
-> - **Local:** `src_local/agents/Kotlin/Audit/nebula.ts`
-> - **Causa:** A persona 'nebula' na stack 'Kotlin' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `hash`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `push`
->   - `substring`
->   - `tofixed`
->   - `test`
->   - `gocloudengine`
->   - `infrastructure`
->   - `scan`
->   - `match`
->   - `foreach`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `backend`
->   - `logic`
->   - `some`
->
-> ### 🔵 `NEUTRO` [9] `Audit/nebula.ts`
->
-> - **Local:** `src_local/agents/Go/Audit/nebula.ts`
-> - **Causa:** A persona 'nebula' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `hash`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
 >   - `architecture`
->   - `backend`
 >   - `logic`
 >   - `some`
 >
-> ### 🔵 `NEUTRO` [10] `Audit/nebula.ts`
+> ### 🔵 `NEUTRO` [2] `Audit/nebula.ts`
 >
 > - **Local:** `src_local/agents/Flutter/Audit/nebula.ts`
 > - **Causa:** A persona 'nebula' na stack 'Flutter' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
@@ -1128,7 +919,60 @@
 >   - `substring`
 >   - `tofixed`
 >   - `test`
+>   - `gocloudengine`
+>   - `infrastructure`
+>   - `scan`
+>   - `match`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
 >   - `architecture`
+>   - `logic`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [3] `Audit/nebula.ts`
+>
+> - **Local:** `src_local/agents/Go/Audit/nebula.ts`
+> - **Causa:** A persona 'nebula' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `hash`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `backend`
+>   - `architecture`
+>   - `logic`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [4] `Audit/nebula.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Audit/nebula.ts`
+> - **Causa:** A persona 'nebula' na stack 'Kotlin' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `hash`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `backend`
 >   - `gocloudengine`
 >   - `infrastructure`
 >   - `scan`
@@ -1140,7 +984,29 @@
 >   - `logic`
 >   - `some`
 >
-> ### 🔵 `NEUTRO` [11] `Audit/nebula.ts`
+> ### 🔵 `NEUTRO` [5] `Audit/nebula.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Audit/nebula.ts`
+> - **Causa:** A persona 'nebula' na stack 'TypeScript' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `hash`
+>   - `backend`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `endmetrics`
+>   - `gocloudengine`
+>   - `infrastructure`
+>   - `scan`
+>   - `match`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `architecture`
+>   - `logic`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [6] `Audit/nebula.ts`
 >
 > - **Local:** `src_local/agents/Python/Audit/nebula.ts`
 > - **Causa:** A persona 'nebula' na stack 'Python' está incompleta. Faltam 22 unidades em relação ao padrão cross-stack.
@@ -1160,964 +1026,22 @@
 >   - `substring`
 >   - `tofixed`
 >   - `test`
->   - `architecture`
+>   - `backend`
 >   - `gocloudengine`
 >   - `infrastructure`
 >   - `scan`
 >   - `match`
 >   - `foreach`
->   - `backend`
->
-> ### 🔵 `NEUTRO` [12] `Audit/nebula.ts`
->
-> - **Local:** `src_local/agents/TypeScript/Audit/nebula.ts`
-> - **Causa:** A persona 'nebula' na stack 'TypeScript' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `hash`
 >   - `architecture`
->   - `startmetrics`
->   - `findpatterns`
->   - `endmetrics`
->   - `gocloudengine`
->   - `infrastructure`
->   - `scan`
->   - `match`
->   - `foreach`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `backend`
->   - `logic`
->   - `some`
 >
-> ### 🔵 `NEUTRO` [13] `Audit/probe.ts`
->
-> - **Local:** `src_local/agents/Bun/Audit/probe.ts`
-> - **Causa:** A persona 'probe' na stack 'Bun' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `goprobeengine`
->   - `tracing`
->   - `audit`
->   - `includes`
->   - `startmetrics`
->   - `erros`
->   - `findpatterns`
->   - `foreach`
->   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `selfdiagnostic`
->   - `analysis`
->   - `repouso`
->   - `some`
->   - `vulnerability`
->
-> ### 🔵 `NEUTRO` [14] `Audit/probe.ts`
->
-> - **Local:** `src_local/agents/Go/Audit/probe.ts`
-> - **Causa:** A persona 'probe' na stack 'Go' está incompleta. Faltam 15 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
->   - `analysis`
->   - `repouso`
->   - `some`
->   - `vulnerability`
->
-> ### 🔵 `NEUTRO` [15] `Audit/probe.ts`
->
-> - **Local:** `src_local/agents/Kotlin/Audit/probe.ts`
-> - **Causa:** A persona 'probe' na stack 'Kotlin' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `push`
->   - `substring`
->   - `tofixed`
->   - `test`
->   - `goprobeengine`
->   - `tracing`
->   - `audit`
->   - `includes`
->   - `erros`
->   - `foreach`
->   - `vulnerability`
->
-> ### 🔵 `NEUTRO` [16] `Audit/probe.ts`
->
-> - **Local:** `src_local/agents/Flutter/Audit/probe.ts`
-> - **Causa:** A persona 'probe' na stack 'Flutter' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `push`
->   - `substring`
->   - `tofixed`
->   - `test`
->   - `goprobeengine`
->   - `tracing`
->   - `audit`
->   - `includes`
->   - `erros`
->   - `foreach`
->   - `repouso`
->   - `vulnerability`
->
-> ### 🔵 `NEUTRO` [17] `Audit/probe.ts`
->
-> - **Local:** `src_local/agents/Python/Audit/probe.ts`
-> - **Causa:** A persona 'probe' na stack 'Python' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `push`
->   - `substring`
->   - `tofixed`
->   - `test`
->   - `goprobeengine`
->   - `tracing`
->   - `audit`
->   - `includes`
->   - `erros`
->   - `foreach`
->   - `repouso`
->
-> ### 🔵 `NEUTRO` [18] `Audit/probe.ts`
->
-> - **Local:** `src_local/agents/TypeScript/Audit/probe.ts`
-> - **Causa:** A persona 'probe' na stack 'TypeScript' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `substring`
->   - `goprobeengine`
->   - `tracing`
->   - `audit`
->   - `includes`
->   - `startmetrics`
->   - `erros`
->   - `findpatterns`
->   - `foreach`
->   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `analysis`
->   - `repouso`
->   - `some`
->   - `vulnerability`
->
-> ### 🔵 `NEUTRO` [19] `Audit/scale.ts`
->
-> - **Local:** `src_local/agents/Bun/Audit/scale.ts`
-> - **Causa:** A persona 'scale' na stack 'Bun' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `goscalingengine`
->   - `scaling`
->   - `audit`
->   - `includes`
->   - `add`
->   - `startmetrics`
->   - `findpatterns`
->   - `foreach`
->   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `selfdiagnostic`
->   - `architecture`
->   - `ncia`
->   - `scalability`
->   - `internas`
->   - `planning`
->   - `collect`
->   - `hardware`
->   - `sistema`
->   - `detection`
->   - `with`
->   - `risk`
->
-> ### 🔵 `NEUTRO` [20] `Audit/scale.ts`
->
-> - **Local:** `src_local/agents/Go/Audit/scale.ts`
-> - **Causa:** A persona 'scale' na stack 'Go' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `entries`
->   - `endswith`
->   - `split`
->   - `keys`
->   - `some`
->   - `tofixed`
->   - `architecture`
->   - `ncia`
->   - `scalability`
->   - `internas`
->   - `planning`
->   - `collect`
->   - `hardware`
->   - `sistema`
->   - `detection`
->   - `with`
->   - `risk`
->
-> ### 🔵 `NEUTRO` [21] `Audit/scale.ts`
->
-> - **Local:** `src_local/agents/Kotlin/Audit/scale.ts`
-> - **Causa:** A persona 'scale' na stack 'Kotlin' está incompleta. Faltam 32 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `entries`
->   - `if`
->   - `endswith`
->   - `split`
->   - `push`
->   - `match`
->   - `keys`
->   - `some`
->   - `tofixed`
->   - `goscalingengine`
->   - `scaling`
->   - `audit`
->   - `includes`
->   - `add`
->   - `foreach`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `scalability`
->   - `internas`
->   - `planning`
->   - `collect`
->   - `hardware`
->   - `sistema`
->   - `detection`
->   - `with`
->   - `risk`
->
-> ### 🔵 `NEUTRO` [22] `Audit/scale.ts`
->
-> - **Local:** `src_local/agents/Flutter/Audit/scale.ts`
-> - **Causa:** A persona 'scale' na stack 'Flutter' está incompleta. Faltam 32 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `entries`
->   - `if`
->   - `endswith`
->   - `split`
->   - `push`
->   - `match`
->   - `keys`
->   - `some`
->   - `tofixed`
->   - `goscalingengine`
->   - `scaling`
->   - `audit`
->   - `includes`
->   - `add`
->   - `foreach`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `architecture`
->   - `ncia`
->   - `planning`
->   - `collect`
->   - `hardware`
->   - `sistema`
->   - `detection`
->   - `with`
->   - `risk`
->
-> ### 🔵 `NEUTRO` [23] `Audit/scale.ts`
->
-> - **Local:** `src_local/agents/Python/Audit/scale.ts`
-> - **Causa:** A persona 'scale' na stack 'Python' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `entries`
->   - `endswith`
->   - `split`
->   - `push`
->   - `match`
->   - `keys`
->   - `tofixed`
->   - `goscalingengine`
->   - `scaling`
->   - `audit`
->   - `add`
->   - `foreach`
->   - `substring`
->   - `architecture`
->   - `ncia`
->   - `scalability`
->   - `internas`
->   - `detection`
->   - `with`
->   - `risk`
->
-> ### 🔵 `NEUTRO` [24] `Audit/scale.ts`
->
-> - **Local:** `src_local/agents/TypeScript/Audit/scale.ts`
-> - **Causa:** A persona 'scale' na stack 'TypeScript' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `keys`
->   - `some`
->   - `goscalingengine`
->   - `scaling`
->   - `audit`
->   - `includes`
->   - `add`
->   - `startmetrics`
->   - `findpatterns`
->   - `foreach`
->   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `architecture`
->   - `ncia`
->   - `scalability`
->   - `internas`
->   - `planning`
->   - `collect`
->   - `hardware`
->   - `sistema`
->
-> ### 🔵 `NEUTRO` [25] `Audit/scope.ts`
->
-> - **Local:** `src_local/agents/Bun/Audit/scope.ts`
-> - **Causa:** A persona 'scope' na stack 'Bun' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `strategy`
->   - `startmetrics`
->   - `findpatterns`
->   - `endmetrics`
->   - `selfdiagnostic`
->   - `gomoduleengine`
->   - `audit`
->   - `includes`
->   - `go`
->   - `foreach`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `scope`
->   - `boundaries`
->   - `some`
->
-> ### 🔵 `NEUTRO` [26] `Audit/scope.ts`
->
-> - **Local:** `src_local/agents/Kotlin/Audit/scope.ts`
-> - **Causa:** A persona 'scope' na stack 'Kotlin' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `serve`
->   - `fetch`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `if`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `push`
->   - `tofixed`
->   - `match`
->   - `gomoduleengine`
->   - `audit`
->   - `includes`
->   - `go`
->   - `foreach`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `scope`
->   - `boundaries`
->   - `some`
->
-> ### 🔵 `NEUTRO` [27] `Audit/scope.ts`
->
-> - **Local:** `src_local/agents/Go/Audit/scope.ts`
-> - **Causa:** A persona 'scope' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `serve`
->   - `fetch`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `match`
->   - `scope`
->   - `boundaries`
->   - `some`
->
-> ### 🔵 `NEUTRO` [28] `Audit/scope.ts`
->
-> - **Local:** `src_local/agents/Flutter/Audit/scope.ts`
-> - **Causa:** A persona 'scope' na stack 'Flutter' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `serve`
->   - `fetch`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `if`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `push`
->   - `tofixed`
->   - `match`
->   - `strategy`
->   - `gomoduleengine`
->   - `audit`
->   - `includes`
->   - `go`
->   - `foreach`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `boundaries`
->   - `some`
->
-> ### 🔵 `NEUTRO` [29] `Audit/scope.ts`
->
-> - **Local:** `src_local/agents/Python/Audit/scope.ts`
-> - **Causa:** A persona 'scope' na stack 'Python' está incompleta. Faltam 22 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `serve`
->   - `fetch`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `push`
->   - `tofixed`
->   - `match`
->   - `strategy`
->   - `gomoduleengine`
->   - `audit`
->   - `includes`
->   - `go`
->   - `foreach`
->   - `substring`
->   - `scope`
->
-> ### 🔵 `NEUTRO` [30] `Audit/scope.ts`
->
-> - **Local:** `src_local/agents/TypeScript/Audit/scope.ts`
-> - **Causa:** A persona 'scope' na stack 'TypeScript' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `serve`
->   - `fetch`
->   - `strategy`
->   - `startmetrics`
->   - `findpatterns`
->   - `endmetrics`
->   - `gomoduleengine`
->   - `audit`
->   - `includes`
->   - `go`
->   - `foreach`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `scope`
->   - `boundaries`
->   - `some`
->
-> ### 🔵 `NEUTRO` [31] `Audit/testify.ts`
->
-> - **Local:** `src_local/agents/Bun/Audit/testify.ts`
-> - **Causa:** A persona 'testify' na stack 'Bun' está incompleta. Faltam 34 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `mockintegrityengine`
->   - `qa`
->   - `instrumented`
->   - `analyze`
->   - `any`
->   - `startmetrics`
->   - `descritivo`
->   - `verificadas`
->   - `limite`
->   - `findpatterns`
->   - `foreach`
->   - `endmetrics`
->   - `filterbyquality`
->   - `switch`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `selfdiagnostic`
->   - `gotestintegrityengine`
->   - `verification`
->   - `expectativas`
->   - `parallel`
->   - `noerror`
->   - `cleanup`
->   - `fatal`
->   - `error`
->   - `context`
->   - `teste`
->   - `verify`
->   - `ficas`
->   - `pytest`
->   - `borda`
->   - `expect`
->   - `todo`
->
-> ### 🔵 `NEUTRO` [32] `Audit/testify.ts`
->
-> - **Local:** `src_local/agents/Kotlin/Audit/testify.ts`
-> - **Causa:** A persona 'testify' na stack 'Kotlin' está incompleta. Faltam 36 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `substring`
->   - `keys`
->   - `add`
->   - `replace`
->   - `has`
->   - `tofixed`
->   - `test`
->   - `runtestsuite`
->   - `interpretfailures`
->   - `analyzetestqualitymatrix`
->   - `analyzetestpyramid`
->   - `gotestintegrityengine`
->   - `verification`
->   - `expectativas`
->   - `parallel`
->   - `noerror`
->   - `cleanup`
->   - `fatal`
->   - `error`
->   - `context`
->   - `teste`
->   - `verify`
->   - `ficas`
->   - `pytest`
->   - `borda`
->   - `expect`
->   - `todo`
->
-> ### 🔵 `NEUTRO` [33] `Audit/testify.ts`
->
-> - **Local:** `src_local/agents/Go/Audit/testify.ts`
-> - **Causa:** A persona 'testify' na stack 'Go' está incompleta. Faltam 35 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `keys`
->   - `add`
->   - `replace`
->   - `has`
->   - `tofixed`
->   - `test`
->   - `runtestsuite`
->   - `interpretfailures`
->   - `filter`
->   - `analyzetestqualitymatrix`
->   - `analyzetestpyramid`
->   - `mockintegrityengine`
->   - `qa`
->   - `instrumented`
->   - `any`
->   - `descritivo`
->   - `verificadas`
->   - `limite`
->   - `filterbyquality`
->   - `switch`
->   - `verify`
->   - `ficas`
->   - `pytest`
->   - `borda`
->   - `expect`
->   - `todo`
->
-> ### 🔵 `NEUTRO` [34] `Audit/testify.ts`
->
-> - **Local:** `src_local/agents/Flutter/Audit/testify.ts`
-> - **Causa:** A persona 'testify' na stack 'Flutter' está incompleta. Faltam 35 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `substring`
->   - `keys`
->   - `add`
->   - `replace`
->   - `has`
->   - `tofixed`
->   - `test`
->   - `instrumented`
->   - `any`
->   - `descritivo`
->   - `verificadas`
->   - `limite`
->   - `gotestintegrityengine`
->   - `verification`
->   - `expectativas`
->   - `parallel`
->   - `noerror`
->   - `cleanup`
->   - `fatal`
->   - `error`
->   - `context`
->   - `teste`
->   - `pytest`
->   - `borda`
->   - `expect`
->   - `todo`
->
-> ### 🔵 `NEUTRO` [35] `Audit/testify.ts`
->
-> - **Local:** `src_local/agents/Python/Audit/testify.ts`
-> - **Causa:** A persona 'testify' na stack 'Python' está incompleta. Faltam 39 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `substring`
->   - `keys`
->   - `add`
->   - `replace`
->   - `has`
->   - `tofixed`
->   - `test`
->   - `runtestsuite`
->   - `interpretfailures`
->   - `analyzetestqualitymatrix`
->   - `analyzetestpyramid`
->   - `instrumented`
->   - `any`
->   - `descritivo`
->   - `verificadas`
->   - `limite`
->   - `gotestintegrityengine`
->   - `verification`
->   - `expectativas`
->   - `parallel`
->   - `noerror`
->   - `cleanup`
->   - `fatal`
->   - `error`
->   - `context`
->   - `teste`
->   - `verify`
->   - `ficas`
->   - `expect`
->   - `todo`
->
-> ### 🔵 `NEUTRO` [36] `Audit/testify.ts`
->
-> - **Local:** `src_local/agents/TypeScript/Audit/testify.ts`
-> - **Causa:** A persona 'testify' na stack 'TypeScript' está incompleta. Faltam 36 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `runtestsuite`
->   - `interpretfailures`
->   - `filter`
->   - `analyzetestqualitymatrix`
->   - `analyzetestpyramid`
->   - `mockintegrityengine`
->   - `qa`
->   - `instrumented`
->   - `analyze`
->   - `any`
->   - `startmetrics`
->   - `descritivo`
->   - `verificadas`
->   - `limite`
->   - `findpatterns`
->   - `foreach`
->   - `endmetrics`
->   - `filterbyquality`
->   - `switch`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `gotestintegrityengine`
->   - `verification`
->   - `expectativas`
->   - `parallel`
->   - `noerror`
->   - `cleanup`
->   - `fatal`
->   - `error`
->   - `context`
->   - `teste`
->   - `verify`
->   - `ficas`
->   - `pytest`
->   - `borda`
->
-> ### 🔵 `NEUTRO` [37] `Content/echo.ts`
->
-> - **Local:** `src_local/agents/Bun/Content/echo.ts`
-> - **Causa:** A persona 'echo' na stack 'Bun' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `observability`
->   - `startmetrics`
->   - `findpatterns`
->   - `println`
->   - `endmetrics`
->   - `includes`
->   - `selfdiagnostic`
->   - `goechoengine`
->   - `logging`
->   - `fprintf`
->   - `estruturados`
->   - `prometheus`
->   - `foreach`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `mapping`
->   - `some`
->   - `arb`
->   - `alert`
->
-> ### 🔵 `NEUTRO` [38] `Content/echo.ts`
->
-> - **Local:** `src_local/agents/Kotlin/Content/echo.ts`
-> - **Causa:** A persona 'echo' na stack 'Kotlin' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `inspect`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `push`
->   - `tofixed`
->   - `test`
->   - `goechoengine`
->   - `logging`
->   - `fprintf`
->   - `estruturados`
->   - `prometheus`
->   - `foreach`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `mapping`
->   - `some`
->   - `arb`
->   - `alert`
->
-> ### 🔵 `NEUTRO` [39] `Content/echo.ts`
->
-> - **Local:** `src_local/agents/Go/Content/echo.ts`
-> - **Causa:** A persona 'echo' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
->   - `observability`
->   - `println`
->   - `mapping`
->   - `some`
->   - `arb`
->   - `alert`
->
-> ### 🔵 `NEUTRO` [40] `Content/echo.ts`
->
-> - **Local:** `src_local/agents/Flutter/Content/echo.ts`
-> - **Causa:** A persona 'echo' na stack 'Flutter' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `inspect`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `push`
->   - `tofixed`
->   - `test`
->   - `observability`
->   - `println`
->   - `goechoengine`
->   - `logging`
->   - `fprintf`
->   - `estruturados`
->   - `prometheus`
->   - `foreach`
->   - `substring`
->   - `alert`
->
-> ### 🔵 `NEUTRO` [41] `Content/echo.ts`
->
-> - **Local:** `src_local/agents/Python/Content/echo.ts`
-> - **Causa:** A persona 'echo' na stack 'Python' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `inspect`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `push`
->   - `tofixed`
->   - `test`
->   - `observability`
->   - `println`
->   - `includes`
->   - `goechoengine`
->   - `logging`
->   - `fprintf`
->   - `estruturados`
->   - `prometheus`
->   - `foreach`
->   - `substring`
->   - `arb`
->   - `alert`
->
-> ### 🔵 `NEUTRO` [42] `Content/echo.ts`
->
-> - **Local:** `src_local/agents/TypeScript/Content/echo.ts`
-> - **Causa:** A persona 'echo' na stack 'TypeScript' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `inspect`
->   - `observability`
->   - `startmetrics`
->   - `findpatterns`
->   - `println`
->   - `endmetrics`
->   - `includes`
->   - `goechoengine`
->   - `logging`
->   - `fprintf`
->   - `estruturados`
->   - `prometheus`
->   - `foreach`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `mapping`
->   - `some`
->   - `arb`
->
-> ### 🔵 `NEUTRO` [43] `Content/forge.ts`
+> ### 🔵 `NEUTRO` [7] `Content/forge.ts`
 >
 > - **Local:** `src_local/agents/Bun/Content/forge.ts`
 > - **Causa:** A persona 'forge' na stack 'Bun' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
 >   - `blueprinting`
 >   - `startmetrics`
+>   - `externo`
 >   - `findpatterns`
 >   - `some`
 >   - `includes`
@@ -2131,63 +1055,8 @@
 >   - `audit`
 >   - `foreach`
 >   - `substring`
->   - `externo`
 >
-> ### 🔵 `NEUTRO` [44] `Content/forge.ts`
->
-> - **Local:** `src_local/agents/Kotlin/Content/forge.ts`
-> - **Causa:** A persona 'forge' na stack 'Kotlin' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `eval`
->   - `function`
->   - `import`
->   - `build`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `push`
->   - `tofixed`
->   - `test`
->   - `validatecodesafety`
->   - `goforgeengine`
->   - `boilerplate`
->   - `audit`
->   - `foreach`
->   - `substring`
->   - `externo`
->
-> ### 🔵 `NEUTRO` [45] `Content/forge.ts`
->
-> - **Local:** `src_local/agents/Go/Content/forge.ts`
-> - **Causa:** A persona 'forge' na stack 'Go' está incompleta. Faltam 19 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `eval`
->   - `function`
->   - `import`
->   - `build`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
->   - `validatecodesafety`
->   - `blueprinting`
->   - `some`
->   - `externo`
->
-> ### 🔵 `NEUTRO` [46] `Content/forge.ts`
+> ### 🔵 `NEUTRO` [8] `Content/forge.ts`
 >
 > - **Local:** `src_local/agents/Flutter/Content/forge.ts`
 > - **Causa:** A persona 'forge' na stack 'Flutter' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
@@ -2214,7 +1083,85 @@
 >   - `foreach`
 >   - `substring`
 >
-> ### 🔵 `NEUTRO` [47] `Content/forge.ts`
+> ### 🔵 `NEUTRO` [9] `Content/forge.ts`
+>
+> - **Local:** `src_local/agents/Go/Content/forge.ts`
+> - **Causa:** A persona 'forge' na stack 'Go' está incompleta. Faltam 19 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `eval`
+>   - `function`
+>   - `import`
+>   - `build`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `validatecodesafety`
+>   - `blueprinting`
+>   - `externo`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [10] `Content/forge.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Content/forge.ts`
+> - **Causa:** A persona 'forge' na stack 'Kotlin' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `eval`
+>   - `function`
+>   - `import`
+>   - `build`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `validatecodesafety`
+>   - `externo`
+>   - `goforgeengine`
+>   - `boilerplate`
+>   - `audit`
+>   - `foreach`
+>   - `substring`
+>
+> ### 🔵 `NEUTRO` [11] `Content/forge.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Content/forge.ts`
+> - **Causa:** A persona 'forge' na stack 'TypeScript' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `import`
+>   - `build`
+>   - `validatecodesafety`
+>   - `blueprinting`
+>   - `startmetrics`
+>   - `externo`
+>   - `findpatterns`
+>   - `some`
+>   - `includes`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `goforgeengine`
+>   - `boilerplate`
+>   - `audit`
+>   - `foreach`
+>   - `substring`
+>
+> ### 🔵 `NEUTRO` [12] `Content/forge.ts`
 >
 > - **Local:** `src_local/agents/Python/Content/forge.ts`
 > - **Causa:** A persona 'forge' na stack 'Python' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
@@ -2236,65 +1183,104 @@
 >   - `tofixed`
 >   - `test`
 >   - `validatecodesafety`
+>   - `externo`
 >   - `goforgeengine`
 >   - `boilerplate`
 >   - `audit`
 >   - `foreach`
 >   - `substring`
->   - `externo`
 >
-> ### 🔵 `NEUTRO` [48] `Content/forge.ts`
->
-> - **Local:** `src_local/agents/TypeScript/Content/forge.ts`
-> - **Causa:** A persona 'forge' na stack 'TypeScript' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `import`
->   - `build`
->   - `validatecodesafety`
->   - `blueprinting`
->   - `startmetrics`
->   - `findpatterns`
->   - `some`
->   - `includes`
->   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `goforgeengine`
->   - `boilerplate`
->   - `audit`
->   - `foreach`
->   - `substring`
->   - `externo`
->
-> ### 🔵 `NEUTRO` [49] `Audit/bolt.ts`
+> ### 🔵 `NEUTRO` [13] `Audit/bolt.ts`
 >
 > - **Local:** `src_local/agents/Bun/Audit/bolt.ts`
 > - **Causa:** A persona 'bolt' na stack 'Bun' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `instrumentation`
->   - `startmetrics`
->   - `delay`
->   - `findpatterns`
->   - `some`
->   - `includes`
->   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `withcontext`
->   - `selfdiagnostic`
 >   - `efficiency`
 >   - `map`
 >   - `foreach`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `endmetrics`
+>   - `includes`
 >   - `sleep`
+>   - `selfdiagnostic`
 >   - `goruntimeanalyzer`
 >   - `inspect`
 >   - `unlock`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
 >   - `substring`
+>   - `instrumentation`
+>   - `delay`
+>   - `some`
+>   - `withcontext`
 >   - `enumerate`
 >
-> ### 🔵 `NEUTRO` [50] `Audit/bolt.ts`
+> ### 🔵 `NEUTRO` [14] `Audit/bolt.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Audit/bolt.ts`
+> - **Causa:** A persona 'bolt' na stack 'Flutter' está incompleta. Faltam 28 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `file`
+>   - `write`
+>   - `spawn`
+>   - `from`
+>   - `text`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `goruntimeanalyzer`
+>   - `inspect`
+>   - `unlock`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `instrumentation`
+>   - `delay`
+>   - `some`
+>   - `withcontext`
+>   - `enumerate`
+>
+> ### 🔵 `NEUTRO` [15] `Audit/bolt.ts`
+>
+> - **Local:** `src_local/agents/Go/Audit/bolt.ts`
+> - **Causa:** A persona 'bolt' na stack 'Go' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `file`
+>   - `write`
+>   - `spawn`
+>   - `from`
+>   - `text`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `map`
+>   - `sleep`
+>   - `instrumentation`
+>   - `delay`
+>   - `some`
+>   - `withcontext`
+>   - `enumerate`
+>
+> ### 🔵 `NEUTRO` [16] `Audit/bolt.ts`
 >
 > - **Local:** `src_local/agents/Kotlin/Audit/bolt.ts`
 > - **Causa:** A persona 'bolt' na stack 'Kotlin' está incompleta. Faltam 26 unidades em relação ao padrão cross-stack.
@@ -2326,70 +1312,38 @@
 >   - `substring`
 >   - `enumerate`
 >
-> ### 🔵 `NEUTRO` [51] `Audit/bolt.ts`
+> ### 🔵 `NEUTRO` [17] `Audit/bolt.ts`
 >
-> - **Local:** `src_local/agents/Flutter/Audit/bolt.ts`
-> - **Causa:** A persona 'bolt' na stack 'Flutter' está incompleta. Faltam 28 unidades em relação ao padrão cross-stack.
+> - **Local:** `src_local/agents/TypeScript/Audit/bolt.ts`
+> - **Causa:** A persona 'bolt' na stack 'TypeScript' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
 >   - `file`
 >   - `write`
 >   - `spawn`
 >   - `from`
 >   - `text`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
->   - `instrumentation`
->   - `delay`
->   - `some`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `withcontext`
+>   - `efficiency`
+>   - `map`
+>   - `foreach`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `endmetrics`
+>   - `includes`
+>   - `sleep`
 >   - `goruntimeanalyzer`
 >   - `inspect`
 >   - `unlock`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
 >   - `substring`
->   - `enumerate`
->
-> ### 🔵 `NEUTRO` [52] `Audit/bolt.ts`
->
-> - **Local:** `src_local/agents/Go/Audit/bolt.ts`
-> - **Causa:** A persona 'bolt' na stack 'Go' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `file`
->   - `write`
->   - `spawn`
->   - `from`
->   - `text`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
 >   - `instrumentation`
 >   - `delay`
 >   - `some`
 >   - `withcontext`
->   - `map`
->   - `sleep`
 >   - `enumerate`
 >
-> ### 🔵 `NEUTRO` [53] `Audit/bolt.ts`
+> ### 🔵 `NEUTRO` [18] `Audit/bolt.ts`
 >
 > - **Local:** `src_local/agents/Python/Audit/bolt.ts`
 > - **Causa:** A persona 'bolt' na stack 'Python' está incompleta. Faltam 28 unidades em relação ao padrão cross-stack.
@@ -2411,31 +1365,844 @@
 >   - `push`
 >   - `tofixed`
 >   - `test`
->   - `instrumentation`
->   - `delay`
->   - `includes`
->   - `withcontext`
 >   - `map`
 >   - `foreach`
+>   - `includes`
 >   - `sleep`
 >   - `goruntimeanalyzer`
 >   - `inspect`
 >   - `unlock`
 >   - `substring`
+>   - `instrumentation`
+>   - `delay`
+>   - `withcontext`
 >
-> ### 🔵 `NEUTRO` [54] `Audit/bolt.ts`
+> ### 🔵 `NEUTRO` [19] `Audit/probe.ts`
 >
-> - **Local:** `src_local/agents/TypeScript/Audit/bolt.ts`
-> - **Causa:** A persona 'bolt' na stack 'TypeScript' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
+> - **Local:** `src_local/agents/Bun/Audit/probe.ts`
+> - **Causa:** A persona 'probe' na stack 'Bun' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `file`
->   - `write`
->   - `spawn`
->   - `from`
->   - `text`
+>   - `analysis`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `some`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `selfdiagnostic`
+>   - `goprobeengine`
+>   - `tracing`
+>   - `audit`
+>   - `includes`
+>   - `erros`
+>   - `foreach`
+>   - `repouso`
+>   - `vulnerability`
+>
+> ### 🔵 `NEUTRO` [20] `Audit/probe.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Audit/probe.ts`
+> - **Causa:** A persona 'probe' na stack 'Flutter' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `goprobeengine`
+>   - `tracing`
+>   - `audit`
+>   - `includes`
+>   - `erros`
+>   - `foreach`
+>   - `repouso`
+>   - `vulnerability`
+>
+> ### 🔵 `NEUTRO` [21] `Audit/probe.ts`
+>
+> - **Local:** `src_local/agents/Go/Audit/probe.ts`
+> - **Causa:** A persona 'probe' na stack 'Go' está incompleta. Faltam 15 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `analysis`
+>   - `some`
+>   - `repouso`
+>   - `vulnerability`
+>
+> ### 🔵 `NEUTRO` [22] `Audit/probe.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Audit/probe.ts`
+> - **Causa:** A persona 'probe' na stack 'Kotlin' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `goprobeengine`
+>   - `tracing`
+>   - `audit`
+>   - `includes`
+>   - `erros`
+>   - `foreach`
+>   - `vulnerability`
+>
+> ### 🔵 `NEUTRO` [23] `Audit/probe.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Audit/probe.ts`
+> - **Causa:** A persona 'probe' na stack 'TypeScript' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `substring`
+>   - `analysis`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `some`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `goprobeengine`
+>   - `tracing`
+>   - `audit`
+>   - `includes`
+>   - `erros`
+>   - `foreach`
+>   - `repouso`
+>   - `vulnerability`
+>
+> ### 🔵 `NEUTRO` [24] `Audit/probe.ts`
+>
+> - **Local:** `src_local/agents/Python/Audit/probe.ts`
+> - **Causa:** A persona 'probe' na stack 'Python' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `goprobeengine`
+>   - `tracing`
+>   - `audit`
+>   - `includes`
+>   - `erros`
+>   - `foreach`
+>   - `repouso`
+>
+> ### 🔵 `NEUTRO` [25] `Audit/scale.ts`
+>
+> - **Local:** `src_local/agents/Bun/Audit/scale.ts`
+> - **Causa:** A persona 'scale' na stack 'Bun' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `scalability`
+>   - `startmetrics`
+>   - `internas`
+>   - `findpatterns`
+>   - `endmetrics`
+>   - `selfdiagnostic`
+>   - `goscalingengine`
+>   - `scaling`
+>   - `audit`
+>   - `includes`
+>   - `add`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `architecture`
+>   - `ncia`
+>   - `detection`
+>   - `with`
+>   - `risk`
+>   - `planning`
+>   - `collect`
+>   - `hardware`
+>   - `sistema`
+>
+> ### 🔵 `NEUTRO` [26] `Audit/scale.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Audit/scale.ts`
+> - **Causa:** A persona 'scale' na stack 'Flutter' está incompleta. Faltam 32 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `entries`
+>   - `if`
+>   - `endswith`
+>   - `split`
+>   - `push`
+>   - `match`
+>   - `keys`
+>   - `some`
+>   - `tofixed`
+>   - `goscalingengine`
+>   - `scaling`
+>   - `audit`
+>   - `includes`
+>   - `add`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `architecture`
+>   - `ncia`
+>   - `detection`
+>   - `with`
+>   - `risk`
+>   - `planning`
+>   - `collect`
+>   - `hardware`
+>   - `sistema`
+>
+> ### 🔵 `NEUTRO` [27] `Audit/scale.ts`
+>
+> - **Local:** `src_local/agents/Go/Audit/scale.ts`
+> - **Causa:** A persona 'scale' na stack 'Go' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `entries`
+>   - `endswith`
+>   - `split`
+>   - `keys`
+>   - `some`
+>   - `tofixed`
+>   - `scalability`
+>   - `internas`
+>   - `architecture`
+>   - `ncia`
+>   - `detection`
+>   - `with`
+>   - `risk`
+>   - `planning`
+>   - `collect`
+>   - `hardware`
+>   - `sistema`
+>
+> ### 🔵 `NEUTRO` [28] `Audit/scale.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Audit/scale.ts`
+> - **Causa:** A persona 'scale' na stack 'Kotlin' está incompleta. Faltam 32 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `entries`
+>   - `if`
+>   - `endswith`
+>   - `split`
+>   - `push`
+>   - `match`
+>   - `keys`
+>   - `some`
+>   - `tofixed`
+>   - `scalability`
+>   - `internas`
+>   - `goscalingengine`
+>   - `scaling`
+>   - `audit`
+>   - `includes`
+>   - `add`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `detection`
+>   - `with`
+>   - `risk`
+>   - `planning`
+>   - `collect`
+>   - `hardware`
+>   - `sistema`
+>
+> ### 🔵 `NEUTRO` [29] `Audit/scale.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Audit/scale.ts`
+> - **Causa:** A persona 'scale' na stack 'TypeScript' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `keys`
+>   - `some`
+>   - `scalability`
+>   - `startmetrics`
+>   - `internas`
+>   - `findpatterns`
+>   - `endmetrics`
+>   - `goscalingengine`
+>   - `scaling`
+>   - `audit`
+>   - `includes`
+>   - `add`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `architecture`
+>   - `ncia`
+>   - `planning`
+>   - `collect`
+>   - `hardware`
+>   - `sistema`
+>
+> ### 🔵 `NEUTRO` [30] `Audit/scale.ts`
+>
+> - **Local:** `src_local/agents/Python/Audit/scale.ts`
+> - **Causa:** A persona 'scale' na stack 'Python' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `entries`
+>   - `endswith`
+>   - `split`
+>   - `push`
+>   - `match`
+>   - `keys`
+>   - `tofixed`
+>   - `scalability`
+>   - `internas`
+>   - `goscalingengine`
+>   - `scaling`
+>   - `audit`
+>   - `add`
+>   - `foreach`
+>   - `substring`
+>   - `architecture`
+>   - `ncia`
+>   - `detection`
+>   - `with`
+>   - `risk`
+>
+> ### 🔵 `NEUTRO` [31] `Audit/metric.ts`
+>
+> - **Local:** `src_local/agents/Bun/Audit/metric.ts`
+> - **Causa:** A persona 'metric' na stack 'Bun' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
 >   - `instrumentation`
 >   - `startmetrics`
->   - `delay`
+>   - `findpatterns`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `selfdiagnostic`
+>   - `gometricengine`
+>   - `telemetry`
+>   - `validate`
+>   - `includes`
+>   - `nativas`
+>   - `gc`
+>   - `ticas`
+>   - `recover`
+>   - `foreach`
+>   - `substring`
+>   - `plataforma`
+>   - `conformidade`
+>
+> ### 🔵 `NEUTRO` [32] `Audit/metric.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Audit/metric.ts`
+> - **Causa:** A persona 'metric' na stack 'Flutter' está incompleta. Faltam 26 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `nanoseconds`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `performauditrules`
+>   - `gometricengine`
+>   - `telemetry`
+>   - `validate`
+>   - `includes`
+>   - `nativas`
+>   - `gc`
+>   - `ticas`
+>   - `recover`
+>   - `foreach`
+>   - `substring`
+>   - `plataforma`
+>   - `conformidade`
+>
+> ### 🔵 `NEUTRO` [33] `Audit/metric.ts`
+>
+> - **Local:** `src_local/agents/Go/Audit/metric.ts`
+> - **Causa:** A persona 'metric' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `nanoseconds`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `performauditrules`
+>   - `instrumentation`
+>   - `plataforma`
+>   - `conformidade`
+>
+> ### 🔵 `NEUTRO` [34] `Audit/metric.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Audit/metric.ts`
+> - **Causa:** A persona 'metric' na stack 'Kotlin' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `nanoseconds`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `performauditrules`
+>   - `gometricengine`
+>   - `telemetry`
+>   - `validate`
+>   - `includes`
+>   - `nativas`
+>   - `gc`
+>   - `ticas`
+>   - `recover`
+>   - `foreach`
+>   - `substring`
+>
+> ### 🔵 `NEUTRO` [35] `Audit/metric.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Audit/metric.ts`
+> - **Causa:** A persona 'metric' na stack 'TypeScript' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `nanoseconds`
+>   - `performauditrules`
+>   - `instrumentation`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `gometricengine`
+>   - `telemetry`
+>   - `validate`
+>   - `includes`
+>   - `nativas`
+>   - `gc`
+>   - `ticas`
+>   - `recover`
+>   - `foreach`
+>   - `substring`
+>   - `plataforma`
+>   - `conformidade`
+>
+> ### 🔵 `NEUTRO` [36] `Audit/metric.ts`
+>
+> - **Local:** `src_local/agents/Python/Audit/metric.ts`
+> - **Causa:** A persona 'metric' na stack 'Python' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `nanoseconds`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `performauditrules`
+>   - `gometricengine`
+>   - `telemetry`
+>   - `validate`
+>   - `includes`
+>   - `nativas`
+>   - `gc`
+>   - `ticas`
+>   - `recover`
+>   - `foreach`
+>   - `substring`
+>   - `plataforma`
+>   - `conformidade`
+>
+> ### 🔵 `NEUTRO` [37] `Strategic/warden.ts`
+>
+> - **Local:** `src_local/agents/Bun/Strategic/warden.ts`
+> - **Causa:** A persona 'warden' na stack 'Bun' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `lifecycle`
+>   - `startmetrics`
+>   - `broadcast`
+>   - `findpatterns`
+>   - `some`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `selfdiagnostic`
+>   - `golifecycleengine`
+>   - `governance`
+>   - `recursos`
+>   - `inspect`
+>   - `includes`
+>   - `close`
+>   - `stop`
+>   - `parada`
+>   - `add`
+>   - `done`
+>   - `exit`
+>   - `main`
+>   - `rio`
+>   - `foreach`
+>   - `substring`
+>
+> ### 🔵 `NEUTRO` [38] `Strategic/warden.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Strategic/warden.ts`
+> - **Causa:** A persona 'warden' na stack 'Flutter' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `golifecycleengine`
+>   - `governance`
+>   - `recursos`
+>   - `inspect`
+>   - `includes`
+>   - `close`
+>   - `stop`
+>   - `parada`
+>   - `add`
+>   - `done`
+>   - `exit`
+>   - `main`
+>   - `rio`
+>   - `foreach`
+>   - `substring`
+>
+> ### 🔵 `NEUTRO` [39] `Strategic/warden.ts`
+>
+> - **Local:** `src_local/agents/Go/Strategic/warden.ts`
+> - **Causa:** A persona 'warden' na stack 'Go' está incompleta. Faltam 14 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `lifecycle`
+>   - `broadcast`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [40] `Strategic/warden.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Strategic/warden.ts`
+> - **Causa:** A persona 'warden' na stack 'Kotlin' está incompleta. Faltam 28 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `broadcast`
+>   - `golifecycleengine`
+>   - `governance`
+>   - `recursos`
+>   - `inspect`
+>   - `includes`
+>   - `close`
+>   - `stop`
+>   - `parada`
+>   - `add`
+>   - `done`
+>   - `exit`
+>   - `main`
+>   - `rio`
+>   - `foreach`
+>   - `substring`
+>
+> ### 🔵 `NEUTRO` [41] `Strategic/warden.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Strategic/warden.ts`
+> - **Causa:** A persona 'warden' na stack 'TypeScript' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `lifecycle`
+>   - `startmetrics`
+>   - `broadcast`
+>   - `findpatterns`
+>   - `some`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `golifecycleengine`
+>   - `governance`
+>   - `recursos`
+>   - `inspect`
+>   - `includes`
+>   - `close`
+>   - `stop`
+>   - `parada`
+>   - `add`
+>   - `done`
+>   - `exit`
+>   - `main`
+>   - `rio`
+>   - `foreach`
+>   - `substring`
+>
+> ### 🔵 `NEUTRO` [42] `Audit/scope.ts`
+>
+> - **Local:** `src_local/agents/Bun/Audit/scope.ts`
+> - **Causa:** A persona 'scope' na stack 'Bun' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `scope`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `endmetrics`
+>   - `selfdiagnostic`
+>   - `gomoduleengine`
+>   - `strategy`
+>   - `audit`
+>   - `includes`
+>   - `go`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `boundaries`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [43] `Audit/scope.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Audit/scope.ts`
+> - **Causa:** A persona 'scope' na stack 'Flutter' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `serve`
+>   - `fetch`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `if`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `match`
+>   - `gomoduleengine`
+>   - `strategy`
+>   - `audit`
+>   - `includes`
+>   - `go`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `boundaries`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [44] `Audit/scope.ts`
+>
+> - **Local:** `src_local/agents/Go/Audit/scope.ts`
+> - **Causa:** A persona 'scope' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `serve`
+>   - `fetch`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `match`
+>   - `scope`
+>   - `boundaries`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [45] `Audit/scope.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Audit/scope.ts`
+> - **Causa:** A persona 'scope' na stack 'Kotlin' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `serve`
+>   - `fetch`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `if`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `match`
+>   - `scope`
+>   - `gomoduleengine`
+>   - `audit`
+>   - `includes`
+>   - `go`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `boundaries`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [46] `Audit/scope.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Audit/scope.ts`
+> - **Causa:** A persona 'scope' na stack 'TypeScript' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `serve`
+>   - `fetch`
+>   - `scope`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `endmetrics`
+>   - `gomoduleengine`
+>   - `strategy`
+>   - `audit`
+>   - `includes`
+>   - `go`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `boundaries`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [47] `Audit/scope.ts`
+>
+> - **Local:** `src_local/agents/Python/Audit/scope.ts`
+> - **Causa:** A persona 'scope' na stack 'Python' está incompleta. Faltam 22 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `serve`
+>   - `fetch`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `match`
+>   - `scope`
+>   - `gomoduleengine`
+>   - `strategy`
+>   - `audit`
+>   - `includes`
+>   - `go`
+>   - `foreach`
+>   - `substring`
+>
+> ### 🔵 `NEUTRO` [48] `Content/scribe.ts`
+>
+> - **Local:** `src_local/agents/Bun/Content/scribe.ts`
+> - **Causa:** A persona 'scribe' na stack 'Bun' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `integrity`
+>   - `o`
+>   - `startmetrics`
 >   - `findpatterns`
 >   - `some`
 >   - `includes`
@@ -2443,45 +2210,197 @@
 >   - `performactivehealing`
 >   - `log`
 >   - `join`
->   - `withcontext`
->   - `efficiency`
->   - `map`
+>   - `selfdiagnostic`
+>   - `goscribeengine`
+>   - `writing`
+>   - `audit`
 >   - `foreach`
->   - `sleep`
->   - `goruntimeanalyzer`
->   - `inspect`
->   - `unlock`
 >   - `substring`
->   - `enumerate`
 >
-> ### 🔵 `NEUTRO` [55] `Content/globe.ts`
+> ### 🔵 `NEUTRO` [49] `Content/scribe.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Content/scribe.ts`
+> - **Causa:** A persona 'scribe' na stack 'Flutter' está incompleta. Faltam 14 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `entries`
+>   - `endswith`
+>   - `match`
+>   - `push`
+>   - `tofixed`
+>   - `goscribeengine`
+>   - `writing`
+>   - `audit`
+>   - `foreach`
+>   - `substring`
+>
+> ### 🔵 `NEUTRO` [50] `Content/scribe.ts`
+>
+> - **Local:** `src_local/agents/Go/Content/scribe.ts`
+> - **Causa:** A persona 'scribe' na stack 'Go' está incompleta. Faltam 10 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `entries`
+>   - `endswith`
+>   - `tofixed`
+>   - `integrity`
+>   - `o`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [51] `Content/scribe.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Content/scribe.ts`
+> - **Causa:** A persona 'scribe' na stack 'Kotlin' está incompleta. Faltam 15 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `entries`
+>   - `endswith`
+>   - `match`
+>   - `push`
+>   - `tofixed`
+>   - `o`
+>   - `goscribeengine`
+>   - `writing`
+>   - `audit`
+>   - `foreach`
+>   - `substring`
+>
+> ### 🔵 `NEUTRO` [52] `Content/scribe.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Content/scribe.ts`
+> - **Causa:** A persona 'scribe' na stack 'TypeScript' está incompleta. Faltam 15 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `integrity`
+>   - `o`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `some`
+>   - `includes`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `goscribeengine`
+>   - `writing`
+>   - `audit`
+>   - `foreach`
+>   - `substring`
+>
+> ### 🔵 `NEUTRO` [53] `Content/scribe.ts`
+>
+> - **Local:** `src_local/agents/Python/Content/scribe.ts`
+> - **Causa:** A persona 'scribe' na stack 'Python' está incompleta. Faltam 15 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `entries`
+>   - `endswith`
+>   - `match`
+>   - `push`
+>   - `tofixed`
+>   - `o`
+>   - `goscribeengine`
+>   - `writing`
+>   - `audit`
+>   - `foreach`
+>   - `substring`
+>
+> ### 🔵 `NEUTRO` [54] `Content/globe.ts`
 >
 > - **Local:** `src_local/agents/Bun/Content/globe.ts`
 > - **Causa:** A persona 'globe' na stack 'Bun' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
 >   - `logic`
->   - `recursos`
 >   - `startmetrics`
 >   - `findpatterns`
->   - `some`
->   - `includes`
 >   - `endmetrics`
 >   - `performactivehealing`
 >   - `log`
 >   - `join`
->   - `nativo`
 >   - `selfdiagnostic`
 >   - `goglobeengine`
 >   - `ux`
 >   - `audit`
 >   - `match`
+>   - `includes`
 >   - `utc`
 >   - `foreach`
+>   - `recursos`
+>   - `some`
+>   - `nativo`
+>   - `tolocaledatestring`
 >   - `rio`
 >   - `fonte`
+>
+> ### 🔵 `NEUTRO` [55] `Content/globe.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Content/globe.ts`
+> - **Causa:** A persona 'globe' na stack 'Flutter' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `which`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `goglobeengine`
+>   - `ux`
+>   - `audit`
+>   - `match`
+>   - `includes`
+>   - `utc`
+>   - `foreach`
+>   - `recursos`
+>   - `some`
+>   - `nativo`
 >   - `tolocaledatestring`
+>   - `rio`
+>   - `fonte`
 >
 > ### 🔵 `NEUTRO` [56] `Content/globe.ts`
+>
+> - **Local:** `src_local/agents/Go/Content/globe.ts`
+> - **Causa:** A persona 'globe' na stack 'Go' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `info`
+>   - `which`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `logic`
+>   - `recursos`
+>   - `some`
+>   - `nativo`
+>   - `tolocaledatestring`
+>   - `rio`
+>   - `fonte`
+>
+> ### 🔵 `NEUTRO` [57] `Content/globe.ts`
 >
 > - **Local:** `src_local/agents/Kotlin/Content/globe.ts`
 > - **Causa:** A persona 'globe' na stack 'Kotlin' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
@@ -2506,66 +2425,35 @@
 >   - `match`
 >   - `utc`
 >   - `foreach`
+>   - `tolocaledatestring`
 >   - `rio`
 >   - `fonte`
->   - `tolocaledatestring`
->
-> ### 🔵 `NEUTRO` [57] `Content/globe.ts`
->
-> - **Local:** `src_local/agents/Go/Content/globe.ts`
-> - **Causa:** A persona 'globe' na stack 'Go' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `info`
->   - `which`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
->   - `logic`
->   - `recursos`
->   - `some`
->   - `nativo`
->   - `rio`
->   - `fonte`
->   - `tolocaledatestring`
 >
 > ### 🔵 `NEUTRO` [58] `Content/globe.ts`
 >
-> - **Local:** `src_local/agents/Flutter/Content/globe.ts`
-> - **Causa:** A persona 'globe' na stack 'Flutter' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
+> - **Local:** `src_local/agents/TypeScript/Content/globe.ts`
+> - **Causa:** A persona 'globe' na stack 'TypeScript' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
 >   - `which`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `push`
->   - `substring`
->   - `tofixed`
->   - `test`
->   - `recursos`
->   - `some`
->   - `includes`
->   - `nativo`
+>   - `logic`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
 >   - `goglobeengine`
 >   - `ux`
 >   - `audit`
 >   - `match`
+>   - `includes`
 >   - `utc`
 >   - `foreach`
+>   - `recursos`
+>   - `some`
+>   - `nativo`
 >   - `rio`
 >   - `fonte`
->   - `tolocaledatestring`
 >
 > ### 🔵 `NEUTRO` [59] `Content/globe.ts`
 >
@@ -2586,347 +2474,24 @@
 >   - `substring`
 >   - `tofixed`
 >   - `test`
->   - `recursos`
->   - `nativo`
 >   - `goglobeengine`
 >   - `ux`
 >   - `audit`
 >   - `match`
 >   - `utc`
 >   - `foreach`
+>   - `recursos`
+>   - `nativo`
 >   - `tolocaledatestring`
 >
-> ### 🔵 `NEUTRO` [60] `Content/globe.ts`
->
-> - **Local:** `src_local/agents/TypeScript/Content/globe.ts`
-> - **Causa:** A persona 'globe' na stack 'TypeScript' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `which`
->   - `logic`
->   - `recursos`
->   - `startmetrics`
->   - `findpatterns`
->   - `some`
->   - `includes`
->   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `nativo`
->   - `goglobeengine`
->   - `ux`
->   - `audit`
->   - `match`
->   - `utc`
->   - `foreach`
->   - `rio`
->   - `fonte`
->
-> ### 🔵 `NEUTRO` [61] `Content/scribe.ts`
->
-> - **Local:** `src_local/agents/Bun/Content/scribe.ts`
-> - **Causa:** A persona 'scribe' na stack 'Bun' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `integrity`
->   - `startmetrics`
->   - `findpatterns`
->   - `some`
->   - `includes`
->   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `selfdiagnostic`
->   - `goscribeengine`
->   - `writing`
->   - `audit`
->   - `foreach`
->   - `substring`
->   - `o`
->
-> ### 🔵 `NEUTRO` [62] `Content/scribe.ts`
->
-> - **Local:** `src_local/agents/Kotlin/Content/scribe.ts`
-> - **Causa:** A persona 'scribe' na stack 'Kotlin' está incompleta. Faltam 15 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `entries`
->   - `endswith`
->   - `match`
->   - `push`
->   - `tofixed`
->   - `goscribeengine`
->   - `writing`
->   - `audit`
->   - `foreach`
->   - `substring`
->   - `o`
->
-> ### 🔵 `NEUTRO` [63] `Content/scribe.ts`
->
-> - **Local:** `src_local/agents/Go/Content/scribe.ts`
-> - **Causa:** A persona 'scribe' na stack 'Go' está incompleta. Faltam 10 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `entries`
->   - `endswith`
->   - `tofixed`
->   - `integrity`
->   - `some`
->   - `o`
->
-> ### 🔵 `NEUTRO` [64] `Content/scribe.ts`
->
-> - **Local:** `src_local/agents/Flutter/Content/scribe.ts`
-> - **Causa:** A persona 'scribe' na stack 'Flutter' está incompleta. Faltam 14 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `entries`
->   - `endswith`
->   - `match`
->   - `push`
->   - `tofixed`
->   - `goscribeengine`
->   - `writing`
->   - `audit`
->   - `foreach`
->   - `substring`
->
-> ### 🔵 `NEUTRO` [65] `Content/scribe.ts`
->
-> - **Local:** `src_local/agents/Python/Content/scribe.ts`
-> - **Causa:** A persona 'scribe' na stack 'Python' está incompleta. Faltam 15 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `entries`
->   - `endswith`
->   - `match`
->   - `push`
->   - `tofixed`
->   - `goscribeengine`
->   - `writing`
->   - `audit`
->   - `foreach`
->   - `substring`
->   - `o`
->
-> ### 🔵 `NEUTRO` [66] `Content/scribe.ts`
->
-> - **Local:** `src_local/agents/TypeScript/Content/scribe.ts`
-> - **Causa:** A persona 'scribe' na stack 'TypeScript' está incompleta. Faltam 15 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `integrity`
->   - `startmetrics`
->   - `findpatterns`
->   - `some`
->   - `includes`
->   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `goscribeengine`
->   - `writing`
->   - `audit`
->   - `foreach`
->   - `substring`
->   - `o`
->
-> ### 🔵 `NEUTRO` [67] `Content/palette.ts`
->
-> - **Local:** `src_local/agents/Bun/Content/palette.ts`
-> - **Causa:** A persona 'palette' na stack 'Bun' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `integrity`
->   - `startmetrics`
->   - `findpatterns`
->   - `some`
->   - `includes`
->   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `tema`
->   - `selfdiagnostic`
->   - `gopaletteengine`
->   - `aesthetics`
->   - `audit`
->   - `cor`
->   - `interativos`
->   - `foreach`
->   - `substring`
->   - `charmbracelet`
->   - `harmony`
->   - `temas`
->   - `ntica`
->   - `ui`
->
-> ### 🔵 `NEUTRO` [68] `Content/palette.ts`
->
-> - **Local:** `src_local/agents/Kotlin/Content/palette.ts`
-> - **Causa:** A persona 'palette' na stack 'Kotlin' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `push`
->   - `tofixed`
->   - `test`
->   - `gopaletteengine`
->   - `aesthetics`
->   - `audit`
->   - `cor`
->   - `interativos`
->   - `foreach`
->   - `substring`
->   - `charmbracelet`
->   - `harmony`
->   - `temas`
->   - `ntica`
->   - `ui`
->
-> ### 🔵 `NEUTRO` [69] `Content/palette.ts`
->
-> - **Local:** `src_local/agents/Go/Content/palette.ts`
-> - **Causa:** A persona 'palette' na stack 'Go' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
->   - `integrity`
->   - `some`
->   - `tema`
->   - `harmony`
->   - `temas`
->   - `ntica`
->   - `ui`
->
-> ### 🔵 `NEUTRO` [70] `Content/palette.ts`
->
-> - **Local:** `src_local/agents/Flutter/Content/palette.ts`
-> - **Causa:** A persona 'palette' na stack 'Flutter' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `push`
->   - `tofixed`
->   - `test`
->   - `integrity`
->   - `some`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `tema`
->   - `gopaletteengine`
->   - `aesthetics`
->   - `audit`
->   - `cor`
->   - `interativos`
->   - `foreach`
->   - `substring`
->   - `charmbracelet`
->   - `ui`
->
-> ### 🔵 `NEUTRO` [71] `Content/palette.ts`
->
-> - **Local:** `src_local/agents/Python/Content/palette.ts`
-> - **Causa:** A persona 'palette' na stack 'Python' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `push`
->   - `tofixed`
->   - `test`
->   - `includes`
->   - `tema`
->   - `gopaletteengine`
->   - `aesthetics`
->   - `audit`
->   - `cor`
->   - `interativos`
->   - `foreach`
->   - `substring`
->   - `charmbracelet`
->   - `harmony`
->   - `temas`
->   - `ntica`
->
-> ### 🔵 `NEUTRO` [72] `Content/palette.ts`
->
-> - **Local:** `src_local/agents/TypeScript/Content/palette.ts`
-> - **Causa:** A persona 'palette' na stack 'TypeScript' está incompleta. Faltam 22 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `integrity`
->   - `startmetrics`
->   - `findpatterns`
->   - `some`
->   - `includes`
->   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `tema`
->   - `gopaletteengine`
->   - `aesthetics`
->   - `audit`
->   - `cor`
->   - `interativos`
->   - `foreach`
->   - `substring`
->   - `charmbracelet`
->   - `harmony`
->   - `temas`
->   - `ntica`
->   - `ui`
->
-> ### 🔵 `NEUTRO` [73] `Content/hype.ts`
+> ### 🔵 `NEUTRO` [60] `Content/hype.ts`
 >
 > - **Local:** `src_local/agents/Bun/Content/hype.ts`
 > - **Causa:** A persona 'hype' na stack 'Bun' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `vectors`
+>   - `discovery`
 >   - `startmetrics`
 >   - `findpatterns`
->   - `release`
 >   - `endmetrics`
 >   - `selfdiagnostic`
 >   - `gohypeengine`
@@ -2940,59 +2505,10 @@
 >   - `log`
 >   - `join`
 >   - `substring`
->   - `discovery`
->
-> ### 🔵 `NEUTRO` [74] `Content/hype.ts`
->
-> - **Local:** `src_local/agents/Kotlin/Content/hype.ts`
-> - **Causa:** A persona 'hype' na stack 'Kotlin' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `entries`
->   - `endswith`
->   - `parse`
->   - `push`
->   - `keys`
->   - `some`
->   - `test`
->   - `tofixed`
->   - `gohypeengine`
->   - `engagement`
->   - `audit`
->   - `macro`
->   - `match`
->   - `split`
->   - `foreach`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `discovery`
->
-> ### 🔵 `NEUTRO` [75] `Content/hype.ts`
->
-> - **Local:** `src_local/agents/Go/Content/hype.ts`
-> - **Causa:** A persona 'hype' na stack 'Go' está incompleta. Faltam 14 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `entries`
->   - `endswith`
->   - `parse`
->   - `keys`
->   - `some`
->   - `test`
->   - `tofixed`
 >   - `vectors`
 >   - `release`
->   - `discovery`
 >
-> ### 🔵 `NEUTRO` [76] `Content/hype.ts`
+> ### 🔵 `NEUTRO` [61] `Content/hype.ts`
 >
 > - **Local:** `src_local/agents/Flutter/Content/hype.ts`
 > - **Causa:** A persona 'hype' na stack 'Flutter' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
@@ -3009,8 +2525,58 @@
 >   - `some`
 >   - `test`
 >   - `tofixed`
+>   - `gohypeengine`
+>   - `engagement`
+>   - `audit`
+>   - `macro`
+>   - `match`
+>   - `split`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
 >   - `vectors`
 >   - `release`
+>
+> ### 🔵 `NEUTRO` [62] `Content/hype.ts`
+>
+> - **Local:** `src_local/agents/Go/Content/hype.ts`
+> - **Causa:** A persona 'hype' na stack 'Go' está incompleta. Faltam 14 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `entries`
+>   - `endswith`
+>   - `parse`
+>   - `keys`
+>   - `some`
+>   - `test`
+>   - `tofixed`
+>   - `discovery`
+>   - `vectors`
+>   - `release`
+>
+> ### 🔵 `NEUTRO` [63] `Content/hype.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Content/hype.ts`
+> - **Causa:** A persona 'hype' na stack 'Kotlin' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `entries`
+>   - `endswith`
+>   - `parse`
+>   - `push`
+>   - `keys`
+>   - `some`
+>   - `test`
+>   - `tofixed`
+>   - `discovery`
 >   - `gohypeengine`
 >   - `engagement`
 >   - `audit`
@@ -3023,15 +2589,14 @@
 >   - `join`
 >   - `substring`
 >
-> ### 🔵 `NEUTRO` [77] `Content/hype.ts`
+> ### 🔵 `NEUTRO` [64] `Content/hype.ts`
 >
 > - **Local:** `src_local/agents/TypeScript/Content/hype.ts`
 > - **Causa:** A persona 'hype' na stack 'TypeScript' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `vectors`
+>   - `discovery`
 >   - `startmetrics`
 >   - `findpatterns`
->   - `release`
 >   - `endmetrics`
 >   - `gohypeengine`
 >   - `engagement`
@@ -3044,187 +2609,83 @@
 >   - `log`
 >   - `join`
 >   - `substring`
->   - `discovery`
+>   - `vectors`
+>   - `release`
 >
-> ### 🔵 `NEUTRO` [78] `Content/mantra.ts`
->
-> - **Local:** `src_local/agents/Bun/Content/mantra.ts`
-> - **Causa:** A persona 'mantra' na stack 'Bun' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `architecture`
->   - `startmetrics`
->   - `findpatterns`
->   - `imutabilidade`
->   - `endmetrics`
->   - `includes`
->   - `selfdiagnostic`
->   - `gomantraengine`
->   - `idioms`
->   - `go`
->   - `audit`
->   - `split`
->   - `panic`
->   - `new`
->   - `foreach`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `purity`
->   - `manager`
->   - `assertion`
->   - `test`
->
-> ### 🔵 `NEUTRO` [79] `Content/mantra.ts`
->
-> - **Local:** `src_local/agents/Kotlin/Content/mantra.ts`
-> - **Causa:** A persona 'mantra' na stack 'Kotlin' está incompleta. Faltam 30 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `file`
->   - `json`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `push`
->   - `tofixed`
->   - `match`
->   - `gomantraengine`
->   - `idioms`
->   - `go`
->   - `audit`
->   - `split`
->   - `panic`
->   - `new`
->   - `foreach`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `purity`
->   - `manager`
->   - `assertion`
->   - `test`
->
-> ### 🔵 `NEUTRO` [80] `Content/mantra.ts`
->
-> - **Local:** `src_local/agents/Go/Content/mantra.ts`
-> - **Causa:** A persona 'mantra' na stack 'Go' está incompleta. Faltam 19 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `file`
->   - `json`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `match`
->   - `architecture`
->   - `imutabilidade`
->   - `purity`
->   - `manager`
->   - `assertion`
->   - `test`
->
-> ### 🔵 `NEUTRO` [81] `Content/mantra.ts`
->
-> - **Local:** `src_local/agents/Flutter/Content/mantra.ts`
-> - **Causa:** A persona 'mantra' na stack 'Flutter' está incompleta. Faltam 30 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `file`
->   - `json`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `push`
->   - `tofixed`
->   - `match`
->   - `architecture`
->   - `imutabilidade`
->   - `gomantraengine`
->   - `idioms`
->   - `go`
->   - `audit`
->   - `split`
->   - `panic`
->   - `new`
->   - `foreach`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `assertion`
->   - `test`
->
-> ### 🔵 `NEUTRO` [82] `Content/mantra.ts`
->
-> - **Local:** `src_local/agents/TypeScript/Content/mantra.ts`
-> - **Causa:** A persona 'mantra' na stack 'TypeScript' está incompleta. Faltam 22 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `file`
->   - `json`
->   - `architecture`
->   - `startmetrics`
->   - `findpatterns`
->   - `imutabilidade`
->   - `endmetrics`
->   - `includes`
->   - `gomantraengine`
->   - `idioms`
->   - `go`
->   - `audit`
->   - `split`
->   - `panic`
->   - `new`
->   - `foreach`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `purity`
->   - `manager`
->
-> ### 🔵 `NEUTRO` [83] `Strategic/sentinel.ts`
+> ### 🔵 `NEUTRO` [65] `Strategic/sentinel.ts`
 >
 > - **Local:** `src_local/agents/Bun/Strategic/sentinel.ts`
 > - **Causa:** A persona 'sentinel' na stack 'Bun' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `architecture`
->   - `startmetrics`
->   - `findpatterns`
->   - `endmetrics`
->   - `includes`
->   - `selfdiagnostic`
 >   - `gosecurityengine`
 >   - `vigilance`
 >   - `audit`
+>   - `includes`
+>   - `startmetrics`
 >   - `a`
+>   - `findpatterns`
 >   - `foreach`
+>   - `endmetrics`
 >   - `performactivehealing`
 >   - `log`
 >   - `join`
+>   - `selfdiagnostic`
 >   - `shielding`
 >   - `o`
 >   - `some`
+>   - `architecture`
 >   - `vulnerabilities`
 >
-> ### 🔵 `NEUTRO` [84] `Strategic/sentinel.ts`
+> ### 🔵 `NEUTRO` [66] `Strategic/sentinel.ts`
+>
+> - **Local:** `src_local/agents/Go/Strategic/sentinel.ts`
+> - **Causa:** A persona 'sentinel' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `shielding`
+>   - `o`
+>   - `some`
+>   - `architecture`
+>   - `vulnerabilities`
+>
+> ### 🔵 `NEUTRO` [67] `Strategic/sentinel.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Strategic/sentinel.ts`
+> - **Causa:** A persona 'sentinel' na stack 'Flutter' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `gosecurityengine`
+>   - `vigilance`
+>   - `audit`
+>   - `includes`
+>   - `a`
+>   - `foreach`
+>   - `architecture`
+>   - `vulnerabilities`
+>
+> ### 🔵 `NEUTRO` [68] `Strategic/sentinel.ts`
 >
 > - **Local:** `src_local/agents/Kotlin/Strategic/sentinel.ts`
 > - **Causa:** A persona 'sentinel' na stack 'Kotlin' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
@@ -3255,80 +2716,31 @@
 >   - `some`
 >   - `vulnerabilities`
 >
-> ### 🔵 `NEUTRO` [85] `Strategic/sentinel.ts`
->
-> - **Local:** `src_local/agents/Go/Strategic/sentinel.ts`
-> - **Causa:** A persona 'sentinel' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
->   - `architecture`
->   - `shielding`
->   - `o`
->   - `some`
->   - `vulnerabilities`
->
-> ### 🔵 `NEUTRO` [86] `Strategic/sentinel.ts`
->
-> - **Local:** `src_local/agents/Flutter/Strategic/sentinel.ts`
-> - **Causa:** A persona 'sentinel' na stack 'Flutter' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `push`
->   - `substring`
->   - `tofixed`
->   - `test`
->   - `architecture`
->   - `includes`
->   - `gosecurityengine`
->   - `vigilance`
->   - `audit`
->   - `a`
->   - `foreach`
->   - `vulnerabilities`
->
-> ### 🔵 `NEUTRO` [87] `Strategic/sentinel.ts`
+> ### 🔵 `NEUTRO` [69] `Strategic/sentinel.ts`
 >
 > - **Local:** `src_local/agents/TypeScript/Strategic/sentinel.ts`
 > - **Causa:** A persona 'sentinel' na stack 'TypeScript' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
 >   - `substring`
->   - `architecture`
->   - `startmetrics`
->   - `findpatterns`
->   - `endmetrics`
->   - `includes`
 >   - `gosecurityengine`
 >   - `vigilance`
 >   - `audit`
+>   - `includes`
+>   - `startmetrics`
 >   - `a`
+>   - `findpatterns`
 >   - `foreach`
+>   - `endmetrics`
 >   - `performactivehealing`
 >   - `log`
 >   - `join`
 >   - `shielding`
 >   - `o`
 >   - `some`
+>   - `architecture`
 >   - `vulnerabilities`
 >
-> ### 🔵 `NEUTRO` [88] `Strategic/sentinel.ts`
+> ### 🔵 `NEUTRO` [70] `Strategic/sentinel.ts`
 >
 > - **Local:** `src_local/agents/Python/Strategic/sentinel.ts`
 > - **Causa:** A persona 'sentinel' na stack 'Python' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
@@ -3346,166 +2758,435 @@
 >   - `substring`
 >   - `tofixed`
 >   - `test`
->   - `architecture`
->   - `includes`
 >   - `gosecurityengine`
 >   - `vigilance`
 >   - `audit`
+>   - `includes`
 >   - `a`
 >   - `foreach`
 >   - `o`
+>   - `architecture`
 >
-> ### 🔵 `NEUTRO` [89] `System/bridge.ts`
+> ### 🔵 `NEUTRO` [71] `Audit/testify.ts`
 >
-> - **Local:** `src_local/agents/Go/System/bridge.ts`
-> - **Causa:** A persona 'bridge' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **Local:** `src_local/agents/Bun/Audit/testify.ts`
+> - **Causa:** A persona 'testify' na stack 'Bun' está incompleta. Faltam 34 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `file`
->   - `json`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
->   - `systems`
->   - `nativas`
->   - `jni`
->
-> ### 🔵 `NEUTRO` [90] `System/bridge.ts`
->
-> - **Local:** `src_local/agents/Bun/System/bridge.ts`
-> - **Causa:** A persona 'bridge' na stack 'Bun' está incompleta. Faltam 19 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `gobridgeengine`
->   - `stack`
->   - `ffi`
->   - `audit`
->   - `includes`
+>   - `mockintegrityengine`
+>   - `qa`
+>   - `analyze`
+>   - `verify`
 >   - `startmetrics`
->   - `insegura`
->   - `gerenciado`
->   - `locais`
+>   - `ficas`
 >   - `findpatterns`
 >   - `foreach`
 >   - `endmetrics`
+>   - `filterbyquality`
+>   - `switch`
 >   - `performactivehealing`
 >   - `log`
 >   - `join`
 >   - `selfdiagnostic`
->   - `systems`
->   - `nativas`
->   - `jni`
+>   - `gotestintegrityengine`
+>   - `verification`
+>   - `expectativas`
+>   - `parallel`
+>   - `noerror`
+>   - `cleanup`
+>   - `fatal`
+>   - `error`
+>   - `context`
+>   - `teste`
+>   - `instrumented`
+>   - `any`
+>   - `descritivo`
+>   - `verificadas`
+>   - `limite`
+>   - `expect`
+>   - `todo`
+>   - `pytest`
+>   - `borda`
 >
-> ### 🔵 `NEUTRO` [91] `System/bridge.ts`
+> ### 🔵 `NEUTRO` [72] `Audit/testify.ts`
 >
-> - **Local:** `src_local/agents/Kotlin/System/bridge.ts`
-> - **Causa:** A persona 'bridge' na stack 'Kotlin' está incompleta. Faltam 26 unidades em relação ao padrão cross-stack.
+> - **Local:** `src_local/agents/Flutter/Audit/testify.ts`
+> - **Causa:** A persona 'testify' na stack 'Flutter' está incompleta. Faltam 35 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `gobridgeengine`
->   - `stack`
->   - `ffi`
->   - `audit`
->   - `push`
->   - `insegura`
->   - `gerenciado`
->   - `locais`
->   - `foreach`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
 >   - `child`
 >   - `now`
 >   - `info`
->   - `file`
->   - `json`
 >   - `for`
 >   - `regexp`
 >   - `entries`
 >   - `endswith`
 >   - `of`
 >   - `matchall`
+>   - `substring`
+>   - `keys`
+>   - `add`
+>   - `replace`
+>   - `has`
 >   - `tofixed`
 >   - `test`
+>   - `gotestintegrityengine`
+>   - `verification`
+>   - `expectativas`
+>   - `parallel`
+>   - `noerror`
+>   - `cleanup`
+>   - `fatal`
+>   - `error`
+>   - `context`
+>   - `teste`
+>   - `instrumented`
+>   - `any`
+>   - `descritivo`
+>   - `verificadas`
+>   - `limite`
+>   - `expect`
+>   - `todo`
+>   - `pytest`
+>   - `borda`
 >
-> ### 🔵 `NEUTRO` [92] `System/bridge.ts`
+> ### 🔵 `NEUTRO` [73] `Audit/testify.ts`
 >
-> - **Local:** `src_local/agents/Flutter/System/bridge.ts`
-> - **Causa:** A persona 'bridge' na stack 'Flutter' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
+> - **Local:** `src_local/agents/Go/Audit/testify.ts`
+> - **Causa:** A persona 'testify' na stack 'Go' está incompleta. Faltam 35 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `gobridgeengine`
->   - `stack`
->   - `ffi`
->   - `audit`
->   - `push`
->   - `insegura`
->   - `gerenciado`
->   - `locais`
->   - `foreach`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
 >   - `child`
 >   - `now`
 >   - `info`
->   - `file`
->   - `json`
 >   - `for`
 >   - `regexp`
 >   - `entries`
 >   - `endswith`
 >   - `of`
 >   - `matchall`
+>   - `keys`
+>   - `add`
+>   - `replace`
+>   - `has`
 >   - `tofixed`
 >   - `test`
->   - `jni`
+>   - `runtestsuite`
+>   - `interpretfailures`
+>   - `filter`
+>   - `analyzetestqualitymatrix`
+>   - `analyzetestpyramid`
+>   - `mockintegrityengine`
+>   - `qa`
+>   - `verify`
+>   - `ficas`
+>   - `filterbyquality`
+>   - `switch`
+>   - `instrumented`
+>   - `any`
+>   - `descritivo`
+>   - `verificadas`
+>   - `limite`
+>   - `expect`
+>   - `todo`
+>   - `pytest`
+>   - `borda`
 >
-> ### 🔵 `NEUTRO` [93] `System/bridge.ts`
+> ### 🔵 `NEUTRO` [74] `Audit/testify.ts`
 >
-> - **Local:** `src_local/agents/TypeScript/System/bridge.ts`
-> - **Causa:** A persona 'bridge' na stack 'TypeScript' está incompleta. Faltam 19 unidades em relação ao padrão cross-stack.
+> - **Local:** `src_local/agents/Kotlin/Audit/testify.ts`
+> - **Causa:** A persona 'testify' na stack 'Kotlin' está incompleta. Faltam 36 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `gobridgeengine`
->   - `stack`
->   - `ffi`
->   - `audit`
->   - `includes`
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `substring`
+>   - `keys`
+>   - `add`
+>   - `replace`
+>   - `has`
+>   - `tofixed`
+>   - `test`
+>   - `runtestsuite`
+>   - `interpretfailures`
+>   - `analyzetestqualitymatrix`
+>   - `analyzetestpyramid`
+>   - `verify`
+>   - `ficas`
+>   - `gotestintegrityengine`
+>   - `verification`
+>   - `expectativas`
+>   - `parallel`
+>   - `noerror`
+>   - `cleanup`
+>   - `fatal`
+>   - `error`
+>   - `context`
+>   - `teste`
+>   - `expect`
+>   - `todo`
+>   - `pytest`
+>   - `borda`
+>
+> ### 🔵 `NEUTRO` [75] `Audit/testify.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Audit/testify.ts`
+> - **Causa:** A persona 'testify' na stack 'TypeScript' está incompleta. Faltam 36 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `runtestsuite`
+>   - `interpretfailures`
+>   - `filter`
+>   - `analyzetestqualitymatrix`
+>   - `analyzetestpyramid`
+>   - `mockintegrityengine`
+>   - `qa`
+>   - `analyze`
+>   - `verify`
 >   - `startmetrics`
->   - `insegura`
->   - `gerenciado`
->   - `locais`
+>   - `ficas`
 >   - `findpatterns`
 >   - `foreach`
 >   - `endmetrics`
+>   - `filterbyquality`
+>   - `switch`
 >   - `performactivehealing`
 >   - `log`
 >   - `join`
->   - `file`
->   - `systems`
->   - `nativas`
->   - `jni`
+>   - `gotestintegrityengine`
+>   - `verification`
+>   - `expectativas`
+>   - `parallel`
+>   - `noerror`
+>   - `cleanup`
+>   - `fatal`
+>   - `error`
+>   - `context`
+>   - `teste`
+>   - `instrumented`
+>   - `any`
+>   - `descritivo`
+>   - `verificadas`
+>   - `limite`
+>   - `pytest`
+>   - `borda`
 >
-> ### 🔵 `NEUTRO` [94] `Strategic/vault.ts`
+> ### 🔵 `NEUTRO` [76] `Audit/testify.ts`
+>
+> - **Local:** `src_local/agents/Python/Audit/testify.ts`
+> - **Causa:** A persona 'testify' na stack 'Python' está incompleta. Faltam 39 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `substring`
+>   - `keys`
+>   - `add`
+>   - `replace`
+>   - `has`
+>   - `tofixed`
+>   - `test`
+>   - `runtestsuite`
+>   - `interpretfailures`
+>   - `analyzetestqualitymatrix`
+>   - `analyzetestpyramid`
+>   - `verify`
+>   - `ficas`
+>   - `gotestintegrityengine`
+>   - `verification`
+>   - `expectativas`
+>   - `parallel`
+>   - `noerror`
+>   - `cleanup`
+>   - `fatal`
+>   - `error`
+>   - `context`
+>   - `teste`
+>   - `instrumented`
+>   - `any`
+>   - `descritivo`
+>   - `verificadas`
+>   - `limite`
+>   - `expect`
+>   - `todo`
+>
+> ### 🔵 `NEUTRO` [77] `Content/mantra.ts`
+>
+> - **Local:** `src_local/agents/Bun/Content/mantra.ts`
+> - **Causa:** A persona 'mantra' na stack 'Bun' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `purity`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `manager`
+>   - `endmetrics`
+>   - `includes`
+>   - `selfdiagnostic`
+>   - `gomantraengine`
+>   - `idioms`
+>   - `go`
+>   - `audit`
+>   - `split`
+>   - `panic`
+>   - `new`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `architecture`
+>   - `imutabilidade`
+>   - `assertion`
+>   - `test`
+>
+> ### 🔵 `NEUTRO` [78] `Content/mantra.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Content/mantra.ts`
+> - **Causa:** A persona 'mantra' na stack 'Flutter' está incompleta. Faltam 30 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `file`
+>   - `json`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `match`
+>   - `gomantraengine`
+>   - `idioms`
+>   - `go`
+>   - `audit`
+>   - `split`
+>   - `panic`
+>   - `new`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `architecture`
+>   - `imutabilidade`
+>   - `assertion`
+>   - `test`
+>
+> ### 🔵 `NEUTRO` [79] `Content/mantra.ts`
+>
+> - **Local:** `src_local/agents/Go/Content/mantra.ts`
+> - **Causa:** A persona 'mantra' na stack 'Go' está incompleta. Faltam 19 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `file`
+>   - `json`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `match`
+>   - `purity`
+>   - `manager`
+>   - `architecture`
+>   - `imutabilidade`
+>   - `assertion`
+>   - `test`
+>
+> ### 🔵 `NEUTRO` [80] `Content/mantra.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Content/mantra.ts`
+> - **Causa:** A persona 'mantra' na stack 'Kotlin' está incompleta. Faltam 30 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `file`
+>   - `json`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `match`
+>   - `purity`
+>   - `manager`
+>   - `gomantraengine`
+>   - `idioms`
+>   - `go`
+>   - `audit`
+>   - `split`
+>   - `panic`
+>   - `new`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `assertion`
+>   - `test`
+>
+> ### 🔵 `NEUTRO` [81] `Content/mantra.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Content/mantra.ts`
+> - **Causa:** A persona 'mantra' na stack 'TypeScript' está incompleta. Faltam 22 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `file`
+>   - `json`
+>   - `purity`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `manager`
+>   - `endmetrics`
+>   - `includes`
+>   - `gomantraengine`
+>   - `idioms`
+>   - `go`
+>   - `audit`
+>   - `split`
+>   - `panic`
+>   - `new`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `architecture`
+>   - `imutabilidade`
+>
+> ### 🔵 `NEUTRO` [82] `Strategic/vault.ts`
 >
 > - **Local:** `src_local/agents/Bun/Strategic/vault.ts`
 > - **Causa:** A persona 'vault' na stack 'Bun' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
 >   - `persistence`
 >   - `startmetrics`
->   - `chave`
 >   - `findpatterns`
 >   - `some`
 >   - `endmetrics`
 >   - `performactivehealing`
 >   - `log`
 >   - `join`
+>   - `architecture`
+>   - `backing`
 >   - `selfdiagnostic`
 >   - `govaultengine`
 >   - `secrets`
@@ -3515,60 +3196,9 @@
 >   - `includes`
 >   - `foreach`
 >   - `substring`
->   - `architecture`
->   - `backing`
->
-> ### 🔵 `NEUTRO` [95] `Strategic/vault.ts`
->
-> - **Local:** `src_local/agents/Kotlin/Strategic/vault.ts`
-> - **Causa:** A persona 'vault' na stack 'Kotlin' está incompleta. Faltam 22 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `push`
->   - `tofixed`
->   - `test`
->   - `govaultengine`
->   - `secrets`
->   - `audit`
->   - `match`
->   - `obsoletos`
->   - `includes`
->   - `foreach`
->   - `substring`
->   - `architecture`
->   - `backing`
->
-> ### 🔵 `NEUTRO` [96] `Strategic/vault.ts`
->
-> - **Local:** `src_local/agents/Go/Strategic/vault.ts`
-> - **Causa:** A persona 'vault' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
->   - `persistence`
 >   - `chave`
->   - `some`
->   - `architecture`
->   - `backing`
 >
-> ### 🔵 `NEUTRO` [97] `Strategic/vault.ts`
+> ### 🔵 `NEUTRO` [83] `Strategic/vault.ts`
 >
 > - **Local:** `src_local/agents/Flutter/Strategic/vault.ts`
 > - **Causa:** A persona 'vault' na stack 'Flutter' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
@@ -3585,7 +3215,57 @@
 >   - `push`
 >   - `tofixed`
 >   - `test`
+>   - `govaultengine`
+>   - `secrets`
+>   - `audit`
+>   - `match`
+>   - `obsoletos`
+>   - `includes`
+>   - `foreach`
+>   - `substring`
 >   - `chave`
+>
+> ### 🔵 `NEUTRO` [84] `Strategic/vault.ts`
+>
+> - **Local:** `src_local/agents/Go/Strategic/vault.ts`
+> - **Causa:** A persona 'vault' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `persistence`
+>   - `some`
+>   - `architecture`
+>   - `backing`
+>   - `chave`
+>
+> ### 🔵 `NEUTRO` [85] `Strategic/vault.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Strategic/vault.ts`
+> - **Causa:** A persona 'vault' na stack 'Kotlin' está incompleta. Faltam 22 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `architecture`
+>   - `backing`
 >   - `govaultengine`
 >   - `secrets`
 >   - `audit`
@@ -3595,20 +3275,21 @@
 >   - `foreach`
 >   - `substring`
 >
-> ### 🔵 `NEUTRO` [98] `Strategic/vault.ts`
+> ### 🔵 `NEUTRO` [86] `Strategic/vault.ts`
 >
 > - **Local:** `src_local/agents/TypeScript/Strategic/vault.ts`
 > - **Causa:** A persona 'vault' na stack 'TypeScript' está incompleta. Faltam 19 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
 >   - `persistence`
 >   - `startmetrics`
->   - `chave`
 >   - `findpatterns`
 >   - `some`
 >   - `endmetrics`
 >   - `performactivehealing`
 >   - `log`
 >   - `join`
+>   - `architecture`
+>   - `backing`
 >   - `govaultengine`
 >   - `secrets`
 >   - `audit`
@@ -3617,10 +3298,9 @@
 >   - `includes`
 >   - `foreach`
 >   - `substring`
->   - `architecture`
->   - `backing`
+>   - `chave`
 >
-> ### 🔵 `NEUTRO` [99] `Strategic/vault.ts`
+> ### 🔵 `NEUTRO` [87] `Strategic/vault.ts`
 >
 > - **Local:** `src_local/agents/Python/Strategic/vault.ts`
 > - **Causa:** A persona 'vault' na stack 'Python' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
@@ -3637,7 +3317,8 @@
 >   - `push`
 >   - `tofixed`
 >   - `test`
->   - `chave`
+>   - `architecture`
+>   - `backing`
 >   - `govaultengine`
 >   - `secrets`
 >   - `audit`
@@ -3646,72 +3327,78 @@
 >   - `includes`
 >   - `foreach`
 >   - `substring`
->   - `architecture`
->   - `backing`
+>   - `chave`
 >
-> ### 🔵 `NEUTRO` [100] `System/cache.ts`
+> ### 🔵 `NEUTRO` [88] `Content/palette.ts`
 >
-> - **Local:** `src_local/agents/Go/System/cache.ts`
-> - **Causa:** A persona 'cache' na stack 'Go' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
+> - **Local:** `src_local/agents/Bun/Content/palette.ts`
+> - **Causa:** A persona 'palette' na stack 'Bun' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `file`
->   - `text`
->   - `write`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
->   - `optimization`
->   - `ria`
->   - `some`
->
-> ### 🔵 `NEUTRO` [101] `System/cache.ts`
->
-> - **Local:** `src_local/agents/Bun/System/cache.ts`
-> - **Causa:** A persona 'cache' na stack 'Bun' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `gocacheengine`
->   - `performance`
->   - `audit`
->   - `includes`
+>   - `harmony`
 >   - `startmetrics`
 >   - `findpatterns`
->   - `foreach`
+>   - `temas`
+>   - `ntica`
 >   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
+>   - `includes`
 >   - `selfdiagnostic`
->   - `optimization`
->   - `ria`
->   - `some`
->
-> ### 🔵 `NEUTRO` [102] `System/cache.ts`
->
-> - **Local:** `src_local/agents/Kotlin/System/cache.ts`
-> - **Causa:** A persona 'cache' na stack 'Kotlin' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `gocacheengine`
->   - `performance`
+>   - `gopaletteengine`
+>   - `aesthetics`
 >   - `audit`
->   - `includes`
->   - `push`
+>   - `cor`
+>   - `interativos`
 >   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
 >   - `substring`
+>   - `charmbracelet`
+>   - `integrity`
+>   - `some`
+>   - `tema`
+>   - `ui`
+>
+> ### 🔵 `NEUTRO` [89] `Content/palette.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Content/palette.ts`
+> - **Causa:** A persona 'palette' na stack 'Flutter' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
 >   - `child`
 >   - `now`
 >   - `info`
->   - `file`
->   - `text`
->   - `write`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `gopaletteengine`
+>   - `aesthetics`
+>   - `audit`
+>   - `cor`
+>   - `interativos`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `charmbracelet`
+>   - `integrity`
+>   - `some`
+>   - `tema`
+>   - `ui`
+>
+> ### 🔵 `NEUTRO` [90] `Content/palette.ts`
+>
+> - **Local:** `src_local/agents/Go/Content/palette.ts`
+> - **Causa:** A persona 'palette' na stack 'Go' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
 >   - `for`
 >   - `regexp`
 >   - `entries`
@@ -3720,88 +3407,272 @@
 >   - `matchall`
 >   - `tofixed`
 >   - `test`
->   - `ria`
+>   - `harmony`
+>   - `temas`
+>   - `ntica`
+>   - `integrity`
 >   - `some`
+>   - `tema`
+>   - `ui`
 >
-> ### 🔵 `NEUTRO` [103] `System/cache.ts`
+> ### 🔵 `NEUTRO` [91] `Content/palette.ts`
 >
-> - **Local:** `src_local/agents/Flutter/System/cache.ts`
-> - **Causa:** A persona 'cache' na stack 'Flutter' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **Local:** `src_local/agents/Kotlin/Content/palette.ts`
+> - **Causa:** A persona 'palette' na stack 'Kotlin' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `gocacheengine`
->   - `performance`
->   - `audit`
->   - `includes`
->   - `push`
->   - `foreach`
->   - `substring`
 >   - `child`
 >   - `now`
 >   - `info`
->   - `file`
->   - `text`
->   - `write`
 >   - `for`
 >   - `regexp`
 >   - `entries`
 >   - `endswith`
 >   - `of`
 >   - `matchall`
+>   - `push`
 >   - `tofixed`
 >   - `test`
->   - `ria`
->   - `some`
->
-> ### 🔵 `NEUTRO` [104] `System/cache.ts`
->
-> - **Local:** `src_local/agents/Python/System/cache.ts`
-> - **Causa:** A persona 'cache' na stack 'Python' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `gocacheengine`
->   - `performance`
+>   - `harmony`
+>   - `temas`
+>   - `ntica`
+>   - `gopaletteengine`
+>   - `aesthetics`
 >   - `audit`
->   - `push`
+>   - `cor`
+>   - `interativos`
 >   - `foreach`
 >   - `substring`
->   - `child`
->   - `now`
->   - `info`
->   - `file`
->   - `text`
->   - `write`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
+>   - `charmbracelet`
+>   - `ui`
 >
-> ### 🔵 `NEUTRO` [105] `System/cache.ts`
+> ### 🔵 `NEUTRO` [92] `Content/palette.ts`
 >
-> - **Local:** `src_local/agents/TypeScript/System/cache.ts`
-> - **Causa:** A persona 'cache' na stack 'TypeScript' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
+> - **Local:** `src_local/agents/TypeScript/Content/palette.ts`
+> - **Causa:** A persona 'palette' na stack 'TypeScript' está incompleta. Faltam 22 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `gocacheengine`
->   - `performance`
->   - `audit`
->   - `includes`
+>   - `harmony`
 >   - `startmetrics`
 >   - `findpatterns`
+>   - `temas`
+>   - `ntica`
+>   - `endmetrics`
+>   - `includes`
+>   - `gopaletteengine`
+>   - `aesthetics`
+>   - `audit`
+>   - `cor`
+>   - `interativos`
 >   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `charmbracelet`
+>   - `integrity`
+>   - `some`
+>   - `tema`
+>   - `ui`
+>
+> ### 🔵 `NEUTRO` [93] `Content/palette.ts`
+>
+> - **Local:** `src_local/agents/Python/Content/palette.ts`
+> - **Causa:** A persona 'palette' na stack 'Python' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `harmony`
+>   - `temas`
+>   - `ntica`
+>   - `includes`
+>   - `gopaletteengine`
+>   - `aesthetics`
+>   - `audit`
+>   - `cor`
+>   - `interativos`
+>   - `foreach`
+>   - `substring`
+>   - `charmbracelet`
+>   - `tema`
+>
+> ### 🔵 `NEUTRO` [94] `Content/echo.ts`
+>
+> - **Local:** `src_local/agents/Bun/Content/echo.ts`
+> - **Causa:** A persona 'echo' na stack 'Bun' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `mapping`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `some`
+>   - `includes`
 >   - `endmetrics`
 >   - `performactivehealing`
 >   - `log`
 >   - `join`
->   - `file`
->   - `text`
->   - `write`
->   - `optimization`
->   - `ria`
->   - `some`
+>   - `arb`
+>   - `selfdiagnostic`
+>   - `goechoengine`
+>   - `logging`
+>   - `fprintf`
+>   - `estruturados`
+>   - `prometheus`
+>   - `foreach`
+>   - `substring`
+>   - `observability`
+>   - `println`
+>   - `alert`
 >
-> ### 🔵 `NEUTRO` [106] `Strategic/voyager.ts`
+> ### 🔵 `NEUTRO` [95] `Content/echo.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Content/echo.ts`
+> - **Causa:** A persona 'echo' na stack 'Flutter' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `inspect`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `goechoengine`
+>   - `logging`
+>   - `fprintf`
+>   - `estruturados`
+>   - `prometheus`
+>   - `foreach`
+>   - `substring`
+>   - `observability`
+>   - `println`
+>   - `alert`
+>
+> ### 🔵 `NEUTRO` [96] `Content/echo.ts`
+>
+> - **Local:** `src_local/agents/Go/Content/echo.ts`
+> - **Causa:** A persona 'echo' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `mapping`
+>   - `some`
+>   - `arb`
+>   - `observability`
+>   - `println`
+>   - `alert`
+>
+> ### 🔵 `NEUTRO` [97] `Content/echo.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/Content/echo.ts`
+> - **Causa:** A persona 'echo' na stack 'Kotlin' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `inspect`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `mapping`
+>   - `some`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `arb`
+>   - `goechoengine`
+>   - `logging`
+>   - `fprintf`
+>   - `estruturados`
+>   - `prometheus`
+>   - `foreach`
+>   - `substring`
+>   - `alert`
+>
+> ### 🔵 `NEUTRO` [98] `Content/echo.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Content/echo.ts`
+> - **Causa:** A persona 'echo' na stack 'TypeScript' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `inspect`
+>   - `mapping`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `some`
+>   - `includes`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `arb`
+>   - `goechoengine`
+>   - `logging`
+>   - `fprintf`
+>   - `estruturados`
+>   - `prometheus`
+>   - `foreach`
+>   - `substring`
+>   - `observability`
+>   - `println`
+>
+> ### 🔵 `NEUTRO` [99] `Content/echo.ts`
+>
+> - **Local:** `src_local/agents/Python/Content/echo.ts`
+> - **Causa:** A persona 'echo' na stack 'Python' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `inspect`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `includes`
+>   - `arb`
+>   - `goechoengine`
+>   - `logging`
+>   - `fprintf`
+>   - `estruturados`
+>   - `prometheus`
+>   - `foreach`
+>   - `substring`
+>   - `observability`
+>   - `println`
+>   - `alert`
+>
+> ### 🔵 `NEUTRO` [100] `Strategic/voyager.ts`
 >
 > - **Local:** `src_local/agents/Bun/Strategic/voyager.ts`
 > - **Causa:** A persona 'voyager' na stack 'Bun' está incompleta. Faltam 35 unidades em relação ao padrão cross-stack.
@@ -3813,7 +3684,6 @@
 >   - `endmetrics`
 >   - `log`
 >   - `join`
->   - `links`
 >   - `selfdiagnostic`
 >   - `goroutingengine`
 >   - `navigation`
@@ -3827,6 +3697,7 @@
 >   - `foreach`
 >   - `substring`
 >   - `openapi`
+>   - `links`
 >   - `parameters`
 >   - `apply`
 >   - `call`
@@ -3842,7 +3713,93 @@
 >   - `isabsolute`
 >   - `metro`
 >
-> ### 🔵 `NEUTRO` [107] `Strategic/voyager.ts`
+> ### 🔵 `NEUTRO` [101] `Strategic/voyager.ts`
+>
+> - **Local:** `src_local/agents/Flutter/Strategic/voyager.ts`
+> - **Causa:** A persona 'voyager' na stack 'Flutter' está incompleta. Faltam 42 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `require`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `if`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `filter`
+>   - `goroutingengine`
+>   - `navigation`
+>   - `analyze`
+>   - `includes`
+>   - `default`
+>   - `new`
+>   - `use`
+>   - `raiz`
+>   - `framework`
+>   - `foreach`
+>   - `substring`
+>   - `openapi`
+>   - `links`
+>   - `parameters`
+>   - `apply`
+>   - `call`
+>   - `stica`
+>   - `getabsolutepath`
+>   - `existssync`
+>   - `readfilesync`
+>   - `split`
+>   - `trim`
+>   - `catch`
+>   - `error`
+>   - `writefilesync`
+>   - `isabsolute`
+>   - `metro`
+>
+> ### 🔵 `NEUTRO` [102] `Strategic/voyager.ts`
+>
+> - **Local:** `src_local/agents/Go/Strategic/voyager.ts`
+> - **Causa:** A persona 'voyager' na stack 'Go' está incompleta. Faltam 32 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `require`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `suggestautohealing`
+>   - `filter`
+>   - `map`
+>   - `linking`
+>   - `mapexplorationvectors`
+>   - `links`
+>   - `parameters`
+>   - `apply`
+>   - `call`
+>   - `stica`
+>   - `getabsolutepath`
+>   - `existssync`
+>   - `readfilesync`
+>   - `split`
+>   - `trim`
+>   - `catch`
+>   - `error`
+>   - `writefilesync`
+>   - `isabsolute`
+>   - `metro`
+>
+> ### 🔵 `NEUTRO` [103] `Strategic/voyager.ts`
 >
 > - **Local:** `src_local/agents/Kotlin/Strategic/voyager.ts`
 > - **Causa:** A persona 'voyager' na stack 'Kotlin' está incompleta. Faltam 42 unidades em relação ao padrão cross-stack.
@@ -3890,93 +3847,7 @@
 >   - `isabsolute`
 >   - `metro`
 >
-> ### 🔵 `NEUTRO` [108] `Strategic/voyager.ts`
->
-> - **Local:** `src_local/agents/Go/Strategic/voyager.ts`
-> - **Causa:** A persona 'voyager' na stack 'Go' está incompleta. Faltam 32 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `require`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
->   - `suggestautohealing`
->   - `filter`
->   - `map`
->   - `linking`
->   - `mapexplorationvectors`
->   - `links`
->   - `parameters`
->   - `apply`
->   - `call`
->   - `stica`
->   - `getabsolutepath`
->   - `existssync`
->   - `readfilesync`
->   - `split`
->   - `trim`
->   - `catch`
->   - `error`
->   - `writefilesync`
->   - `isabsolute`
->   - `metro`
->
-> ### 🔵 `NEUTRO` [109] `Strategic/voyager.ts`
->
-> - **Local:** `src_local/agents/Flutter/Strategic/voyager.ts`
-> - **Causa:** A persona 'voyager' na stack 'Flutter' está incompleta. Faltam 42 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `require`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `if`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `push`
->   - `tofixed`
->   - `test`
->   - `filter`
->   - `links`
->   - `goroutingengine`
->   - `navigation`
->   - `analyze`
->   - `includes`
->   - `default`
->   - `new`
->   - `use`
->   - `raiz`
->   - `framework`
->   - `foreach`
->   - `substring`
->   - `openapi`
->   - `parameters`
->   - `apply`
->   - `call`
->   - `stica`
->   - `getabsolutepath`
->   - `existssync`
->   - `readfilesync`
->   - `split`
->   - `trim`
->   - `catch`
->   - `error`
->   - `writefilesync`
->   - `isabsolute`
->   - `metro`
->
-> ### 🔵 `NEUTRO` [110] `Strategic/voyager.ts`
+> ### 🔵 `NEUTRO` [104] `Strategic/voyager.ts`
 >
 > - **Local:** `src_local/agents/TypeScript/Strategic/voyager.ts`
 > - **Causa:** A persona 'voyager' na stack 'TypeScript' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
@@ -3990,7 +3861,6 @@
 >   - `mapexplorationvectors`
 >   - `endmetrics`
 >   - `log`
->   - `links`
 >   - `goroutingengine`
 >   - `navigation`
 >   - `analyze`
@@ -4003,9 +3873,10 @@
 >   - `foreach`
 >   - `substring`
 >   - `openapi`
+>   - `links`
 >   - `metro`
 >
-> ### 🔵 `NEUTRO` [111] `Strategic/voyager.ts`
+> ### 🔵 `NEUTRO` [105] `Strategic/voyager.ts`
 >
 > - **Local:** `src_local/agents/Python/Strategic/voyager.ts`
 > - **Causa:** A persona 'voyager' na stack 'Python' está incompleta. Faltam 42 unidades em relação ao padrão cross-stack.
@@ -4026,7 +3897,6 @@
 >   - `test`
 >   - `suggestautohealing`
 >   - `filter`
->   - `links`
 >   - `goroutingengine`
 >   - `navigation`
 >   - `analyze`
@@ -4039,6 +3909,7 @@
 >   - `foreach`
 >   - `substring`
 >   - `openapi`
+>   - `links`
 >   - `parameters`
 >   - `apply`
 >   - `call`
@@ -4053,7 +3924,350 @@
 >   - `writefilesync`
 >   - `isabsolute`
 >
-> ### 🔵 `NEUTRO` [112] `System/flow.ts`
+> ### 🔵 `NEUTRO` [106] `System/bridge.ts`
+>
+> - **Local:** `src_local/agents/Bun/System/bridge.ts`
+> - **Causa:** A persona 'bridge' na stack 'Bun' está incompleta. Faltam 19 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `systems`
+>   - `nativas`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `endmetrics`
+>   - `includes`
+>   - `selfdiagnostic`
+>   - `gobridgeengine`
+>   - `stack`
+>   - `ffi`
+>   - `audit`
+>   - `insegura`
+>   - `gerenciado`
+>   - `locais`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `jni`
+>
+> ### 🔵 `NEUTRO` [107] `System/bridge.ts`
+>
+> - **Local:** `src_local/agents/Flutter/System/bridge.ts`
+> - **Causa:** A persona 'bridge' na stack 'Flutter' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `file`
+>   - `json`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `gobridgeengine`
+>   - `stack`
+>   - `ffi`
+>   - `audit`
+>   - `insegura`
+>   - `gerenciado`
+>   - `locais`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `jni`
+>
+> ### 🔵 `NEUTRO` [108] `System/bridge.ts`
+>
+> - **Local:** `src_local/agents/Go/System/bridge.ts`
+> - **Causa:** A persona 'bridge' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `file`
+>   - `json`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `systems`
+>   - `nativas`
+>   - `jni`
+>
+> ### 🔵 `NEUTRO` [109] `System/bridge.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/System/bridge.ts`
+> - **Causa:** A persona 'bridge' na stack 'Kotlin' está incompleta. Faltam 26 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `file`
+>   - `json`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `gobridgeengine`
+>   - `stack`
+>   - `ffi`
+>   - `audit`
+>   - `insegura`
+>   - `gerenciado`
+>   - `locais`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>
+> ### 🔵 `NEUTRO` [110] `System/bridge.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/System/bridge.ts`
+> - **Causa:** A persona 'bridge' na stack 'TypeScript' está incompleta. Faltam 19 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `file`
+>   - `systems`
+>   - `nativas`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `endmetrics`
+>   - `includes`
+>   - `gobridgeengine`
+>   - `stack`
+>   - `ffi`
+>   - `audit`
+>   - `insegura`
+>   - `gerenciado`
+>   - `locais`
+>   - `foreach`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `jni`
+>
+> ### 🔵 `NEUTRO` [111] `System/cache.ts`
+>
+> - **Local:** `src_local/agents/Bun/System/cache.ts`
+> - **Causa:** A persona 'cache' na stack 'Bun' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `optimization`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `selfdiagnostic`
+>   - `gocacheengine`
+>   - `performance`
+>   - `audit`
+>   - `includes`
+>   - `foreach`
+>   - `substring`
+>   - `ria`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [112] `System/cache.ts`
+>
+> - **Local:** `src_local/agents/Flutter/System/cache.ts`
+> - **Causa:** A persona 'cache' na stack 'Flutter' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `file`
+>   - `text`
+>   - `write`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `gocacheengine`
+>   - `performance`
+>   - `audit`
+>   - `includes`
+>   - `foreach`
+>   - `substring`
+>   - `ria`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [113] `System/cache.ts`
+>
+> - **Local:** `src_local/agents/Go/System/cache.ts`
+> - **Causa:** A persona 'cache' na stack 'Go' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `file`
+>   - `text`
+>   - `write`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `tofixed`
+>   - `test`
+>   - `optimization`
+>   - `ria`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [114] `System/cache.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/System/cache.ts`
+> - **Causa:** A persona 'cache' na stack 'Kotlin' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `file`
+>   - `text`
+>   - `write`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `gocacheengine`
+>   - `performance`
+>   - `audit`
+>   - `includes`
+>   - `foreach`
+>   - `substring`
+>   - `ria`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [115] `System/cache.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/System/cache.ts`
+> - **Causa:** A persona 'cache' na stack 'TypeScript' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `file`
+>   - `text`
+>   - `write`
+>   - `optimization`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `gocacheengine`
+>   - `performance`
+>   - `audit`
+>   - `includes`
+>   - `foreach`
+>   - `ria`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [116] `System/cache.ts`
+>
+> - **Local:** `src_local/agents/Python/System/cache.ts`
+> - **Causa:** A persona 'cache' na stack 'Python' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `file`
+>   - `text`
+>   - `write`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `tofixed`
+>   - `test`
+>   - `gocacheengine`
+>   - `performance`
+>   - `audit`
+>   - `foreach`
+>   - `substring`
+>
+> ### 🔵 `NEUTRO` [117] `System/flow.ts`
+>
+> - **Local:** `src_local/agents/Bun/System/flow.ts`
+> - **Causa:** A persona 'flow' na stack 'Bun' está incompleta. Faltam 19 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `integrity`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `some`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `operators`
+>   - `selfdiagnostic`
+>   - `goflowengine`
+>   - `intelligence`
+>   - `analyze`
+>   - `includes`
+>   - `close`
+>   - `foreach`
+>   - `ncronos`
+>   - `individuais`
+>   - `topology`
+>
+> ### 🔵 `NEUTRO` [118] `System/flow.ts`
+>
+> - **Local:** `src_local/agents/Flutter/System/flow.ts`
+> - **Causa:** A persona 'flow' na stack 'Flutter' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `then`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `goflowengine`
+>   - `intelligence`
+>   - `analyze`
+>   - `includes`
+>   - `close`
+>   - `foreach`
+>   - `ncronos`
+>   - `individuais`
+>   - `topology`
+>
+> ### 🔵 `NEUTRO` [119] `System/flow.ts`
 >
 > - **Local:** `src_local/agents/Go/System/flow.ts`
 > - **Causa:** A persona 'flow' na stack 'Go' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
@@ -4073,133 +4287,15 @@
 >   - `integrity`
 >   - `some`
 >   - `operators`
+>   - `ncronos`
+>   - `individuais`
 >   - `topology`
->   - `ncronos`
->   - `individuais`
 >
-> ### 🔵 `NEUTRO` [113] `System/flow.ts`
->
-> - **Local:** `src_local/agents/Bun/System/flow.ts`
-> - **Causa:** A persona 'flow' na stack 'Bun' está incompleta. Faltam 19 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `goflowengine`
->   - `intelligence`
->   - `analyze`
->   - `includes`
->   - `close`
->   - `startmetrics`
->   - `findpatterns`
->   - `foreach`
->   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `selfdiagnostic`
->   - `integrity`
->   - `some`
->   - `operators`
->   - `topology`
->   - `ncronos`
->   - `individuais`
->
-> ### 🔵 `NEUTRO` [114] `System/flow.ts`
->
-> - **Local:** `src_local/agents/Flutter/System/flow.ts`
-> - **Causa:** A persona 'flow' na stack 'Flutter' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `goflowengine`
->   - `intelligence`
->   - `analyze`
->   - `includes`
->   - `close`
->   - `push`
->   - `foreach`
->   - `substring`
->   - `child`
->   - `now`
->   - `info`
->   - `then`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
->   - `topology`
->   - `ncronos`
->   - `individuais`
->
-> ### 🔵 `NEUTRO` [115] `System/flow.ts`
->
-> - **Local:** `src_local/agents/Kotlin/System/flow.ts`
-> - **Causa:** A persona 'flow' na stack 'Kotlin' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `goflowengine`
->   - `intelligence`
->   - `analyze`
->   - `close`
->   - `push`
->   - `foreach`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `child`
->   - `now`
->   - `info`
->   - `then`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
->   - `integrity`
->   - `some`
->   - `operators`
->   - `ncronos`
->   - `individuais`
->
-> ### 🔵 `NEUTRO` [116] `System/flow.ts`
->
-> - **Local:** `src_local/agents/TypeScript/System/flow.ts`
-> - **Causa:** A persona 'flow' na stack 'TypeScript' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `goflowengine`
->   - `intelligence`
->   - `analyze`
->   - `includes`
->   - `close`
->   - `startmetrics`
->   - `findpatterns`
->   - `foreach`
->   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `integrity`
->   - `some`
->   - `operators`
->   - `topology`
->   - `ncronos`
->   - `individuais`
->
-> ### 🔵 `NEUTRO` [117] `System/flow.ts`
+> ### 🔵 `NEUTRO` [120] `System/flow.ts`
 >
 > - **Local:** `src_local/agents/Python/System/flow.ts`
 > - **Causa:** A persona 'flow' na stack 'Python' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `goflowengine`
->   - `intelligence`
->   - `analyze`
->   - `close`
->   - `push`
->   - `foreach`
->   - `substring`
 >   - `child`
 >   - `now`
 >   - `info`
@@ -4210,12 +4306,128 @@
 >   - `endswith`
 >   - `of`
 >   - `matchall`
+>   - `push`
+>   - `substring`
 >   - `tofixed`
 >   - `test`
 >   - `operators`
+>   - `goflowengine`
+>   - `intelligence`
+>   - `analyze`
+>   - `close`
+>   - `foreach`
 >   - `topology`
 >
-> ### 🔵 `NEUTRO` [118] `System/hermes.ts`
+> ### 🔵 `NEUTRO` [121] `System/flow.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/System/flow.ts`
+> - **Causa:** A persona 'flow' na stack 'Kotlin' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `then`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `integrity`
+>   - `some`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `operators`
+>   - `goflowengine`
+>   - `intelligence`
+>   - `analyze`
+>   - `close`
+>   - `foreach`
+>   - `ncronos`
+>   - `individuais`
+>
+> ### 🔵 `NEUTRO` [122] `System/flow.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/System/flow.ts`
+> - **Causa:** A persona 'flow' na stack 'TypeScript' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `integrity`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `some`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `operators`
+>   - `goflowengine`
+>   - `intelligence`
+>   - `analyze`
+>   - `includes`
+>   - `close`
+>   - `foreach`
+>   - `ncronos`
+>   - `individuais`
+>   - `topology`
+>
+> ### 🔵 `NEUTRO` [123] `System/hermes.ts`
+>
+> - **Local:** `src_local/agents/Bun/System/hermes.ts`
+> - **Causa:** A persona 'hermes' na stack 'Bun' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `integrity`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `endmetrics`
+>   - `includes`
+>   - `selfdiagnostic`
+>   - `gohermesengine`
+>   - `reliability`
+>   - `audit`
+>   - `panic`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `architecture`
+>   - `o`
+>
+> ### 🔵 `NEUTRO` [124] `System/hermes.ts`
+>
+> - **Local:** `src_local/agents/Flutter/System/hermes.ts`
+> - **Causa:** A persona 'hermes' na stack 'Flutter' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `keys`
+>   - `some`
+>   - `tofixed`
+>   - `test`
+>   - `gohermesengine`
+>   - `reliability`
+>   - `audit`
+>   - `panic`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `architecture`
+>   - `o`
+>
+> ### 🔵 `NEUTRO` [125] `System/hermes.ts`
 >
 > - **Local:** `src_local/agents/Go/System/hermes.ts`
 > - **Causa:** A persona 'hermes' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
@@ -4237,72 +4449,11 @@
 >   - `architecture`
 >   - `o`
 >
-> ### 🔵 `NEUTRO` [119] `System/hermes.ts`
->
-> - **Local:** `src_local/agents/Bun/System/hermes.ts`
-> - **Causa:** A persona 'hermes' na stack 'Bun' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `gohermesengine`
->   - `reliability`
->   - `audit`
->   - `includes`
->   - `panic`
->   - `startmetrics`
->   - `findpatterns`
->   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `selfdiagnostic`
->   - `integrity`
->   - `architecture`
->   - `o`
->
-> ### 🔵 `NEUTRO` [120] `System/hermes.ts`
->
-> - **Local:** `src_local/agents/Flutter/System/hermes.ts`
-> - **Causa:** A persona 'hermes' na stack 'Flutter' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `gohermesengine`
->   - `reliability`
->   - `audit`
->   - `panic`
->   - `push`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `keys`
->   - `some`
->   - `tofixed`
->   - `test`
->   - `architecture`
->   - `o`
->
-> ### 🔵 `NEUTRO` [121] `System/hermes.ts`
+> ### 🔵 `NEUTRO` [126] `System/hermes.ts`
 >
 > - **Local:** `src_local/agents/Kotlin/System/hermes.ts`
 > - **Causa:** A persona 'hermes' na stack 'Kotlin' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `gohermesengine`
->   - `reliability`
->   - `audit`
->   - `panic`
->   - `push`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
 >   - `child`
 >   - `now`
 >   - `info`
@@ -4312,184 +4463,92 @@
 >   - `endswith`
 >   - `of`
 >   - `matchall`
+>   - `push`
 >   - `keys`
 >   - `some`
 >   - `tofixed`
 >   - `test`
 >   - `integrity`
+>   - `gohermesengine`
+>   - `reliability`
+>   - `audit`
+>   - `panic`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
 >
-> ### 🔵 `NEUTRO` [122] `System/hermes.ts`
+> ### 🔵 `NEUTRO` [127] `System/hermes.ts`
 >
 > - **Local:** `src_local/agents/TypeScript/System/hermes.ts`
 > - **Causa:** A persona 'hermes' na stack 'TypeScript' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `gohermesengine`
->   - `reliability`
->   - `audit`
->   - `includes`
->   - `panic`
->   - `startmetrics`
->   - `findpatterns`
->   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
 >   - `keys`
 >   - `some`
 >   - `integrity`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `endmetrics`
+>   - `includes`
+>   - `gohermesengine`
+>   - `reliability`
+>   - `audit`
+>   - `panic`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
 >   - `architecture`
 >   - `o`
 >
-> ### 🔵 `NEUTRO` [123] `Strategic/warden.ts`
->
-> - **Local:** `src_local/agents/Go/Strategic/warden.ts`
-> - **Causa:** A persona 'warden' na stack 'Go' está incompleta. Faltam 14 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
->   - `lifecycle`
->   - `some`
->   - `broadcast`
->
-> ### 🔵 `NEUTRO` [124] `Strategic/warden.ts`
->
-> - **Local:** `src_local/agents/Bun/Strategic/warden.ts`
-> - **Causa:** A persona 'warden' na stack 'Bun' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `golifecycleengine`
->   - `governance`
->   - `recursos`
->   - `inspect`
->   - `includes`
->   - `close`
->   - `stop`
->   - `parada`
->   - `startmetrics`
->   - `add`
->   - `done`
->   - `exit`
->   - `main`
->   - `rio`
->   - `findpatterns`
->   - `foreach`
->   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `selfdiagnostic`
->   - `lifecycle`
->   - `some`
->   - `broadcast`
->
-> ### 🔵 `NEUTRO` [125] `Strategic/warden.ts`
->
-> - **Local:** `src_local/agents/Kotlin/Strategic/warden.ts`
-> - **Causa:** A persona 'warden' na stack 'Kotlin' está incompleta. Faltam 28 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `golifecycleengine`
->   - `governance`
->   - `recursos`
->   - `inspect`
->   - `includes`
->   - `push`
->   - `close`
->   - `stop`
->   - `parada`
->   - `add`
->   - `done`
->   - `exit`
->   - `main`
->   - `rio`
->   - `foreach`
->   - `substring`
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
->   - `broadcast`
->
-> ### 🔵 `NEUTRO` [126] `Strategic/warden.ts`
->
-> - **Local:** `src_local/agents/Flutter/Strategic/warden.ts`
-> - **Causa:** A persona 'warden' na stack 'Flutter' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `golifecycleengine`
->   - `governance`
->   - `recursos`
->   - `inspect`
->   - `includes`
->   - `push`
->   - `close`
->   - `stop`
->   - `parada`
->   - `add`
->   - `done`
->   - `exit`
->   - `main`
->   - `rio`
->   - `foreach`
->   - `substring`
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
->
-> ### 🔵 `NEUTRO` [127] `Strategic/warden.ts`
->
-> - **Local:** `src_local/agents/TypeScript/Strategic/warden.ts`
-> - **Causa:** A persona 'warden' na stack 'TypeScript' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `golifecycleengine`
->   - `governance`
->   - `recursos`
->   - `inspect`
->   - `includes`
->   - `close`
->   - `stop`
->   - `parada`
->   - `startmetrics`
->   - `add`
->   - `done`
->   - `exit`
->   - `main`
->   - `rio`
->   - `findpatterns`
->   - `foreach`
->   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `lifecycle`
->   - `some`
->   - `broadcast`
->
 > ### 🔵 `NEUTRO` [128] `System/neural.ts`
+>
+> - **Local:** `src_local/agents/Bun/System/neural.ts`
+> - **Causa:** A persona 'neural' na stack 'Bun' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `orchestration`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `some`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `thread`
+>   - `selfdiagnostic`
+>   - `goneuralengine`
+>   - `computing`
+>   - `audit`
+>   - `foreach`
+>   - `learning`
+>   - `alta`
+>
+> ### 🔵 `NEUTRO` [129] `System/neural.ts`
+>
+> - **Local:** `src_local/agents/Flutter/System/neural.ts`
+> - **Causa:** A persona 'neural' na stack 'Flutter' está incompleta. Faltam 19 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `goneuralengine`
+>   - `computing`
+>   - `audit`
+>   - `foreach`
+>   - `learning`
+>   - `alta`
+>
+> ### 🔵 `NEUTRO` [130] `System/neural.ts`
 >
 > - **Local:** `src_local/agents/Go/System/neural.ts`
 > - **Causa:** A persona 'neural' na stack 'Go' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
@@ -4511,115 +4570,11 @@
 >   - `learning`
 >   - `alta`
 >
-> ### 🔵 `NEUTRO` [129] `System/neural.ts`
->
-> - **Local:** `src_local/agents/Bun/System/neural.ts`
-> - **Causa:** A persona 'neural' na stack 'Bun' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `goneuralengine`
->   - `computing`
->   - `audit`
->   - `startmetrics`
->   - `findpatterns`
->   - `foreach`
->   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `selfdiagnostic`
->   - `orchestration`
->   - `some`
->   - `thread`
->   - `learning`
->   - `alta`
->
-> ### 🔵 `NEUTRO` [130] `System/neural.ts`
->
-> - **Local:** `src_local/agents/Flutter/System/neural.ts`
-> - **Causa:** A persona 'neural' na stack 'Flutter' está incompleta. Faltam 19 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `goneuralengine`
->   - `computing`
->   - `audit`
->   - `push`
->   - `foreach`
->   - `substring`
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
->   - `learning`
->   - `alta`
->
 > ### 🔵 `NEUTRO` [131] `System/neural.ts`
->
-> - **Local:** `src_local/agents/Kotlin/System/neural.ts`
-> - **Causa:** A persona 'neural' na stack 'Kotlin' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `goneuralengine`
->   - `computing`
->   - `audit`
->   - `push`
->   - `foreach`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
->   - `orchestration`
->   - `some`
->   - `thread`
->   - `alta`
->
-> ### 🔵 `NEUTRO` [132] `System/neural.ts`
->
-> - **Local:** `src_local/agents/TypeScript/System/neural.ts`
-> - **Causa:** A persona 'neural' na stack 'TypeScript' está incompleta. Faltam 14 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `goneuralengine`
->   - `computing`
->   - `audit`
->   - `startmetrics`
->   - `findpatterns`
->   - `foreach`
->   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `orchestration`
->   - `some`
->   - `thread`
->   - `learning`
->
-> ### 🔵 `NEUTRO` [133] `System/neural.ts`
 >
 > - **Local:** `src_local/agents/Python/System/neural.ts`
 > - **Causa:** A persona 'neural' na stack 'Python' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `goneuralengine`
->   - `computing`
->   - `audit`
->   - `includes`
->   - `push`
->   - `foreach`
->   - `substring`
 >   - `child`
 >   - `now`
 >   - `info`
@@ -4627,172 +4582,163 @@
 >   - `regexp`
 >   - `entries`
 >   - `endswith`
+>   - `includes`
 >   - `of`
 >   - `matchall`
+>   - `push`
+>   - `substring`
 >   - `tofixed`
 >   - `test`
 >   - `thread`
+>   - `goneuralengine`
+>   - `computing`
+>   - `audit`
+>   - `foreach`
 >   - `learning`
 >   - `alta`
 >
-> ### 🔵 `NEUTRO` [134] `System/nexus.ts`
+> ### 🔵 `NEUTRO` [132] `System/neural.ts`
 >
-> - **Local:** `src_local/agents/Go/System/nexus.ts`
-> - **Causa:** A persona 'nexus' na stack 'Go' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
+> - **Local:** `src_local/agents/Kotlin/System/neural.ts`
+> - **Causa:** A persona 'neural' na stack 'Kotlin' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
 >   - `child`
 >   - `now`
 >   - `info`
->   - `fetch`
 >   - `for`
 >   - `regexp`
 >   - `entries`
 >   - `endswith`
 >   - `of`
 >   - `matchall`
+>   - `push`
+>   - `substring`
 >   - `tofixed`
 >   - `test`
->   - `integrity`
->   - `runtime`
+>   - `orchestration`
 >   - `some`
->   - `resiliency`
->   - `controlados`
->   - `settimeout`
->
-> ### 🔵 `NEUTRO` [135] `System/nexus.ts`
->
-> - **Local:** `src_local/agents/Bun/System/nexus.ts`
-> - **Causa:** A persona 'nexus' na stack 'Bun' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `goorchestrationengine`
->   - `systems`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `thread`
+>   - `goneuralengine`
+>   - `computing`
 >   - `audit`
->   - `includes`
+>   - `foreach`
+>   - `alta`
+>
+> ### 🔵 `NEUTRO` [133] `System/neural.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/System/neural.ts`
+> - **Causa:** A persona 'neural' na stack 'TypeScript' está incompleta. Faltam 14 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `orchestration`
 >   - `startmetrics`
 >   - `findpatterns`
+>   - `some`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `thread`
+>   - `goneuralengine`
+>   - `computing`
+>   - `audit`
 >   - `foreach`
+>   - `learning`
+>
+> ### 🔵 `NEUTRO` [134] `System/spark.ts`
+>
+> - **Local:** `src_local/agents/Bun/System/spark.ts`
+> - **Causa:** A persona 'spark' na stack 'Bun' está incompleta. Faltam 22 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `orchestration`
+>   - `startmetrics`
+>   - `visual`
+>   - `ticas`
+>   - `findpatterns`
+>   - `some`
+>   - `includes`
 >   - `endmetrics`
 >   - `performactivehealing`
 >   - `log`
 >   - `join`
 >   - `selfdiagnostic`
->   - `integrity`
->   - `runtime`
->   - `some`
->   - `resiliency`
->   - `controlados`
->   - `settimeout`
->
-> ### 🔵 `NEUTRO` [136] `System/nexus.ts`
->
-> - **Local:** `src_local/agents/Flutter/System/nexus.ts`
-> - **Causa:** A persona 'nexus' na stack 'Flutter' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `goorchestrationengine`
->   - `systems`
+>   - `gosparkengine`
+>   - `driven`
 >   - `audit`
->   - `push`
+>   - `close`
+>   - `garantida`
 >   - `foreach`
->   - `substring`
+>   - `delight`
+>   - `phd`
+>   - `slice`
+>   - `indexof`
+>
+> ### 🔵 `NEUTRO` [135] `System/spark.ts`
+>
+> - **Local:** `src_local/agents/Flutter/System/spark.ts`
+> - **Causa:** A persona 'spark' na stack 'Flutter' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
 >   - `child`
 >   - `now`
 >   - `info`
->   - `fetch`
+>   - `exit`
 >   - `for`
 >   - `regexp`
 >   - `entries`
 >   - `endswith`
 >   - `of`
 >   - `matchall`
+>   - `push`
+>   - `substring`
 >   - `tofixed`
 >   - `test`
->   - `resiliency`
->   - `controlados`
->   - `settimeout`
->
-> ### 🔵 `NEUTRO` [137] `System/nexus.ts`
->
-> - **Local:** `src_local/agents/Kotlin/System/nexus.ts`
-> - **Causa:** A persona 'nexus' na stack 'Kotlin' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `goorchestrationengine`
->   - `systems`
+>   - `gosparkengine`
+>   - `driven`
 >   - `audit`
->   - `push`
+>   - `close`
+>   - `garantida`
 >   - `foreach`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
+>   - `delight`
+>   - `phd`
+>   - `slice`
+>   - `indexof`
+>
+> ### 🔵 `NEUTRO` [136] `System/spark.ts`
+>
+> - **Local:** `src_local/agents/Python/System/spark.ts`
+> - **Causa:** A persona 'spark' na stack 'Python' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
 >   - `child`
 >   - `now`
 >   - `info`
->   - `fetch`
+>   - `exit`
 >   - `for`
 >   - `regexp`
 >   - `entries`
 >   - `endswith`
 >   - `of`
 >   - `matchall`
+>   - `push`
+>   - `substring`
 >   - `tofixed`
 >   - `test`
->   - `integrity`
->   - `runtime`
->   - `some`
->   - `settimeout`
->
-> ### 🔵 `NEUTRO` [138] `System/nexus.ts`
->
-> - **Local:** `src_local/agents/TypeScript/System/nexus.ts`
-> - **Causa:** A persona 'nexus' na stack 'TypeScript' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `goorchestrationengine`
->   - `systems`
->   - `audit`
+>   - `visual`
+>   - `ticas`
 >   - `includes`
->   - `startmetrics`
->   - `findpatterns`
->   - `foreach`
->   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `integrity`
->   - `runtime`
->   - `some`
->   - `resiliency`
->   - `controlados`
->
-> ### 🔵 `NEUTRO` [139] `System/nexus.ts`
->
-> - **Local:** `src_local/agents/Python/System/nexus.ts`
-> - **Causa:** A persona 'nexus' na stack 'Python' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `goorchestrationengine`
->   - `systems`
+>   - `gosparkengine`
+>   - `driven`
 >   - `audit`
->   - `includes`
->   - `push`
+>   - `close`
+>   - `garantida`
 >   - `foreach`
->   - `substring`
->   - `child`
->   - `now`
->   - `info`
->   - `fetch`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
->   - `runtime`
->   - `resiliency`
->   - `controlados`
->   - `settimeout`
+>   - `delight`
+>   - `phd`
+>   - `slice`
+>   - `indexof`
 >
-> ### 🔵 `NEUTRO` [140] `System/spark.ts`
+> ### 🔵 `NEUTRO` [137] `System/spark.ts`
 >
 > - **Local:** `src_local/agents/Go/System/spark.ts`
 > - **Causa:** A persona 'spark' na stack 'Go' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
@@ -4818,159 +4764,150 @@
 >   - `slice`
 >   - `indexof`
 >
-> ### 🔵 `NEUTRO` [141] `System/spark.ts`
+> ### 🔵 `NEUTRO` [138] `System/spark.ts`
 >
-> - **Local:** `src_local/agents/Bun/System/spark.ts`
-> - **Causa:** A persona 'spark' na stack 'Bun' está incompleta. Faltam 22 unidades em relação ao padrão cross-stack.
+> - **Local:** `src_local/agents/Kotlin/System/spark.ts`
+> - **Causa:** A persona 'spark' na stack 'Kotlin' está incompleta. Faltam 29 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `exit`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `orchestration`
+>   - `visual`
+>   - `ticas`
+>   - `some`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
 >   - `gosparkengine`
 >   - `driven`
 >   - `audit`
->   - `includes`
 >   - `close`
->   - `startmetrics`
 >   - `garantida`
->   - `findpatterns`
 >   - `foreach`
+>   - `slice`
+>   - `indexof`
+>
+> ### 🔵 `NEUTRO` [139] `System/spark.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/System/spark.ts`
+> - **Causa:** A persona 'spark' na stack 'TypeScript' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `substring`
+>   - `orchestration`
+>   - `startmetrics`
+>   - `visual`
+>   - `ticas`
+>   - `findpatterns`
+>   - `some`
+>   - `includes`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `gosparkengine`
+>   - `driven`
+>   - `audit`
+>   - `close`
+>   - `garantida`
+>   - `foreach`
+>   - `delight`
+>   - `phd`
+>
+> ### 🔵 `NEUTRO` [140] `System/stream.ts`
+>
+> - **Local:** `src_local/agents/Bun/System/stream.ts`
+> - **Causa:** A persona 'stream' na stack 'Bun' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `flow`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `some`
 >   - `endmetrics`
 >   - `performactivehealing`
 >   - `log`
 >   - `join`
 >   - `selfdiagnostic`
->   - `orchestration`
->   - `visual`
->   - `ticas`
->   - `some`
->   - `delight`
->   - `phd`
->   - `slice`
->   - `indexof`
->
-> ### 🔵 `NEUTRO` [142] `System/spark.ts`
->
-> - **Local:** `src_local/agents/Flutter/System/spark.ts`
-> - **Causa:** A persona 'spark' na stack 'Flutter' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `gosparkengine`
->   - `driven`
->   - `audit`
->   - `close`
->   - `push`
->   - `garantida`
->   - `foreach`
->   - `substring`
->   - `child`
->   - `now`
->   - `info`
->   - `exit`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
->   - `delight`
->   - `phd`
->   - `slice`
->   - `indexof`
->
-> ### 🔵 `NEUTRO` [143] `System/spark.ts`
->
-> - **Local:** `src_local/agents/Kotlin/System/spark.ts`
-> - **Causa:** A persona 'spark' na stack 'Kotlin' está incompleta. Faltam 29 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `gosparkengine`
->   - `driven`
->   - `audit`
->   - `close`
->   - `push`
->   - `garantida`
->   - `foreach`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `child`
->   - `now`
->   - `info`
->   - `exit`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
->   - `orchestration`
->   - `visual`
->   - `ticas`
->   - `some`
->   - `slice`
->   - `indexof`
->
-> ### 🔵 `NEUTRO` [144] `System/spark.ts`
->
-> - **Local:** `src_local/agents/TypeScript/System/spark.ts`
-> - **Causa:** A persona 'spark' na stack 'TypeScript' está incompleta. Faltam 20 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `gosparkengine`
->   - `driven`
->   - `audit`
+>   - `pipes`
 >   - `includes`
->   - `close`
->   - `startmetrics`
->   - `garantida`
->   - `findpatterns`
->   - `foreach`
->   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `orchestration`
->   - `visual`
->   - `ticas`
->   - `some`
->   - `delight`
->   - `phd`
->
-> ### 🔵 `NEUTRO` [145] `System/spark.ts`
->
-> - **Local:** `src_local/agents/Python/System/spark.ts`
-> - **Causa:** A persona 'spark' na stack 'Python' está incompleta. Faltam 27 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `gosparkengine`
->   - `driven`
+>   - `gostreamengine`
+>   - `streaming`
 >   - `audit`
->   - `includes`
->   - `close`
->   - `push`
->   - `garantida`
+>   - `lentos`
 >   - `foreach`
->   - `substring`
+>   - `vida`
+>
+> ### 🔵 `NEUTRO` [141] `System/stream.ts`
+>
+> - **Local:** `src_local/agents/Flutter/System/stream.ts`
+> - **Causa:** A persona 'stream' na stack 'Flutter' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
 >   - `child`
 >   - `now`
 >   - `info`
->   - `exit`
+>   - `on`
+>   - `off`
+>   - `stop`
 >   - `for`
 >   - `regexp`
 >   - `entries`
 >   - `endswith`
 >   - `of`
 >   - `matchall`
+>   - `push`
+>   - `substring`
 >   - `tofixed`
 >   - `test`
->   - `visual`
->   - `ticas`
->   - `delight`
->   - `phd`
->   - `slice`
->   - `indexof`
+>   - `pipes`
+>   - `includes`
+>   - `gostreamengine`
+>   - `streaming`
+>   - `audit`
+>   - `lentos`
+>   - `foreach`
+>   - `vida`
 >
-> ### 🔵 `NEUTRO` [146] `System/stream.ts`
+> ### 🔵 `NEUTRO` [142] `System/stream.ts`
+>
+> - **Local:** `src_local/agents/Python/System/stream.ts`
+> - **Causa:** A persona 'stream' na stack 'Python' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `on`
+>   - `off`
+>   - `stop`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `flow`
+>   - `gostreamengine`
+>   - `streaming`
+>   - `audit`
+>   - `lentos`
+>   - `foreach`
+>   - `vida`
+>
+> ### 🔵 `NEUTRO` [143] `System/stream.ts`
 >
 > - **Local:** `src_local/agents/Go/System/stream.ts`
 > - **Causa:** A persona 'stream' na stack 'Go' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
@@ -4991,51 +4928,124 @@
 >   - `test`
 >   - `flow`
 >   - `some`
->   - `vida`
 >   - `pipes`
+>   - `vida`
 >
-> ### 🔵 `NEUTRO` [147] `System/stream.ts`
+> ### 🔵 `NEUTRO` [144] `System/stream.ts`
 >
-> - **Local:** `src_local/agents/Bun/System/stream.ts`
-> - **Causa:** A persona 'stream' na stack 'Bun' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
+> - **Local:** `src_local/agents/Kotlin/System/stream.ts`
+> - **Causa:** A persona 'stream' na stack 'Kotlin' está incompleta. Faltam 26 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `on`
+>   - `off`
+>   - `stop`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `some`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `pipes`
 >   - `gostreamengine`
 >   - `streaming`
 >   - `audit`
->   - `includes`
->   - `startmetrics`
 >   - `lentos`
->   - `findpatterns`
 >   - `foreach`
+>
+> ### 🔵 `NEUTRO` [145] `System/stream.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/System/stream.ts`
+> - **Causa:** A persona 'stream' na stack 'TypeScript' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `stop`
+>   - `flow`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `some`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `pipes`
+>   - `includes`
+>   - `gostreamengine`
+>   - `streaming`
+>   - `audit`
+>   - `lentos`
+>   - `foreach`
+>   - `vida`
+>
+> ### 🔵 `NEUTRO` [146] `System/nexus.ts`
+>
+> - **Local:** `src_local/agents/Bun/System/nexus.ts`
+> - **Causa:** A persona 'nexus' na stack 'Bun' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `integrity`
+>   - `startmetrics`
+>   - `runtime`
+>   - `findpatterns`
+>   - `some`
+>   - `includes`
 >   - `endmetrics`
 >   - `performactivehealing`
 >   - `log`
 >   - `join`
 >   - `selfdiagnostic`
->   - `flow`
->   - `some`
->   - `vida`
->   - `pipes`
->
-> ### 🔵 `NEUTRO` [148] `System/stream.ts`
->
-> - **Local:** `src_local/agents/Flutter/System/stream.ts`
-> - **Causa:** A persona 'stream' na stack 'Flutter' está incompleta. Faltam 24 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `gostreamengine`
->   - `streaming`
+>   - `goorchestrationengine`
+>   - `systems`
 >   - `audit`
->   - `includes`
->   - `push`
->   - `lentos`
 >   - `foreach`
->   - `substring`
+>   - `resiliency`
+>   - `controlados`
+>   - `settimeout`
+>
+> ### 🔵 `NEUTRO` [147] `System/nexus.ts`
+>
+> - **Local:** `src_local/agents/Flutter/System/nexus.ts`
+> - **Causa:** A persona 'nexus' na stack 'Flutter' está incompleta. Faltam 21 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
 >   - `child`
 >   - `now`
 >   - `info`
->   - `on`
->   - `off`
->   - `stop`
+>   - `fetch`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `goorchestrationengine`
+>   - `systems`
+>   - `audit`
+>   - `foreach`
+>   - `resiliency`
+>   - `controlados`
+>   - `settimeout`
+>
+> ### 🔵 `NEUTRO` [148] `System/nexus.ts`
+>
+> - **Local:** `src_local/agents/Go/System/nexus.ts`
+> - **Causa:** A persona 'nexus' na stack 'Go' está incompleta. Faltam 18 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `fetch`
 >   - `for`
 >   - `regexp`
 >   - `entries`
@@ -5044,127 +5054,96 @@
 >   - `matchall`
 >   - `tofixed`
 >   - `test`
->   - `vida`
->   - `pipes`
+>   - `integrity`
+>   - `runtime`
+>   - `some`
+>   - `resiliency`
+>   - `controlados`
+>   - `settimeout`
 >
-> ### 🔵 `NEUTRO` [149] `System/stream.ts`
+> ### 🔵 `NEUTRO` [149] `System/nexus.ts`
 >
-> - **Local:** `src_local/agents/Kotlin/System/stream.ts`
-> - **Causa:** A persona 'stream' na stack 'Kotlin' está incompleta. Faltam 26 unidades em relação ao padrão cross-stack.
+> - **Local:** `src_local/agents/Python/System/nexus.ts`
+> - **Causa:** A persona 'nexus' na stack 'Python' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
 > - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `gostreamengine`
->   - `streaming`
->   - `audit`
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `fetch`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
 >   - `push`
->   - `lentos`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `runtime`
+>   - `includes`
+>   - `goorchestrationengine`
+>   - `systems`
+>   - `audit`
 >   - `foreach`
+>   - `resiliency`
+>   - `controlados`
+>   - `settimeout`
+>
+> ### 🔵 `NEUTRO` [150] `System/nexus.ts`
+>
+> - **Local:** `src_local/agents/Kotlin/System/nexus.ts`
+> - **Causa:** A persona 'nexus' na stack 'Kotlin' está incompleta. Faltam 25 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `fetch`
+>   - `for`
+>   - `regexp`
+>   - `entries`
+>   - `endswith`
+>   - `of`
+>   - `matchall`
+>   - `push`
+>   - `substring`
+>   - `tofixed`
+>   - `test`
+>   - `integrity`
+>   - `runtime`
+>   - `some`
 >   - `performactivehealing`
 >   - `log`
 >   - `join`
->   - `substring`
->   - `child`
->   - `now`
->   - `info`
->   - `on`
->   - `off`
->   - `stop`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
->   - `some`
->   - `pipes`
->
-> ### 🔵 `NEUTRO` [150] `System/stream.ts`
->
-> - **Local:** `src_local/agents/TypeScript/System/stream.ts`
-> - **Causa:** A persona 'stream' na stack 'TypeScript' está incompleta. Faltam 17 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `gostreamengine`
->   - `streaming`
+>   - `goorchestrationengine`
+>   - `systems`
 >   - `audit`
->   - `includes`
->   - `startmetrics`
->   - `lentos`
->   - `findpatterns`
 >   - `foreach`
+>   - `settimeout`
+>
+> ### 🔵 `NEUTRO` [151] `System/nexus.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/System/nexus.ts`
+> - **Causa:** A persona 'nexus' na stack 'TypeScript' está incompleta. Faltam 16 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `integrity`
+>   - `startmetrics`
+>   - `runtime`
+>   - `findpatterns`
+>   - `some`
+>   - `includes`
 >   - `endmetrics`
 >   - `performactivehealing`
 >   - `log`
 >   - `join`
->   - `stop`
->   - `flow`
->   - `some`
->   - `vida`
->   - `pipes`
->
-> ### 🔵 `NEUTRO` [151] `System/stream.ts`
->
-> - **Local:** `src_local/agents/Python/System/stream.ts`
-> - **Causa:** A persona 'stream' na stack 'Python' está incompleta. Faltam 23 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `gostreamengine`
->   - `streaming`
+>   - `goorchestrationengine`
+>   - `systems`
 >   - `audit`
->   - `push`
->   - `lentos`
 >   - `foreach`
->   - `substring`
->   - `child`
->   - `now`
->   - `info`
->   - `on`
->   - `off`
->   - `stop`
->   - `for`
->   - `regexp`
->   - `entries`
->   - `endswith`
->   - `of`
->   - `matchall`
->   - `tofixed`
->   - `test`
->   - `flow`
->   - `vida`
+>   - `resiliency`
+>   - `controlados`
 >
-> ### 🔵 `NEUTRO` [152] `Audit/strict.ts`
->
-> - **Local:** `src_local/agents/Go/Audit/strict.ts`
-> - **Causa:** A persona 'strict' na stack 'Go' está incompleta. Faltam 8 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `child`
->   - `now`
->   - `info`
->   - `for`
->   - `entries`
->   - `endswith`
->   - `parse`
->   - `tofixed`
->
-> ### 🔵 `NEUTRO` [153] `Audit/strict.ts`
->
-> - **Local:** `src_local/agents/TypeScript/Audit/strict.ts`
-> - **Causa:** A persona 'strict' na stack 'TypeScript' está incompleta. Faltam 13 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `gostrictengine`
->   - `rigor`
->   - `inspect`
->   - `split`
->   - `startmetrics`
->   - `findpatterns`
->   - `foreach`
->   - `endmetrics`
->   - `performactivehealing`
->   - `log`
->   - `join`
->   - `substring`
->   - `generics`
->
-> ### 🔵 `NEUTRO` [154] `Content/fragment.ts`
+> ### 🔵 `NEUTRO` [152] `Content/fragment.ts`
 >
 > - **Local:** `src_local/agents/Go/Content/fragment.ts`
 > - **Causa:** A persona 'fragment' na stack 'Go' está incompleta. Faltam 4 unidades em relação ao padrão cross-stack.
@@ -5174,7 +5153,7 @@
 >   - `some`
 >   - `nica`
 >
-> ### 🔵 `NEUTRO` [155] `Content/fragment.ts`
+> ### 🔵 `NEUTRO` [153] `Content/fragment.ts`
 >
 > - **Local:** `src_local/agents/Python/Content/fragment.ts`
 > - **Causa:** A persona 'fragment' na stack 'Python' está incompleta. Faltam 7 unidades em relação ao padrão cross-stack.
@@ -5187,32 +5166,7 @@
 >   - `foreach`
 >   - `substring`
 >
-> ### 🔵 `NEUTRO` [156] `Strategic/vortex.ts`
->
-> - **Local:** `src_local/agents/Go/Strategic/vortex.ts`
-> - **Causa:** A persona 'vortex' na stack 'Go' está incompleta. Faltam 3 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `management`
->   - `stack`
->   - `some`
->
-> ### 🔵 `NEUTRO` [157] `Strategic/vortex.ts`
->
-> - **Local:** `src_local/agents/Python/Strategic/vortex.ts`
-> - **Causa:** A persona 'vortex' na stack 'Python' está incompleta. Faltam 10 unidades em relação ao padrão cross-stack.
-> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
->   - `govortexengine`
->   - `proofing`
->   - `audit`
->   - `match`
->   - `push`
->   - `includes`
->   - `iteradores`
->   - `tipo`
->   - `foreach`
->   - `substring`
->
-> ### 🔵 `NEUTRO` [158] `Strategic/director.ts`
+> ### 🔵 `NEUTRO` [154] `Strategic/director.ts`
 >
 > - **Local:** `src_local/agents/Go/Strategic/director.ts`
 > - **Causa:** A persona 'director' na stack 'Go' está incompleta. Faltam 30 unidades em relação ao padrão cross-stack.
@@ -5248,7 +5202,7 @@
 >   - `ausentes`
 >   - `micas`
 >
-> ### 🔵 `NEUTRO` [159] `Strategic/director.ts`
+> ### 🔵 `NEUTRO` [155] `Strategic/director.ts`
 >
 > - **Local:** `src_local/agents/TypeScript/Strategic/director.ts`
 > - **Causa:** A persona 'director' na stack 'TypeScript' está incompleta. Faltam 14 unidades em relação ao padrão cross-stack.
@@ -5267,6 +5221,64 @@
 >   - `deduplicateresults`
 >   - `has`
 >   - `add`
+>
+> ### 🔵 `NEUTRO` [156] `Strategic/vortex.ts`
+>
+> - **Local:** `src_local/agents/Go/Strategic/vortex.ts`
+> - **Causa:** A persona 'vortex' na stack 'Go' está incompleta. Faltam 3 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `management`
+>   - `stack`
+>   - `some`
+>
+> ### 🔵 `NEUTRO` [157] `Strategic/vortex.ts`
+>
+> - **Local:** `src_local/agents/Python/Strategic/vortex.ts`
+> - **Causa:** A persona 'vortex' na stack 'Python' está incompleta. Faltam 10 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `govortexengine`
+>   - `proofing`
+>   - `audit`
+>   - `match`
+>   - `push`
+>   - `includes`
+>   - `iteradores`
+>   - `tipo`
+>   - `foreach`
+>   - `substring`
+>
+> ### 🔵 `NEUTRO` [158] `Audit/strict.ts`
+>
+> - **Local:** `src_local/agents/Go/Audit/strict.ts`
+> - **Causa:** A persona 'strict' na stack 'Go' está incompleta. Faltam 8 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `child`
+>   - `now`
+>   - `info`
+>   - `for`
+>   - `entries`
+>   - `endswith`
+>   - `parse`
+>   - `tofixed`
+>
+> ### 🔵 `NEUTRO` [159] `Audit/strict.ts`
+>
+> - **Local:** `src_local/agents/TypeScript/Audit/strict.ts`
+> - **Causa:** A persona 'strict' na stack 'TypeScript' está incompleta. Faltam 13 unidades em relação ao padrão cross-stack.
+> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**
+>   - `gostrictengine`
+>   - `rigor`
+>   - `inspect`
+>   - `split`
+>   - `startmetrics`
+>   - `findpatterns`
+>   - `foreach`
+>   - `endmetrics`
+>   - `performactivehealing`
+>   - `log`
+>   - `join`
+>   - `substring`
+>   - `generics`
 >
 
 ## 💀 Risco Existencial

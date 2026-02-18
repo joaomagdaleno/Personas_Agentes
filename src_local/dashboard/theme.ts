@@ -1,22 +1,5 @@
-/**
- * 🎨 Design System Tokens for Sentinel Dashboard
- */
+import * as shadow from "./theme_shadow";
 
-export const COLORS = {
-    bg: "#06090f",
-    panel: "rgba(13, 17, 23, 0.7)",
-    border: "rgba(255, 255, 255, 0.08)",
-    textPrimary: "#ffffff",
-    textSecondary: "#7d8590",
-    accent: "#58a6ff",
-    success: "#3fb950",
-    danger: "#f85149",
-    warning: "#d29922",
-    neutral: "#58a6ff"
-};
-
-export const FONTS = {
-    display: '"Inter", "Outfit", sans-serif',
-    ui: '"Inter", system-ui, sans-serif',
-    mono: '"JetBrains Mono", monospace'
-};
+export const THEME_NAME = "Sentinel Dark";
+export const getTheme = shadow.getTheme;
+export const THEME_VALUES = shadow.THEME_VALUES;

@@ -1,12 +1,9 @@
-import { describe, it, expect } from "bun:test";
-import { DebugEngine } from "./debug_engine.ts";
+import { expect, test, describe } from "bun:test";
+import { DebugEngine } from "./debug_engine";
 
-describe("DebugEngine Integrity", () => {
-    it("should be importable", () => {
-        expect(DebugEngine).toBeDefined();
-    });
-
-    it("should have trace_file method", () => {
-        expect(typeof DebugEngine.trace_file).toBe("function");
+describe("Debug Engine Deep Audit", () => {
+    test("should trace file and return array", () => {
+        const result = DebugEngine.trace_file("non-existent");
+        expect(Array.isArray(result)).toBe(true);
     });
 });
