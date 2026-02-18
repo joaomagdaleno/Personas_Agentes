@@ -73,124 +73,93 @@ export class DirectorPersona extends BaseActivePersona {
     }
 
     /**
-     * Formats 360 report
+     * Formats 360 report — PhD Narrative Flow
      */
     format360Report(snapshot: any, findings: any): string {
-        logger.info(`[${this.name}] Formatting 360 report...`);
+        logger.info(`[${this.name}] Orquestrando Relatório Narrativo PhD...`);
 
         const isCollapse = snapshot.health_score === 0;
         const statusEmoji = snapshot.health_score > 80 ? "OK" : (snapshot.health_score > 50 ? "ALERTA" : "CRÍTICO");
         const statusBadge = this.sectionsEngine["_getStatusBadge"](statusEmoji);
+        const lastCheck = new Date().toLocaleTimeString();
 
-        let report = `# 🏛️ RELATÓRIO SISTÊMICO
+        // 1. Identidade e Sincronia
+        let report = `# 🏛️ RELATÓRIO SISTÊMICO: CONSOLIDAÇÃO DA REALIDADE
 
-> **Status Operacional:** ${statusBadge}
-> **Ambiente:** \`TS-MASTER-CONTROL\`
+> **Status Operacional:** ${statusBadge} | **Integridade Geral:** \`${Math.round(snapshot.health_score || 0)}%\`
+> **Ambiente:** \`TS-MASTER-CONTROL\` | **Último Check:** \`${lastCheck}\`
 > 
 > ${isCollapse ? "💀 `SITUAÇÃO: COLAPSO DE INTEGRIDADE`" : "💎 `SITUAÇÃO: SOBERANIA TÉCNICA`"}
 
 ---
 
-## 🧬 SINCRONIA DE IDENTIDADE
-
-| Métrica | Dashboard Visual | Status Operacional |
-| :--- | :--- | :--- |
-| **Integridade Geral** | \`${Math.round(snapshot.health_score || 0)}%\` | ${statusBadge} |
-| **Alertas Ativos** | \`${findings.length} Achados\` | 🔵 \`MONITORADO\` |
-| **Último Check** | \`${new Date().toLocaleTimeString()}\` | 🟢 \`ATIVA\` |
+## 🧬 FLUXO DE DIAGNÓSTICO (CAUSA-RAIZ)
 
 ${this.sectionsEngine.formatGovernanceSection(snapshot)}
 
-## 🩺 SINAIS VITAIS DO PRODUTO
+---
 
-${this.sectionsEngine.formatVitalsTable(snapshot, "Integridade", isCollapse ? "COLAPSO" : snapshot.status)}
+## 🎯 HOTSPOTS DE INTERVENÇÃO (TOP PRIORITIES)
 
-${snapshot.parity_stats?.raw_report || this.sectionsEngine.formatParityBoard(snapshot.parity_stats)}
-
-${this.sectionsEngine.formatRoadmap(snapshot)}
-
-## 🗺️ TOPOLOGIA DE SINCRONIA (NEURAL BRIDGE)
-
-${this.sectionsEngine.formatTopologyMap(snapshot)}
-
-## 🌪️ MAPA DE ENTROPIA & ACOPLAMENTO
-
-${this.sectionsEngine.formatEntropyMap(snapshot.entropy_map || {}, 500)}
-
-## 🧪 MATRIZ DE CONFIANÇA
-
-| Componente | Entropia | Asserções | Status de Teste |
-| :--- | :---: | :---: | :--- |
 `;
 
         const matrix = snapshot.confidence_matrix || [];
-        for (const entry of matrix) {
-            const statusIcon = entry.test_status === "DEEP" ? "🟢 `PROFUNDO`" : (entry.test_status === "STRUCTURAL" ? "🟡 `ESTRUTURAL`" : "🔴 `FRÁGIL`");
-            const basename = entry.file.split(/[\\/]/).pop() || entry.file;
-            report += `| \`${basename}\` | \`${entry.complexity}\` | \`${entry.assertions}\` | ${statusIcon} |\n`;
+        const critical = matrix.filter((e: any) => (e.advanced_metrics?.cyclomaticComplexity || e.complexity || 0) > 30 || (e.complexity || 0) > 50);
+        critical.sort((a: any, b: any) => (b.complexity || 0) - (a.complexity || 0));
+
+        if (critical.length > 0) {
+            const top10 = critical.slice(0, 10);
+            report += `### 🔴 Componentes de Intervenção Urgente
+
+> Estes ativos concentram a maior entropia do sistema e são os principais impeditivos para o score 100%.
+
+| # | Componente | Complexidade | Risco | Ação Recomendada |
+| :---: | :--- | :---: | :---: | :--- |
+`;
+            for (let i = 0; i < top10.length; i++) {
+                const f = top10[i];
+                const risk = f.advanced_metrics?.riskLevel || "HIGH";
+                const riskIcon = risk === "CRITICAL" ? "🔴" : "🟠";
+                report += `| ${i + 1} | \`${f.name || f.file.split(/[\\/]/).pop()}\` | \`${f.complexity}\` | ${riskIcon} ${risk} | Desmembrar / Refatorar |\n`;
+            }
+            if (critical.length > 10) report += `> ...e mais \`${critical.length - 10}\` arquivos críticos detectados.\n`;
+        } else {
+            report += "> 🟢 **Nenhum hotspot crítico detectado.** Componentes operando em zonas de segurança.\n";
         }
 
         report += `
-## 🎯 PLANO DE BATALHA: DIRETRIZES DE ENGENHARIA
+---
 
-| Severidade | Qtd. | Impacto Estratégico | Status de Resposta |
+## 🔍 INTEGRIDADE E VISIBILIDADE
+
+${this.sectionsEngine.formatVisibilityAnalysis(snapshot)}
+
+${this.sectionsEngine.formatRoadmap(snapshot)}
+
+---
+
+## 🚩 PLANO DE BATALHA E ACHADOS ESTRATÉGICOS
+
+| Nível | Qtd | Impacto | Resposta |
 | :--- | :---: | :--- | :--- |
 | **CRITICAL** | \`${findings.filter((f: any) => f.severity === "CRITICAL").length}\` | 🔴 \`BLOQUEANTE\` | ${findings.some((f: any) => f.severity === "CRITICAL") ? "🔴 `INTERVENÇÃO`" : "🟢 `LIVRE`"} |
 | **HIGH** | \`${findings.filter((f: any) => f.severity === "HIGH").length}\` | 🟡 \`RISCO ALTO\` | ${findings.some((f: any) => f.severity === "HIGH") ? "🟡 `PRIORIDADE`" : "🟢 `LIVRE`"} |
 | **MEDIUM** | \`${findings.filter((f: any) => f.severity === "MEDIUM").length}\` | 🔵 \`DÉBITO TÉC.\` | ${findings.some((f: any) => f.severity === "MEDIUM") ? "🔵 `EM FILA`" : "🟢 `LIVRE`"} |
 
-
-
-
----
-
-## 🚩 ACHADOS DETALHADOS
 `;
 
-        if (Array.isArray(findings)) {
-            let fIdx = 1;
-            for (const finding of findings) {
-                const severity = finding.severity || "UNKNOWN";
-                const file = finding.file || "N/A";
-                const issue = finding.issue || finding.message || JSON.stringify(finding);
-                const badge = this.sectionsEngine["_getStatusBadge"](severity);
-                const parts = file.split(/[\\/]/);
-                const basename = parts.pop() || file;
-                const parent = parts.pop() || "";
-                const context = parent ? `${parent}/${basename}` : basename;
-
-                report += `> ### ${badge} [${fIdx++}] \`${context}\`\n> - **Local:** \`${file}\`\n> - **Causa:** ${issue}\n`;
-
-                if (finding.meta) {
-                    if (finding.meta.missing && finding.meta.missing.length > 0) {
-                        report += `> - **🧬 Unidades Atômicas Ausentes (Parity Gap):**\n`;
-                        for (const unit of finding.meta.missing) {
-                            report += `>   - \`${unit}\`\n`;
-                        }
-                    }
-                    if (finding.meta.added && finding.meta.added.length > 0) {
-                        report += `> - **🚀 Novas Unidades Atômicas (Evolução):**\n`;
-                        for (const unit of finding.meta.added) {
-                            report += `>   - \`${unit}\`\n`;
-                        }
-                    }
-                }
-                report += `>\n`;
-            }
-        } else {
-            report += "Formato de achados inválido.";
+        if (findings.length > 0) {
+            report += `### 🏷️ Achados Detalhados\n\n`;
+            findings.slice(0, 5).forEach((f: any, idx: number) => {
+                const badge = this.sectionsEngine["_getStatusBadge"](f.severity);
+                report += `> #### ${badge} [${idx + 1}] \`${f.file.split(/[\\/]/).pop()}\`\n> - ${f.issue || f.message}\n`;
+            });
+            if (findings.length > 5) report += `\n> ...total de \`${findings.length}\` achados monitorados.\n`;
         }
-
-
-
-        report += `
-## 💀 Risco Existencial
-
-> Autoconsciência nativa ativa. Governança PhD em vigor.
-`;
 
         return report;
     }
+
 
     selfDiagnostic(): any {
         return {

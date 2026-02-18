@@ -2,11 +2,28 @@ import winston from 'winston';
 import * as path from 'path';
 import { CognitiveValidator } from "../../../utils/cognitive_validator";
 import type { CognitiveHealthReport } from "../../../utils/cognitive_validator";
+import { MetricsEngine } from "./metrics_engine";
 
 /**
  * Assistente Técnico: Analista de Densidade de Verificação 📏
+ * 
+ * Agora integrado com MetricsEngine para 9+ métricas de qualidade:
+ * - Complexidade Ciclomática
+ * - Complexidade Cognitiva  
+ * - Complexidade Halstead
+ * - Profundidade de Aninhamento
+ * - LOC / SLOC
+ * - CBO / Ca
+ * - DIT
+ * - Índice de Manutenibilidade
+ * - Densidade de Defeitos
  */
 export class QualityAnalyst {
+    private metricsEngine: MetricsEngine;
+
+    constructor() {
+        this.metricsEngine = new MetricsEngine();
+    }
     /**
      * 🧠 Classifica a natureza estrutural de um arquivo.
      * Retorna "STRUCTURAL" (barrel/constants/types), "FACADE" (delegação pura), ou "LOGIC" (lógica real).
@@ -38,6 +55,7 @@ export class QualityAnalyst {
 
     /**
      * Correlaciona entropia de produção com cobertura de asserções via busca flexível.
+     * Agora inclui as 9+ métricas de qualidade.
      */
     calculateConfidenceMatrix(mapData: Record<string, any>): any[] {
         const matrix: any[] = [];
@@ -95,16 +113,104 @@ export class QualityAnalyst {
                 }
             }
 
+            // 📊 Extrair métricas avançadas do contexto (se disponíveis)
+            const advancedMetrics = info.advanced_metrics || {};
+            
+            // 🎯 Para shadows: usar complexidade própria se disponível
+            const effectiveComplexity = advancedMetrics.isShadow && advancedMetrics.shadowComplexity
+                ? advancedMetrics.shadowComplexity
+                : complexity;
+
             matrix.push({
                 file: file,
-                complexity: complexity,
+                complexity: effectiveComplexity, // Usar complexidade efetiva para shadows
+                originalComplexity: complexity,
                 assertions: assertions,
                 coverage_ratio: Number(ratio.toFixed(2)),
-                test_status: status
+                test_status: status,
+                // Coupling/Instabilidade
+                instability: (info.coupling?.instability || 0),
+                // 📊 Novas métricas de qualidade (9+)
+                advanced_metrics: {
+                    cyclomaticComplexity: advancedMetrics.cyclomaticComplexity || 0,
+                    cognitiveComplexity: advancedMetrics.cognitiveComplexity || 0,
+                    halsteadVolume: advancedMetrics.halsteadVolume || 0,
+                    halsteadDifficulty: advancedMetrics.halsteadDifficulty || 0,
+                    nestingDepth: advancedMetrics.nestingDepth || 0,
+                    loc: advancedMetrics.loc || 0,
+                    sloc: advancedMetrics.sloc || 0,
+                    cbo: advancedMetrics.cbo || 0,
+                    ca: advancedMetrics.ca || 0,
+                    dit: advancedMetrics.dit || 0,
+                    maintainabilityIndex: advancedMetrics.maintainabilityIndex || 0,
+                    defectDensity: advancedMetrics.defectDensity || 0,
+                    riskLevel: advancedMetrics.riskLevel || "LOW",
+                    qualityGate: advancedMetrics.qualityGate || "GREEN",
+                    isShadow: advancedMetrics.isShadow || false,
+                    shadowComplexity: advancedMetrics.shadowComplexity || 0,
+                    shadowCompliance: info.shadow_compliance || null
+                }
             });
         }
 
         return matrix.sort((a, b) => b.complexity - a.complexity);
+    }
+
+    /**
+     * Calcula métricas agregadas de qualidade para todo o projeto
+     */
+    calculateProjectQualityMetrics(matrix: any[]): any {
+        const total = matrix.length;
+        
+        // Estatísticas básicas
+        const avgComplexity = matrix.reduce((sum, m) => sum + (m.complexity || 0), 0) / total;
+        const avgCC = matrix.reduce((sum, m) => sum + (m.advanced_metrics?.cyclomaticComplexity || 0), 0) / total;
+        const avgCognitive = matrix.reduce((sum, m) => sum + (m.advanced_metrics?.cognitiveComplexity || 0), 0) / total;
+        const avgMI = matrix.reduce((sum, m) => sum + (m.advanced_metrics?.maintainabilityIndex || 0), 0) / total;
+        
+        // Contagens por categoria
+        const riskCounts = { LOW: 0, MODERATE: 0, HIGH: 0, CRITICAL: 0 };
+        const gateCounts = { GREEN: 0, YELLOW: 0, RED: 0 };
+        const statusCounts = { DEEP: 0, SHALLOW: 0, STRUCTURAL: 0 };
+        const shadowCounts = { compliant: 0, non_compliant: 0 };
+        
+        for (const m of matrix) {
+            // Risk Level
+            const risk = m.advanced_metrics?.riskLevel || "LOW";
+            if (riskCounts[risk] !== undefined) riskCounts[risk]++;
+            
+            // Quality Gate
+            const gate = m.advanced_metrics?.qualityGate || "GREEN";
+            if (gateCounts[gate] !== undefined) gateCounts[gate]++;
+            
+            // Test Status
+            const status = m.test_status || "SHALLOW";
+            if (statusCounts[status] !== undefined) statusCounts[status]++;
+            
+            // Shadow Compliance
+            if (m.advanced_metrics?.isShadow) {
+                const compliance = m.advanced_metrics?.shadowCompliance;
+                if (compliance?.compliant) {
+                    shadowCounts.compliant++;
+                } else {
+                    shadowCounts.non_compliant++;
+                }
+            }
+        }
+
+        return {
+            summary: {
+                total_files: total,
+                avg_complexity: Number(avgComplexity.toFixed(2)),
+                avg_cyclomatic_complexity: Number(avgCC.toFixed(2)),
+                avg_cognitive_complexity: Number(avgCognitive.toFixed(2)),
+                avg_maintainability_index: Number(avgMI.toFixed(2))
+            },
+            risk_distribution: riskCounts,
+            quality_gate_distribution: gateCounts,
+            test_coverage_distribution: statusCounts,
+            shadow_compliance: shadowCounts
+        };
     }
 
     /**

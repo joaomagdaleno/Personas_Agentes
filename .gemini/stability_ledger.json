@@ -30280,5 +30280,12 @@
       "2026-02-16T01:23:05.222Z"
     ],
     "status": "HEALED"
+  },
+  "debug_shadows_quality.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-02-18T12:24:53.500Z"
+    ],
+    "status": "HEALED"
   }
 }

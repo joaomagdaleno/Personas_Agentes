@@ -7,6 +7,7 @@ import { StructuralAnalyst } from "../agents/Support/Analysis/structural_analyst
 import { CoverageAuditor } from "../agents/Support/Analysis/coverage_auditor.ts";
 import { ConnectivityMapper } from "../agents/Support/Analysis/connectivity_mapper.ts";
 import { ParityAnalyst } from "../agents/Support/Analysis/parity_analyst.ts";
+import { MetricsEngine, type MetricsResult } from "../agents/Support/Diagnostics/metrics_engine.ts";
 
 const logger = winston.child({ module: "ContextEngine" });
 
@@ -24,6 +25,7 @@ export class ContextEngine {
     coverageAuditor: CoverageAuditor;
     connectivityMapper: ConnectivityMapper;
     parityAnalyst: ParityAnalyst;
+    metricsEngine: MetricsEngine;
     allFilesIndex: string[] = [];
     private contentCache: Record<string, string> = {};
 
@@ -35,6 +37,7 @@ export class ContextEngine {
         this.coverageAuditor = new CoverageAuditor();
         this.connectivityMapper = new ConnectivityMapper();
         this.parityAnalyst = new ParityAnalyst();
+        this.metricsEngine = new MetricsEngine();
     }
 
     async analyzeProject(): Promise<any> {
@@ -96,6 +99,47 @@ export class ContextEngine {
                 info.dependencies = metrics.dependencies || [];
                 // Merge other structural data if available
                 if (metrics.functions) info.functions = metrics.functions;
+            }
+        }
+
+        // 🔬 ANÁLISE DE MÉTRICAS DE QUALIDADE (9+ métricas)
+        const relPath = path.relativeTo(this.projectRoot).replace(/\\/g, "/");
+        const advancedMetrics = this.metricsEngine.analyzeFile(content, relPath, info.dependencies || []);
+        
+        // Adicionar métricas avançadas ao info
+        info.advanced_metrics = {
+            cyclomaticComplexity: advancedMetrics.cyclomaticComplexity,
+            cognitiveComplexity: advancedMetrics.cognitiveComplexity,
+            halsteadVolume: advancedMetrics.halsteadVolume,
+            halsteadDifficulty: advancedMetrics.halsteadDifficulty,
+            halsteadEffort: advancedMetrics.halsteadEffort,
+            nestingDepth: advancedMetrics.nestingDepth,
+            loc: advancedMetrics.loc,
+            locExecutable: advancedMetrics.locExecutable,
+            sloc: advancedMetrics.sloc,
+            cbo: advancedMetrics.cbo,
+            ca: advancedMetrics.ca,
+            dit: advancedMetrics.dit,
+            maintainabilityIndex: advancedMetrics.maintainabilityIndex,
+            defectDensity: advancedMetrics.defectDensity,
+            riskLevel: advancedMetrics.riskLevel,
+            qualityGate: advancedMetrics.qualityGate,
+            isShadow: advancedMetrics.isShadow,
+            shadowComplexity: advancedMetrics.shadowComplexity
+        };
+
+        // Validação especial para shadows
+        if (advancedMetrics.isShadow) {
+            const validation = this.metricsEngine.validateShadowCompliance(advancedMetrics);
+            info.shadow_compliance = {
+                compliant: validation.compliant,
+                reason: validation.reason
+            };
+            
+            // Usar complexidade própria do shadow para classificação
+            // (em vez da complexidade total que inclui dependências)
+            if (advancedMetrics.shadowComplexity <= 15) {
+                info.complexity = Math.min(info.complexity || 15, 15); // Limitar a 15 para shadows
             }
         }
 

@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "workspace": {
+    "name": "Personas_Agentes",
+    "createdAt": 1771415975168,
+    "preset": "starter"
+  },
+  "authorizedRoots": [
+    "C:\\Users\\joaovitormagdaleno\\Documents\\GitHub\\Personas_Agentes"
+  ]
+}

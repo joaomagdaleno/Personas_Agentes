@@ -138,6 +138,66 @@ export class ReportSectionsEngine {
     }
 
 
+    /**
+     * 🧪 Diagnóstico Integrado (Pilares + Qualidade)
+     * Une os 5 pilares com as penalidades técnicas para uma narrativa de causa-raiz.
+     */
+    formatIntegratedDiagnosis(breakdown: any): string {
+        const pillars = [
+            { name: "Stability", val: breakdown["Stability (Coverage)"] || 0, max: 40, desc: "Cobertura de Testes" },
+            { name: "Purity", val: breakdown["Purity (Complexity)"] || 0, max: 20, desc: "Complexidade Média" },
+            { name: "Observability", val: breakdown["Observability (Telemetry)"] || 0, max: 15, desc: "Telemetria" },
+            { name: "Security", val: breakdown["Security (Vulnerabilities)"] || 0, max: 15, desc: "Vulnerabilidades" },
+            { name: "Excellence", val: breakdown["Excellence (Documentation)"] || 0, max: 10, desc: "Documentação" },
+        ];
+
+        const lines = [
+            "### 🩺 DIAGNÓSTICO DE SAÚDE (PILARES E QUALIDADE)",
+            "",
+            "| Pilar de Sustentação | Score | Máx | Status | Impacto Técnico |",
+            "| :--- | :---: | :---: | :--- | :--- |",
+        ];
+
+        for (const p of pillars) {
+            const status = this._getStatusBadge(p.val > (p.max * 0.7) ? "OK" : "ALERTA");
+            lines.push(`| ${p.name} | \`${Math.round(p.val)}\` | ${p.max} | ${status} | ${p.desc} |`);
+        }
+
+        lines.push("");
+        lines.push("#### 📐 Detalhamento de Métricas de Qualidade");
+        lines.push("");
+        lines.push(...this.formatQualityMetrics(breakdown));
+
+        return lines.join("\n");
+    }
+
+    /**
+     * 🔍 Análise de Visibilidade e Integridade Sistêmica
+     * Une Sinais Vitais com Paridade Atômica.
+     */
+    formatVisibilityAnalysis(healthData: any): string {
+        const blindCount = (healthData.dark_matter || []).length;
+        const brittleCount = (healthData.brittle_points || []).length;
+        const stats = healthData.parity_stats || { total_atoms: 0, shallow: 0, deep: 0, gaps: 0 };
+        const purityRate = stats.total_atoms > 0 ? Math.round((stats.deep / stats.total_atoms) * 100) : 0;
+
+        return [
+            "### 🔍 VISIBILIDADE E INTEGRIDADE SISTÊMICA",
+            "",
+            "> Análise cruzada entre Cobertura de Testes (Realidade) e a Paridade Atômica (Consistência).",
+            "",
+            "| Dimensão de Integridade | Valor | Status | Contexto de Realidade |",
+            "| :--- | :--- | :--- | :--- |",
+            `| 🧨 **Gaps de Paridade** | \`${stats.gaps}\` | ${stats.gaps > 0 ? "🔴 `CRÍTICO`" : "🟢 `ZERO`"} | ${stats.total_atoms > 0 ? Math.round((stats.gaps / stats.total_atoms) * 100) : 0}% de desalinhamento |`,
+            `| 🌫️ **Pontos Cegos** | \`${blindCount}\` | ${blindCount > 10 ? "🔴 `ALERTA`" : "🟢 `SEGURO`"} | Ativos sem qualquer monitoramento |`,
+            `| 💎 **Deep Parity** | \`${stats.deep}\` | 🟢 \`ATÔMICO\` | \`${purityRate}%\` de fidelidade sistêmica |`,
+            `| 🚧 **Shallow Parity** | \`${stats.shallow}\` | 🟡 \`ADAPTADO\` | Componentes com lógica parcial |`,
+            `| 🧊 **Fragilidades** | \`${brittleCount}\` | ${brittleCount > 0 ? "🔴 `RISCO`" : "🟢 `ESTÁVEL`"} | Pontos de ruptura identificados |`,
+            "",
+            `**Sincronia Nativa:** \`${stats.native_sync || 0}%\` | **Personas Ativas:** \`${stats.total_atoms}\` | **Audit Score:** \`${Math.round(healthData.health_score)}%\``,
+            "",
+        ].join("\n");
+    }
 
     /**
      * ⚖️ Formata a seção de Governança PhD.
@@ -147,20 +207,9 @@ export class ReportSectionsEngine {
         const directives = healthData.directives || ["Manter paridade absoluta", "Zero débito técnico"];
 
         const breakdown = healthData.breakdown || {};
-        const pillars = [
-            `| Stability | \`${Math.round(breakdown["Stability (Coverage)"] || 0)}\` | 40 | ${this._getStatusBadge((breakdown["Stability (Coverage)"] || 0) > 30 ? "OK" : "ALERTA")} |`,
-            `| Purity | \`${Math.round(breakdown["Purity (Complexity)"] || 0)}\` | 20 | ${this._getStatusBadge((breakdown["Purity (Complexity)"] || 0) > 15 ? "OK" : "ALERTA")} |`,
-            `| Observability | \`${Math.round(breakdown["Observability (Telemetry)"] || 0)}\` | 15 | ${this._getStatusBadge((breakdown["Observability (Telemetry)"] || 0) > 10 ? "OK" : "ALERTA")} |`,
-            `| Security | \`${Math.round(breakdown["Security (Vulnerabilities)"] || 0)}\` | 15 | ${this._getStatusBadge((breakdown["Security (Vulnerabilities)"] || 0) > 10 ? "OK" : "ALERTA")} |`,
-            `| Excellence | \`${Math.round(breakdown["Excellence (Documentation)"] || 0)}\` | 10 | ${this._getStatusBadge((breakdown["Excellence (Documentation)"] || 0) > 8 ? "OK" : "ALERTA")} |`,
-        ];
 
         return [
-            "### 📊 DECOMPOSIÇÃO DA SAÚDE (PILARES)",
-            "",
-            "| Pilar | Score | Máx | Status |",
-            "| :--- | :---: | :---: | :--- |",
-            ...pillars,
+            this.formatIntegratedDiagnosis(breakdown),
             "",
             "### ⚖️ DIRETRIZES DE GOVERNANÇA PHD",
             "",
@@ -172,6 +221,63 @@ export class ReportSectionsEngine {
             ...directives.map((d: string) => `- ${d}`),
             "",
         ].join("\n");
+    }
+
+    /**
+     * 📊 Formata as métricas de qualidade (9+) — Normalizadas v2.0
+     */
+    formatQualityMetrics(breakdown: any): string[] {
+        const lines: string[] = [];
+
+        // Penalidades normalizadas (proporcionais com caps)
+        const ccPenalty = breakdown["Quality (CC > 20 - High Risk)"] || 0;
+        const cognitivePenalty = breakdown["Quality (Cognitive > 15)"] || 0;
+        const nestingPenalty = breakdown["Quality (Nesting > 3)"] || 0;
+        const cboPenalty = breakdown["Quality (CBO > 10 - High Coupling)"] || 0;
+        const ditPenalty = breakdown["Quality (DIT > 5 - Deep Inheritance)"] || 0;
+        const miLowPenalty = breakdown["Quality (MI < 10 - Low Maint)"] || 0;
+        const miCritPenalty = breakdown["Quality (MI < 5 - Critical)"] || 0;
+        const defectPenalty = breakdown["Quality (Defect Density > 1/KLOC)"] || 0;
+        const gateRedPenalty = breakdown["Quality (Gate RED)"] || 0;
+        const shadowPenalty = breakdown["Quality (Shadow Non-Compliant)"] || 0;
+
+        // Contagens brutas (passadas pelo PenaltyEngine)
+        const ccCount = breakdown["_raw_ccCount"] || 0;
+        const cogCount = breakdown["_raw_cognitiveCount"] || 0;
+        const nestCount = breakdown["_raw_nestingCount"] || 0;
+        const cboCount = breakdown["_raw_cboCount"] || 0;
+        const ditCount = breakdown["_raw_ditCount"] || 0;
+        const miLowCount = breakdown["_raw_miLowCount"] || 0;
+        const miCritCount = breakdown["_raw_miCriticalCount"] || 0;
+        const defectCount = breakdown["_raw_defectCount"] || 0;
+        const gateRedCount = breakdown["_raw_gateRedCount"] || 0;
+        const shadowCount = breakdown["_raw_shadowCount"] || 0;
+        const totalAnalyzed = breakdown["_raw_totalAnalyzed"] || 0;
+
+        const totalQualityPenalty = Math.round((ccPenalty + cognitivePenalty + nestingPenalty + cboPenalty +
+            ditPenalty + miLowPenalty + miCritPenalty + defectPenalty +
+            gateRedPenalty + shadowPenalty) * 10) / 10;
+
+        if (totalQualityPenalty > 0 || totalAnalyzed > 0) {
+            lines.push("### 📐 Métricas de Qualidade (NIST/SONARQUBE)");
+            lines.push("");
+            lines.push("| Métrica | Limite | Violações | Penalidade |");
+            lines.push("| :--- | :--- | :---: | ---: |");
+            lines.push(`| Complexidade Ciclomática (CC > 20) | > 20 | ${ccCount}/${totalAnalyzed} | ${ccPenalty} pts |`);
+            lines.push(`| Complexidade Cognitiva (> 15) | > 15 | ${cogCount}/${totalAnalyzed} | ${cognitivePenalty} pts |`);
+            lines.push(`| Aninhamento Profundo (> 3) | > 3 | ${nestCount}/${totalAnalyzed} | ${nestingPenalty} pts |`);
+            lines.push(`| Alto Acoplamento (CBO > 10) | > 10 | ${cboCount}/${totalAnalyzed} | ${cboPenalty} pts |`);
+            lines.push(`| Herança Profunda (DIT > 5) | > 5 | ${ditCount}/${totalAnalyzed} | ${ditPenalty} pts |`);
+            lines.push(`| Baixa Manutenibilidade (MI < 10) | < 10 | ${miLowCount}/${totalAnalyzed} | ${miLowPenalty} pts |`);
+            lines.push(`| Manutenibilidade Crítica (MI < 5) | < 5 | ${miCritCount}/${totalAnalyzed} | ${miCritPenalty} pts |`);
+            lines.push(`| Quality Gate RED | - | ${gateRedCount}/${totalAnalyzed} | ${gateRedPenalty} pts |`);
+            lines.push(`| Shadow Non-Compliant | - | ${shadowCount}/${totalAnalyzed} | ${shadowPenalty} pts |`);
+            lines.push("");
+            lines.push(`> **Penalidade Total de Qualidade:** \`${totalQualityPenalty} pts\` (cap: 30) | Base: NIST, SonarQube, Microsoft`);
+            lines.push("");
+        }
+
+        return lines;
     }
 
     /**
