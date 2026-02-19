@@ -1,5 +1,7 @@
 import winston from "winston";
-import { ComplexityAnalyst } from "./strategies/ComplexityAnalyst.ts";
+import { CyclomaticAnalyst } from "./strategies/CyclomaticAnalyst.ts";
+import { CognitiveAnalyst } from "./strategies/CognitiveAnalyst.ts";
+import { HalsteadAnalyst } from "./strategies/HalsteadAnalyst.ts";
 import { SizeAnalyst } from "./strategies/SizeAnalyst.ts";
 import { RelationshipAnalyst } from "./strategies/RelationshipAnalyst.ts";
 import { QualityEvaluator } from "./strategies/QualityEvaluator.ts";
@@ -36,9 +38,9 @@ export class MetricsEngine {
         const isShadow = filePath.includes("_shadow");
         const analysisContent = isShadow ? this.extractSelfCode(content) : content;
 
-        const cc = ComplexityAnalyst.calculateCyclomaticComplexity(analysisContent);
-        const cog = ComplexityAnalyst.calculateCognitiveComplexity(analysisContent);
-        const halstead = ComplexityAnalyst.calculateHalsteadMetrics(analysisContent);
+        const cc = CyclomaticAnalyst.calculate(analysisContent);
+        const cog = CognitiveAnalyst.calculate(analysisContent);
+        const halstead = HalsteadAnalyst.calculate(analysisContent);
         const loc = SizeAnalyst.countLOC(content);
         const sloc = SizeAnalyst.countExecutableLOC(analysisContent);
         const comments = SizeAnalyst.countCommentLOC(content);
@@ -72,7 +74,7 @@ export class MetricsEngine {
     }
 
     private calculateShadowSelfComplexity(content: string): number {
-        return Math.min(ComplexityAnalyst.calculateCyclomaticComplexity(this.extractSelfCode(content)), 15);
+        return Math.min(CyclomaticAnalyst.calculate(this.extractSelfCode(content)), 15);
     }
 
     validateShadowCompliance(metrics: MetricsResult): { compliant: boolean; reason: string } {

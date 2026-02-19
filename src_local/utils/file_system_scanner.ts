@@ -22,15 +22,11 @@ export class FileSystemScanner {
         const files: string[] = [];
         const walk = async (dir: string) => {
             if (this.isForbiddenDir(dir)) return;
-
             const entries = await readdir(dir, { withFileTypes: true });
             for (const entry of entries) {
                 const res = join(dir, entry.name);
-                if (entry.isDirectory()) {
-                    await walk(res);
-                } else {
-                    files.push(entry.name.toLowerCase());
-                }
+                if (entry.isDirectory()) await walk(res);
+                else files.push(entry.name.toLowerCase());
             }
         };
         await walk(this.root.toString());
@@ -38,90 +34,57 @@ export class FileSystemScanner {
     }
 
     private isForbiddenDir(dir: string): boolean {
-        const normalized = dir.replace(/\\/g, "/").toLowerCase();
-        const segments = normalized.split("/");
-
-        // Check for forbidden directories using Set for O(1) lookups
-        const forbidden = new Set([".git", ".gemini", "restore", "forensics", "__pycache__", "node_modules", ".venv", "dist", "build"]);
-        if (segments.some(p => forbidden.has(p))) {
-            return true;
-        }
-
-        // Handle .agent directory rules
-        if (segments.includes(".agent")) {
-            if (normalized.includes("fast-android-build")) {
-                return false;
-            }
-
-            const sub = segments.slice(segments.indexOf(".agent"));
-            const allowedHierarchy = new Set([".agent", "skills"]);
-            if (sub.every(p => allowedHierarchy.has(p))) {
-                return false;
-            }
-
-            return true;
-        }
-
+        const segments = dir.replace(/\\/g, "/").toLowerCase().split("/");
+        if (this._hasForbiddenSegment(segments)) return true;
+        if (segments.includes(".agent")) return this._isForbiddenAgentDir(dir.replace(/\\/g, "/").toLowerCase(), segments);
         return false;
+    }
+
+    private _hasForbiddenSegment(segments: string[]): boolean {
+        const forbidden = new Set([".git", ".gemini", "restore", "forensics", "__pycache__", "node_modules", ".venv", "dist", "build"]);
+        return segments.some(p => forbidden.has(p));
+    }
+
+    private _isForbiddenAgentDir(normalized: string, segments: string[]): boolean {
+        if (normalized.includes("fast-android-build")) return false;
+        const sub = segments.slice(segments.indexOf(".agent"));
+        const allowed = new Set([".agent", "skills"]);
+        return !sub.every(p => allowed.has(p));
     }
 
     async *getAnalyzableFiles(): AsyncGenerator<Path> {
         const seen = new Set<string>();
+        const generator = this._walkAndYield(this.root.toString());
 
-        const walk = async function* (this: FileSystemScanner, dir: string): AsyncGenerator<string> {
-            if (this.isForbiddenDir(dir)) return;
-
-            const entries = await readdir(dir, { withFileTypes: true });
-            for (const entry of entries) {
-                const res = join(dir, entry.name);
-                if (entry.isDirectory()) {
-                    yield* walk.call(this, res);
-                } else {
-                    yield res;
-                }
-            }
-        };
-
-        for await (const pathStr of walk.call(this, this.root.toString())) {
-            if (seen.has(pathStr)) continue;
-
+        for await (const pathStr of generator) {
             const path = new Path(pathStr);
-
-            if (await this.shouldSkip(path)) {
-                continue;
+            if (!seen.has(pathStr) && !(await this.shouldSkip(path))) {
+                seen.add(pathStr);
+                yield path;
             }
+        }
+    }
 
-            seen.add(pathStr);
-            yield path;
+    private async * _walkAndYield(dir: string): AsyncGenerator<string> {
+        if (this.isForbiddenDir(dir)) return;
+        const entries = await readdir(dir, { withFileTypes: true });
+        for (const entry of entries) {
+            const res = join(dir, entry.name);
+            if (entry.isDirectory()) yield* this._walkAndYield(res);
+            else yield res;
         }
     }
 
     async shouldSkip(path: Path): Promise<boolean> {
-        if (!(await path.isFile())) {
-            return true;
-        }
-
         const pathStr = path.toString().replace(/\\/g, "/").toLowerCase();
-        const dirPath = dirname(pathStr);
-
-        if (this.isForbiddenDir(dirPath)) {
-            return true;
-        }
-
-        // Strict check for .agent directory
-        if ((pathStr.includes("/.agent/") || pathStr.startsWith(".agent/")) && !pathStr.includes("fast-android-build")) {
-            return true;
-        }
-
-        const isSrc = pathStr.includes("src_local");
-        if (this.analyst.shouldIgnore(path) && !isSrc) {
-            return true;
-        }
-
-        if (!this.analyst.isAnalyable(path)) {
-            return true;
-        }
-
+        const checks = [
+            async () => !(await path.isFile()),
+            async () => this.isForbiddenDir(dirname(pathStr)),
+            async () => pathStr.includes("/.agent/") && !pathStr.includes("fast-android-build"),
+            async () => !pathStr.includes("src_local") && this.analyst.shouldIgnore(path),
+            async () => !this.analyst.isAnalyable(path)
+        ];
+        for (const check of checks) if (await check()) return true;
         return false;
     }
 }

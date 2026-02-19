@@ -8,51 +8,59 @@ import { SourceCodeParser } from "./source_code_parser.ts";
 
 const logger = winston.child({ module: "DiscoveryAgent" });
 
+/**
+ * 🔭 DiscoveryAgent - PhD in Systemic Discovery
+ */
 export class DiscoveryAgent {
-    orc: any;
-    parser: SourceCodeParser;
-    constructor(orchestrator: any) { this.orc = orchestrator; this.parser = new SourceCodeParser(); }
+    orc: any; parser = new SourceCodeParser();
+    constructor(orchestrator: any) { this.orc = orchestrator; }
 
     async runDiscoveryPhase(): Promise<[any, any[]]> {
-        logger.info("🔭 Discovery Phase (Sovereign Multi-Stack)...");
-        const root = this.orc.projectRoot.toString(), stacks = ["Bun", "Flutter", "Go", "Kotlin", "Python", "TypeScript"];
-        const raw = GoDiscoveryAdapter.scan(root, root, false);
-        const filtered = raw.filter(f => stacks.some(s => f.path.replace(/\\/g, "/").startsWith(`src_local/agents/${s}`)));
-
-        const allAgentFiles = await this.enrichAgentFiles(filtered, root);
-        const findings: any[] = [];
-        this.mapDisparities(this.groupByPersona(allAgentFiles), findings);
-
-        const native = this.recursiveReaddir(root, [".ts", ".tsx", ".js", ".py", ".go", ".kt"]);
-        const depth = await DepthIntelligence.calculateDepthAudit(root, native, [], allAgentFiles);
+        logger.info("🔭 Discovery Phase...");
+        const root = this.orc.projectRoot.toString();
+        const { results: raw, findings: goFindings } = GoDiscoveryAdapter.scan(root, root, false);
+        const filtered = raw.filter(f => f.path.replace(/\\/g, "/").startsWith(`src_local/agents/`));
+        const { agents, findings: enrichFindings } = await this.enrich(filtered, root);
+        const findings: any[] = [...goFindings, ...enrichFindings];
+        this.mapDisparities(this.groupByPersona(agents), findings);
+        const depth = await DepthIntelligence.calculateDepthAudit(root, this._getFiles(root), [], agents);
         const ctx = await this.orc.contextEngine.analyzeProject();
-        ctx.atomicUnits = allAgentFiles; ctx.depthAudit = depth;
-
+        ctx.atomicUnits = agents; ctx.depthAudit = depth;
         findings.push(...await this.orc.runStrategicAudit(ctx, null, false), ...await this.orc.runObfuscationScan());
         return [ctx, findings];
     }
 
-    private async enrichAgentFiles(raw: any[], root: string) {
-        return Promise.all(raw.map(async f => {
+    private async enrich(raw: any[], root: string): Promise<{ agents: any[], findings: any[] }> {
+        const findings: any[] = [];
+        const agents = await Promise.all(raw.map(async f => {
             try {
-                const content = await fs.promises.readFile(path.join(root, f.path), "utf-8");
-                const analysis = this.parser.analyze_file_logic(content, f.path);
-                if (!analysis) return f;
-                return { ...f, units: [...analysis.classes.map((c: any) => ({ name: c, type: "class", line: 1 })), ...(analysis.functions || []).map((fn: any) => ({ name: fn, type: "function", line: 1 }))] };
-            } catch { return f; }
+                const c = await fs.promises.readFile(path.join(root, f.path), "utf-8");
+                const a = this.parser.analyze_file_logic(c, f.path);
+                return a ? { ...f, units: [...a.classes.map((n: any) => ({ name: n, type: "class", line: 1 })), ...(a.functions || []).map((n: any) => ({ name: n, type: "function", line: 1 }))] } : f;
+            } catch (e: any) {
+                findings.push({
+                    type: "ERROR",
+                    severity: "HIGH",
+                    file: f.path,
+                    issue: `Falha ao processar arquivo durante descoberta: ${e.message}`,
+                    category: "Discovery",
+                    context: "DiscoveryAgent"
+                });
+                return f;
+            }
         }));
+        return { agents, findings };
     }
 
     private groupByPersona(files: any[]) {
-        const groups: Record<string, any[]> = {};
+        const g: Record<string, any[]> = {};
         files.forEach(f => {
-            const ext = path.extname(f.path), name = path.basename(f.path, ext);
-            if (IGNORE_LIST.includes(path.basename(f.path)) || path.basename(f.path).startsWith("__")) return;
-            const pid = name.replace(/_?(persona|agent|system|engine)$/, "").toLowerCase();
-            if (!groups[pid]) groups[pid] = [];
-            groups[pid].push(f);
+            const b = path.basename(f.path);
+            if (IGNORE_LIST.includes(b) || b.startsWith("__")) return;
+            const id = b.replace(/\.[^/.]+$/, "").replace(/_?(persona|agent|system|engine)$/, "").toLowerCase();
+            (g[id] ||= []).push(f);
         });
-        return groups;
+        return g;
     }
 
     private mapDisparities(groups: Record<string, any[]>, findings: any[]) {
@@ -64,22 +72,20 @@ export class DiscoveryAgent {
             files.forEach(f => {
                 const cur = (f.units || []).map((u: any) => norm(u.name));
                 const miss = Array.from(all).filter(u => !cur.includes(u));
-                if (miss.length) findings.push({ type: "DISPARITY", severity: miss.length > 3 ? "HIGH" : "MEDIUM", file: f.path, issue: `Persona '${id}'@${f.path.split('/')[2]} missing ${miss.length} units.`, category: "AtomicParity" });
+                if (miss.length) findings.push({ type: "DISPARITY", severity: "MEDIUM", file: f.path, issue: `Persona '${id}' missing ${miss.length} units.`, category: "AtomicParity" });
             });
         });
     }
 
+    private _getFiles(root: string) { return this.recursiveReaddir(root, [".ts", ".js", ".py", ".go", ".kt"]); }
     private recursiveReaddir(dir: string, exts: string[]): string[] {
         let results: string[] = [];
-        if (!fs.existsSync(dir)) return results;
         try {
             const list = fs.readdirSync(dir, { withFileTypes: true });
             for (const item of list) {
                 const full = path.join(dir, item.name);
-                if (item.isDirectory()) {
-                    if (["node_modules", ".git", ".gemini", "dist", "artifacts"].includes(item.name)) continue;
-                    results = results.concat(this.recursiveReaddir(full, exts));
-                } else if (exts.includes(path.extname(item.name))) results.push(full);
+                if (item.isDirectory()) { if (!/[\\/](\.git|node_modules|dist|artifacts|\.gemini)$/.test(full)) results = results.concat(this.recursiveReaddir(full, exts)); }
+                else if (exts.includes(path.extname(item.name))) results.push(full);
             }
         } catch { }
         return results;

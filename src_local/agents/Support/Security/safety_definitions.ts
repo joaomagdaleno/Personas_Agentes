@@ -9,3 +9,5 @@ export { DANGEROUS_KEYWORDS, TRIVIAL_COMPARE_KEYWORDS } from "./safety_patterns"
 export const TELEMETRY_KEYWORDS = ["duration", "elapsed", "took", "time_diff", "start_t"];
 export const SAFE_LOG_METHODS = ['info', 'warning', 'error', 'debug', 'exception'];
 export const CRITICAL_LOG_METHODS = ['error', 'exception', 'critical'];
+export const SAFE_METADATA_VARS = ['rules', 'patterns', 'manifest', 'metadata'];
+export const CORE_PERFORMANCE_FUNCS = ['scan_content', 'performAudit', 'calculateComplexity'];

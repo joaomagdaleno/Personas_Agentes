@@ -68,6 +68,11 @@ export class DiagnosticPipeline {
         const validationAgent = new ValidationAgent(this.orc);
         const health = await validationAgent.runValidationPhase(findings, skip);
 
+        // 📊 Merging Metric Audit Findings (to expose the "hidden" 122 issues)
+        const matrix = qa.calculateConfidenceMatrix(ctx.map || {});
+        const metricFindings = qa.generateMetricFindings(matrix);
+        findings.push(...metricFindings);
+
         const result = await DiagnosticFinalizer.finalize(
             this,
             ctx,

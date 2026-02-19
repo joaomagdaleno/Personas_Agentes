@@ -6,6 +6,8 @@ import { CognitiveEngine } from "../../../utils/cognitive_engine.ts";
 import { Orchestrator } from "../../../core/orchestrator.ts";
 import { ObfuscationCleanerEngine } from "../Security/obfuscation_cleaner_engine.ts";
 import * as ts from 'typescript';
+import { HealerPromptBuilder } from "./healer_prompt_builder.ts";
+import { PatchManager } from "./patch_manager.ts";
 
 /**
  * 🩹 Agente Healer (PhD in Software Reparation).
@@ -14,6 +16,7 @@ import * as ts from 'typescript';
 export class HealerPersona extends BaseActivePersona {
     private brain: CognitiveEngine;
     private cleaner: ObfuscationCleanerEngine;
+    private patcher: PatchManager;
 
     constructor(projectRoot?: string) {
         super(projectRoot);
@@ -23,6 +26,7 @@ export class HealerPersona extends BaseActivePersona {
         this.stack = "Correction";
         this.brain = new CognitiveEngine();
         this.cleaner = new ObfuscationCleanerEngine();
+        this.patcher = new PatchManager(projectRoot || process.cwd());
     }
 
     async performAudit(): Promise<any[]> {
@@ -63,32 +67,11 @@ export class HealerPersona extends BaseActivePersona {
             const legacyFullPath = new Path(this.projectRoot).join(finding.meta.legacyPath);
             if (fs.existsSync(legacyFullPath.toString())) {
                 const legacyContent = fs.readFileSync(legacyFullPath.toString(), 'utf-8');
-                contextPrompt = `
-                CONTEXTO DO LEGADO (Código original que deve ser migrado):
-                \`\`\`
-                ${legacyContent}
-                \`\`\`
-                FOCO NA UNIDADE: ${finding.meta.unit.name} (${finding.meta.unit.type})
-                `;
+                contextPrompt = HealerPromptBuilder.buildDisparityContext(legacyContent, finding.meta.unit.name, finding.meta.unit.type);
             }
         }
 
-        const prompt = `
-        Você é o Dr. Healer, PhD em Reparação e Migração de Software.
-        Sua missão é integrar a lógica que falta ou corrigir a fragilidade.
-        
-        ARQUIVO ALVO: ${filePath}
-        CÓDIGO ATUAL NO PROJETO:
-        \`\`\`typescript
-        ${content}
-        \`\`\`
-        
-        PROBLEMA IDENTIFICADO: ${issue}
-        ${contextPrompt}
-        
-        REQUISITO: Forneça o código completo (merged) do arquivo alvo, garantindo que a lógica do legado seja implementada com as melhores práticas de TypeScript.
-        Forneça APENAS o código completo rodeado por triplos backticks.
-        `;
+        const prompt = HealerPromptBuilder.buildHealPrompt(filePath, content, issue, contextPrompt);
 
         const suggestion = await this.brain.reason(prompt);
         if (!suggestion) return false;
@@ -96,34 +79,7 @@ export class HealerPersona extends BaseActivePersona {
         const codeMatch = suggestion.match(/```(?:typescript|ts|javascript|js|python)?\n([\s\S]*?)\n```/);
         if (codeMatch && codeMatch[1]) {
             const newContent = codeMatch[1];
-            const backupPath = fullPath.toString() + ".bak";
-
-            // Backup
-            if (fs.existsSync(fullPath.toString())) fs.renameSync(fullPath.toString(), backupPath);
-
-            try {
-                fs.writeFileSync(fullPath.toString(), newContent, 'utf-8');
-                winston.info(`✨ [Healer] Remendo aplicado em ${filePath}. Validando...`);
-
-                // Validação Cruzada
-                const auditResults = await orchestrator.auditEngine.runStrategicAudit(orchestrator, `Cura de arquivo: ${filePath}`);
-
-                const stillBroken = auditResults[0].some((f: any) => f.file === filePath && f.issue === issue);
-
-                if (!stillBroken) {
-                    winston.info(`✅ [Healer] Cura CONFIRMADA em ${filePath}.`);
-                    if (fs.existsSync(backupPath)) fs.unlinkSync(backupPath);
-                    return true;
-                } else {
-                    winston.warn(`❌ [Healer] Cura REPROVADA (problema persiste). Revertendo...`);
-                    if (fs.existsSync(backupPath)) fs.renameSync(backupPath, fullPath.toString());
-                    return false;
-                }
-            } catch (err) {
-                winston.error(`❌ [Healer] Erro fatal durante a aplicação da cura: ${err}`);
-                if (fs.existsSync(backupPath)) fs.renameSync(backupPath, fullPath.toString());
-                return false;
-            }
+            return this.patcher.applyAndValidate(filePath, newContent, issue, orchestrator);
         }
 
         return false;

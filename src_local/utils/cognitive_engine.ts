@@ -1,165 +1,59 @@
 import winston from 'winston';
+import { CogHelpers } from "./CogHelpers.ts";
 
 /**
- * 🧠 Cérebro Local (Bridge to SLM).
- * Gerencia o raciocínio via API local (Ollama ou similar).
+ * 🧠 CognitiveEngine - PhD in Reasoning Systems
  */
 export class CognitiveEngine {
     private static instance: CognitiveEngine;
     private logger!: winston.Logger;
-    private initialized: boolean = false;
     private modelName: string = "qwen2.5-coder:1.5b";
     private endpoint: string = process.env.AI_ENDPOINT || "http://localhost:11434/api/generate";
     private defaultMaxTokens: number = 512;
-    private memoryLimit: number = 85;
     private activeModel: string | null = null;
-
-    /**
-     * 🏰 Metadata API for Sovereignty Reports.
-     */
-    public getMetadata(): Record<string, any> {
-        return {
-            id: "infrastructure.cognitive",
-            model: this.modelName,
-            endpoint: this.endpoint,
-            status: this.activeModel ? "READY" : "IDLE"
-        };
-    }
 
     constructor() {
         if (CognitiveEngine.instance) return CognitiveEngine.instance;
-
         this.logger = winston.createLogger({
             level: 'info',
-            format: winston.format.combine(
-                winston.format.timestamp(),
-                winston.format.printf(({ timestamp, level, message }) => `${timestamp} - Cognitive - ${level.toUpperCase()} - ${message}`)
-            ),
+            format: winston.format.combine(winston.format.timestamp(), winston.format.printf(({ timestamp, level, message }) => `${timestamp} - Cognitive - ${level.toUpperCase()} - ${message}`)),
             transports: [new winston.transports.Console()]
         });
-
-        this.initialized = true;
         CognitiveEngine.instance = this;
     }
 
-    /**
-     * Ajusta a profundidade de pensamento (Legacy set_thinking_depth logic).
-     */
     public setThinkingDepth(isDeep: boolean = false): void {
-        if (isDeep) {
-            this.defaultMaxTokens = 4096;
-            this.logger.info("🧠 [Cognitive] Modo HIPERPENSAMENTO ativado (Contexto Expandido).");
-        } else {
-            this.defaultMaxTokens = 512;
-            this.logger.info("🧠 [Cognitive] Modo PULSE ativado (Resposta Rápida).");
-        }
+        this.defaultMaxTokens = isDeep ? 4096 : 512;
+        this.logger.info(`🧠 [Cognitive] Modo ${isDeep ? 'HIPERPENSAMENTO' : 'PULSE'} ativado.`);
     }
 
-    /**
-     * Verifica as condições de hardware antes de raciocinar (Memory & Thrashing logic).
-     */
-    private async checkVitals(): Promise<boolean> {
-        // Implementação simplificada de vitais (Simulando Psutil)
-        const isDiskBusy = false; // Mock: No Bun we would use a native bridge if needed
-        const memUsage = 50; // Mock: Bun.gc() or similar
-
-        if (memUsage > this.memoryLimit || isDiskBusy) {
-            this.logger.warn(`⚠️ [Cognitive] Sistema sob pressão. Abortando raciocínio para evitar Thrashing.`);
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Processa um pensamento usando o modelo de linguagem.
-     * Implementado como bridge HTTP para compatibilidade com Bun.
-     */
     async reason(prompt: string, options: { temperature?: number, max_tokens?: number, deep?: boolean } = {}): Promise<string | null> {
         if (options.deep) this.setThinkingDepth(true);
-
-        if (!(await this.checkVitals())) return null;
-
-        this.logger.info(`🧠 [Cognitive] Raciocinando sobre objetivo...`);
-
+        this.logger.info(`🧠 [Cognitive] Raciocinando...`);
         try {
-            const response = await fetch(this.endpoint, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    model: this.modelName,
-                    prompt: prompt,
-                    stream: false,
-                    options: {
-                        temperature: options.temperature || 0.7,
-                        num_predict: options.max_tokens || this.defaultMaxTokens
-                    }
-                })
-            });
-
-            if (!response.ok) {
-                this.logger.warn(`⚠️ [Cognitive] API indisponível (${response.status}). Usando fallback heurístico.`);
-                return null;
-            }
-
-            const data: any = await response.json();
+            const data = await CogHelpers.callOllama(this.endpoint, { model: this.modelName, prompt, stream: false, options: CogHelpers.getParams(options, this.defaultMaxTokens) });
+            if (!data) return null;
             this.activeModel = this.modelName;
             return data.response || null;
         } catch (error) {
-            this.logger.error(`❌ [Cognitive] Falha na conexão com o Cérebro: ${error}`);
+            this.logger.error(`❌ [Cognitive] Falha: ${error}`);
             return null;
         }
     }
 
-    /**
-     * Libera o modelo da memória (Unload).
-     */
     async release(): Promise<void> {
-        this.logger.info("🧠 [Cognitive] Solicitando liberação de VRAM...");
-        try {
-            await fetch("http://localhost:11434/api/generate", {
-                method: "POST",
-                body: JSON.stringify({ model: this.modelName, keep_alive: 0 })
-            });
-            this.activeModel = null;
-        } catch (e) {
-            this.logger.warn("⚠️ [Cognitive] Não foi possível descarregar o modelo via API.");
-        }
+        this.logger.info("🧠 [Cognitive] Descarregando...");
+        if (await CogHelpers.unloadModel(this.endpoint, this.modelName)) this.activeModel = null;
     }
 
-    /**
-     * Retorna o estado atual da consciência.
-     */
-    public get model(): string | null {
-        return this.activeModel;
-    }
-
-    /** Parity: __new__ (Singleton) — Returns the singleton instance. */
-    static getInstance(): CognitiveEngine {
-        if (!CognitiveEngine.instance) {
-            CognitiveEngine.instance = new CognitiveEngine();
-        }
-        return CognitiveEngine.instance;
-    }
-
-    /** Parity: load_model — Pre-loads (warms up) the model by sending a dummy request. */
     async load_model(modelName?: string): Promise<boolean> {
         if (modelName) this.modelName = modelName;
-        this.logger.info(`🧠 [Cognitive] Carregando modelo '${this.modelName}'...`);
-        try {
-            const response = await fetch(this.endpoint, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ model: this.modelName, prompt: "ping", stream: false, options: { num_predict: 1 } })
-            });
-            if (response.ok) {
-                this.activeModel = this.modelName;
-                this.logger.info(`✅ [Cognitive] Modelo '${this.modelName}' carregado.`);
-                return true;
-            }
-            return false;
-        } catch {
-            this.logger.warn(`⚠️ [Cognitive] Falha ao pré-carregar modelo.`);
-            return false;
-        }
+        this.logger.info(`🧠 [Cognitive] Aquecendo '${this.modelName}'...`);
+        const data = await CogHelpers.callOllama(this.endpoint, { model: this.modelName, prompt: "ping", stream: false, options: { num_predict: 1 } });
+        if (data) { this.activeModel = this.modelName; return true; }
+        return false;
     }
+
+    static getInstance(): CognitiveEngine { return CognitiveEngine.instance || (CognitiveEngine.instance = new CognitiveEngine()); }
+    public get model(): string | null { return this.activeModel; }
 }

@@ -31,9 +31,9 @@ export class PenaltyEngine {
         const stats = qaData?.matrix ? AdjustmentCalculator.calculate(qaData.matrix, mapData, caps) : { total: 0, shallow: 0 };
         const prop = (count: number, cap: number) => Math.round(Math.min(cap, (count / Math.max(1, stats.total)) * cap) * 10) / 10;
         return {
-            "Quality (CC > 25 - High Risk)": prop(stats.cc, caps.cc), "Quality (Cognitive > 20)": prop(stats.cog, caps.cognitive), "Quality (Nesting > 5)": prop(stats.nest, caps.nesting),
-            "Quality (CBO > 15 - High Coupling)": prop(stats.cbo, caps.cbo), "Quality (DIT > 7 - Deep Inheritance)": prop(stats.dit, caps.dit), "Quality (MI < 10 - Low Maint)": prop(stats.miL, caps.miLow),
-            "Quality (MI < 5 - Critical)": prop(stats.miC, caps.miCritical), "Quality (Defect Density > 2/KLOC)": prop(stats.def, caps.defect), "Quality (Gate RED)": prop(stats.red, caps.gateRed),
+            "Quality (CC > 20 - High Risk)": prop(stats.cc, caps.cc), "Quality (Cognitive > 15)": prop(stats.cog, caps.cognitive), "Quality (Nesting > 3)": prop(stats.nest, caps.nesting),
+            "Quality (CBO > 10 - High Coupling)": prop(stats.cbo, caps.cbo), "Quality (DIT > 5 - Deep Inheritance)": prop(stats.dit, caps.dit), "Quality (MI < 10 - Low Maint)": prop(stats.miL, caps.miLow),
+            "Quality (MI < 5 - Critical)": prop(stats.miC, caps.miCritical), "Quality (Defect Density > 1/KLOC)": prop(stats.def, caps.defect), "Quality (Gate RED)": prop(stats.red, caps.gateRed),
             "Quality (Shadow Non-Compliant)": prop(stats.shad, caps.shadow), "Stability (Coverage)": (stats.shallow || 0) * 0.01,
             "Security (Vulnerabilities)": allAlerts.filter(r => r.severity === 'critical' || r.severity === 'high').length * 10, "Excellence (Documentation)": allAlerts.filter(r => typeof r === 'string').length * 0.1,
             _raw_ccCount: stats.cc, _raw_cognitiveCount: stats.cog, _raw_nestingCount: stats.nest, _raw_cboCount: stats.cbo, _raw_ditCount: stats.dit, _raw_miLowCount: stats.miL,

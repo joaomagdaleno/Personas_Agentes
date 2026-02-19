@@ -61,4 +61,49 @@ export class QualityAnalyst {
     async runCognitiveAudit(): Promise<CognitiveHealthReport> {
         return await new CognitiveValidator().runFullCheck();
     }
+
+    /**
+     * Gera achados detalhados para violações de métricas na matriz.
+     */
+    generateMetricFindings(matrix: any[]): any[] {
+        const findings: any[] = [];
+        for (const item of matrix) {
+            const adv = item.advanced_metrics || {};
+            const file = item.file;
+
+            if (adv.cognitiveComplexity > 15) {
+                findings.push({
+                    file,
+                    line: 1,
+                    issue: `Complexidade Cognitiva Elevada (${adv.cognitiveComplexity} > 15)`,
+                    severity: adv.cognitiveComplexity > 25 ? "HIGH" : "MEDIUM",
+                    category: "Quality",
+                    context: "CognitiveAudit"
+                });
+            }
+
+            if (adv.nestingDepth > 3) {
+                findings.push({
+                    file,
+                    line: 1,
+                    issue: `Aninhamento Excessivo (${adv.nestingDepth} > 3)`,
+                    severity: "MEDIUM",
+                    category: "Quality",
+                    context: "StructuralAudit"
+                });
+            }
+
+            if (adv.cyclomaticComplexity > 20) {
+                findings.push({
+                    file,
+                    line: 1,
+                    issue: `Complexidade Ciclomática Elevada (${adv.cyclomaticComplexity} > 20)`,
+                    severity: adv.cyclomaticComplexity > 30 ? "HIGH" : "MEDIUM",
+                    category: "Quality",
+                    context: "MetricsEngine"
+                });
+            }
+        }
+        return findings;
+    }
 }

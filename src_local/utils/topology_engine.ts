@@ -30,56 +30,61 @@ export class TopologyEngine {
     private static IGNORE_FILES = [".DS_Store", "Thumbs.db"];
 
     static scanProject(projectRoot: string): TopologyMap {
-        const ROOTS = {
-            SOVEREIGN: path.join(projectRoot, "src_local"),
-            SHADOW: "C:/Users/joaom/Documents/GitHub/legacy_restore",
-            SCRIPTS: path.join(projectRoot, "scripts"),
-            NATIVE: path.join(projectRoot, "src_native")
-        };
-
-        const sovereign = fs.existsSync(ROOTS.SOVEREIGN) ? this.scanDirectory(ROOTS.SOVEREIGN, ROOTS.SOVEREIGN) : [];
-        const shadow = fs.existsSync(ROOTS.SHADOW) ? this.scanDirectory(ROOTS.SHADOW, ROOTS.SHADOW) : [];
-        const scripts = fs.existsSync(ROOTS.SCRIPTS) ? this.scanDirectory(ROOTS.SCRIPTS, ROOTS.SCRIPTS) : [];
-        const native = fs.existsSync(ROOTS.NATIVE) ? this.scanDirectory(ROOTS.NATIVE, ROOTS.NATIVE) : [];
-
-        // All active project files that are not legacy
-        const allSovereign = [...sovereign, ...scripts, ...native];
+        const ROOTS = this._getProjectRoots(projectRoot);
+        const sovereign = this._safeScan(ROOTS.SOVEREIGN);
+        const shadow = this._safeScan(ROOTS.SHADOW);
+        const scripts = this._safeScan(ROOTS.SCRIPTS);
+        const native = this._safeScan(ROOTS.NATIVE);
 
         return {
             timestamp: new Date().toISOString(),
-            sovereign: allSovereign,
-            shadow: shadow,
-            scripts: scripts,
+            sovereign: [...sovereign, ...scripts, ...native],
+            shadow,
+            scripts,
             gaps: []
         };
     }
 
+    private static _getProjectRoots(root: string) {
+        return {
+            SOVEREIGN: path.join(root, "src_local"),
+            SHADOW: "C:/Users/joaom/Documents/GitHub/legacy_restore",
+            SCRIPTS: path.join(root, "scripts"),
+            NATIVE: path.join(root, "src_native")
+        };
+    }
+
+    private static _safeScan(dir: string): TopologyFile[] {
+        return fs.existsSync(dir) ? this.scanDirectory(dir, dir) : [];
+    }
+
     private static scanDirectory(dir: string, baseDir: string): TopologyFile[] {
-        let results: TopologyFile[] = [];
-        const list = fs.readdirSync(dir);
+        return fs.readdirSync(dir)
+            .map(f => this._toItem(dir, f))
+            .flatMap(item => this._processItem(item, baseDir));
+    }
 
-        for (const file of list) {
-            const fullPath = path.join(dir, file);
-            const relativePath = path.relative(baseDir, fullPath);
-            const stat = fs.statSync(fullPath);
+    private static _toItem(dir: string, file: string) {
+        const full = path.join(dir, file);
+        return { file, full, stat: fs.statSync(full) };
+    }
 
-            if (stat.isDirectory()) {
-                if (this.IGNORE_DIRS.includes(file)) continue;
-                results = results.concat(this.scanDirectory(fullPath, baseDir));
-            } else {
-                if (this.IGNORE_FILES.includes(file)) continue;
-                results.push({
-                    path: path.relative(process.cwd(), fullPath),
-                    name: file,
-                    extension: path.extname(file),
-                    category: this.categorize(fullPath),
-                    size: stat.size,
-                    stack: this.identifyStack(file)
-                });
-            }
+    private static _processItem(item: any, baseDir: string): TopologyFile[] {
+        if (item.stat.isDirectory()) {
+            return this.IGNORE_DIRS.includes(item.file) ? [] : this.scanDirectory(item.full, baseDir);
         }
+        return this.IGNORE_FILES.includes(item.file) ? [] : [this._createTopologyFile(item.full, item.file, item.stat, baseDir)];
+    }
 
-        return results;
+    private static _createTopologyFile(fullPath: string, file: string, stat: fs.Stats, baseDir: string): TopologyFile {
+        return {
+            path: path.relative(process.cwd(), fullPath),
+            name: file,
+            extension: path.extname(file),
+            category: this.categorize(fullPath),
+            size: stat.size,
+            stack: this.identifyStack(file)
+        };
     }
 
     private static categorize(filePath: string): "Agent" | "Core" | "Util" | "Script" | "Native" | "Unknown" {
@@ -105,16 +110,17 @@ export class TopologyEngine {
      * Identifies Python agents that have a corresponding TypeScript version.
      */
     static findRedundantAgents(sovereignFiles: TopologyFile[]): TopologyFile[] {
-        const redundant: TopologyFile[] = [];
-        const pyFiles = sovereignFiles.filter(f => f.extension === ".py" && f.path.includes("agents"));
-        const tsFiles = new Set(sovereignFiles.filter(f => f.extension === ".ts").map(f => f.path.replace(/\.ts$/, "")));
+        const tsFiles = this._getTSFilesSet(sovereignFiles);
+        return sovereignFiles
+            .filter(f => this._isPotentialRedundantPy(f))
+            .filter(f => tsFiles.has(f.path.replace(/\.py$/, "")));
+    }
 
-        for (const py of pyFiles) {
-            const base = py.path.replace(/\.py$/, "");
-            if (tsFiles.has(base)) {
-                redundant.push(py);
-            }
-        }
-        return redundant;
+    private static _getTSFilesSet(files: TopologyFile[]): Set<string> {
+        return new Set(files.filter(f => f.extension === ".ts").map(f => f.path.replace(/\.ts$/, "")));
+    }
+
+    private static _isPotentialRedundantPy(f: TopologyFile): boolean {
+        return f.extension === ".py" && f.path.includes("agents");
     }
 }

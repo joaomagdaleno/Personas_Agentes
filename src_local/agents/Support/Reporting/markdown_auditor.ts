@@ -3,7 +3,6 @@ import * as fs from "node:fs";
 
 const logger = winston.child({ module: "MarkdownAuditor" });
 import { LintRules } from "./strategies/LintRules.ts";
-import { SpacingStrategy } from "./strategies/SpacingStrategy.ts";
 export interface LintError { rule: string; line: number; message: string; }
 
 /**
@@ -23,8 +22,7 @@ export class MarkdownAuditor {
             const stripped = line.trim();
             if (stripped.startsWith("```")) { inCodeBlock = !inCodeBlock; return; }
             if (inCodeBlock) return;
-            SpacingStrategy.check(lines, i, stripped, filePath, errors);
-            if (stripped.startsWith("#")) LintRules.checkHeadings(lines, i, stripped, filePath, headings, errors);
+            LintRules.run(lines, i, stripped, filePath, headings, errors);
         });
         return errors;
     }

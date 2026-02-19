@@ -4,6 +4,8 @@ import { MaturityEvaluator } from "./../Diagnostics/maturity_evaluator.ts";
 import { SourceCodeParser } from "./source_code_parser.ts";
 import { ComponentClassifier } from "./component_classifier.ts";
 import { IntegrityGuardian } from "./../Core/integrity_guardian.ts";
+import { AnalysisPolicy } from "./strategies/AnalysisPolicy.ts";
+import { IntentClassifier } from "./strategies/IntentClassifier.ts";
 
 const logger = winston.child({ module: "StructuralAnalyst" });
 
@@ -49,37 +51,14 @@ export class StructuralAnalyst {
 
     analyzePython(content: string, filename: string): FileAnalysis {
         const startT = Date.now();
-        const res = this.analyzeRaw(content, filename);
+        const res = this.parser.analyzePyMetadata(content);
 
         const duration = (Date.now() - startT) / 1000;
         logger.debug(`⏱️ [StructuralAnalyst] Decomposição ${filename} in ${duration.toFixed(4)}s`);
-        return res;
-    }
-
-    private analyzeRaw(content: string, filename: string): FileAnalysis {
-        const hasTelemetry = ["telemetry", "log_performance", "winston", "logger"].some(kw => content.includes(kw));
-
-        if (!filename.endsWith('.py')) {
-            return { complexity: 1, dependencies: [], telemetry: hasTelemetry };
-        }
-
-        try {
-            const d = this.parser.analyzePy(content);
-            if (!d.tree) {
-                return { complexity: 1, dependencies: [] };
-            }
-
-            return {
-                complexity: this.parser.calculatePyComplexity(content),
-                dependencies: this.parser.extractPyImports(content),
-                functions: d.functions,
-                classes: d.classes,
-                telemetry: ["telemetry", "log_performance", "winston", "logger"].some(kw => content.includes(kw))
-            };
-        } catch (error) {
-            logger.error(`❌ [StructuralAnalyst] Failed to analyze ${filename}: ${error}`);
-            return { complexity: 1, dependencies: [] };
-        }
+        return {
+            ...res,
+            telemetry: ["telemetry", "log_performance", "winston", "logger"].some(kw => content.includes(kw))
+        };
     }
 
     mapComponentType(relPath: string): string {
@@ -92,22 +71,11 @@ export class StructuralAnalyst {
     }
 
     shouldIgnore(path: Path): boolean {
-        const pathStr = path.toString().replace(/\\/g, "/").toLowerCase();
-
-        // Bloqueio cirúrgico para infraestrutura .agent
-        if (pathStr.includes("/.agent/") || pathStr.startsWith(".agent/")) {
-            // Só permitimos se pertencer à skill autorizada
-            if (pathStr.includes("fast-android-build")) return false;
-            return true;
-        }
-
-        const ignored = new Set(['.git', '__pycache__', 'build', 'node_modules', '.venv', '.gemini', '.idea', '.vscode', 'dist', 'out']);
-        return Array.from(ignored).some(p => pathStr.includes(`/${p}/`) || pathStr.endsWith(`/${p}`));
+        return AnalysisPolicy.shouldIgnore(path);
     }
 
     isAnalyable(path: Path): boolean {
-        const name = path.name();
-        return (name.endsWith('.py') || name.endsWith('.ts') || name.endsWith('.tsx') || name.endsWith('.js') || name.endsWith('.yaml'));
+        return AnalysisPolicy.isAnalyable(path);
     }
 
     async readProjectFile(path: string): Promise<string | null> {
@@ -140,7 +108,14 @@ export class StructuralAnalyst {
             return this.logicAuditor.constructor.scanFile(sourceFile);
         } catch (error) {
             logger.error(`❌ [StructuralAnalyst] Failed to analyze logic flaws in ${filename}: ${error}`);
-            return [];
+            return [{
+                file: filename,
+                line: 1,
+                issue: `Falha na análise lógica (AST): ${error}`,
+                severity: "HIGH",
+                category: "Analysis",
+                context: "StructuralAnalyst"
+            }];
         }
     }
 
@@ -149,11 +124,7 @@ export class StructuralAnalyst {
      */
     analyze_file_logic(content: string, filename: string): any {
         try {
-            if (filename.endsWith('.py')) {
-                return this.analyzeRaw(content, filename);
-            }
-            // For TS/JS, use SourceCodeParser if available/extended or return parser result
-            return this.parser.analyzeTs(content);
+            return this.parser.analyze_file_logic(content, filename);
         } catch (error) {
             logger.error(`❌ [StructuralAnalyst] Failed to analyze file logic in ${filename}: ${error}`);
             return { complexity: 1, dependencies: [] };
@@ -162,9 +133,7 @@ export class StructuralAnalyst {
 
     /** Parity: analyze_intent — Classifies the primary intent of a file (logic, metadata, observability). */
     analyze_intent(content: string, filename: string): string {
-        if (/export\s+(type|interface|enum)\s+/.test(content)) return "METADATA";
-        if (/logger\.(info|warn|error|debug)/.test(content)) return "OBSERVABILITY";
-        return "LOGIC";
+        return IntentClassifier.classify(content, filename);
     }
 }
 

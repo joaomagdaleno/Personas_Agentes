@@ -13,129 +13,92 @@ type Phase = (typeof phases)[number];
 type Platform = (typeof platforms)[number];
 
 async function main() {
-    console.log("Script starting...");
     const args = process.argv.slice(2);
-    console.log("Args:", args);
-    if (args.length < 2) {
-        console.error("Usage: bun run activate-phase.ts <Phase> <Platform>");
-        console.error(`Phases: ${phases.join(", ")}`);
-        console.error(`Platforms: ${platforms.join(", ")}`);
-        process.exit(1);
-    }
+    if (!validateArgs(args)) process.exit(1);
 
-    const phase = args[0] as Phase;
-    const platform = args[1] as Platform;
-
-    if (!phases.includes(phase)) {
-        console.error(`Invalid phase: ${phase}. Must be one of: ${phases.join(", ")}`);
-        process.exit(1);
-    }
-
-    if (!platforms.includes(platform)) {
-        console.error(`Invalid platform: ${platform}. Must be one of: ${platforms.join(", ")}`);
-        process.exit(1);
-    }
-
+    const [phase, platform] = args as [Phase, Platform];
     const rootDir = process.cwd();
-    const baseDir = join(rootDir, platform);
+    const output = phase === "Full" ? await getFullOutput(rootDir, platform) : await getPhaseOutput(rootDir, phase, platform);
 
-    let output = "";
+    await copyToClipboard(output);
+    printSuccess(phase, platform);
+}
 
-    // Updated mapping based on current project structure
-    const agentMap: Record<string, string> = {
-        // Genesis
-        "Scope": "Audit/scope.py",
-        "Scale": "Audit/scale.py",
-        "Scribe": "Content/scribe.py",
-        // Infra
-        "Nebula": "Audit/nebula.py",
-        "Sentinel": "Strategic/sentinel.py",
-        "Bridge": "System/bridge.py",
-        // Forge
-        "Flow": "System/flow.py",
-        "Palette": "Content/palette.py",
-        "Nexus": "System/nexus.py",
-        "Bolt": "Audit/bolt.py",
-        "Stream": "System/stream.py",
-        "Cache": "System/cache.py",
-        // Orbit
-        "Testify": "Audit/testify.py",
-        "Warden": "Strategic/warden.py",
-        "Hype": "Content/hype.py",
-        "Metric": "Audit/metric.py",
-        "Echo": "Content/echo.py",
-        "Vault": "Strategic/vault.py"
-    };
-
-    if (phase === "Full") {
-        const fullContextFile = join(rootDir, "Personas_Agentes", `todos_agentes_${platform.toLowerCase()}.txt`);
-        const file = Bun.file(fullContextFile);
-        if (await file.exists()) {
-            output = await file.text();
-        } else {
-            console.error(`File not found: ${fullContextFile}`);
-            process.exit(1);
-        }
-    } else {
-        let personas: string[] = [];
-        switch (phase) {
-            case "Genesis": personas = ["Scope", "Scale", "Scribe"]; break;
-            case "Infra": personas = ["Nebula", "Sentinel", "Bridge"]; break;
-            case "Forge": personas = ["Flow", "Palette", "Nexus", "Bolt", "Stream", "Cache"]; break;
-            case "Orbit": personas = ["Testify", "Warden", "Hype", "Metric", "Echo", "Vault"]; break;
-        }
-
-        // Attempt to find Director info in Python
-        const directorFile = join(rootDir, "src_local", "agents", "Python", "Strategic", "director.py");
-        let directorContent = "Master Orchestrator - Driving specialized agents to project excellence.";
-        if (await Bun.file(directorFile).exists()) {
-            directorContent = await Bun.file(directorFile).text();
-        }
-
-        output = `=== MASTER ORCHESTRATOR ===\n${directorContent}\n\n`;
-
-        for (const p of personas) {
-            const relPath = agentMap[p];
-            if (relPath) {
-                const filePath = join(rootDir, "src_local", "agents", platform, relPath);
-                const file = Bun.file(filePath);
-                if (await file.exists()) {
-                    const content = await file.text();
-                    output += `=== START OF PERSONA: ${p} (${relPath}) ===\n${content}\n\n`;
-                } else {
-                    console.warn(`\x1b[33m⚠️  Warning: Persona file not found for ${p} at ${filePath}\x1b[0m`);
-                }
-            }
-        }
+function validateArgs(args: string[]): boolean {
+    if (args.length < 2) {
+        console.error("Usage: bun run activate-phase.ts <Phase> <Platform>\nPhases: Genesis, Infra, Forge, Orbit, Full\nPlatforms: Flutter, Kotlin");
+        return false;
     }
+    if (!phases.includes(args[0] as any)) { console.error(`Invalid phase: ${args[0]}`); return false; }
+    if (!platforms.includes(args[1] as any)) { console.error(`Invalid platform: ${args[1]}`); return false; }
+    return true;
+}
 
-    // Copy to clipboard using PowerShell (cross-platform way for Windows)
-    // We use a temp file to avoid command line length limits
-    const tempFile = join(rootDir, ".temp_clipboard.txt");
+async function getFullOutput(rootDir: string, platform: string): Promise<string> {
+    const file = join(rootDir, "Personas_Agentes", `todos_agentes_${platform.toLowerCase()}.txt`);
+    if (await Bun.file(file).exists()) return Bun.file(file).text();
+    console.error(`File not found: ${file}`);
+    process.exit(1);
+    return "";
+}
+
+async function getPhaseOutput(rootDir: string, phase: Phase, platform: string): Promise<string> {
+    const personas = getPersonasForPhase(phase);
+    const directorContent = await getDirectorContent(rootDir);
+    let output = `=== MASTER ORCHESTRATOR ===\n${directorContent}\n\n`;
+
+    for (const p of personas) {
+        output += await getPersonaContent(rootDir, p, platform);
+    }
+    return output;
+}
+
+function getPersonasForPhase(phase: Phase): string[] {
+    const map: any = {
+        Genesis: ["Scope", "Scale", "Scribe"], Infra: ["Nebula", "Sentinel", "Bridge"],
+        Forge: ["Flow", "Palette", "Nexus", "Bolt", "Stream", "Cache"],
+        Orbit: ["Testify", "Warden", "Hype", "Metric", "Echo", "Vault"]
+    };
+    return map[phase] || [];
+}
+
+async function getDirectorContent(rootDir: string): Promise<string> {
+    const file = join(rootDir, "src_local", "agents", "Python", "Strategic", "director.py");
+    return (await Bun.file(file).exists()) ? Bun.file(file).text() : "Master Orchestrator - Driving specialized agents.";
+}
+
+async function getPersonaContent(rootDir: string, p: string, platform: string): Promise<string> {
+    const agentMap: any = {
+        Scope: "Audit/scope.py", Scale: "Audit/scale.py", Scribe: "Content/scribe.py",
+        Nebula: "Audit/nebula.py", Sentinel: "Strategic/sentinel.py", Bridge: "System/bridge.py",
+        Flow: "System/flow.py", Palette: "Content/palette.py", Nexus: "System/nexus.py",
+        Bolt: "Audit/bolt.py", Stream: "System/stream.py", Cache: "System/cache.py",
+        Testify: "Audit/testify.py", Warden: "Strategic/warden.py", Hype: "Content/hype.py",
+        Metric: "Audit/metric.py", Echo: "Content/echo.py", Vault: "Strategic/vault.py"
+    };
+    const relPath = agentMap[p];
+    if (!relPath) return "";
+    const filePath = join(rootDir, "src_local", "agents", platform, relPath);
+    if (!(await Bun.file(filePath).exists())) {
+        console.warn(`⚠️  Persona not found: ${p}`);
+        return "";
+    }
+    return `=== START OF PERSONA: ${p} (${relPath}) ===\n${await Bun.file(filePath).text()}\n\n`;
+}
+
+async function copyToClipboard(output: string) {
+    const tempFile = join(process.cwd(), ".temp_clipboard.txt");
     await Bun.write(tempFile, output);
-
     try {
         await $`powershell -Command "Get-Content -Raw .temp_clipboard.txt | Set-Clipboard"`;
-        console.log(`\x1b[32m✅ [PHASE: ${phase}] for ${platform} copied to your clipboard!\x1b[0m`);
-        if (phase !== "Full") {
-            let personasList = "";
-            switch (phase) {
-                case "Genesis": personasList = "Scope, Scale, Scribe"; break;
-                case "Infra": personasList = "Nebula, Sentinel, Bridge"; break;
-                case "Forge": personasList = "Flow, Palette, Nexus, Bolt, Stream, Cache"; break;
-                case "Orbit": personasList = "Testify, Warden, Hype, Metric, Echo, Vault"; break;
-            }
-            console.log(`\x1b[36mActive Personas: ${personasList}\x1b[0m`);
-        }
-    } catch (err) {
-        console.error("Failed to copy to clipboard:", err);
-    } finally {
-        // Cleanup
-        const f = Bun.file(tempFile);
-        if (await f.exists()) {
-            await $`rm ${tempFile}`;
-        }
-    }
+    } catch { console.error("Clipboard fail"); }
+    finally { if (await Bun.file(tempFile).exists()) await $`rm ${tempFile}`; }
 }
+
+function printSuccess(phase: string, platform: string) {
+    console.log(`✅ [PHASE: ${phase}] for ${platform} copied!`);
+}
+
+main();
 
 main();

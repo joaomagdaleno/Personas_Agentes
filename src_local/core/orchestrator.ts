@@ -193,60 +193,35 @@ export class Orchestrator {
         const { QualityAnalyst } = await import("../agents/Support/Diagnostics/quality_analyst.ts");
         const { TopologyGraphAgent } = await import("../agents/Support/Automation/topology_graph_agent.ts");
 
-        const pyramid = new PyramidAnalyst();
-        const quality = new QualityAnalyst();
-        const topology = new TopologyGraphAgent();
-
-        // 🌪️ Enriquecimento de Alta Resolução (PhD Depth)
-        if (ctx.depthAudit?.metrics) {
-            const mapKeys = Object.keys(ctx.map || {});
-
-            for (const metric of ctx.depthAudit.metrics) {
-                const normPath = metric.path.replace(/\\/g, "/");
-
-                let found = false;
-                for (const mapKey of mapKeys) {
-                    if (mapKey.replace(/\\/g, "/") === normPath) {
-                        // 🛡️ SECURITY FIX: Do not overwrite high-fidelity complexity from MetricsEngine 
-                        // unless specifically requested or if it's a "shadow" that needs adjustment.
-                        // We store tsDepth in a separate field for audit visibility.
-                        ctx.map[mapKey].tsDepth = metric.tsDepth;
-                        found = true;
-                        break;
-                    }
-                }
-
-                if (!found) {
-                    const base = normPath.split('/').pop();
-                    for (const mapKey of mapKeys) {
-                        if (mapKey.replace(/\\/g, "/").endsWith(base || "INVALID")) {
-                            ctx.map[mapKey].tsDepth = metric.tsDepth;
-                            found = true;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
+        this._enrichPathMetrics(ctx);
 
         const qaData = {
-            pyramid: await pyramid.analyze(ctx.map || {}, async (p: string) => {
-                const f = this.projectRoot.join(p);
-                return await Bun.file(f.toString()).text();
-            }),
+            pyramid: await new PyramidAnalyst().analyze(ctx.map || {}, async (p: string) => Bun.file(this.projectRoot.join(p).toString()).text()),
             execution: {},
-            matrix: quality.calculateConfidenceMatrix(ctx.map || {}),
-            topology_graph: topology.generateMermaidGraph(ctx.map || {}),
+            matrix: new QualityAnalyst().calculateConfidenceMatrix(ctx.map || {}),
+            topology_graph: new TopologyGraphAgent().generateMermaidGraph(ctx.map || {}),
             depth_audit: ctx.depthAudit
         };
 
-        // Pass findings to synthesize360 by adding them to context as alerts
-        const contextWithAlerts = {
-            ...ctx,
-            alerts: findings
-        };
+        return await this.synthesizer.synthesize360({ ...ctx, alerts: findings }, this.metrics, this.personas, this.stabilityLedger, qaData);
+    }
 
-        return await this.synthesizer.synthesize360(contextWithAlerts, this.metrics, this.personas, this.stabilityLedger, qaData);
+    private _enrichPathMetrics(ctx: any) {
+        if (!ctx.depthAudit?.metrics) return;
+        const mapKeys = Object.keys(ctx.map || {});
+        for (const metric of ctx.depthAudit.metrics) {
+            const normPath = metric.path.replace(/\\/g, "/");
+            this._matchAndApplyMetric(ctx.map, mapKeys, normPath, metric.tsDepth);
+        }
+    }
+
+    private _matchAndApplyMetric(map: any, keys: string[], normPath: string, depth: number) {
+        for (const k of keys) {
+            if (k.replace(/\\/g, "/") === normPath || k.replace(/\\/g, "/").endsWith(normPath.split('/').pop() || "INVALID")) {
+                map[k].tsDepth = depth;
+                break;
+            }
+        }
     }
 
     async generateMorningBriefing() {

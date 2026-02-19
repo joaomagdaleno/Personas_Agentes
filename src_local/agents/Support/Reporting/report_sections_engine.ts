@@ -6,6 +6,8 @@ import { ParitySection } from "./Sections/ParitySection.ts";
 import { EntropySection } from "./Sections/EntropySection.ts";
 import { VisibilitySection } from "./Sections/VisibilitySection.ts";
 
+import { DiagnosisRenderer } from "./strategies/DiagnosisRenderer.ts";
+
 const logger = winston.child({ module: "ReportSectionsEngine" });
 
 /**
@@ -28,9 +30,12 @@ export class ReportSectionsEngine {
 
     protected _getStatusBadge(status: string): string {
         const s = status.toUpperCase();
-        if (s.includes("CRÍTICO") || s.includes("COLLAPSE") || s.includes("ERRO")) return "🔴 `CRÍTICO`";
-        if (s.includes("ALERTA") || s.includes("ATENÇÃO") || s.includes("RISCO")) return "🟡 `ATENÇÃO`";
+        if (s.includes("CRÍTICO") || s.includes("COLLAPSE") || s.includes("ERRO") || s === "CRITICAL" || s === "HIGH") return "🔴 `CRÍTICO`";
+        if (s.includes("ALERTA") || s.includes("ATENÇÃO") || s.includes("RISCO") || s === "MEDIUM") return "🟡 `ATENÇÃO`";
         if (s.includes("SUCESSO") || s.includes("ESTÁVEL") || s.includes("OK")) return "🟢 `ESTÁVEL`";
+        if (s === "STRATEGIC") return "🟣 `ESTRATÉGICO`";
+        if (s === "LOW") return "⚪ `BAIXO`";
+        if (s === "INFO") return "🔵 `INFO`";
         return "🔵 `NEUTRO`";
     }
 
@@ -51,19 +56,7 @@ export class ReportSectionsEngine {
     }
 
     formatIntegratedDiagnosis(breakdown: any): string {
-        const pillars = [
-            { name: "Stability", val: breakdown["Stability (Coverage)"] || 0, max: 40, desc: "Cobertura de Testes" },
-            { name: "Purity", val: breakdown["Purity (Complexity)"] || 0, max: 20, desc: "Complexidade Média" },
-            { name: "Observability", val: breakdown["Observability (Telemetry)"] || 0, max: 15, desc: "Telemetria" },
-            { name: "Security", val: breakdown["Security (Vulnerabilities)"] || 0, max: 15, desc: "Vulnerabilidades" },
-            { name: "Excellence", val: breakdown["Excellence (Documentation)"] || 0, max: 10, desc: "Documentação" },
-        ];
-
-        let content = "### 🩺 DIAGNÓSTICO DE SAÚDE (PILARES E QUALIDADE)\n\n| Pilar | Score | Máx | Status | Impacto |\n| :--- | :---: | :---: | :--- | :--- |\n";
-        for (const p of pillars) {
-            content += `| ${p.name} | \`${Math.round(p.val)}\` | ${p.max} | ${this._getStatusBadge(p.val > (p.max * 0.7) ? "OK" : "ALERTA")} | ${p.desc} |\n`;
-        }
-        return content + "\n#### 📐 Detalhamento de Métricas de Qualidade\n\n" + this.formatQualityMetrics(breakdown).join("\n");
+        return DiagnosisRenderer.render(breakdown, (s) => this._getStatusBadge(s), (b) => this.formatQualityMetrics(b));
     }
 
     formatVisibilityAnalysis(healthData: any): string {

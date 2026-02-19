@@ -82,70 +82,23 @@ function walk(dir: string, callback: (path: string) => void) {
     }
 }
 
+import { ImportHelpers } from "./import_helpers.ts";
+
 walk(projectRoot, (filePath) => {
     let content = readFileSync(filePath, "utf-8");
-    let changed = false;
+    let initial = content;
 
-    // Normalize path to use forward slashes for internal logic
     const relFile = relative(projectRoot, filePath).replace(/\\/g, "/");
     const isInsideSupport = relFile.startsWith("src_local/agents/Support/") && relFile.split("/").length === 5;
     const myCategory = isInsideSupport ? relFile.split("/")[3] : null;
 
-    // 1. PROJECT-WIDE: Update absolute-ish and distant relative imports
-    // from ".../agents/Support/agent" -> from ".../agents/Support/Category/agent"
-    for (const agent of agentNames) {
-        const category = mapping[agent];
-
-        // Match imports ending in the agent name, optionally with .ts
-        // This handles:
-        // - from "@/agents/Support/agent"
-        // - from "../../agents/Support/agent"
-        // - from "../../agents/Support/agent.ts"
-        const regex = new RegExp(`(from\\s+["'])([^"']*\/agents\/Support\/)(${agent})(\.ts)?(["'])`, "g");
-        if (regex.test(content)) {
-            // Check if it already has the category
-            const checkAlreadyFixed = new RegExp(`\/agents\/Support\/${category}\/${agent}`, "g");
-            if (!checkAlreadyFixed.test(content)) {
-                content = content.replace(regex, `$1$2${category}/$3$4$5`);
-                changed = true;
-            }
-        }
-    }
-
-    // 2. INTERNAL Support/ files: Handle neighboring and external relative imports
+    content = ImportHelpers.applyProjectWideFixes(content, agentNames, mapping);
     if (isInsideSupport && myCategory) {
-        // Fix neighbors: from "./agent" -> from "../Category/agent" (if different category)
-        for (const otherAgent of agentNames) {
-            const otherCategory = mapping[otherAgent];
-            const otherRegex = new RegExp(`(from\\s+["']\.\/)(${otherAgent})(\.ts)?(["'])`, "g");
-            if (otherRegex.test(content)) {
-                if (myCategory === otherCategory) {
-                    // Keep ./ for same category
-                } else {
-                    // Change to ../Category/ for different category
-                    content = content.replace(otherRegex, `$1../${otherCategory}/$2$3$4`);
-                    changed = true;
-                }
-            }
-        }
-
-        // Fix external: from "../../core" -> from "../../../core"
-        // Pattern: from "../.."
-        if (content.includes('from "../..')) {
-            content = content.replace(/(from\s+["']\.\.\/\.\.\/)([^"']+["'])/g, 'from "../../../$2');
-            changed = true;
-        }
-
-        // and from "../core" (unlikely but possible) -> from "../../core"
-        // But only if it's NOT pointing to another category (which we handled above)
-        const coreUtilsRegex = /(from\s+["']\.\.\/)(core|utils|core|shared)([^"']+["'])/g;
-        if (coreUtilsRegex.test(content)) {
-            content = content.replace(coreUtilsRegex, 'from "../../$2$3');
-            changed = true;
-        }
+        content = ImportHelpers.fixSupportNeighbors(content, myCategory, agentNames, mapping);
+        content = ImportHelpers.fixExternalRelativeImports(content);
     }
 
-    if (changed) {
+    if (content !== initial) {
         writeFileSync(filePath, content);
         console.log(`✨ Fixed imports in: ${relFile}`);
     }

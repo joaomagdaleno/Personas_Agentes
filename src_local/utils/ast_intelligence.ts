@@ -29,37 +29,21 @@ export class ASTIntelligence {
     private static readonly DANGEROUS_CALLS = new Set(["eval", "exec", "Function", "setTimeout", "setInterval", "Bun.spawn", "Bun.$"]);
 
     static isMetadataContext(node: ts.Node): boolean {
-        let parent: ts.Node | undefined = node.parent;
-        while (parent) {
-            if ((ts.isVariableDeclaration(parent) || ts.isPropertyAssignment(parent)) && this.METADATA_KEYWORDS.test(parent.name.getText())) return true;
-            parent = parent.parent;
-        }
-        return false;
+        return this.getParentChain(node).some(p => (ts.isVariableDeclaration(p) || ts.isPropertyAssignment(p)) && this.METADATA_KEYWORDS.test(p.name.getText()));
     }
 
     static isMathContext(node: ts.Node): boolean {
-        let curr: ts.Node | undefined = node;
-        const kwArr = Array.from(this.TECH_KEYWORDS);
-        for (let i = 0; i < 3 && curr; i++, curr = curr.parent) {
-            const text = curr.getText().toLowerCase();
-            if (kwArr.some(kw => text.includes(kw) && new RegExp(`\\b${kw}\\b`).test(text))) return true;
-        }
-        return false;
+        const check = (c: ts.Node) => Array.from(this.TECH_KEYWORDS).some(kw => c.getText().toLowerCase().includes(kw) && new RegExp(`\\b${kw}\\b`, 'i').test(c.getText()));
+        return [node, node.parent, node.parent?.parent].filter(Boolean).some(c => check(c!));
     }
 
     static isObservabilityContext(node: ts.Node): boolean {
-        let parent: ts.Node | undefined = node.parent;
-        while (parent) {
-            if (ts.isCallExpression(parent) && this.OBSERVABILITY_KEYWORDS.test(parent.expression.getText())) return true;
-            parent = parent.parent;
-        }
-        return false;
+        return this.getParentChain(node).some(p => ts.isCallExpression(p) && this.OBSERVABILITY_KEYWORDS.test(p.expression.getText()));
     }
 
     static isDangerousCall(node: ts.Node): boolean {
-        if (!ts.isCallExpression(node)) return false;
-        const text = node.expression.getText();
-        return this.DANGEROUS_CALLS.has(text) || [...this.DANGEROUS_CALLS].some(dc => text.includes(dc));
+        const text = ts.isCallExpression(node) ? node.expression.getText() : "";
+        return !!text && (this.DANGEROUS_CALLS.has(text) || Array.from(this.DANGEROUS_CALLS).some(dc => text.includes(dc)));
     }
 
     static isCallTo(node: ts.Node, keywords: string[]): boolean {

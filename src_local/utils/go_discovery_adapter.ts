@@ -27,10 +27,21 @@ export class GoDiscoveryAdapter {
     /**
      * Executa o scan atômico em um diretório.
      */
-    static scan(directory: string, root: string, isLegacy: boolean = false): FileAnalysis[] {
+    static scan(directory: string, root: string, isLegacy: boolean = false): { results: FileAnalysis[], findings: any[] } {
         if (!existsSync(this.BINARY_PATH)) {
-            logger.warn(`⚠️ Binário Go não encontrado em ${this.BINARY_PATH}. Abortando scan Go.`);
-            return [];
+            const msg = `⚠️ Binário Go não encontrado em ${this.BINARY_PATH}. Abortando scan Go.`;
+            logger.warn(msg);
+            return {
+                results: [],
+                findings: [{
+                    type: "CRITICAL",
+                    severity: "CRITICAL",
+                    file: "go-scanner.exe",
+                    issue: msg,
+                    category: "Infrastructure",
+                    context: "GoDiscoveryAdapter"
+                }]
+            };
         }
 
         try {
@@ -46,10 +57,21 @@ export class GoDiscoveryAdapter {
             const duration = Date.now() - startTime;
             logger.info(`✨ [GoAdapter] Scan concluído em ${duration}ms. (${results.length} arquivos analisados)`);
 
-            return results;
+            return { results, findings: [] };
         } catch (error: any) {
-            logger.error(`🚨 Falha no scan Go: ${error.message}`);
-            return [];
+            const msg = `🚨 Falha no scan Go: ${error.message}`;
+            logger.error(msg);
+            return {
+                results: [],
+                findings: [{
+                    type: "CRITICAL",
+                    severity: "CRITICAL",
+                    file: "go-scanner.exe",
+                    issue: msg,
+                    category: "Infrastructure",
+                    context: "GoDiscoveryAdapter"
+                }]
+            };
         }
     }
 }

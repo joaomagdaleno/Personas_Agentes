@@ -8,6 +8,7 @@ import { CoverageAuditor } from "../agents/Support/Analysis/coverage_auditor.ts"
 import { ConnectivityMapper } from "../agents/Support/Analysis/connectivity_mapper.ts";
 import { ParityAnalyst } from "../agents/Support/Analysis/parity_analyst.ts";
 import { MetricsEngine } from "../agents/Support/Diagnostics/metrics_engine.ts";
+import { ContextHelpers } from "./context_helpers.ts";
 
 const logger = winston.child({ module: "ContextEngine" });
 
@@ -20,6 +21,7 @@ export class ContextEngine {
     analyst = new StructuralAnalyst(); coverageAuditor = new CoverageAuditor();
     connectivityMapper = new ConnectivityMapper(); parityAnalyst = new ParityAnalyst();
     metricsEngine = new MetricsEngine(); allFilesIndex: string[] = [];
+    projectIdentity: any = {};
     private contentCache: Record<string, string> = {};
 
     constructor(projectRoot: string) { this.projectRoot = new Path(projectRoot); }
@@ -45,48 +47,57 @@ export class ContextEngine {
 
     private async getCachedContent(path: Path, rel: string): Promise<string> {
         if (this.contentCache[rel]) return this.contentCache[rel]!;
-        try { return await Bun.file(path.toString()).text(); } catch { return ""; }
+        try { return await (Bun as any).file(path.toString()).text(); } catch { return ""; }
     }
 
     private async performDeepAnalysis(path: Path, content: string, info: any, ignoreTest: boolean) {
-        const structural = path.toString().endsWith('.py') ? this.analyst.analyzePython(content, path.name()) : this.analyst.analyze_file_logic(content, path.name());
+        this._applyStructuralAnalysis(path, content, info);
+        this._applyAdvancedMetrics(path, content, info);
+        await this._applySecurityAndTests(path, content, info, ignoreTest);
+    }
+
+    private _applyStructuralAnalysis(path: Path, content: string, info: any) {
+        const structural = path.toString().endsWith('.py')
+            ? this.analyst.analyzePython(content, path.name())
+            : this.analyst.analyze_file_logic(content, path.name());
         Object.assign(info, structural);
+    }
 
-        const adv = this.metricsEngine.analyzeFile(content, path.relativeTo(this.projectRoot).replace(/\\/g, "/"), info.dependencies || []);
-        info.advanced_metrics = { ...adv };
-        info.telemetry = adv.telemetry || info.telemetry;
-        info.complexity = adv.cyclomaticComplexity;
-
+    private _applyAdvancedMetrics(path: Path, content: string, info: any) {
+        const rel = path.relativeTo(this.projectRoot).replace(/\\/g, "/");
+        const adv = this.metricsEngine.analyzeFile(content, rel, info.dependencies || []);
+        Object.assign(info, { advanced_metrics: { ...adv }, telemetry: adv.telemetry || info.telemetry, complexity: adv.cyclomaticComplexity });
         if (adv.isShadow) {
             const v = this.metricsEngine.validateShadowCompliance(adv);
-            info.shadow_compliance = { compliant: v.compliant, reason: v.reason };
-            info.complexity = adv.shadowComplexity;
+            Object.assign(info, { shadow_compliance: { compliant: v.compliant, reason: v.reason }, complexity: adv.shadowComplexity });
         }
+    }
 
-        Object.assign(info, await this.analyst.integrityGuardian.detectVulnerabilities(content, info.component_type, ignoreTest));
+    private async _applySecurityAndTests(path: Path, content: string, info: any, ignoreTest: boolean) {
+        const vuln = await this.analyst.integrityGuardian.detectVulnerabilities(content, info.component_type, ignoreTest);
+        Object.assign(info, vuln);
         info.has_test = this.coverageAuditor.detectTest(path, info.component_type, this.allFilesIndex, info);
-        if (info.component_type === "TEST") info.test_depth = { assertion_count: (content.match(/assert|expect|should/g) || []).length, quality_level: (content.match(/assert|expect|should/g) || []).length > 5 ? "DEEP" : "SHALLOW" };
+        if (info.component_type === "TEST") {
+            const matches = (content.match(/assert|expect|should/g) || []).length;
+            info.test_depth = { assertion_count: matches, quality_level: matches > 5 ? "DEEP" : "SHALLOW" };
+        }
     }
 
     private buildDependencyMap() {
-        Object.keys(this.map).forEach(f => this.map[f].coupling = this.connectivityMapper.calculateMetrics(f, this.map[f], this.map));
+        Object.keys(this.map).forEach(f => {
+            this.map[f].coupling = this.connectivityMapper.calculateMetrics(f, this.map[f], this.map);
+        });
         this.callGraph = {};
-        Object.entries(this.map).forEach(([f, d]) => (d.dependencies || []).forEach((dep: string) => {
-            const resolved = this.resolveDependency(dep);
-            if (resolved && resolved !== f) (this.callGraph[resolved] = this.callGraph[resolved] || []).push(f);
-        }));
-    }
-
-    private resolveDependency(dep: string): string | null {
-        const lower = dep.toLowerCase().replace(/\./g, '/');
-        return Object.keys(this.map).find(f => f.toLowerCase().match(new RegExp(`${lower}(\\.ts|\\.py|$)`))) || null;
+        Object.entries(this.map).forEach(([f, d]) => {
+            (d.dependencies || []).forEach((dep: string) => {
+                const res = ContextHelpers.resolveDependency(dep, this.map);
+                if (res && res !== f) (this.callGraph[res] ||= []).push(f);
+            });
+        });
     }
 
     analyzeStackParity(personas: any[]) { const p = this.parityAnalyst.analyzeStackGaps(personas) as any; p.detected = this.projectIdentity.stacks || new Set(); return p; }
     async cognitiveReason(p: string) { return (await new (await import("./cognitive_engine.ts")).CognitiveEngine()).reason(p); }
-    _injectSupport() { }
-    _initializeSupportTools() { }
     _getScanner() { return new FileSystemScanner(this.projectRoot.toString(), this.analyst); }
-    _findDependents(f: string) { return this.callGraph[f] || []; }
-    get_criticality_score(f: string) { return (this.map[f]?.complexity || 0) * (this.map[f]?.coupling?.total || 1); }
+    get_criticality_score(f: string) { return ContextHelpers.getCriticalityScore(f, this.map); }
 }

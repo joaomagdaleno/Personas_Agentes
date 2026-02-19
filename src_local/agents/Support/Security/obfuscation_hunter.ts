@@ -26,7 +26,14 @@ export class ObfuscationHunter {
             return this.scanNode(sourceFile, sourceFile);
         } catch (error) {
             this.logger.error(`❌ [ObfuscationHunter] Erro ao processar AST de ${filePath}: ${error}`);
-            return [];
+            return [{
+                file: filePath,
+                line: 1,
+                issue: `Falha crítica no parsing AST: ${error}`,
+                severity: "HIGH",
+                category: "Security",
+                context: "ObfuscationHunter"
+            }];
         }
     }
 

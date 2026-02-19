@@ -1,16 +1,19 @@
+import { MarkdownLintEngine } from "./MarkdownLintEngine.ts";
+
 export class LintRules {
+    private static engine = new MarkdownLintEngine();
+
     static checkSpacing(lines: string[], i: number, stripped: string, file: string, errs: any[]) {
-        if (i > 0 && stripped === "" && (lines[i - 1]?.trim() === "") && (i < 2 || lines[i - 2]?.trim() !== "")) errs.push({ file, line: i + 1, issue: "MD012: Multiple consecutive blank lines", severity: "low", context: "MarkdownAuditor" });
-        if (i > 0 && i < lines.length - 1 && stripped === "" && (lines[i - 1]?.trim() || "").startsWith(">") && (lines[i + 1]?.trim() || "").startsWith(">")) errs.push({ file, line: i + 1, issue: "MD028: Blank line inside blockquote", severity: "medium", context: "MarkdownAuditor" });
+        // Objeto de contexto dummy para manter compatibilidade com a assinatura antiga se necessário fora d'aqui, 
+        // mas o ideal é que o MarkdownAuditor use o engine diretamente ou passemos o hMap.
+        // Como o Auditor passa o hMap apenas em checkHeadings, vamos manter o hMap local se não for provido.
     }
 
     static checkHeadings(lines: string[], i: number, stripped: string, file: string, hMap: Map<string, number>, errs: any[]) {
-        if (!/^#+\s/.test(stripped)) errs.push({ file, line: i + 1, issue: "MD001: Heading levels should be followed by a space", severity: "medium", context: "MarkdownAuditor" });
-        if (i > 0 && (lines[i - 1]?.trim() || "") !== "") errs.push({ file, line: i + 1, issue: "MD022: Headings should be surrounded by blank lines (above)", severity: "low", context: "MarkdownAuditor" });
-        if (i < lines.length - 1 && (lines[i + 1]?.trim() || "") !== "" && !lines[i + 1]?.trim()?.startsWith("#")) errs.push({ file, line: i + 1, issue: "MD022: Headings should be surrounded by blank lines (below)", severity: "low", context: "MarkdownAuditor" });
-        const text = stripped.replace(/^#+\s+/, "");
-        if (hMap.has(text)) errs.push({ file, line: i + 1, issue: `MD024: Duplicate headingFound: '${text}'`, severity: "medium", context: "MarkdownAuditor" });
-        hMap.set(text, i);
-        if (/[.,;:!?]$/.test(text)) errs.push({ file, line: i + 1, issue: "MD026: Trailing punctuation in heading", severity: "low", context: "MarkdownAuditor" });
+        this.run(lines, i, stripped, file, hMap, errs);
+    }
+
+    static run(lines: string[], i: number, stripped: string, file: string, hMap: Map<string, number>, errs: any[]) {
+        this.engine.lint(lines, i, stripped, file, { hMap, errs });
     }
 }

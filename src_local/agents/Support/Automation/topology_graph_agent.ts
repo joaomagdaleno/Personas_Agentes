@@ -4,66 +4,36 @@ import { Path } from "../../../core/path_utils.ts";
 const logger = winston.child({ module: "TopologyGraphAgent" });
 
 /**
- * 🕸️ Agente especialista em mapear a teia de conexões do projeto (Bun Version).
- * Gera código Mermaid para visualização da topologia.
+ * 🕸️ TopologyGraphAgent - PhD in Systemic Mapping
  */
 export class TopologyGraphAgent {
-    /**
-     * Gera um código Mermaid para visualização de fluxo baseado no mapa de contexto.
-     */
-    generateMermaidGraph(contextMap: Record<string, any>): string {
-        logger.info("🕸️ [Topology] Mapeando grafo de dependências...");
+    generateMermaidGraph(map: Record<string, any>): string {
+        logger.info("🕸️ [Topology] Mapeando grafo...");
+        const lines = ["graph TD"], nodes = new Set<string>();
+        const valid = ['.ts', '.py', '.tsx', '.js'];
+        const entries = Object.entries(map).filter(([f]) => valid.some(e => f.endsWith(e)) && !/[\\/](node_modules|dist)$/.test(f)).sort(([a], [b]) => this._score(b) - this._score(a));
 
-        const lines = ["graph TD"];
-        const nodes = new Set<string>();
-        const validExtensions = ['.ts', '.py', '.tsx', '.js'];
-
-        // Prioritiza nós CORE e AGENTS
-        const entries = Object.entries(contextMap)
-            .filter(([f]) => validExtensions.some(ext => f.endsWith(ext)) && !f.includes("node_modules") && !f.includes("dist"))
-            .sort(([a], [b]) => {
-                const scoreA = (a.includes("core/") ? 10 : 0) + (a.includes("agents/") ? 5 : 0);
-                const scoreB = (b.includes("core/") ? 10 : 0) + (b.includes("agents/") ? 5 : 0);
-                return scoreB - scoreA;
+        let count = 0;
+        for (const [f, d] of entries) {
+            if (count >= 150) break;
+            const nid = this._id(f), lbl = new Path(f).name();
+            if (!nodes.has(nid)) { nodes.add(nid); this._style(nid, f, lines); }
+            (d.dependencies || []).forEach((dep: any) => {
+                if (count < 150 && !(count > 100 && /(utils|types)/.test(dep))) {
+                    lines.push(`    ${nid}["${lbl}"] --> ${this._id(dep.toString())}`);
+                    count++;
+                }
             });
-
-        let connectionCount = 0;
-        const MAX_CONNECTIONS = 150;
-
-        for (const [file, data] of entries) {
-            if (connectionCount >= MAX_CONNECTIONS) break;
-
-            const nodeId = this.formatNodeId(file);
-            const nodeLabel = new Path(file).name();
-
-            if (!nodes.has(nodeId)) {
-                nodes.add(nodeId);
-                // Style nodes based on type
-                if (file.includes("/core/")) lines.push(`    class ${nodeId} core;`);
-                if (file.includes("/agents/")) lines.push(`    class ${nodeId} agent;`);
-            }
-
-            const dependencies = data.dependencies || [];
-            for (const dep of dependencies) {
-                if (connectionCount >= MAX_CONNECTIONS) break;
-                // Filter trivial dependencies if getting full
-                if (connectionCount > 100 && (dep.includes("utils") || dep.includes("types"))) continue;
-
-                const depId = this.formatNodeId(dep.toString());
-                lines.push(`    ${nodeId}["${nodeLabel}"] --> ${depId}`);
-                connectionCount++;
-            }
         }
-
-        // Add styling definitions
-        lines.push("    classDef core fill:#ff9999,stroke:#333,stroke-width:2px;");
-        lines.push("    classDef agent fill:#99ccff,stroke:#333,stroke-width:2px;");
-
-        logger.info(`✅ [Topology] Grafo gerado com ${connectionCount} conexões principais.`);
+        lines.push("    classDef core fill:#ff9999,stroke:#333;");
+        lines.push("    classDef agent fill:#99ccff,stroke:#333;");
         return lines.join("\n");
     }
 
-    private formatNodeId(str: string): string {
-        return str.replace(/[\.\/\-@]/g, "_");
+    private _score(f: string) { return (f.includes("/core/") ? 10 : 0) + (f.includes("/agents/") ? 5 : 0); }
+    private _id(s: string) { return s.replace(/[\.\/\-@]/g, "_"); }
+    private _style(id: string, f: string, l: string[]) {
+        if (f.includes("/core/")) l.push(`    class ${id} core;`);
+        else if (f.includes("/agents/")) l.push(`    class ${id} agent;`);
     }
 }
