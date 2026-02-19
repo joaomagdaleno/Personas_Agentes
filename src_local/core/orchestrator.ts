@@ -207,7 +207,10 @@ export class Orchestrator {
                 let found = false;
                 for (const mapKey of mapKeys) {
                     if (mapKey.replace(/\\/g, "/") === normPath) {
-                        ctx.map[mapKey].complexity = metric.tsDepth;
+                        // 🛡️ SECURITY FIX: Do not overwrite high-fidelity complexity from MetricsEngine 
+                        // unless specifically requested or if it's a "shadow" that needs adjustment.
+                        // We store tsDepth in a separate field for audit visibility.
+                        ctx.map[mapKey].tsDepth = metric.tsDepth;
                         found = true;
                         break;
                     }
@@ -217,7 +220,7 @@ export class Orchestrator {
                     const base = normPath.split('/').pop();
                     for (const mapKey of mapKeys) {
                         if (mapKey.replace(/\\/g, "/").endsWith(base || "INVALID")) {
-                            ctx.map[mapKey].complexity = metric.tsDepth;
+                            ctx.map[mapKey].tsDepth = metric.tsDepth;
                             found = true;
                             break;
                         }

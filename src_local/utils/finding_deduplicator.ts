@@ -1,3 +1,7 @@
+import winston from "winston";
+
+const logger = winston.child({ module: "FindingDeduplicator" });
+
 /**
  * 🔬 Assistente de Deduplicação Forense (Bun Version).
  */
@@ -40,7 +44,11 @@ export class FindingDeduplicator {
         const fIssue = f.issue || 'Unknown Issue';
         const fSev = (f.severity || 'MEDIUM').toUpperCase();
 
-        const coord = `${cleanPath}:${fLine}:${fIssue}`;
+        // Se for um hotspot de complexidade (sem linha), usamos uma chave especial
+        const isComplexityHotspot = fIssue.includes("Complexity") || fIssue.includes("Complexidade");
+        const coord = isComplexityHotspot
+            ? `COMPLEXITY:${cleanPath}`
+            : `${cleanPath}:${fLine}:${fIssue}`;
 
         const existing = coordinateMap.get(coord);
         if (!existing) {

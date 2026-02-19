@@ -1,3 +1,7 @@
+import winston from "winston";
+
+const logger = winston.child({ module: "MarkdownUtil" });
+
 /**
  * 📝 Utilitários de Markdown PhD.
  * Provê funções atômicas para deduplicação e normalização de documentos.

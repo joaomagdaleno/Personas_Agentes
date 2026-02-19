@@ -1,215 +1,50 @@
 import * as ts from "typescript";
 import winston from "winston";
-import { ASTIntelligence } from "../../../utils/ast_intelligence.ts";
-import { SafetySupremeJudge } from "./../Security/safety_supreme_judge.ts";
+import { SilentErrorStrategy } from "./logic_strategies/silent_error_strategy.ts";
+import { VetoStrategy } from "./logic_strategies/veto_strategy.ts";
+import { SafetyStrategy } from "./logic_strategies/safety_strategy.ts";
 
 const logger = winston.child({ module: "StructuralAuditorSupreme" });
 
 /**
- * 🏗️ Structural Auditor Supreme (High-Fidelity TypeScript Version).
- * Consolida legacy logic_node_auditor.py, silent_error_detector.py, 
- * veto_criteria_engine.py, e veto_structural_engine.py.
- * 
- * Melhorias sobre a versão legacy:
- * 1. Análise de "Veto Semântico": Isenta termos matemáticos e técnicos de alertas monetários.
- * 2. Detecção de "Erros Silenciosos" com consciência de contexto de log.
- * 3. Validação de permissões de teste de forma granular.
+ * 🏗️ Structural Auditor Supreme (PhD Version).
+ * Unifica a auditoria estrutural delegando para estratégias modulares.
  */
 export class StructuralAuditorSupreme {
-    // ast removed as we use static methods
-    private safety: SafetySupremeJudge;
-
-    constructor() {
-        this.safety = new SafetySupremeJudge();
-    }
+    constructor() { }
 
     /**
      * Valida um arquivo TypeScript em busca de falhas estruturais.
      */
     public auditFile(sourceFile: ts.SourceFile, ctx: { domain: string; isTechnical: boolean }): any[] {
         const issues: any[] = [];
+
+        // 1. Auditoria de Erros Silenciosos (Delegada)
+        issues.push(...SilentErrorStrategy.audit(sourceFile));
+
+        // 2. Scan de Nós Recursivo (Veto & Core Logic)
         this.walk(sourceFile, sourceFile, issues, ctx);
+
         return issues;
     }
 
     private walk(node: ts.Node, sourceFile: ts.SourceFile, issues: any[], ctx: { domain: string; isTechnical: boolean }): void {
-        // 1. Decisor de Veto (LineVeto legacy logic)
-        if (this.isVetoed(node, sourceFile, ctx)) return;
+        // Veto Strategy
+        if (VetoStrategy.isVetoed(node, sourceFile, ctx)) return;
 
-        // 2. Detectar erros silenciados (Catch blocks sem tratamento)
-        if (ts.isCatchClause(node)) {
-            if (this.isSilentCatch(node)) {
-                issues.push(this.createIssue(node, sourceFile, "Captura de erro silenciosa detectada (Catch vazio ou sem log).", "HIGH"));
-            }
-        }
-
-        // 3. Veto de Regras (Ex: Isentar termos técnicos de imprecisão monetária)
-        if (ts.isNumericLiteral(node) || ts.isBinaryExpression(node)) {
-            if (this.isMathContext(node, sourceFile)) {
-                // Skip further audit for this specific numeric context
-                return;
-            }
-        }
+        // Custom structural checks can be added here
 
         ts.forEachChild(node, (child) => this.walk(child, sourceFile, issues, ctx));
     }
 
-    private isVetoed(node: ts.Node, sourceFile: ts.SourceFile, ctx: { domain: string; isTechnical: boolean; inDocstring?: boolean }): boolean {
-        // Comment Veto (legacy VetoStructuralEngine logic)
-        if (this.isComment(node)) return true;
-
-        // Docstring Veto (legacy VetoStructuralEngine logic)
-        if (this.isDocstring(node, ctx)) return true;
-
-        // Domain Exclusion: Se for EXPERIMENTATION (testes), ignorar severidade não-crítica
-        // (No TypeScript, isso significa ser mais permissivo com lambdas ou asserts)
-        if (ctx.domain === "EXPERIMENTATION" && !this.isCriticalRisk(node)) {
-            return true;
-        }
-
-        // Rule Definition Veto
-        if (ctx.isTechnical && this.isRuleDefinition(node)) {
-            return true;
-        }
-
-        return false;
+    /**
+     * Interface de compatibilidade para o AuditExpertEngine.
+     */
+    public isInteractionSafe(content: string, line: number, riskType: string): { isSafe: boolean; reason: string } {
+        // Implementação simplificada delegando para SafetyStrategy
+        // Nota: A SafetyStrategy atual pode precisar de adaptação para aceitar número de linha
+        return SafetyStrategy.isInteractionSafe(content, "temp.ts");
     }
-
-    private isComment(node: ts.Node): boolean {
-        const text = node.getFullText();
-        return text.trim().startsWith("//") || text.trim().startsWith("/*");
-    }
-
-    private isDocstring(node: ts.Node, ctx: { inDocstring?: boolean }): boolean {
-        // No TypeScript, docstrings são JSDoc (ts.isJSDocRoot) ou comentários multi-linha
-        const text = node.getText();
-        if (text.startsWith("/**") || text.startsWith("/*")) return true;
-        return ctx.inDocstring || false;
-    }
-
-    private isCriticalRisk(node: ts.Node): boolean {
-        const text = node.getText().toLowerCase();
-        // Riscos críticos configurados: eval, exec, process.env direto (exemplo)
-        return text.includes("eval(") || text.includes("exec(");
-    }
-
-    private isRuleDefinition(node: ts.Node): boolean {
-        const text = node.getText();
-        return ["patterns", "rules", "regex", "diretriz"].some(kw => text.includes(kw));
-    }
-
-    private isSilentCatch(node: ts.CatchClause): boolean {
-        if (node.block.statements.length === 0) return true;
-
-        const text = node.block.getText().toLowerCase();
-        const hasLog = ["console.log", "logger", "info", "warn", "error", "trace", "_log_performance"].some(l => text.includes(l));
-        return !hasLog;
-    }
-
-    private isMathContext(node: ts.Node, sourceFile: ts.SourceFile): boolean {
-        const techTerms = ['alpha', 'progress', 'offset', 'dp', 'sp', 'x', 'y', 'width', 'height', 'radius', 'velocity', 'phase', 'lerp', 'sin', 'cos', 'tan', 'atan'];
-        const chain = ASTIntelligence.getParentChain(node);
-        return chain.some(parent => {
-            const text = parent.getText().toLowerCase();
-            return techTerms.some(term => text.includes(term));
-        });
-    }
-
-    private isTestContext(node: ts.Node, sourceFile: ts.SourceFile): boolean {
-        const testKeywords = ["describe", "it", "test", "expect"];
-        const chain = ASTIntelligence.getParentChain(node);
-        return chain.some(parent => ASTIntelligence.isCallTo(parent, testKeywords));
-    }
-
-    private createIssue(node: ts.Node, sourceFile: ts.SourceFile, msg: string, severity: string): any {
-        const { line } = sourceFile.getLineAndCharacterOfPosition(node.getStart());
-        return {
-            file: sourceFile.fileName,
-            line: line + 1,
-            issue: msg,
-            severity,
-            snippet: node.getText().slice(0, 150)
-        };
-    }
-
-    /** Parity: _is_single_line_docstring — Checks if a node is a single-line JSDoc/docstring. */
-    public _is_single_line_docstring(node: ts.Node): boolean {
-        const text = node.getText();
-        return (text.startsWith('/**') || text.startsWith('//')) && !text.includes('\n');
-    }
-
-    /** Gaps: inspect_intent and scan_file_logic */
-    public inspect_intent(node: ts.Node, sourceFile: ts.SourceFile): string { return "LOGIC"; }
-    public scan_file_logic(filePath: string, content: string): any[] { return []; }
-
-    /** Gaps: metrics_assembler.py */
-    public gather_qa_data(): any { return {}; }
-    public get_orchestration_metrics(): any { return {}; }
-
-    /** Parity: __init__ */
-    public __init__(): void { }
-
-    /** Parity stubs for semantic_context_analyst.py */
-    public classify_intent(node: ts.Node, sourceFile: ts.SourceFile): string { return "LOGIC"; }
-    public _is_metadata_context(node: ts.Node): boolean { return false; }
-    public _is_observability_context(node: ts.Node): boolean { return false; }
-    public map_component_type(filePath: string): string { return "AGENT"; }
-
-    /** Parity stubs for VetoRules */
-    public check_test_permissions(): boolean { return true; }
-    public is_technical_math_context(): boolean { return false; }
-    public is_domain_excluded(): boolean { return false; }
-
-    /** Parity stubs for VetoCriteriaEngine */
-    public check_permissions(): boolean { return true; }
-    public is_rule_def(): boolean { return false; }
-
-    /** Parity stubs for line_veto.py */
-    public should_skip(line: string): boolean { return false; }
-    public _is_structural_veto(node: ts.Node): boolean { return false; }
-    public _is_permission_or_content_veto(node: ts.Node): boolean { return false; }
 }
 
-/** Parity: LineVeto — Legacy alias for StructuralAuditorSupreme. */
-export class LineVeto extends StructuralAuditorSupreme {
-    public override should_skip(line: string): boolean { return false; }
-}
-
-/** Parity: SemanticContextAnalyst — Legacy alias for StructuralAuditorSupreme. */
-export class SemanticContextAnalyst extends StructuralAuditorSupreme {
-    public override __init__(): void { }
-}
-
-/** Parity: VetoStructuralEngine — Legacy alias for StructuralAuditorSupreme. */
-export class VetoStructuralEngine extends StructuralAuditorSupreme { }
-
-/** Parity: CodeInspectorAgent — Legacy alias for StructuralAuditorSupreme. */
-export class CodeInspectorAgent extends StructuralAuditorSupreme { }
-
-/** Parity: MetricsAssembler — Legacy alias for StructuralAuditorSupreme. */
-export class MetricsAssembler extends StructuralAuditorSupreme { }
-
-/** Parity: VetoCriteriaEngine — Legacy alias for StructuralAuditorSupreme. */
-export class VetoCriteriaEngine extends StructuralAuditorSupreme { }
-
-/** Parity: VetoRules — Legacy alias for StructuralAuditorSupreme. */
-export class VetoRules extends StructuralAuditorSupreme {
-    public override check_test_permissions(): boolean { return true; }
-    public override is_technical_math_context(): boolean { return false; }
-    public override is_domain_excluded(): boolean { return false; }
-    public override check_permissions(): boolean { return true; }
-    public override is_rule_def(): boolean { return false; }
-}
-
-/** Parity: MetaAnalysisDetector — Legacy alias for StructuralAuditorSupreme. */
-export class MetaAnalysisDetector extends StructuralAuditorSupreme {
-    public is_meta_analysis_node(): boolean { return false; }
-    public _is_isinstance_ast_check(): boolean { return false; }
-    public _is_regex_call(): boolean { return false; }
-}
-
-/** Parity: SilentErrorDetector — Legacy alias for StructuralAuditorSupreme. */
-export class SilentErrorDetector extends StructuralAuditorSupreme {
-    public detect(node: ts.Node): boolean { return false; }
-    public _is_silent_except(node: ts.Node): boolean { return false; }
-}
+// Nota: Classes Legadas (LineVeto, etc) foram removidas pois não possuem dependências ativas.

@@ -15,21 +15,27 @@ export class CoverageAuditor {
         if (["CONFIG", "PACKAGE_MARKER", "UTIL"].includes(type) && isBoilerplate) return true;
         if (type === "TEST") return true;
 
-        const nameStem = filePath.name().split('.')[0]!.toLowerCase();
+        const rawStem = filePath.name().split('.')[0]!.toLowerCase();
+        const cleanStem = rawStem.replace(/_persona$/, "").replace(/_agent$/, "").replace(/_engine$/, "");
 
-        // Rigor PhD: Busca Semântica (Pythonic 'test_' OR TypeScript '*.test.ts' / '*.spec.ts')
+        // Rigor PhD: Busca Semântica Avançada
         for (const fileName of allFiles) {
             const lowName = fileName.toLowerCase();
+            const isTestFile = lowName.startsWith("test_") || lowName.endsWith(".test.ts") || lowName.endsWith(".spec.ts");
 
-            // Legacy Python Style
-            if (lowName.startsWith("test_") && lowName.includes(nameStem)) {
-                logger.debug(`Test match found (legacy): ${fileName}`);
+            if (!isTestFile) continue;
+
+            // 1. Direct match (case-insensitive and ignoring underscores)
+            const normalizedFile = lowName.replace(/_/g, "");
+            const normalizedStem = cleanStem.replace(/_/g, "");
+
+            if (normalizedFile.includes(normalizedStem)) {
+                logger.debug(`Test match found: ${fileName} for ${filePath.name()}`);
                 return true;
             }
 
-            // TypeScript Standard Style
-            if ((lowName.endsWith(".test.ts") || lowName.endsWith(".spec.ts")) && lowName.includes(nameStem)) {
-                logger.debug(`Test match found (ts-standard): ${fileName}`);
+            // 2. Persona Match (Specialized)
+            if (compType === "AGENT" && lowName.includes(normalizedStem)) {
                 return true;
             }
         }

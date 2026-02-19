@@ -1,5 +1,8 @@
 import winston from "winston";
 import { BattlePlanSectionsEngine } from "./battle_plan_sections_engine.ts";
+import { SeverityGrouper } from "./strategies/SeverityGrouper.ts";
+import { PlanHeader } from "./strategies/PlanHeader.ts";
+import { PlanItems } from "./strategies/PlanItems.ts";
 
 const logger = winston.child({ module: "BattlePlanFormatter" });
 
@@ -16,11 +19,8 @@ export class BattlePlanFormatter {
 
     format(auditResults: any[]): string {
         const active = this.engine.filterActiveResults(auditResults, this.getItemKey);
-        if (active.length === 0) {
-            return "## 🎯 PLANO DE BATALHA\n\n> ✅ Nenhuma intervenção necessária.";
-        }
-
-        const categories = this.groupBySeverity(active);
+        if (active.length === 0) return "## 🎯 PLANO DE BATALHA\n\n> ✅ Nenhuma intervenção necessária.";
+        const categories = SeverityGrouper.group(active);
         const sections: string[] = [
             "## 🎯 PLANO DE BATALHA: DIRETRIZES DE ENGENHARIA",
             this.formatImpactSummary(categories),
@@ -56,51 +56,18 @@ export class BattlePlanFormatter {
 
         for (const item of activeItems) {
             if (item && typeof item === 'object') {
-                const sevKey = (item.severity || 'MEDIUM').toUpperCase();
-                const list = cats[sevKey];
-                if (list) {
-                    list.push(item);
-                } else {
-                    cats["MEDIUM"].push(item);
-                }
-            } else {
-                cats["STRATEGIC"].push(item);
-            }
+                const sevKey = (item.severity || 'MEDIUM').toUpperCase(), list = (cats as any)[sevKey];
+                if (list) list.push(item); else (cats as any)["MEDIUM"].push(item);
+            } else cats["STRATEGIC"].push(item);
         }
         return cats;
     }
 
     private formatImpactSummary(cats: Record<string, any[]>): string {
-        let res = "### 📊 RESUMO DE INTERVENÇÕES\n\n| Severidade | Quantidade |\n| :--- | :---: |\n";
-        const order = ["CRITICAL", "HIGH", "MEDIUM", "LOW", "STRATEGIC"];
-        for (const s of order) {
-            const list = cats[s];
-            if (list && list.length > 0) {
-                res += `| ${s} | ${list.length} |\n`;
-            }
-        }
-        return res.trim();
+        return PlanHeader.formatImpact(cats);
     }
 
     private formatItem(item: any, sev: string): string {
-        if (typeof item !== 'object' || item === null) {
-            return `- **Diretriz Estratégica:** ${item.toString().replace(/\.$/, '').trim()}\n\n`;
-        }
-
-        const issueClean = (item.issue || '').toString().replace(/\.$/, '').trim();
-        const line = item.line || 'N/A';
-        const fileId = (item.file || '').replace(/\./g, '_').replace(/[\\/]/g, '/');
-
-        let res = `#### 🔴 Item ${line}: ${issueClean} [ID: ${fileId}_${line}]\n\n`;
-
-        if (item.snippet) {
-            res += `- **Evidência:**\n\n\`\`\`typescript\n${item.snippet.trim()}\n\`\`\`\n\n`;
-        }
-
-        if (item.ai_insight) {
-            res += `> 🧠 **TestRefiner (AI Insight):**\n> ${item.ai_insight.replace(/\n/g, '\n> ')}\n\n`;
-        }
-
-        return res + `- **Diretriz:** Padrão soberano de ${sev.toLowerCase()}\n\n`;
+        return PlanItems.format(item, sev);
     }
 }

@@ -10,12 +10,26 @@ export class TaskExecutor {
     constructor() { }
 
     /**
-     * Executes tasks in parallel using Promise.all.
-     * Concurrency is currently unlimited but could be throttled.
+     * Executes tasks in parallel using a concurrency-limited pool.
+     * Default concurrency: 10
      */
-    async runParallel<T, R>(fn: (item: T) => Promise<R> | R, items: T[]): Promise<R[]> {
+    async runParallel<T, R>(fn: (item: T) => Promise<R> | R, items: T[], concurrency: number = 10): Promise<R[]> {
         if (!items || items.length === 0) return [];
-        return await Promise.all(items.map(item => fn(item)));
+
+        const results: R[] = new Array(items.length);
+        let currentIdx = 0;
+
+        const worker = async () => {
+            while (currentIdx < items.length) {
+                const index = currentIdx++;
+                results[index] = await fn(items[index]!);
+            }
+        };
+
+        const workers = Array.from({ length: Math.min(concurrency, items.length) }, () => worker());
+        await Promise.all(workers);
+
+        return results;
     }
 
     /** Parity stub: run_parallel */

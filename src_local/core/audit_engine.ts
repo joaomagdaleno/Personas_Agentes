@@ -6,13 +6,10 @@ import * as ts from "typescript";
 const logger = winston.child({ module: "AuditEngine" });
 
 /**
- * Motor especializado em auditorias estratégicas e scans de integridade (Bun Version).
+ * 🏛️ AuditEngine — PhD in Systemic Integrity & Intelligence Orquestration
  */
 export class AuditEngine {
-    orc: any;
-    root: Path;
-    taskOrc: TaskOrchestrator;
-
+    orc: any; root: Path; taskOrc: TaskOrchestrator;
     constructor(orchestrator: any) {
         this.orc = orchestrator;
         this.root = new Path(orchestrator.projectRoot.toString());
@@ -21,212 +18,83 @@ export class AuditEngine {
 
     async runStrategicAudit(context: any, objective: string | null = null, dryRun: boolean = false): Promise<[any[], number]> {
         const startT = Date.now();
-        const stacks = context.identity?.stacks || new Set(["Python"]);
-        const target = objective || `Validar integridade ${Array.from(stacks).join(', ')}`;
-
-        // Seleção e Detecção
-        const active = this.taskOrc.selectActivePhds(target, stacks, this.orc.personas);
+        const target = objective || `Validar integridade ${Array.from(context.identity?.stacks || ["Python"]).join(', ')}`;
+        const active = this.taskOrc.selectActivePhds(target, context.identity?.stacks || new Set(["Python"]), this.orc.personas);
         const changedFiles = await this.detectChanges(Object.keys(context.map || {}));
-        this.orc.lastDetectedChanges = Object.keys(changedFiles);
-
-        // Execução
         const findings = await this.taskOrc.runAuditCycle(active, target, changedFiles, context);
 
-        // Auditoria Lógica Semântica (Novidade Phd TS)
-        for (const filePath of Object.keys(changedFiles)) {
-            if (filePath.endsWith(".ts") || filePath.endsWith(".tsx")) {
-                const fullPath = this.root.join(filePath);
-                const content = await Bun.file(fullPath.toString()).text();
-                const { LogicAuditor } = await import("../agents/Support/Analysis/logic_auditor.ts");
-                const sourceFile = ts.createSourceFile(filePath, content, ts.ScriptTarget.Latest, true);
-                findings.push(...LogicAuditor.scanFile(sourceFile));
-            } else if (filePath.endsWith(".md")) {
-                const fullPath = this.root.join(filePath);
-                const content = await Bun.file(fullPath.toString()).text();
-                const { MarkdownAuditor } = await import("../agents/Support/Reporting/markdown_auditor.ts");
-                findings.push(...MarkdownAuditor.auditMarkdown(filePath, content));
-            }
-        }
-
-        // 🛡️ Security Audit (Secrets)
-        const { SecuritySentinelAgent } = await import("../agents/Support/Security/security_sentinel_agent.ts");
-        const security = new SecuritySentinelAgent();
-        findings.push(...await security.scanProject(context.map));
-
-        // 📦 Dependency Audit (Submodules)
-        const { DependencyAuditor } = await import("../utils/dependency_auditor.ts");
-        const auditor = new DependencyAuditor(this.root.toString());
-        findings.push(...await auditor.checkSubmoduleStatus());
-
-        // 🧠 Cognitive Audit (Intent)
-        const { CognitiveAnalyst } = await import("../agents/Support/Diagnostics/cognitive_analyst.ts");
-        for (const filePath of Object.keys(changedFiles)) {
-            const fullPath = this.root.join(filePath);
-            const content = await Bun.file(fullPath.toString()).text();
-            const cognitiveFinding = await CognitiveAnalyst.analyzeIntent(filePath, content, this.orc);
-            if (cognitiveFinding) findings.push(cognitiveFinding);
-        }
-
-        if (!dryRun) {
-            // Persistência Atômica
-            for (const [p, h] of Object.entries(changedFiles)) {
-                this.orc.cacheManager.update(p, h);
-            }
-            this.orc.cacheManager.save();
-            this.orc.stabilityLedger.update(findings, context.map);
-        } else {
-            logger.info("🛡️ [AuditEngine] Dry-Run: Persistência de cache e ledger ignorada.");
-        }
-
+        await this.enrichAuditFindings(findings, Object.keys(changedFiles), context);
+        if (!dryRun) this.persistAuditState(findings, changedFiles, context);
+        else logger.info("🛡️ [AuditEngine] Dry-Run active.");
         return [findings, startT];
     }
 
-    private async detectChanges(mapFiles: string[]): Promise<Record<string, string>> {
-        const check = async (p: string) => {
-            const fullPath = this.root.join(p);
-            const h = await this.orc.cacheManager.getFileHash(fullPath);
-            return this.orc.cacheManager.isChanged(p, h) ? { path: p, hash: h } : null;
-        };
-
-        const results = await this.orc.executor.runParallel(check, mapFiles);
-        const changed: Record<string, string> = {};
-        for (const res of results) {
-            if (res) changed[res.path] = res.hash;
+    private async enrichAuditFindings(findings: any[], changedFiles: string[], context: any): Promise<void> {
+        for (const f of changedFiles) {
+            const content = await Bun.file(this.root.join(f).toString()).text();
+            if (f.match(/\.ts$|\.tsx$/)) findings.push(...(await import("../agents/Support/Analysis/logic_auditor.ts")).LogicAuditor.scanFile(ts.createSourceFile(f, content, ts.ScriptTarget.Latest, true)));
+            else if (f.endsWith(".md")) findings.push(...(await import("../agents/Support/Reporting/markdown_auditor.ts")).MarkdownAuditor.auditMarkdown(f, content));
+            const cog = await (await import("../agents/Support/Diagnostics/cognitive_analyst.ts")).CognitiveAnalyst.analyzeIntent(f, content, this.orc);
+            if (cog) findings.push(cog);
         }
-        return changed;
+        findings.push(...await (new (await import("../agents/Support/Security/security_sentinel_agent.ts")).SecuritySentinelAgent()).scanProject(context.map));
+        findings.push(...await (new (await import("../utils/dependency_auditor.ts")).DependencyAuditor(this.root.toString())).checkSubmoduleStatus());
+    }
+
+    private persistAuditState(findings: any[], changed: Record<string, string>, context: any): void {
+        Object.entries(changed).forEach(([p, h]) => this.orc.cacheManager.update(p, h));
+        this.orc.cacheManager.save();
+        this.orc.stabilityLedger.update(findings, context.map);
+    }
+
+    private async detectChanges(mapFiles: string[]): Promise<Record<string, string>> {
+        const results = await this.orc.executor.runParallel(async (p: string) => {
+            const h = await this.orc.cacheManager.getFileHash(this.root.join(p));
+            return this.orc.cacheManager.isChanged(p, h) ? { path: p, hash: h } : null;
+        }, mapFiles);
+        return results.reduce((acc: Record<string, string>, r: any) => { if (r) acc[r.path] = r.hash; return acc; }, {});
     }
 
     async runObfuscationScan(contextMap: any = null): Promise<any[]> {
-        const startT = Date.now();
-        const { ObfuscationHunter } = await import("../agents/Support/Security/obfuscation_hunter.ts");
-        const hunter = new ObfuscationHunter();
-
-        try {
-            let findings: any[] = [];
-            const tMap = contextMap || this.orc.contextEngine.map;
-
-            for (const [filePath, data] of Object.entries(tMap)) {
-                // Support both .py (original target) and .ts (new target)
-                if (filePath.endsWith(".ts") || filePath.endsWith(".js") || filePath.endsWith(".py")) {
-                    const fullPath = this.root.join(filePath);
-                    if (await Bun.file(fullPath.toString()).exists()) {
-                        const content = await Bun.file(fullPath.toString()).text();
-                        const fileFindings = await hunter.scanFile(filePath, content);
-                        findings = findings.concat(fileFindings.map((f: any) => ({ ...f, file: filePath })));
-                    }
-                }
+        const startT = Date.now(), hunter = new (await import("../agents/Support/Security/obfuscation_hunter.ts")).ObfuscationHunter();
+        let findings: any[] = [];
+        const tMap = contextMap || this.orc.contextEngine.map;
+        for (const [f, d] of Object.entries(tMap)) {
+            if (f.match(/\.ts$|\.js$|\.py$/) && await Bun.file(this.root.join(f).toString()).exists()) {
+                const c = await Bun.file(this.root.join(f).toString()).text();
+                findings = findings.concat((await hunter.scanFile(f, c)).map((fi: any) => ({ ...fi, file: f })));
             }
-
-            const duration = (Date.now() - startT) / 1000;
-            logger.info(`🕵️ [AuditEngine] Obfuscation scan concluído em ${duration.toFixed(4)}s. Detectados: ${findings.length}`);
-            return findings;
-        } catch (e) {
-            logger.error(`❌ [AuditEngine] Erro no scan de ofuscação: ${e}`);
-            return [];
         }
+        logger.info(`🕵️ [AuditEngine] Obfuscation scan concluído em ${((Date.now() - startT) / 1000).toFixed(4)}s.`);
+        return findings;
     }
 
     async runStagedAudit(context: any, dryRun: boolean = true): Promise<[any[], number]> {
         const startT = Date.now();
-        const stacks = context.identity?.stacks || new Set(["TypeScript", "Python"]);
-        const target = "Auditoria de Commit (Staged Files)";
-
-        // Get staged files from git
         const stagedRaw = await this.orc.executor.runCommand("git diff --cached --name-only");
-        const stagedFilesList = stagedRaw.stdout.split("\n").filter((f: string) => f.trim() !== "");
+        const staged = stagedRaw.stdout.split("\n").filter((f: string) => f.trim() !== "");
+        if (staged.length === 0) return [[], startT];
 
-        if (stagedFilesList.length === 0) {
-            logger.info("📦 [AuditEngine] Nenhum arquivo staged para auditar.");
-            return [[], startT];
-        }
-
-        const active = this.taskOrc.selectActivePhds(target, stacks, this.orc.personas);
-
-        // Build a change map equivalent to what detectChanges produces
-        const changedFiles: Record<string, string> = {};
-        for (const f of stagedFilesList) {
-            changedFiles[f] = "staged"; // Dummy hash for staged mode
-        }
-
-        const findings = await this.taskOrc.runAuditCycle(active, target, changedFiles, context);
-
-        // Standard logic for TS/MD files in staged set
-        for (const filePath of stagedFilesList) {
-            const fullPath = this.root.join(filePath);
-            if (!await Bun.file(fullPath.toString()).exists()) continue;
-
-            const content = await Bun.file(fullPath.toString()).text();
-
-            if (filePath.endsWith(".ts") || filePath.endsWith(".tsx")) {
-                const { LogicAuditor } = await import("../agents/Support/Analysis/logic_auditor.ts");
-                const sourceFile = ts.createSourceFile(filePath, content, ts.ScriptTarget.Latest, true);
-                findings.push(...LogicAuditor.scanFile(sourceFile));
-            } else if (filePath.endsWith(".md")) {
-                const { MarkdownAuditor } = await import("../agents/Support/Reporting/markdown_auditor.ts");
-                findings.push(...MarkdownAuditor.auditMarkdown(filePath, content));
-            }
-        }
-
+        const changed: Record<string, string> = staged.reduce((acc: any, f: string) => { acc[f] = "staged"; return acc; }, {});
+        const active = this.taskOrc.selectActivePhds("Staged Audit", context.identity?.stacks || new Set(["TS", "PY"]), this.orc.personas);
+        const findings = await this.taskOrc.runAuditCycle(active, "Staged Audit", changed, context);
+        await this.enrichAuditFindings(findings, staged, context);
         return [findings, startT];
     }
 
-    /**
-     * 🧠 Scan de Conteúdo em Memória (Legacy Compatibility).
-     * Permite auditar strings arbitrárias sem salvar em disco.
-     */
     async scan_content(content: string, filename: string): Promise<any[]> {
-        if (filename.endsWith(".ts") || filename.endsWith(".tsx")) {
-            const { LogicAuditor } = await import("../agents/Support/Analysis/logic_auditor.ts");
-            const sourceFile = ts.createSourceFile(filename, content, ts.ScriptTarget.Latest, true);
-            return LogicAuditor.scanFile(sourceFile);
-        } else if (filename.endsWith(".md")) {
-            const { MarkdownAuditor } = await import("../agents/Support/Reporting/markdown_auditor.ts");
-            return MarkdownAuditor.auditMarkdown(filename, content);
-        }
+        if (filename.match(/\.ts$|\.tsx$/)) return (await import("../agents/Support/Analysis/logic_auditor.ts")).LogicAuditor.scanFile(ts.createSourceFile(filename, content, ts.ScriptTarget.Latest, true));
+        if (filename.endsWith(".md")) return (await import("../agents/Support/Reporting/markdown_auditor.ts")).MarkdownAuditor.auditMarkdown(filename, content);
         return [];
     }
 
-    /**
-     * 📦 Scan em Lote (Phd Version).
-     * Processa múltiplos arquivos com contexto compartilhado.
-     */
     async scan_multiple_files(files: string[]): Promise<any[]> {
         const findings: any[] = [];
-        const context = this._build_scan_context(files);
-
-        logger.info(`📦 [AuditEngine] Batch Scan iniciado para ${files.length} arquivos.`);
-
-        for (const file of files) {
-            const fullPath = this.root.join(file);
-            if (await Bun.file(fullPath.toString()).exists()) {
-                const content = await Bun.file(fullPath.toString()).text();
-                findings.push(...await this.scan_content(content, file));
-            }
+        for (const f of files) {
+            if (await Bun.file(this.root.join(f).toString()).exists()) findings.push(...await this.scan_content(await Bun.file(this.root.join(f).toString()).text(), f));
         }
         return findings;
     }
 
-    private _build_scan_context(files: string[]): any {
-        return {
-            timestamp: Date.now(),
-            files: files,
-            mode: "batch",
-            phd: "AuditEngine"
-        };
-    }
-
-    /** Parity: _log_perf — Logs performance metrics for audit operations. */
-    private _log_perf(operation: string, startTime: number, count: number): void {
-        const duration = (Date.now() - startTime) / 1000;
-        logger.info(`⏱️ [AuditEngine] ${operation}: ${duration.toFixed(4)}s (${count} items)`);
-    }
-
-    /** Parity: _scan_single_file — Audits a single file and returns findings. */
-    public async _scan_single_file(filePath: string, context: any): Promise<any[]> {
-        const fullPath = this.root.join(filePath);
-        if (!await Bun.file(fullPath.toString()).exists()) return [];
-        const content = await Bun.file(fullPath.toString()).text();
-        return await this.scan_content(content, filePath);
-    }
+    public async _scan_single_file(f: string, ctx: any): Promise<any[]> { return this.scan_content(await Bun.file(this.root.join(f).toString()).text(), f); }
 }
-

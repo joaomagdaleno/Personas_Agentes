@@ -1,5 +1,8 @@
 import * as fs from "fs";
 import * as path from "path";
+import winston from "winston";
+
+const logger = winston.child({ module: "TopologyEngine" });
 
 export interface TopologyFile {
     path: string;

@@ -57,8 +57,10 @@ export class StructuralAnalyst {
     }
 
     private analyzeRaw(content: string, filename: string): FileAnalysis {
+        const hasTelemetry = ["telemetry", "log_performance", "winston", "logger"].some(kw => content.includes(kw));
+
         if (!filename.endsWith('.py')) {
-            return { complexity: 1, dependencies: [] };
+            return { complexity: 1, dependencies: [], telemetry: hasTelemetry };
         }
 
         try {

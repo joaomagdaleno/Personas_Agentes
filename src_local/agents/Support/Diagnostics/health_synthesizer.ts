@@ -54,22 +54,14 @@ export class HealthSynthesizer {
 
         const vitals = metricsEngine.getVitals(mapData);
 
-        // 🌪️ Enriquecendo Mapa de Entropia com Alta Resolução (Depth Intelligence)
+        // 🌪️ Enriquecendo Mapa de Entropia com Métricas de Auditoria
         const enrichedMap = { ...mapData };
         if (qaData?.depth_audit?.metrics) {
             for (const metric of qaData.depth_audit.metrics) {
                 const pathKey = metric.path;
                 if (enrichedMap[pathKey]) {
-                    enrichedMap[pathKey].complexity = metric.tsDepth;
-                } else {
-                    // Tenta encontrar por basename se o path absoluto/relativo divergir
-                    const base = pathKey.split('/').pop();
-                    for (const key of Object.keys(enrichedMap)) {
-                        if (key.endsWith(base || "")) {
-                            enrichedMap[key].complexity = metric.tsDepth;
-                            break;
-                        }
-                    }
+                    // Do not overwrite complexity anymore, just add tsDepth for visibility
+                    enrichedMap[pathKey].ts_depth = metric.tsDepth;
                 }
             }
         }

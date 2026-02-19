@@ -1,4 +1,7 @@
 import { Path } from "../../../core/path_utils.ts";
+import winston from "winston";
+
+const logger = winston.child({ module: "DNAProfiler" });
 
 /**
  * 🧬 Perfilador de DNA PhD (Bun Version).

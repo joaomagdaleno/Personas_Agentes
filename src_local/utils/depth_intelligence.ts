@@ -1,7 +1,11 @@
 import { readFile, exists } from "node:fs/promises";
 import * as path from "node:path";
-import * as ts from "typescript";
+import winston from "winston";
 import type { FileAnalysis } from "./go_discovery_adapter.ts";
+import { TsDepthScorer } from "./strategies/depth/TsDepthScorer.ts";
+import { PyDepthScorer } from "./strategies/depth/PyDepthScorer.ts";
+
+const logger = winston.child({ module: "DepthIntelligence" });
 
 export interface DepthMetric {
     path: string;
@@ -83,10 +87,7 @@ const LEGACY_ALIASES: Record<string, string> = {
  */
 export class DepthIntelligence {
     static async calculateDepthAudit(projectRoot: string, tsFiles: string[], pyFiles: string[], atomicUnits: FileAnalysis[]): Promise<DepthSummary> {
-        console.log("🧠 [DepthIntelligence] Iniciando calculateDepthAudit...");
         const legacyMap = this.buildLegacyMap(pyFiles);
-        console.log(`🧠 [DepthIntelligence] LegacyMap construído com ${legacyMap.size} entradas.`);
-
         const metrics: DepthMetric[] = [];
         const stats = { EVOLVED: 0, MAINTAINED: 0, SIMPLIFIED: 0 };
 
@@ -101,42 +102,30 @@ export class DepthIntelligence {
                     if (pySourcesRetry && pySourcesRetry.length > 0) pySources.push(...pySourcesRetry);
                 }
 
-                const pyDepthPromises = pySources.map(p => this.getPythonDepth(p, atomicUnits));
-                const pyDepths = await Promise.all(pyDepthPromises);
+                const pyDepths = await Promise.all(pySources.map(p => PyDepthScorer.calculate(p, atomicUnits, this.getAtomicPoints)));
                 const pyDepth = pyDepths.reduce((acc, d) => acc + d, 0);
+                const tsDepth = await TsDepthScorer.calculate(sovPath, atomicUnits, this.getAtomicPoints);
 
-                const tsDepth = await this.getTsDepth(sovPath, atomicUnits);
-
-                let status: DepthMetric["status"] = "⚠️ MAINTAINED";
-                let evolution = "Paridade funcional preservada.";
-
-                if (tsDepth > pyDepth * 1.5) {
-                    status = "🚀 EVOLVED";
-                    evolution = "Complexidade semântica e segurança aumentadas.";
-                    stats.EVOLVED++;
-                } else if (tsDepth < pyDepth * 0.8) {
-                    status = "📉 SIMPLIFIED";
-                    evolution = "Lógica consolidada (Risco de baixa profundidade).";
-                    stats.SIMPLIFIED++;
-                } else {
-                    stats.MAINTAINED++;
-                }
+                const { status, evolution } = this.determineEvolution(pyDepth, tsDepth);
+                stats[status.split(" ")[1] as keyof typeof stats]++;
 
                 metrics.push({
                     path: path.relative(projectRoot, sovPath).replace(/\\/g, "/"),
-                    pyDepth,
-                    tsDepth,
-                    delta: tsDepth - pyDepth,
-                    status,
-                    evolution,
-                    pySources
+                    pyDepth, tsDepth, delta: tsDepth - pyDepth,
+                    status: status as DepthMetric["status"],
+                    evolution, pySources
                 });
             } catch (err) {
-                console.error(`💥 Erro ao processar profundidade para ${sovPath}: ${err}`);
+                logger.error(`💥 Erro depths ${sovPath}: ${err}`);
             }
         }
-
         return { stats, metrics };
+    }
+
+    private static determineEvolution(py: number, ts: number): { status: string, evolution: string } {
+        if (ts > py * 1.5) return { status: "🚀 EVOLVED", evolution: "Complexidade semântica e segurança aumentadas." };
+        if (ts < py * 0.8) return { status: "📉 SIMPLIFIED", evolution: "Lógica consolidada (Risco de baixa profundidade)." };
+        return { status: "⚠️ MAINTAINED", evolution: "Paridade funcional preservada." };
     }
 
     private static buildLegacyMap(pyFiles: string[]): Map<string, string[]> {
@@ -150,117 +139,12 @@ export class DepthIntelligence {
         return map;
     }
 
-    private static async getPythonDepth(filePath: string, atomicUnits: FileAnalysis[]): Promise<number> {
-        if (!await exists(filePath)) return 0;
-        const content = await readFile(filePath, "utf-8");
-        let score = 0;
-
-        const logicKeywords = [" if ", " elif ", " for ", " while ", " def ", " class ", " try ", " except ", " with "];
-        logicKeywords.forEach(kw => {
-            const escaped = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            const count = (content.match(new RegExp(escaped, "g")) || []).length;
-            score += count * 20; // Increased from 5 to 20 for PhD resolution
-        });
-
-        const functional = [".match(", "ast.", "re.", "@property", "lambda", "yield"];
-        functional.forEach(kw => {
-            const escaped = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            const count = (content.match(new RegExp(escaped, "g")) || []).length;
-            score += count * 15; // Increased from 3 to 15
-        });
-
-        score += this.getAtomicPoints(filePath, atomicUnits);
-        return score;
-    }
-
-    private static async getTsDepth(filePath: string, atomicUnits: FileAnalysis[]): Promise<number> {
-        if (!await exists(filePath)) return 0;
-        const content = await readFile(filePath, "utf-8");
-
-        // v7.2 PhD Upgrade: Detect script kind for proper JSX/TSX parsing
-        const isTsx = filePath.endsWith(".tsx") || filePath.endsWith(".jsx");
-        const sourceFile = ts.createSourceFile(
-            filePath,
-            content,
-            ts.ScriptTarget.Latest,
-            true,
-            isTsx ? ts.ScriptKind.TSX : ts.ScriptKind.TS
-        );
-
-        let score = 0;
-
-        const walk = (node: ts.Node) => {
-            // Detect Delegate Pattern (Facade) - Heuristic
-            // If method is one line and calls a property, it's a delegate.
-            let isDelegate = false;
-            if (ts.isMethodDeclaration(node) && node.body && node.body.statements.length === 1) {
-                const stmt = node.body.statements[0];
-                if (stmt && (ts.isReturnStatement(stmt) || ts.isExpressionStatement(stmt))) {
-                    isDelegate = true;
-                }
-            }
-
-            if (ts.isIfStatement(node) || ts.isForOfStatement(node) || ts.isForInStatement(node) || ts.isSwitchStatement(node) || ts.isTryStatement(node)) {
-                score += 30; // High Resolution Logic
-            }
-            if (ts.isMethodDeclaration(node) || ts.isArrowFunction(node) || ts.isClassDeclaration(node) || ts.isFunctionDeclaration(node)) {
-                if (isDelegate) {
-                    score += 1; // Facade Delegation is cheap
-                } else {
-                    score += 25; // High Resolution Atomics
-                }
-            }
-            if (ts.isInterfaceDeclaration(node) || ts.isTypeAliasDeclaration(node) || ts.isTypeReferenceNode(node) || ts.isEnumDeclaration(node)) {
-                score += 15; // Type complexity
-            }
-
-            // v8.7: Data Density (Knowledge Weight)
-            // Recognize constants, exports and property assignments as "Deep Knowledge"
-            if (ts.isVariableDeclaration(node) || ts.isPropertyAssignment(node) || ts.isExportAssignment(node)) {
-                score += 5;
-            }
-
-            // v7.2: JSX Depth (Aggressive UI weight)
-            if (ts.isJsxElement(node) || ts.isJsxSelfClosingElement(node)) {
-                score += 10;
-            }
-
-            // Only check text on leaf nodes (Identifiers) to avoid recursive parent inflation
-            if (ts.isIdentifier(node)) {
-                const text = node.text; // Use .text for identifiers, faster and cleaner
-                if (text.includes("SyntaxKind") || text.includes("ast") || text.includes("Node")) {
-                    score += 5; // Reduced from 15 (since it will match individual identifiers)
-                }
-                if (text.includes("shouldSkip") || text.includes("isSafe") || text.includes("veto") || text.includes("audit")) {
-                    score += 3; // Reduced from 10
-                }
-            }
-            ts.forEachChild(node, walk);
-        };
-
-        walk(sourceFile);
-
-        // Adjust Atomic Points contextually
-        // If the file consists mostly of delegates, don't penalize with atomic points
-        let atomicScore = this.getAtomicPoints(filePath, atomicUnits);
-
-        if (filePath.includes("governance_system") || filePath.includes("facade")) {
-            atomicScore = Math.min(atomicScore, 10); // Cap atomic score for known facades
-        }
-
-        score += atomicScore;
-        return score;
-    }
-
     private static getAtomicPoints(filePath: string, atomicUnits: FileAnalysis[]): number {
-        // v7.2: Hybrid Resolve (Absolute vs Relative vs Cross-Platform)
         const targetAbs = path.resolve(filePath).toLowerCase().replace(/\\/g, "/");
-
         const fileData = atomicUnits.find(f => {
             const fAbs = path.resolve(f.path).toLowerCase().replace(/\\/g, "/");
             return fAbs === targetAbs || targetAbs.endsWith(f.path.toLowerCase().replace(/\\/g, "/"));
         });
-
         return fileData ? fileData.units.length * 40 : 0;
     }
 }

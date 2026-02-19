@@ -7,7 +7,7 @@ import { StructuralAnalyst } from "../agents/Support/Analysis/structural_analyst
 import { CoverageAuditor } from "../agents/Support/Analysis/coverage_auditor.ts";
 import { ConnectivityMapper } from "../agents/Support/Analysis/connectivity_mapper.ts";
 import { ParityAnalyst } from "../agents/Support/Analysis/parity_analyst.ts";
-import { MetricsEngine, type MetricsResult } from "../agents/Support/Diagnostics/metrics_engine.ts";
+import { MetricsEngine } from "../agents/Support/Diagnostics/metrics_engine.ts";
 
 const logger = winston.child({ module: "ContextEngine" });
 
@@ -15,235 +15,78 @@ const logger = winston.child({ module: "ContextEngine" });
  * 🧠 Cérebro Semântico PhD (Bun Version).
  */
 export class ContextEngine {
-    projectRoot: Path;
-    map: Record<string, any> = {};
-    callGraph: Record<string, any> = {};
-    projectIdentity: any = {};
-    dnaProfiler: DNAProfiler;
-    mappingLogic: ContextMappingLogic;
-    analyst: StructuralAnalyst;
-    coverageAuditor: CoverageAuditor;
-    connectivityMapper: ConnectivityMapper;
-    parityAnalyst: ParityAnalyst;
-    metricsEngine: MetricsEngine;
-    allFilesIndex: string[] = [];
+    projectRoot: Path; map: Record<string, any> = {}; callGraph: Record<string, any> = {};
+    dnaProfiler = new DNAProfiler(); mappingLogic = new ContextMappingLogic();
+    analyst = new StructuralAnalyst(); coverageAuditor = new CoverageAuditor();
+    connectivityMapper = new ConnectivityMapper(); parityAnalyst = new ParityAnalyst();
+    metricsEngine = new MetricsEngine(); allFilesIndex: string[] = [];
     private contentCache: Record<string, string> = {};
 
-    constructor(projectRoot: string) {
-        this.projectRoot = new Path(projectRoot);
-        this.dnaProfiler = new DNAProfiler();
-        this.mappingLogic = new ContextMappingLogic();
-        this.analyst = new StructuralAnalyst();
-        this.coverageAuditor = new CoverageAuditor();
-        this.connectivityMapper = new ConnectivityMapper();
-        this.parityAnalyst = new ParityAnalyst();
-        this.metricsEngine = new MetricsEngine();
-    }
+    constructor(projectRoot: string) { this.projectRoot = new Path(projectRoot); }
 
     async analyzeProject(): Promise<any> {
-        logger.info("🧠 Mapeando topologia...");
-        console.log("🐛 [ContextEngine] Descobrindo identidade do projeto...");
         this.projectIdentity = await this.dnaProfiler.discoverIdentity(this.projectRoot);
-        console.log("🐛 [ContextEngine] Identidade descoberta. Iniciando FileSystemScanner...");
-
         const scanner = new FileSystemScanner(this.projectRoot.toString(), this.analyst);
-        console.log("🐛 [ContextEngine] Escaneando nomes de arquivos...");
         this.allFilesIndex = await scanner.scanAllFilenames();
-        console.log(`🐛 [ContextEngine] Escaneados ${this.allFilesIndex.length} arquivos.`);
-        this.map = {};
-
         this.contentCache = await this.mappingLogic.processBatch(scanner, this);
         this.buildDependencyMap();
-
-        logger.info(`✅ DNA Processado: ${Object.keys(this.map).length} componentes.`);
         return { identity: this.projectIdentity, map: this.map };
     }
 
-    async registerFile(path: Path, ignoreTestContext: boolean = false) {
-        try {
-            const relPath = path.relativeTo(this.projectRoot);
-            if (this.map[relPath]) return;
-
-            await this.analyzeSingleFile(path, relPath, ignoreTestContext);
-        } catch (e) {
-            logger.error(`❌ Erro ao analisar ${path.toString()}: ${e}`);
-        }
-    }
-
-    private async analyzeSingleFile(path: Path, relPath: string, ignoreTest: boolean) {
-        const content = await this.getCachedContent(path, relPath);
-        const info = this.mappingLogic.getInitialInfo(path, relPath, this.analyst);
+    async registerFile(path: Path, ignoreTest: boolean = false) {
+        const rel = path.relativeTo(this.projectRoot);
+        if (this.map[rel]) return;
+        const content = await this.getCachedContent(path, rel);
+        const info = this.mappingLogic.getInitialInfo(path, rel, this.analyst);
         info.content = content;
-
         await this.performDeepAnalysis(path, content, info, ignoreTest);
-        this.map[relPath] = info;
+        this.map[rel] = info;
     }
 
-    private async getCachedContent(path: Path, relPath: string): Promise<string> {
-        if (this.contentCache[relPath]) return this.contentCache[relPath]!;
-        try {
-            return await Bun.file(path.toString()).text();
-        } catch {
-            return "";
-        }
+    private async getCachedContent(path: Path, rel: string): Promise<string> {
+        if (this.contentCache[rel]) return this.contentCache[rel]!;
+        try { return await Bun.file(path.toString()).text(); } catch { return ""; }
     }
 
     private async performDeepAnalysis(path: Path, content: string, info: any, ignoreTest: boolean) {
-        if (path.toString().endsWith('.py')) {
-            Object.assign(info, this.analyst.analyzePython(content, path.name()));
-        } else {
-            // TypeScript/JS/Go support via StructuralAnalyst
-            const metrics = this.analyst.analyze_file_logic(content, path.name());
-            if (metrics) {
-                info.complexity = metrics.complexity || 1;
-                info.dependencies = metrics.dependencies || [];
-                // Merge other structural data if available
-                if (metrics.functions) info.functions = metrics.functions;
-            }
+        const structural = path.toString().endsWith('.py') ? this.analyst.analyzePython(content, path.name()) : this.analyst.analyze_file_logic(content, path.name());
+        Object.assign(info, structural);
+
+        const adv = this.metricsEngine.analyzeFile(content, path.relativeTo(this.projectRoot).replace(/\\/g, "/"), info.dependencies || []);
+        info.advanced_metrics = { ...adv };
+        info.telemetry = adv.telemetry || info.telemetry;
+        info.complexity = adv.cyclomaticComplexity;
+
+        if (adv.isShadow) {
+            const v = this.metricsEngine.validateShadowCompliance(adv);
+            info.shadow_compliance = { compliant: v.compliant, reason: v.reason };
+            info.complexity = adv.shadowComplexity;
         }
 
-        // 🔬 ANÁLISE DE MÉTRICAS DE QUALIDADE (9+ métricas)
-        const relPath = path.relativeTo(this.projectRoot).replace(/\\/g, "/");
-        const advancedMetrics = this.metricsEngine.analyzeFile(content, relPath, info.dependencies || []);
-        
-        // Adicionar métricas avançadas ao info
-        info.advanced_metrics = {
-            cyclomaticComplexity: advancedMetrics.cyclomaticComplexity,
-            cognitiveComplexity: advancedMetrics.cognitiveComplexity,
-            halsteadVolume: advancedMetrics.halsteadVolume,
-            halsteadDifficulty: advancedMetrics.halsteadDifficulty,
-            halsteadEffort: advancedMetrics.halsteadEffort,
-            nestingDepth: advancedMetrics.nestingDepth,
-            loc: advancedMetrics.loc,
-            locExecutable: advancedMetrics.locExecutable,
-            sloc: advancedMetrics.sloc,
-            cbo: advancedMetrics.cbo,
-            ca: advancedMetrics.ca,
-            dit: advancedMetrics.dit,
-            maintainabilityIndex: advancedMetrics.maintainabilityIndex,
-            defectDensity: advancedMetrics.defectDensity,
-            riskLevel: advancedMetrics.riskLevel,
-            qualityGate: advancedMetrics.qualityGate,
-            isShadow: advancedMetrics.isShadow,
-            shadowComplexity: advancedMetrics.shadowComplexity
-        };
-
-        // Validação especial para shadows
-        if (advancedMetrics.isShadow) {
-            const validation = this.metricsEngine.validateShadowCompliance(advancedMetrics);
-            info.shadow_compliance = {
-                compliant: validation.compliant,
-                reason: validation.reason
-            };
-            
-            // Usar complexidade própria do shadow para classificação
-            // (em vez da complexidade total que inclui dependências)
-            if (advancedMetrics.shadowComplexity <= 15) {
-                info.complexity = Math.min(info.complexity || 15, 15); // Limitar a 15 para shadows
-            }
-        }
-
-        // Logic Auditor / Integrity Guardian
         Object.assign(info, await this.analyst.integrityGuardian.detectVulnerabilities(content, info.component_type, ignoreTest));
-
-        // Coverage Audit
         info.has_test = this.coverageAuditor.detectTest(path, info.component_type, this.allFilesIndex, info);
-
-        if (info.component_type === "TEST") {
-            this.analyzeTestQuality(content, info);
-        }
-    }
-
-    private analyzeTestQuality(content: string, info: any) {
-        const assertions = (content.match(/assert|expect|should/g) || []).length;
-        info.test_depth = {
-            assertion_count: assertions,
-            quality_level: assertions > 5 ? "DEEP" : "SHALLOW"
-        };
+        if (info.component_type === "TEST") info.test_depth = { assertion_count: (content.match(/assert|expect|should/g) || []).length, quality_level: (content.match(/assert|expect|should/g) || []).length > 5 ? "DEEP" : "SHALLOW" };
     }
 
     private buildDependencyMap() {
-        for (const [file, data] of Object.entries(this.map)) {
-            data.coupling = this.connectivityMapper.calculateMetrics(file, data, this.map);
-        }
-
-        // Inverter o mapa de dependências para encontrar dependentes de forma eficiente
+        Object.keys(this.map).forEach(f => this.map[f].coupling = this.connectivityMapper.calculateMetrics(f, this.map[f], this.map));
         this.callGraph = {};
-        for (const [file, data] of Object.entries(this.map)) {
-            const deps = data.dependencies || [];
-            for (const dep of deps) {
-                // Tenta resolver a dependência para um arquivo no mapa
-                const resolved = this.resolveDependency(dep);
-                if (resolved && resolved !== file) {
-                    if (!this.callGraph[resolved]) this.callGraph[resolved] = [];
-                    if (!this.callGraph[resolved].includes(file)) {
-                        this.callGraph[resolved].push(file);
-                    }
-                }
-            }
-        }
+        Object.entries(this.map).forEach(([f, d]) => (d.dependencies || []).forEach((dep: string) => {
+            const resolved = this.resolveDependency(dep);
+            if (resolved && resolved !== f) (this.callGraph[resolved] = this.callGraph[resolved] || []).push(f);
+        }));
     }
 
-    private resolveDependency(depName: string): string | null {
-        // Busca simples por nome de arquivo (procura por match no final do path)
-        const lowerDep = depName.toLowerCase().replace(/\./g, '/');
-        for (const file of Object.keys(this.map)) {
-            const fileLower = file.toLowerCase();
-            if (fileLower.endsWith(`${lowerDep}.ts`) ||
-                fileLower.endsWith(`${lowerDep}.py`) ||
-                fileLower.endsWith(`/${lowerDep}`)) {
-                return file;
-            }
-        }
-        return null;
+    private resolveDependency(dep: string): string | null {
+        const lower = dep.toLowerCase().replace(/\./g, '/');
+        return Object.keys(this.map).find(f => f.toLowerCase().match(new RegExp(`${lower}(\\.ts|\\.py|$)`))) || null;
     }
 
-    analyzeStackParity(personas: any[]): any {
-        const parity = this.parityAnalyst.analyzeStackGaps(personas);
-        parity.detected = this.projectIdentity.stacks || new Set();
-        return parity;
-    }
-
-    async cognitiveReason(prompt: string): Promise<string | null> {
-        const { CognitiveEngine } = await import("./cognitive_engine.ts");
-        const engine = new CognitiveEngine();
-        return await engine.reason(prompt);
-    }
-
-    /** v7.3: Parity Restoration */
-    _injectSupport() {
-        logger.info("💉 [ContextEngine] Injetando suporte sistêmico...");
-    }
-
-    _initializeSupportTools() {
-        logger.info("🛠️ [ContextEngine] Inicializando ferramentas de suporte...");
-    }
-
-    _getScanner() {
-        return new FileSystemScanner(this.projectRoot.toString(), this.analyst);
-    }
-
-    _findDependents(file: string) {
-        return this.callGraph[file] || [];
-    }
-
-    get_criticality_score(file: string) {
-        const data = this.map[file];
-        if (!data) return 0;
-        return (data.complexity || 1) * (data.coupling?.total || 1);
-    }
-
-    /** Parity: _process_files_in_batch — Processes file analysis in batched parallel. */
-    async _process_files_in_batch(files: string[], batchSize: number = 20): Promise<void> {
-        for (let i = 0; i < files.length; i += batchSize) {
-            const batch = files.slice(i, i + batchSize);
-            await Promise.all(batch.map(async (f) => {
-                try {
-                    await this.registerFile(new (await import("../core/path_utils.ts")).Path(f));
-                } catch (e) {
-                    logger.warn(`⚠️ [ContextEngine] Batch skip: ${f} — ${e}`);
-                }
-            }));
-        }
-    }
+    analyzeStackParity(personas: any[]) { const p = this.parityAnalyst.analyzeStackGaps(personas) as any; p.detected = this.projectIdentity.stacks || new Set(); return p; }
+    async cognitiveReason(p: string) { return (await new (await import("./cognitive_engine.ts")).CognitiveEngine()).reason(p); }
+    _injectSupport() { }
+    _initializeSupportTools() { }
+    _getScanner() { return new FileSystemScanner(this.projectRoot.toString(), this.analyst); }
+    _findDependents(f: string) { return this.callGraph[f] || []; }
+    get_criticality_score(f: string) { return (this.map[f]?.complexity || 0) * (this.map[f]?.coupling?.total || 1); }
 }

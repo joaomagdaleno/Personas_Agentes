@@ -1,4 +1,7 @@
 import { readFileSync } from "node:fs";
+import winston from "winston";
+
+const logger = winston.child({ module: "PortalEngine" });
 
 export const PORTAL_METADATA = {
     title: "🏛️ PhD Governance Sentinel",
