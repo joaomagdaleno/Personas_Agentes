@@ -1,8 +1,8 @@
 # 🏛️ RELATÓRIO SISTÊMICO: CONSOLIDAÇÃO DA REALIDADE
 
 > **Status Operacional:** 🟢 `ESTÁVEL` | **Integridade Geral:** `97%`
-> **Sanidade Neural:** `3.0321` | **Estado:** 🚨 Anomalia Sequencial Crítica
-> **Ambiente:** `TS-MASTER-CONTROL` | **Último Check:** `08:56:18`
+> **Sanidade Neural:** `2.8987` | **Estado:** ⚠️ Fluxo Não-Convencional Detectado
+> **Ambiente:** `TS-MASTER-CONTROL` | **Último Check:** `09:12:29`
 >
 > 💎 `SITUAÇÃO: SOBERANIA TÉCNICA`
 
@@ -128,13 +128,13 @@
 >
 > - Complexidade Cognitiva Elevada (29 > 15)
 >
-> #### 🔴 `CRÍTICO` [8] `battle_plan_sections_engine.ts`
->
-> - Complexidade Cognitiva Elevada (27 > 15)
->
-> #### 🔴 `CRÍTICO` [9] `briefing_agent.ts`
+> #### 🔴 `CRÍTICO` [8] `briefing_agent.ts`
 >
 > - Complexidade Cognitiva Elevada (33 > 15)
+>
+> #### 🔴 `CRÍTICO` [9] `battle_plan_sections_engine.ts`
+>
+> - Complexidade Cognitiva Elevada (27 > 15)
 >
 > #### 🔴 `CRÍTICO` [10] `voyager.ts`
 >
