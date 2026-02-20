@@ -210,7 +210,13 @@ export class Orchestrator {
             depth_audit: ctx.depthAudit
         };
 
-        return await this.synthesizer.synthesize360({ ...ctx, alerts: findings }, this.metrics, this.personas, this.stabilityLedger, qaData);
+        return await this.synthesizer.synthesize360(
+            { ...ctx, alerts: findings, predictor_metrics: this.predictorEngine.getSanityMetrics() },
+            this.metrics,
+            this.personas,
+            this.stabilityLedger,
+            qaData
+        );
     }
 
     private _enrichPathMetrics(ctx: any) {

@@ -53,24 +53,51 @@ export class Value {
     backward(): void {
         const topo: Value[] = [];
         const visited = new Set<Value>();
+        const stack: Value[] = [this];
 
-        function buildTopo(v: Value): void {
-            if (!visited.has(v)) {
-                visited.add(v);
-                for (const child of v._children) {
-                    buildTopo(child);
+        // Iterative Topological Sort to avoid Stack Overflow on deep graphs
+        const visitStack: Value[] = [this];
+        const processed = new Set<Value>();
+
+        while (visitStack.length > 0) {
+            const v = visitStack[visitStack.length - 1]!;
+            if (visited.has(v)) {
+                visitStack.pop();
+                if (!processed.has(v)) {
+                    processed.add(v);
+                    topo.push(v);
                 }
-                topo.push(v);
+                continue;
+            }
+            visited.add(v);
+            for (const child of v._children) {
+                if (!visited.has(child)) {
+                    visitStack.push(child);
+                }
             }
         }
 
-        buildTopo(this);
         this.grad = 1;
         for (let i = topo.length - 1; i >= 0; i--) {
             const v = topo[i]!;
+            const g = v.grad;
             for (let j = 0; j < v._children.length; j++) {
-                v._children[j]!.grad += v._localGrads[j]! * v.grad;
+                v._children[j]!.grad += v._localGrads[j]! * g;
             }
         }
+    }
+
+    /**
+     * Matrix multiplication helper for a vector and a matrix.
+     * x: vector [n], w: matrix [m, n] -> output [m]
+     */
+    static matmul(x: Value[], w: Value[][]): Value[] {
+        return w.map(row => {
+            let sum = new Value(0);
+            for (let i = 0; i < x.length; i++) {
+                sum = sum.add(x[i]!.mul(row[i]!));
+            }
+            return sum;
+        });
     }
 }

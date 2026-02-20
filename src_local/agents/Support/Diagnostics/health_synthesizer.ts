@@ -91,6 +91,7 @@ export class HealthSynthesizer {
             confidence_matrix: qaData?.matrix || {},
             objective: context.identity?.core_mission || "Manutenção de Integridade",
             parity_stats: parityStats,
+            predictor_metrics: context.predictor_metrics || { score: 0, status: "Unknown", label: "⚪ Estado Neural Indefinido" },
             timestamp: new Date().toISOString(),
             status: score > 80 ? "HEALTHY" : (score > 50 ? "WARNING" : "CRITICAL")
         };

@@ -40,7 +40,10 @@ export class PredictorEngine {
     constructor(projectRoot: string) {
         this.projectRoot = projectRoot;
         this.predictor = new MicroPredictor(this.VOCABULARY);
-        this.loadOrSeedTrainingData();
+        const loaded = this.loadModel();
+        if (!loaded) {
+            this.loadOrSeedTrainingData();
+        }
     }
 
     /**
@@ -88,6 +91,38 @@ export class PredictorEngine {
     }
 
     /**
+     * Saves the current model weights to disk.
+     */
+    public saveModel(): void {
+        try {
+            const weights = this.predictor.exportWeights();
+            const configPath = `${this.projectRoot}/.gemini/microgpt_weights.json`;
+            fs.writeFileSync(configPath, JSON.stringify(weights, null, 2));
+            logger.info(`🔮 [Predictor] Model weights saved to ${configPath}`);
+        } catch (err) {
+            logger.error(`🚨 [Predictor] Failed to save weights: ${err}`);
+        }
+    }
+
+    /**
+     * Loads the model weights from disk.
+     */
+    public loadModel(): boolean {
+        try {
+            const configPath = `${this.projectRoot}/.gemini/microgpt_weights.json`;
+            if (fs.existsSync(configPath)) {
+                const data = JSON.parse(fs.readFileSync(configPath, "utf-8"));
+                this.predictor.importWeights(data);
+                logger.info(`🔮 [Predictor] Model weights loaded from ${configPath}`);
+                return true;
+            }
+        } catch (err) {
+            logger.warn(`⚠️ [Predictor] Failed to load weights: ${err}`);
+        }
+        return false;
+    }
+
+    /**
      * Initializes the Predictor with a "Healthy Baseline" so it knows what normal looks like.
      */
     private loadOrSeedTrainingData(): void {
@@ -127,5 +162,25 @@ export class PredictorEngine {
         logger.info("🔮 [Predictor] Initializing MicroGPT Anomaly Neural Engine...");
         this.predictor.train(this.trainingHistory, 150, 0.05);
         logger.info("🔮 [Predictor] Neural baseline established.");
+    }
+
+    /**
+     * Returns sanity metrics for reporting.
+     */
+    public getSanityMetrics(): { score: number, status: string, label: string } {
+        const score = this.evaluateCurrentFlow();
+        let status = "Healthy";
+        let label = "✅ Sanidade Neural Nominal";
+
+        if (score > 1.5) {
+            status = "Suspicious";
+            label = "⚠️ Fluxo Não-Convencional Detectado";
+        }
+        if (score > 3.0) {
+            status = "Anomaly";
+            label = "🚨 Anomalia Sequencial Crítica";
+        }
+
+        return { score, status, label };
     }
 }

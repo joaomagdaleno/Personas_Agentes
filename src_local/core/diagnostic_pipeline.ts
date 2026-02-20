@@ -99,6 +99,7 @@ export class DiagnosticPipeline {
         }
 
         this.orc.predictorEngine.learnCurrentSequence();
+        this.orc.predictorEngine.saveModel();
         this.orc.predictorEngine.clearCurrentSequence();
 
         const duration = (Date.now() - startTime) / 1000;

@@ -5,6 +5,7 @@ export class MicroPredictor {
     public vocabSize: number;
     private stateDict: Record<string, Value[][]>;
     private BOS: number;
+    public lastAttentionWeights: number[][][] = []; // [layer][head][seq_pos]
 
     // Hyperparameters
     private readonly N_EMBD = 16;
@@ -51,9 +52,7 @@ export class MicroPredictor {
 
     // ---- Model layers ----
     private linear(x: Value[], w: Value[][]): Value[] {
-        return w.map((wo) =>
-            wo.reduce((acc, wi, i) => acc.add(wi.mul(x[i]!)), new Value(0))
-        );
+        return Value.matmul(x, w);
     }
 
     private softmax(logits: Value[]): Value[] {
@@ -105,6 +104,36 @@ export class MicroPredictor {
         );
     }
 
+    /**
+     * Exports the model weights as a plain JSON object.
+     */
+    public exportWeights(): Record<string, number[][]> {
+        const weights: Record<string, number[][]> = {};
+        for (const [key, mat] of Object.entries(this.stateDict)) {
+            weights[key] = mat.map(row => row.map(v => v.data));
+        }
+        return weights;
+    }
+
+    /**
+     * Imports weights into the current state dictionary.
+     */
+    public importWeights(weights: Record<string, number[][]>): void {
+        for (const [key, matData] of Object.entries(weights)) {
+            if (this.stateDict[key]) {
+                const targetMat = this.stateDict[key]!;
+                matData.forEach((rowData, i) => {
+                    rowData.forEach((val, j) => {
+                        if (targetMat[i] && targetMat[i][j]) {
+                            targetMat[i][j]!.data = val;
+                            targetMat[i][j]!.grad = 0;
+                        }
+                    });
+                });
+            }
+        }
+    }
+
     private gpt(
         tokenId: number,
         posId: number,
@@ -134,11 +163,14 @@ export class MicroPredictor {
                 const vH = values[li]!.map((vi) => vi.slice(hs, hs + this.HEAD_DIM));
 
                 const attnLogits = kH.map((kHt) =>
-                    qH
-                        .reduce((acc, qj, j) => acc.add(qj.mul(kHt[j]!)), new Value(0))
-                        .mul(1 / this.HEAD_DIM ** 0.5)
+                    Value.matmul(qH, [kHt])[0]!.mul(1 / this.HEAD_DIM ** 0.5)
                 );
                 const attnWeights = this.softmax(attnLogits);
+
+                // Capture attention weights for visualization
+                if (!this.lastAttentionWeights[li]) this.lastAttentionWeights[li] = [];
+                if (!this.lastAttentionWeights[li]![h]) this.lastAttentionWeights[li]![h] = [];
+                this.lastAttentionWeights[li]![h]!.push(...attnWeights.map(v => v.data));
 
                 for (let j = 0; j < this.HEAD_DIM; j++) {
                     xAttn.push(
@@ -227,6 +259,7 @@ export class MicroPredictor {
         const tokens = [this.BOS, ...validEvents.map(e => this.vocab.indexOf(e)), this.BOS];
         const n = Math.min(this.BLOCK_SIZE, tokens.length - 1);
 
+        this.lastAttentionWeights = []; // Clear previous capture
         let totalLoss = 0;
         const ObjectKeys: Value[][][] = Array.from({ length: this.N_LAYER }, () => []);
         const ObjectVals: Value[][][] = Array.from({ length: this.N_LAYER }, () => []);

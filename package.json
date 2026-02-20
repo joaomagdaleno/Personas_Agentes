@@ -20,7 +20,7 @@
   "scripts": {
     "verify-all": "bun run --parallel test diagnostic",
     "test": "bun test",
-    "diagnostic": "bun run run-diagnostic.ts",
+    "diagnostic": "bun run scripts/run-diagnostic.ts",
     "benchmark": "bun run -e 'import { TestRunner } from \"./src_local/agents/Support/test_runner\"; const tr = new TestRunner(); tr.benchmark(\".\").then(r => console.log(JSON.stringify(r, null, 2)))'",
     "generate-tests": "bun run -e 'import { TestArchitectAgent } from \"./src_local/agents/Support/test_architect_agent\"; const ta = new TestArchitectAgent(); ta.generateMissingTests(\".\").then(g => console.log(`Generated ${g.length} tests.`))'",
     "git-doctor": "bun run -e 'import { GitAutomaton } from \"./src_local/agents/Support/git_automaton\"; const ga = new GitAutomaton(\".\"); ga.diagnoseAndFix()'",
