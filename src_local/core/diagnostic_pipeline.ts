@@ -39,17 +39,22 @@ export class DiagnosticPipeline {
 
     private async runAtomicPipeline(skip: boolean, autoHeal: boolean, dryRun: boolean): Promise<Path> {
         const startTime = Date.now();
+        this.orc.recordSystemEvent("PIPELINE_START");
         await this.reset();
 
         const discoveryAgent = new DiscoveryAgent(this.orc);
+        this.orc.recordSystemEvent("DISCOVERY_PHASE_START");
         let [ctx, findings] = await discoveryAgent.runDiscoveryPhase();
+        this.orc.recordSystemEvent("DISCOVERY_FINDINGS");
 
         // 🏛️ PhD Census & Cognitive Audit (100% Deep)
         logger.info("🏛️ [Pipeline] Validando Censo PhD e Saúde Cognitiva...");
+        this.orc.recordSystemEvent("CENSUS_VALIDATION");
         const census = await this.orc.director.validatePhDCensus();
 
         const { QualityAnalyst } = await import("../agents/Support/Diagnostics/quality_analyst.ts");
         const qa = new QualityAnalyst();
+        this.orc.recordSystemEvent("COGNITIVE_AUDIT");
         const cognitive = await qa.runCognitiveAudit();
 
         // Inject into context for reporting
@@ -58,17 +63,21 @@ export class DiagnosticPipeline {
 
         if (autoHeal) {
             logger.info("🩹 [Pipeline] Iniciando Ciclo de Auto-Cura Ativa...");
+            this.orc.recordSystemEvent("AUTO_HEAL_ATTEMPT");
             const healedCount = await this.orc.runAutoHealing(findings);
             if (healedCount > 0) {
+                this.orc.recordSystemEvent("AUTO_HEAL_SUCCESS");
                 logger.info(`✨ [Pipeline] ${healedCount} fragilidades curadas autonomamente. Re-validando...`);
                 [ctx, findings] = await discoveryAgent.runDiscoveryPhase();
             }
         }
 
         const validationAgent = new ValidationAgent(this.orc);
+        this.orc.recordSystemEvent("VALIDATION_PHASE");
         const health = await validationAgent.runValidationPhase(findings, skip);
 
         // 📊 Merging Metric Audit Findings (to expose the "hidden" 122 issues)
+        this.orc.recordSystemEvent("METRICS_GENERATED");
         const matrix = qa.calculateConfidenceMatrix(ctx.map || {});
         const metricFindings = qa.generateMetricFindings(matrix);
         findings.push(...metricFindings);
@@ -80,6 +89,17 @@ export class DiagnosticPipeline {
             this.deduplicator.deduplicate(findings),
             dryRun
         );
+
+        this.orc.recordSystemEvent("PIPELINE_FINISHED");
+        const anomalyScore = this.orc.predictorEngine.evaluateCurrentFlow();
+        logger.info(`🔮 [MicroPredictor] Flow Anomaly Score: ${anomalyScore.toFixed(4)}`);
+
+        if (anomalyScore > 2.0) {
+            logger.warn(`🚨 [MicroPredictor] High Anomaly Detected! Triggering strategic analysis...`);
+        }
+
+        this.orc.predictorEngine.learnCurrentSequence();
+        this.orc.predictorEngine.clearCurrentSequence();
 
         const duration = (Date.now() - startTime) / 1000;
         logger.info(`✅ [Pipeline] Diagnóstico concluído em ${duration.toFixed(4)}s.`);

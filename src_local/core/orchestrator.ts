@@ -17,6 +17,7 @@ import { BehaviorAnalyst } from "../utils/behavior_analyst.ts";
 import { TaskWorker } from "../utils/task_worker.ts";
 import type { IAgent, SovereignState, DiagnosticFinding, SystemHealth360 } from "./types.ts";
 import { MemoryPruningAgent } from "../agents/Support/Maintenance/memory_pruning_agent.ts";
+import { PredictorEngine } from "../utils/ai/predictor_engine.ts";
 
 const logger = winston.child({ module: "Orchestrator" });
 
@@ -48,6 +49,7 @@ export class Orchestrator {
     behaviorAnalyst: BehaviorAnalyst;
     worker: TaskWorker;
     pruningAgent: MemoryPruningAgent;
+    predictorEngine: PredictorEngine;
 
     constructor(projectRoot: string) {
         this.projectRoot = new Path(projectRoot);
@@ -71,6 +73,7 @@ export class Orchestrator {
         this.behaviorAnalyst = new BehaviorAnalyst(this.projectRoot.toString());
         this.worker = new TaskWorker(this);
         this.pruningAgent = new MemoryPruningAgent(this.projectRoot.toString());
+        this.predictorEngine = new PredictorEngine(this.projectRoot.toString());
 
         this._registerAgents();
         this._initEngines();
@@ -91,6 +94,10 @@ export class Orchestrator {
 
         if (agent.initialize) await agent.initialize();
         return await agent.execute(context);
+    }
+
+    recordSystemEvent(eventName: string): void {
+        this.predictorEngine.recordEvent(eventName);
     }
 
     _initEngines() {
