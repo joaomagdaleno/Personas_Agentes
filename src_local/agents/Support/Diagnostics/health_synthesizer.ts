@@ -31,7 +31,7 @@ export class HealthSynthesizer {
         logger.debug(`Map data entries: ${Object.keys(mapData).length}`);
 
         // Calculate score
-        const { score, breakdown } = this.calculator.calculateFinalScore(mapData, allAlerts, qaData);
+        const { score, breakdown } = this.calculator.calculateFinalScore(mapData, allAlerts, qaData, context.cognitive);
 
         logger.debug(`Calculated score: ${score}`);
         logger.debug("Score breakdown:", breakdown);

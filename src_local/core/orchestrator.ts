@@ -11,6 +11,8 @@ import { HistoryAgent } from "../utils/history_agent.ts";
 import { TaskQueue } from "../utils/task_queue.ts";
 import { MemoryEngine } from "../utils/memory_engine.ts";
 import { ReflexEngine } from "./reflex_engine.ts";
+import { CoreValidator } from "./validator.ts";
+import { DiagnosticStrategist } from "../agents/Support/Diagnostics/diagnostic_strategist.ts";
 import { UpdateTransaction } from "../utils/update_transaction.ts";
 import { SystemSentinel } from "../utils/system_sentinel.ts";
 import { BehaviorAnalyst } from "../utils/behavior_analyst.ts";
@@ -101,23 +103,12 @@ export class Orchestrator {
     }
 
     _initEngines() {
-        // Placeholders for remaining engines
-        this.strategist = {
-            planTargetedVerification: async (findings: any[]) => {
-                logger.info("Strategist: Planejando verificações...");
-                return { tasks: [] };
-            }
-        };
+        this.strategist = new DiagnosticStrategist();
         logger.info("Engines do Orquestrador (Bun) inicializados.");
     }
 
     _initTools() {
-        this.coreValidator = {
-            verifyCoreHealth: async (root: Path, files: string[]) => {
-                logger.info(`CoreValidator: Verificando saúde em ${files.length} arquivos...`);
-                return { success: true, score: 98 };
-            }
-        };
+        this.coreValidator = new CoreValidator(this);
         this.synthesizer = {
             getTopologyIssues: (ctx: any) => [],
             synthesize360: async (ctx: any, m_orc: any, personas: any, ledger: any, qa: any) => {

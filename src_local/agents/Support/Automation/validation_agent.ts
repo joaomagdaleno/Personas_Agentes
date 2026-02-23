@@ -25,7 +25,7 @@ export class ValidationAgent {
         const filesFromFindings = targetFiles.length > 0 ? targetFiles :
             findings.filter(f => typeof f === 'object' && f.file).map(f => f.file);
 
-        return await this.orc.coreValidator.verifyCoreHealth(this.orc.projectRoot, filesFromFindings);
+        return await this.orc.coreValidator.verifyCoreHealth(this.orc.projectRoot.toString(), filesFromFindings);
     }
 
     private fastFallback() {

@@ -1,8 +1,8 @@
 # 🏛️ RELATÓRIO SISTÊMICO: CONSOLIDAÇÃO DA REALIDADE
 
-> **Status Operacional:** 🟢 `ESTÁVEL` | **Integridade Geral:** `97%`
-> **Sanidade Neural:** `3.5871` | **Estado:** 🚨 Anomalia Sequencial Crítica
-> **Ambiente:** `TS-MASTER-CONTROL` | **Último Check:** `09:20:13`
+> **Status Operacional:** 🟡 `ATENÇÃO` | **Integridade Geral:** `65%`
+> **Sanidade Neural:** `3.6689` | **Estado:** 🚨 Anomalia Sequencial Crítica
+> **Ambiente:** `TS-MASTER-CONTROL` | **Último Check:** `12:42:41 PM`
 >
 > 💎 `SITUAÇÃO: SOBERANIA TÉCNICA`
 
@@ -28,7 +28,7 @@
 | :--- | :--- | :---: | ---: |
 | Complexidade Ciclomática (CC > 20) | > 20 | 3/451 | 0 pts |
 | Complexidade Cognitiva (> 15) | > 15 | 127/451 | 1.1 pts |
-| Aninhamento Profundo (> 3) | > 3 | 241/451 | 1.6 pts |
+| Aninhamento Profundo (> 3) | > 3 | 242/451 | 1.6 pts |
 | Alto Acoplamento (CBO > 10) | > 10 | 4/451 | 0 pts |
 | Herança Profunda (DIT > 5) | > 5 | 0/451 | 0 pts |
 | Baixa Manutenibilidade (MI < 10) | < 10 | 0/451 | 0 pts |
@@ -61,8 +61,8 @@
 | 1 | `MicroPredictor.ts` | `26` | 🟠 HIGH | Desmembrar / Refatorar |
 | 2 | `quality_analyst.ts` | `22` | 🟠 HIGH | Desmembrar / Refatorar |
 | 3 | `report_sections_engine.ts` | `21` | 🟠 HIGH | Desmembrar / Refatorar |
-| 4 | `score_calculator.ts` | `18` | 🟠 MODERATE | Desmembrar / Refatorar |
-| 5 | `GateCalculator.ts` | `18` | 🟠 MODERATE | Desmembrar / Refatorar |
+| 4 | `finding_deduplicator.ts` | `18` | 🟠 MODERATE | Desmembrar / Refatorar |
+| 5 | `cognitive_engine.ts` | `18` | 🟠 MODERATE | Desmembrar / Refatorar |
 
 ---
 
@@ -80,7 +80,7 @@
 | 🚧 **Shallow Parity** | `0` | 🟡 `ADAPTADO` | Componentes com lógica parcial |
 | 🧊 **Fragilidades** | `1` | 🔴 `CRÍTICO` | Pontos de ruptura identificados |
 
-**Sincronia Nativa:** `0%` | **Personas Ativas:** `0` | **Audit Score:** `97%`
+**Sincronia Nativa:** `0%` | **Personas Ativas:** `0` | **Audit Score:** `65%`
 
 ### 🗺️ ROADMAP PARA 100% (REQUISITOS)
 
@@ -94,7 +94,7 @@
 | :--- | :---: | :--- | :--- |
 | **CRITICAL** | `0` | 🔴 `BLOQUEANTE` | 🟢 `LIVRE` |
 | **HIGH** | `24` | 🟡 `RISCO ALTO` | 🟡 `INTERVENÇÃO` |
-| **MEDIUM** | `517` | 🔵 `DÉBITO TÉC.` | 🔵 `INTERVENÇÃO` |
+| **MEDIUM** | `518` | 🔵 `DÉBITO TÉC.` | 🔵 `INTERVENÇÃO` |
 | **LOW** | `0` | ⚪ `MENOR` | 🟢 `LIVRE` |
 | **STRATEGIC** | `0` | 🟣 `MELHORIA` | 🟢 `LIVRE` |
 
@@ -108,79 +108,79 @@
 >
 > - Complexidade Cognitiva Elevada (30 > 15)
 >
-> #### 🔴 `CRÍTICO` [3] `GateCalculator.ts`
+> #### 🔴 `CRÍTICO` [3] `stability_ledger.ts`
 >
-> - Complexidade Cognitiva Elevada (51 > 15)
+> - Complexidade Cognitiva Elevada (29 > 15)
 >
 > #### 🔴 `CRÍTICO` [4] `dependency_auditor.ts`
 >
 > - Complexidade Cognitiva Elevada (34 > 15)
 >
-> #### 🔴 `CRÍTICO` [5] `stability_ledger.ts`
+> #### 🔴 `CRÍTICO` [5] `GateCalculator.ts`
 >
-> - Complexidade Cognitiva Elevada (29 > 15)
+> - Complexidade Cognitiva Elevada (51 > 15)
 >
-> #### 🔴 `CRÍTICO` [6] `parity_analyst.ts`
->
-> - Complexidade Cognitiva Elevada (29 > 15)
->
-> #### 🔴 `CRÍTICO` [7] `battle_plan_sections_engine.ts`
->
-> - Complexidade Cognitiva Elevada (27 > 15)
->
-> #### 🔴 `CRÍTICO` [8] `briefing_agent.ts`
+> #### 🔴 `CRÍTICO` [6] `file_system_scanner.ts`
 >
 > - Complexidade Cognitiva Elevada (33 > 15)
 >
-> #### 🔴 `CRÍTICO` [9] `voyager.ts`
+> #### 🔴 `CRÍTICO` [7] `voyager.ts`
 >
 > - Complexidade Cognitiva Elevada (36 > 15)
 >
-> #### 🔴 `CRÍTICO` [10] `validator.ts`
+> #### 🔴 `CRÍTICO` [8] `parity_analyst.ts`
+>
+> - Complexidade Cognitiva Elevada (29 > 15)
+>
+> #### 🔴 `CRÍTICO` [9] `briefing_agent.ts`
+>
+> - Complexidade Cognitiva Elevada (33 > 15)
+>
+> #### 🔴 `CRÍTICO` [10] `battle_plan_sections_engine.ts`
 >
 > - Complexidade Cognitiva Elevada (27 > 15)
 >
 > *... e mais 14 achados de nível HIGH omitidos para brevidade.*
 >
-> #### 🟡 `ATENÇÃO` [11] `nebula.ts`
+> #### 🟡 `ATENÇÃO` [11] `metric.ts`
 >
-> - Persona 'nebula' missing 16 units.
+> - Persona 'metric' missing 16 units.
 >
-> #### 🟡 `ATENÇÃO` [12] `nebula.ts`
+> #### 🟡 `ATENÇÃO` [12] `metric.ts`
 >
-> - Persona 'nebula' missing 25 units.
+> - Persona 'metric' missing 20 units.
 >
-> #### 🟡 `ATENÇÃO` [13] `nebula.ts`
+> #### 🟡 `ATENÇÃO` [13] `metric.ts`
 >
-> - Persona 'nebula' missing 16 units.
+> - Persona 'metric' missing 26 units.
 >
-> #### 🟡 `ATENÇÃO` [14] `nebula.ts`
+> #### 🟡 `ATENÇÃO` [14] `metric.ts`
 >
-> - Persona 'nebula' missing 25 units.
+> - Persona 'metric' missing 24 units.
 >
-> #### 🟡 `ATENÇÃO` [15] `nebula.ts`
+> #### 🟡 `ATENÇÃO` [15] `metric.ts`
 >
-> - Persona 'nebula' missing 22 units.
+> - Persona 'metric' missing 25 units.
 >
-> #### 🟡 `ATENÇÃO` [16] `nebula.ts`
+> #### 🟡 `ATENÇÃO` [16] `metric.ts`
 >
-> - Persona 'nebula' missing 16 units.
+> - Persona 'metric' missing 21 units.
 >
-> #### 🟡 `ATENÇÃO` [17] `bolt.ts`
+> #### 🟡 `ATENÇÃO` [17] `nexus.ts`
 >
-> - Persona 'bolt' missing 21 units.
+> - Persona 'nexus' missing 18 units.
 >
-> #### 🟡 `ATENÇÃO` [18] `bolt.ts`
+> #### 🟡 `ATENÇÃO` [18] `nexus.ts`
 >
-> - Persona 'bolt' missing 28 units.
+> - Persona 'nexus' missing 16 units.
 >
-> #### 🟡 `ATENÇÃO` [19] `bolt.ts`
+> #### 🟡 `ATENÇÃO` [19] `nexus.ts`
 >
-> - Persona 'bolt' missing 23 units.
+> - Persona 'nexus' missing 21 units.
 >
-> #### 🟡 `ATENÇÃO` [20] `bolt.ts`
+> #### 🟡 `ATENÇÃO` [20] `nexus.ts`
 >
-> - Persona 'bolt' missing 26 units.
+> - Persona 'nexus' missing 23 units.
 >
-> *... e mais 507 achados de nível MEDIUM omitidos para brevidade.*
+> *... e mais 508 achados de nível MEDIUM omitidos para brevidade.*
 >

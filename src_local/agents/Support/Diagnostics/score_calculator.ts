@@ -16,7 +16,7 @@ export class ScoreCalculator {
         this.penaltyEngine = new PenaltyEngine();
     }
 
-    calculateFinalScore(mapData: Record<string, any>, allAlerts: any[], qaData: any = null): { score: number, breakdown: Record<string, number> } {
+    calculateFinalScore(mapData: Record<string, any>, allAlerts: any[], qaData: any = null, cognitive: any = null): { score: number, breakdown: Record<string, number> } {
         if (!mapData || Object.keys(mapData).length === 0) return { score: 0, breakdown: {} };
         const total = Object.keys(mapData).length;
 
@@ -28,9 +28,9 @@ export class ScoreCalculator {
             excellence: this.metricsEngine.calcExcellence(mapData, total)[0]
         };
 
-        const raw = Object.values(pillars).reduce((a, b) => a + b, 0) + this.calculateQualityBonus(mapData, qaData);
-        const finalScore = this.penaltyEngine.apply(raw, allAlerts, mapData, total, qaData);
-        const adj = this.penaltyEngine.getPilarAdjustments(allAlerts, mapData, qaData);
+        const raw = Object.values(pillars).reduce((a, b) => a + b, 0) + (this.calculateQualityBonus(mapData, qaData) / total);
+        const finalScore = this.penaltyEngine.apply(raw, allAlerts, mapData, total, qaData, cognitive);
+        const adj = this.penaltyEngine.getPilarAdjustments(allAlerts, mapData, qaData, cognitive);
 
         return {
             score: finalScore,
@@ -46,7 +46,7 @@ export class ScoreCalculator {
     }
 
     private mapQualityAdjs(adj: any) {
-        const keys = ["Quality (CC > 20 - High Risk)", "Quality (Cognitive > 15)", "Quality (Nesting > 3)", "Quality (CBO > 10 - High Coupling)", "Quality (DIT > 5 - Deep Inheritance)", "Quality (MI < 10 - Low Maint)", "Quality (MI < 5 - Critical)", "Quality (Defect Density > 1/KLOC)", "Quality (Gate RED)", "Quality (Shadow Non-Compliant)"];
+        const keys = ["Cognitive (System Sanity)", "Quality (CC > 20 - High Risk)", "Quality (Cognitive > 15)", "Quality (Nesting > 3)", "Quality (CBO > 10 - High Coupling)", "Quality (DIT > 5 - Deep Inheritance)", "Quality (MI < 10 - Low Maint)", "Quality (MI < 5 - Critical)", "Quality (Defect Density > 1/KLOC)", "Quality (Gate RED)", "Quality (Shadow Non-Compliant)"];
         const res: any = {};
         keys.forEach(k => res[k] = adj[k] || 0);
         ["_raw_ccCount", "_raw_cognitiveCount", "_raw_nestingCount", "_raw_cboCount", "_raw_ditCount", "_raw_miLowCount", "_raw_miCriticalCount", "_raw_defectCount", "_raw_gateRedCount", "_raw_shadowCount", "_raw_totalAnalyzed"].forEach(k => res[k] = adj[k] || 0);

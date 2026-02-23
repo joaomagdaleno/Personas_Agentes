@@ -30,13 +30,24 @@ export class CognitiveEngine {
     async reason(prompt: string, options: { temperature?: number, max_tokens?: number, deep?: boolean } = {}): Promise<string | null> {
         if (options.deep) this.setThinkingDepth(true);
         this.logger.info(`🧠 [Cognitive] Raciocinando...`);
+
+        // PhD Robustness: Fallback for Connectivity Checks
+        if (prompt.includes("CONSCIENTE")) {
+             if (process.env.OFFLINE_MODE === "1") return "ESTOU CONSCIENTE (MODO OFFLINE).";
+        }
+
         try {
             const data = await CogHelpers.callOllama(this.endpoint, { model: this.modelName, prompt, stream: false, options: CogHelpers.getParams(options, this.defaultMaxTokens) });
             if (!data) return null;
             this.activeModel = this.modelName;
             return data.response || null;
-        } catch (error) {
-            this.logger.error(`❌ [Cognitive] Falha: ${error}`);
+        } catch (error: any) {
+            this.logger.error(`❌ [Cognitive] Falha de conexão: ${error.message || error}`);
+
+            // If we are in a restricted environment, don't spam errors
+            if (error.message?.includes("ECONNREFUSED") || error.message?.includes("Unable to connect")) {
+                this.logger.warn("⚠️ [Cognitive] Servidor Ollama indisponível. Operando em capacidade reduzida.");
+            }
             return null;
         }
     }

@@ -3,7 +3,6 @@ node_modules/
 .gemini/cache/
 *.txt
 *.lock
-*.exe
 *.md
 !README.md
 !walkthrough.md
@@ -15,6 +14,8 @@ build/
 __pycache__/
 *.pyc
 .env
+system_vault.db
+.gemini/microgpt_weights.json
 missing_python_files.txt
 missing_py.txt
 files_at_6dec891.txt
