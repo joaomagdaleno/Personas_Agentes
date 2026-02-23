@@ -20,29 +20,46 @@ export class ScoreCalculator {
         if (!mapData || Object.keys(mapData).length === 0) return { score: 0, breakdown: {} };
         const total = Object.keys(mapData).length;
 
-        const pillars = {
+        const pillars = this.calculatePillars(mapData, allAlerts, total);
+        const raw = this.calculateRawScore(pillars, mapData, qaData, total);
+
+        const finalScore = this.penaltyEngine.apply(raw, allAlerts, mapData, total, qaData, cognitive);
+        const adj = this.penaltyEngine.getPilarAdjustments(allAlerts, mapData, qaData, cognitive);
+
+        return {
+            score: finalScore,
+            breakdown: this.buildBreakdown(pillars, adj)
+        };
+    }
+
+    private calculatePillars(mapData: any, allAlerts: any[], total: number) {
+        return {
             stability: this.metricsEngine.calcStability(mapData)[0],
             purity: this.metricsEngine.calcPurity(mapData, total)[0],
             observability: this.metricsEngine.calcObservability(mapData)[0],
             security: this.metricsEngine.calcSecurity(allAlerts)[0],
             excellence: this.metricsEngine.calcExcellence(mapData, total)[0]
         };
+    }
 
-        const raw = Object.values(pillars).reduce((a, b) => a + b, 0) + (this.calculateQualityBonus(mapData, qaData) / total);
-        const finalScore = this.penaltyEngine.apply(raw, allAlerts, mapData, total, qaData, cognitive);
-        const adj = this.penaltyEngine.getPilarAdjustments(allAlerts, mapData, qaData, cognitive);
+    private calculateRawScore(pillars: any, mapData: any, qaData: any, total: number): number {
+        const pillarSum = Object.values(pillars).reduce((a: any, b: any) => a + b, 0) as number;
+        return pillarSum + (this.calculateQualityBonus(mapData, qaData) / total);
+    }
 
+    private buildBreakdown(pillars: any, adj: any): Record<string, number> {
         return {
-            score: finalScore,
-            breakdown: {
-                "Stability (Coverage)": Math.round(Math.max(0, pillars.stability - (adj["Stability (Coverage)"] || 0)) * 10) / 10,
-                "Purity (Complexity)": Math.round(Math.max(0, pillars.purity - (adj["Purity (Complexity)"] || 0)) * 10) / 10,
-                "Observability (Telemetry)": Math.round(pillars.observability * 10) / 10,
-                "Security (Vulnerabilities)": Math.round(Math.max(0, pillars.security - (adj["Security (Vulnerabilities)"] || 0)) * 10) / 10,
-                "Excellence (Documentation)": Math.round(Math.max(0, pillars.excellence - (adj["Excellence (Documentation)"] || 0)) * 10) / 10,
-                ...this.mapQualityAdjs(adj)
-            }
+            "Stability (Coverage)": this.round(pillars.stability - (adj["Stability (Coverage)"] || 0)),
+            "Purity (Complexity)": this.round(pillars.purity - (adj["Purity (Complexity)"] || 0)),
+            "Observability (Telemetry)": this.round(pillars.observability),
+            "Security (Vulnerabilities)": this.round(pillars.security - (adj["Security (Vulnerabilities)"] || 0)),
+            "Excellence (Documentation)": this.round(pillars.excellence - (adj["Excellence (Documentation)"] || 0)),
+            ...this.mapQualityAdjs(adj)
         };
+    }
+
+    private round(val: number): number {
+        return Math.round(Math.max(0, val) * 10) / 10;
     }
 
     private mapQualityAdjs(adj: any) {

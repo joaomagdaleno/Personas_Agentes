@@ -68,7 +68,8 @@ export class HealthSynthesizer {
 
         // 🧬 Parity Counter Logic (Native Sovereignty v8.0)
         const { ParityAnalyst } = await import("../Analysis/parity_analyst");
-        const analyst = new ParityAnalyst(context.projectRoot || ".");
+        const parityRoot = context.projectRoot ? `${context.projectRoot}/src_local/agents` : "src_local/agents";
+        const analyst = new ParityAnalyst(parityRoot);
         const nativeReport = analyst.analyzeAtomicParity();
 
         const parityStats = {

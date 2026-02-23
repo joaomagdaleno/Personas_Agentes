@@ -10,39 +10,36 @@ export class SilentErrorStrategy {
 
         function visitor(node: ts.Node) {
             if (ts.isCatchClause(node)) {
-                const statements = node.block.statements;
-                let isSilent = false;
-
-                // 1. Bloco totalmente vazio
-                if (statements.length === 0) {
-                    isSilent = true;
-                }
-                // 2. Bloco contendo apenas 'continue' (silenciamento em loop)
-                else if (statements.length === 1 && ts.isContinueStatement(statements[0]!)) {
-                    isSilent = true;
-                }
-                // 3. Bloco contendo apenas declaração vazia (;)
-                else if (statements.length === 1 && ts.isEmptyStatement(statements[0]!)) {
-                    isSilent = true;
-                }
-
-                if (isSilent) {
-                    const { line, character } = sourceFile.getLineAndCharacterOfPosition(node.getStart());
-
-                    // Verificar se o contexto é seguro (Log ou Teste)
-                    if (!ASTIntelligence.isNodeSafe(node, sourceFile)) {
-                        issues.push({
-                            file: sourceFile.fileName,
-                            line: line + 1,
-                            column: character + 1,
-                            issue: "Captura de erro silenciosa detectada (Try/Catch vazio ou suprimido).",
-                            severity: "high",
-                            context: "LogicAuditor"
-                        });
-                    }
-                }
+                checkCatchClause(node);
             }
             ts.forEachChild(node, visitor);
+        }
+
+        function checkCatchClause(node: ts.CatchClause) {
+            if (isSilentCatch(node) && !ASTIntelligence.isNodeSafe(node, sourceFile)) {
+                addIssue(node);
+            }
+        }
+
+        function isSilentCatch(node: ts.CatchClause): boolean {
+            const statements = node.block.statements;
+            if (statements.length === 0) return true;
+            if (statements.length > 1) return false;
+
+            const first = statements[0]!;
+            return ts.isContinueStatement(first) || ts.isEmptyStatement(first);
+        }
+
+        function addIssue(node: ts.Node) {
+            const { line, character } = sourceFile.getLineAndCharacterOfPosition(node.getStart());
+            issues.push({
+                file: sourceFile.fileName,
+                line: line + 1,
+                column: character + 1,
+                issue: "Captura de erro silenciosa detectada (Try/Catch vazio ou suprimido).",
+                severity: "high",
+                context: "LogicAuditor"
+            });
         }
 
         ts.forEachChild(sourceFile, visitor);

@@ -17,18 +17,39 @@ export class AuditExpertEngine {
 
     public scanPattern(pattern: any, lines: string[], file: string, agentName: string, auditor: any, veto: any): AuditEntry[] {
         const regex = new RegExp(pattern.regex, "i");
-        return lines.reduce((acc: AuditEntry[], line, i) => {
-            if (!line || (veto?.shouldSkip?.(line, pattern, { file, agentName })) || !regex.test(line) || this.isErrorReport(lines, i)) return acc;
+        const entries: AuditEntry[] = [];
 
-            let severity = (pattern.severity || "MEDIUM").toUpperCase();
-            if (auditor?.isInteractionSafe) {
-                const safety = auditor.isInteractionSafe(lines.join("\n"), i + 1, this.mapRiskLevel(pattern.regex));
-                if (safety?.isSafe) return acc;
-                if (safety?.reason?.includes("Severity:")) severity = safety.reason.split("Severity:")[1].split("]")[0].trim().toUpperCase();
-            }
-            acc.push(this.createEntry(file, i, pattern, lines, agentName, severity));
-            return acc;
-        }, []);
+        for (let i = 0; i < lines.length; i++) {
+            const entry = this.processLine(i, lines, pattern, regex, file, agentName, auditor, veto);
+            if (entry) entries.push(entry);
+        }
+
+        return entries;
+    }
+
+    private processLine(i: number, lines: string[], pattern: any, regex: RegExp, file: string, agentName: string, auditor: any, veto: any): AuditEntry | null {
+        const line = lines[i];
+        if (!line || this.shouldSkipLine(line, i, lines, pattern, regex, file, agentName, veto)) return null;
+
+        let severity = (pattern.severity || "MEDIUM").toUpperCase();
+        if (auditor?.isInteractionSafe) {
+            const safety = auditor.isInteractionSafe(lines.join("\n"), i + 1, this.mapRiskLevel(pattern.regex));
+            if (safety?.isSafe) return null;
+            severity = this.extractSeverity(safety, severity);
+        }
+
+        return this.createEntry(file, i, pattern, lines, agentName, severity);
+    }
+
+    private shouldSkipLine(line: string, i: number, lines: string[], pattern: any, regex: RegExp, file: string, agentName: string, veto: any): boolean {
+        return (veto?.shouldSkip?.(line, pattern, { file, agentName })) || !regex.test(line) || this.isErrorReport(lines, i);
+    }
+
+    private extractSeverity(safety: any, defaultSeverity: string): string {
+        if (safety?.reason?.includes("Severity:")) {
+            return safety.reason.split("Severity:")[1].split("]")[0].trim().toUpperCase();
+        }
+        return defaultSeverity;
     }
 
     public createEntry(file: string, lineIdx: number, pattern: any, lines: string[], agentName: string, severityOverride?: string): AuditEntry {

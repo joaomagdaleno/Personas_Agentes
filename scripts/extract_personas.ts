@@ -1,50 +1,91 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-const baseDir = 'c:/Users/joaom/Documents/GitHub/Personas_Agentes/src_local/agents';
-const stacks = ['Python', 'Flutter', 'Kotlin'];
+const baseDir = path.join(process.cwd(), 'src_local/agents');
+const stacks = ['Python', 'Flutter', 'Kotlin', 'TypeScript', 'Go'];
 const categories = ['Audit', 'Content', 'Strategic', 'System'];
 
 const manifest: any = { personas: [] };
 
 for (const stack of stacks) {
+    processStack(stack, categories, baseDir, manifest);
+}
+
+function processStack(stack: string, categories: string[], baseDir: string, manifest: any) {
     for (const category of categories) {
         const dir = path.join(baseDir, stack, category);
-        if (!fs.existsSync(dir)) continue;
-
-        const files = fs.readdirSync(dir).filter(f => f.endsWith('.py') && f !== '__init__.py');
-        for (const file of files) {
-            const content = fs.readFileSync(path.join(dir, file), 'utf-8');
-
-            const nameMatch = content.match(/self\.name\s*=\s*["'](.*?)["']/);
-            const emojiMatch = content.match(/self\.emoji\s*=\s*["'](.*?)["']/);
-            const roleMatch = content.match(/self\.role\s*=\s*["'](.*?)["']/);
-            const stackMatch = content.match(/self\.stack\s*=\s*["'](.*?)["']/);
-
-            // Extract audit rules (simple regex for now)
-            const rules: any[] = [];
-            const ruleMatches = content.matchAll(/{'regex':\s*['"](.*?)['"],\s*'issue':\s*['"](.*?)['"],\s*'severity':\s*['"](.*?)['"]}/g);
-            for (const m of ruleMatches) {
-                rules.push({ regex: m[1], issue: m[2], severity: m[3] });
-            }
-
-            // Extract reason template
-            const reasonMatch = content.match(/return f"(.*?)"/);
-
-            manifest.personas.push({
-                id: `${stack}_${category}_${file.replace('.py', '')}`,
-                name: nameMatch ? nameMatch[1] : file.replace('.py', ''),
-                emoji: emojiMatch ? emojiMatch[1] : '👤',
-                role: roleMatch ? roleMatch[1] : 'PhD Agent',
-                stack: stackMatch ? stackMatch[1] : stack,
-                category: category,
-                rules: rules,
-                reasonTemplate: reasonMatch ? reasonMatch[1] : null,
-                originalFile: `src_local/agents/${stack}/${category}/${file}`
-            });
+        if (fs.existsSync(dir)) {
+            processCategoryDir(dir, stack, category, manifest);
         }
     }
 }
 
-fs.writeFileSync('c:/Users/joaom/Documents/GitHub/Personas_Agentes/src_local/utils/persona_manifest.json', JSON.stringify(manifest, null, 2));
+function processCategoryDir(dir: string, stack: string, category: string, manifest: any) {
+    const files = fs.readdirSync(dir).filter(f => isAuditableFile(f));
+    for (const file of files) {
+        const content = fs.readFileSync(path.join(dir, file), 'utf-8');
+        const persona = extractPersonaMetadata(file, content, stack, category);
+        manifest.personas.push(persona);
+    }
+}
+
+function isAuditableFile(f: string): boolean {
+    return (f.endsWith('.py') || f.endsWith('.ts')) && f !== '__init__.py' && !f.endsWith('.test.ts');
+}
+
+function extractPersonaMetadata(file: string, content: string, stack: string, category: string): any {
+    const id = `${stack}_${category}_${file.replace(/\.(py|ts)$/, '')}`;
+    const name = matchValue(content, /(?:self\.name|this\.name)\s*=\s*["'](.*?)["']/) || file.replace(/\.(py|ts)$/, '');
+
+    return {
+        id,
+        name,
+        emoji: matchValue(content, /(?:self\.emoji|this\.emoji)\s*=\s*["'](.*?)["']/) || '👤',
+        role: matchValue(content, /(?:self\.role|this\.role)\s*=\s*["'](.*?)["']/) || 'PhD Agent',
+        stack: matchValue(content, /(?:self\.stack|this\.stack)\s*=\s*["'](.*?)["']/) || stack,
+        category,
+        rules: extractRules(content),
+        reasonTemplate: extractReasonTemplate(content),
+        originalFile: `src_local/agents/${stack}/${category}/${file}`
+    };
+}
+
+function matchValue(content: string, regex: RegExp): string | null {
+    const m = content.match(regex);
+    return m ? m[1] : null;
+}
+
+function extractRules(content: string): any[] {
+    const rules: any[] = [];
+    const pattern = /(?:{'regex':\s*['"](.*?)['"],\s*'issue':\s*['"](.*?)['"],\s*'severity':\s*['"](.*?)['"]}|{ regex:\s*(.*?),\s*issue:\s*['"](.*?)['"],\s*severity:\s*['"](.*?)['"] })/g;
+
+    for (const m of content.matchAll(pattern)) {
+        const rule = processRuleMatch(m);
+        if (rule) rules.push(rule);
+    }
+    return rules;
+}
+
+function processRuleMatch(m: RegExpMatchArray): any {
+    let regex = m[1] || m[4];
+    const issue = m[2] || m[5];
+    const severity = m[3] || m[6];
+
+    if (!regex) return null;
+
+    if (regex.startsWith('/') && regex.endsWith('/')) {
+        regex = regex.substring(1, regex.length - 1);
+    }
+    if (!m[4]) {
+        regex = regex.replace(/\\\\/g, '\\');
+    }
+    return { regex, issue, severity };
+}
+
+function extractReasonTemplate(content: string): string | null {
+    const m = content.match(/(?:return f"(.*?)"|issue:\s*[`'"](.*?)[`'"])/);
+    return m ? (m[1] || m[2]) : null;
+}
+
+fs.writeFileSync(path.join(process.cwd(), 'src_local/utils/persona_manifest.json'), JSON.stringify(manifest, null, 2));
 console.log(`✅ Extraídos ${manifest.personas.length} personas para o manifesto.`);

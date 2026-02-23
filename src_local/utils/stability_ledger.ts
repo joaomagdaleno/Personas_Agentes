@@ -29,24 +29,9 @@ export class StabilityLedger {
 
     update(auditResults: any[], contextMap: Record<string, any> = {}): Record<string, any> {
         /** 📈 Sincroniza os achados da auditoria com a memória persistente. */
-        const currentErrorFiles = new Set<string>();
-        const isInternal = this.projectRoot.toString().includes("Personas_Agentes");
-
         try {
-            // Limpeza preventiva para projetos externos
-            if (!isInternal && this.ledger[".agent/skills"]) {
-                delete this.ledger[".agent/skills"];
-            }
-
-            for (const issue of auditResults) {
-                const file = (typeof issue === 'object' && issue !== null)
-                    ? String(issue.file || 'N/A').replace(/\\/g, "/")
-                    : "Strategic/DNA";
-                currentErrorFiles.add(file);
-                this.updateFileStatus(file, contextMap);
-            }
-
-            // Detecção de CURA
+            this.performMaintenance();
+            const currentErrorFiles = this.processAuditResults(auditResults, contextMap);
             this.detectHealedFiles(currentErrorFiles);
 
             this.persistence.saveLedger(this.ledger);
@@ -55,6 +40,30 @@ export class StabilityLedger {
             logger.error(`🚨 Falha ao atualizar livro de estabilidade: ${e.message}`);
             return this.ledger;
         }
+    }
+
+    private performMaintenance() {
+        const isInternal = this.projectRoot.toString().includes("Personas_Agentes");
+        if (!isInternal && this.ledger[".agent/skills"]) {
+            delete this.ledger[".agent/skills"];
+        }
+    }
+
+    private processAuditResults(results: any[], contextMap: any): Set<string> {
+        const currentErrorFiles = new Set<string>();
+        for (const issue of results) {
+            const file = this.extractFileName(issue);
+            currentErrorFiles.add(file);
+            this.updateFileStatus(file, contextMap);
+        }
+        return currentErrorFiles;
+    }
+
+    private extractFileName(issue: any): string {
+        if (typeof issue === 'object' && issue !== null) {
+            return String(issue.file || 'N/A').replace(/\\/g, "/");
+        }
+        return "Strategic/DNA";
     }
 
     private updateFileStatus(file: string, contextMap: Record<string, any>) {

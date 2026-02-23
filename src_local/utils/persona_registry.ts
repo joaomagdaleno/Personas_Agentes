@@ -29,50 +29,11 @@ export class PersonaRegistry {
 
     async loadFleet(orchestrator: any) {
         try {
-            const manifestPath = path.join(__dirname, "..", "utils", "persona_manifest.json");
-            if (!fs.existsSync(manifestPath)) {
-                throw new Error(`Manifesto não encontrado: ${manifestPath}`);
-            }
-
-            const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+            const manifest = this.loadManifest();
             logger.info(`🎭 [Registry] Analisando memórias de ${manifest.personas.length} PhDs...`);
 
-            const { SchemaPersona } = await import("../agents/schema_persona.ts");
-            const { TestifyPersona } = await import("../agents/Support/Automation/testify_persona.ts");
-
             for (const metadata of manifest.personas) {
-                let persona;
-
-                // 1. Tentar Importar Classe Detalhada (PhD Real)
-                const detailedPath = this.resolveDetailedPath(metadata);
-
-                if (detailedPath && fs.existsSync(detailedPath)) {
-                    try {
-                        const module = await import(detailedPath);
-                        // Procurar por classes que terminam em Persona (ex: MacroPersona)
-                        const PersonaClass = Object.values(module).find((v: any) =>
-                            typeof v === 'function' && v.name?.endsWith('Persona')
-                        ) as any;
-
-                        if (PersonaClass) {
-                            persona = new PersonaClass(this.projectRoot);
-                            logger.debug(`💎 [Registry] PhD Detalhado carregado: ${metadata.name}`);
-                        }
-                    } catch (importErr) {
-                        logger.warn(`⚠️ [Registry] Falha ao importar PhD detalhado ${metadata.name}, usando Schema fallback.`);
-                    }
-                }
-
-                // 2. Fallbacks e Exceções
-                if (!persona) {
-                    if (metadata.name === "Testify") {
-                        persona = new TestifyPersona(this.projectRoot);
-                    } else {
-                        // O "Ator de Script" genérico
-                        persona = new SchemaPersona(metadata, this.projectRoot);
-                    }
-                }
-
+                const persona = await this.mobilizePersona(metadata);
                 orchestrator.addPersona(persona);
             }
 
@@ -82,15 +43,63 @@ export class PersonaRegistry {
         }
     }
 
+    private loadManifest(): any {
+        const manifestPath = path.join(__dirname, "..", "utils", "persona_manifest.json");
+        if (!fs.existsSync(manifestPath)) {
+            throw new Error(`Manifesto não encontrado: ${manifestPath}`);
+        }
+        return JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+    }
+
+    private async mobilizePersona(metadata: any): Promise<any> {
+        let persona = await this.tryLoadDetailedPersona(metadata);
+        if (!persona) {
+            persona = await this.loadFallbackPersona(metadata);
+        }
+        return persona;
+    }
+
+    private async tryLoadDetailedPersona(metadata: any): Promise<any | null> {
+        const detailedPath = this.resolveDetailedPath(metadata);
+        if (!detailedPath || !fs.existsSync(detailedPath)) return null;
+
+        try {
+            const module = await import(detailedPath);
+            const PersonaClass = Object.values(module).find((v: any) =>
+                typeof v === 'function' && v.name?.endsWith('Persona')
+            ) as any;
+
+            if (PersonaClass) {
+                logger.debug(`💎 [Registry] PhD Detalhado carregado: ${metadata.name}`);
+                return new PersonaClass(this.projectRoot);
+            }
+        } catch (err: any) {
+            logger.warn(`⚠️ [Registry] Falha ao importar PhD detalhado ${metadata.name}: ${err.message}`);
+        }
+        return null;
+    }
+
+    private async loadFallbackPersona(metadata: any): Promise<any> {
+        if (metadata.name === "Testify") {
+            const { TestifyPersona } = await import("../agents/Support/Automation/testify_persona.ts");
+            return new TestifyPersona(this.projectRoot);
+        }
+        const { SchemaPersona } = await import("../agents/schema_persona.ts");
+        return new SchemaPersona(metadata, this.projectRoot);
+    }
+
     /**
      * Resolve o caminho do arquivo .ts detalhado baseado nos metadados do manifesto.
      */
     private resolveDetailedPath(metadata: any): string | null {
-        if (!["TypeScript", "Bun"].includes(metadata.stack)) return null;
+        if (!["TypeScript", "Bun", "Go", "Kotlin"].includes(metadata.stack)) return null;
 
-        // Tentar reconstruir o path baseado na categoria e nome
-        // Ex: TypeScript/Audit/bolt.ts
-        const relativePath = path.join(__dirname, "..", "agents", metadata.stack, metadata.category, `${metadata.name}.ts`);
+        if (metadata.originalFile && metadata.originalFile.endsWith('.ts')) {
+            return path.resolve(this.projectRoot, metadata.originalFile);
+        }
+
+        // Fallback: Tentar reconstruir o path baseado na categoria e nome
+        const relativePath = path.join(__dirname, "..", "agents", metadata.stack, metadata.category, `${metadata.name.toLowerCase()}.ts`);
         return relativePath;
     }
 }

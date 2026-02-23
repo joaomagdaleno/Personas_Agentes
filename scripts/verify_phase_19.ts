@@ -25,14 +25,7 @@ async function verifyPhase19() {
 
     // 2. Check each agent has all 3 required methods
     for (const agents of [flutterAgents, kotlinAgents, pythonAgents]) {
-        for (const agent of agents) {
-            if (typeof agent.performAudit !== "function") { console.error(`❌ ${agent.name} missing performAudit`); process.exit(1); }
-            if (typeof agent.reasonAboutObjective !== "function") { console.error(`❌ ${agent.name} missing reasonAboutObjective`); process.exit(1); }
-            if (typeof agent.getSystemPrompt !== "function") { console.error(`❌ ${agent.name} missing getSystemPrompt`); process.exit(1); }
-            // Verify system prompt returns non-empty
-            const prompt = agent.getSystemPrompt();
-            if (!prompt || prompt.length < 10) { console.error(`❌ ${agent.name} getSystemPrompt too short`); process.exit(1); }
-        }
+        agents.forEach(validateAgent);
     }
     console.log("  ✅ All agents have performAudit, reasonAboutObjective, getSystemPrompt\n");
 
@@ -56,6 +49,21 @@ async function verifyPhase19() {
     console.log(`  ✅ Strategic findings: ${strategic.length}`);
 
     console.log("\n🎉 Phase 19 Verification: ALL PASSED!");
+}
+
+function validateAgent(agent: any) {
+    const required = ["performAudit", "reasonAboutObjective", "getSystemPrompt"];
+    for (const method of required) {
+        if (typeof agent[method] !== "function") {
+            console.error(`❌ ${agent.name} missing ${method}`);
+            process.exit(1);
+        }
+    }
+    const prompt = agent.getSystemPrompt();
+    if (!prompt || prompt.length < 10) {
+        console.error(`❌ ${agent.name} getSystemPrompt too short`);
+        process.exit(1);
+    }
 }
 
 verifyPhase19().catch(e => { console.error("❌ Failed:", e); process.exit(1); });
