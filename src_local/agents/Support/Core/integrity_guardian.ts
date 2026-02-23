@@ -6,7 +6,7 @@ const logger = winston.child({ module: "IntegrityGuardian" });
  * 🛡️ Guardião de Integridade PhD (Bun Version).
  */
 export class IntegrityGuardian {
-    async detectVulnerabilities(content: string, componentType: string, ignoreTestContext: boolean = false): Promise<any> {
+    async detectVulnerabilities(content: string, componentType: string, filename: string = "unknown", ignoreTestContext: boolean = false): Promise<any> {
         const issues = { brittle: false, silent_error: false };
 
         if (componentType === "TEST" && !ignoreTestContext) {
@@ -14,29 +14,29 @@ export class IntegrityGuardian {
         }
 
         // Simplified detection logic (LogicAuditor mock for now)
-        this.analyzeBrittleContext(content, issues);
-        this.analyzeErrorSilencing(content, issues);
+        this.analyzeBrittleContext(content, filename, issues);
+        this.analyzeErrorSilencing(content, filename, issues);
 
         return issues;
     }
 
-    private analyzeBrittleContext(content: string, issues: any) {
+    private analyzeBrittleContext(content: string, filename: string, issues: any) {
         const brittlePattern = /\b(eval|exec|global|shell=true)\b/gi;
         const matches = [...content.matchAll(brittlePattern)];
 
         if (matches.length > 0) {
             // In a real port, we'd use LogicAuditor here
-            logger.warn(`Entropia detectada: Padrão frágil encontrado.`);
+            logger.warn(`Entropia detectada: Padrão frágil encontrado em ${filename}.`);
             issues.brittle = true;
         }
     }
 
-    private analyzeErrorSilencing(content: string, issues: any) {
+    private analyzeErrorSilencing(content: string, filename: string, issues: any) {
         const silentPattern = /except.*:\s*pass/gi;
         const match = content.match(silentPattern);
         if (match) {
             if (!["logger.err", "logger.excep", "telemetry"].some(kw => content.includes(kw))) {
-                logger.warn(`Cegueira operacional: Erro silenciado sem telemetria.`);
+                logger.warn(`Cegueira operacional (Silent Except): Erro silenciado sem telemetria em ${filename}.`);
                 issues.silent_error = true;
             }
         }

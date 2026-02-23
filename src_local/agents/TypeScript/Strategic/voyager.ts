@@ -20,7 +20,20 @@ export class VoyagerPersona extends BaseActivePersona {
         const start = Date.now();
         logger.info(`[${this.name}] Analisando Modernidade TypeScript...`);
 
-        const auditRules = [
+        const results: any[] = [];
+        Object.entries(this.contextData).forEach(([file, content]) => {
+            if (file.endsWith('.ts') || file.endsWith('.tsx')) {
+                results.push(...this.auditSingleFile(file, content));
+            }
+        });
+
+        const duration = (Date.now() - start) / 1000;
+        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
+        return results;
+    }
+
+    private auditSingleFile(file: string, content: string): any[] {
+        const rules = [
             { regex: '\\bvar\\s+\\w+', issue: 'Legado: "var" — use "const" ou "let" para escopo seguro.', severity: 'high' },
             { regex: '\\brequire\\s*\\(', issue: 'CommonJS: require() — use ESM "import" para compatibilidade TypeScript.', severity: 'high' },
             { regex: 'module\\.exports', issue: 'CommonJS: module.exports — use "export" ESM.', severity: 'high' },
@@ -29,21 +42,10 @@ export class VoyagerPersona extends BaseActivePersona {
             { regex: 'new\\s+Promise\\(.*resolve.*reject', issue: 'Verboso: Promise constructor manual — prefira async/await.', severity: 'low' },
         ];
 
-        const results: any[] = [];
-        for (const rule of auditRules) {
-            const regex = new RegExp(rule.regex, 'g');
-            for (const [filePath, content] of Object.entries(this.contextData)) {
-                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx')) {
-                    for (const match of (content as string).matchAll(regex)) {
-                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0], persona: this.name });
-                    }
-                }
-            }
-        }
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
-        return results;
+        return rules.flatMap(rule => {
+            const matches = [...content.matchAll(new RegExp(rule.regex, 'g'))];
+            return matches.map(m => ({ file, issue: rule.issue, severity: rule.severity, evidence: m[0], persona: this.name }));
+        });
     }
 
     async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
@@ -68,42 +70,46 @@ export class VoyagerPersona extends BaseActivePersona {
         logger.info(`✨ [Voyager] Iniciando Cura Ativa em ${blindSpots.length} pontos cegos...`);
 
         for (const spot of blindSpots) {
-            try {
-                const fullPath = this.getAbsolutePath(spot);
-                const fs = require('fs');
-                if (!fs.existsSync(fullPath)) continue;
-
-                const content = fs.readFileSync(fullPath, 'utf-8');
-                const lines = content.split('\n');
-                let changed = false;
-                const newLines: string[] = [];
-
-                for (let i = 0; i < lines.length; i++) {
-                    const line = lines[i];
-                    const trimmed = line.trim();
-
-                    // Detecta catch { /* empty */ } ou try/catch sem log
-                    if (trimmed === "catch (e) {}" || trimmed === "catch {}" || (trimmed === "catch (error) {}")) {
-                        const indent = line.split('catch')[0];
-                        newLines.push(`${indent}catch (e) {`);
-                        newLines.push(`${indent}    logger.error(\`🚨 [Cura Ativa] Falha crítica silenciada detectada em ${spot}\`, e);`);
-                        newLines.push(`${indent}}`);
-                        changed = true;
-                    } else {
-                        newLines.push(line);
-                    }
-                }
-
-                if (changed) {
-                    fs.writeFileSync(fullPath, newLines.join('\n'), 'utf-8');
-                    logger.info(`✨ [Voyager] Arquivo ${spot} curado com sucesso.`);
-                    healedCount++;
-                }
-            } catch (e) {
-                logger.error(`❌ [Voyager] Falha ao curar ${spot}: ${e}`);
-            }
+            if (await this.healFile(spot)) healedCount++;
         }
         return healedCount;
+    }
+
+    private async healFile(spot: string): Promise<boolean> {
+        try {
+            const fullPath = this.getAbsolutePath(spot);
+            const fs = require('fs');
+            if (!fs.existsSync(fullPath)) return false;
+
+            const content = fs.readFileSync(fullPath, 'utf-8');
+            const { result, changed } = this.applyHealPatterns(content, spot);
+
+            if (changed) {
+                fs.writeFileSync(fullPath, result, 'utf-8');
+                logger.info(`✨ [Voyager] Arquivo ${spot} curado com sucesso.`);
+                return true;
+            }
+        } catch (e) {
+            logger.error(`❌ [Voyager] Falha ao curar ${spot}: ${e}`);
+        }
+        return false;
+    }
+
+    private applyHealPatterns(content: string, spot: string): { result: string, changed: boolean } {
+        const lines = content.split('\n');
+        let changed = false;
+        const newLines = lines.map(line => {
+            const trimmed = line.trim();
+            const emptyCatch = ["catch (e) {}", "catch {}", "catch (error) {}"];
+
+            if (emptyCatch.includes(trimmed)) {
+                changed = true;
+                const indent = line.split('catch')[0];
+                return `${indent}catch (e) {\n${indent}    logger.error(\`🚨 [Cura Ativa] Falha crítica silenciada detectada em ${spot}\`, e);\n${indent}}`;
+            }
+            return line;
+        });
+        return { result: newLines.join('\n'), changed };
     }
 
     private getAbsolutePath(relPath: string): string {

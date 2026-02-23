@@ -30,13 +30,17 @@ export class ReportSectionsEngine {
 
     protected _getStatusBadge(status: string): string {
         const s = status.toUpperCase();
-        if (s.includes("CRÍTICO") || s.includes("COLLAPSE") || s.includes("ERRO") || s === "CRITICAL" || s === "HIGH") return "🔴 `CRÍTICO`";
-        if (s.includes("ALERTA") || s.includes("ATENÇÃO") || s.includes("RISCO") || s === "MEDIUM") return "🟡 `ATENÇÃO`";
-        if (s.includes("SUCESSO") || s.includes("ESTÁVEL") || s.includes("OK")) return "🟢 `ESTÁVEL`";
-        if (s === "STRATEGIC") return "🟣 `ESTRATÉGICO`";
-        if (s === "LOW") return "⚪ `BAIXO`";
-        if (s === "INFO") return "🔵 `INFO`";
-        return "🔵 `NEUTRO`";
+        const matches = (keys: string[]) => keys.some(k => s.includes(k));
+
+        if (matches(["CRÍTICO", "COLLAPSE", "ERRO", "CRITICAL", "HIGH"])) return "🔴 `CRÍTICO`";
+        if (matches(["ALERTA", "ATENÇÃO", "RISCO", "MEDIUM"])) return "🟡 `ATENÇÃO`";
+        if (matches(["SUCESSO", "ESTÁVEL", "OK"])) return "🟢 `ESTÁVEL`";
+
+        return {
+            "STRATEGIC": "🟣 `ESTRATÉGICO`",
+            "LOW": "⚪ `BAIXO`",
+            "INFO": "🔵 `INFO`"
+        }[s] || "🔵 `NEUTRO`";
     }
 
     formatVitalsTable(healthData: any, label: string, status: string): string {

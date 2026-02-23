@@ -8,6 +8,7 @@ import { TestDiscoveryStrategy } from "./strategies/TestDiscoveryStrategy.ts";
 
 import { StatusDeterminator } from "./strategies/StatusDeterminator.ts";
 import { MatrixBuilder } from "./strategies/MatrixBuilder.ts";
+import { StatsAggregator } from "./strategies/StatsAggregator.ts";
 
 const logger = winston.child({ module: "QualityAnalyst" });
 
@@ -44,13 +45,7 @@ export class QualityAnalyst {
 
     calculateProjectQualityMetrics(matrix: any[]): any {
         const total = matrix.length || 1;
-        const stats = matrix.reduce((acc, m) => {
-            const adv = m.advanced_metrics || {};
-            acc.complexity += (m.complexity || 0); acc.cc += (adv.cyclomaticComplexity || 0); acc.cog += (adv.cognitiveComplexity || 0); acc.mi += (adv.maintainabilityIndex || 0);
-            acc.risk[adv.riskLevel]++; acc.gate[adv.qualityGate]++; acc.status[m.test_status]++;
-            if (adv.isShadow) (adv.shadowCompliance?.compliant ? acc.shadow.compliant++ : acc.shadow.non_compliant++);
-            return acc;
-        }, { complexity: 0, cc: 0, cog: 0, mi: 0, risk: { LOW: 0, MODERATE: 0, HIGH: 0, CRITICAL: 0 }, gate: { GREEN: 0, YELLOW: 0, RED: 0 }, status: { DEEP: 0, SHALLOW: 0, STRUCTURAL: 0, UNTESTED: 0 }, shadow: { compliant: 0, non_compliant: 0 } });
+        const stats = matrix.reduce(StatsAggregator.aggregate, StatsAggregator.getEmptyStats());
 
         return {
             summary: { total_files: matrix.length, avg_complexity: Number((stats.complexity / total).toFixed(2)), avg_cyclomatic_complexity: Number((stats.cc / total).toFixed(2)), avg_cognitive_complexity: Number((stats.cog / total).toFixed(2)), avg_maintainability_index: Number((stats.mi / total).toFixed(2)) },

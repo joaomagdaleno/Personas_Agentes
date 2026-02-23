@@ -2,6 +2,8 @@ import winston from "winston";
 import { Path } from "../../../core/path_utils.ts";
 import { Database } from "bun:sqlite";
 import * as os from "node:os";
+import { ProjectSaudeFormatter } from "./ProjectSaudeFormatter.ts";
+import { InsightSabedoriaFormatter } from "./InsightSabedoriaFormatter.ts";
 
 const logger = winston.child({ module: "BriefingAgent" });
 
@@ -83,38 +85,17 @@ export class BriefingAgent {
 
     private formatReport(insights: any[], projects: any[], optimizations: any): string {
         const now = new Date();
-        const timeStr = now.toLocaleTimeString();
-        const dateStr = now.toLocaleDateString();
+        const header = `# 🏛️ Relatório Soberano - ${now.toLocaleDateString()}\n\n`;
+        const meta = `> **Gerado às ${now.toLocaleTimeString()}** | *Status do Sistema: Operacional*\n\n`;
 
-        let md = `# 🏛️ Relatório Soberano - ${dateStr}\n\n`;
-        md += `> **Gerado às ${timeStr}** | *Status do Sistema: Operacional*\n\n`;
-
+        let md = header + meta;
         md += "## 🛡️ Atividade de Defesa & Otimização\n";
         md += `- **Processos Ociosos Encerrados:** ${optimizations.processes_killed}\n`;
         md += `- **Plataforma:** ${os.platform()} ${os.release()}\n\n`;
 
-        md += "## 📡 Saúde dos Territórios (Projetos)\n";
-        md += "| Projeto | Saúde Atual | Status |\n|---|---|---|\n";
+        md += ProjectSaudeFormatter.format(projects);
+        md += "\n" + InsightSabedoriaFormatter.format(insights);
 
-        for (const p of projects) {
-            const score = Math.round(p.health_score || 0);
-            const status = score > 80 ? "✅ Estável" : score > 50 ? "⚠️ Atenção" : "🚨 Crítico";
-            md += `| **${p.name || 'Unknown'}** | \`${score}%\` | ${status} |\n`;
-        }
-
-        md += "\n## 🧠 Sabedoria Noturna (Insights)\n";
-        if (insights.length === 0) {
-            md += "*Nenhum insight profundo gerado. O sistema pode não ter entrado em modo ocioso prolongado.*\n";
-        } else {
-            for (const row of insights) {
-                const icon = row.mode === "KILL" ? "🧹" : row.mode === "DEEP" ? "💡" : "📝";
-                const badge = row.impact_level === "HIGH" ? "**[HIGH]**" : "";
-                const time = (row.timestamp || "").substring(11, 16);
-                md += `### ${icon} ${time} - ${badge}\n${row.insight}\n\n`;
-            }
-        }
-
-        md += "---\n*Este relatório foi gerado automaticamente pela sua IA Soberana.*";
-        return md;
+        return md + "\n---\n*Este relatório foi gerado automaticamente pela sua IA Soberana.*";
     }
 }

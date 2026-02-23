@@ -89,21 +89,15 @@ export class TopologyEngine {
 
     private static categorize(filePath: string): "Agent" | "Core" | "Util" | "Script" | "Native" | "Unknown" {
         const low = filePath.toLowerCase();
-        if (low.includes("agents")) return "Agent";
-        if (low.includes("core")) return "Core";
-        if (low.includes("utils")) return "Util";
-        if (low.includes("scripts")) return "Script";
-        if (low.includes("native")) return "Native";
-        return "Unknown";
+        const map: Record<string, any> = { agents: "Agent", core: "Core", utils: "Util", scripts: "Script", native: "Native" };
+        const match = Object.keys(map).find(k => low.includes(k));
+        return match ? map[match] : "Unknown";
     }
 
     private static identifyStack(fileName: string): "TypeScript" | "Python" | "Go" | "Kotlin" | "Flutter" | "Dart" | undefined {
-        if (fileName.endsWith(".ts")) return "TypeScript";
-        if (fileName.endsWith(".py")) return "Python";
-        if (fileName.endsWith(".go")) return "Go";
-        if (fileName.endsWith(".kt")) return "Kotlin";
-        if (fileName.endsWith(".dart")) return "Flutter";
-        return undefined;
+        const extMap: Record<string, any> = { ".ts": "TypeScript", ".py": "Python", ".go": "Go", ".kt": "Kotlin", ".dart": "Flutter" };
+        const ext = Object.keys(extMap).find(e => fileName.endsWith(e));
+        return ext ? extMap[ext] : undefined;
     }
 
     /**

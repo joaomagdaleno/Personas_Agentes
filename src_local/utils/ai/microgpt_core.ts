@@ -51,40 +51,35 @@ export class Value {
     }
 
     backward(): void {
-        const topo: Value[] = [];
-        const visited = new Set<Value>();
+        const topo = this.buildTopo();
+        this.grad = 1;
+        this.propagateGradients(topo);
+    }
+
+    private propagateGradients(topo: Value[]) {
+        for (let i = topo.length - 1; i >= 0; i--) {
+            const v = topo[i]!;
+            v._children.forEach((child, j) => {
+                child.grad += v._localGrads[j]! * v.grad;
+            });
+        }
+    }
+
+    private buildTopo(): Value[] {
+        const topo: Value[] = [], visited = new Set<Value>(), processed = new Set<Value>();
         const stack: Value[] = [this];
 
-        // Iterative Topological Sort to avoid Stack Overflow on deep graphs
-        const visitStack: Value[] = [this];
-        const processed = new Set<Value>();
-
-        while (visitStack.length > 0) {
-            const v = visitStack[visitStack.length - 1]!;
+        while (stack.length > 0) {
+            const v = stack[stack.length - 1]!;
             if (visited.has(v)) {
-                visitStack.pop();
-                if (!processed.has(v)) {
-                    processed.add(v);
-                    topo.push(v);
-                }
+                stack.pop();
+                if (!processed.has(v)) { processed.add(v); topo.push(v); }
                 continue;
             }
             visited.add(v);
-            for (const child of v._children) {
-                if (!visited.has(child)) {
-                    visitStack.push(child);
-                }
-            }
+            v._children.forEach(c => { if (!visited.has(c)) stack.push(c); });
         }
-
-        this.grad = 1;
-        for (let i = topo.length - 1; i >= 0; i--) {
-            const v = topo[i]!;
-            const g = v.grad;
-            for (let j = 0; j < v._children.length; j++) {
-                v._children[j]!.grad += v._localGrads[j]! * g;
-            }
-        }
+        return topo;
     }
 
     /**

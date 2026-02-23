@@ -4,6 +4,8 @@ import { Path } from "../core/path_utils.ts";
 import { GitClient } from "./git_client.ts";
 import { DependencyHelpers } from "./dependency_helpers.ts";
 import { ConflictPolicy } from "./conflict_policy.ts";
+import { GitSyncManager } from "./git_sync_manager.ts";
+import { TopologyInfoProvider } from "./TopologyInfoProvider.ts";
 
 const logger = winston.child({ module: "DependencyAuditor" });
 
@@ -19,6 +21,7 @@ export class DependencyAuditor {
     private isInternal: boolean;
     private git: GitClient;
     private conflictPolicy: ConflictPolicy;
+    private syncManager: GitSyncManager;
 
     constructor(projectRoot: string) {
         this.projectRoot = new Path(projectRoot);
@@ -27,6 +30,7 @@ export class DependencyAuditor {
         this.isInternal = projectRoot.includes("Personas_Agentes");
         this.git = new GitClient(this.agentPath.toString());
         this.conflictPolicy = new ConflictPolicy(this.agentPath.toString());
+        this.syncManager = new GitSyncManager(this.git, this.projectRoot, this.agentPath);
     }
 
     async syncSubmodule(): Promise<boolean> {
@@ -37,7 +41,9 @@ export class DependencyAuditor {
         try {
             await this.ensureInitialized();
             if (!(await this.agentPath.join(".git").exists())) return false;
-            return await this._executeGitSync();
+            const success = await this.syncManager.executeGitSync();
+            if (success) await this.verifySystemIntegrity();
+            return success;
         } catch (e: any) {
             this._handleSyncError(e);
             return false;
@@ -50,71 +56,19 @@ export class DependencyAuditor {
         DependencyHelpers.handleSyncError(e, this.conflictPolicy);
     }
 
-    private async _executeGitSync(): Promise<boolean> {
-        const remote = await this.git.discoverRemote();
-        if (!remote) return false;
-
-        await this.git.rebaseAbort();
-        logger.info(`🔄 Sync: ${remote}`);
-        await this.git.fetchPrune(remote);
-
-        const target = await this._getTargetRef(remote);
-        const commitsBehind = await this.git.getCommitCount(`HEAD..${target}`);
-
-        if (commitsBehind === 0) {
-            logger.info("✅ Versão Atualizada.");
-            return true;
-        }
-
-        return await this._performPull(target, commitsBehind);
-    }
-
-    private async _getTargetRef(remote: string): Promise<string> {
-        const active = await this.git.getCurrentBranch();
-        const tracking = await this.git.getTrackingBranch(active);
-        return `${remote}/${tracking}`;
-    }
-
-    private async _performPull(target: string, count: number): Promise<boolean> {
-        logger.info(`⬇️ Puxando ${count} commits...`);
-        await this.git.stashPush("Auto-sync");
-        const rebased = await this.git.rebase(target) === 0;
-        const success = rebased || await this._fallbackReset(target);
-        return success ? await this._finalizeSync() : false;
-    }
-
-    private async _fallbackReset(target: string): Promise<boolean> {
-        logger.warn(`⚠️ Reset Hard para ${target}`);
-        await this.git.rebaseAbort();
-        return await this.git.resetHard(target) === 0;
-    }
-
-    private async _finalizeSync(): Promise<boolean> {
-        await this.verifySystemIntegrity();
-        await this._gitAddSkills();
-        await this.git.stashPop();
-        logger.info("✨ Sync Sucesso.");
-        return true;
-    }
-
-    private async _gitAddSkills(): Promise<void> {
-        const proc = Bun.spawn(["git", "add", ".agent/skills"], { cwd: this.projectRoot.toString() });
-        await proc.exited;
-    }
-
     async ensureInitialized(): Promise<void> {
-        if (await this.projectRoot.exists()) {
-            const hasFiles = await fs.readdir(this.agentPath.toString()).then(files => files.length > 0).catch(() => false);
-            if (!hasFiles) {
-                try {
-                    const proc = Bun.spawn(["git", "submodule", "update", "--init", "--recursive"], {
-                        cwd: this.projectRoot.toString()
-                    });
-                    await proc.exited;
-                } catch (e) {
-                    logger.error(`❌ Falha na inicialização de submódulos: ${e}`);
-                }
-            }
+        if (!(await this.projectRoot.exists())) return;
+        const hasFiles = await fs.readdir(this.agentPath.toString()).then(f => f.length > 0).catch(() => false);
+        if (!hasFiles) await this.initSubmodules();
+    }
+
+    private async initSubmodules(): Promise<void> {
+        try {
+            await Bun.spawn(["git", "submodule", "update", "--init", "--recursive"], {
+                cwd: this.projectRoot.toString()
+            }).exited;
+        } catch (e: any) {
+            logger.error(`❌ Falha na inicialização de submódulos: ${e.message}`);
         }
     }
 
@@ -143,13 +97,7 @@ export class DependencyAuditor {
     }
 
     async _get_topology(): Promise<{ path: string, remote: string | null, branch: string | null }[]> {
-        try {
-            const remote = await this.git.discoverRemote();
-            const branch = await this.git.getCurrentBranch();
-            return [{ path: this.agentPath.toString(), remote, branch }];
-        } catch {
-            return [{ path: this.agentPath.toString(), remote: null, branch: null }];
-        }
+        return TopologyInfoProvider.get(this.git, this.agentPath);
     }
 
     private async _validate_pre_conditions_internal(): Promise<{ ready: boolean }> {

@@ -37,21 +37,27 @@ export class TaskOrchestrator {
         /** Surgically verifies specific files using the assigned agents. */
         const verifiedFindings: any[] = [];
         for (const [file, agents] of Object.entries(auditMap)) {
-            const fullPath = this.orc.projectRoot.join(file);
-            if (!(await fullPath.exists())) continue;
-
-            const content = await this.orc.contextEngine.analyst.readProjectFile(fullPath.toString());
-            if (!content) continue;
-
-            for (const agentName of agents) {
-                const agent = this.orc.personas.find((p: any) => p.name === agentName);
-                if (agent && typeof agent.performStrategicAudit === 'function') {
-                    // Inicia auditoria estratégica cirúrgica
-                    verifiedFindings.push(...await agent.performStrategicAudit({ fileTarget: file, contentTarget: content }));
-                }
-            }
+            const findings = await this.verifyFile(file, agents);
+            verifiedFindings.push(...findings);
         }
         return verifiedFindings;
+    }
+
+    private async verifyFile(file: string, agentNames: string[]): Promise<any[]> {
+        const fullPath = this.orc.projectRoot.join(file);
+        if (!(await fullPath.exists())) return [];
+
+        const content = await this.orc.contextEngine.analyst.readProjectFile(fullPath.toString());
+        if (!content) return [];
+
+        const findings: any[] = [];
+        for (const name of agentNames) {
+            const agent = this.orc.personas.find((p: any) => p.name === name);
+            if (agent?.performStrategicAudit) {
+                findings.push(...await agent.performStrategicAudit({ fileTarget: file, contentTarget: content }));
+            }
+        }
+        return findings;
     }
 
     selectActivePhds(objective: string, stacks: Set<string>, personas: any[]): any[] {
