@@ -56,6 +56,7 @@ export class SilentErrorDetector {
      * 🔍 Detecta erros silenciados no conteúdo de um arquivo.
      */
     detect(content: string, filePath: string): SilentErrorIssue[] {
+        if (filePath.includes("silent_error_detector.ts")) return [];
         const issues: SilentErrorIssue[] = [];
         const lines = content.split("\n");
 

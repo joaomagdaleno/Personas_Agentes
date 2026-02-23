@@ -74,7 +74,7 @@ export class ContextEngine {
     }
 
     private async _applySecurityAndTests(path: Path, content: string, info: any, ignoreTest: boolean) {
-        const vuln = await this.analyst.integrityGuardian.detectVulnerabilities(content, info.component_type, ignoreTest);
+        const vuln = await this.analyst.integrityGuardian.detectVulnerabilities(content, info.component_type, path.name(), ignoreTest);
         Object.assign(info, vuln);
         info.has_test = this.coverageAuditor.detectTest(path, info.component_type, this.allFilesIndex, info);
         if (info.component_type === "TEST") {

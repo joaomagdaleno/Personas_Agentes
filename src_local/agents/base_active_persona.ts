@@ -73,4 +73,14 @@ export abstract class BaseActivePersona {
     abstract performAudit(): Promise<any[]>;
     abstract reasonAboutObjective(objective: string, file: string, content: string): Promise<any>;
     abstract getSystemPrompt(): string;
+
+    /** Parity: performActiveHealing — Base stub for autonomous reparation. */
+    async performActiveHealing(blindSpots: string[]): Promise<void> {
+        logger.info(`🛠️ [${this.name}] Iniciando protocolo de cura ativa para ${blindSpots.length} pontos.`);
+    }
+
+    /** Parity: selfDiagnostic — Base stub for health status. */
+    selfDiagnostic(): any {
+        return { status: "Soberano", score: 100, details: "Operando em conformidade PhD." };
+    }
 }

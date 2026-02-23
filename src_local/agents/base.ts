@@ -46,6 +46,11 @@ export abstract class BaseActivePersona {
 
     protected _initializeSupportTools() { BaseHelpers.initializeTools(this, this.projectRoot); }
 
+    /** Parity: performActiveHealing — Base stub for autonomous reparation. */
+    public performActiveHealing(blindSpots: string[]): void {
+        logger.info(`🛠️ [${this.name}] Iniciando protocolo de cura ativa para ${blindSpots.length} pontos.`);
+    }
+
     public analyzeLogic(f: string) { return (this.structuralAnalyst && this.projectRoot) ? this.structuralAnalyst.analyzeFileLogic(f, this.projectRoot, this.ignoredFiles, this.name) : this.performAudit(); }
     public getMaturityMetrics() { return (this.maturityEvaluator && this.projectRoot) ? this.maturityEvaluator.evaluatePersona(this.projectRoot, this.stack, this.name) : { score: 0, status: "OFFLINE" }; }
 }

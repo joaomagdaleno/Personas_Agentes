@@ -43,8 +43,8 @@ export class MaintenanceEnginePhd {
 
             let ours: any[] = [];
             let theirs: any[] = [];
-            try { ours = JSON.parse(oursText); } catch { }
-            try { theirs = JSON.parse(theirsText); } catch { }
+            try { ours = JSON.parse(oursText); } catch { logger.debug("⚠️ Maintenance: Failed to parse OURS version of skills index."); }
+            try { theirs = JSON.parse(theirsText); } catch { logger.debug("⚠️ Maintenance: Failed to parse THEIRS version of skills index."); }
 
             // Merge Logic: Base is THEIRS, but override with OURS if protected
             // Use Map for O(1) lookups

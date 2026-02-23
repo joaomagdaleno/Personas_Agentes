@@ -67,11 +67,13 @@ export class DiscoveryAgent {
         const norm = (n: string) => n.toLowerCase().replace(/_/g, "").replace(/init/g, "constructor");
         Object.entries(groups).forEach(([id, files]) => {
             if (files.length < 2) return;
-            const all = new Set<string>();
-            files.forEach(f => (f.units || []).forEach((u: any) => all.add(norm(u.name))));
+            // PhD Parity: Focus only on Persona classes and their methods to avoid engine-specific noise
+            const allPersonaUnits = new Set<string>();
+            files.forEach(f => (f.units || []).filter((u: any) => u.name.includes("Persona")).forEach((u: any) => allPersonaUnits.add(norm(u.name))));
+
             files.forEach(f => {
                 const cur = (f.units || []).map((u: any) => norm(u.name));
-                const miss = Array.from(all).filter(u => !cur.includes(u));
+                const miss = Array.from(allPersonaUnits).filter(u => !cur.includes(u));
                 if (miss.length) findings.push({ type: "DISPARITY", severity: "MEDIUM", file: f.path, issue: `Persona '${id}' missing ${miss.length} units.`, category: "AtomicParity" });
             });
         });

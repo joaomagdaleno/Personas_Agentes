@@ -2,16 +2,63 @@ import { type MetricsResult } from "../metrics_engine";
 
 export class GateCalculator {
     static calculate(m: MetricsResult): number {
-        const checks = [
-            () => m.maintainabilityIndex >= 20 ? 25 : (m.maintainabilityIndex >= 10 ? 15 : 5),
-            () => m.cyclomaticComplexity <= 10 ? 20 : (m.cyclomaticComplexity <= 20 ? 15 : (m.cyclomaticComplexity <= 30 ? 10 : 5)),
-            () => m.cognitiveComplexity <= 10 ? 15 : (m.cognitiveComplexity <= 20 ? 10 : (m.cognitiveComplexity <= 30 ? 5 : 0)),
-            () => m.nestingDepth <= 3 ? 10 : (m.nestingDepth <= 5 ? 5 : 0),
-            () => m.cbo <= 3 ? 10 : (m.cbo <= 5 ? 5 : 0),
-            () => m.defectDensity <= 1 ? 10 : (m.defectDensity <= 3 ? 5 : 0),
-            () => m.dit <= 2 ? 5 : 0,
-            () => m.qualityGate === "GREEN" ? 5 : (m.qualityGate === "YELLOW" ? 2 : 0)
-        ];
-        return checks.reduce((sum, chk) => sum + chk(), 0);
+        return [
+            this.scoreMI(m.maintainabilityIndex),
+            this.scoreCC(m.cyclomaticComplexity),
+            this.scoreCog(m.cognitiveComplexity),
+            this.scoreNest(m.nestingDepth),
+            this.scoreCBO(m.cbo),
+            this.scoreDefect(m.defectDensity),
+            this.scoreDIT(m.dit),
+            this.scoreGate(m.qualityGate)
+        ].reduce((a, b) => a + b, 0);
+    }
+
+    private static scoreMI(v: number): number {
+        if (v >= 20) return 25;
+        if (v >= 10) return 15;
+        return 5;
+    }
+
+    private static scoreCC(v: number): number {
+        if (v <= 10) return 20;
+        if (v <= 20) return 15;
+        if (v <= 30) return 10;
+        return 5;
+    }
+
+    private static scoreCog(v: number): number {
+        if (v <= 10) return 15;
+        if (v <= 20) return 10;
+        if (v <= 30) return 5;
+        return 0;
+    }
+
+    private static scoreNest(v: number): number {
+        if (v <= 3) return 10;
+        if (v <= 5) return 5;
+        return 0;
+    }
+
+    private static scoreCBO(v: number): number {
+        if (v <= 3) return 10;
+        if (v <= 5) return 5;
+        return 0;
+    }
+
+    private static scoreDefect(v: number): number {
+        if (v <= 1) return 10;
+        if (v <= 3) return 5;
+        return 0;
+    }
+
+    private static scoreDIT(v: number): number {
+        return v <= 2 ? 5 : 0;
+    }
+
+    private static scoreGate(v: string): number {
+        if (v === "GREEN") return 5;
+        if (v === "YELLOW") return 2;
+        return 0;
     }
 }

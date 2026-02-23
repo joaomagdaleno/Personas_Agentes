@@ -1,8 +1,8 @@
 # 🏛️ RELATÓRIO SISTÊMICO: CONSOLIDAÇÃO DA REALIDADE
 
 > **Status Operacional:** 🟡 `ATENÇÃO` | **Integridade Geral:** `67%`
-> **Sanidade Neural:** `3.6768` | **Estado:** 🚨 Anomalia Sequencial Crítica
-> **Ambiente:** `TS-MASTER-CONTROL` | **Último Check:** `1:05:39 PM`
+> **Sanidade Neural:** `3.6927` | **Estado:** 🚨 Anomalia Sequencial Crítica
+> **Ambiente:** `TS-MASTER-CONTROL` | **Último Check:** `1:20:45 PM`
 >
 > 💎 `SITUAÇÃO: SOBERANIA TÉCNICA`
 
@@ -26,16 +26,16 @@
 
 | Métrica | Limite | Violações | Penalidade |
 | :--- | :--- | :---: | ---: |
-| Complexidade Ciclomática (CC > 20) | > 20 | 3/454 | 0 pts |
-| Complexidade Cognitiva (> 15) | > 15 | 127/454 | 1.1 pts |
-| Aninhamento Profundo (> 3) | > 3 | 243/454 | 1.6 pts |
-| Alto Acoplamento (CBO > 10) | > 10 | 4/454 | 0 pts |
-| Herança Profunda (DIT > 5) | > 5 | 0/454 | 0 pts |
-| Baixa Manutenibilidade (MI < 10) | < 10 | 0/454 | 0 pts |
-| Manutenibilidade Crítica (MI < 5) | < 5 | 0/454 | 0 pts |
-| Defect Density (> 1/KLOC) | > 1 | 0/454 | 0 pts |
-| Quality Gate RED | - | 0/454 | 0 pts |
-| Shadow Non-Compliant | - | 1/454 | 0 pts |
+| Complexidade Ciclomática (CC > 20) | > 20 | 2/456 | 0 pts |
+| Complexidade Cognitiva (> 15) | > 15 | 128/456 | 1.1 pts |
+| Aninhamento Profundo (> 3) | > 3 | 243/456 | 1.6 pts |
+| Alto Acoplamento (CBO > 10) | > 10 | 4/456 | 0 pts |
+| Herança Profunda (DIT > 5) | > 5 | 0/456 | 0 pts |
+| Baixa Manutenibilidade (MI < 10) | < 10 | 0/456 | 0 pts |
+| Manutenibilidade Crítica (MI < 5) | < 5 | 0/456 | 0 pts |
+| Defect Density (> 1/KLOC) | > 1 | 0/456 | 0 pts |
+| Quality Gate RED | - | 0/456 | 0 pts |
+| Shadow Non-Compliant | - | 1/456 | 0 pts |
 
 > **Penalidade Total de Qualidade:** `2.7 pts` (cap: 30) | Base: NIST, SonarQube, Microsoft
 
@@ -59,10 +59,10 @@
 | # | Componente | Complexidade | Risco | Ação Recomendada |
 | :---: | :--- | :---: | :---: | :--- |
 | 1 | `MicroPredictor.ts` | `22` | 🟠 HIGH | Desmembrar / Refatorar |
-| 2 | `quality_analyst.ts` | `22` | 🟠 HIGH | Desmembrar / Refatorar |
-| 3 | `report_sections_engine.ts` | `21` | 🟠 HIGH | Desmembrar / Refatorar |
-| 4 | `finding_deduplicator.ts` | `18` | 🟠 MODERATE | Desmembrar / Refatorar |
-| 5 | `stability_ledger.ts` | `18` | 🟠 MODERATE | Desmembrar / Refatorar |
+| 2 | `report_sections_engine.ts` | `21` | 🟠 HIGH | Desmembrar / Refatorar |
+| 3 | `finding_deduplicator.ts` | `18` | 🟠 MODERATE | Desmembrar / Refatorar |
+| 4 | `stability_ledger.ts` | `18` | 🟠 MODERATE | Desmembrar / Refatorar |
+| 5 | `audit_expert_engine.ts` | `18` | 🟠 MODERATE | Desmembrar / Refatorar |
 
 ---
 
@@ -93,8 +93,8 @@
 | Nível | Qtd | Impacto | Resposta |
 | :--- | :---: | :--- | :--- |
 | **CRITICAL** | `0` | 🔴 `BLOQUEANTE` | 🟢 `LIVRE` |
-| **HIGH** | `25` | 🟡 `RISCO ALTO` | 🟡 `INTERVENÇÃO` |
-| **MEDIUM** | `518` | 🔵 `DÉBITO TÉC.` | 🔵 `INTERVENÇÃO` |
+| **HIGH** | `24` | 🟡 `RISCO ALTO` | 🟡 `INTERVENÇÃO` |
+| **MEDIUM** | `348` | 🔵 `DÉBITO TÉC.` | 🔵 `INTERVENÇÃO` |
 | **LOW** | `0` | ⚪ `MENOR` | 🟢 `LIVRE` |
 | **STRATEGIC** | `0` | 🟣 `MELHORIA` | 🟢 `LIVRE` |
 
@@ -104,83 +104,83 @@
 >
 > - Complexidade Cognitiva Elevada (46 > 15)
 >
-> #### 🔴 `CRÍTICO` [2] `quality_analyst.ts`
->
-> - Complexidade Cognitiva Elevada (30 > 15)
->
-> #### 🔴 `CRÍTICO` [3] `stability_ledger.ts`
+> #### 🔴 `CRÍTICO` [2] `stability_ledger.ts`
 >
 > - Complexidade Cognitiva Elevada (29 > 15)
 >
-> #### 🔴 `CRÍTICO` [4] `dependency_auditor.ts`
+> #### 🔴 `CRÍTICO` [3] `GateCalculator.ts`
 >
 > - Complexidade Cognitiva Elevada (34 > 15)
 >
-> #### 🔴 `CRÍTICO` [5] `GateCalculator.ts`
->
-> - Complexidade Cognitiva Elevada (51 > 15)
->
-> #### 🔴 `CRÍTICO` [6] `file_system_scanner.ts`
+> #### 🔴 `CRÍTICO` [4] `file_system_scanner.ts`
 >
 > - Complexidade Cognitiva Elevada (33 > 15)
 >
-> #### 🔴 `CRÍTICO` [7] `behavior_analyst.ts`
+> #### 🔴 `CRÍTICO` [5] `behavior_analyst.ts`
 >
 > - Complexidade Cognitiva Elevada (27 > 15)
 >
-> #### 🔴 `CRÍTICO` [8] `voyager.ts`
+> #### 🔴 `CRÍTICO` [6] `voyager.ts`
 >
 > - Complexidade Cognitiva Elevada (36 > 15)
 >
-> #### 🔴 `CRÍTICO` [9] `parity_analyst.ts`
+> #### 🔴 `CRÍTICO` [7] `parity_analyst.ts`
 >
 > - Complexidade Cognitiva Elevada (29 > 15)
 >
-> #### 🔴 `CRÍTICO` [10] `briefing_agent.ts`
+> #### 🔴 `CRÍTICO` [8] `briefing_agent.ts`
 >
 > - Complexidade Cognitiva Elevada (33 > 15)
 >
-> *... e mais 15 achados de nível HIGH omitidos para brevidade.*
+> #### 🔴 `CRÍTICO` [9] `battle_plan_sections_engine.ts`
 >
-> #### 🟡 `ATENÇÃO` [11] `nexus.ts`
+> - Complexidade Cognitiva Elevada (27 > 15)
 >
-> - Persona 'nexus' missing 18 units.
+> #### 🔴 `CRÍTICO` [10] `validator.ts`
 >
-> #### 🟡 `ATENÇÃO` [12] `nexus.ts`
+> - Complexidade Cognitiva Elevada (27 > 15)
 >
-> - Persona 'nexus' missing 21 units.
+> *... e mais 14 achados de nível HIGH omitidos para brevidade.*
 >
-> #### 🟡 `ATENÇÃO` [13] `nexus.ts`
+> #### 🟡 `ATENÇÃO` [11] `MicroPredictor.ts`
 >
-> - Persona 'nexus' missing 23 units.
+> - Aninhamento Excessivo (7 > 3)
 >
-> #### 🟡 `ATENÇÃO` [14] `nexus.ts`
+> #### 🟡 `ATENÇÃO` [12] `report_sections_engine.ts`
 >
-> - Persona 'nexus' missing 18 units.
+> - Complexidade Ciclomática Elevada (21 > 20)
 >
-> #### 🟡 `ATENÇÃO` [15] `nexus.ts`
+> #### 🟡 `ATENÇÃO` [13] `finding_deduplicator.ts`
 >
-> - Persona 'nexus' missing 16 units.
+> - Aninhamento Excessivo (4 > 3)
 >
-> #### 🟡 `ATENÇÃO` [16] `nexus.ts`
+> #### 🟡 `ATENÇÃO` [14] `stability_ledger.ts`
 >
-> - Persona 'nexus' missing 25 units.
+> - Aninhamento Excessivo (4 > 3)
 >
-> #### 🟡 `ATENÇÃO` [17] `globe.ts`
+> #### 🟡 `ATENÇÃO` [15] `audit_expert_engine.ts`
 >
-> - Persona 'globe' missing 18 units.
+> - Complexidade Cognitiva Elevada (18 > 15)
 >
-> #### 🟡 `ATENÇÃO` [18] `globe.ts`
+> #### 🟡 `ATENÇÃO` [16] `audit_expert_engine.ts`
 >
-> - Persona 'globe' missing 21 units.
+> - Aninhamento Excessivo (5 > 3)
 >
-> #### 🟡 `ATENÇÃO` [19] `globe.ts`
+> #### 🟡 `ATENÇÃO` [17] `score_calculator.ts`
 >
-> - Persona 'globe' missing 27 units.
+> - Complexidade Cognitiva Elevada (23 > 15)
 >
-> #### 🟡 `ATENÇÃO` [20] `globe.ts`
+> #### 🟡 `ATENÇÃO` [18] `score_calculator.ts`
 >
-> - Persona 'globe' missing 23 units.
+> - Aninhamento Excessivo (5 > 3)
 >
-> *... e mais 508 achados de nível MEDIUM omitidos para brevidade.*
+> #### 🟡 `ATENÇÃO` [19] `orchestrator.ts`
+>
+> - Complexidade Cognitiva Elevada (25 > 15)
+>
+> #### 🟡 `ATENÇÃO` [20] `orchestrator.ts`
+>
+> - Aninhamento Excessivo (5 > 3)
+>
+> *... e mais 338 achados de nível MEDIUM omitidos para brevidade.*
 >
