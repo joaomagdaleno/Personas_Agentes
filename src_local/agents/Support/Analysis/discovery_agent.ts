@@ -64,32 +64,40 @@ export class DiscoveryAgent {
     }
 
     private mapDisparities(groups: Record<string, any[]>, findings: any[]) {
-        const norm = (n: string) => n.toLowerCase().replace(/_/g, "").replace(/init/g, "constructor");
         Object.entries(groups).forEach(([id, files]) => {
             if (files.length < 2) return;
-            // PhD Parity: Focus only on Persona classes and their methods to avoid engine-specific noise
-            const allPersonaUnits = new Set<string>();
-            files.forEach(f => (f.units || []).filter((u: any) => u.name.includes("Persona")).forEach((u: any) => allPersonaUnits.add(norm(u.name))));
+            this.processGroupDisparities(id, files, findings);
+        });
+    }
 
-            files.forEach(f => {
-                const cur = (f.units || []).map((u: any) => norm(u.name));
-                const miss = Array.from(allPersonaUnits).filter(u => !cur.includes(u));
-                if (miss.length) findings.push({ type: "DISPARITY", severity: "MEDIUM", file: f.path, issue: `Persona '${id}' missing ${miss.length} units.`, category: "AtomicParity" });
-            });
+    private processGroupDisparities(id: string, files: any[], findings: any[]) {
+        const norm = (n: string) => n.toLowerCase().replace(/_/g, "").replace(/init/g, "constructor");
+        const all = new Set<string>();
+        files.forEach(f => (f.units || []).filter((u: any) => u.name.includes("Persona")).forEach((u: any) => all.add(norm(u.name))));
+
+        files.forEach(f => {
+            const cur = (f.units || []).map((u: any) => norm(u.name));
+            const miss = Array.from(all).filter(u => !cur.includes(u));
+            if (miss.length) {
+                findings.push({ type: "DISPARITY", severity: "MEDIUM", file: f.path, issue: `Persona '${id}' missing ${miss.length} units.`, category: "AtomicParity" });
+            }
         });
     }
 
     private _getFiles(root: string) { return this.recursiveReaddir(root, [".ts", ".js", ".py", ".go", ".kt"]); }
     private recursiveReaddir(dir: string, exts: string[]): string[] {
-        let results: string[] = [];
         try {
-            const list = fs.readdirSync(dir, { withFileTypes: true });
-            for (const item of list) {
+            return fs.readdirSync(dir, { withFileTypes: true }).reduce((acc: string[], item) => {
                 const full = path.join(dir, item.name);
-                if (item.isDirectory()) { if (!/[\\/](\.git|node_modules|dist|artifacts|\.gemini)$/.test(full)) results = results.concat(this.recursiveReaddir(full, exts)); }
-                else if (exts.includes(path.extname(item.name))) results.push(full);
-            }
-        } catch { }
-        return results;
+                if (item.isDirectory()) return acc.concat(this.scanSubDir(full, exts));
+                if (exts.includes(path.extname(item.name))) acc.push(full);
+                return acc;
+            }, []);
+        } catch { return []; }
+    }
+
+    private scanSubDir(full: string, exts: string[]): string[] {
+        const forbidden = /[\\/](\.git|node_modules|dist|artifacts|\.gemini)$/;
+        return forbidden.test(full) ? [] : this.recursiveReaddir(full, exts);
     }
 }

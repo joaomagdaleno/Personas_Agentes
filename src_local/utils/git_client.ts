@@ -1,7 +1,7 @@
 import winston from "winston";
 import { TaskExecutor } from "./task_executor.ts";
-import * as fs from "node:fs";
-import * as path from "node:path";
+import { RemoteDiscoverer } from "./RemoteDiscoverer.ts";
+import { LockCleaner } from "./LockCleaner.ts";
 
 const logger = winston.child({ module: "GitClient" });
 
@@ -32,16 +32,7 @@ export class GitClient {
     }
 
     async discoverRemote(): Promise<string | null> {
-        const output = await this.getOutput(["remote"]);
-        const remotes = output.split("\n").map(r => r.trim());
-
-        for (const r of ["upstream", "origin"]) {
-            if (remotes.includes(r)) {
-                const res = await this.run(["ls-remote", "--heads", r]);
-                if (res.exitCode === 0) return r;
-            }
-        }
-        return remotes.length > 0 ? (remotes[0] as string) : null;
+        return RemoteDiscoverer.discover(this);
     }
 
     async getCommitCount(revRange: string): Promise<number> {
@@ -120,22 +111,7 @@ export class GitClient {
      * Limpa arquivos de trava do Git (.lock).
      */
     async clearLocks(): Promise<void> {
-        const gitDir = path.join(this.cwd, ".git");
-        if (fs.existsSync(gitDir)) {
-            const clearRecursive = (dir: string) => {
-                const list = fs.readdirSync(dir);
-                for (const file of list) {
-                    const fullPath = path.join(dir, file);
-                    if (fs.statSync(fullPath).isDirectory()) {
-                        clearRecursive(fullPath);
-                    } else if (file.endsWith(".lock")) {
-                        fs.unlinkSync(fullPath);
-                        logger.info(`🧹 Trava removida: ${file}`);
-                    }
-                }
-            };
-            clearRecursive(gitDir);
-        }
+        LockCleaner.clear(this.cwd);
     }
 
     /**

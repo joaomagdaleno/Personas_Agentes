@@ -15,41 +15,27 @@ export class GateCalculator {
     }
 
     private static scoreMI(v: number): number {
-        if (v >= 20) return 25;
-        if (v >= 10) return 15;
-        return 5;
+        return [[20, 25], [10, 15], [0, 5]].find(l => v >= l[0]!)?.[1] || 5;
     }
 
     private static scoreCC(v: number): number {
-        if (v <= 10) return 20;
-        if (v <= 20) return 15;
-        if (v <= 30) return 10;
-        return 5;
+        return [[10, 20], [20, 15], [30, 10], [999, 5]].find(l => v <= l[0]!)?.[1] || 5;
     }
 
     private static scoreCog(v: number): number {
-        if (v <= 10) return 15;
-        if (v <= 20) return 10;
-        if (v <= 30) return 5;
-        return 0;
+        return [[10, 15], [20, 10], [30, 5], [999, 0]].find(l => v <= l[0]!)?.[1] || 0;
     }
 
     private static scoreNest(v: number): number {
-        if (v <= 3) return 10;
-        if (v <= 5) return 5;
-        return 0;
+        return [[3, 10], [5, 5], [999, 0]].find(l => v <= l[0]!)?.[1] || 0;
     }
 
     private static scoreCBO(v: number): number {
-        if (v <= 3) return 10;
-        if (v <= 5) return 5;
-        return 0;
+        return [[3, 10], [5, 5], [999, 0]].find(l => v <= l[0]!)?.[1] || 0;
     }
 
     private static scoreDefect(v: number): number {
-        if (v <= 1) return 10;
-        if (v <= 3) return 5;
-        return 0;
+        return [[1, 10], [3, 5], [999, 0]].find(l => v <= l[0]!)?.[1] || 0;
     }
 
     private static scoreDIT(v: number): number {
@@ -57,8 +43,6 @@ export class GateCalculator {
     }
 
     private static scoreGate(v: string): number {
-        if (v === "GREEN") return 5;
-        if (v === "YELLOW") return 2;
-        return 0;
+        return ({ "GREEN": 5, "YELLOW": 2 } as any)[v] || 0;
     }
 }

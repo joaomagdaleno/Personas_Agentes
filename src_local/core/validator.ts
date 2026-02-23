@@ -25,12 +25,11 @@ export class CoreValidator {
         let score = 100;
         const issues: any[] = [];
 
-        if (context && context.map) {
-            for (const file in context.map) {
-                const info = context.map[file];
+        if (context?.map) {
+            Object.values(context.map).forEach((info: any) => {
                 if (info.brittle) score -= 5;
                 if (info.silent_error) score -= 10;
-            }
+            });
         }
 
         return { score: Math.max(0, score), issues };

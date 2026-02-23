@@ -2,7 +2,9 @@ import winston from "winston";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import type { ParityReport, DepthMetric, AgentParityResult, AtomicFingerprint } from "./parity_types";
-import { extractPythonFingerprint, extractTSFingerprint, computeDeltas, computeScore, capitalize } from "./parity_utils";
+import { computeDeltas, computeScore } from "./parity_utils";
+import { InstanceGrouper } from "./InstanceGrouper.ts";
+import { ParityReporter } from "./ParityReporter.ts";
 
 const logger = winston.child({ module: "ParityAnalyst" });
 
@@ -16,17 +18,11 @@ export class ParityAnalyst {
     analyzeStackGaps(_personas: any[]): ParityReport { return this.analyzeAtomicParity(); }
 
     public analyzeAtomicParity(): ParityReport {
-        const groups = this.groupAgentInstances();
+        const groups = InstanceGrouper.group(this.tsRoot);
         const results = Array.from(groups.entries()).flatMap(([name, insts]) => this.compareInstances(name, insts));
 
-        const byStack: any = {}, byCategory: any = {};
-        results.forEach(r => {
-            [byStack[r.stack] = byStack[r.stack] || { total: 0, symmetric: 0, parity: 0 }, byCategory[r.category] = byCategory[r.category] || { total: 0, symmetric: 0, parity: 0 }]
-                .forEach(st => { st.total++; if (r.status === "IDENTICAL") st.symmetric++; });
-        });
-
-        Object.entries(byStack).forEach(([k, st]: any) => st.parity = this.avgScore(results.filter(r => r.stack === k)));
-        Object.entries(byCategory).forEach(([k, st]: any) => st.parity = this.avgScore(results.filter(r => r.category === k)));
+        const byStack = this.aggregateBy(results, "stack");
+        const byCategory = this.aggregateBy(results, "category");
 
         return {
             timestamp: new Date().toISOString(), totalAgents: groups.size, totalInstances: results.length,
@@ -37,19 +33,15 @@ export class ParityAnalyst {
         };
     }
 
-    private groupAgentInstances(): Map<string, any[]> {
-        const groups = new Map<string, any[]>();
-        ["Bun", "Flutter", "Go", "Kotlin", "Python", "TypeScript"].forEach(stack => {
-            ["Audit", "Content", "Strategic", "System"].forEach(cat => {
-                const dir = path.join(this.tsRoot, stack, cat);
-                if (fs.existsSync(dir)) fs.readdirSync(dir).filter(f => /\.(ts|tsx|go|kt|py|dart)$/.test(f)).forEach(tf => {
-                    const name = tf.replace(/\.(ts|tsx|go|kt|py|dart)$/, "").toLowerCase(), content = fs.readFileSync(path.join(dir, tf), "utf-8");
-                    const fp = tf.endsWith(".py") ? extractPythonFingerprint(content, capitalize(name)) : extractTSFingerprint(content, capitalize(name));
-                    if (fp) (groups.get(name) || groups.set(name, []).get(name)!).push({ stack, cat, fp, path: path.join(dir, tf) });
-                });
-            });
+    private aggregateBy(results: AgentParityResult[], key: "stack" | "category"): any {
+        const agg: any = {};
+        results.forEach(r => {
+            const st = agg[r[key]] ||= { total: 0, symmetric: 0, parity: 0 };
+            st.total++;
+            if (r.status === "IDENTICAL") st.symmetric++;
         });
-        return groups;
+        Object.keys(agg).forEach(k => agg[k].parity = this.avgScore(results.filter(r => r[key] === k)));
+        return agg;
     }
 
     private compareInstances(name: string, instances: any[]): AgentParityResult[] {
@@ -66,10 +58,7 @@ export class ParityAnalyst {
     private avgScore(res: any[]) { return res.length ? Math.round(res.reduce((s, r) => s + r.score, 0) / res.length) : 0; }
 
     formatMarkdownReport(report: ParityReport): string {
-        let md = `## ⚖️ SINCRO-NATIVA: Consistência Multi-Stack (Soberania 2.0)\n\n> Zero Legacy Reference.\n\n| Métrica | Valor |\n| :--- | :---: |\n`;
-        md += `| **Sincronia Geral** | ${report.overallParity}% |\n| **Personas Identificadas** | ${report.totalAgents} |\n| **Instalações Ativas** | ${report.totalInstances} |\n| **Symmetry Mirror** | ${report.symmetricCount} |\n| **Divergências** | ${report.divergentCount} |\n\n### 🌍 Cobertura Global\n\n| Persona | Fidelidade | Stacks |\n| :--- | :---: | :--- |\n`;
-        report.coverage.sort((a, b) => b.stacks.length - a.stacks.length).forEach(c => md += `| ${c.agent} | ${c.stacks.length}/6 | ${c.stacks.join(", ")} |\n`);
-        return md;
+        return ParityReporter.formatMarkdown(report);
     }
 
     getVitalStatus(report: ParityReport): string { return `${report.overallParity}% ${report.overallParity >= 95 ? "Atômica" : (report.overallParity >= 80 ? "Parcial" : "Crítica")}`; }

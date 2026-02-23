@@ -5,6 +5,7 @@ import { GitClient } from "./git_client.ts";
 import { DependencyHelpers } from "./dependency_helpers.ts";
 import { ConflictPolicy } from "./conflict_policy.ts";
 import { GitSyncManager } from "./git_sync_manager.ts";
+import { TopologyInfoProvider } from "./TopologyInfoProvider.ts";
 
 const logger = winston.child({ module: "DependencyAuditor" });
 
@@ -56,18 +57,18 @@ export class DependencyAuditor {
     }
 
     async ensureInitialized(): Promise<void> {
-        if (await this.projectRoot.exists()) {
-            const hasFiles = await fs.readdir(this.agentPath.toString()).then(files => files.length > 0).catch(() => false);
-            if (!hasFiles) {
-                try {
-                    const proc = Bun.spawn(["git", "submodule", "update", "--init", "--recursive"], {
-                        cwd: this.projectRoot.toString()
-                    });
-                    await proc.exited;
-                } catch (e) {
-                    logger.error(`❌ Falha na inicialização de submódulos: ${e}`);
-                }
-            }
+        if (!(await this.projectRoot.exists())) return;
+        const hasFiles = await fs.readdir(this.agentPath.toString()).then(f => f.length > 0).catch(() => false);
+        if (!hasFiles) await this.initSubmodules();
+    }
+
+    private async initSubmodules(): Promise<void> {
+        try {
+            await Bun.spawn(["git", "submodule", "update", "--init", "--recursive"], {
+                cwd: this.projectRoot.toString()
+            }).exited;
+        } catch (e: any) {
+            logger.error(`❌ Falha na inicialização de submódulos: ${e.message}`);
         }
     }
 
@@ -96,13 +97,7 @@ export class DependencyAuditor {
     }
 
     async _get_topology(): Promise<{ path: string, remote: string | null, branch: string | null }[]> {
-        try {
-            const remote = await this.git.discoverRemote();
-            const branch = await this.git.getCurrentBranch();
-            return [{ path: this.agentPath.toString(), remote, branch }];
-        } catch {
-            return [{ path: this.agentPath.toString(), remote: null, branch: null }];
-        }
+        return TopologyInfoProvider.get(this.git, this.agentPath);
     }
 
     private async _validate_pre_conditions_internal(): Promise<{ ready: boolean }> {

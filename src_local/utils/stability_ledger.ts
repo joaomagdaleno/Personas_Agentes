@@ -51,41 +51,44 @@ export class StabilityLedger {
 
             this.persistence.saveLedger(this.ledger);
             return this.ledger;
-        } catch (e) {
-            logger.error(`🚨 Falha ao atualizar livro de estabilidade: ${e}`);
+        } catch (e: any) {
+            logger.error(`🚨 Falha ao atualizar livro de estabilidade: ${e.message}`);
             return this.ledger;
         }
     }
 
     private updateFileStatus(file: string, contextMap: Record<string, any>) {
+        if (this.tryMarkReference(file, contextMap)) return;
+
+        const entry = this.ledger[file] || { occurrences: 0, history: [], status: "UNSTABLE" };
+        entry.occurrences += 1;
+        entry.history.push(new Date().toISOString());
+        entry.status = "UNSTABLE";
+        this.ledger[file] = entry;
+    }
+
+    private tryMarkReference(file: string, contextMap: Record<string, any>): boolean {
         if (contextMap[file]?.is_gold_standard) {
-            if (!this.ledger[file]) {
-                this.ledger[file] = { status: "REFERENCE", history: ["Identificado como Gold Standard"] };
-            }
-            return;
+            this.ledger[file] ||= { status: "REFERENCE", history: ["Identificado como Gold Standard"] };
+            return true;
         }
-
-        if (!this.ledger[file]) {
-            this.ledger[file] = { occurrences: 0, history: [], status: "UNSTABLE" };
-        }
-
-        this.ledger[file].occurrences += 1;
-        this.ledger[file].history.push(new Date().toISOString());
-        this.ledger[file].status = "UNSTABLE";
+        return false;
     }
 
     private detectHealedFiles(currentErrors: Set<string>) {
-        for (const file of Object.keys(this.ledger)) {
-            if (file === "Strategic/DNA" || this.ledger[file].status === "REFERENCE") {
-                continue;
-            }
-
-            if (!currentErrors.has(file) && this.ledger[file].status !== "HEALED") {
+        Object.keys(this.ledger).forEach(file => {
+            if (this.isHealable(file, currentErrors)) {
                 logger.info(`✨ [Memória] Cura confirmada: ${file}`);
                 this.ledger[file].status = "HEALED";
                 this.ledger[file].occurrences = 0;
             }
-        }
+        });
+    }
+
+    private isHealable(file: string, currentErrors: Set<string>): boolean {
+        const entry = this.ledger[file];
+        if (file === "Strategic/DNA" || entry.status === "REFERENCE") return false;
+        return !currentErrors.has(file) && entry.status !== "HEALED";
     }
 
     clear() {
