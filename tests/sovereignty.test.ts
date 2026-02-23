@@ -1,6 +1,7 @@
 import { expect, test, describe } from "bun:test";
 import { HealerPersona } from "../src_local/agents/Support/Core/healer";
-import { ComplexityAnalyst } from "../src_local/agents/Support/Diagnostics/strategies/ComplexityAnalyst";
+import { CognitiveAnalyst } from "../src_local/agents/Support/Diagnostics/strategies/CognitiveAnalyst";
+import { CyclomaticAnalyst } from "../src_local/agents/Support/Diagnostics/strategies/CyclomaticAnalyst";
 import { LintRules } from "../src_local/agents/Support/Reporting/strategies/LintRules";
 import { FingerprintExtractor } from "../src_local/agents/Support/Analysis/strategies/FingerprintExtractor";
 import { StructuralAnalyst } from "../src_local/agents/Support/Analysis/structural_analyst";
@@ -12,8 +13,9 @@ describe("🏛️ Sovereignty Bridge: Baseline Validation", () => {
         expect(healer.name).toBe("Healer");
     });
 
-    test("Complexity Analyst Strategy", () => {
-        expect(ComplexityAnalyst).toBeDefined();
+    test("Complexity Analyst Strategies", () => {
+        expect(CognitiveAnalyst).toBeDefined();
+        expect(CyclomaticAnalyst).toBeDefined();
     });
 
     test("Markdown Lint Rules", () => {

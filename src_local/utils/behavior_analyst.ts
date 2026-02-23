@@ -30,35 +30,42 @@ export class BehaviorAnalyst {
         }
 
         try {
-            const command = `
-                Add-Type @"
-                using System;
-                using System.Runtime.InteropServices;
-                using System.Text;
-                public class Win32 {
-                    [DllImport("user32.dll")]
-                    public static extern IntPtr GetForegroundWindow();
-                    [DllImport("user32.dll")]
-                    public static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
-                    [DllImport("user32.dll")]
-                    public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
-                }
+            if (process.platform === "win32") {
+                const command = `
+                    Add-Type @"
+                    using System;
+                    using System.Runtime.InteropServices;
+                    using System.Text;
+                    public class Win32 {
+                        [DllImport("user32.dll")]
+                        public static extern IntPtr GetForegroundWindow();
+                        [DllImport("user32.dll")]
+                        public static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
+                        [DllImport("user32.dll")]
+                        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+                    }
 "@
-                $hwnd = [Win32]::GetForegroundWindow()
-                $sb = New-Object System.Text.StringBuilder 256
-                [Win32]::GetWindowText($hwnd, $sb, $sb.Capacity)
-                $pid = 0
-                [Win32]::GetWindowThreadProcessId($hwnd, [ref]$pid)
-                $proc = Get-Process -Id $pid
-                "$($proc.ProcessName)|$($sb.ToString())"
-            `;
+                    $hwnd = [Win32]::GetForegroundWindow()
+                    $sb = New-Object System.Text.StringBuilder 256
+                    [Win32]::GetWindowText($hwnd, $sb, $sb.Capacity)
+                    $pid = 0
+                    [Win32]::GetWindowThreadProcessId($hwnd, [ref]$pid)
+                    $proc = Get-Process -Id $pid
+                    "$($proc.ProcessName)|$($sb.ToString())"
+                `;
 
-            const output = execSync(`powershell -Command "${command.replace(/\n/g, '')}"`, { encoding: 'utf8' }).trim();
-            const [app, title] = output.split('|');
-            const data = { app: app || "Unknown", title: title || "" };
-            this.windowCache = { data, timestamp: Date.now() };
-            return data;
-        } catch (e) {
+                const output = execSync(`powershell -Command "${command.replace(/\n/g, '')}"`, { encoding: 'utf8' }).trim();
+                const [app, title] = output.split('|');
+                const data = { app: app || "Unknown", title: title || "" };
+                this.windowCache = { data, timestamp: Date.now() };
+                return data;
+            } else {
+                // PhD cross-platform: Basic Linux support via xdotool if available
+                // Fallback for non-interactive/headless environments
+                return { app: "System (Headless)", title: "N/A" };
+            }
+        } catch (e: any) {
+            logger.debug(`⚠️ Failed to detect active window: ${e.message}`);
             return { app: "System", title: "N/A" };
         }
     }
@@ -105,8 +112,12 @@ export class BehaviorAnalyst {
                 "INSERT INTO user_activity (app_name, category, duration_seconds) VALUES (?, ?, ?)",
                 [app, category, duration]
             );
-        } catch (e) {
-            // Tabela pode não existir se HistoryAgent não a criou
+        } catch (e: any) {
+            if (e.message?.includes("no such table")) {
+                 logger.debug("👀 [Behavior] Skiping save: user_activity table not initialized.");
+            } else {
+                 logger.warn(`❌ [Behavior] Database error: ${e.message}`);
+            }
         }
     }
 

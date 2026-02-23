@@ -1,4 +1,6 @@
-import { Value } from './microgpt_core.js';
+import { Value } from './microgpt_core.ts';
+import { ModelOps } from './ModelOps.ts';
+import { ModelInitializer } from './ModelInitializer.ts';
 
 export class MicroPredictor {
     private vocab: string[];
@@ -7,95 +9,17 @@ export class MicroPredictor {
     private BOS: number;
     public lastAttentionWeights: number[][][] = []; // [layer][head][seq_pos]
 
-    // Hyperparameters
     private readonly N_EMBD = 16;
     private readonly N_HEAD = 4;
     private readonly N_LAYER = 1;
     private readonly BLOCK_SIZE = 16;
-    private readonly HEAD_DIM = 16 / 4; // N_EMBD / N_HEAD
+    private readonly HEAD_DIM = 16 / 4;
 
     constructor(uniqueEvents: string[]) {
         this.vocab = [...new Set(uniqueEvents)].sort();
         this.BOS = this.vocab.length;
         this.vocabSize = this.vocab.length + 1;
-        this.stateDict = this.initModel();
-    }
-
-    // ---- Seeded PRNG (Mulberry32) for deterministic initialization ----
-    private mulberry32(seed: number): () => number {
-        let s = seed | 0;
-        return () => {
-            s = (s + 0x6d2b79f5) | 0;
-            let t = Math.imul(s ^ (s >>> 15), 1 | s);
-            t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-            return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-        };
-    }
-
-    private gauss(rng: () => number, mean: number, std: number): number {
-        const u1 = rng();
-        const u2 = rng();
-        return mean + std * Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
-    }
-
-    private shuffle<T>(rng: () => number, arr: T[]): void {
-        for (let i = arr.length - 1; i > 0; i--) {
-            const j = Math.floor(rng() * (i + 1));
-            const tempI = arr[i];
-            const tempJ = arr[j];
-            if (tempI !== undefined && tempJ !== undefined) {
-                arr[i] = tempJ;
-                arr[j] = tempI;
-            }
-        }
-    }
-
-    // ---- Model layers ----
-    private linear(x: Value[], w: Value[][]): Value[] {
-        return Value.matmul(x, w);
-    }
-
-    private softmax(logits: Value[]): Value[] {
-        const maxVal = Math.max(...logits.map((v) => v.data));
-        const exps = logits.map((v) => v.sub(maxVal).exp());
-        const total = exps.reduce((a, b) => a.add(b));
-        return exps.map((e) => e.div(total));
-    }
-
-    private rmsnorm(x: Value[]): Value[] {
-        const ms = x
-            .reduce((acc, xi) => acc.add(xi.mul(xi)), new Value(0))
-            .div(x.length);
-        const scale = ms.add(1e-5).pow(-0.5);
-        return x.map((xi) => xi.mul(scale));
-    }
-
-    private initModel(): Record<string, Value[][]> {
-        const rng = this.mulberry32(42);
-        const gaussFn = (mean: number, std: number) => this.gauss(rng, mean, std);
-
-        function matrix(nout: number, nin: number, std = 0.08): Value[][] {
-            return Array.from(
-                { length: nout },
-                () => Array.from({ length: nin }, () => new Value(gaussFn(0, std))),
-            );
-        }
-
-        const dict: Record<string, Value[][]> = {
-            wte: matrix(this.vocabSize, this.N_EMBD),
-            wpe: matrix(this.BLOCK_SIZE, this.N_EMBD),
-            lm_head: matrix(this.vocabSize, this.N_EMBD),
-        };
-
-        for (let i = 0; i < this.N_LAYER; i++) {
-            dict[`layer${i}.attn_wq`] = matrix(this.N_EMBD, this.N_EMBD);
-            dict[`layer${i}.attn_wk`] = matrix(this.N_EMBD, this.N_EMBD);
-            dict[`layer${i}.attn_wv`] = matrix(this.N_EMBD, this.N_EMBD);
-            dict[`layer${i}.attn_wo`] = matrix(this.N_EMBD, this.N_EMBD);
-            dict[`layer${i}.mlp_fc1`] = matrix(4 * this.N_EMBD, this.N_EMBD);
-            dict[`layer${i}.mlp_fc2`] = matrix(this.N_EMBD, 4 * this.N_EMBD);
-        }
-        return dict;
+        this.stateDict = ModelInitializer.initDict(this.vocabSize, this.BLOCK_SIZE, this.N_LAYER, this.N_EMBD);
     }
 
     private getParams(): Value[] {
@@ -134,148 +58,120 @@ export class MicroPredictor {
         }
     }
 
-    private gpt(
-        tokenId: number,
-        posId: number,
-        keys: Value[][][],
-        values: Value[][][],
-    ): Value[] {
+    private gpt(tokenId: number, posId: number, keys: Value[][][], values: Value[][][]): Value[] {
         const tokEmb = this.stateDict["wte"]?.[tokenId];
         const posEmb = this.stateDict["wpe"]?.[posId];
         if (!tokEmb || !posEmb) throw new Error("Missing embeddings");
-        let x = tokEmb.map((t, i) => t.add(posEmb[i]!));
-        x = this.rmsnorm(x);
+        let x = ModelOps.rmsnorm(tokEmb.map((t, i) => t.add(posEmb[i]!)));
 
         for (let li = 0; li < this.N_LAYER; li++) {
-            let xResidual = x;
-            x = this.rmsnorm(x);
-            const q = this.linear(x, this.stateDict[`layer${li}.attn_wq`]!);
-            const k = this.linear(x, this.stateDict[`layer${li}.attn_wk`]!);
-            const v = this.linear(x, this.stateDict[`layer${li}.attn_wv`]!);
-            keys[li]!.push(k);
-            values[li]!.push(v);
-
-            const xAttn: Value[] = [];
-            for (let h = 0; h < this.N_HEAD; h++) {
-                const hs = h * this.HEAD_DIM;
-                const qH = q.slice(hs, hs + this.HEAD_DIM);
-                const kH = keys[li]!.map((ki) => ki.slice(hs, hs + this.HEAD_DIM));
-                const vH = values[li]!.map((vi) => vi.slice(hs, hs + this.HEAD_DIM));
-
-                const attnLogits = kH.map((kHt) =>
-                    Value.matmul(qH, [kHt])[0]!.mul(1 / this.HEAD_DIM ** 0.5)
-                );
-                const attnWeights = this.softmax(attnLogits);
-
-                // Capture attention weights for visualization
-                if (!this.lastAttentionWeights[li]) this.lastAttentionWeights[li] = [];
-                if (!this.lastAttentionWeights[li]![h]) this.lastAttentionWeights[li]![h] = [];
-                this.lastAttentionWeights[li]![h]!.push(...attnWeights.map(v => v.data));
-
-                for (let j = 0; j < this.HEAD_DIM; j++) {
-                    xAttn.push(
-                        attnWeights.reduce(
-                            (acc, wt, t) => acc.add(wt.mul(vH[t]![j]!)),
-                            new Value(0),
-                        ),
-                    );
-                }
-            }
-
-            x = this.linear(xAttn, this.stateDict[`layer${li}.attn_wo`]!);
-            x = x.map((a, i) => a.add(xResidual[i]!));
-
-            xResidual = x;
-            x = this.rmsnorm(x);
-            x = this.linear(x, this.stateDict[`layer${li}.mlp_fc1`]!);
-            x = x.map((xi) => xi.relu());
-            x = this.linear(x, this.stateDict[`layer${li}.mlp_fc2`]!);
-            x = x.map((a, i) => a.add(xResidual[i]!));
+            x = this.transformerBlock(li, x, keys, values);
         }
+        return ModelOps.linear(x, this.stateDict["lm_head"]!);
+    }
 
-        return this.linear(x, this.stateDict["lm_head"]!);
+    private transformerBlock(li: number, x: Value[], keys: Value[][][], values: Value[][][]): Value[] {
+        let xResidual = x;
+        x = ModelOps.rmsnorm(x);
+        const q = ModelOps.linear(x, this.stateDict[`layer${li}.attn_wq`]!);
+        const k = ModelOps.linear(x, this.stateDict[`layer${li}.attn_wk`]!);
+        const v = ModelOps.linear(x, this.stateDict[`layer${li}.attn_wv`]!);
+        keys[li]!.push(k);
+        values[li]!.push(v);
+
+        const xAttn = this.multiHeadAttention(li, q, keys[li]!, values[li]!);
+        x = ModelOps.linear(xAttn, this.stateDict[`layer${li}.attn_wo`]!).map((a, i) => a.add(xResidual[i]!));
+
+        xResidual = x;
+        x = ModelOps.rmsnorm(x);
+        x = ModelOps.linear(x, this.stateDict[`layer${li}.mlp_fc1`]!).map(xi => xi.relu());
+        x = ModelOps.linear(x, this.stateDict[`layer${li}.mlp_fc2`]!).map((a, i) => a.add(xResidual[i]!));
+        return x;
+    }
+
+    private multiHeadAttention(li: number, q: Value[], keys: Value[][], values: Value[][]): Value[] {
+        const xAttn: Value[] = [];
+        for (let h = 0; h < this.N_HEAD; h++) {
+            const hs = h * this.HEAD_DIM;
+            const qH = q.slice(hs, hs + this.HEAD_DIM);
+            const kH = keys.map((ki) => ki.slice(hs, hs + this.HEAD_DIM));
+            const vH = values.map((vi) => vi.slice(hs, hs + this.HEAD_DIM));
+
+            const attnLogits = kH.map((kHt) => Value.matmul(qH, [kHt])[0]!.mul(1 / this.HEAD_DIM ** 0.5));
+            const attnWeights = ModelOps.softmax(attnLogits);
+
+            this.captureAttention(li, h, attnWeights);
+
+            for (let j = 0; j < this.HEAD_DIM; j++) {
+                xAttn.push(attnWeights.reduce((acc, wt, t) => acc.add(wt.mul(vH[t]![j]!)), new Value(0)));
+            }
+        }
+        return xAttn;
+    }
+
+    private captureAttention(li: number, h: number, weights: Value[]) {
+        if (!this.lastAttentionWeights[li]) this.lastAttentionWeights[li] = [];
+        if (!this.lastAttentionWeights[li]![h]) this.lastAttentionWeights[li]![h] = [];
+        this.lastAttentionWeights[li]![h]!.push(...weights.map(v => v.data));
     }
 
     public train(dataSequences: string[][], steps: number = 200, learningRate: number = 0.01) {
         const params = this.getParams();
-        const beta1 = 0.85;
-        const beta2 = 0.99;
-        const epsAdam = 1e-8;
-        const m = new Float64Array(params.length);
-        const v = new Float64Array(params.length);
-
-        const rng = this.mulberry32(123); // keep training consistent for tests
-        const flattenedDocs = dataSequences.map(seq => {
-            // Filter out unknown events just in case
-            return seq.filter(e => this.vocab.includes(e)).map(e => this.vocab.indexOf(e));
-        }).filter(s => s.length > 0);
+        const adam = { m: new Float64Array(params.length), v: new Float64Array(params.length) };
+        const rng = ModelInitializer.mulberry32(123);
+        const flattenedDocs = dataSequences.map(s => s.filter(e => this.vocab.includes(e)).map(e => this.vocab.indexOf(e))).filter(s => s.length > 0);
 
         if (flattenedDocs.length === 0) return;
 
         for (let step = 0; step < steps; step++) {
-            // Randomly pick a sequence
-            const docIdx = Math.floor(rng() * flattenedDocs.length);
-            const doc = flattenedDocs[docIdx] ?? [];
-
+            const doc = flattenedDocs[Math.floor(rng() * flattenedDocs.length)] ?? [];
             const tokens = [this.BOS, ...doc, this.BOS];
             const n = Math.min(this.BLOCK_SIZE, tokens.length - 1);
 
-            const ObjectKeys: Value[][][] = Array.from({ length: this.N_LAYER }, () => []);
-            const ObjectVals: Value[][][] = Array.from({ length: this.N_LAYER }, () => []);
+            const keys: Value[][][] = Array.from({ length: this.N_LAYER }, () => []);
+            const vals: Value[][][] = Array.from({ length: this.N_LAYER }, () => []);
             const losses: Value[] = [];
 
             for (let posId = 0; posId < n; posId++) {
-                const tokenId = tokens[posId]!;
-                const targetId = tokens[posId + 1]!;
-                const logits = this.gpt(tokenId, posId, ObjectKeys, ObjectVals);
-                const probs = this.softmax(logits);
-
-                const targetProb = probs[targetId];
-                if (targetProb) {
-                    losses.push(targetProb.log().neg());
-                }
+                const probs = ModelOps.softmax(this.gpt(tokens[posId]!, posId, keys, vals));
+                const targetProb = probs[tokens[posId + 1]!];
+                if (targetProb) losses.push(targetProb.log().neg());
             }
 
-            const loss = losses.reduce((a, b) => a.add(b)).mul(1 / n);
-            loss.backward();
+            losses.reduce((a, b) => a.add(b)).mul(1 / n).backward();
+            this.applyAdam(params, adam, step, steps, learningRate);
+        }
+    }
 
-            const lrT = learningRate * (1 - step / steps);
-            for (let i = 0; i < params.length; i++) {
-                const p = params[i]!;
-                m[i] = beta1 * m[i]! + (1 - beta1) * p.grad;
-                v[i] = beta2 * v[i]! + (1 - beta2) * p.grad ** 2;
-                const mHat = m[i]! / (1 - beta1 ** (step + 1));
-                const vHat = v[i]! / (1 - beta2 ** (step + 1));
-                p.data -= lrT * mHat / (Math.sqrt(vHat) + epsAdam);
-                p.grad = 0;
-            }
+    private applyAdam(params: Value[], adam: any, step: number, steps: number, lr: number) {
+        const lrT = lr * (1 - step / steps);
+        for (let i = 0; i < params.length; i++) {
+            const p = params[i]!;
+            adam.m[i] = 0.85 * adam.m[i] + 0.15 * p.grad;
+            adam.v[i] = 0.99 * adam.v[i] + 0.01 * p.grad ** 2;
+            const mHat = adam.m[i] / (1 - 0.85 ** (step + 1));
+            const vHat = adam.v[i] / (1 - 0.99 ** (step + 1));
+            p.data -= lrT * mHat / (Math.sqrt(vHat) + 1e-8);
+            p.grad = 0;
         }
     }
 
     public calculateAnomalyScore(sequence: string[]): number {
         const validEvents = sequence.filter(e => this.vocab.includes(e));
-        if (validEvents.length === 0) return 0; // If nothing is recognizable, no sequence modeled
+        if (validEvents.length === 0) return 0;
 
         const tokens = [this.BOS, ...validEvents.map(e => this.vocab.indexOf(e)), this.BOS];
         const n = Math.min(this.BLOCK_SIZE, tokens.length - 1);
-
-        this.lastAttentionWeights = []; // Clear previous capture
+        this.lastAttentionWeights = [];
         let totalLoss = 0;
-        const ObjectKeys: Value[][][] = Array.from({ length: this.N_LAYER }, () => []);
-        const ObjectVals: Value[][][] = Array.from({ length: this.N_LAYER }, () => []);
+        const keys: Value[][][] = Array.from({ length: this.N_LAYER }, () => []);
+        const vals: Value[][][] = Array.from({ length: this.N_LAYER }, () => []);
 
         for (let posId = 0; posId < n; posId++) {
-            const tokenId = tokens[posId]!;
-            const targetId = tokens[posId + 1]!;
-            const logits = this.gpt(tokenId, posId, ObjectKeys, ObjectVals);
-            const probs = this.softmax(logits);
-
-            const targetProb = probs[targetId];
-            if (targetProb !== undefined) {
-                totalLoss += targetProb.log().neg().data;
-            }
+            const probs = ModelOps.softmax(this.gpt(tokens[posId]!, posId, keys, vals));
+            const targetProb = probs[tokens[posId + 1]!];
+            if (targetProb !== undefined) totalLoss += targetProb.log().neg().data;
         }
-
         return totalLoss / n;
     }
 }

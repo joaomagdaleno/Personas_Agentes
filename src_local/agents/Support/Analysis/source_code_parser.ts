@@ -29,8 +29,15 @@ export class SourceCodeParser {
 
     analyzeTs(content: string) {
         try { return TypeScriptParser.analyze(content); }
-        catch (e) { return { functions: [], classes: [], complexity: 1, dependencies: [] }; }
+        catch (e) { return { functions: [], classes: [], complexity: 1, dependencies: [], tree: false }; }
     }
+
+    calculatePyComplexity(content: string): number { return PythonParser.calculateComplexity(content); }
+    extractPyImports(content: string): string[] { return PythonParser.extractImports(content); }
+    calculateTsComplexity(content: string): number { return TypeScriptParser.calculateComplexity(content); }
+    extractTsImports(content: string): string[] { return TypeScriptParser.extractImports(content); }
+    analyzeKt(content: string) { return PolyglotParser.analyzeKt(content); }
+    calculateKtComplexity(content: string): number { return PolyglotParser.calculateKtComplexity(content); }
 
     analyze_file_logic(content: string, fileName: string) {
         const ext = fileName.split(".").pop()?.toLowerCase();

@@ -48,7 +48,7 @@ export class TypeScriptParser {
     }
 
     static extractImports(content: string): string[] {
-        const matches = content.matchAll(/import\s+(?:\{[^}]*\}|\*\s+ as\s+\w+|\w+)\s+from\s+['"]([^'"]+)['"]/g);
+        const matches = content.matchAll(/import\s+(?:\{[^}]*\}|\*\s+as\s+\w+|\w+)\s+from\s+['"]([^'"]+)['"]/g);
         return [...matches].map(m => m[1] || '').filter(Boolean);
     }
 }

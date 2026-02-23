@@ -1,5 +1,6 @@
 import winston from 'winston';
 import { CogHelpers } from "./CogHelpers.ts";
+import { StaticReasoning } from "./StaticReasoning.ts";
 
 /**
  * 🧠 CognitiveEngine - PhD in Reasoning Systems
@@ -31,11 +32,6 @@ export class CognitiveEngine {
         if (options.deep) this.setThinkingDepth(true);
         this.logger.info(`🧠 [Cognitive] Raciocinando...`);
 
-        // PhD Robustness: Fallback for Connectivity Checks
-        if (prompt.includes("CONSCIENTE")) {
-             if (process.env.OFFLINE_MODE === "1") return "ESTOU CONSCIENTE (MODO OFFLINE).";
-        }
-
         try {
             const data = await CogHelpers.callOllama(this.endpoint, { model: this.modelName, prompt, stream: false, options: CogHelpers.getParams(options, this.defaultMaxTokens) });
             if (!data) return null;
@@ -46,7 +42,8 @@ export class CognitiveEngine {
 
             // If we are in a restricted environment, don't spam errors
             if (error.message?.includes("ECONNREFUSED") || error.message?.includes("Unable to connect")) {
-                this.logger.warn("⚠️ [Cognitive] Servidor Ollama indisponível. Operando em capacidade reduzida.");
+                this.logger.warn("⚠️ [Cognitive] Servidor Ollama indisponível. Ativando Raciocínio Estático.");
+                return StaticReasoning.handle(prompt);
             }
             return null;
         }
