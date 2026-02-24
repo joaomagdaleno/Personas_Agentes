@@ -39,23 +39,29 @@ export class FindingDeduplicator {
     }
 
     private handleFindingDict(f: any, coordinateMap: Map<string, any>) {
-        const cleanPath = this.normalizePath(f.file || 'global');
-        const fLine = f.line || 0;
-        const fIssue = f.issue || 'Unknown Issue';
-        const fSev = (f.severity || 'MEDIUM').toUpperCase();
-
-        // Se for um hotspot de complexidade (sem linha), usamos uma chave especial
-        const isComplexityHotspot = fIssue.includes("Complexity") || fIssue.includes("Complexidade");
-        const coord = isComplexityHotspot
-            ? `COMPLEXITY:${cleanPath}`
-            : `${cleanPath}:${fLine}:${fIssue}`;
-
+        const coord = this.generateCoordinate(f);
         const existing = coordinateMap.get(coord);
+
         if (!existing) {
             coordinateMap.set(coord, f);
         } else {
             this.resolveSeverityConflict(coord, f, coordinateMap);
         }
+    }
+
+    private generateCoordinate(f: any): string {
+        const cleanPath = this.normalizePath(f.file || 'global');
+        const fIssue = f.issue || 'Unknown Issue';
+
+        if (this.isComplexityHotspot(fIssue)) {
+            return `COMPLEXITY:${cleanPath}`;
+        }
+
+        return `${cleanPath}:${f.line || 0}:${fIssue}`;
+    }
+
+    private isComplexityHotspot(issue: string): boolean {
+        return issue.includes("Complexity") || issue.includes("Complexidade");
     }
 
     private normalizePath(rawPath: string): string {

@@ -187,19 +187,8 @@ export class Orchestrator {
     }
 
     async getSystemHealth360(ctx: any, health: any, findings: any[]) {
-        const { PyramidAnalyst } = await import("../agents/Support/Analysis/pyramid_analyst.ts");
-        const { QualityAnalyst } = await import("../agents/Support/Diagnostics/quality_analyst.ts");
-        const { TopologyGraphAgent } = await import("../agents/Support/Automation/topology_graph_agent.ts");
-
         this._enrichPathMetrics(ctx);
-
-        const qaData = {
-            pyramid: await new PyramidAnalyst().analyze(ctx.map || {}, async (p: string) => Bun.file(this.projectRoot.join(p).toString()).text()),
-            execution: {},
-            matrix: new QualityAnalyst().calculateConfidenceMatrix(ctx.map || {}),
-            topology_graph: new TopologyGraphAgent().generateMermaidGraph(ctx.map || {}),
-            depth_audit: ctx.depthAudit
-        };
+        const qaData = await this.collectQAData(ctx);
 
         return await this.synthesizer.synthesize360(
             { ...ctx, alerts: findings, predictor_metrics: this.predictorEngine.getSanityMetrics() },
@@ -208,6 +197,20 @@ export class Orchestrator {
             this.stabilityLedger,
             qaData
         );
+    }
+
+    private async collectQAData(ctx: any) {
+        const { PyramidAnalyst } = await import("../agents/Support/Analysis/pyramid_analyst.ts");
+        const { QualityAnalyst } = await import("../agents/Support/Diagnostics/quality_analyst.ts");
+        const { TopologyGraphAgent } = await import("../agents/Support/Automation/topology_graph_agent.ts");
+
+        return {
+            pyramid: await new PyramidAnalyst().analyze(ctx.map || {}, async (p: string) => Bun.file(this.projectRoot.join(p).toString()).text()),
+            execution: {},
+            matrix: new QualityAnalyst().calculateConfidenceMatrix(ctx.map || {}),
+            topology_graph: new TopologyGraphAgent().generateMermaidGraph(ctx.map || {}),
+            depth_audit: ctx.depthAudit
+        };
     }
 
     private _enrichPathMetrics(ctx: any) {

@@ -59,27 +59,27 @@ export class MetaAnalysisDetector {
      * 🔬 Detecta se uma linha contém lógica de meta-análise.
      */
     isMetaAnalysisLine(line: string): MetaAnalysisNode | null {
-        for (const pattern of this.AST_PATTERNS) {
-            if (pattern.test(line)) {
-                return { line: 0, type: "AST_CHECK", evidence: line.trim() };
-            }
-        }
-        for (const pattern of this.REGEX_PATTERNS) {
-            if (pattern.test(line)) {
-                return { line: 0, type: "REGEX_CALL", evidence: line.trim() };
-            }
-        }
-        for (const pattern of this.REFLECTION_PATTERNS) {
-            if (pattern.test(line)) {
-                return { line: 0, type: "REFLECTION", evidence: line.trim() };
-            }
-        }
-        for (const pattern of this.TYPE_GUARD_PATTERNS) {
-            if (pattern.test(line)) {
-                return { line: 0, type: "TYPE_GUARD", evidence: line.trim() };
+        const categories: { patterns: RegExp[], type: MetaAnalysisNode["type"] }[] = [
+            { patterns: this.AST_PATTERNS, type: "AST_CHECK" },
+            { patterns: this.REGEX_PATTERNS, type: "REGEX_CALL" },
+            { patterns: this.REFLECTION_PATTERNS, type: "REFLECTION" },
+            { patterns: this.TYPE_GUARD_PATTERNS, type: "TYPE_GUARD" }
+        ];
+
+        for (const cat of categories) {
+            const match = this.findPatternMatch(line, cat.patterns);
+            if (match) {
+                return { line: 0, type: cat.type, evidence: line.trim() };
             }
         }
         return null;
+    }
+
+    private findPatternMatch(line: string, patterns: RegExp[]): boolean {
+        for (const pattern of patterns) {
+            if (pattern.test(line)) return true;
+        }
+        return false;
     }
 
     /**
@@ -87,20 +87,22 @@ export class MetaAnalysisDetector {
      */
     scanFile(content: string, filePath: string): MetaAnalysisNode[] {
         const lines = content.split("\n");
-        const nodes: MetaAnalysisNode[] = [];
-
-        for (let i = 0; i < lines.length; i++) {
-            const result = this.isMetaAnalysisLine(lines[i]!);
-            if (result) {
-                result.line = i + 1;
-                nodes.push(result);
-            }
-        }
+        const nodes: MetaAnalysisNode[] = lines
+            .map((line, i) => this.processLine(line, i))
+            .filter((node): node is MetaAnalysisNode => node !== null);
 
         if (nodes.length > 0) {
             logger.debug(`🔬 ${filePath}: ${nodes.length} meta-analysis nodes detected`);
         }
         return nodes;
+    }
+
+    private processLine(line: string, index: number): MetaAnalysisNode | null {
+        const result = this.isMetaAnalysisLine(line);
+        if (result) {
+            result.line = index + 1;
+        }
+        return result;
     }
 
     /**

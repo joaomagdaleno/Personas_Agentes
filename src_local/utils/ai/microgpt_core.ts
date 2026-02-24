@@ -66,20 +66,37 @@ export class Value {
     }
 
     private buildTopo(): Value[] {
-        const topo: Value[] = [], visited = new Set<Value>(), processed = new Set<Value>();
+        const topo: Value[] = [];
+        const visited = new Set<Value>();
+        const processed = new Set<Value>();
         const stack: Value[] = [this];
 
         while (stack.length > 0) {
             const v = stack[stack.length - 1]!;
             if (visited.has(v)) {
-                stack.pop();
-                if (!processed.has(v)) { processed.add(v); topo.push(v); }
+                this.finalizeNode(v, stack, processed, topo);
                 continue;
             }
             visited.add(v);
-            v._children.forEach(c => { if (!visited.has(c)) stack.push(c); });
+            this.pushChildren(v, visited, stack);
         }
         return topo;
+    }
+
+    private finalizeNode(v: Value, stack: Value[], processed: Set<Value>, topo: Value[]) {
+        stack.pop();
+        if (!processed.has(v)) {
+            processed.add(v);
+            topo.push(v);
+        }
+    }
+
+    private pushChildren(v: Value, visited: Set<Value>, stack: Value[]) {
+        v._children.forEach(c => {
+            if (!visited.has(c)) {
+                stack.push(c);
+            }
+        });
     }
 
     /**

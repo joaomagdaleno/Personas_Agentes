@@ -49,39 +49,52 @@ export class HealerPersona extends BaseActivePersona {
         const filePath = finding.file;
         const issue = finding.issue;
 
-        if (!filePath || !issue || !this.projectRoot) return false;
+        if (!this.isValidForHealing(finding)) return false;
+
+        winston.info(`🩹 [Healer] Iniciando protocolo de cura em: ${filePath}`);
+
+        const currentContent = this.getCurrentContent(filePath);
+        const contextPrompt = this.getContextPrompt(finding);
+        const prompt = HealerPromptBuilder.buildHealPrompt(filePath, currentContent, issue, contextPrompt);
+
+        const suggestion = await this.brain.reason(prompt);
+        return this.processSuggestion(suggestion, filePath, issue, orchestrator);
+    }
+
+    private isValidForHealing(finding: any): boolean {
+        const filePath = finding.file;
+        if (!filePath || !finding.issue || !this.projectRoot) return false;
 
         const fullPath = new Path(this.projectRoot).join(filePath);
         if (!fs.existsSync(fullPath.toString()) && finding.type !== "DISPARITY") {
             winston.error(`🩹 [Healer] Arquivo não encontrado para cura: ${filePath}`);
             return false;
         }
+        return true;
+    }
 
-        winston.info(`🩹 [Healer] Iniciando protocolo de cura em: ${filePath}`);
+    private getCurrentContent(filePath: string): string {
+        const fullPath = new Path(this.projectRoot!).join(filePath);
+        return fs.existsSync(fullPath.toString()) ? fs.readFileSync(fullPath.toString(), 'utf-8') : "// Novo arquivo migrado\n";
+    }
 
-        // Se o arquivo atual não existir (DISPARITY crítico), tentamos criar
-        const content = fs.existsSync(fullPath.toString()) ? fs.readFileSync(fullPath.toString(), 'utf-8') : "// Novo arquivo migrado\n";
-
-        let contextPrompt = "";
+    private getContextPrompt(finding: any): string {
         if (finding.type === "DISPARITY" && finding.meta?.legacyPath) {
-            const legacyFullPath = new Path(this.projectRoot).join(finding.meta.legacyPath);
+            const legacyFullPath = new Path(this.projectRoot!).join(finding.meta.legacyPath);
             if (fs.existsSync(legacyFullPath.toString())) {
                 const legacyContent = fs.readFileSync(legacyFullPath.toString(), 'utf-8');
-                contextPrompt = HealerPromptBuilder.buildDisparityContext(legacyContent, finding.meta.unit.name, finding.meta.unit.type);
+                return HealerPromptBuilder.buildDisparityContext(legacyContent, finding.meta.unit.name, finding.meta.unit.type);
             }
         }
+        return "";
+    }
 
-        const prompt = HealerPromptBuilder.buildHealPrompt(filePath, content, issue, contextPrompt);
-
-        const suggestion = await this.brain.reason(prompt);
+    private async processSuggestion(suggestion: string | null, filePath: string, issue: string, orchestrator: Orchestrator): Promise<boolean> {
         if (!suggestion) return false;
-
         const codeMatch = suggestion.match(/```(?:typescript|ts|javascript|js|python)?\n([\s\S]*?)\n```/);
         if (codeMatch && codeMatch[1]) {
-            const newContent = codeMatch[1];
-            return this.patcher.applyAndValidate(filePath, newContent, issue, orchestrator);
+            return this.patcher.applyAndValidate(filePath, codeMatch[1], issue, orchestrator);
         }
-
         return false;
     }
 

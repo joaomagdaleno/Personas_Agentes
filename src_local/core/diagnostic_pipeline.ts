@@ -82,6 +82,8 @@ export class DiagnosticPipeline {
         const metricFindings = qa.generateMetricFindings(matrix);
         findings.push(...metricFindings);
 
+        this.orc.recordSystemEvent("PIPELINE_FINISHED");
+
         const result = await DiagnosticFinalizer.finalize(
             this,
             ctx,
@@ -90,7 +92,6 @@ export class DiagnosticPipeline {
             dryRun
         );
 
-        this.orc.recordSystemEvent("PIPELINE_FINISHED");
         const anomalyScore = this.orc.predictorEngine.evaluateCurrentFlow();
         logger.info(`🔮 [MicroPredictor] Flow Anomaly Score: ${anomalyScore.toFixed(4)}`);
 

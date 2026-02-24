@@ -21,32 +21,64 @@ export class HypePersona extends BaseActivePersona {
         logger.info(`[${this.name}] Analisando Visibilidade de Produto TypeScript...`);
 
         const results: any[] = [];
-        // Check package.json for missing metadata
-        for (const [filePath, content] of Object.entries(this.contextData)) {
-            if (filePath.endsWith('package.json')) {
-                try {
-                    const pkg = JSON.parse(content as string);
-                    if (!pkg.description) results.push({ file: filePath, issue: 'Invisível: package.json sem campo "description".', severity: 'medium', persona: this.name });
-                    if (!pkg.repository) results.push({ file: filePath, issue: 'Desconectado: package.json sem campo "repository".', severity: 'medium', persona: this.name });
-                    if (!pkg.license) results.push({ file: filePath, issue: 'Risco Legal: package.json sem campo "license".', severity: 'high', persona: this.name });
-                    if (!pkg.keywords || pkg.keywords.length === 0) results.push({ file: filePath, issue: 'Baixa Descobribilidade: package.json sem "keywords".', severity: 'low', persona: this.name });
-                    if (!pkg.author) results.push({ file: filePath, issue: 'Anônimo: package.json sem campo "author".', severity: 'low', persona: this.name });
-                    if (pkg.name && /^(my-app|project|untitled|test|app)$/.test(pkg.name)) {
-                        results.push({ file: filePath, issue: 'Genérico: Nome de pacote genérico impede a identidade do projeto.', severity: 'medium', persona: this.name });
-                    }
-                } catch { /* not valid JSON */ }
-            }
-        }
-
-        // Check for README
-        const hasReadme = Object.keys(this.contextData).some(f => /readme\.md$/i.test(f));
-        if (!hasReadme) {
-            results.push({ file: 'ROOT', issue: 'Invisibilidade Total: Projeto sem README.md.', severity: 'high', persona: this.name });
-        }
+        this.auditPackageJson(results);
+        this.auditProjectPresence(results);
 
         const duration = (Date.now() - start) / 1000;
         logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
         return results;
+    }
+
+    private auditPackageJson(results: any[]) {
+        for (const [filePath, content] of Object.entries(this.contextData)) {
+            if (filePath.endsWith('package.json')) {
+                this.analyzePackageContent(filePath, content as string, results);
+            }
+        }
+    }
+
+    private analyzePackageContent(filePath: string, content: string, results: any[]) {
+        try {
+            const pkg = JSON.parse(content);
+            this.checkRequiredFields(pkg, filePath, results);
+            this.checkKeywords(pkg, filePath, results);
+            this.checkIdentity(pkg, filePath, results);
+        } catch { /* ignore invalid json */ }
+    }
+
+    private checkRequiredFields(pkg: any, filePath: string, results: any[]) {
+        const checks = [
+            { field: 'description', issue: 'Invisível: package.json sem campo "description".', severity: 'medium' },
+            { field: 'repository', issue: 'Desconectado: package.json sem campo "repository".', severity: 'medium' },
+            { field: 'license', issue: 'Risco Legal: package.json sem campo "license".', severity: 'high' },
+            { field: 'author', issue: 'Anônimo: package.json sem campo "author".', severity: 'low' },
+        ];
+
+        checks.forEach(check => {
+            if (!pkg[check.field]) {
+                results.push({ file: filePath, issue: check.issue, severity: check.severity, persona: this.name });
+            }
+        });
+    }
+
+    private checkKeywords(pkg: any, filePath: string, results: any[]) {
+        if (!pkg.keywords || pkg.keywords.length === 0) {
+            results.push({ file: filePath, issue: 'Baixa Descobribilidade: package.json sem "keywords".', severity: 'low', persona: this.name });
+        }
+    }
+
+    private checkIdentity(pkg: any, filePath: string, results: any[]) {
+        const genericNames = /^(my-app|project|untitled|test|app)$/;
+        if (pkg.name && genericNames.test(pkg.name)) {
+            results.push({ file: filePath, issue: 'Genérico: Nome de pacote genérico impede a identidade do projeto.', severity: 'medium', persona: this.name });
+        }
+    }
+
+    private auditProjectPresence(results: any[]) {
+        const hasReadme = Object.keys(this.contextData).some(f => /readme\.md$/i.test(f));
+        if (!hasReadme) {
+            results.push({ file: 'ROOT', issue: 'Invisibilidade Total: Projeto sem README.md.', severity: 'high', persona: this.name });
+        }
     }
 
     async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
