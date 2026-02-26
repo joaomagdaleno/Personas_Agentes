@@ -1,7 +1,75 @@
-# Personas & Agents Index
+# Personas & Agents System
 
-This index is automatically generated to help you find the right specialist agent for your task.
+Bem-vindo ao sistema de **Personas & Agents**! Este projeto utiliza uma arquitetura de alta performance (Bun/TypeScript + Go) integrada com Inteligência Artificial local (Ollama) para analisar, diagnosticar e sugerir melhorias em código fonte através de Agentes Especialistas (Personas).
 
+## 🛠️ Pré-requisitos
+
+Para que o sistema funcione corretamente 100% local e com alta velocidade, você precisa ter:
+
+1. **[Bun](https://bun.sh/)**: Runtime Javascript/Typescript super-rápido, usado como o orquestrador principal dos Agentes.
+2. **[Go (Golang)](https://go.dev/dl/)**: Necessário para rodar/compilar o `go-scanner.exe`, o motor nativo que mapeia os arquivos do repositório em milissegundos.
+3. **[Ollama](https://ollama.com/)**: O motor de IA. Permite rodar modelos complexos (como Llama 3) utilizando o hardware da sua própria máquina (CPU/GPU), mantendo seus dados privados e dispensando APIs pagas na nuvem.
+
+## 🚀 Como Configurar (Setup Inicial)
+
+1. **Instale as dependências Node/Bun:**
+   Na raiz do projeto, rode:
+
+   ```bash
+   bun install
+   ```
+
+2. **Compile o Go Scanner (obrigatório):**
+   O adaptador `GoDiscoveryAdapter` precisa deste binário para ler a estrutura atômica dos arquivos:
+
+   ```bash
+   cd src_native
+   go build -o go-scanner.exe scanner/main.go
+   cd ..
+   ```
+
+3. **Inicie o Ollama (Motor de IA):**
+   As personas dependem da API local do Ollama (`http://localhost:11434`). Baixe o Ollama e garanta que o modelo que você pretende usar esteja baixado e rodando. Exemplo:
+
+   ```bash
+   ollama run llama3
+   ```
+
+## ⚡ Como Usar (Comandos Principais)
+
+Todos os fluxos vitais do sistema estão encapsulados em scripts do `bun`.
+
+- **Executar Diagnóstico do Sistema:** (O Orquestrador escaneia todo o projeto, levanta hotspots e gera os relatórios Markdown de saúde).
+
+  ```bash
+  bun run diagnostic
+  ```
+
+- **Rodar os Testes:**
+
+  ```bash
+  bun test
+  ```
+
+- **Verificação Completa (Testes + Diagnóstico):**
+
+  ```bash
+  bun run verify-all
+  ```
+
+- **Limpeza e Manutenção (Opcionais):**
+  Existem comandos para arquitetar novos testes ou limpar códigos usando as Personas:
+
+  ```bash
+  bun run generate-tests
+  bun run git-doctor
+  ```
+
+---
+
+## 👥 Personas & Agents Index
+
+Este índice (abaixo) mapeia e descreve a especialidade de cada agente disponível no sistema.
 
 ## Flutter Specialists
 
