@@ -17,7 +17,7 @@ export class SentinelPersona extends BaseActivePersona {
     }
 
     async performAudit(): Promise<any[]> {
-        const start = Date.now();
+        this.startMetrics();
         logger.info(`[${this.name}] Analisando Segurança de Transporte Bun...`);
 
         const auditRules = [
@@ -27,31 +27,18 @@ export class SentinelPersona extends BaseActivePersona {
             { regex: 'Access-Control-Allow-Origin.*\\*', issue: 'Permissivo: CORS wildcard no Bun.serve.', severity: 'high' },
         ];
 
-        const results: any[] = [];
-        for (const rule of auditRules) {
-            const regex = new RegExp(rule.regex, 'gs');
-            for (const [filePath, content] of Object.entries(this.contextData)) {
-                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx')) {
-                    for (const match of (content as string).matchAll(regex)) {
-                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0].substring(0, 60), persona: this.name });
-                    }
-                }
-            }
-        }
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
+        const results = this.findPatterns(['.ts', '.tsx'], auditRules as any);
+        this.endMetrics(results.length);
         return results;
     }
 
     async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
-        if (/http:\/\/(?!localhost|127\.0\.0\.1)/.test(content)) {
-            return {
-                file, severity: "HIGH", persona: this.name,
-                issue: `Vulnerabilidade: O objetivo '${objective}' exige segurança. Em '${file}', HTTP sem TLS expõe o Bun.serve a ataques MITM.`
-            };
-        }
-        return null;
+        if (!/http:\/\/(?!localhost|127\.0\.0\.1)/.test(content)) return null;
+
+        return {
+            file, severity: "HIGH", persona: this.name,
+            issue: `Vulnerabilidade: O objetivo '${objective}' exige segurança. Em '${file}', HTTP sem TLS expõe o Bun.serve a ataques MITM.`
+        };
     }
 
     getSystemPrompt(): string {

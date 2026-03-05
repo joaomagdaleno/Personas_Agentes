@@ -9,12 +9,20 @@ export interface AtomicUnit {
     type: "class" | "function";
     name: string;
     line: number;
+    complexity: number;
+    cognitive_complexity: number;
 }
 
 export interface FileAnalysis {
     path: string;
     exists: boolean;
     units: AtomicUnit[];
+    total_complexity?: number;
+    cognitive_complexity?: number;
+    max_nesting?: number;
+    loc?: number;
+    sloc?: number;
+    comments?: number;
 }
 
 /**

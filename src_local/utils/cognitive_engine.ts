@@ -15,53 +15,102 @@ export class CognitiveEngine {
 
     constructor() {
         if (CognitiveEngine.instance) return CognitiveEngine.instance;
-        this.logger = winston.createLogger({
+        this.logger = this.initializeLogger();
+        CognitiveEngine.instance = this;
+    }
+
+    private initializeLogger(): winston.Logger {
+        return winston.createLogger({
             level: 'info',
-            format: winston.format.combine(winston.format.timestamp(), winston.format.printf(({ timestamp, level, message }) => `${timestamp} - Cognitive - ${level.toUpperCase()} - ${message}`)),
+            format: winston.format.combine(
+                winston.format.timestamp(),
+                winston.format.printf(({ timestamp, level, message }) => `${timestamp} - Cognitive - ${level.toUpperCase()} - ${message}`)
+            ),
             transports: [new winston.transports.Console()]
         });
-        CognitiveEngine.instance = this;
     }
 
     public setThinkingDepth(isDeep: boolean = false): void {
         this.defaultMaxTokens = isDeep ? 4096 : 512;
-        this.logger.info(`🧠 [Cognitive] Modo ${isDeep ? 'HIPERPENSAMENTO' : 'PULSE'} ativado.`);
+        const mode = isDeep ? 'HIPERPENSAMENTO' : 'PULSE';
+        this.logger.info(`🧠 [Cognitive] Modo ${mode} ativado.`);
     }
 
     async reason(prompt: string, options: { temperature?: number, max_tokens?: number, deep?: boolean } = {}): Promise<string | null> {
-        if (options.deep) this.setThinkingDepth(true);
+        this.applyThinkingOptions(options);
         this.logger.info(`🧠 [Cognitive] Raciocinando...`);
 
         try {
-            const data = await CogHelpers.callOllama(this.endpoint, { model: this.modelName, prompt, stream: false, options: CogHelpers.getParams(options, this.defaultMaxTokens) });
-            if (!data) return null;
-            this.activeModel = this.modelName;
-            return data.response || null;
+            return await this.callAiService(prompt, options);
         } catch (error: any) {
-            this.logger.error(`❌ [Cognitive] Falha de conexão: ${error.message || error}`);
-
-            // If we are in a restricted environment, don't spam errors
-            if (error.message?.includes("ECONNREFUSED") || error.message?.includes("Unable to connect")) {
-                this.logger.warn("⚠️ [Cognitive] Servidor Ollama indisponível. Ativando Raciocínio Estático.");
-                return StaticReasoning.handle(prompt);
-            }
-            return null;
+            return this.handleReasoningError(error, prompt);
         }
+    }
+
+    private applyThinkingOptions(options: any) {
+        if (options.deep) {
+            this.setThinkingDepth(true);
+        }
+    }
+
+    private async callAiService(prompt: string, options: any): Promise<string | null> {
+        const params = CogHelpers.getParams(options, this.defaultMaxTokens);
+        const data = await CogHelpers.callOllama(this.endpoint, {
+            model: this.modelName,
+            prompt,
+            stream: false,
+            options: params
+        });
+
+        if (!data) return null;
+        this.activeModel = this.modelName;
+        return data.response || null;
+    }
+
+    private handleReasoningError(error: any, prompt: string): string | null {
+        this.logger.error(`❌ [Cognitive] Falha de conexão: ${error.message || error}`);
+
+        if (this.isConnectionFailure(error)) {
+            this.logger.warn("⚠️ [Cognitive] Servidor Ollama indisponível. Ativando Raciocínio Estático.");
+            return StaticReasoning.handle(prompt);
+        }
+        return null;
+    }
+
+    private isConnectionFailure(error: any): boolean {
+        const msg = error.message || "";
+        return msg.includes("ECONNREFUSED") || msg.includes("Unable to connect");
     }
 
     async release(): Promise<void> {
         this.logger.info("🧠 [Cognitive] Descarregando...");
-        if (await CogHelpers.unloadModel(this.endpoint, this.modelName)) this.activeModel = null;
+        const success = await CogHelpers.unloadModel(this.endpoint, this.modelName);
+        if (success) {
+            this.activeModel = null;
+        }
     }
 
     async load_model(modelName?: string): Promise<boolean> {
         if (modelName) this.modelName = modelName;
         this.logger.info(`🧠 [Cognitive] Aquecendo '${this.modelName}'...`);
-        const data = await CogHelpers.callOllama(this.endpoint, { model: this.modelName, prompt: "ping", stream: false, options: { num_predict: 1 } });
-        if (data) { this.activeModel = this.modelName; return true; }
+
+        const data = await CogHelpers.callOllama(this.endpoint, {
+            model: this.modelName,
+            prompt: "ping",
+            stream: false,
+            options: { num_predict: 1 }
+        });
+
+        if (data) {
+            this.activeModel = this.modelName;
+            return true;
+        }
         return false;
     }
 
-    static getInstance(): CognitiveEngine { return CognitiveEngine.instance || (CognitiveEngine.instance = new CognitiveEngine()); }
+    static getInstance(): CognitiveEngine {
+        return CognitiveEngine.instance || (CognitiveEngine.instance = new CognitiveEngine());
+    }
+
     public get model(): string | null { return this.activeModel; }
 }

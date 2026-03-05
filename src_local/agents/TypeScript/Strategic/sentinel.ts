@@ -36,29 +36,51 @@ export class SentinelPersona extends BaseActivePersona {
         const start = Date.now();
         logger.info(`[${this.name}] Analisando Segurança de Transporte TypeScript...`);
 
-        const auditRules = [
+        const auditRules = this.getSecurityRules();
+        const results: any[] = [];
+
+        for (const rule of auditRules) {
+            this.auditWithRule(rule, results);
+        }
+
+        const duration = (Date.now() - start) / 1000;
+        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
+        return results;
+    }
+
+    private getSecurityRules() {
+        return [
             { regex: 'http:\\/\\/(?!localhost|127\\.0\\.0\\.1|0\\.0\\.0\\.0)', issue: 'Vulnerabilidade: URL HTTP sem criptografia — use HTTPS.', severity: 'high' },
             { regex: 'rejectUnauthorized:\\s*false', issue: 'Crítico: Verificação TLS desativada — vulnerável a MITM.', severity: 'critical' },
             { regex: 'NODE_TLS_REJECT_UNAUTHORIZED\\s*=\\s*["\']?0', issue: 'Crítico: Validação TLS global desativada.', severity: 'critical' },
             { regex: 'cors\\(\\)', issue: 'Permissivo: CORS aberto para todas as origens.', severity: 'high' },
             { regex: 'Access-Control-Allow-Origin.*\\*', issue: 'Permissivo: CORS wildcard permite qualquer origem.', severity: 'high' },
         ];
+    }
 
-        const results: any[] = [];
-        for (const rule of auditRules) {
-            const regex = new RegExp(rule.regex, 'g');
-            for (const [filePath, content] of Object.entries(this.contextData)) {
-                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx') || filePath.endsWith('.json')) {
-                    for (const match of (content as string).matchAll(regex)) {
-                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0], persona: this.name });
-                    }
-                }
+    private auditWithRule(rule: any, results: any[]) {
+        const regex = new RegExp(rule.regex, 'g');
+        for (const [filePath, content] of Object.entries(this.contextData)) {
+            if (this.shouldAuditFile(filePath)) {
+                this.scanContent(filePath, content as string, regex, rule, results);
             }
         }
+    }
 
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
-        return results;
+    private shouldAuditFile(filePath: string): boolean {
+        return filePath.endsWith('.ts') || filePath.endsWith('.tsx') || filePath.endsWith('.json');
+    }
+
+    private scanContent(filePath: string, content: string, regex: RegExp, rule: any, results: any[]) {
+        for (const match of content.matchAll(regex)) {
+            results.push({
+                file: filePath,
+                issue: rule.issue,
+                severity: rule.severity,
+                evidence: match[0],
+                persona: this.name
+            });
+        }
     }
 
     async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {

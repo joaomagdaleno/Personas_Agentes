@@ -20,7 +20,20 @@ export class MantraPersona extends BaseActivePersona {
         const start = Date.now();
         logger.info(`[${this.name}] Analisando Pureza de Tipos TypeScript...`);
 
-        const auditRules = [
+        const auditRules = this.getMantraRules();
+        const results: any[] = [];
+
+        for (const rule of auditRules) {
+            this.auditWithRule(rule, results);
+        }
+
+        const duration = (Date.now() - start) / 1000;
+        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
+        return results;
+    }
+
+    private getMantraRules() {
+        return [
             { regex: ':\\s*any\\b', issue: 'Impureza: Tipagem "any" destrói a segurança do type system.', severity: 'high' },
             { regex: 'as\\s+any\\b', issue: 'Escape: Type assertion "as any" — força passagem sem verificação.', severity: 'high' },
             { regex: '@ts-ignore', issue: 'Supressão: @ts-ignore silencia erro do compilador.', severity: 'critical' },
@@ -30,22 +43,31 @@ export class MantraPersona extends BaseActivePersona {
             { regex: 'Record<string,\\s*any>', issue: 'Opacidade: Record<string, any> — dicionário sem tipagem de valor.', severity: 'medium' },
             { regex: 'Object\\.assign\\(', issue: 'Perda de Tipo: Object.assign pode gerar tipos imprecisos.', severity: 'low' },
         ];
+    }
 
-        const results: any[] = [];
-        for (const rule of auditRules) {
-            const regex = new RegExp(rule.regex, 'g');
-            for (const [filePath, content] of Object.entries(this.contextData)) {
-                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx')) {
-                    for (const match of (content as string).matchAll(regex)) {
-                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0], persona: this.name });
-                    }
-                }
+    private auditWithRule(rule: any, results: any[]) {
+        const regex = new RegExp(rule.regex, 'g');
+        for (const [filePath, content] of Object.entries(this.contextData)) {
+            if (this.shouldAuditFile(filePath)) {
+                this.scanContent(filePath, content as string, regex, rule, results);
             }
         }
+    }
 
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
-        return results;
+    private shouldAuditFile(filePath: string): boolean {
+        return filePath.endsWith('.ts') || filePath.endsWith('.tsx');
+    }
+
+    private scanContent(filePath: string, content: string, regex: RegExp, rule: any, results: any[]) {
+        for (const match of content.matchAll(regex)) {
+            results.push({
+                file: filePath,
+                issue: rule.issue,
+                severity: rule.severity,
+                evidence: match[0],
+                persona: this.name
+            });
+        }
     }
 
     async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {

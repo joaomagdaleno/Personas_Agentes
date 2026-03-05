@@ -5,7 +5,6 @@ const logger = winston.child({ module: "TS_Scribe" });
 
 /**
  * 📝 Dr. Scribe — PhD in TypeScript Documentation & Knowledge
- * Especialista em JSDoc, documentação de APIs e clareza de código.
  */
 export class ScribePersona extends BaseActivePersona {
     constructor(projectRoot: string | null = null) {
@@ -22,26 +21,7 @@ export class ScribePersona extends BaseActivePersona {
 
         const results: any[] = [];
         for (const [filePath, content] of Object.entries(this.contextData)) {
-            if (!filePath.endsWith('.ts') && !filePath.endsWith('.tsx')) continue;
-            if (filePath.endsWith('.test.ts') || filePath.endsWith('.spec.ts')) continue;
-
-            // Check for exported functions/classes without JSDoc
-            const exportMatches = (content as string).match(/export\s+(?:async\s+)?(?:function|class|const|interface|type|enum)\s+\w+/g);
-            const jsdocCount = ((content as string).match(/\/\*\*[\s\S]*?\*\//g) || []).length;
-
-            if (exportMatches && exportMatches.length > 0 && jsdocCount === 0) {
-                results.push({
-                    file: filePath,
-                    issue: `Amnésia Técnica: ${exportMatches.length} exportações sem nenhum JSDoc — caixa preta total.`,
-                    severity: 'high', persona: this.name
-                });
-            } else if (exportMatches && exportMatches.length > jsdocCount * 2) {
-                results.push({
-                    file: filePath,
-                    issue: `Documentação Parcial: ${exportMatches.length} exportações mas apenas ${jsdocCount} blocos JSDoc.`,
-                    severity: 'medium', persona: this.name
-                });
-            }
+            this.auditFile(filePath, content as string, results);
         }
 
         const duration = (Date.now() - start) / 1000;
@@ -49,9 +29,38 @@ export class ScribePersona extends BaseActivePersona {
         return results;
     }
 
+    private auditFile(filePath: string, content: string, results: any[]) {
+        if (!this.isAuditable(filePath)) return;
+
+        const exportMatches = content.match(/export\s+(?:async\s+)?(?:function|class|const|interface|type|enum)\s+\w+/g);
+        const jsdocCount = (content.match(/\/\*\*[\s\S]*?\*\//g) || []).length;
+
+        if (this.isMissingDocumentation(exportMatches, jsdocCount)) {
+            results.push(this.createFinding(filePath, exportMatches!.length, jsdocCount));
+        }
+    }
+
+    private isAuditable(filePath: string): boolean {
+        const isTS = filePath.endsWith('.ts') || filePath.endsWith('.tsx');
+        const isTest = filePath.endsWith('.test.ts') || filePath.endsWith('.spec.ts');
+        return isTS && !isTest;
+    }
+
+    private isMissingDocumentation(exportMatches: RegExpMatchArray | null, jsdocCount: number): boolean {
+        return !!exportMatches && exportMatches.length > 0 && (jsdocCount === 0 || exportMatches.length > jsdocCount * 2);
+    }
+
+    private createFinding(file: string, exports: number, jsdocs: number) {
+        if (jsdocs === 0) {
+            return { file, issue: `Amnésia Técnica: ${exports} exportações sem nenhum JSDoc — caixa preta total.`, severity: 'high', persona: this.name };
+        }
+        return { file, issue: `Documentação Parcial: ${exports} exportações mas apenas ${jsdocs} blocos JSDoc.`, severity: 'medium', persona: this.name };
+    }
+
     async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
         const exports = (content.match(/export\s+(?:async\s+)?(?:function|class)\s+\w+/g) || []).length;
         const docs = (content.match(/\/\*\*[\s\S]*?\*\//g) || []).length;
+
         if (exports > 0 && docs === 0) {
             return {
                 file, severity: "HIGH", persona: this.name,
@@ -60,15 +69,7 @@ export class ScribePersona extends BaseActivePersona {
         }
         return {
             file, severity: "INFO", persona: this.name,
-            issue: `PhD Scribe: Analisando explicabilidade para ${objective}. Focando em JSDoc e clareza de intenção.`
-        };
-    }
-
-    selfDiagnostic(): any {
-        return {
-            status: "Soberano",
-            score: 100,
-            details: "Arquivista de conhecimento TS operando com clareza PhD."
+            issue: `PhD Scribe: Analisando explicabilidade para ${objective}.`
         };
     }
 

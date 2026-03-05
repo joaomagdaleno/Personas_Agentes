@@ -36,29 +36,51 @@ export class MetricPersona extends BaseActivePersona {
         const start = Date.now();
         logger.info(`[${this.name}] Analisando Observabilidade TypeScript...`);
 
-        const auditRules = [
+        const auditRules = this.getMetricRules();
+        const results: any[] = [];
+
+        for (const rule of auditRules) {
+            this.auditWithRule(rule, results);
+        }
+
+        const duration = (Date.now() - start) / 1000;
+        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
+        return results;
+    }
+
+    private getMetricRules() {
+        return [
             { regex: 'console\\.log\\(', issue: 'Cegueira: console.log em produção — use logger estruturado.', severity: 'high' },
             { regex: 'console\\.error\\(', issue: 'Telemetria Fraca: console.error sem contexto estruturado.', severity: 'medium' },
             { regex: 'console\\.warn\\(', issue: 'Telemetria Fraca: console.warn sem nível de severidade.', severity: 'low' },
             { regex: 'catch\\s*\\([^)]*\\)\\s*\\{\\s*\\}', issue: 'Cegueira Total: catch vazio engole erros silenciosamente.', severity: 'critical' },
             { regex: 'catch\\s*\\([^)]*\\)\\s*\\{[^}]*console\\.log', issue: 'Telemetria Informal: Erro logado via console em vez de logger.', severity: 'medium' },
         ];
+    }
 
-        const results: any[] = [];
-        for (const rule of auditRules) {
-            const regex = new RegExp(rule.regex, 'g');
-            for (const [filePath, content] of Object.entries(this.contextData)) {
-                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx')) {
-                    for (const match of (content as string).matchAll(regex)) {
-                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0], persona: this.name });
-                    }
-                }
+    private auditWithRule(rule: any, results: any[]) {
+        const regex = new RegExp(rule.regex, 'g');
+        for (const [filePath, content] of Object.entries(this.contextData)) {
+            if (this.shouldAuditFile(filePath)) {
+                this.scanContent(filePath, content as string, regex, rule, results);
             }
         }
+    }
 
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
-        return results;
+    private shouldAuditFile(filePath: string): boolean {
+        return filePath.endsWith('.ts') || filePath.endsWith('.tsx');
+    }
+
+    private scanContent(filePath: string, content: string, regex: RegExp, rule: any, results: any[]) {
+        for (const match of content.matchAll(regex)) {
+            results.push({
+                file: filePath,
+                issue: rule.issue,
+                severity: rule.severity,
+                evidence: match[0],
+                persona: this.name
+            });
+        }
     }
 
     async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {

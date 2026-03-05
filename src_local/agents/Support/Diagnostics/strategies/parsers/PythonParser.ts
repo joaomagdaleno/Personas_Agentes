@@ -7,20 +7,25 @@ export class PythonParser {
         let curInd = 0;
 
         content.split("\n").forEach((line, i) => {
-            const cM = line.match(/^(\s*)class\s+(\w+)/);
-            const dM = line.match(/^(\s*)def\s+(\w+)/);
+            const classMatch = line.match(/^(\s*)class\s+(\w+)/);
+            const defMatch = line.match(/^(\s*)def\s+(\w+)/);
 
-            if (cM) {
-                curInd = (cM[1] ?? "").length;
-                curClass = cM[2] ?? "";
+            if (classMatch) {
+                curInd = (classMatch[1] ?? "").length;
+                curClass = classMatch[2] ?? "";
                 units.push({ type: "class", name: curClass, line: i + 1 });
-            } else if (dM) {
-                const ind = (dM[1] ?? "").length;
-                const name = dM[2] ?? "";
-                if (curClass && ind > curInd) {
-                    units.push({ type: "method", name, parent: curClass, line: i + 1 });
+                return;
+            }
+
+            if (defMatch) {
+                const ind = (defMatch[1] ?? "").length;
+                const name = defMatch[2] ?? "";
+                const isMethod = curClass && ind > curInd;
+
+                if (isMethod) {
+                    units.push({ type: "method", name, parent: curClass!, line: i + 1 });
                 } else {
-                    if (curClass && ind <= curInd) curClass = null;
+                    curClass = null;
                     units.push({ type: "function", name, line: i + 1 });
                 }
             }

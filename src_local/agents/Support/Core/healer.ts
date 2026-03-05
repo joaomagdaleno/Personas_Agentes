@@ -11,7 +11,6 @@ import { PatchManager } from "./patch_manager.ts";
 
 /**
  * 🩹 Agente Healer (PhD in Software Reparation).
- * Usa o CognitiveEngine para gerar patches de correção e validar a cura.
  */
 export class HealerPersona extends BaseActivePersona {
     private brain: CognitiveEngine;
@@ -29,10 +28,7 @@ export class HealerPersona extends BaseActivePersona {
         this.patcher = new PatchManager(projectRoot || process.cwd());
     }
 
-    async performAudit(): Promise<any[]> {
-        // Healer não audita proativamente, ele é invocado para cura.
-        return [];
-    }
+    async performAudit(): Promise<any[]> { return []; }
 
     getSystemPrompt(): string {
         return "Você é o Dr. Healer, focado em correções de código seguras e minimalistas.";
@@ -42,65 +38,60 @@ export class HealerPersona extends BaseActivePersona {
         return null;
     }
 
-    /**
-     * Tenta curar uma fragilidade específica.
-     */
     async healFinding(finding: any, orchestrator: Orchestrator): Promise<boolean> {
-        const filePath = finding.file;
-        const issue = finding.issue;
-
         if (!this.isValidForHealing(finding)) return false;
 
+        const filePath = finding.file;
         winston.info(`🩹 [Healer] Iniciando protocolo de cura em: ${filePath}`);
 
-        const currentContent = this.getCurrentContent(filePath);
-        const contextPrompt = this.getContextPrompt(finding);
-        const prompt = HealerPromptBuilder.buildHealPrompt(filePath, currentContent, issue, contextPrompt);
+        const prompt = HealerPromptBuilder.buildHealPrompt(
+            filePath,
+            this.getCurrentContent(filePath),
+            finding.issue,
+            this.getContextPrompt(finding)
+        );
 
         const suggestion = await this.brain.reason(prompt);
-        return this.processSuggestion(suggestion, filePath, issue, orchestrator);
+        return this.processSuggestion(suggestion, filePath, finding.issue, orchestrator);
     }
 
     private isValidForHealing(finding: any): boolean {
-        const filePath = finding.file;
-        if (!filePath || !finding.issue || !this.projectRoot) return false;
+        if (!finding.file || !finding.issue || !this.projectRoot) return false;
+        return this.checkFileExistence(finding);
+    }
 
-        const fullPath = new Path(this.projectRoot).join(filePath);
-        if (!fs.existsSync(fullPath.toString()) && finding.type !== "DISPARITY") {
-            winston.error(`🩹 [Healer] Arquivo não encontrado para cura: ${filePath}`);
-            return false;
-        }
-        return true;
+    private checkFileExistence(finding: any): boolean {
+        const fullPath = new Path(this.projectRoot!).join(finding.file).toString();
+        if (fs.existsSync(fullPath) || finding.type === "DISPARITY") return true;
+
+        winston.error(`🩹 [Healer] Arquivo não encontrado para cura: ${finding.file}`);
+        return false;
     }
 
     private getCurrentContent(filePath: string): string {
-        const fullPath = new Path(this.projectRoot!).join(filePath);
-        return fs.existsSync(fullPath.toString()) ? fs.readFileSync(fullPath.toString(), 'utf-8') : "// Novo arquivo migrado\n";
+        const fullPath = new Path(this.projectRoot!).join(filePath).toString();
+        return fs.existsSync(fullPath) ? fs.readFileSync(fullPath, 'utf-8') : "// Novo arquivo migrado\n";
     }
 
     private getContextPrompt(finding: any): string {
-        if (finding.type === "DISPARITY" && finding.meta?.legacyPath) {
-            const legacyFullPath = new Path(this.projectRoot!).join(finding.meta.legacyPath);
-            if (fs.existsSync(legacyFullPath.toString())) {
-                const legacyContent = fs.readFileSync(legacyFullPath.toString(), 'utf-8');
-                return HealerPromptBuilder.buildDisparityContext(legacyContent, finding.meta.unit.name, finding.meta.unit.type);
-            }
-        }
-        return "";
+        if (finding.type !== "DISPARITY" || !finding.meta?.legacyPath) return "";
+        return this.getLegacyContext(finding.meta.legacyPath, finding.meta.unit);
+    }
+
+    private getLegacyContext(legacyPath: string, unit: any): string {
+        const fullPath = new Path(this.projectRoot!).join(legacyPath).toString();
+        if (!fs.existsSync(fullPath)) return "";
+
+        const content = fs.readFileSync(fullPath, 'utf-8');
+        return HealerPromptBuilder.buildDisparityContext(content, unit.name, unit.type);
     }
 
     private async processSuggestion(suggestion: string | null, filePath: string, issue: string, orchestrator: Orchestrator): Promise<boolean> {
         if (!suggestion) return false;
         const codeMatch = suggestion.match(/```(?:typescript|ts|javascript|js|python)?\n([\s\S]*?)\n```/);
-        if (codeMatch && codeMatch[1]) {
-            return this.patcher.applyAndValidate(filePath, codeMatch[1], issue, orchestrator);
-        }
-        return false;
+        return (codeMatch && codeMatch[1]) ? this.patcher.applyAndValidate(filePath, codeMatch[1], issue, orchestrator) : false;
     }
 
-    /**
-     * Limpa ofuscações em um arquivo.
-     */
     async cleanFile(filePath: string): Promise<boolean> {
         if (!this.projectRoot) return false;
         const fullPath = new Path(this.projectRoot).join(filePath).toString();
@@ -112,8 +103,7 @@ export class HealerPersona extends BaseActivePersona {
 
         if (replacements.length > 0) {
             winston.info(`🩹 [Healer] Limpando ${replacements.length} ofuscações em ${filePath}`);
-            const cleaned = this.cleaner.applyClean(content, replacements);
-            fs.writeFileSync(fullPath, cleaned, 'utf-8');
+            fs.writeFileSync(fullPath, this.cleaner.applyClean(content, replacements), 'utf-8');
             return true;
         }
         return false;

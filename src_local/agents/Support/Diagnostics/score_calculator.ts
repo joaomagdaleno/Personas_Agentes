@@ -48,14 +48,15 @@ export class ScoreCalculator {
     }
 
     private buildBreakdown(pillars: any, adj: any): Record<string, number> {
-        return {
+        const baseBreakdown = {
             "Stability (Coverage)": this.round(pillars.stability - (adj["Stability (Coverage)"] || 0)),
             "Purity (Complexity)": this.round(pillars.purity - (adj["Purity (Complexity)"] || 0)),
             "Observability (Telemetry)": this.round(pillars.observability),
             "Security (Vulnerabilities)": this.round(pillars.security - (adj["Security (Vulnerabilities)"] || 0)),
             "Excellence (Documentation)": this.round(pillars.excellence - (adj["Excellence (Documentation)"] || 0)),
-            ...this.mapQualityAdjs(adj)
         };
+
+        return { ...baseBreakdown, ...this.mapQualityAdjs(adj) };
     }
 
     private round(val: number): number {
@@ -66,21 +67,39 @@ export class ScoreCalculator {
         const keys = ["Cognitive (System Sanity)", "Quality (CC > 20 - High Risk)", "Quality (Cognitive > 15)", "Quality (Nesting > 3)", "Quality (CBO > 10 - High Coupling)", "Quality (DIT > 5 - Deep Inheritance)", "Quality (MI < 10 - Low Maint)", "Quality (MI < 5 - Critical)", "Quality (Defect Density > 1/KLOC)", "Quality (Gate RED)", "Quality (Shadow Non-Compliant)"];
         const res: any = {};
         keys.forEach(k => res[k] = adj[k] || 0);
-        ["_raw_ccCount", "_raw_cognitiveCount", "_raw_nestingCount", "_raw_cboCount", "_raw_ditCount", "_raw_miLowCount", "_raw_miCriticalCount", "_raw_defectCount", "_raw_gateRedCount", "_raw_shadowCount", "_raw_totalAnalyzed"].forEach(k => res[k] = adj[k] || 0);
+
+        const rawKeys = ["_raw_ccCount", "_raw_cognitiveCount", "_raw_nestingCount", "_raw_cboCount", "_raw_ditCount", "_raw_miLowCount", "_raw_miCriticalCount", "_raw_defectCount", "_raw_gateRedCount", "_raw_shadowCount", "_raw_totalAnalyzed"];
+        rawKeys.forEach(k => res[k] = adj[k] || 0);
+
         return res;
     }
 
     private calculateQualityBonus(mapData: Record<string, any>, qaData: any): number {
         if (!qaData?.matrix) return 0;
-        return (qaData.matrix as any[]).reduce((sum, item) => {
-            const m = item.advanced_metrics || {};
-            let b = 0;
-            if (m.maintainabilityIndex >= 50) b += 1.0; else if (m.maintainabilityIndex >= 20) b += 0.5;
-            if (m.qualityGate === "GREEN") b += 0.3;
-            if (m.isShadow && m.shadowCompliance?.compliant) b += 2.0;
-            if (m.cyclomaticComplexity <= 10) b += 0.2;
-            if (m.riskLevel === "LOW") b += 0.3;
-            return sum + b;
-        }, 0);
+        return (qaData.matrix as any[]).reduce((sum, item) => sum + this.getItemQualityBonus(item), 0);
+    }
+
+    private getItemQualityBonus(item: any): number {
+        const m = item.advanced_metrics || {};
+        return this.calculateBaseBonus(m) + this.calculateComplianceBonus(m);
+    }
+
+    private calculateBaseBonus(m: any): number {
+        let b = this.getMaintainabilityBonus(m.maintainabilityIndex);
+        if (m.qualityGate === "GREEN") b += 0.3;
+        if (m.cyclomaticComplexity <= 10) b += 0.2;
+        if (m.riskLevel === "LOW") b += 0.3;
+        return b;
+    }
+
+    private calculateComplianceBonus(m: any): number {
+        if (m.isShadow && m.shadowCompliance?.compliant) return 2.0;
+        return 0;
+    }
+
+    private getMaintainabilityBonus(mi: number): number {
+        if (mi >= 50) return 1.0;
+        if (mi >= 20) return 0.5;
+        return 0;
     }
 }

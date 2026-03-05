@@ -17,7 +17,7 @@ import { UpdateTransaction } from "../utils/update_transaction.ts";
 import { SystemSentinel } from "../utils/system_sentinel.ts";
 import { BehaviorAnalyst } from "../utils/behavior_analyst.ts";
 import { TaskWorker } from "../utils/task_worker.ts";
-import type { IAgent, SovereignState, DiagnosticFinding, SystemHealth360 } from "./types.ts";
+import type { IAgent, SovereignState } from "./types.ts";
 import { MemoryPruningAgent } from "../agents/Support/Maintenance/memory_pruning_agent.ts";
 import { PredictorEngine } from "../utils/ai/predictor_engine.ts";
 
@@ -32,26 +32,25 @@ export class Orchestrator {
     private agentRegistry: Map<string, IAgent> = new Map();
 
     // Core Engines
-    contextEngine: ContextEngine;
-    cacheManager: CacheManager;
-    executor: TaskExecutor;
-    auditEngine: AuditEngine;
-    director: DirectorPersona;
-    stabilityLedger: StabilityLedger;
-    historyAgent: HistoryAgent;
+    contextEngine!: ContextEngine;
+    cacheManager!: CacheManager;
+    executor!: TaskExecutor;
+    auditEngine!: AuditEngine;
+    director!: DirectorPersona;
+    stabilityLedger!: StabilityLedger;
+    historyAgent!: HistoryAgent;
     strategist: any;
     coreValidator: any;
-    syntax: any;
-    synthesizer: any; // HealthSynthesizer;
-    taskQueue: TaskQueue;
-    memoryEngine: MemoryEngine;
-    reflexEngine: ReflexEngine;
-    updateTransaction: UpdateTransaction;
-    sentinel: SystemSentinel;
-    behaviorAnalyst: BehaviorAnalyst;
-    worker: TaskWorker;
-    pruningAgent: MemoryPruningAgent;
-    predictorEngine: PredictorEngine;
+    synthesizer: any;
+    taskQueue!: TaskQueue;
+    memoryEngine!: MemoryEngine;
+    reflexEngine!: ReflexEngine;
+    updateTransaction!: UpdateTransaction;
+    sentinel!: SystemSentinel;
+    behaviorAnalyst!: BehaviorAnalyst;
+    worker!: TaskWorker;
+    pruningAgent!: MemoryPruningAgent;
+    predictorEngine!: PredictorEngine;
 
     constructor(projectRoot: string) {
         this.projectRoot = new Path(projectRoot);
@@ -60,37 +59,39 @@ export class Orchestrator {
             metrics: { files_scanned: 0, start_time: Date.now() },
             identity: { core_mission: "Integrity Maintenance", stacks: ["TypeScript", "Python"] }
         };
-        this.cacheManager = new CacheManager(this.projectRoot.toString());
-        this.executor = new TaskExecutor();
-        this.contextEngine = new ContextEngine(this.projectRoot.toString());
-        this.auditEngine = new AuditEngine(this);
-        this.director = new DirectorPersona(this.projectRoot.toString());
-        this.stabilityLedger = new StabilityLedger(this.projectRoot.toString());
-        this.historyAgent = new HistoryAgent(this.projectRoot.toString());
-        this.taskQueue = new TaskQueue(this.projectRoot.toString());
-        this.memoryEngine = new MemoryEngine(this.projectRoot.toString());
-        this.reflexEngine = new ReflexEngine(this);
-        this.updateTransaction = new UpdateTransaction();
-        this.sentinel = new SystemSentinel();
-        this.behaviorAnalyst = new BehaviorAnalyst(this.projectRoot.toString());
-        this.worker = new TaskWorker(this);
-        this.pruningAgent = new MemoryPruningAgent(this.projectRoot.toString());
-        this.predictorEngine = new PredictorEngine(this.projectRoot.toString());
-
+        this.initializeEngines(projectRoot);
         this._registerAgents();
         this._initEngines();
         this._initTools();
     }
 
+    private initializeEngines(root: string) {
+        this.cacheManager = new CacheManager(root);
+        this.executor = new TaskExecutor();
+        this.contextEngine = new ContextEngine(root);
+        this.auditEngine = new AuditEngine(this);
+        this.director = new DirectorPersona(root);
+        this.stabilityLedger = new StabilityLedger(root);
+        this.historyAgent = new HistoryAgent(root);
+        this.taskQueue = new TaskQueue(root);
+        this.memoryEngine = new MemoryEngine(root);
+        this.reflexEngine = new ReflexEngine(this);
+        this.updateTransaction = new UpdateTransaction();
+        this.sentinel = new SystemSentinel();
+        this.behaviorAnalyst = new BehaviorAnalyst(root);
+        this.worker = new TaskWorker(this);
+        this.pruningAgent = new MemoryPruningAgent(root);
+        this.predictorEngine = new PredictorEngine(root);
+    }
+
     private _registerAgents() {
         this.agentRegistry.set(this.pruningAgent.id, this.pruningAgent);
-        // More agents can be registered here as they are refactored to IAgent
     }
 
     async dispatch(agentId: string, context: any = {}): Promise<any> {
         const agent = this.agentRegistry.get(agentId);
         if (!agent) {
-            logger.warn(`⚠️ [Orchestrator] Agent ${agentId} não encontrado no registro.`);
+            logger.warn(`⚠️ [Orchestrator] Agent ${agentId} não encontrado.`);
             return null;
         }
 
@@ -126,8 +127,6 @@ export class Orchestrator {
     async runStrategicAudit(context: any, objective: string | null = null, includeHistory: boolean = true) {
         logger.info("Auditoria Estratégica: Acionando AuditEngine...");
         const [findings, startT] = await this.auditEngine.runStrategicAudit(context, objective);
-
-        // Simulating sync and ledger for now
         this._logPerformance(startT, "Auditoria Estratégica");
         return findings;
     }
@@ -145,7 +144,6 @@ export class Orchestrator {
         return await this.auditEngine.runObfuscationScan(null);
     }
 
-    /** v7.3: Parity Restoration */
     setThinkingDepth(level: number) {
         logger.info(`🧠 [Orchestrator] Definindo profundidade de pensamento: ${level}`);
         this.memoryEngine.setDepth(level);
@@ -169,16 +167,20 @@ export class Orchestrator {
     async runAutoHealing(findings: any[]) {
         const { HealerPersona } = await import("../agents/Support/Core/healer.ts");
         const healer = new HealerPersona(this.projectRoot.toString());
-        let healedCount = 0;
 
-        for (const finding of findings) {
-            if (finding.severity === "CRITICAL" || finding.severity === "HIGH") {
-                const success = await healer.healFinding(finding, this);
-                if (success) healedCount++;
-            }
+        const results = await Promise.all(findings.map(f => this.healSingleFinding(healer, f)));
+        return results.filter(Boolean).length;
+    }
+
+    private async healSingleFinding(healer: any, finding: any): Promise<boolean> {
+        if (this.isHighPriority(finding)) {
+            return await healer.healFinding(finding, this);
         }
+        return false;
+    }
 
-        return healedCount;
+    private isHighPriority(finding: any): boolean {
+        return finding.severity === "CRITICAL" || finding.severity === "HIGH";
     }
 
     async runTargetedVerification(plan: any) {
@@ -216,19 +218,20 @@ export class Orchestrator {
     private _enrichPathMetrics(ctx: any) {
         if (!ctx.depthAudit?.metrics) return;
         const mapKeys = Object.keys(ctx.map || {});
-        for (const metric of ctx.depthAudit.metrics) {
-            const normPath = metric.path.replace(/\\/g, "/");
-            this._matchAndApplyMetric(ctx.map, mapKeys, normPath, metric.tsDepth);
+        ctx.depthAudit.metrics.forEach((metric: any) => this.applyMetricToMap(ctx.map, mapKeys, metric));
+    }
+
+    private applyMetricToMap(map: any, mapKeys: string[], metric: any) {
+        const normPath = metric.path.replace(/\\/g, "/");
+        const match = mapKeys.find(k => this.isPathMatch(k, normPath));
+        if (match) {
+            map[match].tsDepth = metric.tsDepth;
         }
     }
 
-    private _matchAndApplyMetric(map: any, keys: string[], normPath: string, depth: number) {
-        for (const k of keys) {
-            if (k.replace(/\\/g, "/") === normPath || k.replace(/\\/g, "/").endsWith(normPath.split('/').pop() || "INVALID")) {
-                map[k].tsDepth = depth;
-                break;
-            }
-        }
+    private isPathMatch(key: string, normPath: string): boolean {
+        const kNorm = key.replace(/\\/g, "/");
+        return kNorm === normPath || kNorm.endsWith(normPath.split('/').pop() || "INVALID");
     }
 
     async generateMorningBriefing() {

@@ -20,28 +20,50 @@ export class PalettePersona extends BaseActivePersona {
         const start = Date.now();
         logger.info(`[${this.name}] Analisando Qualidade Visual TypeScript...`);
 
-        const auditRules = [
-            { regex: 'color:\\s*["\']#[0-9a-fA-F]{3,8}["\']', issue: 'Fragmentação Visual: Cor hardcoded — use design tokens.', severity: 'medium' },
-            { regex: 'style\\s*=\\s*\\{\\{', issue: 'Inline Style: Estilo inline dificulta manutenção e consistência.', severity: 'medium' },
-            { regex: '(?:width|height|margin|padding):\\s*\\d{2,}', issue: 'Magic Number: Dimensão hardcoded — use variáveis de design system.', severity: 'low' },
-            { regex: 'font-size:\\s*\\d+px', issue: 'Tipografia Rígida: font-size em pixels sem escala responsiva.', severity: 'low' },
-        ];
-
+        const auditRules = this.getPaletteRules();
         const results: any[] = [];
+
         for (const rule of auditRules) {
-            const regex = new RegExp(rule.regex, 'g');
-            for (const [filePath, content] of Object.entries(this.contextData)) {
-                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx') || filePath.endsWith('.css')) {
-                    for (const match of (content as string).matchAll(regex)) {
-                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0], persona: this.name });
-                    }
-                }
-            }
+            this.auditWithRule(rule, results);
         }
 
         const duration = (Date.now() - start) / 1000;
         logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
         return results;
+    }
+
+    private getPaletteRules() {
+        return [
+            { regex: 'color:\\s*["\']#[0-9a-fA-F]{3,8}["\']', issue: 'Fragmentação Visual: Cor hardcoded — use design tokens.', severity: 'medium' },
+            { regex: 'style\\s*=\\s*\\{\\{', issue: 'Inline Style: Estilo inline dificulta manutenção e consistência.', severity: 'medium' },
+            { regex: '(?:width|height|margin|padding):\\s*\\d{2,}', issue: 'Magic Number: Dimensão hardcoded — use variáveis de design system.', severity: 'low' },
+            { regex: 'font-size:\\s*\\d+px', issue: 'Tipografia Rígida: font-size em pixels sem escala responsiva.', severity: 'low' },
+        ];
+    }
+
+    private auditWithRule(rule: any, results: any[]) {
+        const regex = new RegExp(rule.regex, 'g');
+        for (const [filePath, content] of Object.entries(this.contextData)) {
+            if (this.shouldAuditFile(filePath)) {
+                this.scanContent(filePath, content as string, regex, rule, results);
+            }
+        }
+    }
+
+    private shouldAuditFile(filePath: string): boolean {
+        return filePath.endsWith('.ts') || filePath.endsWith('.tsx') || filePath.endsWith('.css');
+    }
+
+    private scanContent(filePath: string, content: string, regex: RegExp, rule: any, results: any[]) {
+        for (const match of content.matchAll(regex)) {
+            results.push({
+                file: filePath,
+                issue: rule.issue,
+                severity: rule.severity,
+                evidence: match[0],
+                persona: this.name
+            });
+        }
     }
 
     async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {

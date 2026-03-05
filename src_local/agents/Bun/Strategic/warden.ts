@@ -17,7 +17,7 @@ export class WardenPersona extends BaseActivePersona {
     }
 
     async performAudit(): Promise<any[]> {
-        const start = Date.now();
+        this.startMetrics();
         logger.info(`[${this.name}] Analisando Governança Bun...`);
 
         const auditRules = [
@@ -27,31 +27,18 @@ export class WardenPersona extends BaseActivePersona {
             { regex: 'Bun\\.file\\([^)]*\\).*(?:cpf|rg|password|ssn)', issue: 'PII em Disco: Bun.file lendo/gravando dados sensíveis.', severity: 'critical' },
         ];
 
-        const results: any[] = [];
-        for (const rule of auditRules) {
-            const regex = new RegExp(rule.regex, 'gi');
-            for (const [filePath, content] of Object.entries(this.contextData)) {
-                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx')) {
-                    for (const match of (content as string).matchAll(regex)) {
-                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0], persona: this.name });
-                    }
-                }
-            }
-        }
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
+        const results = this.findPatterns(['.ts', '.tsx'], auditRules as any);
+        this.endMetrics(results.length);
         return results;
     }
 
     async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
-        if (/cpf|rg|ssn|nascimento/i.test(content)) {
-            return {
-                file, severity: "CRITICAL", persona: this.name,
-                issue: `Risco LGPD: O objetivo '${objective}' exige conformidade. Em '${file}', PII sem proteção viola a legislação no ambiente Bun.`
-            };
-        }
-        return null;
+        if (!/cpf|rg|ssn|nascimento/i.test(content)) return null;
+
+        return {
+            file, severity: "CRITICAL", persona: this.name,
+            issue: `Risco LGPD: O objetivo '${objective}' exige conformidade. Em '${file}', PII sem proteção viola a legislação no ambiente Bun.`
+        };
     }
 
     getSystemPrompt(): string {

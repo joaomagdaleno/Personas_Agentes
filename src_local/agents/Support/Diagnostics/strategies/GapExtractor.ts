@@ -16,16 +16,12 @@ export class GapExtractor {
 
     private static processLine(line: string, state: any, allGaps: GapDetail[]) {
         if (line.includes("**Local:**")) {
-            this.flushGaps(state, allGaps);
-            state.lastLocal = line.replace(/.*`([^`]+)`.*/s, "$1").trim();
-            [state.lastLevel, state.lastMissingCount, state.collectingMissing, state.currentMissing] = ["", 0, false, []];
+            this.handleLocalLine(line, state, allGaps);
             return;
         }
 
         if (line.includes("Faltam")) {
-            const match = line.match(/Faltam (\d+)/);
-            state.lastLevel = line.includes("PARITY_GAPS") ? "GAP" : "SHALLOW";
-            state.lastMissingCount = parseInt(match?.[1] || "0");
+            this.handleMissingCountLine(line, state);
             return;
         }
 
@@ -35,12 +31,32 @@ export class GapExtractor {
         }
 
         if (state.collectingMissing) {
-            if (line.startsWith(">") && line.includes("- `")) {
-                state.currentMissing.push(line.replace(/.*`([^`]+)`.*/s, "$1").trim());
-            } else if (!line.startsWith(">")) {
-                this.flushGaps(state, allGaps);
-                [state.collectingMissing, state.currentMissing] = [false, []];
-            }
+            this.handleCollection(line, state, allGaps);
+        }
+    }
+
+    private static handleLocalLine(line: string, state: any, allGaps: GapDetail[]) {
+        this.flushGaps(state, allGaps);
+        state.lastLocal = line.replace(/.*`([^`]+)`.*/s, "$1").trim();
+        state.lastLevel = "";
+        state.lastMissingCount = 0;
+        state.collectingMissing = false;
+        state.currentMissing = [];
+    }
+
+    private static handleMissingCountLine(line: string, state: any) {
+        const match = line.match(/Faltam (\d+)/);
+        state.lastLevel = line.includes("PARITY_GAPS") ? "GAP" : "SHALLOW";
+        state.lastMissingCount = parseInt(match?.[1] || "0");
+    }
+
+    private static handleCollection(line: string, state: any, allGaps: GapDetail[]) {
+        if (line.startsWith(">") && line.includes("- `")) {
+            state.currentMissing.push(line.replace(/.*`([^`]+)`.*/s, "$1").trim());
+        } else if (!line.startsWith(">")) {
+            this.flushGaps(state, allGaps);
+            state.collectingMissing = false;
+            state.currentMissing = [];
         }
     }
 
