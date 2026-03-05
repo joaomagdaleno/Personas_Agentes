@@ -20,7 +20,20 @@ export class NebulaPersona extends BaseActivePersona {
         const start = Date.now();
         logger.info(`[${this.name}] Analisando Segurança Cloud TypeScript...`);
 
-        const auditRules = [
+        const auditRules = this.getSecurityRules();
+        const results: any[] = [];
+
+        for (const rule of auditRules) {
+            this.auditWithRule(rule, results);
+        }
+
+        const duration = (Date.now() - start) / 1000;
+        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
+        return results;
+    }
+
+    private getSecurityRules() {
+        return [
             { regex: 'AKIA[0-9A-Z]{16}', issue: 'Vulnerabilidade Crítica: Chave AWS exposta no código TypeScript.', severity: 'critical' },
             { regex: '(?:api[_-]?key|apiKey|API_KEY)\\s*[:=]\\s*["\'][^"\']{8,}', issue: 'Vazamento: API Key hardcoded no código-fonte.', severity: 'critical' },
             { regex: '(?:password|passwd|secret)\\s*[:=]\\s*["\'][^"\']+["\']', issue: 'Vazamento: Credencial hardcoded no código-fonte.', severity: 'critical' },
@@ -28,23 +41,33 @@ export class NebulaPersona extends BaseActivePersona {
             { regex: 'ghp_[a-zA-Z0-9]{36}', issue: 'Vulnerabilidade Crítica: Token GitHub exposto.', severity: 'critical' },
             { regex: 'process\\.env\\.[A-Z_]+\\s*\\|\\|\\s*["\'][^"\']{8,}', issue: 'Risco: Fallback de variável de ambiente contém segredo real.', severity: 'high' },
         ];
+    }
 
-        const results: any[] = [];
-        for (const rule of auditRules) {
-            const regex = new RegExp(rule.regex, 'g');
-            for (const [filePath, content] of Object.entries(this.contextData)) {
-                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx') || filePath.endsWith('.json')) {
-                    if (filePath.includes('persona_manifest') || filePath.includes('rules')) continue;
-                    for (const match of (content as string).matchAll(regex)) {
-                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0].substring(0, 30) + '...', persona: this.name });
-                    }
-                }
+    private auditWithRule(rule: any, results: any[]) {
+        const regex = new RegExp(rule.regex, 'g');
+        for (const [filePath, content] of Object.entries(this.contextData)) {
+            if (this.shouldAuditFile(filePath)) {
+                this.scanContent(filePath, content as string, regex, rule, results);
             }
         }
+    }
 
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
-        return results;
+    private shouldAuditFile(filePath: string): boolean {
+        const validExt = filePath.endsWith('.ts') || filePath.endsWith('.tsx') || filePath.endsWith('.json');
+        const isInternal = filePath.includes('persona_manifest') || filePath.includes('rules');
+        return validExt && !isInternal;
+    }
+
+    private scanContent(filePath: string, content: string, regex: RegExp, rule: any, results: any[]) {
+        for (const match of content.matchAll(regex)) {
+            results.push({
+                file: filePath,
+                issue: rule.issue,
+                severity: rule.severity,
+                evidence: match[0].substring(0, 30) + '...',
+                persona: this.name
+            });
+        }
     }
 
     async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {

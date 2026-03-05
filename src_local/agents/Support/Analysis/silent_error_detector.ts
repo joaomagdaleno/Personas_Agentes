@@ -1,47 +1,27 @@
 /**
  * SISTEMA DE PERSONAS AGENTES - SUPORTE TÉCNICO
  * Módulo: Detector de Erros Silenciados (SilentErrorDetector)
- * Função: Especialista em identificar capturas de exceção sem tratamento.
- * Soberania: SECURITY-AGENT.
  */
 import winston from "winston";
 
 const logger = winston.child({ module: "SilentErrorDetector" });
 
 export interface SilentErrorIssue {
-    file: string;
-    line: number;
-    issue: string;
-    severity: string;
-    context: string;
-    snippet: string;
+    file: string; line: number; issue: string; severity: string; context: string; snippet: string;
 }
 
 /**
  * 🔇 SilentErrorDetector — Detecta padrões de falha lógica silenciosa.
- *
- * Identifica blocos try/catch vazios, catch genéricos sem tratamento,
- * e padrões de supressão de erro que podem esconder bugs críticos.
  */
 export class SilentErrorDetector {
-    /** Parity: __init__ */
-    constructor() {
-        // Patterns are initialized as class fields.
-    }
-
-    /** Parity: _is_silent_except — Checks if a catch block is a suppressed exception. */
-    private _is_silent_except(block: string): boolean {
-        return this.SILENT_PATTERNS.some(p => p.test(block)) && !this._isSafeContext(block);
-    }
-
     private readonly SILENT_PATTERNS = [
-        /catch\s*\([^)]*\)\s*\{\s*\}/,                          // catch vazio: catch(e) {}
-        /catch\s*\([^)]*\)\s*\{\s*\/\/.*\s*\}/,                 // catch com apenas comentário
-        /catch\s*\([^)]*\)\s*\{\s*(continue|break)\s*;?\s*\}/,  // catch com continue/break
-        /\.catch\s*\(\s*\(\)\s*=>\s*\{\s*\}\s*\)/,              // .catch(() => {})
-        /\.catch\s*\(\s*\(\)\s*=>\s*null\s*\)/,                 // .catch(() => null)
-        /\.catch\s*\(\s*\(\)\s*=>\s*undefined\s*\)/,            // .catch(() => undefined)
-        /except\s*:\s*\n\s*(pass|continue)/,                    // Python: except: pass
+        /catch\s*\([^)]*\)\s*\{\s*\}/,
+        /catch\s*\([^)]*\)\s*\{\s*\/\/.*\s*\}/,
+        /catch\s*\([^)]*\)\s*\{\s*(continue|break)\s*;?\s*\}/,
+        /\.catch\s*\(\s*\(\)\s*=>\s*\{\s*\}\s*\)/,
+        /\.catch\s*\(\s*\(\)\s*=>\s*null\s*\)/,
+        /\.catch\s*\(\s*\(\)\s*=>\s*undefined\s*\)/,
+        /except\s*:\s*\n\s*(pass|continue)/,
     ];
 
     private readonly SAFE_PATTERNS = [
@@ -52,45 +32,40 @@ export class SilentErrorDetector {
         /process\.exit/,
     ];
 
-    /**
-     * 🔍 Detecta erros silenciados no conteúdo de um arquivo.
-     */
     detect(content: string, filePath: string): SilentErrorIssue[] {
         if (filePath.includes("silent_error_detector.ts")) return [];
         const issues: SilentErrorIssue[] = [];
         const lines = content.split("\n");
 
         for (let i = 0; i < lines.length; i++) {
-            const line = lines[i];
-            const surroundingBlock = lines.slice(Math.max(0, i - 2), Math.min(lines.length, i + 5)).join("\n");
-
-            for (const pattern of this.SILENT_PATTERNS) {
-                if (pattern.test(surroundingBlock) && !this._isSafeContext(surroundingBlock)) {
-                    // Evita duplicatas: verifica se já reportamos para esta região
-                    const alreadyReported = issues.some(iss => Math.abs(iss.line - (i + 1)) < 3);
-                    if (alreadyReported) continue;
-
-                    const issue = this._createIssue(i + 1, filePath, lines);
-                    issues.push(issue);
-                    logger.debug(`🔇 Silent error detected: ${filePath}:${i + 1}`);
-                    break;
-                }
-            }
+            this.processLine(i, lines, filePath, issues);
         }
 
         return issues;
     }
 
-    /**
-     * Verifica se o catch é "seguro" (logging, rethrow, etc).
-     */
+    private processLine(i: number, lines: string[], filePath: string, issues: SilentErrorIssue[]) {
+        const surroundingBlock = lines.slice(Math.max(0, i - 2), Math.min(lines.length, i + 5)).join("\n");
+
+        if (this.isSilentError(surroundingBlock) && !this.isAlreadyReported(i + 1, issues)) {
+            const issue = this._createIssue(i + 1, filePath, lines);
+            issues.push(issue);
+            logger.debug(`🔇 Silent error detected: ${filePath}:${i + 1}`);
+        }
+    }
+
+    private isSilentError(block: string): boolean {
+        return this.SILENT_PATTERNS.some(p => p.test(block)) && !this._isSafeContext(block);
+    }
+
+    private isAlreadyReported(line: number, issues: SilentErrorIssue[]): boolean {
+        return issues.some(iss => Math.abs(iss.line - line) < 3);
+    }
+
     private _isSafeContext(block: string): boolean {
         return this.SAFE_PATTERNS.some(p => p.test(block));
     }
 
-    /**
-     * Cria o finding estruturado.
-     */
     private _createIssue(line: number, filePath: string, lines: string[]): SilentErrorIssue {
         const start = Math.max(0, line - 3);
         const end = Math.min(lines.length, line + 3);

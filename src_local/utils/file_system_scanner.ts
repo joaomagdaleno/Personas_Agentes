@@ -27,11 +27,19 @@ export class FileSystemScanner {
 
     private async walkFiles(dir: string, files: string[]) {
         if (ForbiddenPolicy.isForbiddenDir(dir)) return;
+
         const entries = await readdir(dir, { withFileTypes: true });
         for (const entry of entries) {
-            const res = join(dir, entry.name);
-            if (entry.isDirectory()) await this.walkFiles(res, files);
-            else files.push(entry.name.toLowerCase());
+            await this.processEntry(dir, entry, files);
+        }
+    }
+
+    private async processEntry(dir: string, entry: any, files: string[]) {
+        const res = join(dir, entry.name);
+        if (entry.isDirectory()) {
+            await this.walkFiles(res, files);
+        } else {
+            files.push(entry.name.toLowerCase());
         }
     }
 
@@ -50,24 +58,42 @@ export class FileSystemScanner {
 
     private async * _walkAndYield(dir: string): AsyncGenerator<string> {
         if (ForbiddenPolicy.isForbiddenDir(dir)) return;
+
         const entries = await readdir(dir, { withFileTypes: true });
         for (const entry of entries) {
-            const res = join(dir, entry.name);
-            if (entry.isDirectory()) yield* this._walkAndYield(res);
-            else yield res;
+            yield* this._processYieldEntry(dir, entry);
+        }
+    }
+
+    private async * _processYieldEntry(dir: string, entry: any): AsyncGenerator<string> {
+        const res = join(dir, entry.name);
+        if (entry.isDirectory()) {
+            yield* this._walkAndYield(res);
+        } else {
+            yield res;
         }
     }
 
     async shouldSkip(path: Path): Promise<boolean> {
+        if (!(await path.isFile())) return true;
+
         const pathStr = path.toString().replace(/\\/g, "/").toLowerCase();
-        const checks = [
-            async () => !(await path.isFile()),
-            async () => ForbiddenPolicy.isForbiddenDir(dirname(pathStr)),
-            async () => pathStr.includes("/.agent/") && !pathStr.includes("fast-android-build"),
-            async () => !pathStr.includes("src_local") && this.analyst.shouldIgnore(path),
-            async () => !this.analyst.isAnalyable(path)
-        ];
-        for (const check of checks) if (await check()) return true;
-        return false;
+        return this.isPathForbiddenOrIgnored(path, pathStr);
+    }
+
+    private isPathForbiddenOrIgnored(path: Path, pathStr: string): boolean {
+        if (ForbiddenPolicy.isForbiddenDir(dirname(pathStr))) return true;
+        if (this.isAgentRelated(pathStr)) return true;
+        if (this.isIgnoredByAnalyst(path)) return true;
+        return !this.analyst.isAnalyable(path);
+    }
+
+    private isAgentRelated(pathStr: string): boolean {
+        return pathStr.includes("/.agent/") && !pathStr.includes("fast-android-build");
+    }
+
+    private isIgnoredByAnalyst(path: Path): boolean {
+        const pathStr = path.toString().replace(/\\/g, "/").toLowerCase();
+        return !pathStr.includes("src_local") && this.analyst.shouldIgnore(path);
     }
 }

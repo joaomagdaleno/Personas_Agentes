@@ -33,18 +33,18 @@ export interface MetricsResult {
 }
 
 export class MetricsEngine {
-    analyzeFile(content: string, filePath: string, dependencies: string[] = [], bugCount: number = 0): MetricsResult {
+    analyzeFile(content: string, filePath: string, dependencies: string[] = [], bugCount: number = 0, goMetrics?: { totalComplexity?: number, cognitiveComplexity?: number, maxNesting?: number, loc?: number, sloc?: number, comments?: number }): MetricsResult {
         const start = Date.now();
         const isShadow = filePath.includes("_shadow");
         const analysisContent = isShadow ? this.extractSelfCode(content) : content;
 
-        const cc = CyclomaticAnalyst.calculate(analysisContent);
-        const cog = CognitiveAnalyst.calculate(analysisContent);
+        const cc = goMetrics?.totalComplexity ?? CyclomaticAnalyst.calculate(analysisContent);
+        const cog = goMetrics?.cognitiveComplexity ?? CognitiveAnalyst.calculate(analysisContent);
         const halstead = HalsteadAnalyst.calculate(analysisContent);
-        const loc = SizeAnalyst.countLOC(content);
-        const sloc = SizeAnalyst.countExecutableLOC(analysisContent);
-        const comments = SizeAnalyst.countCommentLOC(content);
-        const nesting = SizeAnalyst.calculateNestingDepth(analysisContent);
+        const loc = goMetrics?.loc ?? SizeAnalyst.countLOC(content);
+        const sloc = goMetrics?.sloc ?? SizeAnalyst.countExecutableLOC(analysisContent);
+        const comments = goMetrics?.comments ?? SizeAnalyst.countCommentLOC(content);
+        const nesting = goMetrics?.maxNesting ?? SizeAnalyst.calculateNestingDepth(analysisContent);
         const cbo = RelationshipAnalyst.calculateCBO(dependencies);
         const ca = RelationshipAnalyst.calculateCa(dependencies, filePath);
         const dit = RelationshipAnalyst.calculateDIT(content);

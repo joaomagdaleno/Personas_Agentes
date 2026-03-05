@@ -19,16 +19,19 @@ export class FindingDeduplicator {
     deduplicate(allRawFindings: any[]): any[] {
         const coordinateMap = new Map<string, any>();
 
-        for (const f of allRawFindings) {
-            if (typeof f !== 'object' || f === null) {
-                this.handleRawText(f, coordinateMap);
-                continue;
-            }
-
-            this.handleFindingDict(f, coordinateMap);
-        }
+        allRawFindings.forEach(f => {
+            this.processFinding(f, coordinateMap);
+        });
 
         return Array.from(coordinateMap.values());
+    }
+
+    private processFinding(f: any, coordinateMap: Map<string, any>) {
+        if (typeof f !== 'object' || f === null) {
+            this.handleRawText(f, coordinateMap);
+        } else {
+            this.handleFindingDict(f, coordinateMap);
+        }
     }
 
     private handleRawText(f: any, coordinateMap: Map<string, any>) {
@@ -70,13 +73,18 @@ export class FindingDeduplicator {
 
     private resolveSeverityConflict(coord: string, newFinding: any, coordinateMap: Map<string, any>) {
         const existing = coordinateMap.get(coord);
-        if (typeof existing !== 'object') return;
+        if (typeof existing !== 'object' || existing === null) return;
 
-        const newSev = (newFinding.severity || 'MEDIUM').toUpperCase();
-        const existingSev = (existing.severity || 'MEDIUM').toUpperCase();
+        const newWeight = this.getSeverityWeight(newFinding.severity);
+        const existingWeight = this.getSeverityWeight(existing.severity);
 
-        if ((this.severityRank[newSev] || 3) > (this.severityRank[existingSev] || 3)) {
+        if (newWeight > existingWeight) {
             coordinateMap.set(coord, newFinding);
         }
+    }
+
+    private getSeverityWeight(severity: string): number {
+        const upper = (severity || 'MEDIUM').toUpperCase();
+        return this.severityRank[upper] || 3;
     }
 }

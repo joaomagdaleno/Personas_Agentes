@@ -17,7 +17,7 @@ export class MantraPersona extends BaseActivePersona {
     }
 
     async performAudit(): Promise<any[]> {
-        const start = Date.now();
+        this.startMetrics();
         logger.info(`[${this.name}] Analisando Pureza de Tipos Bun...`);
 
         const auditRules = [
@@ -28,32 +28,23 @@ export class MantraPersona extends BaseActivePersona {
             { regex: 'Bun\\.file\\([^)]+\\)\\.json\\(\\)(?!\\s*as\\b)', issue: 'Risco: Bun.file().json() sem tipagem — resultado é "any".', severity: 'high' },
         ];
 
-        const results: any[] = [];
-        for (const rule of auditRules) {
-            const regex = new RegExp(rule.regex, 'g');
-            for (const [filePath, content] of Object.entries(this.contextData)) {
-                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx')) {
-                    for (const match of (content as string).matchAll(regex)) {
-                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0], persona: this.name });
-                    }
-                }
-            }
-        }
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
+        const results = this.findPatterns(['.ts', '.tsx'], auditRules as any);
+        this.endMetrics(results.length);
         return results;
     }
 
     async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
-        const anyCount = (content.match(/:\s*any\b|as\s+any\b/g) || []).length;
-        if (anyCount > 3) {
-            return {
-                file, severity: "HIGH", persona: this.name,
-                issue: `Erosão de Tipos: O objetivo '${objective}' exige segurança Bun-nativa. O arquivo '${file}' contém ${anyCount} usos de 'any'.`
-            };
-        }
-        return null;
+        const anyCount = this.countAnyUsages(content);
+        if (anyCount <= 3) return null;
+
+        return {
+            file, severity: "HIGH", persona: this.name,
+            issue: `Erosão de Tipos: O objetivo '${objective}' exige segurança Bun-nativa. O arquivo '${file}' contém ${anyCount} usos de 'any'.`
+        };
+    }
+
+    private countAnyUsages(content: string): number {
+        return (content.match(/:\s*any\b|as\s+any\b/g) || []).length;
     }
 
     getSystemPrompt(): string {

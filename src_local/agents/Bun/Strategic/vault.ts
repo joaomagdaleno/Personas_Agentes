@@ -17,7 +17,7 @@ export class VaultPersona extends BaseActivePersona {
     }
 
     async performAudit(): Promise<any[]> {
-        const start = Date.now();
+        this.startMetrics();
         logger.info(`[${this.name}] Analisando Precisão Financeira Bun...`);
 
         const auditRules = [
@@ -26,31 +26,18 @@ export class VaultPersona extends BaseActivePersona {
             { regex: 'Math\\.round\\(.*(?:price|amount|total)', issue: 'Gambiarra: Math.round para dinheiro no Bun.', severity: 'medium' },
         ];
 
-        const results: any[] = [];
-        for (const rule of auditRules) {
-            const regex = new RegExp(rule.regex, 'gi');
-            for (const [filePath, content] of Object.entries(this.contextData)) {
-                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx')) {
-                    for (const match of (content as string).matchAll(regex)) {
-                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0], persona: this.name });
-                    }
-                }
-            }
-        }
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
+        const results = this.findPatterns(['.ts', '.tsx'], auditRules as any);
+        this.endMetrics(results.length);
         return results;
     }
 
     async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
-        if (/(?:price|amount|total)\s*:\s*number/i.test(content)) {
-            return {
-                file, severity: "HIGH", persona: this.name,
-                issue: `Erro de Precisão: O objetivo '${objective}' exige exatidão financeira. Em '${file}', floats monetários invalidam cálculos Bun.`
-            };
-        }
-        return null;
+        if (!/(?:price|amount|total)\s*:\s*number/i.test(content)) return null;
+
+        return {
+            file, severity: "HIGH", persona: this.name,
+            issue: `Erro de Precisão: O objetivo '${objective}' exige exatidão financeira. Em '${file}', floats monetários invalidam cálculos Bun.`
+        };
     }
 
     getSystemPrompt(): string {

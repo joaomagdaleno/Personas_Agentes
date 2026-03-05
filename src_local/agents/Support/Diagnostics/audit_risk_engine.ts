@@ -1,8 +1,5 @@
 /**
  * SISTEMA DE PERSONAS AGENTES - SUPORTE TÉCNICO
- * Módulo: Motor de Risco de Auditoria (AuditRiskEngine)
- * Função: Mapear níveis de risco e formatar entradas de vulnerabilidade.
- * Soberania: RISK-ASSESSOR.
  */
 import winston from "winston";
 
@@ -11,22 +8,11 @@ const logger = winston.child({ module: "AuditRiskEngine" });
 export type RiskType = "eval" | "shell" | "global" | "debug" | "except" | "print" | "crypto" | "network";
 
 export interface RiskEntry {
-    file: string;
-    line: number;
-    issue: string;
-    severity: string;
-    context: string;
-    snippet: string;
-    riskType: RiskType;
+    file: string; line: number; issue: string; severity: string; context: string; snippet: string; riskType: RiskType;
 }
 
 /**
  * 🎯 AuditRiskEngine — Motor de classificação e mapeamento de risco.
- *
- * Responsável por:
- * 1. Classificar o tipo de risco baseado em padrões regex
- * 2. Criar entradas estruturadas de vulnerabilidade para o relatório
- * 3. Calcular severidade baseada no contexto
  */
 export class AuditRiskEngine {
     private readonly RISK_MAP: Array<{ pattern: RegExp; type: RiskType; baseSeverity: string }> = [
@@ -48,13 +34,16 @@ export class AuditRiskEngine {
      */
     mapRiskType(regex: string): RiskType {
         const reg = regex.toLowerCase();
-        if (reg.includes("eval")) return "eval";
-        if (reg.includes("shell")) return "shell";
-        if (reg.includes("global")) return "global";
-        if (reg.includes("debug")) return "debug";
-        if (reg.includes("except") || reg.includes("catch")) return "except";
-        if (reg.includes("crypto")) return "crypto";
-        if (reg.includes("fetch") || reg.includes("http")) return "network";
+
+        const typeMap: Record<string, RiskType> = {
+            "eval": "eval", "shell": "shell", "global": "global", "debug": "debug",
+            "except": "except", "catch": "except", "crypto": "crypto",
+            "fetch": "network", "http": "network"
+        };
+
+        for (const [key, type] of Object.entries(typeMap)) {
+            if (reg.includes(key)) return type;
+        }
         return "print";
     }
 
@@ -65,16 +54,11 @@ export class AuditRiskEngine {
         const start = Math.max(0, lineIndex - 2);
         const end = Math.min(lines.length, lineIndex + 3);
         const riskType = this.mapRiskType(issue);
-        const severity = severityOverride || this._inferSeverity(riskType);
+        const severity = (severityOverride || this._inferSeverity(riskType)).toUpperCase();
 
         return {
-            file,
-            line: lineIndex + 1,
-            issue,
-            severity: severity.toUpperCase(),
-            context: "AuditRiskEngine",
-            snippet: lines.slice(start, end).join("\n"),
-            riskType,
+            file, line: lineIndex + 1, issue, severity,
+            context: "AuditRiskEngine", snippet: lines.slice(start, end).join("\n"), riskType,
         };
     }
 
@@ -86,23 +70,31 @@ export class AuditRiskEngine {
         const entries: RiskEntry[] = [];
 
         for (let i = 0; i < lines.length; i++) {
-            for (const rule of this.RISK_MAP) {
-                if (rule.pattern.test(lines[i]!)) {
-                    entries.push({
-                        file: filePath,
-                        line: i + 1,
-                        issue: `Padrão de risco detectado: ${rule.type}`,
-                        severity: rule.baseSeverity,
-                        context: "AuditRiskEngine",
-                        snippet: lines.slice(Math.max(0, i - 1), Math.min(lines.length, i + 2)).join("\n"),
-                        riskType: rule.type,
-                    });
-                }
-            }
+            this.scanLine(lines, i, filePath, entries);
         }
 
         logger.debug(`🎯 ${filePath}: ${entries.length} riscos detectados`);
         return entries;
+    }
+
+    private scanLine(lines: string[], i: number, filePath: string, entries: RiskEntry[]) {
+        for (const rule of this.RISK_MAP) {
+            if (rule.pattern.test(lines[i]!)) {
+                entries.push(this.createRuleEntry(filePath, i, rule, lines));
+            }
+        }
+    }
+
+    private createRuleEntry(file: string, i: number, rule: any, lines: string[]): RiskEntry {
+        return {
+            file,
+            line: i + 1,
+            issue: `Padrão de risco detectado: ${rule.type}`,
+            severity: rule.baseSeverity,
+            context: "AuditRiskEngine",
+            snippet: lines.slice(Math.max(0, i - 1), Math.min(lines.length, i + 2)).join("\n"),
+            riskType: rule.type,
+        };
     }
 
     private _inferSeverity(riskType: RiskType): string {

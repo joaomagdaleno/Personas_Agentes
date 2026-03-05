@@ -20,28 +20,50 @@ export class StreamPersona extends BaseActivePersona {
         const start = Date.now();
         logger.info(`[${this.name}] Analisando Reatividade Bun...`);
 
-        const auditRules = [
-            { regex: 'addEventListener\\([^)]*\\)(?![\\s\\S]{0,200}removeEventListener)', issue: 'Leak: addEventListener sem removeEventListener no Bun.', severity: 'high' },
-            { regex: '\\.on\\([^)]*\\)(?![\\s\\S]{0,200}\\.off\\()', issue: 'Leak: .on() sem .off() no Bun.', severity: 'high' },
-            { regex: 'setInterval\\([^)]*\\)(?![\\s\\S]{0,200}clearInterval)', issue: 'Timer Leak: setInterval sem clearInterval no Bun.', severity: 'high' },
-            { regex: 'Bun\\.serve\\([^)]*\\)(?![\\s\\S]{0,200}\\.stop\\()', issue: 'Servidor Immortal: Bun.serve sem .stop() — sem graceful shutdown.', severity: 'medium' },
-        ];
-
+        const auditRules = this.getStreamRules();
         const results: any[] = [];
+
         for (const rule of auditRules) {
-            const regex = new RegExp(rule.regex, 'gs');
-            for (const [filePath, content] of Object.entries(this.contextData)) {
-                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx')) {
-                    for (const match of (content as string).matchAll(regex)) {
-                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0].substring(0, 80), persona: this.name });
-                    }
-                }
-            }
+            this.auditWithRule(rule, results);
         }
 
         const duration = (Date.now() - start) / 1000;
         logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
         return results;
+    }
+
+    private getStreamRules() {
+        return [
+            { regex: 'addEventListener\\([^)]*\\)(?![\\s\\S]{0,200}removeEventListener)', issue: 'Leak: addEventListener sem removeEventListener no Bun.', severity: 'high' },
+            { regex: '\\.on\\([^)]*\\)(?![\\s\\S]{0,200}\\.off\\()', issue: 'Leak: .on() sem .off() no Bun.', severity: 'high' },
+            { regex: 'setInterval\\([^)]*\\)(?![\\s\\S]{0,200}clearInterval)', issue: 'Timer Leak: setInterval sem clearInterval no Bun.', severity: 'high' },
+            { regex: 'Bun\\.serve\\([^)]*\\)(?![\\s\\S]{0,200}\\.stop\\()', issue: 'Servidor Immortal: Bun.serve sem .stop() — sem graceful shutdown.', severity: 'medium' },
+        ];
+    }
+
+    private auditWithRule(rule: any, results: any[]) {
+        const regex = new RegExp(rule.regex, 'gs');
+        for (const [filePath, content] of Object.entries(this.contextData)) {
+            if (this.shouldAuditFile(filePath)) {
+                this.scanContent(filePath, content as string, regex, rule, results);
+            }
+        }
+    }
+
+    private shouldAuditFile(filePath: string): boolean {
+        return filePath.endsWith('.ts') || filePath.endsWith('.tsx');
+    }
+
+    private scanContent(filePath: string, content: string, regex: RegExp, rule: any, results: any[]) {
+        for (const match of content.matchAll(regex)) {
+            results.push({
+                file: filePath,
+                issue: rule.issue,
+                severity: rule.severity,
+                evidence: match[0].substring(0, 80),
+                persona: this.name
+            });
+        }
     }
 
     async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {

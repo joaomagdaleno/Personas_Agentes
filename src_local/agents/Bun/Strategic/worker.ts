@@ -17,7 +17,7 @@ export class WorkerPersona extends BaseActivePersona {
     }
 
     async performAudit(): Promise<any[]> {
-        const start = Date.now();
+        this.startMetrics();
         logger.info(`[${this.name}] Analisando Paralelismo Bun...`);
 
         const auditRules = [
@@ -27,31 +27,18 @@ export class WorkerPersona extends BaseActivePersona {
             { regex: 'postMessage\\([^)]*\\)(?![\\s\\S]{0,50}transferable|transfer)', issue: 'Performance: postMessage sem transferable objects — dados clonados.', severity: 'low' },
         ];
 
-        const results: any[] = [];
-        for (const rule of auditRules) {
-            const regex = new RegExp(rule.regex, 'gs');
-            for (const [filePath, content] of Object.entries(this.contextData)) {
-                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx')) {
-                    for (const match of (content as string).matchAll(regex)) {
-                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0].substring(0, 60), persona: this.name });
-                    }
-                }
-            }
-        }
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
+        const results = this.findPatterns(['.ts', '.tsx'], auditRules as any);
+        this.endMetrics(results.length);
         return results;
     }
 
     async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
-        if (/SharedArrayBuffer|Atomics\./.test(content)) {
-            return {
-                file, severity: "MEDIUM", persona: this.name,
-                issue: `Concorrência: O objetivo '${objective}' exige estabilidade. Em '${file}', shared memory e atomics introduzem risco de race conditions/deadlocks.`
-            };
-        }
-        return null;
+        if (!/SharedArrayBuffer|Atomics\./.test(content)) return null;
+
+        return {
+            file, severity: "MEDIUM", persona: this.name,
+            issue: `Concorrência: O objetivo '${objective}' exige estabilidade. Em '${file}', shared memory e atomics introduzem risco de race conditions/deadlocks.`
+        };
     }
 
     getSystemPrompt(): string {

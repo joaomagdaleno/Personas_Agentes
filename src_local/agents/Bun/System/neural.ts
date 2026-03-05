@@ -20,29 +20,52 @@ export class NeuralPersona extends BaseActivePersona {
         const start = Date.now();
         logger.info(`[${this.name}] Analisando Segurança AI Bun...`);
 
-        const auditRules = [
-            { regex: 'sk-[a-zA-Z0-9]{20,}', issue: 'Crítico: Chave OpenAI exposta no Bun.', severity: 'critical' },
-            { regex: 'OPENAI_API_KEY\\s*[:=]\\s*["\']', issue: 'Vazamento: OPENAI_API_KEY hardcoded no Bun.', severity: 'critical' },
-            { regex: 'model\\s*[:=]\\s*["\']gpt-4', issue: 'Custo: GPT-4 sem limite de tokens no Bun.', severity: 'medium' },
-            { regex: 'max_tokens\\s*[:=]\\s*(?:undefined|null)', issue: 'Sem Limite: LLM sem max_tokens no Bun.', severity: 'high' },
-        ];
-
+        const auditRules = this.getNeuralRules();
         const results: any[] = [];
+
         for (const rule of auditRules) {
-            const regex = new RegExp(rule.regex, 'g');
-            for (const [filePath, content] of Object.entries(this.contextData)) {
-                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx')) {
-                    if (filePath.includes('persona_manifest')) continue;
-                    for (const match of (content as string).matchAll(regex)) {
-                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0].substring(0, 30), persona: this.name });
-                    }
-                }
-            }
+            this.auditWithRule(rule, results);
         }
 
         const duration = (Date.now() - start) / 1000;
         logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
         return results;
+    }
+
+    private getNeuralRules() {
+        return [
+            { regex: 'sk-[a-zA-Z0-9]{20,}', issue: 'Crítico: Chave OpenAI exposta no Bun.', severity: 'critical' },
+            { regex: 'OPENAI_API_KEY\\s*[:=]\\s*["\']', issue: 'Vazamento: OPENAI_API_KEY hardcoded no Bun.', severity: 'critical' },
+            { regex: 'model\\s*[:=]\\s*["\']gpt-4', issue: 'Custo: GPT-4 sem limite de tokens no Bun.', severity: 'medium' },
+            { regex: 'max_tokens\\s*[:=]\\s*(?:undefined|null)', issue: 'Sem Limite: LLM sem max_tokens no Bun.', severity: 'high' },
+        ];
+    }
+
+    private auditWithRule(rule: any, results: any[]) {
+        const regex = new RegExp(rule.regex, 'g');
+        for (const [filePath, content] of Object.entries(this.contextData)) {
+            if (this.shouldAuditFile(filePath)) {
+                this.scanContent(filePath, content as string, regex, rule, results);
+            }
+        }
+    }
+
+    private shouldAuditFile(filePath: string): boolean {
+        const validExt = filePath.endsWith('.ts') || filePath.endsWith('.tsx');
+        const isManifest = filePath.includes('persona_manifest');
+        return validExt && !isManifest;
+    }
+
+    private scanContent(filePath: string, content: string, regex: RegExp, rule: any, results: any[]) {
+        for (const match of content.matchAll(regex)) {
+            results.push({
+                file: filePath,
+                issue: rule.issue,
+                severity: rule.severity,
+                evidence: match[0].substring(0, 30),
+                persona: this.name
+            });
+        }
     }
 
     async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {

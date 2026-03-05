@@ -5,7 +5,6 @@ const logger = winston.child({ module: "Bun_Scribe" });
 
 /**
  * 📝 Dr. Scribe — PhD in Bun Documentation & API Clarity
- * Especialista em JSDoc, documentação de APIs Bun e clareza.
  */
 export class ScribePersona extends BaseActivePersona {
     constructor(projectRoot: string | null = null) {
@@ -22,24 +21,33 @@ export class ScribePersona extends BaseActivePersona {
 
         const results: any[] = [];
         for (const [filePath, content] of Object.entries(this.contextData)) {
-            if (!filePath.endsWith('.ts') && !filePath.endsWith('.tsx')) continue;
-            if (filePath.endsWith('.test.ts') || filePath.endsWith('.spec.ts')) continue;
-
-            const exportMatches = (content as string).match(/export\s+(?:async\s+)?(?:function|class|const|interface|type|enum)\s+\w+/g);
-            const jsdocCount = ((content as string).match(/\/\*\*[\s\S]*?\*\//g) || []).length;
-
-            if (exportMatches && exportMatches.length > 0 && jsdocCount === 0) {
-                results.push({
-                    file: filePath,
-                    issue: `Amnésia: ${exportMatches.length} exportações Bun sem nenhum JSDoc.`,
-                    severity: 'high', persona: this.name
-                });
-            }
+            this.auditFile(filePath, content as string, results);
         }
 
         const duration = (Date.now() - start) / 1000;
         logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
         return results;
+    }
+
+    private auditFile(filePath: string, content: string, results: any[]) {
+        if (!this.isAuditable(filePath)) return;
+
+        const exportMatches = content.match(/export\s+(?:async\s+)?(?:function|class|const|interface|type|enum)\s+\w+/g);
+        const jsdocCount = (content.match(/\/\*\*[\s\S]*?\*\//g) || []).length;
+
+        if (exportMatches && exportMatches.length > 0 && jsdocCount === 0) {
+            results.push({
+                file: filePath,
+                issue: `Amnésia: ${exportMatches.length} exportações Bun sem nenhum JSDoc.`,
+                severity: 'high', persona: this.name
+            });
+        }
+    }
+
+    private isAuditable(filePath: string): boolean {
+        const isTS = filePath.endsWith('.ts') || filePath.endsWith('.tsx');
+        const isTest = filePath.endsWith('.test.ts') || filePath.endsWith('.spec.ts');
+        return isTS && !isTest;
     }
 
     async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {

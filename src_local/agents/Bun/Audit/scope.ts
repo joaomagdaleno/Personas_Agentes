@@ -20,29 +20,51 @@ export class ScopePersona extends BaseActivePersona {
         const start = Date.now();
         logger.info(`[${this.name}] Analisando Gestão de Escopo Bun...`);
 
-        const auditRules = [
+        const auditRules = this.getScopeRules();
+        const results: any[] = [];
+
+        for (const rule of auditRules) {
+            this.auditWithRule(rule, results);
+        }
+
+        const duration = (Date.now() - start) / 1000;
+        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
+        return results;
+    }
+
+    private getScopeRules() {
+        return [
             { regex: '\\/\\/\\s*TODO[:\\s]', issue: 'Dívida: TODO pendente no código Bun.', severity: 'medium' },
             { regex: '\\/\\/\\s*FIXME[:\\s]', issue: 'Dívida Crítica: FIXME no código Bun.', severity: 'high' },
             { regex: '\\/\\/\\s*HACK[:\\s]', issue: 'Gambiarra: HACK no código Bun.', severity: 'high' },
             { regex: 'bun add.*--dev.*(?:express|koa|fastify)', issue: 'Conflito: Framework HTTP Node.js em projeto Bun — use Bun.serve().', severity: 'high' },
             { regex: '"node-fetch"|\'node-fetch\'', issue: 'Redundante: node-fetch em Bun — fetch() é nativo.', severity: 'medium' },
         ];
+    }
 
-        const results: any[] = [];
-        for (const rule of auditRules) {
-            const regex = new RegExp(rule.regex, 'gi');
-            for (const [filePath, content] of Object.entries(this.contextData)) {
-                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx') || filePath.endsWith('.toml') || filePath.endsWith('.json')) {
-                    for (const match of (content as string).matchAll(regex)) {
-                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0], persona: this.name });
-                    }
-                }
+    private auditWithRule(rule: any, results: any[]) {
+        const regex = new RegExp(rule.regex, 'gi');
+        for (const [filePath, content] of Object.entries(this.contextData)) {
+            if (this.shouldAuditFile(filePath)) {
+                this.scanContent(filePath, content as string, regex, rule, results);
             }
         }
+    }
 
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
-        return results;
+    private shouldAuditFile(filePath: string): boolean {
+        return filePath.endsWith('.ts') || filePath.endsWith('.tsx') || filePath.endsWith('.toml') || filePath.endsWith('.json');
+    }
+
+    private scanContent(filePath: string, content: string, regex: RegExp, rule: any, results: any[]) {
+        for (const match of content.matchAll(regex)) {
+            results.push({
+                file: filePath,
+                issue: rule.issue,
+                severity: rule.severity,
+                evidence: match[0],
+                persona: this.name
+            });
+        }
     }
 
     async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {

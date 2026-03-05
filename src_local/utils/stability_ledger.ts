@@ -6,7 +6,6 @@ const logger = winston.child({ module: "StabilityLedger" });
 
 /**
  * 🏥 Livro de Estabilidade PhD (Bun Version).
- * A memória de longo prazo do Orquestrador.
  */
 export class StabilityLedger {
     projectRoot: Path;
@@ -22,13 +21,11 @@ export class StabilityLedger {
     }
 
     async sync() {
-        /** 🔄 Sincronização explícita com o disco. */
-        logger.info("💾 [Ledger] Sincronizando livro de estabilidade com armazenamento...");
+        logger.info("💾 [Ledger] Sincronizando livro de estabilidade...");
         this.persistence.saveLedger(this.ledger);
     }
 
     update(auditResults: any[], contextMap: Record<string, any> = {}): Record<string, any> {
-        /** 📈 Sincroniza os achados da auditoria com a memória persistente. */
         try {
             this.performMaintenance();
             const currentErrorFiles = this.processAuditResults(auditResults, contextMap);
@@ -51,17 +48,17 @@ export class StabilityLedger {
 
     private processAuditResults(results: any[], contextMap: any): Set<string> {
         const currentErrorFiles = new Set<string>();
-        for (const issue of results) {
+        results.forEach(issue => {
             const file = this.extractFileName(issue);
             currentErrorFiles.add(file);
             this.updateFileStatus(file, contextMap);
-        }
+        });
         return currentErrorFiles;
     }
 
     private extractFileName(issue: any): string {
-        if (typeof issue === 'object' && issue !== null) {
-            return String(issue.file || 'N/A').replace(/\\/g, "/");
+        if (typeof issue === 'object' && issue !== null && issue.file) {
+            return String(issue.file).replace(/\\/g, "/");
         }
         return "Strategic/DNA";
     }
@@ -87,11 +84,15 @@ export class StabilityLedger {
     private detectHealedFiles(currentErrors: Set<string>) {
         Object.keys(this.ledger).forEach(file => {
             if (this.isHealable(file, currentErrors)) {
-                logger.info(`✨ [Memória] Cura confirmada: ${file}`);
-                this.ledger[file].status = "HEALED";
-                this.ledger[file].occurrences = 0;
+                this.markAsHealed(file);
             }
         });
+    }
+
+    private markAsHealed(file: string) {
+        logger.info(`✨ [Memória] Cura confirmada: ${file}`);
+        this.ledger[file].status = "HEALED";
+        this.ledger[file].occurrences = 0;
     }
 
     private isHealable(file: string, currentErrors: Set<string>): boolean {
@@ -101,16 +102,15 @@ export class StabilityLedger {
     }
 
     clear() {
-        /** 🧹 Limpa a memória de instabilidade (Mantém REFERÊNCIAS). */
-        const newLedger: Record<string, any> = {};
-        for (const [k, v] of Object.entries(this.ledger)) {
-            if (v.status === "REFERENCE") {
-                newLedger[k] = v;
-            }
-        }
-        this.ledger = newLedger;
+        this.ledger = this.filterLedgerByStatus("REFERENCE");
         this.persistence.saveLedger(this.ledger);
         logger.info("🧹 [StabilityLedger] Memória de instabilidade resetada.");
+    }
+
+    private filterLedgerByStatus(status: string): Record<string, any> {
+        return Object.fromEntries(
+            Object.entries(this.ledger).filter(([_, v]) => v.status === status)
+        );
     }
 
     getFileData(filePath: string): any {

@@ -2,36 +2,35 @@ import * as ts from "typescript";
 
 /**
  * 🌀 CyclomaticAnalyst — Specialized in Cyclomatic Complexity.
- * CC = 1 + número de decisões (if, while, for, case, catch, &&, ||, ternary)
  */
 export class CyclomaticAnalyst {
+    private static readonly BRANCH_KINDS = new Set([
+        ts.SyntaxKind.IfStatement,
+        ts.SyntaxKind.WhileStatement,
+        ts.SyntaxKind.DoStatement,
+        ts.SyntaxKind.ForStatement,
+        ts.SyntaxKind.ForInStatement,
+        ts.SyntaxKind.ForOfStatement,
+        ts.SyntaxKind.ConditionalExpression,
+        ts.SyntaxKind.CaseClause,
+        ts.SyntaxKind.CatchClause
+    ]);
+
+    private static readonly LOGICAL_TOKENS = new Set([
+        ts.SyntaxKind.AmpersandAmpersandToken,
+        ts.SyntaxKind.BarBarToken,
+        ts.SyntaxKind.QuestionQuestionToken
+    ]);
+
     static calculate(content: string): number {
         const sourceFile = ts.createSourceFile("temp.ts", content, ts.ScriptTarget.Latest, true);
         let count = 1;
 
         const visitor = (node: ts.Node) => {
-            switch (node.kind) {
-                case ts.SyntaxKind.IfStatement:
-                case ts.SyntaxKind.WhileStatement:
-                case ts.SyntaxKind.DoStatement:
-                case ts.SyntaxKind.ForStatement:
-                case ts.SyntaxKind.ForInStatement:
-                case ts.SyntaxKind.ForOfStatement:
-                case ts.SyntaxKind.ConditionalExpression:
-                case ts.SyntaxKind.CaseClause:
-                case ts.SyntaxKind.CatchClause:
-                    count++;
-                    break;
-                case ts.SyntaxKind.BinaryExpression:
-                    const binExp = node as ts.BinaryExpression;
-                    if (
-                        binExp.operatorToken.kind === ts.SyntaxKind.AmpersandAmpersandToken ||
-                        binExp.operatorToken.kind === ts.SyntaxKind.BarBarToken ||
-                        binExp.operatorToken.kind === ts.SyntaxKind.QuestionQuestionToken
-                    ) {
-                        count++;
-                    }
-                    break;
+            if (this.BRANCH_KINDS.has(node.kind)) {
+                count++;
+            } else if (ts.isBinaryExpression(node) && this.LOGICAL_TOKENS.has(node.operatorToken.kind)) {
+                count++;
             }
             ts.forEachChild(node, visitor);
         };

@@ -79,30 +79,43 @@ IMPORTANTE: Responda APENAS com o bloco de código TYPECRIPT. Sem explicações 
     async generateMissingTests(projectRoot: string): Promise<string[]> {
         const topology = TopologyEngine.scanProject(projectRoot);
         const generated: string[] = [];
+        const darkMatter = this.filterDarkMatter(topology);
 
-        const darkMatter = topology.sovereign.filter(f =>
+        for (const file of darkMatter) {
+            const testPath = this.getTestPath(projectRoot, file);
+            if (!fs.existsSync(testPath)) {
+                const skeleton = await this.generateFileTest(projectRoot, file);
+                this.saveTestFile(testPath, skeleton);
+                generated.push(testPath);
+            }
+        }
+        return generated;
+    }
+
+    private filterDarkMatter(topology: any): any[] {
+        return topology.sovereign.filter((f: any) =>
             f.category !== "Script" &&
             f.category !== "Unknown" &&
             !f.name.endsWith(".test.ts") &&
             !f.name.endsWith(".spec.ts")
         );
+    }
 
-        for (const file of darkMatter) {
-            const testPath = path.join(projectRoot, "tests", `test_${path.basename(file.path, file.extension)}.test.ts`);
-            if (!fs.existsSync(testPath)) {
-                logger.info(`✨ [Architect] Gerando teste para: ${file.path}`);
-                const source = fs.readFileSync(path.join(projectRoot, file.path), "utf-8");
-                const skeleton = await this.draftTestForFile(file.path, source);
+    private getTestPath(projectRoot: string, file: any): string {
+        return path.join(projectRoot, "tests", `test_${path.basename(file.path, file.extension)}.test.ts`);
+    }
 
-                if (!fs.existsSync(path.dirname(testPath))) {
-                    fs.mkdirSync(path.dirname(testPath), { recursive: true });
-                }
+    private async generateFileTest(projectRoot: string, file: any): Promise<string> {
+        logger.info(`✨ [Architect] Gerando teste para: ${file.path}`);
+        const source = fs.readFileSync(path.join(projectRoot, file.path), "utf-8");
+        return await this.draftTestForFile(file.path, source);
+    }
 
-                fs.writeFileSync(testPath, skeleton, "utf-8");
-                generated.push(testPath);
-            }
+    private saveTestFile(testPath: string, content: string) {
+        const dir = path.dirname(testPath);
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
         }
-
-        return generated;
+        fs.writeFileSync(testPath, content, "utf-8");
     }
 }

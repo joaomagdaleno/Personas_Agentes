@@ -19,34 +19,39 @@ export class ObfuscationCleanerEngine {
      */
     public collectReplacements(sourceFile: ts.SourceFile): DeobfuscationResult[] {
         const results: DeobfuscationResult[] = [];
-
-        const visit = (node: ts.Node) => {
-            if (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.PlusToken) {
-                const resolved = this.resolveConstant(node);
-                if (resolved && this.isPotentiallyObfuscated(node)) {
-                    const { line } = sourceFile.getLineAndCharacterOfPosition(node.getStart());
-                    results.push({
-                        original: node.getText(sourceFile),
-                        cleaned: JSON.stringify(resolved),
-                        line: line + 1
-                    });
-                }
-            }
-            ts.forEachChild(node, visit);
-        };
-
-        visit(sourceFile);
+        this.visitTree(sourceFile, (node) => {
+            const res = this.getReplacementIfObfuscated(node, sourceFile);
+            if (res) results.push(res);
+        });
         return results;
+    }
+
+    private visitTree(node: ts.Node, callback: (n: ts.Node) => void) {
+        callback(node);
+        ts.forEachChild(node, c => this.visitTree(c, callback));
+    }
+
+    private getReplacementIfObfuscated(node: ts.Node, sourceFile: ts.SourceFile): DeobfuscationResult | null {
+        if (!ts.isBinaryExpression(node) || node.operatorToken.kind !== ts.SyntaxKind.PlusToken) return null;
+
+        const resolved = this.resolveConstant(node);
+        if (!resolved || !this.isPotentiallyObfuscated(node)) return null;
+
+        const { line } = sourceFile.getLineAndCharacterOfPosition(node.getStart());
+        return {
+            original: node.getText(sourceFile),
+            cleaned: JSON.stringify(resolved),
+            line: line + 1
+        };
     }
 
     private resolveConstant(node: ts.Node): string | null {
         if (ts.isStringLiteral(node)) return node.text;
-        if (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.PlusToken) {
-            const left = this.resolveConstant(node.left);
-            const right = this.resolveConstant(node.right);
-            if (left !== null && right !== null) return left + right;
-        }
-        return null;
+        if (!ts.isBinaryExpression(node) || node.operatorToken.kind !== ts.SyntaxKind.PlusToken) return null;
+
+        const left = this.resolveConstant(node.left);
+        const right = this.resolveConstant(node.right);
+        return (left !== null && right !== null) ? left + right : null;
     }
 
     private isPotentiallyObfuscated(node: ts.BinaryExpression): boolean {
