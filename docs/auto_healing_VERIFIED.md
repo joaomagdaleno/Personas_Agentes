@@ -1,8 +1,8 @@
 # 🏛️ RELATÓRIO SISTÊMICO: CONSOLIDAÇÃO DA REALIDADE
 
-> **Status Operacional:** 🟡 `ATENÇÃO` | **Integridade Geral:** `67%`
+> **Status Operacional:** 🟡 `ATENÇÃO` | **Integridade Geral:** `68%`
 > **Sanidade Neural:** `0.0000` | **Estado:** ✅ Sanidade Neural Nominal
-> **Ambiente:** `TS-MASTER-CONTROL` | **Último Check:** `12:15:35 PM`
+> **Ambiente:** `TS-MASTER-CONTROL` | **Último Check:** `10:45:54`
 >
 > 💎 `SITUAÇÃO: SOBERANIA TÉCNICA`
 
@@ -26,9 +26,9 @@
 
 | Métrica | Limite | Violações | Penalidade |
 | :--- | :--- | :---: | ---: |
-| Complexidade Ciclomática (CC > 20) | > 20 | 0/476 | 0 pts |
-| Complexidade Cognitiva (> 15) | > 15 | 237/476 | 2 pts |
-| Aninhamento Profundo (> 3) | > 3 | 161/476 | 1 pts |
+| Complexidade Ciclomática (CC > 20) | > 20 | 1/476 | 0 pts |
+| Complexidade Cognitiva (> 15) | > 15 | 86/476 | 0.7 pts |
+| Aninhamento Profundo (> 3) | > 3 | 225/476 | 1.4 pts |
 | Alto Acoplamento (CBO > 10) | > 10 | 4/476 | 0 pts |
 | Herança Profunda (DIT > 5) | > 5 | 0/476 | 0 pts |
 | Baixa Manutenibilidade (MI < 10) | < 10 | 0/476 | 0 pts |
@@ -37,7 +37,7 @@
 | Quality Gate RED | - | 0/476 | 0 pts |
 | Shadow Non-Compliant | - | 1/476 | 0 pts |
 
-> **Penalidade Total de Qualidade:** `3 pts` (cap: 30) | Base: NIST, SonarQube, Microsoft
+> **Penalidade Total de Qualidade:** `2.1 pts` (cap: 30) | Base: NIST, SonarQube, Microsoft
 
 ### ⚖️ DIRETRIZES DE GOVERNANÇA PHD
 
@@ -58,11 +58,11 @@
 
 | # | Componente | Complexidade | Risco | Ação Recomendada |
 | :---: | :--- | :---: | :---: | :--- |
-| 1 | `score_calculator.ts` | `18` | 🟠 MODERATE | Desmembrar / Refatorar |
-| 2 | `audit_expert_engine.ts` | `17` | 🟠 MODERATE | Desmembrar / Refatorar |
-| 3 | `debug_penalty_details.ts` | `16` | 🟠 MODERATE | Desmembrar / Refatorar |
-| 4 | `file_system_scanner.ts` | `16` | 🟠 MODERATE | Desmembrar / Refatorar |
-| 5 | `scribe.ts` | `16` | 🟠 MODERATE | Desmembrar / Refatorar |
+| 1 | `audit_expert_engine.ts` | `22` | 🟠 HIGH | Desmembrar / Refatorar |
+| 2 | `healer.ts` | `18` | 🟠 MODERATE | Desmembrar / Refatorar |
+| 3 | `score_calculator.ts` | `18` | 🟠 MODERATE | Desmembrar / Refatorar |
+| 4 | `obfuscation_cleaner_engine.ts` | `17` | 🟠 MODERATE | Desmembrar / Refatorar |
+| 5 | `cognitive_engine.ts` | `17` | 🟠 MODERATE | Desmembrar / Refatorar |
 
 ---
 
@@ -80,7 +80,7 @@
 | 🚧 **Shallow Parity** | `0` | 🟡 `ADAPTADO` | Componentes com lógica parcial |
 | 🧊 **Fragilidades** | `0` | 🟢 `ESTÁVEL` | Pontos de ruptura identificados |
 
-**Sincronia Nativa:** `91%` | **Personas Ativas:** `52` | **Audit Score:** `67%`
+**Sincronia Nativa:** `91%` | **Personas Ativas:** `52` | **Audit Score:** `68%`
 
 > 💎 **Sistema em estado de soberania técnica.** Requisitos de 100% atingidos.
 
@@ -90,95 +90,60 @@
 
 | Nível | Qtd | Impacto | Resposta |
 | :--- | :---: | :--- | :--- |
-| **CRITICAL** | `0` | 🔴 `BLOQUEANTE` | 🟢 `LIVRE` |
-| **HIGH** | `150` | 🟡 `RISCO ALTO` | 🟡 `INTERVENÇÃO` |
-| **MEDIUM** | `248` | 🔵 `DÉBITO TÉC.` | 🔵 `INTERVENÇÃO` |
+| **CRITICAL** | `1` | 🔴 `BLOQUEANTE` | 🔴 `INTERVENÇÃO` |
+| **HIGH** | `0` | 🟡 `RISCO ALTO` | 🟢 `LIVRE` |
+| **MEDIUM** | `311` | 🔵 `DÉBITO TÉC.` | 🔵 `INTERVENÇÃO` |
 | **LOW** | `0` | ⚪ `MENOR` | 🟢 `LIVRE` |
 | **STRATEGIC** | `0` | 🟣 `MELHORIA` | 🟢 `LIVRE` |
 
 ### 🏷️ Achados Detalhados (Limitado a 10 por nível)
 
-> #### 🔴 `CRÍTICO` [1] `score_calculator.ts`
+> #### 🔴 `CRÍTICO` [1] `go-scanner.exe`
 >
-> - Complexidade Cognitiva Elevada (59 > 15)
+> - 🚨 Falha no scan Go: Command failed: "C:\Users\joaovitormagdaleno\Documents\GitHub\Personas_Agentes\src_native\go-scanner.exe" -dir "." -root "." -legacy=false
 >
-> #### 🔴 `CRÍTICO` [2] `audit_expert_engine.ts`
+Esta versão de C:\Users\joaovitormagdaleno\Documents\GitHub\Personas_Agentes\src_native\go-scanner.exe não é compatível com a versão do Windows sendo executada. Verifique as informações de sistema do computador e contate o fornecedor do software.
+
 >
-> - Complexidade Cognitiva Elevada (54 > 15)
+> #### 🟡 `ATENÇÃO` [2] `audit_expert_engine.ts`
 >
-> #### 🔴 `CRÍTICO` [3] `debug_penalty_details.ts`
+> - Complexidade Cognitiva Elevada (22 > 15)
 >
-> - Complexidade Cognitiva Elevada (50 > 15)
+> #### 🟡 `ATENÇÃO` [3] `healer.ts`
 >
-> #### 🔴 `CRÍTICO` [4] `file_system_scanner.ts`
+> - Complexidade Cognitiva Elevada (22 > 15)
 >
-> - Complexidade Cognitiva Elevada (49 > 15)
+> #### 🟡 `ATENÇÃO` [4] `score_calculator.ts`
 >
-> #### 🔴 `CRÍTICO` [5] `scribe.ts`
+> - Complexidade Cognitiva Elevada (16 > 15)
 >
-> - Complexidade Cognitiva Elevada (52 > 15)
+> #### 🟡 `ATENÇÃO` [5] `obfuscation_cleaner_engine.ts`
 >
-> #### 🔴 `CRÍTICO` [6] `base.ts`
+> - Complexidade Cognitiva Elevada (19 > 15)
 >
-> - Complexidade Cognitiva Elevada (51 > 15)
->
-> #### 🔴 `CRÍTICO` [7] `healer.ts`
->
-> - Complexidade Cognitiva Elevada (50 > 15)
->
-> #### 🔴 `CRÍTICO` [8] `obfuscation_cleaner_engine.ts`
->
-> - Complexidade Cognitiva Elevada (51 > 15)
->
-> #### 🔴 `CRÍTICO` [9] `find_complex_funcs.ts`
->
-> - Complexidade Cognitiva Elevada (58 > 15)
->
-> #### 🔴 `CRÍTICO` [10] `finding_deduplicator.ts`
->
-> - Complexidade Cognitiva Elevada (48 > 15)
->
-> *... e mais 140 achados de nível HIGH omitidos para brevidade.*
->
-> #### 🟡 `ATENÇÃO` [11] `file_system_scanner.ts`
+> #### 🟡 `ATENÇÃO` [6] `obfuscation_cleaner_engine.ts`
 >
 > - Aninhamento Excessivo (4 > 3)
 >
-> #### 🟡 `ATENÇÃO` [12] `find_complex_funcs.ts`
+> #### 🟡 `ATENÇÃO` [7] `cognitive_engine.ts`
 >
-> - Aninhamento Excessivo (5 > 3)
+> - Complexidade Cognitiva Elevada (19 > 15)
 >
-> #### 🟡 `ATENÇÃO` [13] `maintenance_engine_phd.ts`
+> #### 🟡 `ATENÇÃO` [8] `debug_penalty_details.ts`
 >
-> - Aninhamento Excessivo (4 > 3)
+> - Complexidade Cognitiva Elevada (16 > 15)
 >
-> #### 🟡 `ATENÇÃO` [14] `healer_persona.ts`
+> #### 🟡 `ATENÇÃO` [9] `maturity_evaluator.ts`
 >
-> - Aninhamento Excessivo (4 > 3)
+> - Complexidade Cognitiva Elevada (18 > 15)
 >
-> #### 🟡 `ATENÇÃO` [15] `audit_engine.ts`
+> #### 🟡 `ATENÇÃO` [10] `audit_engine.ts`
 >
-> - Aninhamento Excessivo (4 > 3)
+> - Complexidade Cognitiva Elevada (22 > 15)
 >
-> #### 🟡 `ATENÇÃO` [16] `persona_registry.ts`
->
-> - Aninhamento Excessivo (4 > 3)
->
-> #### 🟡 `ATENÇÃO` [17] `context_engine.ts`
+> #### 🟡 `ATENÇÃO` [11] `audit_engine.ts`
 >
 > - Aninhamento Excessivo (4 > 3)
 >
-> #### 🟡 `ATENÇÃO` [18] `reflex_engine.ts`
->
-> - Aninhamento Excessivo (4 > 3)
->
-> #### 🟡 `ATENÇÃO` [19] `hype.ts`
->
-> - Aninhamento Excessivo (4 > 3)
->
-> #### 🟡 `ATENÇÃO` [20] `coverage_auditor.ts`
->
-> - Aninhamento Excessivo (4 > 3)
->
-> *... e mais 238 achados de nível MEDIUM omitidos para brevidade.*
+> *... e mais 301 achados de nível MEDIUM omitidos para brevidade.*
 >

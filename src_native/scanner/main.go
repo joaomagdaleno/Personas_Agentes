@@ -12,10 +12,10 @@ import (
 	"sync"
 
 	sitter "github.com/smacker/go-tree-sitter"
-	golang "github.com/tree-sitter/tree-sitter-go/bindings/go"
-	kotlin "github.com/tree-sitter-grammars/tree-sitter-kotlin/bindings/go"
-	python "github.com/tree-sitter/tree-sitter-python/bindings/go"
-	typescript "github.com/tree-sitter/tree-sitter-typescript/bindings/go"
+	"github.com/smacker/go-tree-sitter/golang"
+	"github.com/smacker/go-tree-sitter/kotlin"
+	"github.com/smacker/go-tree-sitter/python"
+	"github.com/smacker/go-tree-sitter/typescript"
 )
 
 type AtomicUnit struct {
@@ -68,19 +68,19 @@ func classifyIntent(content string) string {
 
 func getLanguage(ext string, isLegacy bool) *sitter.Language {
 	if isLegacy {
-		return sitter.NewLanguage(python.Language())
+		return sitter.NewLanguage(python.GetLanguage())
 	}
 	switch ext {
 	case ".ts", ".tsx":
-		return sitter.NewLanguage(typescript.LanguageTypescript())
+		return sitter.NewLanguage(typescript.GetLanguage())
 	case ".js", ".jsx":
-		return sitter.NewLanguage(typescript.LanguageTSX()) // TSX works for JS too usually
+		return sitter.NewLanguage(typescript.GetLanguage())
 	case ".py":
-		return sitter.NewLanguage(python.Language())
+		return sitter.NewLanguage(python.GetLanguage())
 	case ".go":
-		return sitter.NewLanguage(golang.Language())
+		return sitter.NewLanguage(golang.GetLanguage())
 	case ".kt":
-		return sitter.NewLanguage(kotlin.Language())
+		return sitter.NewLanguage(kotlin.GetLanguage())
 	default:
 		return nil
 	}
@@ -150,14 +150,16 @@ func analyzeFile(path string, root string, isLegacy bool) (FileAnalysis, error) 
 		case "case_clause":
 			isBranch = true
 			isCognitiveIncrement = true
-			// Case clauses usually don't increment nesting in Cognitive Complexity standard
 		case "binary_expression":
 			for i := 0; i < int(n.ChildCount()); i++ {
 				child := n.Child(i)
-				if child != nil && (child.Type() == "&&" || child.Type() == "||" || child.Type() == "??" || child.Type() == "and" || child.Type() == "or") {
-					isBranch = true
-					isCognitiveIncrement = true
-					break
+				if child != nil {
+					childType := child.Type()
+					if childType == "&&" || childType == "||" || childType == "??" || childType == "and" || childType == "or" {
+						isBranch = true
+						isCognitiveIncrement = true
+						break
+					}
 				}
 			}
 		}
@@ -190,9 +192,10 @@ func analyzeFile(path string, root string, isLegacy bool) (FileAnalysis, error) 
 			}
 
 			if unitType != "" {
+				name := string(content[nameNode.StartByte():nameNode.EndByte()])
 				analysis.Units = append(analysis.Units, AtomicUnit{
 					Type:                unitType,
-					Name:                string(content[nameNode.StartByte():nameNode.EndByte()]),
+					Name:                name,
 					Line:                int(n.StartPoint().Row) + 1,
 					Complexity:          1,
 					CognitiveComplexity: 0,
