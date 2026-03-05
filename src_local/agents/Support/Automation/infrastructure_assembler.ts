@@ -87,10 +87,28 @@ export class InfrastructureAssembler {
     }
 
     /**
-     * 🔌 Inicia a API Soberana via Bun.serve.
+     * 🔌 Inicia a API Soberana via Bun.serve e o Native Sovereign Hub.
      */
     static async launchSovereignAPI(projectRoot: string): Promise<void> {
-        logger.info("🔌 Iniciando API Soberana em http://localhost:8000...");
+        logger.info(`🎬 [Assembler] Acionando Native Sovereign Hub (Go)...`);
+        logger.info(`🔍 [Assembler] Project Root: ${projectRoot}`);
+        logger.info(`🔍 [Assembler] CWD: ${process.cwd()}`);
+
+        const { spawn } = require("node:child_process");
+        const hubPath = path.resolve(projectRoot, "src_native", "hub", "hub.exe");
+        logger.info(`🔍 [Assembler] Hub Path: ${hubPath}`);
+
+        const hubProcess = spawn(hubPath, ["-port=8080"], {
+            cwd: path.resolve(projectRoot, "src_native", "hub"),
+            detached: true,
+            stdio: "inherit"
+        });
+        hubProcess.on('error', (err: any) => {
+            logger.error(`🚨 [Assembler] Falha ao iniciar hub.exe: ${err.message}`);
+        });
+        hubProcess.unref();
+
+        logger.info("🔌 Iniciando API TypeScript Soberana em http://localhost:8000...");
 
         const orchestrator = { projectRoot }; // Simplified or use real one
 

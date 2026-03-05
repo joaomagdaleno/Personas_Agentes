@@ -1,6 +1,3 @@
-import { execSync } from "node:child_process";
-import { existsSync } from "node:fs";
-import { join } from "node:path";
 import winston from "winston";
 
 const logger = winston.child({ module: "GoDiscoveryAdapter" });
@@ -30,51 +27,55 @@ export interface FileAnalysis {
  * Faz a ponte entre o Bun e o motor Go de alta performance.
  */
 export class GoDiscoveryAdapter {
-    private static readonly BINARY_PATH = join(process.cwd(), "src_native", "go-scanner.exe");
+    private static readonly HUB_URL = "http://localhost:8080/analyze";
 
     /**
-     * Executa o scan atômico em um diretório.
+     * Executa o scan atômico em um diretório ou arquivo.
+     * Agora utiliza o Native Sovereign Hub via HTTP.
      */
-    static scan(directory: string, root: string, isLegacy: boolean = false): { results: FileAnalysis[], findings: any[] } {
-        if (!existsSync(this.BINARY_PATH)) {
-            const msg = `⚠️ Binário Go não encontrado em ${this.BINARY_PATH}. Abortando scan Go.`;
-            logger.warn(msg);
-            return {
-                results: [],
-                findings: [{
-                    type: "CRITICAL",
-                    severity: "CRITICAL",
-                    file: "go-scanner.exe",
-                    issue: msg,
-                    category: "Infrastructure",
-                    context: "GoDiscoveryAdapter"
-                }]
-            };
-        }
-
+    static async scan(directory: string, root: string, isLegacy: boolean = false): Promise<{ results: FileAnalysis[], findings: any[] }> {
         try {
-            const legacyFlag = isLegacy ? "-legacy=true" : "-legacy=false";
-            const command = `"${this.BINARY_PATH}" -dir "${directory}" -root "${root}" ${legacyFlag}`;
-
-            logger.info(`🔍 [GoAdapter] Iniciando scan atômico: ${directory}`);
+            logger.info(`🔍 [GoAdapter] Solicitando análise via Hub: ${directory}`);
             const startTime = Date.now();
 
-            const output = execSync(command, { encoding: "utf8", maxBuffer: 1024 * 1024 * 10 }); // 10MB buffer
-            const results: FileAnalysis[] = JSON.parse(output);
+            const url = new URL(this.HUB_URL);
+            url.searchParams.set("file", directory);
+
+            const response = await fetch(url.toString());
+            if (!response.ok) {
+                throw new Error(`Hub returned ${response.status}: ${await response.text()}`);
+            }
+
+            const rawResult = await response.json();
+
+            const transform = (item: any): FileAnalysis => ({
+                path: item.path,
+                exists: true,
+                units: [],
+                total_complexity: item.complexity,
+                cognitive_complexity: item.cognitive_complexity,
+                loc: item.loc,
+                sloc: item.sloc,
+                comments: item.comments
+            });
+
+            const results: FileAnalysis[] = Array.isArray(rawResult)
+                ? rawResult.map(transform)
+                : [transform(rawResult)];
 
             const duration = Date.now() - startTime;
-            logger.info(`✨ [GoAdapter] Scan concluído em ${duration}ms. (${results.length} arquivos analisados)`);
+            logger.info(`✨ [GoAdapter] Análise concluída em ${duration}ms. (${results.length} arquivos)`);
 
             return { results, findings: [] };
         } catch (error: any) {
-            const msg = `🚨 Falha no scan Go: ${error.message}`;
+            const msg = `🚨 Falha na comunicação com o Hub: ${error.message}`;
             logger.error(msg);
             return {
                 results: [],
                 findings: [{
                     type: "CRITICAL",
                     severity: "CRITICAL",
-                    file: "go-scanner.exe",
+                    file: "hub.exe",
                     issue: msg,
                     category: "Infrastructure",
                     context: "GoDiscoveryAdapter"

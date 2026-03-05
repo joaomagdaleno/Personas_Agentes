@@ -1,0 +1,10 @@
+C:\Users\joaovitormagdaleno\Documents\GitHub\Personas_Agentes\src_native\analyzer\target\release\deps\walkdir-6f29b13b89acf8f7.d: C:\Users\joaovitormagdaleno\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\lib.rs C:\Users\joaovitormagdaleno\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\dent.rs C:\Users\joaovitormagdaleno\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\error.rs C:\Users\joaovitormagdaleno\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\util.rs
+
+C:\Users\joaovitormagdaleno\Documents\GitHub\Personas_Agentes\src_native\analyzer\target\release\deps\libwalkdir-6f29b13b89acf8f7.rlib: C:\Users\joaovitormagdaleno\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\lib.rs C:\Users\joaovitormagdaleno\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\dent.rs C:\Users\joaovitormagdaleno\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\error.rs C:\Users\joaovitormagdaleno\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\util.rs
+
+C:\Users\joaovitormagdaleno\Documents\GitHub\Personas_Agentes\src_native\analyzer\target\release\deps\libwalkdir-6f29b13b89acf8f7.rmeta: C:\Users\joaovitormagdaleno\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\lib.rs C:\Users\joaovitormagdaleno\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\dent.rs C:\Users\joaovitormagdaleno\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\error.rs C:\Users\joaovitormagdaleno\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\util.rs
+
+C:\Users\joaovitormagdaleno\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\lib.rs:
+C:\Users\joaovitormagdaleno\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\dent.rs:
+C:\Users\joaovitormagdaleno\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\error.rs:
+C:\Users\joaovitormagdaleno\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\util.rs:

@@ -63,6 +63,30 @@ export class Orchestrator {
         this._registerAgents();
         this._initEngines();
         this._initTools();
+
+        // Ativando Infraestrutura Nativa (Hub)
+        const assemblerPath = "../agents/Support/Automation/infrastructure_assembler.ts";
+        import(assemblerPath).then(async m => {
+            console.log("🛠️ [Orchestrator] Carregando Infraestrutura Nativa...");
+            await m.InfrastructureAssembler.launchSovereignAPI(projectRoot);
+            await this._waitForHub();
+        }).catch(err => {
+            console.error(`❌ [Orchestrator] Erro ao carregar infrastructure_assembler: ${err.message}`);
+        });
+    }
+
+    private async _waitForHub(retries = 5) {
+        for (let i = 0; i < retries; i++) {
+            try {
+                const res = await fetch("http://localhost:8080/status");
+                if (res.ok) {
+                    console.log("✅ [Orchestrator] Native Sovereign Hub conectado.");
+                    return;
+                }
+            } catch (e) { }
+            console.log(`⏳ [Orchestrator] Aguardando Hub (${i + 1}/${retries})...`);
+            await new Promise(r => setTimeout(r, 1000));
+        }
     }
 
     private initializeEngines(root: string) {

@@ -40,7 +40,7 @@ export class ContextEngine {
 
     private async getGoDiscoveryMap(): Promise<Record<string, any>> {
         const { GoDiscoveryAdapter } = await import("./go_discovery_adapter.ts");
-        const { results: goResults } = GoDiscoveryAdapter.scan(this.projectRoot.toString(), this.projectRoot.toString(), false);
+        const { results: goResults } = await GoDiscoveryAdapter.scan(this.projectRoot.toString(), this.projectRoot.toString(), false);
         const goMap: Record<string, any> = {};
         goResults.forEach(r => goMap[r.path.replace(/\\/g, "/")] = r);
         return goMap;

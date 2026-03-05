@@ -1,0 +1,1 @@
+C:\Users\joaovitormagdaleno\Documents\GitHub\Personas_Agentes\src_native\analyzer\target\release\analyzer.exe: C:\Users\joaovitormagdaleno\Documents\GitHub\Personas_Agentes\src_native\analyzer\src\main.rs

@@ -15,7 +15,7 @@ export class ResourceGovernor {
         return false;
     }
 
-    static async yield(checkFn: () => boolean) {
-        while (checkFn()) await new Promise(res => setTimeout(res, 5000));
+    static async yield(checkFn: () => boolean | Promise<boolean>) {
+        while (await checkFn()) await new Promise(res => setTimeout(res, 5000));
     }
 }
