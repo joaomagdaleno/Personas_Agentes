@@ -19,7 +19,7 @@ class CognitiveEngine:
         if self.initialized:
             return
             
-        self.model_name = "qwen2.5-coder:1.5b"
+        self.model_name = "qwen3.5:4b"
         self.endpoint = os.environ.get("AI_ENDPOINT", "http://localhost:11434/api/generate")
         self.default_max_tokens = 512
         self.memory_limit = 85
