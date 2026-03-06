@@ -34,22 +34,18 @@ export class TestifyPersona extends BaseActivePersona {
     public override performAudit(): AuditFinding[] {
         this.startMetrics();
         const rules: AuditRule[] = [
-            { regex: /def test_/, issue: "Teste Básico: Verifique se o nome do teste descreve o comportamento esperado e não apenas a função.", severity: "low" },
-            { regex: /pytest\.fixture|@pytest\.fixture/, issue: "Fixture: Verifique o 'scope' da fixture para evitar efeitos colaterais entre testes.", severity: "medium" },
-            { regex: /unittest\.mock|mock\.patch|MagicMock/, issue: "Mocking: O uso excessivo de patch pode degradar a performance. Use dependências injetáveis.", severity: "low" },
-            { regex: /assert\s+True/, issue: "Asserção Fraca: Use asserções mais específicas do Pytest (ex: assert x == y) para melhores mensagens de erro.", severity: "medium" },
-            { regex: /pytest\.mark\.parametrize/, issue: "Teste Parametrizado: Verifique a cobertura de casos de borda (edge cases) na lista de parâmetros.", severity: "low" },
-            { regex: /with pytest\.raises/, issue: "Teste de Exceção: Garanta que a mensagem ou código de erro está sendo validado no bloco 'with'.", severity: "medium" },
-            { regex: /time\.sleep\(/, issue: "Anti-padrão: Uso de sleep em testes indica fragilidade de sincronia. Use espera reativa ou mocks de tempo.", severity: "high" },
-            { regex: /conftest\.py/, issue: "Configuração: Verifique se as fixtures globais não estão gerando overhead desnecessário.", severity: "low" },
-            { regex: /mock\.assert_called_with/, issue: "Verificação de Parâmetros: Garanta que todos os argumentos passados foram validados com precisão.", severity: "medium" },
-            { regex: /pytest\.skip\(/, issue: "Teste Pulado: Verifique se o motivo do skip ainda é válido ou se há uma falha de ambiente não resolvida.", severity: "low" }
+            { regex: /def test_[^\(]*\(\s*\):/, issue: "Teste Vazio: Teste Python declarado sem corpo ou asserção.", severity: "critical" },
+            { regex: /pytest\.skip\(|unittest\.skip\(/, issue: "Teste Desativado: Teste pulado intencionalmente; cobertura incompleta.", severity: "high" },
+            { regex: /assert\s+True|self\.assertTrue\(True\)/, issue: "Asserção Fraca: Teste sem asserção real ou 'assert True'.", severity: "high" },
+            { regex: /time\.sleep\(/, issue: "Teste Frágil: Uso de time.sleep() detectado; risco de flaky tests.", severity: "high" },
+            { regex: /pytest\.mark\.skipif\(/, issue: "Skipped Logic: Teste condicionalmente desativado; verifique se a condição ainda é válida.", severity: "medium" },
+            { regex: /print\(/, issue: "Verbose Testing: Verifique se o log no teste é necessário ou se falhou silenciosamente.", severity: "low" }
         ];
         const results = this.findPatterns([".py"], rules);
 
         // Structural Boost: Integrity Engine
         const mockIssues = MockIntegrityEngine.analyze(this.projectRoot || "");
-        mockIssues.forEach(m => results.push({ file: "DYNAMIC", issue: m, severity: "low", line: 0 }));
+        mockIssues.forEach(m => results.push({ file: "DYNAMIC", agent: this.name, role: this.role, emoji: this.emoji, issue: m, severity: "low", stack: this.stack }));
 
         this.endMetrics(results.length);
         return results;
@@ -69,12 +65,15 @@ export class TestifyPersona extends BaseActivePersona {
         console.log(`🛠️ [Testify] Refatorando fixtures e substituindo sleeps por esperas assíncronas em: ${blindSpots.join(", ")}`);
     }
 
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
         return {
             objective,
             analysis: "Auditando a densidade e confiabilidade da suíte de testes Python.",
-            recommendation: "Migrar testes legados para Pytest e usar 'Tox' ou 'Nox' para testes multi-ambiente.",
-            severity: "low"
+            recommendation: "Garantir 80%+ de cobertura e evitar sleeps em testes para não comprometer a pipeline.",
+            severity: "INFO",
+            file: _file,
+            issue: "PhD QA: Analisando cobertura de testes para " + objective,
+            context: this.name
         } as StrategicFinding;
     }
 

@@ -38,12 +38,10 @@ export class BoltPersona extends BaseActivePersona {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /for\s*\{\s*}/, issue: "Busy Wait: Loop infinito sem select detectado.", severity: "critical" },
-            { regex: /sync\.Mutex\.Lock\(\)/, issue: "Mutex Lock: Verifique se há defer Unlock() imediato para evitar deadlocks.", severity: "high" },
-            { regex: /make\(chan.*,\s*0\)/, issue: "Unbuffered Channel: Risco de bloqueio se não houver receptor ativo.", severity: "medium" },
-            { regex: /runtime\.Gosched\(\)/, issue: "Manual Yielding: Verifique se a lógica de concorrência não está mal projetada.", severity: "low" },
-            { regex: /atomic\.AddInt/, issue: "Sincronização Atômica: Preferível ao Mutex para contadores simples.", severity: "low" },
-            { regex: /go\s+func\(\)\s*\{/, issue: "Goroutine Anônima: Garanta que a goroutine possua tratamento de erro e sinal de parada.", severity: "medium" },
-            { regex: /time\.After\(/, issue: "Resource Leak: time.After em loops pode causar vazamento de timers; use time.NewTimer.", severity: "high" }
+            { regex: /sync\.Mutex\.Lock\(\)/, issue: "Blocking: Mutex Lock sem defer Unlock() imediato.", severity: "critical" },
+            { regex: /make\(chan.*,\s*0\)/, issue: "Unbuffered Channel: Risco de bloqueio se não houver receptor ativo.", severity: "high" },
+            { regex: /go\s+func\(\)\s*\{/, issue: "Anonymous Goroutine: Falta de rastreabilidade ou tratamento de erro.", severity: "medium" },
+            { regex: /time\.After\(/, issue: "Resource Leak: time.After em loops causa vazamento de timers.", severity: "high" }
         ];
         const results = this.findPatterns([".go"], rules);
 

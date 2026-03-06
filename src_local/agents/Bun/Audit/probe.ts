@@ -22,9 +22,11 @@ export class ProbePersona extends BaseActivePersona {
 
         const auditRules = [
             { regex: 'catch\\s*\\([^)]*\\)\\s*\\{\\s*\\}', issue: 'Silenciado: catch vazio engole exceção Bun.', severity: 'critical' },
+            { regex: 'catch\\s*\\{\\s*\\}', issue: 'Silenciado: catch vazio sem parâmetro no Bun.', severity: 'critical' },
             { regex: '\\.catch\\(\\(\\)\\s*=>\\s*\\{\\s*\\}\\)', issue: 'Silenciado: Promise .catch vazio no runtime Bun.', severity: 'critical' },
-            { regex: 'Bun\\.serve\\([^)]*\\)(?![\\s\\S]{0,200}error)', issue: 'Frágil: Bun.serve sem handler de erro configurado.', severity: 'high' },
-            { regex: 'Bun\\.spawn\\([^)]*\\)(?![\\s\\S]{0,100}exitCode|stderr)', issue: 'Cego: Bun.spawn sem verificação de exit code ou stderr.', severity: 'high' },
+            { regex: '\\.catch\\(\\(\\)\\s*=>\\s*null\\)', issue: 'Suprimido: Promise .catch retorna null — erro perdido no Bun.', severity: 'high' },
+            { regex: 'catch\\s*\\([^)]*\\)\\s*\\{[^}]*\\/\\/\\s*(?:todo|ignore|suppress)', issue: 'Débito: Catch com TODO/ignore indica tratamento pendente no Bun.', severity: 'medium' },
+            { regex: 'throw\\s+new\\s+Error\\(\\)', issue: 'Vago: Error lançado sem mensagem descritiva no Bun.', severity: 'medium' },
         ];
 
         const results: any[] = [];

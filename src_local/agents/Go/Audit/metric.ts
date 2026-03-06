@@ -36,13 +36,11 @@ export class MetricPersona extends BaseActivePersona {
     public override performAudit(): AuditFinding[] {
         this.startMetrics();
         const rules: AuditRule[] = [
-            { regex: /log\.Printf|fmt\.Print/, issue: "Logging Amador: Use bibliotecas estruturadas como zap ou zerolog para melhor ingestão forense.", severity: "medium" },
-            { regex: /expvar\.Publish/, issue: "Telemetria Nativa: Verifique se os contadores expostos são monitorados no dashboard central.", severity: "low" },
-            { regex: /pprof/, issue: "Profiling: Endpoint pprof detectado; verifique se está protegido em produção.", severity: "high" },
-            { regex: /runtime\.ReadMemStats/, issue: "Coleta de Memória: Verifique a frequência da amostragem para evitar overhead de GC.", severity: "medium" },
-            { regex: /prometheus\.NewCounter/, issue: "Instrumentação: Garanta que todas as labels críticas (status, endpoint) estão presentes.", severity: "low" },
-            { regex: /panic\(.*\)/, issue: "Interrupção Brusca: Evite pânicos; prefira retornar erros para permitir monitoramento de estabilidade.", severity: "high" },
-            { regex: /Recover\(\)/, issue: "Abstração de Falha: Verifique se o recover() loga o stacktrace detalhado para diagnóstico.", severity: "medium" }
+            { regex: /log\.Printf|fmt\.Print|fmt\.Println/, issue: "Cegueira: Logging amador (desestruturado) detectado.", severity: "high" },
+            { regex: /panic\(.*\)/, issue: "Interrupção Brusca: Pânicos sem contexto estruturado prejudicam a telemetria.", severity: "high" },
+            { regex: /Recover\(\)/, issue: "Abstração de Falha: Verifique se o recover() garante a telemetria do erro.", severity: "medium" },
+            { regex: /expvar\.Publish|prometheus\.NewCounter/, issue: "Instrumentação: Verifique se as réguas de telemetria seguem o padrão forense.", severity: "low" },
+            { regex: /pprof/, issue: "Profiling: Endpoint pprof exposto sem proteção em telemetria de produção.", severity: "high" }
         ];
         const results = this.findPatterns([".go"], rules);
 

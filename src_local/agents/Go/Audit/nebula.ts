@@ -36,12 +36,12 @@ export class NebulaPersona extends BaseActivePersona {
     public override performAudit(): AuditFinding[] {
         this.startMetrics();
         const rules: AuditRule[] = [
-            { regex: /password\s*=\s*".*"/i, issue: "Secret Hardcoded: Senha detectada no código. Use variáveis de ambiente ou Secret Manager.", severity: "critical" },
-            { regex: /https:\/\/hooks\.slack\.com/, issue: "Slack Webhook: Webhook exposto detectado; alto risco de spam e vazamento de logs.", severity: "high" },
-            { regex: /AllowAllOrigins\s*:\s*true/i, issue: "CORS Permissivo: Configuração de CORS permite qualquer origem; risco de Cross-Site Request Forgery.", severity: "medium" },
-            { regex: /jwt\.Parse\(.*nil\)/, issue: "Broken JWT Validation: Verificação de token sem chave ou sem validação de algoritmo.", severity: "critical" },
-            { regex: /sql\.Open\(.*"mysql",\s*".*@tcp/, issue: "DB Connection: String de conexão com senha detectada; oculte via Secret Manager.", severity: "high" },
-            { regex: /context\.WithTimeout\(.*time\.Second\s*\*\s*3600\)/, issue: "Infinite Timeout: Timeout de 1 hora detectado; evite retenção excessiva de recursos cloud.", severity: "low" }
+            { regex: /AKIA[0-9A-Z]{16}/, issue: "Vulnerabilidade Crítica: Chave AWS exposta no código Go.", severity: "critical" },
+            { regex: /sk-[a-zA-Z0-9]{20,}|ghp_[a-zA-Z0-9]{36}/, issue: "Vulnerabilidade Crítica: Token (OpenAI/GitHub) exposto.", severity: "critical" },
+            { regex: /(?:apiKey|API_KEY|password|secret)\s*=\s*".{8,}"/i, issue: "Vazamento: Credencial hardcoded no código-fonte Go.", severity: "critical" },
+            { regex: /https:\/\/hooks\.slack\.com/, issue: "Slack Webhook: Webhook exposto detectado; alto risco de vazamento.", severity: "high" },
+            { regex: /jwt\.Parse\(.*nil\)/, issue: "Broken Security: Verificação de token JWT sem validação de segurança.", severity: "critical" },
+            { regex: /sql\.Open\(.*"mysql",\s*".*@tcp/, issue: "DB Credential: String de conexão com senha exposta.", severity: "high" }
         ];
         const results = this.findPatterns([".go"], rules);
 

@@ -36,14 +36,14 @@ export class ScopePersona extends BaseActivePersona {
     public override performAudit(): AuditFinding[] {
         this.startMetrics();
         const rules: AuditRule[] = [
-            { regex: /module\s+.*\/vendor/, issue: "Vending Detected: Uso de vendor/ está depreciado em favor de módulos Go puros; verifique a necessidade.", severity: "low" },
-            { regex: /require\s+.*v0\.[0-9]\.[0-9]/, issue: "Unstable Dep: Dependência em estágio alpha/beta detectada; alto risco de breaking changes.", severity: "medium" },
-            { regex: /retract/, issue: "Module Retraction: Versão de módulo retraída detectada; verifique se a atualização é necessária.", severity: "high" },
-            { regex: /exclude/, issue: "Manual Exclusion: Exclusão manual de dependência no go.mod; verifique se há vulnerabilidades conhecidas.", severity: "medium" },
-            { regex: /indirect/, issue: "Indirect Dependency: Verifique se as dependências indiretas são realmente necessárias e seguras.", severity: "low" },
-            { regex: /github\.com\/.*\/v[2-9]/, issue: "Major Version: Módulo com versão majoritária elevada detectado; verifique se há suporte a longo prazo.", severity: "low" }
+            { regex: /\/\/\s*TODO[:\s]/, issue: "Dívida: TODO pendente no código Go.", severity: "medium" },
+            { regex: /\/\/\s*FIXME[:\s]/, issue: "Dívida Crítica: FIXME detectado na lógica Go.", severity: "high" },
+            { regex: /\/\/\s*HACK[:\s]/, issue: "Gambiarra: HACK detectado; risco de instabilidade Go.", severity: "high" },
+            { regex: /\/\/\s*XXX[:\s]/, issue: "Alerta: Verifique ponto crítico XXX no código Go.", severity: "medium" },
+            { regex: /panic\(.*"not\s+implemented"/, issue: "Incompleto: Funcionalidade Go declarada com panic placeholder.", severity: "high" },
+            { regex: /\/\/\s*no-lint[:\s]|\/\/\s*ignore[:\s]/, issue: "Omissão: Supressão manual de avisos; verifique dívida técnica.", severity: "low" }
         ];
-        const results = this.findPatterns(["go.mod", "go.sum", ".go"], rules);
+        const results = this.findPatterns([".go", "go.mod"], rules);
 
         // Advanced Logic Density
         const moduleIssues = GoModuleEngine.audit(this.projectRoot || "");

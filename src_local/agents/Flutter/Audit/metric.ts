@@ -17,10 +17,11 @@ export class MetricPersona extends BaseActivePersona {
     public override performAudit(): AuditFinding[] {
         this.startMetrics();
         const rules: AuditRule[] = [
-            { regex: /logEvent\(/, issue: "Aviso: Evento analítico detectado. Verifique se segue o schema oficial.", severity: "low" },
-            { regex: /print\(/, issue: "Saída não rastreável: Use o sistema de logs estruturado para garantir paridade de dados.", severity: "medium" },
-            { regex: /FirebaseAnalytics\.instance/, issue: "Acoplamento Direto: Considere um wrapper para facilitar testes e swaps de infra.", severity: "low" },
-            { regex: /Stopwatch\(\)/, issue: "Profiling Manual: Verifique se a instrumentação é removida em instâncias de produção.", severity: "medium" }
+            { regex: /print\(/, issue: "Cegueira: print() em produção — use logger estruturado PhD.", severity: "high" },
+            { regex: /catch\s*\(.*\)\s*\{\s*\}/, issue: "Cegueira Total: Bloco catch vazio engole erros silenciosamente.", severity: "critical" },
+            { regex: /catch\s*\(.*\)\s*\{\s*print\(/, issue: "Telemetria Informal: Erro logado via print no bloco catch.", severity: "medium" },
+            { regex: /FirebaseAnalytics\.instance/, issue: "Acoplamento: Instrumentação direta de analytics sem camada de abstração.", severity: "low" },
+            { regex: /Stopwatch\(\)/, issue: "Profiling: Medição manual de performance via Stopwatch detectada.", severity: "low" }
         ];
         const results = this.findPatterns([".dart"], rules);
 

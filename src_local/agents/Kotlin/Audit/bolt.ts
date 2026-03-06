@@ -17,10 +17,11 @@ export class BoltPersona extends BaseActivePersona {
     public override performAudit(): AuditFinding[] {
         this.startMetrics();
         const rules: AuditRule[] = [
-            { regex: /GlobalScope\.launch/, issue: "Concorrência Insegura: GlobalScope é desencorajado. Use CoroutineScope estruturado para evitar leaks.", severity: "high" },
-            { regex: /Thread\.sleep\(/, issue: "Bloqueio de Thread: Use delay() em coroutines para evitar travar threads do pool.", severity: "medium" },
-            { regex: /ArrayList<.*>\(\)/, issue: "Sizing de Coleção: Verifique se a capacidade inicial é conhecida para evitar re-alocações excessivas.", severity: "low" },
-            { regex: /synchronized\(.*\)/, issue: "Sincronização Manual: Verifique se Mutex de Coroutines não é uma alternativa mais eficiente.", severity: "medium" }
+            { regex: /while\s*\(\s*true\s*\)/, issue: "Busy Wait: Loop infinito sem suspensão ou interrupção.", severity: "critical" },
+            { regex: /Thread\.sleep\(/, issue: "Blocking Thread: Bloqueio de thread física em pool de coroutines.", severity: "critical" },
+            { regex: /GlobalScope\.launch/, issue: "Unstructured Concurrency: Uso de GlobalScope pode causar vazamentos de memória.", severity: "high" },
+            { regex: /ArrayList<.*>\(\)/, issue: "Sizing de Coleção: Alocação sem capacidade inicial definida.", severity: "low" },
+            { regex: /synchronized\(.*\)/, issue: "Manual Sync: Overhead de sincronização manual; considere Mutex/Flow.", severity: "medium" }
         ];
         const results = this.findPatterns([".kt", ".kts"], rules);
 

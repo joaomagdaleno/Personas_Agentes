@@ -17,10 +17,11 @@ export class MetricPersona extends BaseActivePersona {
     public override performAudit(): AuditFinding[] {
         this.startMetrics();
         const rules: AuditRule[] = [
-            { regex: /print\(.*\)/, issue: "Saída Não Gerenciada: Use logging.info() ou similar para garantir paridade de dados e rastreabilidade PhD.", severity: "medium" },
-            { regex: /logging\.basicConfig\(/, issue: "Configuração Global: Verifique se a configuração não sobrescreve handlers de outros módulos em sistemas complexos.", severity: "low" },
-            { regex: /statsd\.increment\(/, issue: "Telemetria Detalhada: Verifique se as tags seguem o esquema de instrumentação Sovereign.", severity: "low" },
-            { regex: /json\.dumps\(.*\)/, issue: "Serialização: Verifique se dados sensíveis são anonimizados antes da telemetria de log.", severity: "medium" }
+            { regex: /print\(.*\)/, issue: "Cegueira: print em produção — use logging estruturado PhD.", severity: "high" },
+            { regex: /except\s*.*:\s*pass/, issue: "Cegueira Total: except vazio engole erros silenciosamente.", severity: "critical" },
+            { regex: /except\s*.*:\s*print\(.*\)/, issue: "Telemetria Informal: Erro logado via print no bloco except.", severity: "medium" },
+            { regex: /logging\.basicConfig\(/, issue: "Telemetria Fraca: Configuração global inadequada em sistemas complexos.", severity: "low" },
+            { regex: /json\.dumps\(.*\)/, issue: "Soberania de Dados: Verifique se dados sensíveis são anonimizados antes do log.", severity: "medium" }
         ];
         const results = this.findPatterns([".py"], rules);
 

@@ -17,10 +17,11 @@ export class BoltPersona extends BaseActivePersona {
     public override performAudit(): AuditFinding[] {
         this.startMetrics();
         const rules: AuditRule[] = [
-            { regex: /while True:\s+pass/, issue: "Gargalo Crítico: Busy-waiting detectado. Consome CPU sem progresso.", severity: "critical" },
-            { regex: /time\.sleep\(0\)/, issue: "Estratégia de Yield Ineficiente: Verifique se o loop de eventos não está sendo bloqueado desnecessariamente.", severity: "medium" },
-            { regex: /for .* in range\(len\(.*\)\):/, issue: "Pythonismo Ineficiente: Use enumerate() para iteração em coleções seguindo o padrão PhD.", severity: "low" },
-            { regex: /logging\.log\(.*\)/, issue: "Performance de Log: Verifique se a construção de strings de log não ocorre antes do check de nível.", severity: "medium" }
+            { regex: /while True:\s+pass|while True:\s+continue/, issue: "Busy Wait: Loop infinito sem processamento útil detectado.", severity: "critical" },
+            { regex: /os\.system|subprocess\.check_call/, issue: "Blocking: Chamada de sistema síncrona que bloqueia a execução.", severity: "critical" },
+            { regex: /for .* in .*:\s+await/, issue: "Sequential Await: await dentro de loop sequencial em Python.", severity: "high" },
+            { regex: /copy\.deepcopy\(|pickle\.dumps\(/, issue: "Ineficiência: Deep clone pesado ou serialização desnecessária.", severity: "medium" },
+            { regex: /time\.sleep\(0\)|time\.sleep\(0\.001\)/, issue: "Yield Ineficiente: Polling de curto intervalo consome CPU excessiva.", severity: "high" }
         ];
         const results = this.findPatterns([".py"], rules);
 

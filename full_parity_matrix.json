@@ -1,0 +1,193 @@
+{
+  "Audit/metric": {
+    "TypeScript": 6,
+    "Bun": 5,
+    "Flutter": 5,
+    "Go": 5,
+    "Kotlin": 5,
+    "Python": 5
+  },
+  "Audit/nebula": {
+    "TypeScript": 7,
+    "Bun": 7,
+    "Flutter": 6,
+    "Go": 6,
+    "Kotlin": 6,
+    "Python": 6
+  },
+  "Audit/scale": {
+    "TypeScript": 0,
+    "Bun": 6,
+    "Flutter": 6,
+    "Go": 6,
+    "Kotlin": 6,
+    "Python": 6
+  },
+  "Audit/scope": {
+    "TypeScript": 6,
+    "Bun": 8,
+    "Flutter": 6,
+    "Go": 6,
+    "Kotlin": 6,
+    "Python": 6
+  },
+  "Audit/strict": {
+    "TypeScript": 0,
+    "Go": 6
+  },
+  "Content/echo": {
+    "TypeScript": 5,
+    "Bun": 5,
+    "Flutter": 4,
+    "Go": 6,
+    "Kotlin": 2,
+    "Python": 4
+  },
+  "Content/forge": {
+    "TypeScript": 5,
+    "Bun": 5,
+    "Flutter": 4,
+    "Go": 6,
+    "Kotlin": 4,
+    "Python": 4
+  },
+  "Content/globe": {
+    "TypeScript": 3,
+    "Bun": 3,
+    "Flutter": 4,
+    "Go": 6,
+    "Kotlin": 4,
+    "Python": 4
+  },
+  "Content/hype": {
+    "TypeScript": 0,
+    "Bun": 0,
+    "Flutter": 2,
+    "Go": 6,
+    "Kotlin": 2,
+    "Python": 1
+  },
+  "Content/mantra": {
+    "TypeScript": 9,
+    "Bun": 5,
+    "Flutter": 2,
+    "Go": 6,
+    "Kotlin": 2,
+    "Python": 1
+  },
+  "Content/palette": {
+    "TypeScript": 5,
+    "Bun": 4,
+    "Flutter": 2,
+    "Go": 6,
+    "Kotlin": 4,
+    "Python": 4
+  },
+  "Content/scribe": {
+    "TypeScript": 0,
+    "Bun": 0,
+    "Flutter": 4,
+    "Go": 6,
+    "Kotlin": 4,
+    "Python": 4
+  },
+  "Strategic/director": {
+    "TypeScript": 0,
+    "Go": 6,
+    "Python": 1
+  },
+  "Strategic/sentinel": {
+    "TypeScript": 6,
+    "Bun": 4,
+    "Flutter": 4,
+    "Go": 6,
+    "Kotlin": 3,
+    "Python": 4
+  },
+  "Strategic/vault": {
+    "TypeScript": 5,
+    "Bun": 3,
+    "Flutter": 4,
+    "Go": 6,
+    "Kotlin": 4,
+    "Python": 4
+  },
+  "Strategic/voyager": {
+    "TypeScript": 6,
+    "Bun": 5,
+    "Flutter": 7,
+    "Go": 6,
+    "Kotlin": 7,
+    "Python": 7
+  },
+  "Strategic/warden": {
+    "TypeScript": 5,
+    "Bun": 4,
+    "Flutter": 4,
+    "Go": 6,
+    "Kotlin": 4,
+    "Python": 1
+  },
+  "System/bridge": {
+    "TypeScript": 4,
+    "Bun": 4,
+    "Flutter": 2,
+    "Go": 6,
+    "Kotlin": 2
+  },
+  "System/cache": {
+    "TypeScript": 4,
+    "Bun": 4,
+    "Flutter": 4,
+    "Go": 6,
+    "Kotlin": 4,
+    "Python": 4
+  },
+  "System/flow": {
+    "TypeScript": 4,
+    "Bun": 3,
+    "Flutter": 4,
+    "Go": 6,
+    "Kotlin": 2,
+    "Python": 4
+  },
+  "System/hermes": {
+    "TypeScript": 4,
+    "Bun": 4,
+    "Flutter": 2,
+    "Go": 6,
+    "Kotlin": 2
+  },
+  "System/neural": {
+    "TypeScript": 6,
+    "Bun": 5,
+    "Flutter": 4,
+    "Go": 6,
+    "Kotlin": 2,
+    "Python": 4
+  },
+  "System/nexus": {
+    "TypeScript": 4,
+    "Bun": 3,
+    "Flutter": 4,
+    "Go": 6,
+    "Kotlin": 2,
+    "Python": 4
+  },
+  "System/spark": {
+    "TypeScript": 3,
+    "Bun": 4,
+    "Flutter": 4,
+    "Go": 6,
+    "Kotlin": 2,
+    "Python": 4
+  },
+  "System/stream": {
+    "TypeScript": 5,
+    "Bun": 5,
+    "Flutter": 4,
+    "Go": 6,
+    "Kotlin": 2,
+    "Python": 4
+  }
+}

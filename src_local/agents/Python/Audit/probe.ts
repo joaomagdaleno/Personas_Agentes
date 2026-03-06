@@ -17,10 +17,12 @@ export class ProbePersona extends BaseActivePersona {
     public override performAudit(): AuditFinding[] {
         this.startMetrics();
         const rules: AuditRule[] = [
-            { regex: /requests\.get\(.*verify=False\)/, issue: "Risco de Segurança: Desativação de verificação SSL em chamadas de rede Python.", severity: "critical" },
-            { regex: /open\(.*, 'w'\)/, issue: "Escrita de Arquivo: Verifique as permissões do sistema de arquivos e se há risco de Path Traversal.", severity: "high" },
-            { regex: /sqlite3\.connect\(/, issue: "Persistência Local: Verifique se o banco de dados SQLite está protegido e se há sanitização de query.", severity: "medium" },
-            { regex: /eval\(|exec\(/, issue: "Execução Arbitrária: O uso de eval/exec em Python é extremamente perigoso para a soberania do sistema.", severity: "critical" }
+            { regex: /except\s*.*:\s*pass/, issue: "Cegueira Total: except vazio engole exceções Python silenciosamente.", severity: "critical" },
+            { regex: /except\s*.*:\s*print\(.*\)/, issue: "Telemetria Informal: Erro logado via print no bloco except.", severity: "medium" },
+            { regex: /except\s+Exception:/, issue: "Captura Genérica: Capturar Exception pode esconder bugs de lógica ou erros de sistema.", severity: "high" },
+            { regex: /raise\s+Exception\(\)/, issue: "Vago: Exception lançada sem mensagem ou tipo descritivo.", severity: "medium" },
+            { regex: /#\s*TODO:?\s*handle\s*error/i, issue: "Débito Tech: Tratamento de erro pendente detectado no comentário.", severity: "medium" },
+            { regex: /asyncio\.create_task\(.*\)(?![^}]*add_done_callback)/, issue: "Resiliência Async: Task criada sem monitoramento de exceção (done callback).", severity: "high" }
         ];
         const results = this.findPatterns([".py"], rules);
 

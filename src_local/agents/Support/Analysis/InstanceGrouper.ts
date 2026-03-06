@@ -1,6 +1,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { extractPythonFingerprint, extractTSFingerprint, capitalize } from "./parity_utils";
+import { FingerprintExtractor } from "./strategies/FingerprintExtractor";
 
 /**
  * 📂 InstanceGrouper — Helper for grouping agent instances across stacks.
@@ -11,6 +12,34 @@ export class InstanceGrouper {
         const stacks = ["Bun", "Flutter", "Go", "Kotlin", "Python", "TypeScript"];
         const cats = ["Audit", "Content", "Strategic", "System"];
 
+        // Try batch extraction first (Rust-powered)
+        const batchResults = FingerprintExtractor.batchExtract(tsRoot);
+
+        if (batchResults.size > 0) {
+            stacks.forEach(stack => {
+                cats.forEach(cat => {
+                    const dir = path.join(tsRoot, stack, cat);
+                    if (!fs.existsSync(dir)) return;
+
+                    fs.readdirSync(dir)
+                        .filter(f => /\.(ts|tsx|go|kt|py|dart)$/.test(f))
+                        .forEach(tf => {
+                            const name = tf.replace(/\.(ts|tsx|go|kt|py|dart)$/, "").toLowerCase();
+                            const key = `${cat}/${capitalize(name)}/${stack}`;
+                            const fp = batchResults.get(key);
+
+                            if (fp) {
+                                const list = groups.get(name) || [];
+                                list.push({ stack, cat, fp, path: path.join(dir, tf) });
+                                groups.set(name, list);
+                            }
+                        });
+                });
+            });
+            return groups;
+        }
+
+        // Fallback to sequential scanning if batch failed
         stacks.forEach(stack => {
             cats.forEach(cat => {
                 const dir = path.join(tsRoot, stack, cat);

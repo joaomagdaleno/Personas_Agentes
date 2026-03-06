@@ -34,22 +34,18 @@ export class TestifyPersona extends BaseActivePersona {
     public override performAudit(): AuditFinding[] {
         this.startMetrics();
         const rules: AuditRule[] = [
-            { regex: /@Test/, issue: "Teste Básico: Verifique se o nome do método de teste é descritivo (use backticks if needed).", severity: "low" },
-            { regex: /@Mock|Mockito\.mock|mockk\(/, issue: "Mocking: Verifique se os mocks estão sendo limpos no @After ou se o MockK está devidamente unmocked.", severity: "medium" },
-            { regex: /assertEquals\(.*\)/, issue: "Asserção Genérica: Considere usar AssertJ ou hamcrest para asserções mais semânticas e legíveis.", severity: "low" },
-            { regex: /Espresso\.onView/, issue: "UI Test: Verifique se o IdlingResource está configurado para evitar flaky tests.", severity: "medium" },
-            { regex: /runBlockingTest|runTest/, issue: "Coroutine Test: Garanta que o TestCoroutineDispatcher está sendo injetado para controle de tempo.", severity: "medium" },
-            { regex: /@Before|@BeforeEach/, issue: "Setup: Verifique se o setup não é excessivamente pesado, degradando a performance da suíte.", severity: "low" },
-            { regex: /@After|@AfterEach/, issue: "Cleanup: Verifique se não há vazamento de memória ou estado entre testes unitários.", severity: "medium" },
-            { regex: /verify\s*{/, issue: "Verificação de Chamada: Garanta que todas as chamadas críticas do mock foram verificadas (atLeastOne, exactly=1).", severity: "low" },
-            { regex: /coEvery\s*{/, issue: "Mock de Coroutine: Verifique se o retorno simulado cobre casos de erro/exceção da suspensão.", severity: "medium" },
-            { regex: /@RunWith\(Parameterized::class\)/, issue: "Teste Parametrizado: Verifique se a lista de parâmetros inclui valores limite (0, null, empty).", severity: "medium" }
+            { regex: /@Test\s+(fun\s+[^{]+{\s*})/, issue: "Teste Vazio: Teste Kotlin declarado sem corpo ou asserção.", severity: "critical" },
+            { regex: /@Ignore\(|@Disabled\(/, issue: "Teste Desativado: Teste pulado; cobertura incompleta.", severity: "high" },
+            { regex: /runBlockingTest|runTest\s*{\s*delay\(/, issue: "Teste Frágil: Uso de delay em testes de coroutine. Use TestCoroutineDispatcher.", severity: "high" },
+            { regex: /assertEquals\(true,\s*/, issue: "Asserção Genérica: Prefira assertTrue() ou asserções AssertJ mais legíveis.", severity: "low" },
+            { regex: /Thread\.sleep\(/, issue: "Anti-padrão: Uso de sleep no código de teste Kotlin; risco extremo de flaky tests.", severity: "high" },
+            { regex: /verify\s*{\s*[^\(]+\(\)\s*(wasNot\s*Called\(\))?\s*}/, issue: "Verificação Fraca: Garanta verificações exatas de parâmetros e contagem de chamadas no MockK.", severity: "medium" }
         ];
         const results = this.findPatterns([".kt"], rules);
 
         // Structural Boost: Integrity Engine
         const mockIssues = MockIntegrityEngine.analyze(this.projectRoot || "");
-        mockIssues.forEach(m => results.push({ file: "DYNAMIC", issue: m, severity: "low", line: 0 }));
+        mockIssues.forEach(m => results.push({ file: "DYNAMIC", agent: this.name, role: this.role, emoji: this.emoji, issue: m, severity: "low", stack: this.stack }));
 
         this.endMetrics(results.length);
         return results;
@@ -69,12 +65,15 @@ export class TestifyPersona extends BaseActivePersona {
         console.log(`🛠️ [Testify] Otimizando setup de testes e injetando dispatchers controlados em: ${blindSpots.join(", ")}`);
     }
 
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
         return {
             objective,
             analysis: "Auditando a estabilidade da camada de testes JVM/Android.",
-            recommendation: "Migrar JUnit 4 para JUnit 5 e usar MockK para melhor suporte a coroutines e singletons.",
-            severity: "low"
+            recommendation: "Garantir 80%+ de cobertura e erradicar anti-padrões como Thread.sleep.",
+            severity: "INFO",
+            file: _file,
+            issue: "PhD QA: Analisando infraestrutura de testes para " + objective,
+            context: this.name
         } as StrategicFinding;
     }
 

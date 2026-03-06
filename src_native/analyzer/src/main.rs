@@ -1,7 +1,9 @@
+mod fingerprint;
+
 use std::env;
 use std::fs;
+use std::path::Path;
 use tree_sitter::{Parser, Node};
-use tree_sitter_typescript;
 use serde::Serialize;
 
 #[derive(Serialize)]
@@ -39,14 +41,7 @@ fn walk_ast(node: Node, depth: i32, results: &mut AnalysisResult) {
     }
 }
 
-fn main() {
-    let args: Vec<String> = env::args().collect();
-    if args.len() < 2 {
-        eprintln!("Usage: analyzer <file_path>");
-        std::process::exit(1);
-    }
-
-    let path = &args[1];
+fn run_analyze(path: &str) {
     let source_code = fs::read_to_string(path).expect("Unable to read file");
     
     let loc = source_code.lines().count();
@@ -73,7 +68,7 @@ fn main() {
     let root_node = tree.root_node();
 
     let mut result = AnalysisResult {
-        path: path.clone(),
+        path: path.to_string(),
         complexity: 1,
         cognitive_complexity: 1,
         loc,
@@ -84,4 +79,47 @@ fn main() {
     walk_ast(root_node, 0, &mut result);
 
     println!("{}", serde_json::to_string(&result).unwrap());
+}
+
+fn run_fingerprint(agents_root: &str) {
+    let root = Path::new(agents_root);
+    if !root.exists() {
+        eprintln!("Error: directory '{}' does not exist", agents_root);
+        std::process::exit(1);
+    }
+
+    let report = fingerprint::extract_all(root);
+    println!("{}", serde_json::to_string_pretty(&report).unwrap());
+}
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    
+    if args.len() < 2 {
+        eprintln!("Usage:");
+        eprintln!("  analyzer analyze <file_path>           — Complexity analysis");
+        eprintln!("  analyzer fingerprint <agents_root>     — AST fingerprint extraction");
+        std::process::exit(1);
+    }
+
+    match args[1].as_str() {
+        "analyze" => {
+            if args.len() < 3 {
+                eprintln!("Usage: analyzer analyze <file_path>");
+                std::process::exit(1);
+            }
+            run_analyze(&args[2]);
+        }
+        "fingerprint" => {
+            if args.len() < 3 {
+                eprintln!("Usage: analyzer fingerprint <agents_root>");
+                std::process::exit(1);
+            }
+            run_fingerprint(&args[2]);
+        }
+        // Legacy: treat first arg as file path for backward compatibility
+        other => {
+            run_analyze(other);
+        }
+    }
 }

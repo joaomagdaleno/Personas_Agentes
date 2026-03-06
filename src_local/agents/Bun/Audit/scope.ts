@@ -32,13 +32,14 @@ export class ScopePersona extends BaseActivePersona {
         return results;
     }
 
-    private getScopeRules() {
+    private getScopeRules(): { regex: RegExp; issue: string; severity: string }[] {
         return [
-            { regex: '\\/\\/\\s*TODO[:\\s]', issue: 'Dívida: TODO pendente no código Bun.', severity: 'medium' },
-            { regex: '\\/\\/\\s*FIXME[:\\s]', issue: 'Dívida Crítica: FIXME no código Bun.', severity: 'high' },
-            { regex: '\\/\\/\\s*HACK[:\\s]', issue: 'Gambiarra: HACK no código Bun.', severity: 'high' },
-            { regex: 'bun add.*--dev.*(?:express|koa|fastify)', issue: 'Conflito: Framework HTTP Node.js em projeto Bun — use Bun.serve().', severity: 'high' },
-            { regex: '"node-fetch"|\'node-fetch\'', issue: 'Redundante: node-fetch em Bun — fetch() é nativo.', severity: 'medium' },
+            { regex: /\/\/\s*TODO[:\s]/, issue: 'Dívida: TODO pendente no código Bun.', severity: 'medium' },
+            { regex: /\/\/\s*FIXME[:\s]/, issue: 'Dívida Crítica: FIXME no código Bun.', severity: 'high' },
+            { regex: /\/\/\s*HACK[:\s]/, issue: 'Gambiarra: HACK detectado no projeto Bun.', severity: 'high' },
+            { regex: /\/\/\s*XXX[:\s]/, issue: 'Alerta: Área de código perigosa XXX no projeto Bun.', severity: 'medium' },
+            { regex: /throw\s+new\s+Error\(["']not\s+implemented/, issue: 'Incompleto: Funcionalidade Bun declarada mas não implementada.', severity: 'high' },
+            { regex: /as\s+any\s*\/\/.*later|as\s+any\s*\/\/.*temporary/, issue: 'Supressão Temporária: "any" com promessa de correção futura no Bun.', severity: 'medium' }
         ];
     }
 

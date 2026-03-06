@@ -17,8 +17,12 @@ export class ScalePersona extends BaseActivePersona {
     public override performAudit(): AuditFinding[] {
         this.startMetrics();
         const rules: AuditRule[] = [
-            { regex: /import\s+['"]package:.*?\/src\/.*?['"]/, issue: "Acoplamento: Importação de pastas internas (/src/) de outros pacotes detectada.", severity: "high" },
-            { regex: /global\s+/, issue: "Risco de Escalabilidade: Uso de estado global detectado.", severity: "critical" }
+            { regex: /\n{400,}/, issue: "God File: Arquivo Flutter excessivamente grande; risco de entropia.", severity: "high" },
+            { regex: /import\s+['"]\.\.\/\.\.\/.*?['"]/, issue: "Deep Relative: Importação excessivamente profunda; risco de acoplamento.", severity: "medium" },
+            { regex: /static\s+.*?/, issue: "Static Abuse: Uso excessivo de membros estáticos dificulta a escala e testes.", severity: "low" },
+            { regex: /import\s+['"]package:.*?\/src\/.*?['"]/, issue: "Internal Leak: Importando de /src/ de outros pacotes; risco de quebra de API.", severity: "high" },
+            { regex: /class\s+.*\{[\s\S]*class\s+/, issue: "Multi-Class File: Múltiplas classes em um arquivo dificultam a manutenção.", severity: "medium" },
+            { regex: /\w+\(.*?,\s*.*?,\s*.*?,\s*.*?,\s*.*?,\s*.*?,\s*.*?,\s*.*?,\s*.*?,\s*.*?\)/, issue: "Massive Constructor: Construtor com mais de 10 parâmetros detectado.", severity: "medium" }
         ];
         const results = this.findPatterns([".dart"], rules);
         this.endMetrics(results.length);
@@ -26,7 +30,14 @@ export class ScalePersona extends BaseActivePersona {
     }
 
     public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {
-        return `PhD Architecture: Analisando padrões de escalabilidade para ${objective}. Focando em desacoplamento e isolamento de estado.`;
+        return {
+            objective,
+            analysis: "Auditando padrões de escalabilidade para soberania arquitetural.",
+            file: _file,
+            issue: "PhD Architecture: Analisando padrões de desacoplamento e isolamento de estado.",
+            severity: "INFO",
+            context: this.name
+        } as StrategicFinding;
     }
 
     public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {

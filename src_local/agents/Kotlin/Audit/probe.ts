@@ -17,10 +17,12 @@ export class ProbePersona extends BaseActivePersona {
     public override performAudit(): AuditFinding[] {
         this.startMetrics();
         const rules: AuditRule[] = [
-            { regex: /HttpURLConnection/, issue: "Legacy API: Use OkHttp ou Retrofit para chamadas de rede resilientes.", severity: "medium" },
-            { regex: /openPersistentStorage\(/, issue: "Storage Local: Verifique se os dados são criptografados em repouso (SQLCipher/EncryptedSharedPreferences).", severity: "high" },
-            { regex: /getSharedPreferences\(.*MODE_PRIVATE\)/, issue: "Observação: Uso de SharedPreferences privado detectado. Verifique se há vazamento via logs.", severity: "low" },
-            { regex: /CertificatePinner/, issue: "Segurança de Rede: Pinning detectado. Verifique a expiração e backup de hashes.", severity: "low" }
+            { regex: /catch\s*\(.*\)\s*\{\s*\}/, issue: "Cegueira Kotlin: Catch vazio detectado; exceção engolida silenciosamente.", severity: "critical" },
+            { regex: /catch\s*\(.*\)\s*\{\s*(println|Log\.)/, issue: "Telemetria Frágil: Erro reportado via log informal no catch.", severity: "medium" },
+            { regex: /try\s*\{.*\}\s*catch\s*\(.*\)\s*\{.*\s*\/\/\s*TODO\s*\}/, issue: "Incompleto: Bloco catch contém TODO; tratamento pendente.", severity: "medium" },
+            { regex: /GlobalScope\.launch/, issue: "Risco de Resiliência: Uso de GlobalScope pode causar vazamento de corrotinas e erros não capturados.", severity: "high" },
+            { regex: /throw\s+Exception\(\)/, issue: "Vago: Lançamento de Exception genérica sem contexto.", severity: "medium" },
+            { regex: /runCatching\s*\{.*\}\.getOrNull\(\)/, issue: "Silenciado: Uso de getOrNull() ignora a falha sem rastro.", severity: "high" }
         ];
         const results = this.findPatterns([".kt", ".kts"], rules);
 
@@ -39,10 +41,10 @@ export class ProbePersona extends BaseActivePersona {
 
     public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {
         return {
-            objective,
-            analysis: "Investigando superfícies de ataque em rede e storage nativo Kotlin.",
-            recommendation: "Migrar para EncryptedSharedPreferences para garantir soberania de dados local.",
-            severity: "high"
+            file,
+            issue: `PhD Resilience: Analisando integridade de falhas para ${objective}. Focando em eliminação de catch-alls silenciosos.`,
+            severity: "INFO",
+            context: this.name
         } as StrategicFinding;
     }
 

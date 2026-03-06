@@ -16,9 +16,11 @@ export class BoltPersona extends BaseActivePersona {
 
     performAudit(): AuditFinding[] {
         const rules: AuditRule[] = [
-            { regex: /while\s*\(true\)\s*\{\s*\}/, issue: "Gargalo: Busy-waiting detectado em Dart.", severity: "critical" },
-            { regex: /sleep\(/, issue: "Risco: Uso de sleep bloqueia a UI Thread do Flutter.", severity: "high" },
-            { regex: /for\s*\(var\s+i\s*=\s*0;\s*i\s*<\s*.*\.length;\s*i\+\+\)/, issue: "Otimização: Prefira .map() ou .forEach() para iteráveis em Dart.", severity: "low" }
+            { regex: /while\s*\(true\)\s*\{\s*\}/, issue: "Busy Wait: Loop infinito sem processamento assíncrono detectado.", severity: "critical" },
+            { regex: /sleep\(/, issue: "Blocking: Uso de sleep() bloqueia a Main Thread do Flutter.", severity: "critical" },
+            { regex: /for\s*\(.*;.*;.*\)\s*\{[^}]*await/, issue: "Sequential Await: await dentro de loop sequencial bloqueia a UI.", severity: "high" },
+            { regex: /jsonDecode\(jsonEncode/, issue: "Ineficiência: Deep clone pesado via JSON roundtrip.", severity: "medium" },
+            { regex: /\.forEach\(async/, issue: "Async Trap: forEach com async não aguarda execução em Dart.", severity: "high" }
         ];
         this.startMetrics();
         const results = this.findPatterns([".dart"], rules);

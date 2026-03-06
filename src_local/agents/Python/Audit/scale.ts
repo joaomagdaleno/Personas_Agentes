@@ -17,10 +17,12 @@ export class ScalePersona extends BaseActivePersona {
     public override performAudit(): AuditFinding[] {
         this.startMetrics();
         const rules: AuditRule[] = [
-            { regex: /psutil\.Process/, issue: "Monitoramento de Processo: Verifique se o polling de recursos é eficiente e se não há vazamento de descritores.", severity: "low" },
-            { regex: /gc\.collect\(\)/, issue: "Coleta de Lixo Manual: O uso de gc.collect() pode indicar má gestão de memória ou referências circulares.", severity: "medium" },
-            { regex: /multiprocessing\.Pool/, issue: "Escalabilidade de CPU: Verifique se o número de workers é proporcional ao hardware (CORES) para evitar thrashing.", severity: "medium" },
-            { regex: /resource\.setrlimit\(/, issue: "Limite de Recurso: Verifique se os limites de sistema (ulimit) são respeitados para evitar crashes por OOM.", severity: "high" }
+            { regex: /\n{400,}/, issue: "God File: Arquivo excessivamente grande; risco de entropia Python.", severity: "high" },
+            { regex: /from\s+.*?\.\.\/\.\.\//, issue: "Deep Relative: Importação excessivamente profunda; risco de acoplamento.", severity: "medium" },
+            { regex: /multiprocessing\.Pool/, issue: "Process Scaling: Verifique a gestão de workers para evitar thrashing de CPU.", severity: "medium" },
+            { regex: /gc\.collect\(\)/, issue: "Memory Pressure: Coleta de lixo manual sugere problemas de escala de memória.", severity: "medium" },
+            { regex: /resource\.setrlimit/, issue: "System Limits: Ajuste manual de rlimit detectado; risco de instabilidade.", severity: "high" },
+            { regex: /import\s+\*/, issue: "Wildcard Import: Poluição de namespace dificulta rastreabilidade e escala.", severity: "low" }
         ];
         const results = this.findPatterns([".py"], rules);
 

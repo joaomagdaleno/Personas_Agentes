@@ -21,22 +21,31 @@ export class ScalePersona extends BaseActivePersona {
         logger.info(`[${this.name}] Analisando Arquitetura Bun...`);
 
         const results: any[] = [];
+        const rules: AuditRule[] = [
+            { regex: /\n{400,}/, issue: "God File: Arquivo excessivamente grande; risco de entropia.", severity: "high" },
+            { regex: /import\s+.*from\s+['"]\.\.\/\.\.\//, issue: "Deep Relative: Importação excessivamente profunda; risco de acoplamento.", severity: "medium" },
+            { regex: /static\s+\w+\s+\w+/, issue: "Static Abuse: Uso excessivo de membros estáticos pode dificultar testes e escalabilidade.", severity: "low" },
+            { regex: /import\s+.*from\s+['"].*\/internal\/.*['"]/, issue: "Internal Leak: Importando de diretório interno de outro módulo.", severity: "high" },
+            { regex: /Bun\.spawn|Bun\.Worker/, issue: "Resource Check: Verifique se processos/workers são encerrados corretamente.", severity: "medium" },
+            { regex: /import\s+.*\{[\s\S]{500,}\}/, issue: "Massive Import: Lista de importação muito longa; sugere quebras de SRP.", severity: "low" }
+        ];
+
         for (const [filePath, content] of Object.entries(this.contextData)) {
             if (!filePath.endsWith('.ts') && !filePath.endsWith('.tsx')) continue;
-            const lines = (content as string).split('\n');
-            if (lines.length > 400) {
-                results.push({ file: filePath, issue: `God File: ${lines.length} linhas — arquivo Bun monolítico.`, severity: 'high', persona: this.name });
-            }
-            const classCount = ((content as string).match(/class\s+\w+/g) || []).length;
-            if (classCount > 3) {
-                results.push({ file: filePath, issue: `Multi-Classe: ${classCount} classes em um arquivo — violar separação de responsabilidades.`, severity: 'medium', persona: this.name });
-            }
-        }
 
-        // Check for bundler config
-        const hasBunfig = Object.keys(this.contextData).some(f => f.endsWith('bunfig.toml'));
-        if (!hasBunfig) {
-            results.push({ file: 'ROOT', issue: 'Ausência: Projeto Bun sem bunfig.toml — sem configuração otimizada.', severity: 'medium', persona: this.name });
+            // Apply regex rules
+            for (const rule of rules) {
+                const regex = new RegExp(rule.regex, 'g');
+                if (regex.test(content as string)) {
+                    results.push({ file: filePath, issue: rule.issue, severity: rule.severity, persona: this.name });
+                }
+            }
+
+            // Programmatic God File check (Fallback)
+            const lines = (content as string).split('\n');
+            if (lines.length > 400 && !results.some(r => r.file === filePath && r.issue.includes("God File"))) {
+                results.push({ file: filePath, issue: `God File (Programmatic): ${lines.length} linhas.`, severity: 'high', persona: this.name });
+            }
         }
 
         const duration = (Date.now() - start) / 1000;

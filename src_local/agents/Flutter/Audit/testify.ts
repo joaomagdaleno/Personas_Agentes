@@ -34,22 +34,18 @@ export class TestifyPersona extends BaseActivePersona {
     public override performAudit(): AuditFinding[] {
         this.startMetrics();
         const rules: AuditRule[] = [
-            { regex: /test\s*\(/, issue: "Teste Básico: Verifique se os nomes dos testes são semânticos e seguem o padrão 'should...'.", severity: "low" },
-            { regex: /testWidget|pumpWidget/, issue: "Widget Test: Verifique se todas as dependências de injeção estão mockadas adequadamente.", severity: "medium" },
-            { regex: /Mockito\.when|when\(/, issue: "Mocking: O uso excessivo de mocks pode mascarar falhas de integração. Prefira fakes quando possível.", severity: "low" },
-            { regex: /expect\(.*\.isTrue\)/, issue: "Asserção Genérica: Use asserções mais gráficas (ex: isA<Type>) para melhor diagnóstico forense.", severity: "low" },
-            { regex: /tester\.pumpAndSettle\(\)/, issue: "Sync de UI: Evite pumpAndSettle em loops infinitos de animação; use timeout explícito.", severity: "medium" },
-            { regex: /expect\(.*\.throwsA\)/, issue: "Teste de Exceção: Verifique se a mensagem da exceção também está sendo validada.", severity: "medium" },
-            { regex: /group\s*\(/, issue: "Organização: Grupos de teste devem ter setup/teardown claros para evitar poluição de estado.", severity: "low" },
-            { regex: /tester\.tap\(.*\)/, issue: "Interação de UI: Sempre use 'pump' após interações para garantir que o frame foi renderizado.", severity: "medium" },
-            { regex: /@visibleForTesting/, issue: "Exposição de Estado: Verifique se a variável realmente precisa ser pública para o teste ou se o teste está muito acoplado.", severity: "low" },
-            { regex: /goldenFile/, issue: "Golden Test: Verifique se as imagens de referência foram geradas em ambientes controlados para evitar falsos negativos.", severity: "medium" }
+            { regex: /testWidgets?\s*\(/, issue: "Teste Vazio: Teste Flutter/Dart sem corpo ou framework corrompido.", severity: "critical" },
+            { regex: /@Skip\(|skip:\s*true/, issue: "Teste Desativado: Teste pulado intencionalmente; expõe cobertura incompleta.", severity: "high" },
+            { regex: /tester\.pumpAndSettle\(\)/, issue: "Teste Frágil: Evite pumpAndSettle sem limites; pode causar timeout em loops de UI.", severity: "medium" },
+            { regex: /expect\([\w\.]*,\s*(?:true|false)\)/, issue: "Asserção Genérica: Use asserções mais específicas ou custom matchers (isA<Type>).", severity: "low" },
+            { regex: /Future\.delayed\(/, issue: "Anti-padrão: Uso de delay forçado em teste; prefira pump() ou runAsync().", severity: "high" },
+            { regex: /verify\(\s*[^\)]+\s*\)(\.called\(1\))?/, issue: "Verificação Fraca: Especifique se a verificação do Mocktail usou os argumentos corretos.", severity: "medium" }
         ];
         const results = this.findPatterns([".dart"], rules);
 
         // Structural Boost: Integrity Engine
         const mockIssues = MockIntegrityEngine.analyze(this.projectRoot || "");
-        mockIssues.forEach(m => results.push({ file: "DYNAMIC", issue: m, severity: "low", line: 0 }));
+        mockIssues.forEach(m => results.push({ file: "DYNAMIC", agent: this.name, role: this.role, emoji: this.emoji, issue: m, severity: "low", stack: this.stack }));
 
         this.endMetrics(results.length);
         return results;
@@ -69,12 +65,15 @@ export class TestifyPersona extends BaseActivePersona {
         console.log(`🛠️ [Testify] Gerando mocks inteligentes e corrigindo asserções frágeis em: ${blindSpots.join(", ")}`);
     }
 
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
         return {
             objective,
             analysis: "Auditando a densidade de verificação e resiliência da suíte de testes Flutter.",
-            recommendation: "Aumentar uso de 'Golden Tests' para detecção de regressão visual e garantir isolamento de 'State Management'.",
-            severity: "low"
+            recommendation: "Aumentar uso de Golden Tests e mitigar dependências frágeis no Mocktail.",
+            severity: "INFO",
+            file: _file,
+            issue: "PhD QA: Analisando infraestrutura de testes para " + objective,
+            context: this.name
         } as StrategicFinding;
     }
 

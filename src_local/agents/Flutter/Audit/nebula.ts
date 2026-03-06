@@ -18,7 +18,11 @@ export class NebulaPersona extends BaseActivePersona {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /AKIA[0-9A-Z]{16}/, issue: "Vulnerabilidade Crítica: Chave AWS exposta no código Flutter.", severity: "critical" },
-            { regex: /https:\/\/(?!.*\.google\.com|.*\.firebaseio\.com)/, issue: "Aviso: Domínio externo detectado. Verifique segurança de CORS.", severity: "medium" }
+            { regex: /(?:api[_-]?key|apiKey|API_KEY)\s*[:=]\s*["\'][^"\']{8,}/, issue: "Vazamento: API Key hardcoded no código Flutter.", severity: "critical" },
+            { regex: /(?:password|passwd|secret)\s*[:=]\s*["\'][^"\']+["\']/, issue: "Vazamento: Credencial hardcoded no código Flutter.", severity: "critical" },
+            { regex: /sk-[a-zA-Z0-9]{20,}/, issue: "Vulnerabilidade Crítica: Chave OpenAI exposta.", severity: "critical" },
+            { regex: /ghp_[a-zA-Z0-9]{36}/, issue: "Vulnerabilidade Crítica: Token GitHub exposto.", severity: "critical" },
+            { regex: /String\.fromEnvironment\(.*,\s*defaultValue:\s*["\'][^"\']{8,}/, issue: "Risco: Fallback de ambiente contém segredo real.", severity: "high" }
         ];
         const results = this.findPatterns([".dart", ".json", ".yaml"], rules);
         this.endMetrics(results.length);
@@ -34,7 +38,12 @@ export class NebulaPersona extends BaseActivePersona {
                 context: this.name
             };
         }
-        return `PhD Cloud: Analisando infraestrutura para ${objective}. Focando em isolamento de chaves e segurança de tráfego.`;
+        return {
+            file,
+            issue: `PhD Cloud Security: Analisando soberania de segredos para ${objective}. Focando em eliminação de hardcoded tokens.`,
+            severity: "INFO",
+            context: this.name
+        } as StrategicFinding;
     }
 
     public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {

@@ -13,6 +13,7 @@ export class TestifyPersona extends BaseActivePersona {
         { regex: 'test\\.todo\\(', issue: 'Teste Pendente: test.todo em bun:test.', severity: 'medium' },
         { regex: 'jest\\.', issue: 'Incompatível: Usando API Jest diretamente — use bun:test nativo.', severity: 'high' },
         { regex: 'require\\(["\']jest["\']\\)', issue: 'Conflito: Importando Jest em projeto Bun — use bun:test.', severity: 'high' },
+        { regex: 'setTimeout\\(', issue: 'Teste Frágil: setTimeout detectado; use temporizadores nativos de bun:test.', severity: 'medium' }
     ];
 
     constructor(projectRoot: string | null = null) {
@@ -37,16 +38,16 @@ export class TestifyPersona extends BaseActivePersona {
     }
 
     private applyRule(rule: any, results: any[]) {
-        const regex = new RegExp(rule.regex, 'g');
+        const pattern = new RegExp(rule.regex, 'g');
         Object.entries(this.contextData).forEach(([filePath, content]) => {
             if (this.isTestFile(filePath)) {
-                this.scanContentForRule(filePath, content as string, regex, rule, results);
+                this.scanContentForRule(filePath, content as string, pattern, rule, results);
             }
         });
     }
 
-    private scanContentForRule(filePath: string, content: string, regex: RegExp, rule: any, results: any[]) {
-        const matches = content.matchAll(regex);
+    private scanContentForRule(filePath: string, content: string, pattern: RegExp, rule: any, results: any[]) {
+        const matches = content.matchAll(pattern);
         for (const match of matches) {
             results.push(this.createFinding(filePath, rule, match[0]));
         }

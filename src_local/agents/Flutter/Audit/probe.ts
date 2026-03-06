@@ -17,10 +17,12 @@ export class ProbePersona extends BaseActivePersona {
     public override performAudit(): AuditFinding[] {
         this.startMetrics();
         const rules: AuditRule[] = [
-            { regex: /http\.get\(/, issue: "Risco de Segurança: Chamada HTTP sem tratamento de erro explícito. Use um cliente resiliente.", severity: "high" },
-            { regex: /SharedPreferences/, issue: "Persistência Insegura: Dados sensíveis não devem ser armazenados de forma plana em SharedPreferences.", severity: "critical" },
-            { regex: /Dio\(|http\.Client\(/, issue: "Observação: Instância de cliente de rede detectada. Verifique timeouts e interceptors.", severity: "low" },
-            { regex: /checkPermission\(/, issue: "Auditoria de Permissões: Verifique se o fluxo lida logicamente com a negação do usuário.", severity: "medium" }
+            { regex: /catch\s*\(.*\)\s*\{\s*\}/, issue: "Cegueira Flutter: catch vazio engole exceção silenciosamente.", severity: "critical" },
+            { regex: /\.catchError\(\(.*\)\s*\{\s*\}\)/, issue: "Promise Silenciada: .catchError vazio engole erro de Future.", severity: "critical" },
+            { regex: /catch\s*\(.*\)\s*\{\s*print\(/, issue: "Telemetria Informal: Erro logado via print no bloco catch.", severity: "medium" },
+            { regex: /onError:\s*\(.*\)\s*\{\s*\}/, issue: "Stream Frágil: Handler onError vazio detectado.", severity: "high" },
+            { regex: /throw\s+Exception\(\)/, issue: "Vago: Exception lançada sem mensagem descritiva.", severity: "medium" },
+            { regex: /\/\/\s*TODO:?\s*handle\s*error/i, issue: "Débito Tech: Tratamento de erro pendente detectado no comentário.", severity: "medium" }
         ];
         const results = this.findPatterns([".dart"], rules);
 
@@ -41,9 +43,11 @@ export class ProbePersona extends BaseActivePersona {
     public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {
         return {
             objective,
-            analysis: "Investigando superfícies de ataque em rede e storage Flutter.",
-            recommendation: "Implementar 'Secure Storage' em vez de SharedPreferences para dados sensíveis.",
-            severity: "high"
+            analysis: "Investigando superfícies de ataque em rede e storage",
+            file: _file,
+            issue: `PhD Resilience: Analisando integridade de falhas para ${objective}. Focando em eliminação de catch-alls silenciosos.`,
+            severity: "INFO",
+            context: this.name
         } as StrategicFinding;
     }
 

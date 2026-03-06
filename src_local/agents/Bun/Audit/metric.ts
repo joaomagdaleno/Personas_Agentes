@@ -21,10 +21,11 @@ export class MetricPersona extends BaseActivePersona {
         logger.info(`[${this.name}] Analisando Observabilidade Bun...`);
 
         const auditRules = [
-            { regex: 'console\\.log\\(', issue: 'Cegueira: console.log em vez de logger estruturado com Bun.', severity: 'high' },
-            { regex: 'console\\.error\\(', issue: 'Telemetria Fraca: console.error sem contexto estruturado Bun.', severity: 'medium' },
+            { regex: 'console\\.log\\(', issue: 'Cegueira: console.log em produção — use logger estruturado Bun.', severity: 'high' },
+            { regex: 'console\\.error\\(|console\\.warn\\(', issue: 'Telemetria Fraca: console sem contexto estruturado.', severity: 'medium' },
+            { regex: 'catch\\s*\\([^)]*\\)\\s*\\{\\s*\\}', issue: 'Cegueira Total: catch vazio engole erros silenciosamente.', severity: 'critical' },
             { regex: 'process\\.hrtime', issue: 'Legado: process.hrtime — use Bun.nanoseconds() para timing nativo.', severity: 'medium' },
-            { regex: 'performance\\.now\\(\\)', issue: 'Alternativa: performance.now() — considere Bun.nanoseconds() para precisão.', severity: 'low' },
+            { regex: 'performance\\.now\\(\\)', issue: 'Alternativa: performance.now() — considere Bun.nanoseconds().', severity: 'low' },
         ];
 
         const results: any[] = [];

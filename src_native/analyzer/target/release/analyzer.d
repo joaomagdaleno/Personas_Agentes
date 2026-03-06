@@ -1,1 +1,1 @@
-C:\Users\joaovitormagdaleno\Documents\GitHub\Personas_Agentes\src_native\analyzer\target\release\analyzer.exe: C:\Users\joaovitormagdaleno\Documents\GitHub\Personas_Agentes\src_native\analyzer\src\main.rs
+C:\Users\joaovitormagdaleno\Documents\GitHub\Personas_Agentes\src_native\analyzer\target\release\analyzer.exe: C:\Users\joaovitormagdaleno\Documents\GitHub\Personas_Agentes\src_native\analyzer\src\fingerprint.rs C:\Users\joaovitormagdaleno\Documents\GitHub\Personas_Agentes\src_native\analyzer\src\main.rs

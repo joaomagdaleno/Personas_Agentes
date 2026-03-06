@@ -17,10 +17,11 @@ export class MetricPersona extends BaseActivePersona {
     public override performAudit(): AuditFinding[] {
         this.startMetrics();
         const rules: AuditRule[] = [
-            { regex: /Log\.d\(|Log\.i\(/, issue: "Logging Android: Verifique se o nível de log é adequado para produção e se não expõe PII.", severity: "low" },
-            { regex: /System\.out\.println/, issue: "Saída Não Gerenciada: Use o sistema de logs da plataforma (Timber/Log) para garantir rastreabilidade.", severity: "medium" },
-            { regex: /measureTimeMillis \{/, issue: "Observação de Performance: Verifique se o profiling é condicional ao modo debug.", severity: "low" },
-            { regex: /FirebaseAnalytics\.logEvent/, issue: "Acoplamento Analítico: Verifique se os nomes dos eventos seguem a convenção global PhD.", severity: "medium" }
+            { regex: /System\.out\.println|Log\.[di]\(/, issue: "Cegueira: Saída não gerenciada ou log de debug em produção.", severity: "high" },
+            { regex: /catch\s*\(.*\)\s*\{\s*\}/, issue: "Cegueira Total: Bloco catch vazio engole exceções silenciosamente.", severity: "critical" },
+            { regex: /catch\s*\(.*\)\s*\{\s*(println|Log\.)/, issue: "Telemetria Informal: Erro logado sem contexto estruturado no catch.", severity: "medium" },
+            { regex: /FirebaseAnalytics\.logEvent/, issue: "Acoplamento: Instrumentação direta de analytics sem camada de abstração.", severity: "low" },
+            { regex: /measureTimeMillis/, issue: "Profiling: Medição ad-hoc de performance detectada.", severity: "low" }
         ];
         const results = this.findPatterns([".kt", ".kts"], rules);
 

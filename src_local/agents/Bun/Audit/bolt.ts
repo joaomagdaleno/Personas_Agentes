@@ -21,12 +21,11 @@ export class BoltPersona extends BaseActivePersona {
         logger.info(`[${this.name}] Analisando Performance Bun...`);
 
         const auditRules = [
-            { regex: 'require\\(["\']fs["\']\\)|from\\s+["\']fs["\']', issue: 'Polyfill: Usando Node "fs" — use Bun.file() e Bun.write() para I/O nativo.', severity: 'high' },
-            { regex: 'require\\(["\']path["\']\\)|from\\s+["\']path["\']', issue: 'Polyfill: Usando Node "path" — Bun suporta import.meta.dir nativamente.', severity: 'medium' },
-            { regex: 'require\\(["\']child_process["\']\\)|from\\s+["\']child_process["\']', issue: 'Polyfill: Usando Node "child_process" — use Bun.spawn() ou Bun.$.', severity: 'high' },
-            { regex: 'require\\(["\']crypto["\']\\)|from\\s+["\']crypto["\']', issue: 'Polyfill: Usando Node "crypto" — use Bun.password e Bun.CryptoHasher.', severity: 'medium' },
-            { regex: 'Buffer\\.from\\(', issue: 'Legado: Buffer.from() — Bun favorece Uint8Array e Blob nativos.', severity: 'low' },
-            { regex: 'readFileSync|writeFileSync', issue: 'Bloqueio: Sync I/O — use Bun.file().text() e Bun.write() assíncronos.', severity: 'high' },
+            { regex: 'while\\s*\\(\\s*true\\s*\\)', issue: 'Gargalo: Loop infinito sem break condicional (Busy-waiting).', severity: 'critical' },
+            { regex: 'readFileSync|writeFileSync|require\\(["\']fs["\']\\)|from\\s+["\']fs["\']', issue: 'Bloqueio: Operação síncrona ou Node "fs" — use Bun.file() para I/O nativo.', severity: 'critical' },
+            { regex: 'for\\s*\\(.*;.*;.*\\)\\s*\\{[^}]*await', issue: 'Serialização: await dentro de for-loop sequencializa operações paralelas.', severity: 'high' },
+            { regex: 'JSON\\.parse\\(JSON\\.stringify|Buffer\\.from\\(', issue: 'Ineficiência: Deep clone ou Buffer legado — use structuredClone ou Uint8Array.', severity: 'medium' },
+            { regex: '\\.forEach\\(async', issue: 'Armadilha: forEach com async não aguarda — use for...of ou Promise.all.', severity: 'high' },
         ];
 
         const results: any[] = [];

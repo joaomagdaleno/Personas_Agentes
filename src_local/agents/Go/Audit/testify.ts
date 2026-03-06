@@ -40,20 +40,11 @@ export class TestifyPersona extends BaseActivePersona {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /func\s+Test.*\{\s*}/, issue: "Empty Test: Teste sem lógica ou asserções detectado.", severity: "critical" },
-            { regex: /assert\.Equal\(t,\s*nil,\s*err\)/, issue: "Generic Assert: Prefira assert.NoError(t, err) para mensagens de erro mais claras.", severity: "low" },
-            { regex: /testing\.Short\(\)/, issue: "Skipped Logic: Verifique se os testes 'short' não estão ocultando regressões críticas.", severity: "medium" },
-            { regex: /setup\(\)|teardown\(\)/, issue: "Legacy Setup: Prefira t.Cleanup() para gestão de recursos em testes Go modernos.", severity: "medium" },
-            { regex: /reflect\.DeepEqual/, issue: "Performance: Prefira google/go-cmp para comparações complexas e mais legíveis.", severity: "low" },
-            { regex: /go\s+test\s+-race/, issue: "Race Detection: Garanta que o CI sempre execute com a flag -race.", severity: "high" },
-            { regex: /time\.Sleep/, issue: "Flaky Test Risk: O uso de time.Sleep em testes Go indica fragilidade; use canais ou sincronização.", severity: "high" },
             { regex: /t\.Skip\(\)/, issue: "Suppressed Test: Verifique se o skip é temporário para evitar buracos na cobertura.", severity: "medium" },
-            { regex: /Fatal\(/, issue: "Abrupt Termination: Fatal() impede a execução de outros testes paralelos no mesmo processo; use Error() se possível.", severity: "low" },
-            { regex: /mock\.Anything/, issue: "Opaque Mocking: Evite Anything; use tipos concretos ou matchers específicos para maior rigor.", severity: "medium" },
-            { regex: /t\.Log\(/, issue: "Verbose Testing: Verifique se o log é necessário ou se deveria ser uma asserção falha.", severity: "low" },
-            { regex: /context\.Background\(\)/, issue: "Static Context: Prefira t.Context() (ou similar) para disparar cancelamentos automáticos no fim do teste.", severity: "medium" },
-            { regex: /require\./, issue: "Strict Requirement: Uso de require detectado; o teste para imediatamente em falha. Verifique se isso é desejado.", severity: "low" },
-            { regex: /Gomega/, issue: "Alternative Matchers: Uso de Gomega detectado; verifique se há consistência nas asserções do projeto.", severity: "low" },
-            { regex: /GoldenFile/, issue: "Snapshot Integrity: Verifique se os arquivos 'golden' são atualizados e auditados regularmente.", severity: "medium" }
+            { regex: /time\.Sleep/, issue: "Flaky Test Risk: O uso de time.Sleep em testes Go indica fragilidade; use canais ou sincronização.", severity: "high" },
+            { regex: /reflect\.DeepEqual/, issue: "Performance: Prefira google/go-cmp para comparações complexas e mais legíveis.", severity: "low" },
+            { regex: /func\s+Test.*t\.Parallel\(\)/, issue: "Performance: Teste não paralelizado detectado; verifique se pode usar t.Parallel().", severity: "low" },
+            { regex: /assert\.Equal\(t,\s*nil,\s*err\)/, issue: "Generic Assert: Prefira assert.NoError(t, err) para mensagens de erro mais claras.", severity: "low" }
         ];
         const results = this.findPatterns([".go", "_test.go"], rules);
 

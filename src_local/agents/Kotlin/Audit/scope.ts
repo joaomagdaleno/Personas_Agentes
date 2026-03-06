@@ -17,15 +17,27 @@ export class ScopePersona extends BaseActivePersona {
     public override performAudit(): AuditFinding[] {
         this.startMetrics();
         const results = this.findPatterns([".kt"], [
-            { regex: /\/\/\s*TODO/, issue: "Débito Técnico: Marcador TODO detectado. Verifique pendências no Jira/Linear.", severity: "low" },
-            { regex: /throw\s+NotImplementedError/, issue: "Incompletude: Funcionalidade prometida mas não implementada no código Kotlin.", severity: "high" }
+            { regex: /\/\/\s*TODO[:\s]/, issue: "Dívida: TODO pendente no código Kotlin.", severity: "medium" },
+            { regex: /\/\/\s*FIXME[:\s]/, issue: "Dívida Crítica: FIXME detectado na lógica Kotlin.", severity: "high" },
+            { regex: /\/\/\s*HACK[:\s]/, issue: "Gambiarra: HACK detectado no projeto Kotlin.", severity: "high" },
+            { regex: /\/\/\s*XXX[:\s]/, issue: "Alerta: Verifique ponto crítico XXX no código Kotlin.", severity: "medium" },
+            { regex: /TODO\(|throw\s+NotImplementedError/, issue: "Incompleto: Funcionalidade Kotlin declarada com placeholder.", severity: "high" },
+            { regex: /@Suppress/, issue: "Omissão: Supressão manual de avisos; verifique dívida técnica Kotlin.", severity: "low" }
         ]);
         this.endMetrics(results.length);
         return results;
     }
 
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {
-        return `PhD Product: Analisando escopo e débitos técnicos para ${objective}. Garantindo que o roadmap técnico Android seja cumprido.`;
+    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
+        return {
+            objective,
+            analysis: "Auditando integridade do backlog e dívida técnica Kotlin.",
+            recommendation: "Garantir que todos os marcadores de dívida técnica sejam resolvidos antes do fechamento do sprint.",
+            severity: "INFO",
+            file: _file,
+            issue: "PhD Scope: Analisando integridade do backlog e eliminação de dívida técnica Kotlin.",
+            context: this.name
+        } as StrategicFinding;
     }
 
     public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {

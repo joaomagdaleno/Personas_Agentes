@@ -17,16 +17,28 @@ export class ScopePersona extends BaseActivePersona {
     public override performAudit(): AuditFinding[] {
         this.startMetrics();
         const rules: AuditRule[] = [
-            { regex: /\/\/\s*TODO/, issue: "Débito Técnico: Marcador TODO detectado. Verifique pendências de entrega.", severity: "low" },
-            { regex: /throw\s+UnimplementedError\(\)/, issue: "Incompletude: Funcionalidade prometida mas não implementada.", severity: "high" }
+            { regex: /\/\/\s*TODO[:\s]/, issue: "Dívida: TODO pendente no código Flutter.", severity: "medium" },
+            { regex: /\/\/\s*FIXME[:\s]/, issue: "Dívida Crítica: FIXME detectado na lógica Flutter.", severity: "high" },
+            { regex: /\/\/\s*HACK[:\s]/, issue: "Gambiarra: HACK detectado no projeto Flutter.", severity: "high" },
+            { regex: /\/\/\s*XXX[:\s]/, issue: "Alerta: Verifique ponto crítico XXX no código Flutter.", severity: "medium" },
+            { regex: /throw\s+UnimplementedError\(\)/, issue: "Incompleto: Funcionalidade Flutter declarada mas não implementada.", severity: "high" },
+            { regex: /\/\/\s*ignore[:\s]/, issue: "Omissão: Supressão manual de lint; verifique dívida técnica Flutter.", severity: "low" }
         ];
         const results = this.findPatterns([".dart"], rules);
         this.endMetrics(results.length);
         return results;
     }
 
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {
-        return `PhD Product: Analisando escopo técnico e débitos para ${objective}. Garantindo que o MVP não comprometa a estabilidade.`;
+    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
+        return {
+            objective,
+            analysis: "Auditando integridade do backlog e dívida técnica Flutter.",
+            recommendation: "Garantir que todos os marcadores de dívida técnica sejam resolvidos para manter a soberania do app.",
+            severity: "INFO",
+            file: _file,
+            issue: "PhD Scope: Analisando integridade do backlog e eliminação de dívida técnica.",
+            context: this.name
+        } as StrategicFinding;
     }
 
     public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {

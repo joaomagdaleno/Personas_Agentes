@@ -17,15 +17,26 @@ export class ScalePersona extends BaseActivePersona {
     public override performAudit(): AuditFinding[] {
         this.startMetrics();
         const results = this.findPatterns([".kt"], [
-            { regex: /import\s+.*?\.\*/, issue: "Acoplamento: Wildcard import detectado em Kotlin. Prefira importações explícitas.", severity: "high" },
-            { regex: /object\s+\w+\s*\{(?!.*companion)/, issue: "Aviso: Singleton manual detectado. Considere o uso de Injeção de Dependência (Hilt/Koin).", severity: "medium" }
+            { regex: /\n{400,}/, issue: "God File: Arquivo excessivamente grande; risco de entropia Kotlin.", severity: "high" },
+            { regex: /import\s+.*?\.\.\/\.\.\//, issue: "Deep Relative: Importação excessivamente profunda; risco de acoplamento.", severity: "medium" },
+            { regex: /object\s+\w+\s*\{(?!.*companion)/, issue: "Singleton Abuse: Uso de 'object' pode dificultar injeção de dependência.", severity: "medium" },
+            { regex: /import\s+.*?\.\*/, issue: "Wildcard Import: Poluição de namespace Kotlin detectada.", severity: "low" },
+            { regex: /import\s+.*?\.internal\..*?/, issue: "Internal Leak: Importando de pacotes internos de outros módulos.", severity: "high" },
+            { regex: /lateinit\s+var/, issue: "State Risk: 'lateinit var' pode causar UninitializedPropertyAccessException em escala.", severity: "medium" }
         ]);
         this.endMetrics(results.length);
         return results;
     }
 
     public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {
-        return `PhD Architecture: Analisando padrões de escalabilidade Android para ${objective}. Focando em modularização e injeção de dependência.`;
+        return {
+            objective,
+            analysis: "Auditando padrões de escalabilidade para soberania arquitetural Kotlin.",
+            file: _file,
+            issue: "PhD Architecture: Analisando padrões de desacoplamento e injeção de dependência.",
+            severity: "INFO",
+            context: this.name
+        } as StrategicFinding;
     }
 
     public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {

@@ -36,12 +36,12 @@ export class ProbePersona extends BaseActivePersona {
     public override performAudit(): AuditFinding[] {
         this.startMetrics();
         const rules: AuditRule[] = [
-            { regex: /_\s*=\s*.*\(.*\)/, issue: "Omissão Silenciosa: Ignorar retorno explicitamente via '_' pode ocultar falhas críticas.", severity: "high" },
-            { regex: /recover\(\)/, issue: "Panic Recovery: Verifique se o recover captura o stacktrace e o envia para o sistema de erros (Sentry/NewRelic).", severity: "medium" },
-            { regex: /fmt\.Errorf\(.*%v/, issue: "Error Wrapping: Use '%w' em fmt.Errorf para permitir o desempacotamento de erros via errors.Is/As.", severity: "low" },
-            { regex: /github\.com\/sirupsen\/logrus/, issue: "Legacy Logger: Logrus está em modo de manutenção; considere migrar para zap ou zerolog.", severity: "low" },
-            { regex: /OpenTelemetry/, issue: "Distributed Tracing: Instrumentação OTel detectada; garanta que os Spans possuem o Context correto.", severity: "low" },
-            { regex: /errors\.New\(.*"Error"/i, issue: "Erro Não-Semântico: Use mensagens de erro descritivas para facilitar o diagnóstico forense.", severity: "medium" }
+            { regex: /_\s*=\s*.*\(.*\)/, issue: "Omissão Silenciosa: Ignorar retorno explicitamente via '_' pode ocultar falhas críticas.", severity: "critical" },
+            { regex: /err\s*:=\s*.*\(.*\)(?![^}]*if\s+err\s*!=\s*nil)/, issue: "Silenciado: Erro atribuído mas não verificado imediatamente.", severity: "critical" },
+            { regex: /recover\(\)/, issue: "Panic Recovery: Verifique se o recover() garante a telemetria do erro.", severity: "medium" },
+            { regex: /fmt\.Errorf\(.*%v/, issue: "Weak Context: Use '%w' em fmt.Errorf para permitir wrapping de erros.", severity: "low" },
+            { regex: /log\.Fatal/, issue: "Unmanaged Exit: log.Fatal interrompe o processo sem cleanup gracioso.", severity: "high" },
+            { regex: /errors\.New\(.*"Error"/i, issue: "Vago: Mensagem de erro genérica dificulta o diagnóstico.", severity: "medium" }
         ];
         const results = this.findPatterns([".go"], rules);
 
