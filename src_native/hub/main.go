@@ -202,8 +202,12 @@ func main() {
 	port := flag.String("port", "8080", "Port to listen on")
 	flag.Parse()
 
-	// Locate analyzer relative to hub
-	exePath := `c:\Users\joaovitormagdaleno\Documents\GitHub\Personas_Agentes\src_native\analyzer\target\release\analyzer.exe`
+	// Locate analyzer relative to executable
+	exePath := filepath.Join("..", "analyzer", "target", "release", "analyzer.exe")
+	if _, err := os.Stat(exePath); os.IsNotExist(err) {
+		// Fallback to simpler relative path if run from root
+		exePath = filepath.Join("src_native", "analyzer", "target", "release", "analyzer.exe")
+	}
 
 	hub := &Hub{
 		analyzerPath: exePath,

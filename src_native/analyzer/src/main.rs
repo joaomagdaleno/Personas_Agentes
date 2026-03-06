@@ -230,7 +230,7 @@ fn main() {
                 std::process::exit(1);
             }
             let prompt = fs::read_to_string(&args[2]).expect("Unable to read prompt file");
-            let brain = brain::Brain::new();
+            let mut brain = brain::Brain::new();
             if let Some(answer) = brain.reason(&prompt, 512) {
                 println!("{}", answer);
             } else {
