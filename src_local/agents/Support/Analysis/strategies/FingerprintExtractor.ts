@@ -186,6 +186,8 @@ export class FingerprintExtractor {
             const report = JSON.parse(output);
 
             for (const entry of report.entries) {
+                if (entry.agent === "__init__") continue;
+                // Use the same key format: category/AgentName/Stack
                 const key = `${entry.category}/${entry.agent}/${entry.stack}`;
                 result.set(key, this.mapRustToAtomic(entry.fingerprint));
             }

@@ -456,6 +456,14 @@ fn truncate(s: &str, max: usize) -> String {
     }
 }
 
+fn capitalize(s: &str) -> String {
+    let mut c = s.chars();
+    match c.next() {
+        None => String::new(),
+        Some(f) => f.to_uppercase().collect::<String>() + c.as_str(),
+    }
+}
+
 fn empty_fingerprint(name: &str) -> AtomicFingerprint {
     AtomicFingerprint {
         name: name.to_string(),
@@ -492,10 +500,14 @@ pub fn extract_all(agents_root: &Path) -> FingerprintReport {
                 let path = entry.path().to_path_buf();
                 if let Some(ext) = path.extension() {
                     if matches!(ext.to_str(), Some("ts" | "tsx" | "go" | "kt" | "py" | "dart")) {
-                        let agent_name = path.file_stem()
+                        let stem = path.file_stem()
                             .and_then(|s| s.to_str())
-                            .unwrap_or("unknown")
-                            .to_string();
+                            .unwrap_or("unknown");
+                        
+                        if stem == "__init__" { continue; }
+                        
+                        let agent_name = capitalize(stem);
+                        
                         file_entries.push((
                             path,
                             stack.to_string(),
