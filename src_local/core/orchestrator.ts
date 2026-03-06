@@ -52,6 +52,8 @@ export class Orchestrator {
     pruningAgent!: MemoryPruningAgent;
     predictorEngine!: PredictorEngine;
 
+    public ready: Promise<void>;
+
     constructor(projectRoot: string) {
         this.projectRoot = new Path(projectRoot);
         this.state = {
@@ -64,15 +66,19 @@ export class Orchestrator {
         this._initEngines();
         this._initTools();
 
-        // Ativando Infraestrutura Nativa (Hub)
-        const assemblerPath = "../agents/Support/Automation/infrastructure_assembler.ts";
-        import(assemblerPath).then(async m => {
+        this.ready = this._initNativeInfrastructure(projectRoot);
+    }
+
+    private async _initNativeInfrastructure(projectRoot: string): Promise<void> {
+        try {
+            const assemblerPath = "../agents/Support/Automation/infrastructure_assembler.ts";
+            const m = await import(assemblerPath);
             console.log("🛠️ [Orchestrator] Carregando Infraestrutura Nativa...");
             await m.InfrastructureAssembler.launchSovereignAPI(projectRoot);
             await this._waitForHub();
-        }).catch(err => {
+        } catch (err: any) {
             console.error(`❌ [Orchestrator] Erro ao carregar infrastructure_assembler: ${err.message}`);
-        });
+        }
     }
 
     private async _waitForHub(retries = 5) {

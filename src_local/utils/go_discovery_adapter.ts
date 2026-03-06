@@ -48,20 +48,26 @@ export class GoDiscoveryAdapter {
 
             const rawResult = await response.json();
 
-            const transform = (item: any): FileAnalysis => ({
-                path: item.path,
-                exists: true,
-                units: [],
-                total_complexity: item.complexity,
-                cognitive_complexity: item.cognitive_complexity,
-                loc: item.loc,
-                sloc: item.sloc,
-                comments: item.comments
-            });
+            let results: FileAnalysis[] = [];
+            if (rawResult) {
+                const transform = (item: any): FileAnalysis => ({
+                    path: item.path || "unknown",
+                    exists: true,
+                    units: [],
+                    total_complexity: item.complexity || 0,
+                    cognitive_complexity: item.cognitive_complexity || 0,
+                    loc: item.loc || 0,
+                    sloc: item.sloc || 0,
+                    comments: item.comments || 0
+                });
 
-            const results: FileAnalysis[] = Array.isArray(rawResult)
-                ? rawResult.map(transform)
-                : [transform(rawResult)];
+                if (Array.isArray(rawResult)) {
+                    // Filter out any null items before transforming
+                    results = rawResult.filter(item => item !== null).map(transform);
+                } else if (typeof rawResult === 'object') {
+                    results = [transform(rawResult)];
+                }
+            }
 
             const duration = Date.now() - startTime;
             logger.info(`✨ [GoAdapter] Análise concluída em ${duration}ms. (${results.length} arquivos)`);

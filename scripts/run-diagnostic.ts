@@ -16,6 +16,7 @@ async function main() {
 
     try {
         const orchestrator = new Orchestrator(root);
+        await orchestrator.ready; // Wait for Native Go Hub to start
         orchestrator.addPersona(new DirectorPersona(root));
         const res = await (args.values.staged ? orchestrator.runStagedAudit({ dryRun: !!args.values["dry-run"] }) : orchestrator.generateFullDiagnostic({ autoHeal: !!args.values["auto-heal"], dryRun: !!args.values["dry-run"] }));
         if (args.values.staged) {

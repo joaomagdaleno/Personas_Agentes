@@ -1,8 +1,8 @@
 # 🏛️ RELATÓRIO SISTÊMICO: CONSOLIDAÇÃO DA REALIDADE
 
-> **Status Operacional:** 🟢 `ESTÁVEL` | **Integridade Geral:** `92%`
+> **Status Operacional:** 🟢 `ESTÁVEL` | **Integridade Geral:** `91%`
 > **Sanidade Neural:** `0.0000` | **Estado:** ✅ Sanidade Neural Nominal
-> **Ambiente:** `TS-MASTER-CONTROL` | **Último Check:** `11:56:46`
+> **Ambiente:** `TS-MASTER-CONTROL` | **Último Check:** `22:32:17`
 >
 > 💎 `SITUAÇÃO: SOBERANIA TÉCNICA`
 
@@ -26,9 +26,9 @@
 
 | Métrica | Limite | Violações | Penalidade |
 | :--- | :--- | :---: | ---: |
-| Complexidade Ciclomática (CC > 20) | > 20 | 0/476 | 0 pts |
-| Complexidade Cognitiva (> 15) | > 15 | 0/476 | 0 pts |
-| Aninhamento Profundo (> 3) | > 3 | 226/476 | 1.4 pts |
+| Complexidade Ciclomática (CC > 20) | > 20 | 1/476 | 0 pts |
+| Complexidade Cognitiva (> 15) | > 15 | 86/476 | 0.7 pts |
+| Aninhamento Profundo (> 3) | > 3 | 227/476 | 1.4 pts |
 | Alto Acoplamento (CBO > 10) | > 10 | 4/476 | 0 pts |
 | Herança Profunda (DIT > 5) | > 5 | 0/476 | 0 pts |
 | Baixa Manutenibilidade (MI < 10) | < 10 | 0/476 | 0 pts |
@@ -37,7 +37,7 @@
 | Quality Gate RED | - | 0/476 | 0 pts |
 | Shadow Non-Compliant | - | 1/476 | 0 pts |
 
-> **Penalidade Total de Qualidade:** `1.4 pts` (cap: 30) | Base: NIST, SonarQube, Microsoft
+> **Penalidade Total de Qualidade:** `2.1 pts` (cap: 30) | Base: NIST, SonarQube, Microsoft
 
 ### ⚖️ DIRETRIZES DE GOVERNANÇA PHD
 
@@ -58,11 +58,11 @@
 
 | # | Componente | Complexidade | Risco | Ação Recomendada |
 | :---: | :--- | :---: | :---: | :--- |
-| 1 | `debug_shadows_quality.ts` | `12` | 🟠 LOW | Desmembrar / Refatorar |
-| 2 | `ViewArea.tsx` | `11` | 🟠 MODERATE | Desmembrar / Refatorar |
-| 3 | `predictor_engine.ts` | `11` | 🟠 MODERATE | Desmembrar / Refatorar |
-| 4 | `markdown_structure_agent.ts` | `10` | 🟠 LOW | Desmembrar / Refatorar |
-| 5 | `scoring_engine.ts` | `10` | 🟠 LOW | Desmembrar / Refatorar |
+| 1 | `audit_expert_engine.ts` | `22` | 🟠 HIGH | Desmembrar / Refatorar |
+| 2 | `healer.ts` | `18` | 🟠 MODERATE | Desmembrar / Refatorar |
+| 3 | `score_calculator.ts` | `18` | 🟠 MODERATE | Desmembrar / Refatorar |
+| 4 | `orchestrator.ts` | `18` | 🟠 MODERATE | Desmembrar / Refatorar |
+| 5 | `obfuscation_cleaner_engine.ts` | `17` | 🟠 MODERATE | Desmembrar / Refatorar |
 
 ---
 
@@ -80,7 +80,7 @@
 | 🚧 **Shallow Parity** | `0` | 🟡 `ADAPTADO` | Componentes com lógica parcial |
 | 🧊 **Fragilidades** | `0` | 🟢 `ESTÁVEL` | Pontos de ruptura identificados |
 
-**Sincronia Nativa:** `91%` | **Personas Ativas:** `52` | **Audit Score:** `92%`
+**Sincronia Nativa:** `91%` | **Personas Ativas:** `52` | **Audit Score:** `91%`
 
 > 💎 **Sistema em estado de soberania técnica.** Requisitos de 100% atingidos.
 
@@ -92,51 +92,51 @@
 | :--- | :---: | :--- | :--- |
 | **CRITICAL** | `0` | 🔴 `BLOQUEANTE` | 🟢 `LIVRE` |
 | **HIGH** | `0` | 🟡 `RISCO ALTO` | 🟢 `LIVRE` |
-| **MEDIUM** | `226` | 🔵 `DÉBITO TÉC.` | 🔵 `INTERVENÇÃO` |
+| **MEDIUM** | `313` | 🔵 `DÉBITO TÉC.` | 🔵 `INTERVENÇÃO` |
 | **LOW** | `0` | ⚪ `MENOR` | 🟢 `LIVRE` |
 | **STRATEGIC** | `0` | 🟣 `MELHORIA` | 🟢 `LIVRE` |
 
 ### 🏷️ Achados Detalhados (Limitado a 10 por nível)
 
-> #### 🟡 `ATENÇÃO` [1] `debug_shadows_quality.ts`
+> #### 🟡 `ATENÇÃO` [1] `audit_expert_engine.ts`
+>
+> - Complexidade Cognitiva Elevada (22 > 15)
+>
+> #### 🟡 `ATENÇÃO` [2] `healer.ts`
+>
+> - Complexidade Cognitiva Elevada (22 > 15)
+>
+> #### 🟡 `ATENÇÃO` [3] `score_calculator.ts`
+>
+> - Complexidade Cognitiva Elevada (16 > 15)
+>
+> #### 🟡 `ATENÇÃO` [4] `orchestrator.ts`
+>
+> - Complexidade Cognitiva Elevada (23 > 15)
+>
+> #### 🟡 `ATENÇÃO` [5] `orchestrator.ts`
 >
 > - Aninhamento Excessivo (4 > 3)
 >
-> #### 🟡 `ATENÇÃO` [2] `predictor_engine.ts`
+> #### 🟡 `ATENÇÃO` [6] `obfuscation_cleaner_engine.ts`
+>
+> - Complexidade Cognitiva Elevada (19 > 15)
+>
+> #### 🟡 `ATENÇÃO` [7] `obfuscation_cleaner_engine.ts`
 >
 > - Aninhamento Excessivo (4 > 3)
 >
-> #### 🟡 `ATENÇÃO` [3] `markdown_structure_agent.ts`
+> #### 🟡 `ATENÇÃO` [8] `cognitive_engine.ts`
 >
-> - Aninhamento Excessivo (4 > 3)
+> - Complexidade Cognitiva Elevada (19 > 15)
 >
-> #### 🟡 `ATENÇÃO` [4] `scoring_engine.ts`
+> #### 🟡 `ATENÇÃO` [9] `debug_penalty_details.ts`
 >
-> - Aninhamento Excessivo (4 > 3)
+> - Complexidade Cognitiva Elevada (16 > 15)
 >
-> #### 🟡 `ATENÇÃO` [5] `file_system_scanner.ts`
+> #### 🟡 `ATENÇÃO` [10] `maturity_evaluator.ts`
 >
-> - Aninhamento Excessivo (4 > 3)
+> - Complexidade Cognitiva Elevada (18 > 15)
 >
-> #### 🟡 `ATENÇÃO` [6] `telemetry_intent_judge.ts`
->
-> - Aninhamento Excessivo (5 > 3)
->
-> #### 🟡 `ATENÇÃO` [7] `AuditView.tsx`
->
-> - Aninhamento Excessivo (4 > 3)
->
-> #### 🟡 `ATENÇÃO` [8] `dependency_auditor.ts`
->
-> - Aninhamento Excessivo (4 > 3)
->
-> #### 🟡 `ATENÇÃO` [9] `markdown_processor.ts`
->
-> - Aninhamento Excessivo (5 > 3)
->
-> #### 🟡 `ATENÇÃO` [10] `find_complex_funcs.ts`
->
-> - Aninhamento Excessivo (5 > 3)
->
-> *... e mais 216 achados de nível MEDIUM omitidos para brevidade.*
+> *... e mais 303 achados de nível MEDIUM omitidos para brevidade.*
 >
