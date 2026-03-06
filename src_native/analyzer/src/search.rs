@@ -3,52 +3,7 @@ use std::fs;
 use serde::{Deserialize, Serialize};
 use tree_sitter::{Parser, Node};
 
-// --- Level 1: Ollama ---
-#[derive(Serialize)]
-struct OllamaEmbeddingRequest {
-    model: String,
-    prompt: String,
-}
-
-#[derive(Deserialize)]
-struct OllamaEmbeddingResponse {
-    embedding: Vec<f32>,
-}
-
-pub struct OllamaEmbedder {
-    endpoint: String,
-    model: String,
-}
-
-impl OllamaEmbedder {
-    pub fn new() -> Self {
-        Self {
-            endpoint: std::env::var("AI_ENDPOINT").unwrap_or_else(|_| "http://localhost:11434".into()),
-            model: "qwen3.5:4b".into(),
-        }
-    }
-
-    pub fn embed(&self, text: &str) -> Option<Vec<f32>> {
-        let url = format!("{}/api/embeddings", self.endpoint);
-        let request = OllamaEmbeddingRequest {
-            model: self.model.clone(),
-            prompt: text.to_string(),
-        };
-
-        match ureq::post(&url).timeout(std::time::Duration::from_secs(5)).send_json(serde_json::to_value(request).ok()?) {
-            Ok(response) => {
-                let data: OllamaEmbeddingResponse = response.into_json().ok()?;
-                Some(data.embedding)
-            }
-            Err(_) => None,
-        }
-    }
-
-    pub fn is_available(&self) -> bool {
-        let url = format!("{}/api/tags", self.endpoint);
-        ureq::get(&url).timeout(std::time::Duration::from_secs(1)).call().is_ok()
-    }
-}
+use crate::brain::Brain;
 
 // --- Search Engine ---
 
@@ -89,15 +44,15 @@ pub fn semantic_search(request: SearchRequest) -> Vec<SearchHit> {
     candidates.sort_by(|a, b| b.score.partial_cmp(&a.score).unwrap());
     candidates.truncate(50); 
 
-    // --- Pass 2: Ollama Integrated Intelligence ---
+    // --- Pass 2: Unified Brain Intelligence ---
     let mut cache = load_embedding_cache();
-    let ollama = OllamaEmbedder::new();
-    let ollama_available = ollama.is_available();
+    let brain = Brain::new();
+    let brain_available = brain.is_loaded();
 
     let query_vec = if let Some(cached) = cache.get(&format!("query:{}", request.query)) {
         Some(cached.clone())
-    } else if ollama_available {
-        if let Some(vec) = ollama.embed(&request.query) {
+    } else if brain_available {
+        if let Some(vec) = brain.embed(&request.query) {
             cache.insert(format!("query:{}", request.query), vec.clone());
             Some(vec)
         } else { None }
@@ -111,8 +66,8 @@ pub fn semantic_search(request: SearchRequest) -> Vec<SearchHit> {
                 
                 let doc_vec = if let Some(cached) = cache.get(&doc_key) {
                     Some(cached.clone())
-                } else if ollama_available {
-                    if let Some(vec) = ollama.embed(text_to_embed) {
+                } else if brain_available {
+                    if let Some(vec) = brain.embed(text_to_embed) {
                         cache.insert(doc_key, vec.clone());
                         Some(vec)
                     } else { None }
@@ -122,7 +77,7 @@ pub fn semantic_search(request: SearchRequest) -> Vec<SearchHit> {
                     let sim = cosine_similarity(&q_vec, &d_vec);
                     // Hybrid Score: 30% VSM + 70% Neural
                     hit.score = hit.score * 0.3 + sim * 0.7;
-                    hit.method = "Hybrid (Ollama)".to_string();
+                    hit.method = "Hybrid (Unified Brain)".to_string();
                 }
             }
         }

@@ -198,51 +198,6 @@ func (h *Hub) handleStatus(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func (h *Hub) handleOllama(w http.ResponseWriter, r *http.Request) {
-	// Simple reverse proxy for now, preparation for queueing
-	targetURL := "http://localhost:11434" + r.URL.Path
-	if r.URL.RawQuery != "" {
-		targetURL += "?" + r.URL.RawQuery
-	}
-
-	proxyReq, err := http.NewRequest(r.Method, targetURL, r.Body)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	proxyReq.Header = r.Header
-
-	client := &http.Client{}
-	resp, err := client.Do(proxyReq)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadGateway)
-		return
-	}
-	defer resp.Body.Close()
-
-	for k, vv := range resp.Header {
-		for _, v := range vv {
-			w.Header().Add(k, v)
-		}
-	}
-	w.WriteHeader(resp.StatusCode)
-
-	// Stream response
-	buf := make([]byte, 1024)
-	for {
-		n, err := resp.Body.Read(buf)
-		if n > 0 {
-			w.Write(buf[:n])
-			if f, ok := w.(http.Flusher); ok {
-				f.Flush()
-			}
-		}
-		if err != nil {
-			break
-		}
-	}
-}
-
 func main() {
 	port := flag.String("port", "8080", "Port to listen on")
 	flag.Parse()
@@ -259,9 +214,8 @@ func main() {
 	http.HandleFunc("/status", hub.handleStatus)
 	http.HandleFunc("/health", hub.handleStatus)
 	http.HandleFunc("/analyze", hub.handleAnalyze)
-	http.HandleFunc("/api/", hub.handleOllama) // Proxy all Ollama API calls
 
-	log.Printf("🚀 Native Sovereign Hub starting on :%s", *port)
+	log.Printf("🚀 Native Sovereign Hub (Analysis-Only) starting on :%s", *port)
 	log.Printf("🧪 Analyzer linked at: %s", exePath)
 	if err := http.ListenAndServe(":"+*port, nil); err != nil {
 		log.Fatalf("Failed to start Hub: %v", err)

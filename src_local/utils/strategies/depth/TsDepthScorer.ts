@@ -1,6 +1,5 @@
 import * as ts from "typescript";
 import { exists, readFile } from "node:fs/promises";
-import type { FileAnalysis } from "../../go_discovery_adapter.ts";
 
 /**
  * 🎓 TsDepthScorer — PhD in TypeScript structural depth.
@@ -13,7 +12,7 @@ export class TsDepthScorer {
         [ts.SyntaxKind.JsxElement]: 10, [ts.SyntaxKind.JsxSelfClosingElement]: 10
     };
 
-    static async calculate(filePath: string, atomicUnits: FileAnalysis[], atomicPointsFn: (path: string, units: FileAnalysis[]) => number): Promise<number> {
+    static async calculate(filePath: string, depthWeight: number): Promise<number> {
         if (!await exists(filePath)) return 0;
         const sourceFile = ts.createSourceFile(filePath, await readFile(filePath, "utf-8"), ts.ScriptTarget.Latest, true);
         let score = 0;
@@ -36,7 +35,6 @@ export class TsDepthScorer {
         };
 
         walk(sourceFile);
-        const atomic = atomicPointsFn(filePath, atomicUnits);
-        return score + (filePath.match(/governance_system|facade/) ? Math.min(atomic, 10) : atomic);
+        return score + depthWeight;
     }
 }

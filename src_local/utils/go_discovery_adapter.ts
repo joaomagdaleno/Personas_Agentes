@@ -35,7 +35,7 @@ export class GoDiscoveryAdapter {
      */
     static async scan(directory: string, root: string, isLegacy: boolean = false): Promise<{ results: FileAnalysis[], findings: any[] }> {
         try {
-            logger.info(`🔍 [GoAdapter] Solicitando análise via Hub: ${directory}`);
+            logger.info(`🔍 [GoAdapter] Solicitando análise de projeto via Hub: ${directory}`);
             const startTime = Date.now();
 
             const url = new URL(this.HUB_URL);

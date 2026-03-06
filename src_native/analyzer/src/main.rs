@@ -8,6 +8,7 @@ mod dna;
 mod graph;
 mod pruner;
 mod search;
+mod brain;
 
 use std::env;
 use std::fs;
@@ -222,6 +223,19 @@ fn main() {
             let request: search::SearchRequest = serde_json::from_str(&content).expect("Invalid search request JSON");
             let results = search::semantic_search(request);
             println!("{}", serde_json::to_string_pretty(&results).unwrap());
+        }
+        "reason" => {
+            if args.len() < 3 {
+                eprintln!("Usage: analyzer reason <prompt_path>");
+                std::process::exit(1);
+            }
+            let prompt = fs::read_to_string(&args[2]).expect("Unable to read prompt file");
+            let brain = brain::Brain::new();
+            if let Some(answer) = brain.reason(&prompt, 512) {
+                println!("{}", answer);
+            } else {
+                eprintln!("Error: Brain was unable to reason.");
+            }
         }
         // Legacy
         other => {
