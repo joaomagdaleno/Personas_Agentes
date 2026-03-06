@@ -213,7 +213,10 @@ export class FingerprintExtractor {
             reasoningTrigger: "",
             systemPrompt: f.system_prompt,
             hasExtraMethods: f.extra_methods,
-            methods: f.methods
+            methods: f.methods,
+            halsteadVolume: f.halstead_volume || 0,
+            halsteadDifficulty: f.halstead_difficulty || 0,
+            halsteadEffort: f.halstead_effort || 0
         };
     }
 
@@ -256,7 +259,13 @@ export class FingerprintExtractor {
             name, emoji: "👤", role: "PhD Agent", stack: "Python", rulesCount: rules,
             rulePatterns: [], ruleIssues: [], ruleSeverities: [], fileExtensions: [],
             hasReasoning: content.includes("reason_about_objective"),
-            reasoningTrigger: "", systemPrompt: "", hasExtraMethods: [], methods
+            reasoningTrigger: "",
+            systemPrompt: "",
+            hasExtraMethods: [],
+            methods: methods,
+            halsteadVolume: 0,
+            halsteadDifficulty: 0,
+            halsteadEffort: 0
         };
     }
 
@@ -282,7 +291,10 @@ export class FingerprintExtractor {
             hasExtraMethods: ast.methods.filter(m =>
                 !["performAudit", "performActiveHealing", "reasonAboutObjective",
                     "selfDiagnostic", "getSystemPrompt", "constructor"].includes(m)),
-            methods: ast.methods
+            methods: ast.methods,
+            halsteadVolume: 0,
+            halsteadDifficulty: 0,
+            halsteadEffort: 0
         };
     }
 

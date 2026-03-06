@@ -1,15 +1,15 @@
 import winston from "winston";
+import * as cp from "node:child_process";
+import * as path from "node:path";
+import * as fs from "node:fs";
 
 const logger = winston.child({ module: "FindingDeduplicator" });
 
 /**
- * 🔬 Assistente de Deduplicação Forense (Bun Version).
+ * 🔬 Assistente de Deduplicação Forense (Rust-Enhanced).
  */
 export class FindingDeduplicator {
-    /** Parity: __init__ */
-    constructor() {
-        // Severity rank is initialized as a class field.
-    }
+    private static BINARY_PATH = path.resolve(process.cwd(), "src_native/analyzer/target/release/analyzer.exe");
 
     private severityRank: Record<string, number> = {
         "CRITICAL": 5, "HIGH": 4, "MEDIUM": 3,
@@ -17,13 +17,34 @@ export class FindingDeduplicator {
     };
 
     deduplicate(allRawFindings: any[]): any[] {
-        const coordinateMap = new Map<string, any>();
+        if (allRawFindings.length > 50 && fs.existsSync(FindingDeduplicator.BINARY_PATH)) {
+            try {
+                return this.deduplicateWithRust(allRawFindings);
+            } catch (err) {
+                logger.warn("Rust deduplication failed, falling back to TypeScript", { error: err });
+            }
+        }
 
+        const coordinateMap = new Map<string, any>();
         allRawFindings.forEach(f => {
             this.processFinding(f, coordinateMap);
         });
-
         return Array.from(coordinateMap.values());
+    }
+
+    private deduplicateWithRust(findings: any[]): any[] {
+        const tmpFile = path.join(process.cwd(), `tmp_dedup_${Date.now()}.json`);
+        fs.writeFileSync(tmpFile, JSON.stringify(findings));
+
+        try {
+            const output = cp.execSync(`${FindingDeduplicator.BINARY_PATH} deduplicate ${tmpFile}`, {
+                encoding: 'utf8',
+                maxBuffer: 50 * 1024 * 1024
+            });
+            return JSON.parse(output);
+        } finally {
+            if (fs.existsSync(tmpFile)) fs.unlinkSync(tmpFile);
+        }
     }
 
     private processFinding(f: any, coordinateMap: Map<string, any>) {
@@ -35,9 +56,10 @@ export class FindingDeduplicator {
     }
 
     private handleRawText(f: any, coordinateMap: Map<string, any>) {
-        const fHash = Bun.hash(String(f)).toString();
-        if (!coordinateMap.has(fHash)) {
-            coordinateMap.set(fHash, f);
+        // Bun.hash is only available in Bun runtime. Check if we have it.
+        const hash = typeof Bun !== 'undefined' ? Bun.hash(String(f)).toString() : String(f).length.toString();
+        if (!coordinateMap.has(hash)) {
+            coordinateMap.set(hash, f);
         }
     }
 
@@ -53,22 +75,14 @@ export class FindingDeduplicator {
     }
 
     private generateCoordinate(f: any): string {
-        const cleanPath = this.normalizePath(f.file || 'global');
+        const cleanPath = (f.file || 'global').replace(/\\/g, "/");
         const fIssue = f.issue || 'Unknown Issue';
 
-        if (this.isComplexityHotspot(fIssue)) {
+        if (fIssue.includes("Complexity") || fIssue.includes("Complexidade")) {
             return `COMPLEXITY:${cleanPath}`;
         }
 
         return `${cleanPath}:${f.line || 0}:${fIssue}`;
-    }
-
-    private isComplexityHotspot(issue: string): boolean {
-        return issue.includes("Complexity") || issue.includes("Complexidade");
-    }
-
-    private normalizePath(rawPath: string): string {
-        return rawPath.replace(/\\/g, "/");
     }
 
     private resolveSeverityConflict(coord: string, newFinding: any, coordinateMap: Map<string, any>) {

@@ -67,7 +67,21 @@ export class SemanticContextAnalyst {
     /**
      * 📊 Analisa um arquivo completo e retorna estatísticas de intenção.
      */
-    analyzeFile(content: string, filePath: string): { metadata: number; observability: number; logic: number; total: number } {
+    analyzeFile(content: string, filePath: string, rustMetadata?: any): { metadata: number; observability: number; logic: number; total: number } {
+        if (rustMetadata && rustMetadata.semantic_blocks) {
+            let metadata = 0, observability = 0, logic = 0;
+            const blocks = rustMetadata.semantic_blocks;
+            for (const key in blocks) {
+                const intent = blocks[key];
+                if (intent === "METADATA") metadata++;
+                else if (intent === "OBSERVABILITY") observability++;
+                else logic++;
+            }
+            const total = metadata + observability + logic;
+            logger.debug(`📊 [Rust-Powered] ${filePath}: META=${metadata} OBS=${observability} LOGIC=${logic}`);
+            return { metadata, observability, logic, total };
+        }
+
         const lines = content.split("\n");
         let metadata = 0, observability = 0, logic = 0;
 
@@ -81,7 +95,7 @@ export class SemanticContextAnalyst {
         }
 
         const total = metadata + observability + logic;
-        logger.debug(`📊 ${filePath}: META=${metadata} OBS=${observability} LOGIC=${logic}`);
+        logger.debug(`📊 [TS-Fallback] ${filePath}: META=${metadata} OBS=${observability} LOGIC=${logic}`);
         return { metadata, observability, logic, total };
     }
 

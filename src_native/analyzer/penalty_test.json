@@ -1,0 +1,24 @@
+{
+    "raw_score": 90.5,
+    "alerts": [
+        {
+            "severity": "medium"
+        }
+    ],
+    "matrix": [
+        {
+            "file": "audit.ts",
+            "component_type": "LOGIC",
+            "test_status": "SHALLOW",
+            "advanced_metrics": {
+                "cyclomatic_complexity": 25,
+                "cognitive_complexity": 20,
+                "nesting_depth": 5,
+                "quality_gate": "RED"
+            }
+        }
+    ],
+    "cognitive": {
+        "status": "DEGRADED"
+    }
+}

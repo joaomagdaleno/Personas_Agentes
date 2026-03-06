@@ -22,6 +22,10 @@ pub struct AtomicFingerprint {
     pub methods: Vec<String>,
     pub extra_methods: Vec<String>,
     pub dynamic_findings_count: usize,
+    // Halstead Metrics
+    pub halstead_volume: f64,
+    pub halstead_difficulty: f64,
+    pub halstead_effort: f64,
 }
 
 #[derive(Serialize, Clone, Debug)]
@@ -51,6 +55,11 @@ struct ASTCollector {
     file_extensions: Vec<String>,
     system_prompt: String,
     class_name: String,
+    // Halstead
+    unique_operators: std::collections::HashSet<String>,
+    unique_operands: std::collections::HashSet<String>,
+    total_operators: usize,
+    total_operands: usize,
 }
 
 // ─── Core AST Extraction ────────────────────────────────────────────────────
@@ -89,6 +98,16 @@ pub fn extract_fingerprint(source: &str, agent_name: &str) -> AtomicFingerprint 
             .unwrap_or_default()
     };
 
+    // Calculate Halstead
+    let n1 = collector.unique_operators.len() as f64;
+    let n2 = collector.unique_operands.len() as f64;
+    let n1_total = collector.total_operators as f64;
+    let n2_total = collector.total_operands as f64;
+    
+    let total_unique = n1 + n2;
+    let volume = if total_unique > 0.0 { total_unique * total_unique.log2() } else { 0.0 };
+    let difficulty = if n2 > 0.0 { (n1 / 2.0) * (n2_total / n2) } else { 0.0 };
+
     AtomicFingerprint {
         name: {
             let n = assign("name");
@@ -118,6 +137,9 @@ pub fn extract_fingerprint(source: &str, agent_name: &str) -> AtomicFingerprint 
             .cloned()
             .collect(),
         dynamic_findings_count: collector.dynamic_findings,
+        halstead_volume: volume,
+        halstead_difficulty: difficulty,
+        halstead_effort: volume * difficulty,
     }
 }
 
@@ -125,6 +147,22 @@ pub fn extract_fingerprint(source: &str, agent_name: &str) -> AtomicFingerprint 
 
 fn walk_node(node: Node, source: &str, col: &mut ASTCollector, depth: usize) {
     let kind = node.kind();
+
+    // Halstead Classification
+    match kind {
+        "+" | "-" | "*" | "/" | "%" | "=" | "==" | "===" | "!=" | "!==" | "<" | ">" | "<=" | ">=" | 
+        "&&" | "||" | "!" | "&" | "|" | "^" | "~" | "<<" | ">>" | ">>>" | "+=" | "-=" | "*=" | "/=" | 
+        "%=" | "&=" | "|=" | "^=" | "<<=" | ">>=" | ">>>=" | "++" | "--" | "?" | ":" | "?." | "..." => {
+            col.unique_operators.insert(kind.to_string());
+            col.total_operators += 1;
+        }
+        "identifier" | "number" | "string" | "template_string" | "true" | "false" | "null" | "undefined" => {
+            let text = node_text(node, source).to_string();
+            col.unique_operands.insert(text);
+            col.total_operands += 1;
+        }
+        _ => {}
+    }
 
     match kind {
         // Class declaration → extract name
@@ -479,6 +517,9 @@ fn empty_fingerprint(name: &str) -> AtomicFingerprint {
         methods: vec![],
         extra_methods: vec![],
         dynamic_findings_count: 0,
+        halstead_volume: 0.0,
+        halstead_difficulty: 0.0,
+        halstead_effort: 0.0,
     }
 }
 

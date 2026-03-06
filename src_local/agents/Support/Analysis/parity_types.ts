@@ -15,6 +15,9 @@ export interface AtomicFingerprint {
     systemPrompt: string;
     hasExtraMethods: string[];
     methods: string[];
+    halsteadVolume: number;
+    halsteadDifficulty: number;
+    halsteadEffort: number;
 }
 
 export interface AgentDelta {

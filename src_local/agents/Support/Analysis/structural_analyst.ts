@@ -132,8 +132,8 @@ export class StructuralAnalyst {
     }
 
     /** Parity: analyze_intent — Classifies the primary intent of a file (logic, metadata, observability). */
-    analyze_intent(content: string, filename: string): string {
-        return IntentClassifier.classify(content, filename);
+    analyze_intent(content: string, filename: string, rustMetadata?: any): string {
+        return IntentClassifier.classify(content, filename, rustMetadata);
     }
 }
 

@@ -1,6 +1,33 @@
 import * as path from 'node:path';
+import * as cp from 'node:child_process';
+import * as fs from 'node:fs';
+import winston from 'winston';
+
+const logger = winston.child({ module: "PatternFinder" });
+
 export class PatternFinder {
+    private static BINARY_PATH = path.resolve(process.cwd(), "src_native/analyzer/target/release/analyzer.exe");
+
     static find(context: Record<string, any>, extensions: string[], rules: any[], ignored: string[], agent: any): any[] {
+        if (Object.keys(context).length > 5 && fs.existsSync(this.BINARY_PATH)) {
+            try {
+                return this.findBulk(context, [{
+                    agent: agent.name,
+                    role: agent.role,
+                    emoji: agent.emoji,
+                    stack: agent.stack,
+                    extensions,
+                    rules: rules.map(r => ({
+                        regex: r.regex instanceof RegExp ? r.regex.source : r.regex,
+                        issue: r.issue,
+                        severity: r.severity
+                    }))
+                }]);
+            } catch (err) {
+                logger.warn("Rust audit failed, falling back to TypeScript", { error: err });
+            }
+        }
+
         const entries = Object.entries(context);
         const analyzable = entries.filter(([f, data]) => this.isAnalyzable(f, data, extensions, ignored));
 
@@ -8,6 +35,35 @@ export class PatternFinder {
             const matches = this.scanFile(file, data.content || "", rules, agent);
             return acc.concat(matches);
         }, [] as any[]);
+    }
+
+    /**
+     * 🦀 Executa auditoria em lote para MÚLTIPLAS personas e TODOS os arquivos em UMA única passada.
+     * Tier 1 High-Performance.
+     */
+    static findBulk(context: Record<string, any>, personaRuleSets: any[]): any[] {
+        if (!fs.existsSync(this.BINARY_PATH)) return [];
+
+        const request = {
+            files: Object.entries(context).map(([f, d]) => ({
+                path: f,
+                content: d.content || ""
+            })),
+            persona_rules: personaRuleSets
+        };
+
+        const tmpFile = path.join(process.cwd(), `tmp_audit_${Date.now()}.json`);
+        fs.writeFileSync(tmpFile, JSON.stringify(request));
+
+        try {
+            const output = cp.execSync(`${this.BINARY_PATH} audit ${tmpFile}`, {
+                encoding: 'utf8',
+                maxBuffer: 100 * 1024 * 1024 // 100MB buffer for large audits
+            });
+            return JSON.parse(output);
+        } finally {
+            if (fs.existsSync(tmpFile)) fs.unlinkSync(tmpFile);
+        }
     }
 
     private static isAnalyzable(f: string, data: any, extensions: string[], ignored: string[]): boolean {

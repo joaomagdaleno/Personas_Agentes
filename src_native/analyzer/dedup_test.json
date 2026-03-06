@@ -1,0 +1,24 @@
+[
+    {
+        "file": "test.ts",
+        "agent": "TestAgent1",
+        "role": "Auditor",
+        "emoji": "🔍",
+        "issue": "Debug log found",
+        "severity": "LOW",
+        "stack": "TypeScript",
+        "evidence": "console.log",
+        "line": 10
+    },
+    {
+        "file": "test.ts",
+        "agent": "TestAgent2",
+        "role": "Auditor",
+        "emoji": "🔍",
+        "issue": "Debug log found",
+        "severity": "HIGH",
+        "stack": "TypeScript",
+        "evidence": "console.log",
+        "line": 10
+    }
+]

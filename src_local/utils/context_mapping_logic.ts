@@ -1,23 +1,70 @@
 import winston from "winston";
+import * as cp from "node:child_process";
+import * as path from "node:path";
+import * as fs from "node:fs";
 import { Path } from "../core/path_utils.ts";
 
 const logger = winston.child({ module: "ContextMappingLogic" });
 
 /**
- * Lógica de Mapeamento de Contexto (Bun Version).
+ * Lógica de Mapeamento de Contexto (Rust-Enhanced).
  */
 export class ContextMappingLogic {
+    private static BINARY_PATH = path.resolve(process.cwd(), "src_native/analyzer/target/release/analyzer.exe");
+    public metadataCache: Record<string, any> = {};
+
     async processBatch(scanner: any, engine: any, goMap: Record<string, any> = {}): Promise<Record<string, string>> {
         const startTime = Date.now();
         const contentCache: Record<string, string> = {};
 
         const filePaths = await this.getAllFiles(scanner);
-        await this.readFilesIntoCache(filePaths, engine, contentCache);
+
+        if (fs.existsSync(ContextMappingLogic.BINARY_PATH) && filePaths.length > 5) {
+            try {
+                const results = await this.processBatchRust(filePaths, engine.projectRoot);
+                for (const res of results) {
+                    contentCache[res.path] = res.content;
+                    this.metadataCache[res.path] = {
+                        dna: res.dna,
+                        semantic_blocks: res.semantic_blocks
+                    };
+                    if (res.dna.length > 0) {
+                        logger.debug(`DNA detected for ${res.path}: ${res.dna.join(", ")}`);
+                    }
+                }
+            } catch (err) {
+                logger.warn("Rust batch processing failed, falling back to TypeScript", { error: err });
+                await this.readFilesIntoCache(filePaths, engine, contentCache);
+            }
+        } else {
+            await this.readFilesIntoCache(filePaths, engine, contentCache);
+        }
+
         await this.registerAllFiles(contentCache, engine, goMap);
 
         const duration = (Date.now() - startTime) / 1000;
-        logger.info(`Telemetry: Context batch processing (parallel) in ${duration.toFixed(4)}s`);
+        logger.info(`Telemetry: Context batch processing (Rust-Parallel) in ${duration.toFixed(4)}s for ${filePaths.length} files`);
         return contentCache;
+    }
+
+    private async processBatchRust(filePaths: any[], projectRoot: any): Promise<any[]> {
+        const request = {
+            file_paths: filePaths.map(p => p.relativeTo(projectRoot)),
+            project_root: projectRoot.toString()
+        };
+
+        const tmpFile = path.join(process.cwd(), `tmp_batch_${Date.now()}.json`);
+        fs.writeFileSync(tmpFile, JSON.stringify(request));
+
+        try {
+            const output = cp.execSync(`${ContextMappingLogic.BINARY_PATH} batch ${tmpFile}`, {
+                encoding: "utf8",
+                maxBuffer: 200 * 1024 * 1024 // 200MB for large projects
+            });
+            return JSON.parse(output);
+        } finally {
+            if (fs.existsSync(tmpFile)) fs.unlinkSync(tmpFile);
+        }
     }
 
     private async getAllFiles(scanner: any): Promise<any[]> {

@@ -1,0 +1,26 @@
+{
+    "files": [
+        {
+            "path": "test.ts",
+            "content": "function foo() { console.log('hello world'); }"
+        }
+    ],
+    "persona_rules": [
+        {
+            "agent": "TestAgent",
+            "role": "Auditor",
+            "emoji": "🔍",
+            "stack": "TypeScript",
+            "extensions": [
+                ".ts"
+            ],
+            "rules": [
+                {
+                    "regex": "console\\.log",
+                    "issue": "Debug log found",
+                    "severity": "LOW"
+                }
+            ]
+        }
+    ]
+}

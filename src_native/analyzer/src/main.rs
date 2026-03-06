@@ -1,8 +1,18 @@
 mod fingerprint;
+mod audit;
+mod deduplicator;
+mod connectivity;
+mod penalty;
+mod batch;
+mod dna;
+mod graph;
+mod pruner;
+mod search;
 
 use std::env;
 use std::fs;
 use std::path::Path;
+use std::collections::HashMap;
 use tree_sitter::{Parser, Node};
 use serde::Serialize;
 
@@ -97,8 +107,11 @@ fn main() {
     
     if args.len() < 2 {
         eprintln!("Usage:");
-        eprintln!("  analyzer analyze <file_path>           — Complexity analysis");
-        eprintln!("  analyzer fingerprint <agents_root>     — AST fingerprint extraction");
+        eprintln!("  analyzer analyze <file_path>             — Complexity analysis");
+        eprintln!("  analyzer fingerprint <agents_root>       — AST fingerprint extraction");
+        eprintln!("  analyzer audit <json_path>               — Bulk audit via RegexSet");
+        eprintln!("  analyzer deduplicate <json_path>         — O(n) finding deduplication");
+        eprintln!("  analyzer connectivity <json_path>        — O(n) file coupling analysis");
         std::process::exit(1);
     }
 
@@ -117,7 +130,100 @@ fn main() {
             }
             run_fingerprint(&args[2]);
         }
-        // Legacy: treat first arg as file path for backward compatibility
+        "audit" => {
+            if args.len() < 3 {
+                eprintln!("Usage: analyzer audit <json_path>");
+                std::process::exit(1);
+            }
+            let content = fs::read_to_string(&args[2]).expect("Unable to read JSON file");
+            let request: audit::BulkAuditRequest = serde_json::from_str(&content).expect("Invalid audit request JSON");
+            let findings = audit::bulk_audit(request);
+            println!("{}", serde_json::to_string_pretty(&findings).unwrap());
+        }
+        "deduplicate" => {
+            if args.len() < 3 {
+                eprintln!("Usage: analyzer deduplicate <json_path>");
+                std::process::exit(1);
+            }
+            let content = fs::read_to_string(&args[2]).expect("Unable to read JSON file");
+            let findings: Vec<deduplicator::RawFinding> = serde_json::from_str(&content).expect("Invalid findings JSON");
+            let deduped = deduplicator::deduplicate(findings);
+            println!("{}", serde_json::to_string_pretty(&deduped).unwrap());
+        }
+        "connectivity" => {
+            if args.len() < 3 {
+                eprintln!("Usage: analyzer connectivity <json_path>");
+                std::process::exit(1);
+            }
+            let content = fs::read_to_string(&args[2]).expect("Unable to read JSON file");
+            let files: HashMap<String, connectivity::FileInfo> = serde_json::from_str(&content).expect("Invalid connectivity JSON");
+            let results = connectivity::calculate_all_connectivity(files);
+            println!("{}", serde_json::to_string_pretty(&results).unwrap());
+        }
+        "penalty" => {
+            if args.len() < 3 {
+                eprintln!("Usage: analyzer penalty <json_path>");
+                std::process::exit(1);
+            }
+            let content = fs::read_to_string(&args[2]).expect("Unable to read JSON file");
+            let request: penalty::PenaltyRequest = serde_json::from_str(&content).expect("Invalid penalty request JSON");
+            let response = penalty::calculate_penalty(request);
+            println!("{}", serde_json::to_string_pretty(&response).unwrap());
+        }
+        "batch" => {
+            if args.len() < 3 {
+                eprintln!("Usage: analyzer batch <json_path>");
+                std::process::exit(1);
+            }
+            #[derive(serde::Deserialize)]
+            struct BatchRequest {
+                file_paths: Vec<String>,
+                project_root: String,
+            }
+            let content = fs::read_to_string(&args[2]).expect("Unable to read JSON file");
+            let request: BatchRequest = serde_json::from_str(&content).expect("Invalid batch request JSON");
+            let results = batch::process_batch(request.file_paths, &request.project_root);
+            println!("{}", serde_json::to_string_pretty(&results).unwrap());
+        }
+        "dna" => {
+            if args.len() < 3 {
+                eprintln!("Usage: analyzer dna <project_root>");
+                std::process::exit(1);
+            }
+            let identity = dna::discover_identity(&args[2]);
+            println!("{}", serde_json::to_string_pretty(&identity).unwrap());
+        }
+        "graph" => {
+            if args.len() < 3 {
+                eprintln!("Usage: analyzer graph <json_path>");
+                std::process::exit(1);
+            }
+            let content = fs::read_to_string(&args[2]).expect("Unable to read JSON file");
+            let request: graph::GraphRequest = serde_json::from_str(&content).expect("Invalid graph request JSON");
+            let result = graph::analyze_graph(request);
+            println!("{}", serde_json::to_string_pretty(&result).unwrap());
+        }
+        "prune" => {
+            if args.len() < 3 {
+                eprintln!("Usage: analyzer prune <json_path>");
+                std::process::exit(1);
+            }
+            let content = fs::read_to_string(&args[2]).expect("Unable to read JSON file");
+            let request: pruner::PruneRequest = serde_json::from_str(&content).expect("Invalid prune request JSON");
+            let result = pruner::prune_context(request);
+            println!("{}", serde_json::to_string_pretty(&result).unwrap());
+        }
+        "search" => {
+            if args.len() < 3 {
+                eprintln!("Usage: analyzer search <json_path>");
+                std::process::exit(1);
+            }
+            let content = fs::read_to_string(&args[2]).expect("Unable to read JSON file");
+            let request: search::SearchRequest = serde_json::from_str(&content).expect("Invalid search request JSON");
+            let results = search::semantic_search(request);
+            println!("{}", serde_json::to_string_pretty(&results).unwrap());
+        }
+        // Legacy
         other => {
             run_analyze(other);
         }

@@ -1,13 +1,26 @@
 import winston from "winston";
+import * as cp from "node:child_process";
+import * as path from "node:path";
+import * as fs from "node:fs";
 import { AdjustmentCalculator } from "./../Diagnostics/strategies/AdjustmentCalculator.ts";
 
 const logger = winston.child({ module: "PenaltyEngine" });
 
 /**
- * ⚖️ PenaltyEngine — PhD in Health Penalties & Ceiling Calculus
+ * ⚖️ PenaltyEngine — PhD in Health Penalties (Rust-Enhanced)
  */
 export class PenaltyEngine {
+    private static BINARY_PATH = path.resolve(process.cwd(), "src_native/analyzer/target/release/analyzer.exe");
+
     apply(raw: number, allAlerts: any[], mapData: Record<string, any>, total: number, qaData: any = null, cognitive: any = null): number {
+        if (fs.existsSync(PenaltyEngine.BINARY_PATH)) {
+            try {
+                return this.applyRust(raw, allAlerts, mapData, qaData, cognitive);
+            } catch (err) {
+                logger.warn("Rust penalty calculation failed, falling back to TypeScript", { error: err });
+            }
+        }
+
         const adjustments = this.getPilarAdjustments(allAlerts, mapData, qaData, cognitive);
         const totalDrain = Object.entries(adjustments)
             .filter(([key]) => key.startsWith("Quality (") || key.startsWith("Cognitive ("))
@@ -19,11 +32,52 @@ export class PenaltyEngine {
 
         if (sevs.has('critical') || sevs.has('high')) ceiling = 70;
         else if (sevs.has('medium')) ceiling = 95;
-        else if (totalDrain > 0) ceiling = 100;
 
         const final = Math.max(0, Math.round(Math.min(raw, ceiling) - totalDrain));
-        logger.info(`🏆 [HealthCalculus] Raw: ${raw.toFixed(3)} | Ceiling: ${ceiling} | Drain: ${totalDrain} | Final: ${final}`);
+        logger.info(`🏆 [HealthCalculus] (TS Fallback) Raw: ${raw.toFixed(3)} | Ceiling: ${ceiling} | Drain: ${totalDrain} | Final: ${final}`);
         return final;
+    }
+
+    private applyRust(raw: number, allAlerts: any[], mapData: Record<string, any>, qaData: any, cognitive: any): number {
+        const matrix = (qaData?.matrix || []).map((item: any) => {
+            const m = item.advanced_metrics || {};
+            return {
+                file: item.file,
+                component_type: mapData[item.file]?.component_type,
+                test_status: item.test_status,
+                advanced_metrics: {
+                    cyclomatic_complexity: m.cyclomaticComplexity,
+                    cognitive_complexity: m.cognitiveComplexity,
+                    nesting_depth: m.nestingDepth,
+                    cbo: m.cbo,
+                    dit: m.dit,
+                    maintainability_index: m.maintainabilityIndex,
+                    defect_density: m.defectDensity,
+                    quality_gate: m.qualityGate,
+                    is_shadow: m.isShadow,
+                    shadow_compliance_compliant: m.shadowCompliance?.compliant
+                }
+            };
+        });
+
+        const request = {
+            raw_score: raw,
+            alerts: allAlerts.filter(a => typeof a === 'object' && a !== null).map(a => ({ severity: a.severity })),
+            matrix,
+            cognitive: cognitive ? { status: cognitive.status } : null
+        };
+
+        const tmpFile = path.join(process.cwd(), `tmp_penalty_${Date.now()}.json`);
+        fs.writeFileSync(tmpFile, JSON.stringify(request));
+
+        try {
+            const output = cp.execSync(`${PenaltyEngine.BINARY_PATH} penalty ${tmpFile}`, { encoding: 'utf8' });
+            const response = JSON.parse(output);
+            logger.info(`🏆 [HealthCalculus] (Rust) Raw: ${raw.toFixed(3)} | Ceiling: ${response.ceiling} | Drain: ${response.total_drain} | Final: ${response.final_score}`);
+            return response.final_score;
+        } finally {
+            if (fs.existsSync(tmpFile)) fs.unlinkSync(tmpFile);
+        }
     }
 
     getPilarAdjustments(allAlerts: any[], mapData: Record<string, any>, qaData: any = null, cognitive: any = null): Record<string, number> {

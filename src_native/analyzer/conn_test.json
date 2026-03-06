@@ -1,0 +1,16 @@
+{
+    "A.ts": {
+        "dependencies": [
+            "B.ts",
+            "C.ts"
+        ]
+    },
+    "B.ts": {
+        "dependencies": [
+            "C.ts"
+        ]
+    },
+    "C.ts": {
+        "dependencies": []
+    }
+}

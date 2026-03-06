@@ -52,6 +52,12 @@ export class ContextEngine {
 
         const content = await this.getCachedContent(path, rel);
         const info = this.mappingLogic.getInitialInfo(path, rel, this.analyst);
+
+        const rustMeta = this.mappingLogic.metadataCache[rel.replace(/\\/g, "/")];
+        if (rustMeta) {
+            info.rust_metadata = rustMeta;
+        }
+
         info.content = content;
 
         if (goMetrics) {
@@ -85,7 +91,7 @@ export class ContextEngine {
     private async performDeepAnalysis(path: Path, content: string, info: any, ignoreTest: boolean) {
         this._applyStructuralAnalysis(path, content, info);
         this._applyAdvancedMetrics(path, content, info, info.atomic_go_metrics);
-        await this._applySecurityAndTests(path, content, info, ignoreTest);
+        await this._applySecurityAndTests(path, content, info, ignoreTest, info.rust_metadata);
     }
 
     private _applyStructuralAnalysis(path: Path, content: string, info: any) {
@@ -93,6 +99,10 @@ export class ContextEngine {
         const structural = path.toString().endsWith('.py')
             ? this.analyst.analyzePython(content, name)
             : this.analyst.analyze_file_logic(content, name);
+
+        // Add intent classification using Rust metadata if available
+        info.intent = this.analyst.analyze_intent(content, name, info.rust_metadata);
+
         Object.assign(info, structural);
     }
 
@@ -119,7 +129,7 @@ export class ContextEngine {
         }
     }
 
-    private async _applySecurityAndTests(path: Path, content: string, info: any, ignoreTest: boolean) {
+    private async _applySecurityAndTests(path: Path, content: string, info: any, ignoreTest: boolean, rustMetadata?: any) {
         const vuln = await this.analyst.integrityGuardian.detectVulnerabilities(content, info.component_type, path.name(), ignoreTest);
         Object.assign(info, vuln);
 
@@ -135,8 +145,15 @@ export class ContextEngine {
     }
 
     private buildDependencyMap() {
+        const bulkResults = this.connectivityMapper.calculateBulk(this.map);
+        const hasBulk = Object.keys(bulkResults).length > 0;
+
         Object.keys(this.map).forEach(f => {
-            this.map[f].coupling = this.connectivityMapper.calculateMetrics(f, this.map[f], this.map);
+            if (hasBulk && bulkResults[f]) {
+                this.map[f].coupling = bulkResults[f];
+            } else {
+                this.map[f].coupling = this.connectivityMapper.calculateMetrics(f, this.map[f], this.map);
+            }
         });
         this.callGraph = {};
         this.populateCallGraph();
