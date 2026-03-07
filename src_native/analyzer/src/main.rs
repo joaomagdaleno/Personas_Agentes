@@ -9,6 +9,7 @@ mod graph;
 mod pruner;
 mod search;
 mod brain;
+mod chat;
 
 use std::env;
 use std::fs;
@@ -216,26 +217,72 @@ fn main() {
         }
         "search" => {
             if args.len() < 3 {
-                eprintln!("Usage: analyzer search <json_path>");
+                eprintln!("Usage: analyzer search <query> [path]");
                 std::process::exit(1);
             }
-            let content = fs::read_to_string(&args[2]).expect("Unable to read JSON file");
-            let request: search::SearchRequest = serde_json::from_str(&content).expect("Invalid search request JSON");
+            let query = args[2].clone();
+            let path = if args.len() > 3 { &args[3] } else { "." };
+            
+            // Auto-load files from directory if it's a directory
+            let mut files = HashMap::new();
+            if std::path::Path::new(path).is_dir() {
+                let mut count = 0;
+                for entry in walkdir::WalkDir::new(path)
+                    .into_iter()
+                    .filter_map(|e| e.ok())
+                    .filter(|e| e.file_type().is_file()) {
+                    if let Ok(c) = fs::read_to_string(entry.path()) {
+                        files.insert(entry.path().to_string_lossy().to_string(), c);
+                        count += 1;
+                        if count % 100 == 0 { eprintln!("📂 Lendo arquivos: {}...", count); }
+                    }
+                }
+                eprintln!("✅ {} arquivos carregados para busca.", count);
+            }
+            
+            let request = search::SearchRequest { query, files };
             let results = search::semantic_search(request);
             println!("{}", serde_json::to_string_pretty(&results).unwrap());
         }
         "reason" => {
             if args.len() < 3 {
-                eprintln!("Usage: analyzer reason <prompt_path>");
+                eprintln!("Usage: analyzer reason <prompt_or_path> [max_tokens]");
                 std::process::exit(1);
             }
-            let prompt = fs::read_to_string(&args[2]).expect("Unable to read prompt file");
-            let mut brain = brain::Brain::new();
-            if let Some(answer) = brain.reason(&prompt, 512) {
-                println!("{}", answer);
+            let prompt = if std::path::Path::new(&args[2]).is_file() {
+                fs::read_to_string(&args[2]).expect("Unable to read prompt file")
             } else {
-                eprintln!("Error: Brain was unable to reason.");
+                args[2].clone()
+            };
+            
+            let max_tokens = if args.len() > 3 {
+                args[3].parse::<usize>().unwrap_or(512)
+            } else { 512 };
+
+            if let Some(mut brain) = brain::Brain::new() {
+                if let Some(answer) = brain.reason(&prompt, max_tokens) {
+                    println!("{}", answer);
+                } else {
+                    eprintln!("Error: Brain was unable to reason.");
+                }
+            } else {
+                eprintln!("Error: Brain was unable to initialize (check model files).");
             }
+        }
+        "inspect-tensors" => {
+            let mut path = std::path::PathBuf::from(".gemini/models/qwen2.5-coder-0.5b/model.safetensors");
+            if !path.exists() {
+                path = std::path::PathBuf::from("../../.gemini/models/qwen2.5-coder-0.5b/model.safetensors");
+            }
+            let file = fs::File::open(path).expect("Unable to open safetensors");
+            let mmap = unsafe { memmap2::Mmap::map(&file).expect("Mmap failed") };
+            let tensors = safetensors::SafeTensors::deserialize(&mmap).expect("Deserialize failed");
+            for name in tensors.names() {
+                println!("{}", name);
+            }
+        }
+        "chat" => {
+            chat::start_chat();
         }
         // Legacy
         other => {

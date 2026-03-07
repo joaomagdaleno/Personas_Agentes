@@ -45,18 +45,22 @@ pub fn semantic_search(request: SearchRequest) -> Vec<SearchHit> {
     candidates.truncate(50); 
 
     // --- Pass 2: Unified Brain Intelligence ---
+    let mut brain = Brain::new().unwrap();
+    if !brain.is_trained() {
+        eprintln!("🧠 [Brain] Indexando arquivos pela primeira vez...");
+        brain.train(&request.files);
+    }
+    
     let mut cache = load_embedding_cache();
-    let brain = Brain::new();
-    let brain_available = brain.is_loaded();
 
     let query_vec = if let Some(cached) = cache.get(&format!("query:{}", request.query)) {
         Some(cached.clone())
-    } else if brain_available {
+    } else {
         if let Some(vec) = brain.embed(&request.query) {
             cache.insert(format!("query:{}", request.query), vec.clone());
             Some(vec)
         } else { None }
-    } else { None };
+    };
 
     if let Some(q_vec) = query_vec {
         for hit in &mut candidates {
@@ -66,18 +70,18 @@ pub fn semantic_search(request: SearchRequest) -> Vec<SearchHit> {
                 
                 let doc_vec = if let Some(cached) = cache.get(&doc_key) {
                     Some(cached.clone())
-                } else if brain_available {
+                } else {
                     if let Some(vec) = brain.embed(text_to_embed) {
                         cache.insert(doc_key, vec.clone());
                         Some(vec)
                     } else { None }
-                } else { None };
+                };
 
                 if let Some(d_vec) = doc_vec {
                     let sim = cosine_similarity(&q_vec, &d_vec);
-                    // Hybrid Score: 30% VSM + 70% Neural
-                    hit.score = hit.score * 0.3 + sim * 0.7;
-                    hit.method = "Hybrid (Unified Brain)".to_string();
+                    // Hybrid Score: 20% VSM + 80% Brain
+                    hit.score = hit.score * 0.2 + sim * 0.8;
+                    hit.method = "Hybrid (Sovereign Brain)".to_string();
                 }
             }
         }
