@@ -4,11 +4,14 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
+	"sync/atomic"
 	"time"
 
+	"github.com/fsnotify/fsnotify"
 	"github.com/getlantern/systray"
 	_ "github.com/ncruces/go-sqlite3/driver"
 	_ "github.com/ncruces/go-sqlite3/embed"
@@ -16,14 +19,66 @@ import (
 	"github.com/sqweek/dialog"
 )
 
-var dbPath string
+var (
+	dbPath          string
+	pendingAnalysis int32
+)
 
 func main() {
-	// Find database in project root (two levels up from src_native/tray)
 	cwd, _ := os.Getwd()
 	dbPath = filepath.Join(cwd, "..", "..", "system_vault.db")
+	projectRoot := filepath.Join(cwd, "..", "..")
+
+	go startFileWatcher(projectRoot)
 
 	systray.Run(onReady, onExit)
+}
+
+func startFileWatcher(root string) {
+	watcher, err := fsnotify.NewWatcher()
+	if err != nil {
+		log.Println("Erro ao iniciar fsnotify:", err)
+		return
+	}
+
+	go func() {
+		for {
+			select {
+			case event, ok := <-watcher.Events:
+				if !ok {
+					return
+				}
+				if event.Has(fsnotify.Write) {
+					ext := filepath.Ext(event.Name)
+					if ext == ".ts" || ext == ".py" || ext == ".go" {
+						atomic.StoreInt32(&pendingAnalysis, 1)
+					}
+				}
+			case err, ok := <-watcher.Errors:
+				if !ok {
+					return
+				}
+				log.Println("watcher error:", err)
+			}
+		}
+	}()
+
+	err = filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if info.IsDir() {
+			name := info.Name()
+			if name == "node_modules" || strings.HasPrefix(name, ".") || name == "target" || name == "build" || name == ".gemini" {
+				return filepath.SkipDir
+			}
+			return watcher.Add(path)
+		}
+		return nil
+	})
+	if err != nil {
+		log.Println("Walk error:", err)
+	}
 }
 
 func onReady() {
@@ -69,6 +124,18 @@ func monitorLoop() {
 
 		if idle > 300 {
 			fmt.Printf("🌙 [Idle] Sistema ocioso há %.0fs. Modo Deep.\n", idle)
+			if atomic.LoadInt32(&pendingAnalysis) == 1 {
+				fmt.Println("🚀 Acionando diagnóstico de fundo inteligente via Hub...")
+				go func() {
+					resp, err := http.Get("http://localhost:8080/scan?dir=./src_local")
+					if err == nil {
+						resp.Body.Close()
+						fmt.Println("✅ Diagnóstico WASM/Hub assíncrono concluído silenciosamente.")
+						// Reset flag
+						atomic.StoreInt32(&pendingAnalysis, 0)
+					}
+				}()
+			}
 		} else {
 			fmt.Printf("👀 [Active] %s (%s) - Contexto: %s\n", appName, title, category)
 		}
