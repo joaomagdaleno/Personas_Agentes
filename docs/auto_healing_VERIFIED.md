@@ -2,7 +2,7 @@
 
 > **Status Operacional:** 🟡 `ATENÇÃO` | **Integridade Geral:** `63%`
 > **Sanidade Neural:** `0.0000` | **Estado:** ✅ Sanidade Neural Nominal
-> **Ambiente:** `TS-MASTER-CONTROL` | **Último Check:** `18:05:58`
+> **Ambiente:** `TS-MASTER-CONTROL` | **Último Check:** `18:25:25`
 >
 > 💎 `SITUAÇÃO: SOBERANIA TÉCNICA`
 
@@ -27,8 +27,8 @@
 | Métrica | Limite | Violações | Penalidade |
 | :--- | :--- | :---: | ---: |
 | Complexidade Ciclomática (CC > 20) | > 20 | 1/474 | 0 pts |
-| Complexidade Cognitiva (> 15) | > 15 | 94/474 | 0.8 pts |
-| Aninhamento Profundo (> 3) | > 3 | 230/474 | 1.5 pts |
+| Complexidade Cognitiva (> 15) | > 15 | 92/474 | 0.8 pts |
+| Aninhamento Profundo (> 3) | > 3 | 228/474 | 1.4 pts |
 | Alto Acoplamento (CBO > 10) | > 10 | 4/474 | 0 pts |
 | Herança Profunda (DIT > 5) | > 5 | 0/474 | 0 pts |
 | Baixa Manutenibilidade (MI < 10) | < 10 | 0/474 | 0 pts |
@@ -37,7 +37,7 @@
 | Quality Gate RED | - | 0/474 | 0 pts |
 | Shadow Non-Compliant | - | 1/474 | 0 pts |
 
-> **Penalidade Total de Qualidade:** `2.3 pts` (cap: 30) | Base: NIST, SonarQube, Microsoft
+> **Penalidade Total de Qualidade:** `2.2 pts` (cap: 30) | Base: NIST, SonarQube, Microsoft
 
 ### ⚖️ DIRETRIZES DE GOVERNANÇA PHD
 
@@ -92,7 +92,7 @@
 | :--- | :---: | :--- | :--- |
 | **CRITICAL** | `0` | 🔴 `BLOQUEANTE` | 🟢 `LIVRE` |
 | **HIGH** | `4` | 🟡 `RISCO ALTO` | 🟡 `INTERVENÇÃO` |
-| **MEDIUM** | `320` | 🔵 `DÉBITO TÉC.` | 🔵 `INTERVENÇÃO` |
+| **MEDIUM** | `316` | 🔵 `DÉBITO TÉC.` | 🔵 `INTERVENÇÃO` |
 | **LOW** | `0` | ⚪ `MENOR` | 🟢 `LIVRE` |
 | **STRATEGIC** | `0` | 🟣 `MELHORIA` | 🟢 `LIVRE` |
 
@@ -154,5 +154,5 @@
 >
 > - Aninhamento Excessivo (4 > 3)
 >
-> *... e mais 310 achados de nível MEDIUM omitidos para brevidade.*
+> *... e mais 306 achados de nível MEDIUM omitidos para brevidade.*
 >

@@ -11,22 +11,60 @@ pub struct ProcessedFile {
     pub content: String,
     pub dna: Vec<String>,
     pub semantic_blocks: HashMap<usize, String>,
+    pub classes: Vec<String>,
+    pub functions: Vec<String>,
+    pub exports: Vec<String>,
+    pub lines: usize,
 }
 
 pub fn process_batch(file_paths: Vec<String>, project_root: &str) -> Vec<ProcessedFile> {
+    let ts_class_re = regex::Regex::new(r"(?:export\s+)?class\s+(\w+)").unwrap();
+    let ts_func_re = regex::Regex::new(r"(?:export\s+)?(?:async\s+)?function\s+(\w+)").unwrap();
+    let ts_export_re = regex::Regex::new(r"export\s+(?:const|let|var|class|function|interface|type|enum)\s+(\w+)").unwrap();
+    
+    let py_class_re = regex::Regex::new(r"(?m)^class\s+(\w+)").unwrap();
+    let py_func_re = regex::Regex::new(r"(?m)^(?:async\s+)?def\s+(\w+)").unwrap();
+
     file_paths.into_par_iter().filter_map(|rel_path| {
         let full_path = Path::new(project_root).join(&rel_path);
         
-        // Fast I/O via standard read or mmap for larger files
+        // Fast I/O
         let content = match read_file_content(&full_path) {
             Ok(c) => c,
             Err(_) => return None,
         };
 
-        // 🧬 DNA Profiling (Item 8)
-        let dna = detect_dna(&content);
+        let is_python = rel_path.ends_with(".py");
+        let mut classes = Vec::new();
+        let mut functions = Vec::new();
+        let mut exports = Vec::new();
 
-        // 🧠 Semantic Classification (Item 9)
+        if is_python {
+            for cap in py_class_re.captures_iter(&content) {
+                let name = cap[1].to_string();
+                if !name.starts_with('_') { classes.push(name); }
+            }
+            for cap in py_func_re.captures_iter(&content) {
+                let name = cap[1].to_string();
+                if !name.starts_with('_') { functions.push(name); }
+            }
+        } else {
+            for cap in ts_class_re.captures_iter(&content) {
+                let name = cap[1].to_string();
+                if !name.starts_with('_') { classes.push(name); }
+            }
+            for cap in ts_func_re.captures_iter(&content) {
+                let name = cap[1].to_string();
+                if !name.starts_with('_') { functions.push(name); }
+            }
+            for cap in ts_export_re.captures_iter(&content) {
+                let name = cap[1].to_string();
+                if !name.starts_with('_') { exports.push(name); }
+            }
+        }
+
+        let lines = content.lines().count();
+        let dna = detect_dna(&content);
         let semantic_blocks = classify_semantic_blocks(&content);
 
         Some(ProcessedFile {
@@ -34,6 +72,10 @@ pub fn process_batch(file_paths: Vec<String>, project_root: &str) -> Vec<Process
             content,
             dna,
             semantic_blocks,
+            classes,
+            functions,
+            exports,
+            lines,
         })
     }).collect()
 }

@@ -19,32 +19,60 @@ export interface IndexData {
  * 📑 Indexer — Cataloga a estrutura anatômica do projeto.
  */
 export class Indexer {
-    constructor(private projectRoot: string) {}
+    constructor(private projectRoot: string) { }
 
     async updateIndex(): Promise<IndexData> {
-        logger.info("📡 Iniciando indexação soberana de metadados...");
+        logger.info("📡 Iniciando indexação soberana de metadados via Rust Analyzer...");
         const startTime = Date.now();
         const indexData = this.getEmptyIndex();
 
         try {
             const files = await this.getAuditableFiles();
-            const results = await Promise.allSettled(files.map(f => this.processFile(f)));
-            this.consolidateResults(indexData, results);
+
+            if (files.length > 0) {
+                const batchRequest = {
+                    file_paths: files,
+                    project_root: this.projectRoot
+                };
+
+                const tmpPath = `${this.projectRoot}/.agent/tmp_batch_${Date.now()}.json`;
+                await Bun.write(tmpPath, JSON.stringify(batchRequest));
+
+                const binaryPath = `${this.projectRoot}/src_native/analyzer/target/release/analyzer.exe`;
+
+                const proc = Bun.spawnSync([binaryPath, "batch", tmpPath], {
+                    cwd: this.projectRoot,
+                    env: { ...process.env },
+                });
+
+                import("node:fs").then(fs => {
+                    if (fs.existsSync(tmpPath)) fs.unlinkSync(tmpPath);
+                });
+
+                if (proc.exitCode !== 0) {
+                    throw new Error(`Rust analyzer failed with code ${proc.exitCode}: ${proc.stderr.toString()}`);
+                }
+
+                const outputRaw = proc.stdout.toString();
+                const processedFiles: any[] = JSON.parse(outputRaw);
+
+                for (const pf of processedFiles) {
+                    const metadata: FileMetadata = {
+                        classes: pf.classes || [],
+                        functions: pf.functions || [],
+                        exports: pf.exports || [],
+                        lines: pf.lines || 0
+                    };
+                    this.integrateResult(indexData, pf.path, metadata);
+                }
+            }
 
             const duration = ((Date.now() - startTime) / 1000).toFixed(2);
-            logger.info(`✅ Indexação concluída: ${indexData.stats.totalFiles} módulos em ${duration}s.`);
+            logger.info(`✅ Indexação nativa concluída: ${indexData.stats.totalFiles} módulos em ${duration}s.`);
         } catch (e: any) {
             logger.error(`🚨 Falha crítica no motor de indexação: ${e.message}`);
         }
         return indexData;
-    }
-
-    private consolidateResults(indexData: IndexData, results: PromiseSettledResult<{ file: string; metadata: FileMetadata }>[]) {
-        for (const result of results) {
-            if (result.status === "fulfilled") {
-                this.integrateResult(indexData, result.value.file, result.value.metadata);
-            }
-        }
     }
 
     private getEmptyIndex(): IndexData {
@@ -65,54 +93,12 @@ export class Indexer {
         return files;
     }
 
-    private async processFile(file: string) {
-        const fullPath = `${this.projectRoot}/${file}`;
-        const metadata = await this._extractMetadata(fullPath);
-        return { file, metadata };
-    }
-
     private integrateResult(indexData: IndexData, file: string, metadata: FileMetadata) {
         indexData.files[file] = metadata;
         indexData.stats.totalFiles++;
         indexData.stats.totalClasses += metadata.classes.length;
         indexData.stats.totalFunctions += metadata.functions.length;
         indexData.stats.totalExports += metadata.exports.length;
-    }
-
-    private async _extractMetadata(filePath: string): Promise<FileMetadata> {
-        try {
-            const content = await Bun.file(filePath).text();
-            const classes = this._extractPattern(content, /(?:export\s+)?class\s+(\w+)/g);
-            const functions = this._extractPattern(content, /(?:export\s+)?(?:async\s+)?function\s+(\w+)/g);
-            const exports = this._extractPattern(content, /export\s+(?:const|let|var|class|function|interface|type|enum)\s+(\w+)/g);
-
-            if (filePath.endsWith(".py")) {
-                this.enrichPythonMetadata(content, classes, functions);
-            }
-            return { classes, functions, exports, lines: content.split("\n").length };
-        } catch (e: any) {
-            logger.warn(`⚠️ Falha na anatomia de ${filePath}: ${e.message}`);
-            return { classes: [], functions: [], exports: [], lines: 0, error: e.message };
-        }
-    }
-
-    private enrichPythonMetadata(content: string, classes: string[], functions: string[]) {
-        const pyClasses = this._extractPattern(content, /^class\s+(\w+)/gm);
-        const pyFunctions = this._extractPattern(content, /^(?:async\s+)?def\s+(\w+)/gm);
-
-        pyClasses.filter(c => !classes.includes(c)).forEach(c => classes.push(c));
-        pyFunctions.filter(f => !functions.includes(f)).forEach(f => functions.push(f));
-    }
-
-    private _extractPattern(content: string, regex: RegExp): string[] {
-        const matches: string[] = [];
-        let match;
-        while ((match = regex.exec(content)) !== null) {
-            if (this.isValidPatternMatch(match)) {
-                matches.push(match[1]);
-            }
-        }
-        return matches;
     }
 
     private isValidPatternMatch(match: RegExpExecArray): boolean {

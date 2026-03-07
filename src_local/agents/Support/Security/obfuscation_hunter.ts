@@ -1,81 +1,71 @@
-import * as ts from "typescript";
-import { ObfuscationLogicEngine } from "./obfuscation_logic_engine";
 import winston from 'winston';
+import * as cp from 'child_process';
+import * as path from 'path';
+import * as fs from 'fs';
 
 /**
  * 🕵️ Caçador de Ofuscação (ObfuscationHunter)
- * Especialista em detectar reconstrução de strings perigosas via AST do TypeScript.
+ * Especialista em detectar reconstrução de strings perigosas.
+ * Delegado para o motor nativo em Rust (analyzer.exe).
  */
 export class ObfuscationHunter {
-    private engine: ObfuscationLogicEngine;
     private logger = winston.loggers.get('default_logger') || winston;
+    private nativeBinary = path.resolve(process.cwd(), "src_native/analyzer/target/release/analyzer.exe");
 
-    constructor() {
-        this.engine = new ObfuscationLogicEngine();
-    }
+    constructor() { }
 
     /**
-     * Varredura de ofuscação em arquivos TypeScript/JavaScript.
+     * Varredura de ofuscação em arquivos TypeScript/JavaScript/Python.
      */
     async scanFile(filePath: string, content: string): Promise<any[]> {
         const { VetoEngine } = await import("../../../utils/veto_engine.ts");
         if (VetoEngine.shouldSkip("", filePath)) return [];
 
+        if (!fs.existsSync(this.nativeBinary)) {
+            this.logger.error(`❌ [ObfuscationHunter] Binary not found at ${this.nativeBinary}`);
+            return [];
+        }
+
         try {
-            const sourceFile = ts.createSourceFile(filePath, content, ts.ScriptTarget.Latest, true);
-            return this.scanNode(sourceFile, sourceFile);
-        } catch (error) {
-            this.logger.error(`❌ [ObfuscationHunter] Erro ao processar AST de ${filePath}: ${error}`);
-            return [{
-                file: filePath,
-                line: 1,
-                issue: `Falha crítica no parsing AST: ${error}`,
-                severity: "HIGH",
-                category: "Security",
-                context: "ObfuscationHunter"
-            }];
-        }
-    }
-
-    private scanNode(node: ts.Node, sourceFile: ts.SourceFile): any[] {
-        let findings: any[] = [];
-
-        if (this.isAdditionNode(node)) {
-            const resolved = this.engine.resolveConstant(this.mapToSimpleNode(node));
-            if (resolved) {
-                const { line } = sourceFile.getLineAndCharacterOfPosition(node.getStart());
-                const finding = this.engine.checkDangerousKeywords(line + 1, resolved, this.mapToSimpleNode(node));
-                if (finding) findings.push(finding);
-            }
-        }
-
-        ts.forEachChild(node, child => {
-            findings = findings.concat(this.scanNode(child, sourceFile));
-        });
-
-        return findings;
-    }
-
-    private isAdditionNode(node: ts.Node): boolean {
-        return ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.PlusToken;
-    }
-
-    /**
-     * Mapeia um nó do TS para o formato simples esperado pelo ObfuscationLogicEngine.
-     */
-    private mapToSimpleNode(node: ts.Node): any {
-        if (ts.isStringLiteral(node)) {
-            return { type: 'StringLiteral', value: node.text };
-        }
-        if (ts.isBinaryExpression(node)) {
-            return {
-                type: 'BinaryExpression',
-                operator: '+',
-                left: this.mapToSimpleNode(node.left),
-                right: this.mapToSimpleNode(node.right)
+            // We create a fake persona rule just to trigger the audit command.
+            // The native `detect_obfuscation` runs regardless of regex rules for code files.
+            const request = {
+                files: [{ path: filePath, content }],
+                persona_rules: [{
+                    agent: "Security Guard",
+                    role: "Protector",
+                    emoji: "🛡️",
+                    stack: "Security",
+                    extensions: [".ts", ".js", ".py"],
+                    rules: [] // No regex rules needed for obfuscation detection
+                }]
             };
+
+            const tmpDir = path.join(process.cwd(), ".agent");
+            if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir);
+            const tmpFile = path.join(tmpDir, `tmp_obf_${Date.now()}.json`);
+            fs.writeFileSync(tmpFile, JSON.stringify(request));
+
+            const output = cp.execSync(`"${this.nativeBinary}" audit "${tmpFile}"`, { encoding: 'utf8', maxBuffer: 1024 * 1024 * 10 });
+            fs.unlinkSync(tmpFile);
+
+            const findings = JSON.parse(output);
+
+            // Map AuditFinding to expected format
+            return findings.map((f: any) => ({
+                file: f.file,
+                line: 1, // Native parser doesn't return line number for fragmentation yet
+                issue: f.issue,
+                severity: f.severity,
+                category: "Security",
+                context: "ObfuscationHunter",
+                evidence: f.evidence
+            }));
+
+        } catch (error) {
+            this.logger.error(`❌ [ObfuscationHunter] Erro ao invocar analizador nativo em ${filePath}: ${error}`);
+            return [];
         }
-        return { type: 'Unknown' };
     }
 
     /** Parity stubs for legacy obfuscation_hunter.py */

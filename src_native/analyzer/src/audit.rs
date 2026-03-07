@@ -73,6 +73,43 @@ fn extract_evidence(content: &str, pattern: &str, _match_idx: usize) -> String {
     "pattern_match".to_string()
 }
 
+fn detect_obfuscation(content: &str, file_path: &str) -> Vec<AuditFinding> {
+    let mut findings = Vec::new();
+    let dangerous = ["eval", "process.env", "require", "exec", "execSync", "spawn", "Buffer.from", "fs.readFile", "document.cookie", "localStorage", "window.crypto", "__dirname", "setTimeout", "setInterval", "Function"];
+    
+    // Look for patterns like 'e' + 'v' + 'a' + 'l' or "ev" + "al"
+    // A simple heuristic: check if the file contains the keyword but NOT as a whole word, 
+    // OR look for string concatenation operations that might form these words.
+    // For a highly performant native replacement, we look for concatenation syntax close to each other.
+    
+    // Simplification for Rust regex: 
+    // Look for quotes separated by plus signs: "..." + "..." or '...' + '...'
+    let concat_re = Regex::new(r#"(["'][^"']*["']\s*\+\s*)+["'][^"']*["']"#).unwrap();
+    
+    for cap in concat_re.captures_iter(content) {
+        let matched = cap[0].to_string();
+        // Reconstruct the string
+        let reconstructed = matched.replace("'", "").replace("\"", "").replace(" ", "").replace("+", "");
+        
+        for kw in dangerous.iter() {
+            if reconstructed.contains(kw) && !matched.contains(kw) {
+                // It contains the keyword when reconstructed, but not in the raw match (meaning it was fragmented!)
+                findings.push(AuditFinding {
+                    file: file_path.to_string(),
+                    agent: "Security Guard".to_string(),
+                    role: "Protector".to_string(),
+                    emoji: "🛡️".to_string(),
+                    issue: format!("Possível Ofuscação: '{}' fragmentado", kw),
+                    severity: "HIGH".to_string(),
+                    stack: "Security".to_string(),
+                    evidence: matched.chars().take(80).collect(),
+                });
+            }
+        }
+    }
+    findings
+}
+
 pub fn bulk_audit(request: BulkAuditRequest) -> Vec<AuditFinding> {
     // 1. Collect and compile patterns
     let all_patterns: Vec<String> = request.persona_rules.iter()
@@ -94,7 +131,7 @@ pub fn bulk_audit(request: BulkAuditRequest) -> Vec<AuditFinding> {
         .flat_map(|file| {
             let matches: Vec<usize> = regex_set.matches(&file.content).into_iter().collect();
             
-            matches.into_iter().filter_map(|rule_idx| {
+            let regex_findings: Vec<_> = matches.into_iter().filter_map(|rule_idx| {
                 let (p_idx, r_idx) = resolve_rule_index(rule_idx, &request.persona_rules)?;
                 let persona = &request.persona_rules[p_idx];
                 let rule = &persona.rules[r_idx];
@@ -120,7 +157,19 @@ pub fn bulk_audit(request: BulkAuditRequest) -> Vec<AuditFinding> {
                     stack: persona.stack.clone(),
                     evidence: extract_evidence(&file.content, &rule.regex, rule_idx),
                 })
-            }).collect::<Vec<_>>()
+            }).collect();
+            
+            // 3. Obfuscation detection
+            let mut file_findings = Vec::new();
+            file_findings.extend(regex_findings);
+            
+            // Only check for obfuscation if it's TS, JS, or PY
+            let is_code = file.path.ends_with(".ts") || file.path.ends_with(".js") || file.path.ends_with(".py");
+            if is_code {
+                file_findings.extend(detect_obfuscation(&file.content, &file.path));
+            }
+            
+            file_findings
         })
         .collect()
 }
