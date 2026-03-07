@@ -30,3 +30,4 @@ target/
 # Internal Gemini/Agent files
 .agent/
 src_native/analyzer/.gemini/
+.gemini/models/
