@@ -21,3 +21,12 @@ missing_py.txt
 files_at_6dec891.txt
 current_files.txt
 *_legacy.py
+
+# Build and binaries
+target/
+*.exe
+*.bin
+
+# Internal Gemini/Agent files
+.agent/
+src_native/analyzer/.gemini/
