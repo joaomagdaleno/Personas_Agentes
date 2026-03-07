@@ -18,8 +18,9 @@
     "winston": "^3.19.0"
   },
   "scripts": {
-    "verify-all": "bun run --parallel test diagnostic",
+    "verify-all": "bun run ensure-binaries && bun run --parallel test diagnostic",
     "test": "bun test",
+    "ensure-binaries": "bun run scripts/ensure_binaries.ts",
     "diagnostic": "bun run scripts/run-diagnostic.ts",
     "benchmark": "bun run -e 'import { TestRunner } from \"./src_local/agents/Support/test_runner\"; const tr = new TestRunner(); tr.benchmark(\".\").then(r => console.log(JSON.stringify(r, null, 2)))'",
     "generate-tests": "bun run -e 'import { TestArchitectAgent } from \"./src_local/agents/Support/test_architect_agent\"; const ta = new TestArchitectAgent(); ta.generateMissingTests(\".\").then(g => console.log(`Generated ${g.length} tests.`))'",

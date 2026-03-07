@@ -1,6 +1,7 @@
 
 import winston from "winston";
 import * as path from "node:path";
+import * as fs from "node:fs";
 import { StructuralAnalyst } from "./../Analysis/structural_analyst";
 import { IntegrityGuardian } from "./../Core/integrity_guardian";
 import { ConnectivityMapper } from "./../Analysis/connectivity_mapper";
@@ -96,12 +97,28 @@ export class InfrastructureAssembler {
 
         const { spawn } = require("node:child_process");
         const hubPath = path.resolve(projectRoot, "src_native", "hub", "hub.exe");
+        const analyzerPath = path.resolve(projectRoot, "src_native", "analyzer", "target", "release", "analyzer.exe");
+        const scannerPath = path.resolve(projectRoot, "src_native", "go-scanner.exe");
+
+        logger.info("🛡️ [Assembler] Validando presença dos binários nativos obrigatórios...");
+        const missing = [];
+        if (!fs.existsSync(hubPath)) missing.push("hub.exe (src_native/hub/)");
+        if (!fs.existsSync(analyzerPath)) missing.push("analyzer.exe (src_native/analyzer/target/release/)");
+        if (!fs.existsSync(scannerPath)) missing.push("go-scanner.exe (src_native/)");
+
+        if (missing.length > 0) {
+            logger.error(`🚨 [Assembler] Falha crítica: Binários obrigatórios ausentes: ${missing.join(", ")}`);
+            logger.error("🛑 [Assembler] O sistema exige que todos os binários nativos de Rust e Go estejam compilados antes de iniciar.");
+            process.exit(1);
+        }
+
         logger.info(`🔍 [Assembler] Hub Path: ${hubPath}`);
 
-        const hubProcess = spawn(hubPath, ["-port=8080"], {
+        const hubProcess = spawn(`"${hubPath}"`, ["-port=8080"], {
             cwd: path.resolve(projectRoot, "src_native", "hub"),
             detached: true,
-            stdio: "inherit"
+            stdio: "inherit",
+            shell: true
         });
         hubProcess.on('error', (err: any) => {
             logger.error(`🚨 [Assembler] Falha ao iniciar hub.exe: ${err.message}`);
