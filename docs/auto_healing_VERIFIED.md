@@ -2,7 +2,7 @@
 
 > **Status Operacional:** 🟡 `ATENÇÃO` | **Integridade Geral:** `63%`
 > **Sanidade Neural:** `0.0000` | **Estado:** ✅ Sanidade Neural Nominal
-> **Ambiente:** `TS-MASTER-CONTROL` | **Último Check:** `15:36:22`
+> **Ambiente:** `TS-MASTER-CONTROL` | **Último Check:** `18:05:58`
 >
 > 💎 `SITUAÇÃO: SOBERANIA TÉCNICA`
 
@@ -27,8 +27,8 @@
 | Métrica | Limite | Violações | Penalidade |
 | :--- | :--- | :---: | ---: |
 | Complexidade Ciclomática (CC > 20) | > 20 | 1/474 | 0 pts |
-| Complexidade Cognitiva (> 15) | > 15 | 95/474 | 0.8 pts |
-| Aninhamento Profundo (> 3) | > 3 | 232/474 | 1.5 pts |
+| Complexidade Cognitiva (> 15) | > 15 | 94/474 | 0.8 pts |
+| Aninhamento Profundo (> 3) | > 3 | 230/474 | 1.5 pts |
 | Alto Acoplamento (CBO > 10) | > 10 | 4/474 | 0 pts |
 | Herança Profunda (DIT > 5) | > 5 | 0/474 | 0 pts |
 | Baixa Manutenibilidade (MI < 10) | < 10 | 0/474 | 0 pts |
@@ -91,8 +91,8 @@
 | Nível | Qtd | Impacto | Resposta |
 | :--- | :---: | :--- | :--- |
 | **CRITICAL** | `0` | 🔴 `BLOQUEANTE` | 🟢 `LIVRE` |
-| **HIGH** | `3` | 🟡 `RISCO ALTO` | 🟡 `INTERVENÇÃO` |
-| **MEDIUM** | `324` | 🔵 `DÉBITO TÉC.` | 🔵 `INTERVENÇÃO` |
+| **HIGH** | `4` | 🟡 `RISCO ALTO` | 🟡 `INTERVENÇÃO` |
+| **MEDIUM** | `320` | 🔵 `DÉBITO TÉC.` | 🔵 `INTERVENÇÃO` |
 | **LOW** | `0` | ⚪ `MENOR` | 🟢 `LIVRE` |
 | **STRATEGIC** | `0` | 🟣 `MELHORIA` | 🟢 `LIVRE` |
 
@@ -106,49 +106,53 @@
 >
 > - Complexidade Cognitiva Elevada (29 > 15)
 >
-> #### 🔴 `CRÍTICO` [3] `context_mapping_logic.ts`
+> #### 🔴 `CRÍTICO` [3] `PythonParser.ts`
+>
+> - Complexidade Cognitiva Elevada (26 > 15)
+>
+> #### 🔴 `CRÍTICO` [4] `context_mapping_logic.ts`
 >
 > - Complexidade Cognitiva Elevada (27 > 15)
 >
-> #### 🟡 `ATENÇÃO` [4] `audit_expert_engine.ts`
+> #### 🟡 `ATENÇÃO` [5] `audit_expert_engine.ts`
 >
 > - Complexidade Cognitiva Elevada (22 > 15)
->
-> #### 🟡 `ATENÇÃO` [5] `finding_deduplicator.ts`
->
-> - Complexidade Cognitiva Elevada (21 > 15)
 >
 > #### 🟡 `ATENÇÃO` [6] `finding_deduplicator.ts`
 >
+> - Complexidade Cognitiva Elevada (21 > 15)
+>
+> #### 🟡 `ATENÇÃO` [7] `finding_deduplicator.ts`
+>
 > - Aninhamento Excessivo (4 > 3)
 >
-> #### 🟡 `ATENÇÃO` [7] `context_engine.ts`
+> #### 🟡 `ATENÇÃO` [8] `context_engine.ts`
 >
 > - Aninhamento Excessivo (5 > 3)
 >
-> #### 🟡 `ATENÇÃO` [8] `healer.ts`
+> #### 🟡 `ATENÇÃO` [9] `healer.ts`
 >
 > - Complexidade Cognitiva Elevada (22 > 15)
 >
-> #### 🟡 `ATENÇÃO` [9] `penalty_engine.ts`
+> #### 🟡 `ATENÇÃO` [10] `penalty_engine.ts`
 >
 > - Complexidade Cognitiva Elevada (20 > 15)
 >
-> #### 🟡 `ATENÇÃO` [10] `penalty_engine.ts`
+> #### 🟡 `ATENÇÃO` [11] `penalty_engine.ts`
 >
 > - Aninhamento Excessivo (4 > 3)
 >
-> #### 🟡 `ATENÇÃO` [11] `score_calculator.ts`
+> #### 🟡 `ATENÇÃO` [12] `score_calculator.ts`
 >
 > - Complexidade Cognitiva Elevada (16 > 15)
 >
-> #### 🟡 `ATENÇÃO` [12] `orchestrator.ts`
+> #### 🟡 `ATENÇÃO` [13] `orchestrator.ts`
 >
 > - Complexidade Cognitiva Elevada (23 > 15)
 >
-> #### 🟡 `ATENÇÃO` [13] `orchestrator.ts`
+> #### 🟡 `ATENÇÃO` [14] `orchestrator.ts`
 >
 > - Aninhamento Excessivo (4 > 3)
 >
-> *... e mais 314 achados de nível MEDIUM omitidos para brevidade.*
+> *... e mais 310 achados de nível MEDIUM omitidos para brevidade.*
 >

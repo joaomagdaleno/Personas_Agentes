@@ -1,3 +1,7 @@
+import * as cp from "child_process";
+import * as path from "path";
+import * as fs from "fs";
+
 export interface PythonAnalysis {
     functions: string[];
     classes: string[];
@@ -5,6 +9,8 @@ export interface PythonAnalysis {
 }
 
 export class PythonParser {
+    private static BINARY_PATH = path.resolve(process.cwd(), "src_native/analyzer/target/release/analyzer.exe");
+
     static analyze(content: string): PythonAnalysis {
         const functions = [...content.matchAll(/def\s+(\w+)\s*\(/g)].map(m => m[1] || '');
         const classes = [...content.matchAll(/class\s+(\w+)\s*[:\(]/g)].map(m => m[1] || '');
@@ -12,8 +18,25 @@ export class PythonParser {
     }
 
     static calculateComplexity(content: string): number {
-        const matches = [...content.matchAll(/\b(if|while|for|except|with)\b|\band\b|\bor\b/g)];
-        return 1 + matches.length;
+        this.ensureBinaryPresence();
+
+        try {
+            // Write temp file for analysis
+            const tmpDir = path.join(process.cwd(), "tmp_rust");
+            if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir);
+            const tmpFile = path.join(tmpDir, `tmp_complexity_${Date.now()}.py`);
+            fs.writeFileSync(tmpFile, content);
+
+            // Execute native analyzer
+            const output = cp.execSync(`"${this.BINARY_PATH}" analyze "${tmpFile}"`, { encoding: 'utf8' });
+            fs.unlinkSync(tmpFile);
+
+            const result = JSON.parse(output);
+            return result.total_complexity || 1;
+        } catch (err) {
+            console.error(`[PythonParser] Native complexity calculation failed:`, err);
+            return 1; // Fallback to minimum
+        }
     }
 
     static extractImports(content: string): string[] {
@@ -35,5 +58,12 @@ export class PythonParser {
             }
         }
         return [...new Set(imports)];
+    }
+
+    private static ensureBinaryPresence() {
+        if (!fs.existsSync(this.BINARY_PATH)) {
+            console.error(`[FATAL] Rust binary not found at ${this.BINARY_PATH}.`);
+            process.exit(1);
+        }
     }
 }

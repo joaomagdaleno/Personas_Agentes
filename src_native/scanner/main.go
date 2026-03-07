@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -10,17 +9,12 @@ import (
 	"regexp"
 	"strings"
 	"sync"
-
-	sitter "github.com/smacker/go-tree-sitter"
-	"github.com/smacker/go-tree-sitter/golang"
-	"github.com/smacker/go-tree-sitter/kotlin"
-	"github.com/smacker/go-tree-sitter/python"
-	"github.com/smacker/go-tree-sitter/typescript"
 )
 
 type AtomicUnit struct {
 	Type                string `json:"type"`
 	Name                string `json:"name"`
+	Parent              string `json:"parent,omitempty"`
 	Line                int    `json:"line"`
 	Complexity          int    `json:"complexity"`
 	CognitiveComplexity int    `json:"cognitive_complexity"`
@@ -41,192 +35,126 @@ type FileAnalysis struct {
 }
 
 var (
-	metadataRegex      = regexp.MustCompile(`(?i)rules|patterns|regex|manifest|metadata|diretriz|heuristics`)
-	observabilityRegex = regexp.MustCompile(`(?i)logger|log|console|telemetry|startMetrics|endMetrics|logPerformance|winston`)
-	mathRegex          = regexp.MustCompile(`(?i)\b(alpha|progress|offset|dp|sp|x|y|width|height|radius|velocity|phase|lerp|sin|cos|tan|atan)\b`)
-	infraRegex         = regexp.MustCompile(`(?i)fs\.|path\.|join\(|existsSync|readdir|readFile|Bun\.file|Bun\.spawn`)
+	classRegex     = regexp.MustCompile(`class\s+(\w+)`)
+	methodRegex    = regexp.MustCompile(`(?:(public|private|protected|static|async)\s+)?(\w+)\s*\(([^)]*)\)`)
+	funcRegex      = regexp.MustCompile(`function\s+(\w+)`)
+	arrowFuncRegex = regexp.MustCompile(`const\s+(\w+)\s*=\s*(?:async\s*)?(?:\([^)]*\)|[\w]+)\s*=>`)
+
+	intentRegexes = map[string]*regexp.Regexp{
+		"METADATA":       regexp.MustCompile(`(?i)rules|patterns|regex|manifest|metadata|diretriz|heuristics`),
+		"OBSERVABILITY":  regexp.MustCompile(`(?i)logger|log|console|telemetry|winston`),
+		"TECH/MATH":      regexp.MustCompile(`(?i)\b(alpha|progress|offset|lerp|sin|cos|tan)\b`),
+		"INFRASTRUCTURE": regexp.MustCompile(`(?i)fs\.|path\.|join\(|existsSync|readdir|readFile`),
+	}
 )
 
-func classifyIntent(content string) string {
-	if metadataRegex.MatchString(content) {
-		return "METADATA"
-	}
-	if observabilityRegex.MatchString(content) {
-		return "OBSERVABILITY"
-	}
-	if mathRegex.MatchString(content) {
-		return "TECH/MATH"
-	}
-	if infraRegex.MatchString(content) {
-		return "INFRASTRUCTURE"
-	}
-	if strings.Contains(content, "ts.SyntaxKind") || strings.Contains(content, "ts.Node") || strings.Contains(content, "ast.") {
-		return "AST/COMPILER"
-	}
-	return "LOGIC"
-}
-
-func getLanguage(ext string, isLegacy bool) *sitter.Language {
-	if isLegacy {
-		return sitter.NewLanguage(python.GetLanguage())
-	}
-	switch ext {
-	case ".ts", ".tsx":
-		return sitter.NewLanguage(typescript.GetLanguage())
-	case ".js", ".jsx":
-		return sitter.NewLanguage(typescript.GetLanguage())
-	case ".py":
-		return sitter.NewLanguage(python.GetLanguage())
-	case ".go":
-		return sitter.NewLanguage(golang.GetLanguage())
-	case ".kt":
-		return sitter.NewLanguage(kotlin.GetLanguage())
-	default:
-		return nil
-	}
-}
-
-func analyzeFile(path string, root string, isLegacy bool) (FileAnalysis, error) {
+func analyzeFile(path string, root string) (FileAnalysis, error) {
 	rel, _ := filepath.Rel(root, path)
 	rel = strings.ReplaceAll(rel, `\`, "/")
 
-	content, err := os.ReadFile(path)
+	contentBytes, err := os.ReadFile(path)
 	if err != nil {
 		return FileAnalysis{}, err
 	}
+	content := string(contentBytes)
+	lines := strings.Split(content, "\n")
 
 	analysis := FileAnalysis{
 		Path:   rel,
 		Exists: true,
 		Units:  []AtomicUnit{},
-		Loc:    len(strings.Split(string(content), "\n")),
+		Loc:    len(lines),
 	}
 
-	ext := filepath.Ext(path)
-	lang := getLanguage(ext, isLegacy)
-	if lang == nil {
-		return analysis, nil
-	}
+	currentClass := ""
 
-	parser := sitter.NewParser()
-	parser.SetLanguage(lang)
-
-	tree, err := parser.ParseCtx(context.Background(), nil, content)
-	if tree == nil {
-		return analysis, fmt.Errorf("failed to parse file %s: %v", path, err)
-	}
-	rootNode := tree.RootNode()
-	if rootNode == nil {
-		return analysis, fmt.Errorf("failed to get root node for %s", path)
-	}
-
-	analysis.TotalComplexity = 0
-	analysis.CognitiveComplexity = 0
-	analysis.MaxNesting = 0
-	analysis.Sloc = 0
-	analysis.Comments = 0
-
-	var walk func(*sitter.Node, int)
-	walk = func(n *sitter.Node, nesting int) {
-		if nesting > analysis.MaxNesting {
-			analysis.MaxNesting = nesting
+	for i, line := range lines {
+		trimmed := strings.TrimSpace(line)
+		if trimmed == "" {
+			continue
 		}
-
-		nodeType := n.Type()
-
-		if strings.Contains(nodeType, "comment") {
+		if strings.HasPrefix(trimmed, "//") || strings.HasPrefix(trimmed, "/*") || strings.HasPrefix(trimmed, "*") {
 			analysis.Comments++
+			continue
 		}
+		analysis.Sloc++
 
-		isBranch := false
-		isCognitiveIncrement := false
-		isNestingIncrement := false
-
-		switch nodeType {
-		case "if_statement", "while_statement", "for_statement", "for_in_statement", "for_of_statement", "catch_clause", "conditional_expression", "if_expression", "when_expression":
-			isBranch = true
-			isCognitiveIncrement = true
-			isNestingIncrement = true
-		case "case_clause":
-			isBranch = true
-			isCognitiveIncrement = true
-		case "binary_expression":
-			for i := 0; i < int(n.ChildCount()); i++ {
-				child := n.Child(i)
-				if child != nil {
-					childType := child.Type()
-					if childType == "&&" || childType == "||" || childType == "??" || childType == "and" || childType == "or" {
-						isBranch = true
-						isCognitiveIncrement = true
-						break
-					}
-				}
-			}
-		}
-
-		if isBranch {
-			analysis.TotalComplexity++
-		}
-
-		if isCognitiveIncrement {
-			cogWeight := 1 + nesting
-			analysis.CognitiveComplexity += cogWeight
-			if len(analysis.Units) > 0 {
-				analysis.Units[len(analysis.Units)-1].CognitiveComplexity += cogWeight
-			}
-		}
-
-		if isBranch && len(analysis.Units) > 0 {
-			analysis.Units[len(analysis.Units)-1].Complexity++
-		}
-
-		// Unit identification
-		nameNode := n.ChildByFieldName("name")
-		if nameNode != nil {
-			unitType := ""
-			switch nodeType {
-			case "class_declaration", "class_definition":
-				unitType = "class"
-			case "function_declaration", "function_definition", "method_definition", "method_declaration":
-				unitType = "function"
-			}
-
-			if unitType != "" {
-				name := string(content[nameNode.StartByte():nameNode.EndByte()])
+		// Simple Regex-based identification (PhD style: fast and effective)
+		if m := classRegex.FindStringSubmatch(line); m != nil {
+			currentClass = m[1]
+			analysis.Units = append(analysis.Units, AtomicUnit{
+				Type: "class",
+				Name: currentClass,
+				Line: i + 1,
+			})
+		} else if m := funcRegex.FindStringSubmatch(line); m != nil {
+			analysis.Units = append(analysis.Units, AtomicUnit{
+				Type: "function",
+				Name: m[1],
+				Line: i + 1,
+			})
+		} else if m := arrowFuncRegex.FindStringSubmatch(line); m != nil {
+			analysis.Units = append(analysis.Units, AtomicUnit{
+				Type: "function",
+				Name: m[1],
+				Line: i + 1,
+			})
+		} else if m := methodRegex.FindStringSubmatch(line); m != nil {
+			name := m[2]
+			// Avoid false positives like if(), for(), while()
+			if !isKeyword(name) && currentClass != "" {
 				analysis.Units = append(analysis.Units, AtomicUnit{
-					Type:                unitType,
-					Name:                name,
-					Line:                int(n.StartPoint().Row) + 1,
-					Complexity:          1,
-					CognitiveComplexity: 0,
-					Intent:              classifyIntent(string(content[n.StartByte():n.EndByte()])),
+					Type:   "method",
+					Name:   name,
+					Parent: currentClass,
+					Line:   i + 1,
 				})
 			}
 		}
-
-		for i := 0; i < int(n.ChildCount()); i++ {
-			nextNesting := nesting
-			if isNestingIncrement || strings.Contains(nodeType, "declaration") || strings.Contains(nodeType, "definition") {
-				nextNesting++
-			}
-			walk(n.Child(i), nextNesting)
-		}
 	}
 
-	walk(rootNode, 0)
-	analysis.TotalComplexity++     // Base cyclomatic complexity
-	analysis.CognitiveComplexity++ // Base cognitive complexity
-	analysis.Intent = classifyIntent(string(content))
-	analysis.Sloc = analysis.Loc - analysis.Comments
+	analysis.Intent = "LOGIC"
+	for intent, re := range intentRegexes {
+		if re.MatchString(content) {
+			analysis.Intent = intent
+			break
+		}
+	}
 
 	return analysis, nil
 }
 
+func isKeyword(s string) bool {
+	keywords := []string{"if", "for", "while", "const", "let", "var", "return", "switch", "catch", "import", "export"}
+	for _, kw := range keywords {
+		if s == kw {
+			return true
+		}
+	}
+	return false
+}
+
 func main() {
-	dirPtr := flag.String("dir", ".", "Directory to scan")
+	dirPtr := flag.String("dir", "", "Directory to scan")
+	filePtr := flag.String("file", "", "Specific file to scan")
 	rootPtr := flag.String("root", ".", "Root directory for relative paths")
-	legacyPtr := flag.Bool("legacy", false, "Scan as legacy Python files")
 	flag.Parse()
+
+	if *filePtr != "" {
+		analysis, err := analyzeFile(*filePtr, *rootPtr)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+		out, _ := json.Marshal([]FileAnalysis{analysis})
+		fmt.Println(string(out))
+		return
+	}
+
+	if *dirPtr == "" {
+		flag.Usage()
+		os.Exit(1)
+	}
 
 	var results = []FileAnalysis{}
 	var mu sync.Mutex
@@ -236,7 +164,7 @@ func main() {
 		if err != nil || info.IsDir() {
 			if info != nil {
 				name := info.Name()
-				if name == "node_modules" || name == "__pycache__" || (strings.HasPrefix(name, ".") && name != ".") {
+				if name == "node_modules" || strings.HasPrefix(name, ".") && name != "." {
 					return filepath.SkipDir
 				}
 			}
@@ -244,22 +172,11 @@ func main() {
 		}
 
 		ext := filepath.Ext(path)
-		isCode := false
-		if *legacyPtr && ext == ".py" {
-			isCode = true
-		} else if !*legacyPtr && (ext == ".ts" || ext == ".tsx" || ext == ".js" || ext == ".jsx" || ext == ".go" || ext == ".kt") {
-			isCode = true
-		}
-
-		if isCode {
-			if strings.Contains(path, "__init__") {
-				return nil
-			}
-
+		if ext == ".ts" || ext == ".tsx" || ext == ".js" || ext == ".py" || ext == ".go" {
 			wg.Add(1)
 			go func(p string) {
 				defer wg.Done()
-				analysis, err := analyzeFile(p, *rootPtr, *legacyPtr)
+				analysis, err := analyzeFile(p, *rootPtr)
 				if err == nil {
 					mu.Lock()
 					results = append(results, analysis)
@@ -271,12 +188,11 @@ func main() {
 	})
 
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error walking: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 		os.Exit(1)
 	}
 
 	wg.Wait()
-
 	out, _ := json.Marshal(results)
 	fmt.Println(string(out))
 }

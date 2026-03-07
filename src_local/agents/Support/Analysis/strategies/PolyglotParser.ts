@@ -1,4 +1,10 @@
+import * as cp from "child_process";
+import * as path from "path";
+import * as fs from "fs";
+
 export class PolyglotParser {
+    private static GO_BINARY = path.resolve(process.cwd(), "src_native/go-scanner.exe");
+
     static analyzeKt(content: string) {
         const lines = content.split('\n');
         return {
@@ -9,24 +15,37 @@ export class PolyglotParser {
     }
 
     static calculateKtComplexity(content: string): number {
-        const keywords = ['if ', 'for ', 'while ', 'when ', 'catch ', '?.let', '?.also', '?.run'];
-        let count = 1;
-        for (const kw of keywords) {
-            count += this.countKeywordMatches(content, kw);
-        }
-        return count;
-    }
-
-    private static countKeywordMatches(content: string, kw: string): number {
-        const safeKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const matches = content.match(new RegExp(safeKw, 'g'));
-        return matches ? matches.length : 0;
+        return this.callNativeScanner(content, ".kt");
     }
 
     static analyzeGo(content: string) {
         const functions = [...content.matchAll(/func\s+(?:\([^)]+\)\s+)?(\w+)\s*\(/g)].map(m => m[1] || '');
         const structs = [...content.matchAll(/type\s+(\w+)\s+struct/g)].map(m => m[1] || '');
         return { functions, classes: structs };
+    }
+
+    static calculateGoComplexity(content: string): number {
+        return this.callNativeScanner(content, ".go");
+    }
+
+    private static callNativeScanner(content: string, ext: string): number {
+        if (!fs.existsSync(this.GO_BINARY)) return 1;
+
+        try {
+            const tmpDir = path.join(process.cwd(), "tmp_native_poly");
+            if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir);
+            const tmpFile = path.join(tmpDir, `tmp_poly_${Date.now()}${ext}`);
+            fs.writeFileSync(tmpFile, content);
+
+            const output = cp.execSync(`"${this.GO_BINARY}" -file "${tmpFile}" -root "${process.cwd()}"`, { encoding: 'utf8' });
+            fs.unlinkSync(tmpFile);
+
+            const data = JSON.parse(output);
+            return data[0]?.total_complexity || 1;
+        } catch (err) {
+            console.error(`[PolyglotParser] Native calculation failed for ${ext}:`, err);
+            return 1;
+        }
     }
 
     static analyzeDart(content: string) {

@@ -43,8 +43,8 @@ export class SourceCodeParser {
         const ext = fileName.split(".").pop()?.toLowerCase();
         if (ext === "py") return this.analyzePy(content);
         if (ext === "ts" || ext === "js" || ext === "tsx") return this.analyzeTs(content);
-        if (ext === "kt") return { ...PolyglotParser.analyzeKt(content), complexity: PolyglotParser.calculateKtComplexity(content) };
-        if (ext === "go") return PolyglotParser.analyzeGo(content);
+        if (ext === "kt") return { ...this.analyzeKt(content), complexity: this.calculateKtComplexity(content) };
+        if (ext === "go") return { ...PolyglotParser.analyzeGo(content), complexity: PolyglotParser.calculateGoComplexity(content) };
         if (ext === "dart") return PolyglotParser.analyzeDart(content);
         return null;
     }

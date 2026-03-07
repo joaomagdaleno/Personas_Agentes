@@ -19,42 +19,49 @@ use tree_sitter::{Parser, Node};
 use serde::Serialize;
 
 #[derive(Serialize)]
+struct FunctionMetric {
+    name: String,
+    score: i32,
+    nesting: i32,
+    line: usize,
+}
+
+#[derive(Serialize)]
 struct AnalysisResult {
     path: String,
-    complexity: i32,
-    cognitive_complexity: i32,
+    total_complexity: i32,
+    functions: Vec<FunctionMetric>,
     loc: usize,
     sloc: usize,
     comments: usize,
 }
 
-fn walk_ast(node: Node, depth: i32, results: &mut AnalysisResult) {
+// Improved walk_ast to handle nested scores
+fn collect_metrics(node: Node, depth: i32, score: &mut i32, max_nesting: &mut i32) {
     let kind = node.kind();
+    let nestable = ["if_statement", "for_statement", "while_statement", "do_statement", "case_clause", "catch_clause", "switch_statement", "conditional_expression"];
     
-    // Simple Cyclomatic Complexity increment
-    if ["if_statement", "for_statement", "while_statement", "case_clause"].contains(&kind) {
-        results.complexity += 1;
-        results.cognitive_complexity += 1 + depth;
+    let mut current_depth = depth;
+    if nestable.contains(&kind) {
+        *score += 1 + depth;
+        current_depth += 1;
+        if current_depth > *max_nesting {
+            *max_nesting = current_depth;
+        }
     }
 
     let mut cursor = node.walk();
     if cursor.goto_first_child() {
         loop {
-            let child = cursor.node();
-            let mut next_depth = depth;
-            if ["if_statement", "for_statement", "while_statement"].contains(&kind) {
-                next_depth += 1;
-            }
-            walk_ast(child, next_depth, results);
-            if !cursor.goto_next_sibling() {
-                break;
-            }
+            collect_metrics(cursor.node(), current_depth, score, max_nesting);
+            if !cursor.goto_next_sibling() { break; }
         }
     }
 }
 
 fn run_analyze(path: &str) {
     let source_code = fs::read_to_string(path).expect("Unable to read file");
+    let source_bytes = source_code.as_bytes();
     
     let loc = source_code.lines().count();
     let mut sloc = 0;
@@ -62,9 +69,7 @@ fn run_analyze(path: &str) {
 
     for line in source_code.lines() {
         let trimmed = line.trim();
-        if trimmed.is_empty() {
-            continue;
-        }
+        if trimmed.is_empty() { continue; }
         if trimmed.starts_with("//") || trimmed.starts_with("/*") || trimmed.starts_with("*") {
             comments += 1;
         } else {
@@ -73,24 +78,82 @@ fn run_analyze(path: &str) {
     }
 
     let mut parser = Parser::new();
-    let language = tree_sitter_typescript::language_typescript();
-    parser.set_language(language).expect("Error loading TypeScript grammar");
+    let extension = Path::new(path).extension().and_then(|s| s.to_str()).unwrap_or("");
+    
+    match extension {
+        "py" => {
+            let language = tree_sitter_python::language();
+            parser.set_language(language).expect("Error loading Python grammar");
+        }
+        "go" => {
+            let language = tree_sitter_go::language();
+            parser.set_language(language).expect("Error loading Go grammar");
+        }
+        _ => {
+            let language = tree_sitter_typescript::language_typescript();
+            parser.set_language(language).expect("Error loading TypeScript grammar");
+        }
+    }
 
     let tree = parser.parse(&source_code, None).expect("Error parsing file");
     let root_node = tree.root_node();
 
-    let mut result = AnalysisResult {
+    let mut functions = Vec::new();
+    
+    // Find all functions
+    let mut cursor = root_node.walk();
+    let mut stack = vec![root_node];
+    while let Some(node) = stack.pop() {
+        let kind = node.kind();
+        if ["function_declaration", "method_definition", "arrow_function", "function"].contains(&kind) {
+            let mut name = "anonymous".to_string();
+            if let Some(n) = node.child_by_field_name("name") {
+                name = n.utf8_text(source_bytes).unwrap_or("anonymous").to_string();
+            } else if kind == "arrow_function" {
+                // Look for variable name in parent
+                if let Some(parent) = node.parent() {
+                    if parent.kind() == "variable_declarator" {
+                        if let Some(n) = parent.child_by_field_name("name") {
+                            name = n.utf8_text(source_bytes).unwrap_or("anonymous").to_string();
+                        }
+                    }
+                }
+            }
+
+            let mut score = 0;
+            let mut nesting = 0;
+            collect_metrics(node, 0, &mut score, &mut nesting);
+
+            functions.push(FunctionMetric {
+                name,
+                score,
+                nesting,
+                line: node.start_position().row + 1,
+            });
+        }
+        
+        // Push children to stack
+        let mut child_cursor = node.walk();
+        if child_cursor.goto_first_child() {
+            loop {
+                stack.push(child_cursor.node());
+                if !child_cursor.goto_next_sibling() { break; }
+            }
+        }
+    }
+
+    let total_complexity: i32 = functions.iter().map(|f| f.score).sum();
+
+    let result = AnalysisResult {
         path: path.to_string(),
-        complexity: 1,
-        cognitive_complexity: 1,
+        total_complexity,
+        functions,
         loc,
         sloc,
         comments,
     };
 
-    walk_ast(root_node, 0, &mut result);
-
-    println!("{}", serde_json::to_string(&result).unwrap());
+    println!("{}", serde_json::to_string_pretty(&result).unwrap());
 }
 
 fn run_fingerprint(agents_root: &str) {
