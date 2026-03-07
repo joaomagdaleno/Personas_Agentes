@@ -44,11 +44,27 @@ export class HealerPersona extends BaseActivePersona {
         const filePath = finding.file;
         winston.info(`🩹 [Healer] Iniciando protocolo de cura em: ${filePath}`);
 
+        // Phase 7: Sovereign Brain TF-IDF Context injection
+        let architecturalContext = "";
+        try {
+            const analyzerPath = new Path(this.projectRoot!).join("src_native", "analyzer", "target", "release", "analyzer.exe").toString();
+            if (fs.existsSync(analyzerPath)) {
+                const output = require('child_process').execSync(`"${analyzerPath}" context "${filePath}"`, { encoding: 'utf8' });
+                const ctxArgs = JSON.parse(output);
+                if (ctxArgs && ctxArgs.length > 0) {
+                    architecturalContext = `\n[SOVEREIGN BRAIN TF-IDF GUIDANCE]\nDependencies & Referencers around this file in the knowledge graph:\n${ctxArgs.join('\n')}\n`;
+                    winston.info(`🧠 [Brain] Injetou ${ctxArgs.length} insights arquiteturais no Healer Prompt.`);
+                }
+            }
+        } catch (e) {
+            // Ignore if brain fails
+        }
+
         const prompt = HealerPromptBuilder.buildHealPrompt(
             filePath,
             this.getCurrentContent(filePath),
             finding.issue,
-            this.getContextPrompt(finding)
+            this.getContextPrompt(finding) + "\n" + architecturalContext
         );
 
         const suggestion = await this.brain.reason(prompt);

@@ -1,44 +1,45 @@
-import * as cp from "child_process";
 import * as path from "path";
-import * as fs from "fs";
 
 async function run() {
     const targetDir = path.resolve(process.cwd(), "src_local");
-    const goScanner = path.resolve(process.cwd(), "src_native/go-scanner.exe");
+    const rootDir = process.cwd();
 
-    if (!fs.existsSync(goScanner)) {
-        console.error("❌ go-scanner.exe not found. Build it first.");
-        process.exit(1);
-    }
-
-    console.log(`📡 Scanning directory: ${targetDir} via go-scanner...`);
+    console.log(`📡 Scanning directory: ${targetDir} via Go Hub...`);
 
     try {
-        const output = cp.execSync(`"${goScanner}" -dir "${targetDir}" -root "${process.cwd()}"`, { encoding: 'utf8', maxBuffer: 1024 * 1024 * 50 });
-        const results: any[] = JSON.parse(output);
+        const url = `http://localhost:8080/scan?dir=${encodeURIComponent(targetDir)}&root=${encodeURIComponent(rootDir)}`;
+        const res = await fetch(url);
+        if (!res.ok) {
+            console.error("❌ Go Hub scan request failed:", res.statusText);
+            process.exit(1);
+        }
+
+        const results: any[] = await res.json();
         const fragile: any[] = [];
 
         for (const fileData of results) {
             if (fileData.path.includes("/test/") || fileData.path.includes("\\test\\")) continue;
 
-            // Proxy fragility based on Total Complexity from Go Scanner
-            if (fileData.total_complexity > 20) {
+            // Proxy fragility based on Units/LOC since the Hub version only has basic LOC/Sloc now, but we can compute density
+            const density = (fileData.units?.length || 0) / (fileData.loc || 1);
+            if (density > 0.1 || fileData.loc > 500) {
                 fragile.push({
                     file: fileData.path,
-                    cc: fileData.total_complexity,
+                    loc: fileData.loc,
                     units: fileData.units?.length || 0
                 });
             }
         }
 
         console.log("--- POTENTIAL FRAGILITIES ---");
-        fragile.sort((a, b) => b.cc - a.cc).forEach(f => {
-            console.log(`${f.file} - CC: ${f.cc} - Units: ${f.units}`);
+        fragile.sort((a, b) => b.loc - a.loc).forEach(f => {
+            console.log(`${f.file} - LOC: ${f.loc} - Units: ${f.units}`);
         });
         console.log(`Total fragile files: ${fragile.length}`);
 
     } catch (err: any) {
         console.error("Target scanning failed:", err.message);
+        console.error("Please ensure the Hub server is running at localhost:8080");
     }
 }
 

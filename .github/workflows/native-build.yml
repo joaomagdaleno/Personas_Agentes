@@ -1,0 +1,66 @@
+name: Build Native Engines
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-rust:
+    name: Build Analyzer (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact_name: analyzer-linux
+            binary_name: analyzer
+          - os: macos-latest
+            artifact_name: analyzer-mac
+            binary_name: analyzer
+          - os: windows-latest
+            artifact_name: analyzer-windows
+            binary_name: analyzer.exe
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+      - name: Build Rust Analyzer
+        working-directory: ./src_native/analyzer
+        run: cargo build --release
+      - name: Upload Analyzer Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: ./src_native/analyzer/target/release/${{ matrix.binary_name }}
+
+  build-go:
+    name: Build Scanner (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact_name: go-scanner-linux
+            binary_name: go-scanner
+          - os: macos-latest
+            artifact_name: go-scanner-mac
+            binary_name: go-scanner
+          - os: windows-latest
+            artifact_name: go-scanner-windows
+            binary_name: go-scanner.exe
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.0'
+      - name: Build Go Scanner
+        working-directory: ./src_native/scanner
+        run: go build -o ${{ matrix.binary_name }} main.go
+      - name: Upload Scanner Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: ./src_native/scanner/${{ matrix.binary_name }}

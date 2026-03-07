@@ -1,21 +1,19 @@
-import * as cp from "child_process";
 import * as path from "path";
 import * as fs from "fs";
 import type { AtomicUnit } from "../DisparityScanner.ts";
 
 export class PythonParser {
-    private static BINARY_PATH = path.resolve(process.cwd(), "src_native/go-scanner.exe");
-
-    static parse(content: string, filePath: string): AtomicUnit[] {
-        if (!fs.existsSync(this.BINARY_PATH)) {
-            console.error(`[PythonParser] Native scanner not found: ${this.BINARY_PATH}`);
-            return [];
-        }
-
+    static async parse(content: string, filePath: string): Promise<AtomicUnit[]> {
         try {
-            // Calling native scanner for single file
-            const output = cp.execSync(`"${this.BINARY_PATH}" -file "${filePath}" -root "${process.cwd()}"`, { encoding: 'utf8' });
-            const data = JSON.parse(output);
+            // Using HTTP fetch to Hub server instead of spawning a new process
+            const url = `http://localhost:8080/scan?file=${encodeURIComponent(filePath)}&root=${encodeURIComponent(process.cwd())}`;
+            const res = await fetch(url);
+            if (!res.ok) {
+                console.error(`[PythonParser] Hub scan request failed for ${filePath}: ${res.statusText}`);
+                return [];
+            }
+
+            const data = await res.json() as any[];
 
             if (data && data.length > 0) {
                 return data[0].units.map((u: any) => ({
@@ -27,7 +25,7 @@ export class PythonParser {
             }
             return [];
         } catch (err) {
-            console.error(`[PythonParser] Native parsing failed for ${filePath}:`, err);
+            console.error(`[PythonParser] Native HTTP parsing failed for ${filePath}:`, err);
             return [];
         }
     }

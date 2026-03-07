@@ -35,7 +35,7 @@ export class DisparityScanner {
         const content = await readFile(full, "utf-8");
         return {
             path: rel,
-            units: isLegacy ? PythonParser.parse(content, full) : TypescriptParser.parse(content, full)
+            units: isLegacy ? await PythonParser.parse(content, full) : await TypescriptParser.parse(content, full)
         };
     }
 

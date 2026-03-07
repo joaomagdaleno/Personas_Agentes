@@ -332,6 +332,19 @@ fn main() {
                 eprintln!("Error: Brain was unable to initialize (check model files).");
             }
         }
+        "context" => {
+            if args.len() < 3 {
+                eprintln!("Usage: analyzer context <file_path>");
+                std::process::exit(1);
+            }
+            if let Some(brain) = brain::Brain::new() {
+                let ctx = brain.get_context_for(&args[2]);
+                println!("{}", serde_json::to_string_pretty(&ctx).unwrap());
+            } else {
+                eprintln!("Error: Brain was unable to initialize.");
+                std::process::exit(1);
+            }
+        }
         "inspect-tensors" => {
             let mut path = std::path::PathBuf::from(".gemini/models/qwen2.5-coder-0.5b/model.safetensors");
             if !path.exists() {
