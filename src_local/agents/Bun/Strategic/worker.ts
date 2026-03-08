@@ -27,7 +27,7 @@ export class WorkerPersona extends BaseActivePersona {
             { regex: 'postMessage\\([^)]*\\)(?![\\s\\S]{0,50}transferable|transfer)', issue: 'Performance: postMessage sem transferable objects — dados clonados.', severity: 'low' },
         ];
 
-        const results = this.findPatterns(['.ts', '.tsx'], auditRules as any);
+        const results = await this.findPatterns(['.ts', '.tsx'], auditRules as any);
         this.endMetrics(results.length);
         return results;
     }
@@ -45,3 +45,4 @@ export class WorkerPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, mestre em workers e paralelismo Bun.`;
     }
 }
+

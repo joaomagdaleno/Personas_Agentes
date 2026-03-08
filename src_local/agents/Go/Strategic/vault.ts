@@ -33,7 +33,7 @@ export class VaultPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /crypto\/tls/, issue: "TLS Configuration: Verifique se as versões mínimas de TLS e ciphers seguros estão configurados.", severity: "high" },
@@ -43,7 +43,7 @@ export class VaultPersona extends BaseActivePersona {
             { regex: /crypto\/rsa/, issue: "RSA Encryption: Verifique se o tamanho da chave é no mínimo 2048 bits; considere migrar para Ed25519.", severity: "medium" },
             { regex: /HMAC/, issue: "Message Integrity: Verifique se as chaves HMAC são geradas aleatoriamente e armazenadas com segurança.", severity: "high" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const cryptoFindings = GoVaultEngine.audit(this.projectRoot || "");
@@ -77,3 +77,4 @@ export class VaultPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Criptografia Go. Sua missão é garantir o sigilo absoluto dos dados.`;
     }
 }
+

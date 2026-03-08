@@ -33,7 +33,7 @@ export class ScopePersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /\/\/\s*TODO[:\s]/, issue: "Dívida: TODO pendente no código Go.", severity: "medium" },
@@ -43,7 +43,7 @@ export class ScopePersona extends BaseActivePersona {
             { regex: /panic\(.*"not\s+implemented"/, issue: "Incompleto: Funcionalidade Go declarada com panic placeholder.", severity: "high" },
             { regex: /\/\/\s*no-lint[:\s]|\/\/\s*ignore[:\s]/, issue: "Omissão: Supressão manual de avisos; verifique dívida técnica.", severity: "low" }
         ];
-        const results = this.findPatterns([".go", "go.mod"], rules);
+        const results = await this.findPatterns([".go", "go.mod"], rules);
 
         // Advanced Logic Density
         const moduleIssues = GoModuleEngine.audit(this.projectRoot || "");
@@ -81,3 +81,4 @@ export class ScopePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Gestão de Módulos Go. Sua missão é garantir a integridade absoluta da cadeia de suprimentos de código.`;
     }
 }
+

@@ -33,7 +33,7 @@ export class StreamPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /github\.com\/gorilla\/websocket/, issue: "Legacy WS: Gorilla Websocket está em manutenção; considere migrar para nhooyr.io/websocket.", severity: "low" },
@@ -43,7 +43,7 @@ export class StreamPersona extends BaseActivePersona {
             { regex: /Context\(\)/, issue: "Stream Lifecycle: Garanta que o stream é encerrado quando o contexto da requisição ou do sistema é cancelado.", severity: "high" },
             { regex: /RateLimit/, issue: "Ingress Control: Verifique se há limites de mensagens por segundo para evitar exaustão de CPU/Memória.", severity: "high" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const streamFindings = GoStreamEngine.audit(this.projectRoot || "");
@@ -77,3 +77,4 @@ export class StreamPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Fluxos em Tempo Real Go. Sua missão é garantir a sincronia perfeita do tempo real.`;
     }
 }
+

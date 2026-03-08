@@ -14,7 +14,7 @@ export class CorePersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /import src_local\.utils/, issue: "Acoplamento de Utilitários: Verifique se o core depende de funções utilitárias que podem ser instáveis.", severity: "low" },
@@ -22,7 +22,7 @@ export class CorePersona extends BaseActivePersona {
             { regex: /isinstance\(.*, \(str, int, float, bool\)\)/, issue: "Verificação de Tipo: Verifique se a validação exaustiva de tipos PhD está sendo aplicada no core.", severity: "low" },
             { regex: /CRITICAL_LOGIC_FAIL/, issue: "Falha de Lógica Core: Alerta sistêmico de degradação na camada fundamental legacy.", severity: "critical" }
         ];
-        const results = this.findPatterns([".py"], rules);
+        const results = await this.findPatterns([".py"], rules);
 
         // Advanced Logic: Fundamental Integrity Audit
         if (results.some(r => r.severity === "critical")) {
@@ -58,3 +58,4 @@ export class CorePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Arquitetura Fundamental Python. Sua missão é garantir a estabilidade do coração do sistema.`;
     }
 }
+

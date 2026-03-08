@@ -30,7 +30,7 @@ export class DirectorPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /func\s+main/, issue: "Entry Point: Ponto de entrada detectado; verifique se a orquestração de shutdown gracioso está presente.", severity: "low" },
@@ -40,7 +40,7 @@ export class DirectorPersona extends BaseActivePersona {
             { regex: /Context\s+Handling/, issue: "Strategic Flow: Garanta que o context.Context é a espinha dorsal de toda a orquestração.", severity: "high" },
             { regex: /version\s+=\s*".*"/, issue: "Identity Check: Verifique se a versão do sistema está centralizada e auditada.", severity: "low" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const strategyIssues = GoDirectorEngine.audit(this.projectRoot || "");
@@ -95,3 +95,4 @@ export class DirectorPersona extends BaseActivePersona {
         return lines.join("\n");
     }
 }
+

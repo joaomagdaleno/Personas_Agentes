@@ -35,7 +35,7 @@ export class PalettePersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /github\.com\/charmbracelet/, issue: "Bubble Tea UI: O uso de Charmbracelet garante uma experiência premium; verifique a fluidez das animações TUI.", severity: "low" },
@@ -45,7 +45,7 @@ export class PalettePersona extends BaseActivePersona {
             { regex: /Layout/, issue: "Responsiveness: Verifique se o layout do terminal se adapta a diferentes larguras de janela.", severity: "low" },
             { regex: /Icon/, issue: "Iconography: Use símbolos Unicode/NerdFonts com cautela para garantir compatibilidade entre terminais.", severity: "medium" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const paletteIssues = GoPaletteEngine.audit(this.projectRoot || "");
@@ -83,3 +83,4 @@ export class PalettePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Estética de Sistemas Go. Sua missão é garantir que o sistema seja funcional e belo.`;
     }
 }
+

@@ -1,44 +1,30 @@
 import winston from "winston";
-import * as cp from "node:child_process";
-import * as path from "node:path";
-import * as fs from "node:fs";
+import { HubManagerGRPC } from "../core/hub_manager_grpc";
 
 const logger = winston.child({ module: "FindingDeduplicator" });
 
 /**
- * 🔬 Assistente de Deduplicação Forense (Rust-Enhanced).
+ * 🔬 Assistente de Deduplicação Forense (gRPC Proxy).
  */
 export class FindingDeduplicator {
-    private static BINARY_PATH = path.resolve(process.cwd(), "src_native/analyzer/target/release/analyzer.exe");
+    constructor(private hubManager?: HubManagerGRPC) { }
 
-    deduplicate(allRawFindings: any[]): any[] {
+    async deduplicate(allRawFindings: any[]): Promise<any[]> {
         if (allRawFindings.length === 0) return [];
 
-        if (!fs.existsSync(FindingDeduplicator.BINARY_PATH)) {
-            logger.error("🚨 Critical: analyzer.exe not found. Deduplication aborted.");
+        if (!this.hubManager) {
+            logger.warn("⚠️ HubManager not provided to FindingDeduplicator. Fallback to raw findings.");
             return allRawFindings;
         }
 
         try {
-            return this.deduplicateWithRust(allRawFindings);
+            logger.info(`🔬 [Deduplicator] Proxying ${allRawFindings.length} findings to Go Hub...`);
+            const deduped = await this.hubManager.deduplicate(allRawFindings);
+            logger.info(`✅ [Deduplicator] Received ${deduped.length} deduplicated findings.`);
+            return deduped;
         } catch (err) {
-            logger.error("❌ Rust deduplication failed", { error: err });
+            logger.error("❌ gRPC deduplication failed", { error: err });
             return allRawFindings;
-        }
-    }
-
-    private deduplicateWithRust(findings: any[]): any[] {
-        const tmpFile = path.join(process.cwd(), `tmp_dedup_${Date.now()}.json`);
-        fs.writeFileSync(tmpFile, JSON.stringify(findings));
-
-        try {
-            const output = cp.execSync(`"${FindingDeduplicator.BINARY_PATH}" deduplicate "${tmpFile}"`, {
-                encoding: 'utf8',
-                maxBuffer: 100 * 1024 * 1024
-            });
-            return JSON.parse(output);
-        } finally {
-            if (fs.existsSync(tmpFile)) fs.unlinkSync(tmpFile);
         }
     }
 }

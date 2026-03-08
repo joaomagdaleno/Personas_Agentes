@@ -33,7 +33,7 @@ export class WardenPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /defer\s+.*\.Close\(\)/, issue: "Safe Resource: Gerenciamento de recurso com defer detectado; verifique se o erro no fechamento é tratado quando crítico.", severity: "low" },
@@ -43,7 +43,7 @@ export class WardenPersona extends BaseActivePersona {
             { regex: /context\.TODO\(\)/, issue: "Technical Debt: Contexto temporário (TODO) detectado; substitua por um contexto adequado.", severity: "low" },
             { regex: /runtime\.SetFinalizer/, issue: "Unstable Finalizer: Evite SetFinalizer para lógica de negócio; não há garantia de execução imediata.", severity: "medium" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const lifecycleIssues = GoLifecycleEngine.inspect(this.projectRoot || "");
@@ -81,3 +81,4 @@ export class WardenPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Governança de Recursos Go. Sua missão é garantir a ordem e a limpeza sistêmica.`;
     }
 }
+

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"net"
 	"net/http"
@@ -198,15 +199,53 @@ func (h *Hub) handleAnalyze(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *Hub) runAnalysis(path string) interface{} {
-	cmd := exec.Command(h.analyzerPath, path)
+func (h *Hub) runRust(command string, args ...string) (string, error) {
+	fullArgs := append([]string{command}, args...)
+	cmd := exec.Command(h.analyzerPath, fullArgs...)
 	output, err := cmd.Output()
+	if err != nil {
+		if exitErr, ok := err.(*exec.ExitError); ok {
+			return "", fmt.Errorf("analyzer error: %w (stderr: %s)", err, string(exitErr.Stderr))
+		}
+		return "", err
+	}
+	return string(output), nil
+}
+
+func (h *Hub) runRustWithStdin(content string, command string, args ...string) (string, error) {
+	fullArgs := append([]string{command}, args...)
+	cmd := exec.Command(h.analyzerPath, fullArgs...)
+	cmd.Stdin = strings.NewReader(content)
+	output, err := cmd.Output()
+	if err != nil {
+		if exitErr, ok := err.(*exec.ExitError); ok {
+			return "", fmt.Errorf("analyzer error: %w (stderr: %s)", err, string(exitErr.Stderr))
+		}
+		return "", err
+	}
+	return string(output), nil
+}
+
+func (h *Hub) runScanner(args ...string) (string, error) {
+	cmd := exec.Command(h.scannerPath, args...)
+	output, err := cmd.Output()
+	if err != nil {
+		if exitErr, ok := err.(*exec.ExitError); ok {
+			return "", fmt.Errorf("scanner error: %w (stderr: %s)", err, string(exitErr.Stderr))
+		}
+		return "", err
+	}
+	return string(output), nil
+}
+
+func (h *Hub) runAnalysis(path string) interface{} {
+	output, err := h.runRust("analyze", path)
 	if err != nil {
 		log.Printf("Analyzer error for %s: %v", path, err)
 		return nil
 	}
 	var res interface{}
-	if err := json.Unmarshal(output, &res); err != nil {
+	if err := json.Unmarshal([]byte(output), &res); err != nil {
 		return nil
 	}
 	return res
@@ -232,6 +271,7 @@ type Hub struct {
 	metrics      SystemMetrics
 	metricsLock  sync.RWMutex
 	analyzerPath string
+	scannerPath  string
 	watcher      *fsnotify.Watcher
 	clients      map[chan string]bool
 	clientsLock  sync.Mutex
@@ -436,7 +476,7 @@ func (h *Hub) handleQueueAdd(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
-func (h *Hub) handleQueuePending(w http.ResponseWriter, r *http.Request) {
+func (h *Hub) handleQueuePending(w http.ResponseWriter, _ *http.Request) {
 	rows, err := h.db.Query("SELECT id, task_type, target_file, status, created_at FROM ai_tasks WHERE status = 'PENDING' ORDER BY created_at ASC LIMIT 10")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -619,12 +659,294 @@ func (h *Hub) ScanProject(ctx context.Context, in *pb.ScanRequest) (*pb.ScanResp
 }
 
 func (h *Hub) AnalyzeFile(ctx context.Context, in *pb.AnalyzeRequest) (*pb.AnalyzeResponse, error) {
-	res := h.runAnalysis(in.File)
-	if res == nil {
-		return nil, fmt.Errorf("analysis failed")
+	ext := strings.ToLower(filepath.Ext(in.File))
+	var data string
+	var err error
+
+	if ext == ".go" || ext == ".kt" || ext == ".dart" {
+		data, err = h.runScanner("-file", in.File)
+	} else {
+		if in.Content != "" {
+			data, err = h.runRustWithStdin(in.Content, "analyze", "-", in.File)
+		} else {
+			data, err = h.runRust("analyze", in.File)
+		}
 	}
-	data, _ := json.Marshal(res)
-	return &pb.AnalyzeResponse{JsonData: string(data)}, nil
+
+	if err != nil {
+		return nil, err
+	}
+	return &pb.AnalyzeResponse{JsonData: data}, nil
+}
+
+func (h *Hub) AnalyzeStream(stream pb.HubService_AnalyzeStreamServer) error {
+	for {
+		in, err := stream.Recv()
+		if err == io.EOF {
+			return nil
+		}
+		if err != nil {
+			return err
+		}
+
+		// Process concurrently or synchronously. For streaming, we process each and send it back immediately.
+		ext := strings.ToLower(filepath.Ext(in.File))
+		var data string
+		var processErr error
+
+		if ext == ".go" || ext == ".kt" || ext == ".dart" {
+			data, processErr = h.runScanner("-file", in.File)
+		} else {
+			if in.Content != "" {
+				data, processErr = h.runRustWithStdin(in.Content, "analyze", "-", in.File)
+			} else {
+				data, processErr = h.runRust("analyze", in.File)
+			}
+		}
+
+		if processErr != nil {
+			log.Printf("AnalyzeStream error on file %s: %v", in.File, processErr)
+			continue
+		}
+
+		if err := stream.Send(&pb.AnalyzeResponse{JsonData: data}); err != nil {
+			return err
+		}
+	}
+}
+
+func (h *Hub) GetDependencies(ctx context.Context, in *pb.AnalyzeRequest) (*pb.AnalyzeResponse, error) {
+	data, err := h.runRust("deps", in.File)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.AnalyzeResponse{JsonData: data}, nil
+}
+
+func (h *Hub) Deduplicate(ctx context.Context, in *pb.DeduplicateRequest) (*pb.AnalyzeResponse, error) {
+	// Deduplicate needs a JSON file or stdin. Most reliable is writing to a temp file.
+	tmpFile := filepath.Join(os.TempDir(), fmt.Sprintf("dedup_%d.json", time.Now().UnixNano()))
+	os.WriteFile(tmpFile, []byte(in.FindingsJson), 0644)
+	defer os.Remove(tmpFile)
+
+	data, err := h.runRust("deduplicate", tmpFile)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.AnalyzeResponse{JsonData: data}, nil
+}
+
+func (h *Hub) Fingerprint(ctx context.Context, in *pb.AnalyzeRequest) (*pb.AnalyzeResponse, error) {
+	var data string
+	var err error
+	if in.Content != "" {
+		data, err = h.runRustWithStdin(in.Content, "fingerprint", "-", in.File)
+	} else {
+		data, err = h.runRust("fingerprint", in.File)
+	}
+	if err != nil {
+		return nil, err
+	}
+	return &pb.AnalyzeResponse{JsonData: data}, nil
+}
+
+func (h *Hub) DiscoverIdentity(ctx context.Context, in *pb.AnalyzeRequest) (*pb.AnalyzeResponse, error) {
+	data, err := h.runRust("dna", in.File)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.AnalyzeResponse{JsonData: data}, nil
+}
+
+func (h *Hub) IndexProject(ctx context.Context, in *pb.AnalyzeRequest) (*pb.AnalyzeResponse, error) {
+	data, err := h.runRust("index", in.File)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.AnalyzeResponse{JsonData: data}, nil
+}
+
+func (h *Hub) ScanTopology(ctx context.Context, in *pb.AnalyzeRequest) (*pb.AnalyzeResponse, error) {
+	data, err := h.runRust("topology", in.File)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.AnalyzeResponse{JsonData: data}, nil
+}
+
+func (h *Hub) GetContext(ctx context.Context, in *pb.AnalyzeRequest) (*pb.AnalyzeResponse, error) {
+	data, err := h.runRust("context", in.File)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.AnalyzeResponse{JsonData: data}, nil
+}
+
+func (h *Hub) GetConnectivity(ctx context.Context, in *pb.ConnectivityRequest) (*pb.AnalyzeResponse, error) {
+	tmpFile := filepath.Join(os.TempDir(), fmt.Sprintf("conn_%d.json", time.Now().UnixNano()))
+	err := os.WriteFile(tmpFile, []byte(in.DependencyMapJson), 0644)
+	if err != nil {
+		return nil, err
+	}
+	defer os.Remove(tmpFile)
+
+	data, err := h.runRust("connectivity", tmpFile)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.AnalyzeResponse{JsonData: data}, nil
+}
+
+func (h *Hub) Audit(ctx context.Context, in *pb.AuditRequest) (*pb.AnalyzeResponse, error) {
+	tmpFile := filepath.Join(os.TempDir(), fmt.Sprintf("audit_%d.json", time.Now().UnixNano()))
+	err := os.WriteFile(tmpFile, []byte(in.AuditJson), 0644)
+	if err != nil {
+		return nil, err
+	}
+	defer os.Remove(tmpFile)
+
+	data, err := h.runRust("audit", tmpFile)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.AnalyzeResponse{JsonData: data}, nil
+}
+
+func (h *Hub) Batch(ctx context.Context, in *pb.BatchRequest) (*pb.AnalyzeResponse, error) {
+	tmpFile := filepath.Join(os.TempDir(), fmt.Sprintf("batch_%d.json", time.Now().UnixNano()))
+	err := os.WriteFile(tmpFile, []byte(in.BatchJson), 0644)
+	if err != nil {
+		return nil, err
+	}
+	defer os.Remove(tmpFile)
+
+	data, err := h.runRust("batch", tmpFile)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.AnalyzeResponse{JsonData: data}, nil
+}
+
+func (h *Hub) Reason(ctx context.Context, in *pb.ReasonRequest) (*pb.AnalyzeResponse, error) {
+	tmpFile := filepath.Join(os.TempDir(), fmt.Sprintf("reason_%d.txt", time.Now().UnixNano()))
+	err := os.WriteFile(tmpFile, []byte(in.Prompt), 0644)
+	if err != nil {
+		return nil, err
+	}
+	defer os.Remove(tmpFile)
+
+	data, err := h.runRust("reason", tmpFile)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.AnalyzeResponse{JsonData: data}, nil
+}
+
+func (h *Hub) Patterns(ctx context.Context, in *pb.PatternRequest) (*pb.AnalyzeResponse, error) {
+	tmpFile := filepath.Join(os.TempDir(), fmt.Sprintf("patterns_%d.json", time.Now().UnixNano()))
+	err := os.WriteFile(tmpFile, []byte(in.PatternJson), 0644)
+	if err != nil {
+		return nil, err
+	}
+	defer os.Remove(tmpFile)
+
+	data, err := h.runRust("patterns", tmpFile)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.AnalyzeResponse{JsonData: data}, nil
+}
+
+func (h *Hub) Penalty(ctx context.Context, in *pb.PenaltyRequest) (*pb.AnalyzeResponse, error) {
+	tmpFile := filepath.Join(os.TempDir(), fmt.Sprintf("penalty_%d.json", time.Now().UnixNano()))
+	err := os.WriteFile(tmpFile, []byte(in.PenaltyJson), 0644)
+	if err != nil {
+		return nil, err
+	}
+	defer os.Remove(tmpFile)
+
+	data, err := h.runRust("penalty", tmpFile)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.AnalyzeResponse{JsonData: data}, nil
+}
+
+func (h *Hub) CalculateScore(ctx context.Context, in *pb.ScoreRequest) (*pb.AnalyzeResponse, error) {
+	tmpFile := filepath.Join(os.TempDir(), fmt.Sprintf("score_%d.json", time.Now().UnixNano()))
+	err := os.WriteFile(tmpFile, []byte(in.ScoreJson), 0644)
+	if err != nil {
+		return nil, err
+	}
+	defer os.Remove(tmpFile)
+
+	data, err := h.runRust("score", tmpFile)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.AnalyzeResponse{JsonData: data}, nil
+}
+
+func (h *Hub) AuditCoverage(ctx context.Context, in *pb.CoverageRequest) (*pb.AnalyzeResponse, error) {
+	tmpFile := filepath.Join(os.TempDir(), fmt.Sprintf("coverage_%d.json", time.Now().UnixNano()))
+	err := os.WriteFile(tmpFile, []byte(in.CoverageJson), 0644)
+	if err != nil {
+		return nil, err
+	}
+	defer os.Remove(tmpFile)
+
+	data, err := h.runRust("coverage", tmpFile)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.AnalyzeResponse{JsonData: data}, nil
+}
+
+func (h *Hub) GetKnowledgeGraph(ctx context.Context, in *pb.GraphRequest) (*pb.AnalyzeResponse, error) {
+	data, err := h.runRust("graph-get", in.GraphJson)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.AnalyzeResponse{JsonData: data}, nil
+}
+
+func (h *Hub) QueryKnowledgeGraph(ctx context.Context, in *pb.QueryRequest) (*pb.AnalyzeResponse, error) {
+	data, err := h.runRust("graph-query", in.QueryJson)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.AnalyzeResponse{JsonData: data}, nil
+}
+
+func (h *Hub) ExecuteHealing(ctx context.Context, in *pb.HealingPlan) (*pb.AnalyzeResponse, error) {
+	// Serialize plan to JSON to pass cleanly over Stdin
+	planJSON, err := json.Marshal(in)
+	if err != nil {
+		return nil, err
+	}
+
+	const maxRetries = 3
+	var data string
+
+	for attempt := 1; attempt <= maxRetries; attempt++ {
+		// Use a 90-second timeout for native AI generation per attempt
+		_, cancel := context.WithTimeout(ctx, 90*time.Second)
+
+		data, err = h.runRustWithStdin(string(planJSON), "heal", "-")
+		cancel()
+
+		if err == nil {
+			break // Success
+		}
+
+		log.Printf("⚠️ Healing attempt %d failed: %v", attempt, err)
+		if attempt == maxRetries {
+			return nil, fmt.Errorf("ExecuteHealing failed after %d attempts: %v", maxRetries, err)
+		}
+		time.Sleep(2 * time.Second)
+	}
+
+	return &pb.AnalyzeResponse{JsonData: data}, nil
 }
 
 func (h *Hub) EnqueueTask(ctx context.Context, in *pb.TaskRequest) (*pb.TaskResponse, error) {
@@ -716,8 +1038,14 @@ func main() {
 		exePath = filepath.Join("src_native", "analyzer", "target", "release", "analyzer.exe")
 	}
 
+	scannerPath := filepath.Join("..", "go-scanner.exe")
+	if _, err := os.Stat(scannerPath); os.IsNotExist(err) {
+		scannerPath = filepath.Join("src_native", "go-scanner.exe")
+	}
+
 	hub := &Hub{
 		analyzerPath: exePath,
+		scannerPath:  scannerPath,
 		port:         port,
 	}
 

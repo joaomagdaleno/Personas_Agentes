@@ -14,9 +14,9 @@ export class HermesPersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = this.findPatterns([".kts", ".gradle"], [
+        const results = await this.findPatterns([".kts", ".gradle"], [
             { regex: /storePassword\s*=\s*["\'].*?["\']/, issue: "Vulnerabilidade Crítica: Segredo de KeyStore exposto no script de build Gradle.", severity: "critical" },
             { regex: /minifyEnabled\s+false/, issue: "Ofuscação Desativada: Binário vulnerável a engenharia reversa. Habilite R8.", severity: "high" }
         ]);
@@ -48,3 +48,4 @@ export class HermesPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Arquitetura de Release e Guardião da Integridade Kotlin.`;
     }
 }
+

@@ -14,7 +14,7 @@ export class NexusPersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /GetIt\.instance\.register/, issue: "Injeção de Dependência: Verifique se o singleton é único ou se deve ser factory para evitar vazamento de estado global.", severity: "medium" },
@@ -22,7 +22,7 @@ export class NexusPersona extends BaseActivePersona {
             { regex: /globalKey/, issue: "Acesso Direto: O uso de GlobalKey para acessar estado de widgets deve ser minimizado para evitar acoplamento forte.", severity: "high" },
             { regex: /ServiceLocator/, issue: "Service Locator Pattern: Verifique se as dependências são resolvidas em compile-time ou runtime (risco de crash).", severity: "medium" }
         ];
-        const results = this.findPatterns([".dart"], rules);
+        const results = await this.findPatterns([".dart"], rules);
 
         // Advanced Logic: Nexus Integration Audit
         if (results.some(r => r.issue.includes("GlobalKey"))) {
@@ -58,3 +58,4 @@ export class NexusPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Orquestração de Sistemas Flutter. Sua missão é garantir a modularidade e o desacoplamento total.`;
     }
 }
+

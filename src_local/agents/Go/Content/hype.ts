@@ -33,7 +33,7 @@ export class HypePersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /internal/, issue: "Invisible Logic: Uso extensivo de pacotes 'internal/' garante privacidade mas oculta o design para usuários externos.", severity: "low" },
@@ -43,7 +43,7 @@ export class HypePersona extends BaseActivePersona {
             { regex: /awesome-go/i, issue: "Registry Potential: Verifique se as bibliotecas criadas podem ser submetidas ao Awesome Go.", severity: "low" },
             { regex: /CLI/i, issue: "User Interface: Verifique se a CLI Go possui comandos de 'help' e 'version' intuitivos.", severity: "medium" }
         ];
-        const results = this.findPatterns([".go", ".md"], rules);
+        const results = await this.findPatterns([".go", ".md"], rules);
 
         // Advanced Logic Density
         const hypeFindings = GoHypeEngine.audit(this.projectRoot || "");
@@ -81,3 +81,4 @@ export class HypePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Engajamento de Tecnologia Go. Sua missão é fazer o projeto brilhar no ecossistema.`;
     }
 }
+

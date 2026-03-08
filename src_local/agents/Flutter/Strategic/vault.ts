@@ -14,7 +14,7 @@ export class VaultPersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /flutter_secure_storage/, issue: "Observação: Uso de Secure Storage detectado. Verifique a configuração de acessibilidade do Keychain/Keystore.", severity: "low" },
@@ -22,7 +22,7 @@ export class VaultPersona extends BaseActivePersona {
             { regex: /ByteData\.view/, issue: "Manipulação de Binários: Auditar se buffers de memória sensível são limpos após o uso.", severity: "medium" },
             { regex: /kSecretKey|API_KEY/, issue: "Risco de Exposição: Chaves mestre não devem estar no código. Use variáveis de ambiente ou Vault seguro.", severity: "critical" }
         ];
-        const results = this.findPatterns([".dart"], rules);
+        const results = await this.findPatterns([".dart"], rules);
 
         // Advanced Logic: Cryptographic Audit
         if (results.some(r => r.severity === "critical")) {
@@ -58,3 +58,4 @@ export class VaultPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Criptografia Flutter. Sua missão é garantir que nenhum segredo escape da fortaleza digital.`;
     }
 }
+

@@ -14,7 +14,7 @@ export class VaultPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /Fernet\(.*\)/, issue: "Criptografia Simétrica: Uso de cryptography.fernet detectado. Verifique a gestão e rotação de chaves.", severity: "low" },
@@ -22,7 +22,7 @@ export class VaultPersona extends BaseActivePersona {
             { regex: /key = .*/, issue: "Chave Hardcoded: Segredos não devem estar no código Python. Use Keybase ou Vault PhD.", severity: "critical" },
             { regex: /os\.urandom\(/, issue: "Entropia: Verifique se a geração de números randômicos é usada corretamente para IVs únicos.", severity: "medium" }
         ];
-        const results = this.findPatterns([".py"], rules);
+        const results = await this.findPatterns([".py"], rules);
 
         // Advanced Logic: Cryptographic Audit
         if (results.some(r => r.severity === "critical")) {
@@ -58,3 +58,4 @@ export class VaultPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Criptografia Python. Sua missão é garantir a inviolabilidade dos segredos legacy.`;
     }
 }
+

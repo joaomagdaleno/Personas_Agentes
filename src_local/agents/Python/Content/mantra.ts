@@ -13,9 +13,9 @@ export class MantraPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = this.findPatterns([".py"], [
+        const results = await this.findPatterns([".py"], [
             { regex: /TODO|FIXME/, issue: "Dívida Filosófica: Pendências detectadas que quebram o mantra de perfeição.", severity: "medium" }
         ]);
         this.endMetrics(results.length);
@@ -39,3 +39,4 @@ export class MantraPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Filosofia Lógica Python.`;
     }
 }
+

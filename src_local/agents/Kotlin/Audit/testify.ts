@@ -31,7 +31,7 @@ export class TestifyPersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /@Test\s+(fun\s+[^{]+{\s*})/, issue: "Teste Vazio: Teste Kotlin declarado sem corpo ou asserção.", severity: "critical" },
@@ -41,7 +41,7 @@ export class TestifyPersona extends BaseActivePersona {
             { regex: /Thread\.sleep\(/, issue: "Anti-padrão: Uso de sleep no código de teste Kotlin; risco extremo de flaky tests.", severity: "high" },
             { regex: /verify\s*{\s*[^\(]+\(\)\s*(wasNot\s*Called\(\))?\s*}/, issue: "Verificação Fraca: Garanta verificações exatas de parâmetros e contagem de chamadas no MockK.", severity: "medium" }
         ];
-        const results = this.findPatterns([".kt"], rules);
+        const results = await this.findPatterns([".kt"], rules);
 
         // Structural Boost: Integrity Engine
         const mockIssues = MockIntegrityEngine.analyze(this.projectRoot || "");
@@ -89,3 +89,4 @@ export class TestifyPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Qualidade JVM. Sua missão é garantir que o código Kotlin seja à prova de falhas sob carga.`;
     }
 }
+

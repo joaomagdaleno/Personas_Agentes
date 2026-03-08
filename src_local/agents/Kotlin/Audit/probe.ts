@@ -14,7 +14,7 @@ export class ProbePersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /catch\s*\(.*\)\s*\{\s*\}/, issue: "Cegueira Kotlin: Catch vazio detectado; exceção engolida silenciosamente.", severity: "critical" },
@@ -24,7 +24,7 @@ export class ProbePersona extends BaseActivePersona {
             { regex: /throw\s+Exception\(\)/, issue: "Vago: Lançamento de Exception genérica sem contexto.", severity: "medium" },
             { regex: /runCatching\s*\{.*\}\.getOrNull\(\)/, issue: "Silenciado: Uso de getOrNull() ignora a falha sem rastro.", severity: "high" }
         ];
-        const results = this.findPatterns([".kt", ".kts"], rules);
+        const results = await this.findPatterns([".kt", ".kts"], rules);
 
         // Advanced Logic: Security Audit
         if (results.some(r => r.severity === "high")) {
@@ -60,3 +60,4 @@ export class ProbePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Análise Forense Kotlin. Seu foco é integridade de dados e resiliência de rede.`;
     }
 }
+

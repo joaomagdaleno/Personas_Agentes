@@ -14,9 +14,9 @@ export class NeuralPersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = this.findPatterns([".kt", ".kts"], [
+        const results = await this.findPatterns([".kt", ".kts"], [
             { regex: /mlkit/, issue: "Risco de Dependência: Uso de ML Kit detectado. Verifique dependência de serviços proprietários.", severity: "low" },
             { regex: /Interpreter\.fromBuffer/, issue: "Carga Crítica: Inferência TFLite em execução direta. Verifique throttling e impacto térmico.", severity: "high" }
         ]);
@@ -48,3 +48,4 @@ export class NeuralPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Inteligência Aplicada e Mestre em Machine Learning Kotlin.`;
     }
 }
+

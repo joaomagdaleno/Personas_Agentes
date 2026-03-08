@@ -33,7 +33,7 @@ export class MetricPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /log\.Printf|fmt\.Print|fmt\.Println/, issue: "Cegueira: Logging amador (desestruturado) detectado.", severity: "high" },
@@ -42,7 +42,7 @@ export class MetricPersona extends BaseActivePersona {
             { regex: /expvar\.Publish|prometheus\.NewCounter/, issue: "Instrumentação: Verifique se as réguas de telemetria seguem o padrão forense.", severity: "low" },
             { regex: /pprof/, issue: "Profiling: Endpoint pprof exposto sem proteção em telemetria de produção.", severity: "high" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const metricFindings = GoMetricEngine.validate(this.projectRoot || "");
@@ -80,3 +80,4 @@ export class MetricPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Telemetria de Sistemas Go. Sua missão é garantir a transparência absoluta do estado do sistema.`;
     }
 }
+

@@ -23,7 +23,7 @@ export class BoltPersona extends BaseActivePersona {
             { regex: /\.forEach\(async/, issue: "Async Trap: forEach com async não aguarda execução em Dart.", severity: "high" }
         ];
         this.startMetrics();
-        const results = this.findPatterns([".dart"], rules);
+        const results = await this.findPatterns([".dart"], rules);
         this.endMetrics(results.length);
         return results;
     }
@@ -53,3 +53,4 @@ export class BoltPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, mestre em performance Flutter. Sua missão é garantir zero jank.`;
     }
 }
+

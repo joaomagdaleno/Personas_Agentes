@@ -33,7 +33,7 @@ export class SentinelPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /crypto\/md5|crypto\/sha1/, issue: "Algoritmo Fraco: MD5/SHA1 detectado. Use SHA-256 ou superior.", severity: "critical" },
@@ -43,7 +43,7 @@ export class SentinelPersona extends BaseActivePersona {
             { regex: /map\[.*\]/, issue: "Concurrency Risk: Mapas Go não são seguros para concorrência sem sync.Map ou Mutex.", severity: "high" },
             { regex: /math\/rand/, issue: "Insegurança Criptográfica: Use crypto/rand para valores que exijam segurança (tokens, chaves).", severity: "critical" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const securityThreats = GoSecurityEngine.audit(this.projectRoot || "");
@@ -81,3 +81,4 @@ export class SentinelPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Segurança Cibernética Go. Sua missão é proteger a soberania do código contra toda forma de intrusão.`;
     }
 }
+

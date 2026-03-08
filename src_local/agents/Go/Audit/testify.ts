@@ -36,7 +36,7 @@ export class TestifyPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /func\s+Test.*\{\s*}/, issue: "Empty Test: Teste sem lógica ou asserções detectado.", severity: "critical" },
@@ -46,7 +46,7 @@ export class TestifyPersona extends BaseActivePersona {
             { regex: /func\s+Test.*t\.Parallel\(\)/, issue: "Performance: Teste não paralelizado detectado; verifique se pode usar t.Parallel().", severity: "low" },
             { regex: /assert\.Equal\(t,\s*nil,\s*err\)/, issue: "Generic Assert: Prefira assert.NoError(t, err) para mensagens de erro mais claras.", severity: "low" }
         ];
-        const results = this.findPatterns([".go", "_test.go"], rules);
+        const results = await this.findPatterns([".go", "_test.go"], rules);
 
         // Advanced Logic Density: Forensic Verification
         const integrityIssues = GoTestIntegrityEngine.analyze(this.projectRoot || "");
@@ -89,3 +89,4 @@ export class TestifyPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Qualidade e Verificação Go. Sua missão é garantir que nenhum bug escape para produção.`;
     }
 }
+

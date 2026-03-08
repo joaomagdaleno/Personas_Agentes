@@ -7,6 +7,8 @@ import { IntegrityGuardian } from "./../Core/integrity_guardian.ts";
 import { AnalysisPolicy } from "./strategies/AnalysisPolicy.ts";
 import { IntentClassifier } from "./strategies/IntentClassifier.ts";
 
+import { HubManagerGRPC } from "../../../core/hub_manager_grpc";
+
 const logger = winston.child({ module: "StructuralAnalyst" });
 
 /**
@@ -21,19 +23,19 @@ export interface FileAnalysis {
 }
 
 /**
- * 🏗️ Analista Estrutural PhD (Bun Version).
+ * 🏗️ Analista Estrutural PhD (gRPC Proxy).
  */
 export class StructuralAnalyst {
     maturityEvaluator: MaturityEvaluator;
     parser: SourceCodeParser;
     classifier: ComponentClassifier;
     integrityGuardian: IntegrityGuardian;
-    logicAuditor: any; // Will be fixed when LogicAuditor type is available
-    inspector: any; // Will be fixed when Inspector type is available
+    logicAuditor: any;
+    inspector: any;
 
-    constructor() {
+    constructor(private hubManager?: HubManagerGRPC) {
         this.maturityEvaluator = new MaturityEvaluator();
-        this.parser = new SourceCodeParser();
+        this.parser = new SourceCodeParser(hubManager);
         this.classifier = new ComponentClassifier();
         this.integrityGuardian = new IntegrityGuardian();
 
@@ -49,9 +51,9 @@ export class StructuralAnalyst {
         this.inspector = { scanFileLogic: () => [] };
     }
 
-    analyzePython(content: string, filename: string): FileAnalysis {
+    async analyzePython(content: string, filename: string): Promise<FileAnalysis> {
         const startT = Date.now();
-        const res = this.parser.analyzePyMetadata(content);
+        const res = await this.parser.analyzePyMetadata(content, filename);
 
         const duration = (Date.now() - startT) / 1000;
         logger.debug(`⏱️ [StructuralAnalyst] Decomposição ${filename} in ${duration.toFixed(4)}s`);
@@ -120,11 +122,11 @@ export class StructuralAnalyst {
     }
 
     /**
-     * 🏗️ Mapeia a lógica do arquivo (AST Simplificado).
+     * 🏗️ Mapeia a lógica do arquivo (AST Simplificado via Hub Proxy).
      */
-    analyze_file_logic(content: string, filename: string): any {
+    async analyze_file_logic(content: string, filename: string): Promise<any> {
         try {
-            return this.parser.analyze_file_logic(content, filename);
+            return await this.parser.analyze_file_logic(content, filename);
         } catch (error) {
             logger.error(`❌ [StructuralAnalyst] Failed to analyze file logic in ${filename}: ${error}`);
             return { complexity: 1, dependencies: [] };

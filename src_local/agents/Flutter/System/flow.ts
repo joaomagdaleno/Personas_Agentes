@@ -14,7 +14,7 @@ export class FlowPersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /StreamBuilder\(|FutureBuilder\(/, issue: "Reatividade Básica: Verifique se o estado inicial e de erro são tratados visualmente.", severity: "low" },
@@ -22,7 +22,7 @@ export class FlowPersona extends BaseActivePersona {
             { regex: /BehaviorSubject|PublishSubject/, issue: "RxDart: Verifique se os subjects são fechados no dispose para evitar memory leaks.", severity: "high" },
             { regex: /await for/, issue: "Loop Assíncrono: Verifique se há timeout ou proteção contra streams infinitas que travam a execução.", severity: "high" }
         ];
-        const results = this.findPatterns([".dart"], rules);
+        const results = await this.findPatterns([".dart"], rules);
 
         // Advanced Logic: Stream Integrity
         if (results.some(r => r.severity === "high")) {
@@ -58,3 +58,4 @@ export class FlowPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Engenharia Reativa Flutter. Sua missão é garantir a fluidez absoluta dos dados.`;
     }
 }
+

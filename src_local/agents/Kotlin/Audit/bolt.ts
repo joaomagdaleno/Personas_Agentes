@@ -14,7 +14,7 @@ export class BoltPersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /while\s*\(\s*true\s*\)/, issue: "Busy Wait: Loop infinito sem suspensão ou interrupção.", severity: "critical" },
@@ -23,7 +23,7 @@ export class BoltPersona extends BaseActivePersona {
             { regex: /ArrayList<.*>\(\)/, issue: "Sizing de Coleção: Alocação sem capacidade inicial definida.", severity: "low" },
             { regex: /synchronized\(.*\)/, issue: "Manual Sync: Overhead de sincronização manual; considere Mutex/Flow.", severity: "medium" }
         ];
-        const results = this.findPatterns([".kt", ".kts"], rules);
+        const results = await this.findPatterns([".kt", ".kts"], rules);
 
         // Advanced Logic: JVM Performance Audit
         if (results.some(r => r.issue.includes("GlobalScope"))) {
@@ -59,3 +59,4 @@ export class BoltPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Performance JVM e Kotlin. Sua missão é garantir que o código voe com estabilidade.`;
     }
 }
+

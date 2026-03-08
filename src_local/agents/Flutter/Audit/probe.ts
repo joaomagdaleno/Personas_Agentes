@@ -14,7 +14,7 @@ export class ProbePersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /catch\s*\(.*\)\s*\{\s*\}/, issue: "Cegueira Flutter: catch vazio engole exceção silenciosamente.", severity: "critical" },
@@ -24,7 +24,7 @@ export class ProbePersona extends BaseActivePersona {
             { regex: /throw\s+Exception\(\)/, issue: "Vago: Exception lançada sem mensagem descritiva.", severity: "medium" },
             { regex: /\/\/\s*TODO:?\s*handle\s*error/i, issue: "Débito Tech: Tratamento de erro pendente detectado no comentário.", severity: "medium" }
         ];
-        const results = this.findPatterns([".dart"], rules);
+        const results = await this.findPatterns([".dart"], rules);
 
         // Advanced Logic: Security Probing
         if (results.some(r => r.severity === "critical")) {
@@ -63,3 +63,4 @@ export class ProbePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Análise Forense Flutter. Seu foco é integridade de dados e resiliência de rede.`;
     }
 }
+

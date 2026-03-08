@@ -14,7 +14,7 @@ export class NebulaPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /AKIA[0-9A-Z]{16}/, issue: "Vulnerabilidade Crítica: Chave AWS exposta no código Python.", severity: "critical" },
@@ -24,7 +24,7 @@ export class NebulaPersona extends BaseActivePersona {
             { regex: /os\.environ\.get\(.*\)\s*or\s*["\'][^"\']{8,}/, issue: "Risco: Fallback de variável de ambiente contém segredo real.", severity: "high" },
             { regex: /ENV\s+[A-Z_]+\s*=\s*["\'][^"\']{8,}/, issue: "Docker Security: Segredo embutido em instrução ENV do Dockerfile.", severity: "critical" }
         ];
-        const results = this.findPatterns([".py", "Dockerfile", ".yaml"], rules);
+        const results = await this.findPatterns([".py", "Dockerfile", ".yaml"], rules);
 
         // Advanced Logic: Infrastructure Audit
         if (results.some(r => r.severity === "critical")) {
@@ -60,3 +60,4 @@ export class NebulaPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Arquitetura de Nuvem Python. Sua missão é garantir que a infraestrutura seja elástica e impenetrável.`;
     }
 }
+

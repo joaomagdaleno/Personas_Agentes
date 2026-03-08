@@ -31,7 +31,7 @@ export class TestifyPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /def test_[^\(]*\(\s*\):/, issue: "Teste Vazio: Teste Python declarado sem corpo ou asserção.", severity: "critical" },
@@ -41,7 +41,7 @@ export class TestifyPersona extends BaseActivePersona {
             { regex: /pytest\.mark\.skipif\(/, issue: "Skipped Logic: Teste condicionalmente desativado; verifique se a condição ainda é válida.", severity: "medium" },
             { regex: /print\(/, issue: "Verbose Testing: Verifique se o log no teste é necessário ou se falhou silenciosamente.", severity: "low" }
         ];
-        const results = this.findPatterns([".py"], rules);
+        const results = await this.findPatterns([".py"], rules);
 
         // Structural Boost: Integrity Engine
         const mockIssues = MockIntegrityEngine.analyze(this.projectRoot || "");
@@ -89,3 +89,4 @@ export class TestifyPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Automação de Testes Python. Sua missão é garantir o 'Zero Gap' entre código e verificação.`;
     }
 }
+

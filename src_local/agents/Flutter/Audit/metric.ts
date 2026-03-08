@@ -14,7 +14,7 @@ export class MetricPersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /print\(/, issue: "Cegueira: print() em produção — use logger estruturado PhD.", severity: "high" },
@@ -23,7 +23,7 @@ export class MetricPersona extends BaseActivePersona {
             { regex: /FirebaseAnalytics\.instance/, issue: "Acoplamento: Instrumentação direta de analytics sem camada de abstração.", severity: "low" },
             { regex: /Stopwatch\(\)/, issue: "Profiling: Medição manual de performance via Stopwatch detectada.", severity: "low" }
         ];
-        const results = this.findPatterns([".dart"], rules);
+        const results = await this.findPatterns([".dart"], rules);
 
         // Advanced Logic: Active Healing Trigger for missing telemetry
         if (results.length === 0) {
@@ -60,3 +60,4 @@ export class MetricPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Estatística e Intrumentação de Sistemas Flutter. Sua missão é garantir paridade de dados absoluta.`;
     }
 }
+

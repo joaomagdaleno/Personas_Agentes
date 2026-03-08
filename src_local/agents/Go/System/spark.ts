@@ -32,7 +32,7 @@ export class SparkPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /Publish\(/, issue: "Async Event: Verifique se a entrega da mensagem é garantida (At-least-once) ou se falhas são silenciadas.", severity: "medium" },
@@ -42,7 +42,7 @@ export class SparkPersona extends BaseActivePersona {
             { regex: /Broadcaster/, issue: "Fan-out Pattern: Verifique se o número de inscritos não causa pressão excessiva na memória.", severity: "medium" },
             { regex: /topic/, issue: "Topic Schema: Garanta que os nomes de tópicos seguem uma nomenclatura hierárquica clara.", severity: "low" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const sparkFindings = GoSparkEngine.audit(this.projectRoot || "");
@@ -76,3 +76,4 @@ export class SparkPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Sistemas Reativos Go. Sua missão é garantir que cada fagulha de evento dispare a ação correta.`;
     }
 }
+

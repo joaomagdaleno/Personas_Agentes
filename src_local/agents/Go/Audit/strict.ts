@@ -33,7 +33,7 @@ export class StrictPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /type\s+.*\s+struct\s*\{\s*\}/, issue: "Empty Struct: Struct sem campos detectada; considere se é necessária ou se um sinal de canal basta.", severity: "low" },
@@ -43,7 +43,7 @@ export class StrictPersona extends BaseActivePersona {
             { regex: /ptr\s+:=\s+&/, issue: "Pointer Inflation: Verifique se o uso de ponteiros é necessário ou se causa pressão indevida no GC via escape analysis.", severity: "medium" },
             { regex: /\w+:.*interface\{\}/, issue: "Map Generic: Mapas com valor interface{} impedem otimizações de tipagem estática.", severity: "high" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const strictFindings = GoStrictEngine.inspect(this.projectRoot || "");
@@ -81,3 +81,4 @@ export class StrictPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Sistemas de Tipagem Go. Sua missão é garantir a precisão matemática dos contratos.`;
     }
 }
+

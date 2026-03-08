@@ -1,14 +1,16 @@
 # Personas & Agents System
 
-Bem-vindo ao sistema de **Personas & Agents**! Este projeto utiliza uma arquitetura de alta performance (Bun/TypeScript + Go) integrada com Inteligência Artificial local (Ollama) para analisar, diagnosticar e sugerir melhorias em código fonte através de Agentes Especialistas (Personas).
+Bem-vindo ao sistema de **Personas & Agents**! Este projeto utiliza uma arquitetura de- **Native Performance**: Heavy logic (Analysis, Metrics, AI) moved to Rust and Go.
+- **Sovereign Brain**: Fully native AI reasoning and knowledge graph in Rust (Model: Qwen2.5-Coder-0.5B via Candle).
+- **Go Hub Proxy**: Central persistent service for gRPC orchestration and file persistence.
+- **TypeScript Intelligence**: Lean agents focused on high-level strategy and collaboration.
 
-## 🛠️ Pré-requisitos
+## 🛠️ Prerequisites
 
-Para que o sistema funcione corretamente 100% local e com alta velocidade, você precisa ter:
-
-1. **[Bun](https://bun.sh/)**: Runtime Javascript/Typescript super-rápido, usado como o orquestrador principal dos Agentes.
-2. **[Go (Golang)](https://go.dev/dl/)**: Necessário para rodar/compilar o `go-scanner.exe`, o motor nativo que mapeia os arquivos do repositório em milissegundos.
-3. **[Ollama](https://ollama.com/)**: O motor de IA. Permite rodar modelos complexos (como Llama 3) utilizando o hardware da sua própria máquina (CPU/GPU), mantendo seus dados privados e dispensando APIs pagas na nuvem.
+- **Go 1.22+**: For the Hub Proxy.
+- **Rust (Stable)**: For the Analyzer and Sovereign Brain.
+- **Node.js (Bun/NPM)**: For the Agent Orchestration.
+- **Protoc & Buf**: For gRPC development.
 
 ## 🚀 Como Configurar (Setup Inicial)
 
@@ -26,13 +28,6 @@ Para que o sistema funcione corretamente 100% local e com alta velocidade, você
    cd src_native
    go build -o go-scanner.exe scanner/main.go
    cd ..
-   ```
-
-3. **Inicie o Ollama (Motor de IA):**
-   As personas dependem da API local do Ollama (`http://localhost:11434`). Baixe o Ollama e garanta que o modelo que você pretende usar esteja baixado e rodando. Exemplo:
-
-   ```bash
-   ollama run llama3
    ```
 
 ## ⚡ Como Usar (Comandos Principais)
@@ -81,7 +76,12 @@ Este índice (abaixo) mapeia e descreve a especialidade de cada agente disponív
 | 🗣️ **Echo** | a customer success and feedback specialist who bridges the gap between the user's voice and the development team. | build channels for feedback, manage in-app support, automate changelogs, and turn user frustration i... | [Echo](Flutter\Echo%20-%20Customer%20Success%20and%20Feedback%20Specialist.txt) |
 | 🌊 **Flow** | a navigation and routing specialist who ensures Flutter applications have seamless, predictable, and robust user journeys. | identify and implement improvements in navigation flows, route management, screen transitions, and d... | [Flow](Flutter\Flow%20-%20Navigation%20and%20Routing%20Specialist.txt) |
 | 🌎 **Globe** | an i18n (Internationalization) and localization specialist who ensures Flutter applications are ready for a global audience across different languages and cultures. | identify and implement robust localization strategies, cultural adaptations, and right-to-left (RTL)... | [Globe](Flutter\Globe%20-%20i18n%20and%20Localization%20Specialist.txt) |
-| 📦 **Hermes** | a DevOps and delivery specialist who ensures Flutter applications are built, tested, and shipped to users with speed and precision. | automate the "path to production," optimizing CI/CD pipelines, build configurations, code signing, a... | [Hermes](Flutter\Hermes%20-%20DevOps%20and%20Delivery%20Specialist.txt) |
+| 📦 **Hermes** | a DevOps and delivery specialist who ensures Flutter applications are built, tested,### 🧠 Sovereign Brain (Rust)
+The AI reasoning is now 100% native. The Rust analyzer loads a quantizied Qwen2.5-Coder model using the `candle` crate.
+- **Knowledge Graph**: Robust `petgraph`-based representation of the codebase.
+- **Semantic Reasoning**: Context-aware analysis without external dependencies.
+- **High Performance**: sub-100ms reasoning for local tasks.
+es](Flutter\Hermes%20-%20DevOps%20and%20Delivery%20Specialist.txt) |
 | 📣 **Hype** | an ASO (App Store Optimization), marketing, and growth engineering specialist who ensures the app is discoverable, installable, and sharable. | optimize the "Acquisition" funnel: from App Store search -> Deep Link click -> Install -> First Open | [Hype](Flutter\Hype%20-%20ASO%20and%20Marketing%20Specialist.txt) |
 | 📊 **Metric** | an analytics and growth specialist who ensures user behavior is tracked accurately, privately, and usefully. | transform application usage into data, implement robust telemetry, and ensure every feature release ... | [Metric](Flutter\Metric%20-%20Analytics%20and%20Growth%20Specialist.txt) |
 | ☁️ **Nebula** | a serverless and backend infrastructure specialist who empowers the frontend with robust cloud capabilities without managing servers. | architect and implement secure, scalable backends using platforms like Firebase, Supabase, or Appwri... | [Nebula](Flutter\Nebula%20-%20Backend%20Serverless%20Specialist.txt) |

@@ -14,7 +14,7 @@ export class ScopePersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /#\s*TODO[:\s]/, issue: "Dívida: TODO pendente no código Python.", severity: "medium" },
@@ -24,7 +24,7 @@ export class ScopePersona extends BaseActivePersona {
             { regex: /raise\s+NotImplementedError/, issue: "Incompleto: Funcionalidade Python declarada mas não implementada.", severity: "high" },
             { regex: /#\s*type:\s*ignore/, issue: "Omissão: Supressão manual de tipos; verifique dívida técnica Python.", severity: "low" }
         ];
-        const results = this.findPatterns([".py"], rules);
+        const results = await this.findPatterns([".py"], rules);
 
         this.endMetrics(results.length);
         return results;
@@ -58,3 +58,4 @@ export class ScopePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Escopo de Lógica e Dívida Técnica Python. Sua missão é garantir a pureza e a completude do código.`;
     }
 }
+

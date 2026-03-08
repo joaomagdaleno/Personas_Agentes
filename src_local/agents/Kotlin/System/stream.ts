@@ -14,9 +14,9 @@ export class StreamPersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = this.findPatterns([".kt"], [
+        const results = await this.findPatterns([".kt"], [
             { regex: /callbackFlow\s*\{(?!.*awaitClose)/, issue: "Vazamento Crítico: Flow detectado sem chamada de awaitClose {}. Risco de memory leak.", severity: "critical" },
             { regex: /MutableStateFlow/, issue: "Gestão de Estado: Verifique se a coleta está vinculada ao ciclo de vida (repeatOnLifecycle).", severity: "high" }
         ]);
@@ -48,3 +48,4 @@ export class StreamPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Sistemas Reativos e Mestre em Concorrência Estruturada Kotlin.`;
     }
 }
+

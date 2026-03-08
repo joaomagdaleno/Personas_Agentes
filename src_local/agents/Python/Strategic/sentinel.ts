@@ -14,7 +14,7 @@ export class SentinelPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /subprocess\.run\(.*shell=True\)/, issue: "Risco de Injeção: O uso de shell=True permite execução de comandos arbitrários. Use listas de argumentos.", severity: "critical" },
@@ -22,7 +22,7 @@ export class SentinelPersona extends BaseActivePersona {
             { regex: /tempfile\.mktemp\(\)/, issue: "Risco de Race Condition: Use NamedTemporaryFile para garantir criação segura de arquivos temporários.", severity: "medium" },
             { regex: /pickle\.load\(/, issue: "Desserialização Insegura: Pickle pode executar código arbitrário. Use JSON ou Protobuf para soberania de dados.", severity: "critical" }
         ];
-        const results = this.findPatterns([".py"], rules);
+        const results = await this.findPatterns([".py"], rules);
 
         // Advanced Logic: Shielding Audit
         if (results.some(r => r.severity === "critical")) {
@@ -58,3 +58,4 @@ export class SentinelPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Proteção de Sistemas Python. Sua missão é ser o escudo intransponível do suporte legacy.`;
     }
 }
+

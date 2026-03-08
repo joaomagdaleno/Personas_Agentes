@@ -14,7 +14,7 @@ export class WardenPersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /CoroutineScope\(.*\)/, issue: "Escopo de Coroutine: Verifique se o escopo é cancelado no onDestroy ou se é um supervisor scope.", severity: "medium" },
@@ -22,7 +22,7 @@ export class WardenPersona extends BaseActivePersona {
             { regex: /ViewModel\(\)/, issue: "Gestão de Estado: Verifique se o ViewModel lida com o cancelamento de jobs no onCleared.", severity: "high" },
             { regex: /BroadcastReceiver/, issue: "Vazamento de Receptor: Verifique se o receiver é desregistrado para evitar vazamentos de contexto de sistema.", severity: "high" }
         ];
-        const results = this.findPatterns([".kt", ".kts"], rules);
+        const results = await this.findPatterns([".kt", ".kts"], rules);
 
         // Advanced Logic: Lifecycle Depth Analysis
         if (results.some(r => r.severity === "high")) {
@@ -58,3 +58,4 @@ export class WardenPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Governança de Recursos Kotlin. Sua meta é um sistema com zero memory leaks e performance máxima.`;
     }
 }
+

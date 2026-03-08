@@ -14,7 +14,7 @@ export class MetricPersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /System\.out\.println|Log\.[di]\(/, issue: "Cegueira: Saída não gerenciada ou log de debug em produção.", severity: "high" },
@@ -23,7 +23,7 @@ export class MetricPersona extends BaseActivePersona {
             { regex: /FirebaseAnalytics\.logEvent/, issue: "Acoplamento: Instrumentação direta de analytics sem camada de abstração.", severity: "low" },
             { regex: /measureTimeMillis/, issue: "Profiling: Medição ad-hoc de performance detectada.", severity: "low" }
         ];
-        const results = this.findPatterns([".kt", ".kts"], rules);
+        const results = await this.findPatterns([".kt", ".kts"], rules);
 
         // Advanced Logic: Telemetry Depth
         if (results.length === 0) {
@@ -59,3 +59,4 @@ export class MetricPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Estatística e Intrumentação de Sistemas Kotlin. Sua missão é a verdade absoluta dos dados.`;
     }
 }
+

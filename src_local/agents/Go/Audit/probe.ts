@@ -33,7 +33,7 @@ export class ProbePersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /_\s*=\s*.*\(.*\)/, issue: "Omissão Silenciosa: Ignorar retorno explicitamente via '_' pode ocultar falhas críticas.", severity: "critical" },
@@ -43,7 +43,7 @@ export class ProbePersona extends BaseActivePersona {
             { regex: /log\.Fatal/, issue: "Unmanaged Exit: log.Fatal interrompe o processo sem cleanup gracioso.", severity: "high" },
             { regex: /errors\.New\(.*"Error"/i, issue: "Vago: Mensagem de erro genérica dificulta o diagnóstico.", severity: "medium" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const probeIssues = GoProbeEngine.audit(this.projectRoot || "");
@@ -81,3 +81,4 @@ export class ProbePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Observabilidade Go. Sua missão é garantir que nenhum erro passe despercebido.`;
     }
 }
+

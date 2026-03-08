@@ -32,7 +32,7 @@ export class NeuralPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /embedding/i, issue: "Vector Logic: Verifique se o processamento vetorial utiliza operações SIMD/AVX para máxima performance em Go.", severity: "low" },
@@ -42,7 +42,7 @@ export class NeuralPersona extends BaseActivePersona {
             { regex: /TrainedData/, issue: "Data Integrity: Garanta que os dados de treino não possuem enviesamento ou informações sensíveis.", severity: "high" },
             { regex: /PromptInjection/, issue: "Safety Filter: Verifique se as entradas do usuário são saneadas antes de serem passadas para o LLM.", severity: "critical" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const neuralFindings = GoNeuralEngine.audit(this.projectRoot || "");
@@ -76,3 +76,4 @@ export class NeuralPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Inteligência Artificial Go. Sua missão é garantir o surgimento ético e eficiente da inteligência.`;
     }
 }
+

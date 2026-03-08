@@ -14,9 +14,9 @@ export class HermesPersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = this.findPatterns([".dart", ".yaml", ".gradle"], [
+        const results = await this.findPatterns([".dart", ".yaml", ".gradle"], [
             { regex: /storePassword\s*[:=]\s*['"].*?['"]/, issue: "Vulnerabilidade Crítica: Segredo de KeyStore exposto no código.", severity: "critical" },
             { regex: /debugPaintSizeEnabled\s*=\s*true/, issue: "Ambiente: Debug mode ativo no código de produção ou commitado.", severity: "high" }
         ]);
@@ -48,3 +48,4 @@ export class HermesPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em SRE e Guardião da Integridade de Build Flutter.`;
     }
 }
+

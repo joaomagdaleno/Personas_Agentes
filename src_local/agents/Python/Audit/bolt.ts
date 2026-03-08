@@ -14,7 +14,7 @@ export class BoltPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /while True:\s+pass|while True:\s+continue/, issue: "Busy Wait: Loop infinito sem processamento útil detectado.", severity: "critical" },
@@ -23,7 +23,7 @@ export class BoltPersona extends BaseActivePersona {
             { regex: /copy\.deepcopy\(|pickle\.dumps\(/, issue: "Ineficiência: Deep clone pesado ou serialização desnecessária.", severity: "medium" },
             { regex: /time\.sleep\(0\)|time\.sleep\(0\.001\)/, issue: "Yield Ineficiente: Polling de curto intervalo consome CPU excessiva.", severity: "high" }
         ];
-        const results = this.findPatterns([".py"], rules);
+        const results = await this.findPatterns([".py"], rules);
 
         // Advanced Logic: Active Healing Trigger
         if (results.some(r => r.severity === "critical")) {
@@ -59,3 +59,4 @@ export class BoltPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Eficiência Computacional Python. Sua missão é garantir latência zero na camada de suporte.`;
     }
 }
+

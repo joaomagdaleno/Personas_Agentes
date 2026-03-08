@@ -78,13 +78,258 @@ export class HubManagerGRPC {
     /**
      * Analyzes a specific file using the Rust backend.
      */
-    async analyzeFile(file: string) {
+    async analyzeFile(file: string, content?: string) {
         try {
-            const { response } = await this.client.analyzeFile({ file });
+            const { response } = await this.client.analyzeFile({ file, content: content || "" });
             return JSON.parse(response.jsonData);
         } catch (e) {
             logger.error(`❌ gRPC analyzeFile failed: ${e}`);
             return null;
+        }
+    }
+
+    /**
+     * Bi-directional streaming analysis for batch file processing.
+     * Sends files concurrently and collects results as they arrive.
+     */
+    async analyzeStream(files: { file: string; content?: string }[]): Promise<any[]> {
+        return new Promise((resolve, reject) => {
+            try {
+                const call = this.client.analyzeStream();
+                const results: any[] = [];
+
+                call.responses.onMessage((response: any) => {
+                    try {
+                        results.push(JSON.parse(response.jsonData));
+                    } catch { /* skip malformed */ }
+                });
+
+                call.responses.onComplete(() => {
+                    resolve(results);
+                });
+
+                call.responses.onError((err: any) => {
+                    logger.error(`❌ gRPC analyzeStream error: ${err}`);
+                    resolve(results); // Return partial results
+                });
+
+                // Send all files
+                for (const f of files) {
+                    call.requests.send({ file: f.file, content: f.content || "" });
+                }
+                call.requests.complete();
+            } catch (e) {
+                logger.error(`❌ gRPC analyzeStream failed: ${e}`);
+                resolve([]);
+            }
+        });
+    }
+
+    /**
+     * Gets AST-based dependencies for a file.
+     */
+    async getDependencies(file: string) {
+        try {
+            const { response } = await this.client.getDependencies({ file, content: "" });
+            return JSON.parse(response.jsonData);
+        } catch (e) {
+            logger.error(`❌ gRPC getDependencies failed: ${e}`);
+            return null;
+        }
+    }
+
+    /**
+     * Deduplicates a list of findings using the Rust analyzer.
+     */
+    async deduplicate(findings: any[]) {
+        try {
+            const { response } = await this.client.deduplicate({ findingsJson: JSON.stringify(findings) });
+            return JSON.parse(response.jsonData);
+        } catch (e) {
+            logger.error(`❌ gRPC deduplicate failed: ${e}`);
+            return [];
+        }
+    }
+
+    /**
+     * Generates an AST fingerprint for an agent or directory.
+     */
+    async fingerprint(path: string, content?: string) {
+        try {
+            const { response } = await this.client.fingerprint({ file: path, content: content || "" });
+            return JSON.parse(response.jsonData);
+        } catch (e) {
+            logger.error(`❌ gRPC fingerprint failed: ${e}`);
+            return null;
+        }
+    }
+
+    /**
+     * Discovers the project's identity (DNA).
+     */
+    async discoverIdentity(path: string) {
+        try {
+            const { response } = await this.client.discoverIdentity({ file: path, content: "" });
+            return JSON.parse(response.jsonData);
+        } catch (e) {
+            logger.error(`❌ gRPC discoverIdentity failed: ${e}`);
+            return null;
+        }
+    }
+
+    /**
+     * Indexes the project for search and patterns.
+     */
+    async indexProject(path: string) {
+        try {
+            const { response } = await this.client.indexProject({ file: path, content: "" });
+            return JSON.parse(response.jsonData);
+        } catch (e) {
+            logger.error(`❌ gRPC indexProject failed: ${e}`);
+            return null;
+        }
+    }
+
+    /**
+     * Scans the project topology.
+     */
+    async scanTopology(path: string) {
+        try {
+            const { response } = await this.client.scanTopology({ file: path, content: "" });
+            return JSON.parse(response.jsonData);
+        } catch (e) {
+            logger.error(`❌ gRPC scanTopology failed: ${e}`);
+            return null;
+        }
+    }
+
+    /**
+     * Gets architectural context (TF-IDF) for a file.
+     */
+    async getContext(path: string): Promise<string[]> {
+        try {
+            const { response } = await this.client.getContext({ file: path, content: "" });
+            return JSON.parse(response.jsonData);
+        } catch (e) {
+            logger.error(`❌ gRPC getContext failed: ${e}`);
+            return [];
+        }
+    }
+
+    /**
+     * Gets systemic metrics (coupling, instability) for a set of files.
+     */
+    async getConnectivity(dependencyMap: Record<string, any>) {
+        try {
+            const { response } = await this.client.getConnectivity({ dependencyMapJson: JSON.stringify(dependencyMap) });
+            return JSON.parse(response.jsonData);
+        } catch (e) {
+            logger.error(`❌ gRPC getConnectivity failed: ${e}`);
+            return [];
+        }
+    }
+
+    /**
+     * Performs a security audit or obfuscation scan.
+     */
+    async audit(auditRequest: any) {
+        try {
+            const { response } = await this.client.audit({ auditJson: JSON.stringify(auditRequest) });
+            return JSON.parse(response.jsonData);
+        } catch (e) {
+            logger.error(`❌ gRPC audit failed: ${e}`);
+            return [];
+        }
+    }
+
+    /**
+     * Performs a batch analysis of multiple files.
+     */
+    async batch(batchRequest: any) {
+        try {
+            const { response } = await this.client.batch({ batchJson: JSON.stringify(batchRequest) });
+            return JSON.parse(response.jsonData);
+        } catch (e) {
+            logger.error(`❌ gRPC batch failed: ${e}`);
+            return [];
+        }
+    }
+
+    /**
+     * Performs a native AI reasoning task.
+     */
+    async reason(prompt: string) {
+        try {
+            const { response } = await this.client.reason({ prompt });
+            return response.jsonData;
+        } catch (e) {
+            logger.error(`❌ gRPC reason failed: ${e}`);
+            return null;
+        }
+    }
+
+    /**
+     * Executes native AI auto-healing generation.
+     */
+    async executeHealing(plan: any) {
+        try {
+            const { response } = await this.client.executeHealing(plan);
+            return response.jsonData;
+        } catch (e) {
+            logger.error(`❌ gRPC executeHealing failed: ${e}`);
+            return null;
+        }
+    }
+
+    /**
+     * Performs a project-wide pattern matching task.
+     */
+    async patterns(patternRequest: any) {
+        try {
+            const { response } = await this.client.patterns({ patternJson: JSON.stringify(patternRequest) });
+            return JSON.parse(response.jsonData);
+        } catch (e) {
+            logger.error(`❌ gRPC patterns failed: ${e}`);
+            return [];
+        }
+    }
+
+    /**
+     * Performs a native systemic health penalty calculation.
+     */
+    async penalty(penaltyRequest: any) {
+        try {
+            const { response } = await this.client.penalty({ penaltyJson: JSON.stringify(penaltyRequest) });
+            return JSON.parse(response.jsonData);
+        } catch (e) {
+            logger.error(`❌ gRPC penalty failed: ${e}`);
+            return null;
+        }
+    }
+
+    /**
+     * Performs a native high-fidelity health score calculation.
+     */
+    async calculateScore(scoreRequest: any) {
+        try {
+            const { response } = await this.client.calculateScore({ scoreJson: JSON.stringify(scoreRequest) });
+            return JSON.parse(response.jsonData);
+        } catch (e) {
+            logger.error(`❌ gRPC calculateScore failed: ${e}`);
+            return null;
+        }
+    }
+
+    /**
+     * Performs a native PhD-grade test coverage audit.
+     */
+    async auditCoverage(coverageRequest: any) {
+        try {
+            const { response } = await this.client.auditCoverage({ coverageJson: JSON.stringify(coverageRequest) });
+            return JSON.parse(response.jsonData);
+        } catch (e) {
+            logger.error(`❌ gRPC auditCoverage failed: ${e}`);
+            return { has_test: false };
         }
     }
 

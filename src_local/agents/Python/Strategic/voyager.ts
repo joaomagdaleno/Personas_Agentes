@@ -22,7 +22,7 @@ export class VoyagerPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /flask\.url_for|django\.urls\.reverse/, issue: "Navegação por Link: Verifique se o endpoint existe na tabela de rotas centralizada.", severity: "low" },
@@ -33,7 +33,7 @@ export class VoyagerPersona extends BaseActivePersona {
             { regex: /FastAPI\(.*openapi_url=None\)/, issue: "Configuração de Segurança: Verifique se a exposição da documentação de rotas é necessária em produção.", severity: "low" },
             { regex: /requests\.get\(.*stream=True\)/, issue: "Navegação de Fluxo: Verifique o fechamento do stream para evitar vazamento de sockets em pipes de rede.", severity: "medium" }
         ];
-        const results = this.findPatterns([".py"], rules);
+        const results = await this.findPatterns([".py"], rules);
 
         // Advanced Logic: Map exploration vectors
         this.mapExplorationVectors(results);
@@ -75,3 +75,4 @@ export class VoyagerPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Topologia Web Python. Sua missão é garantir rotas seguras e arquitetura de rede resiliente.`;
     }
 }
+

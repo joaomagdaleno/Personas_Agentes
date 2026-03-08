@@ -33,7 +33,7 @@ export class NebulaPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /AKIA[0-9A-Z]{16}/, issue: "Vulnerabilidade Crítica: Chave AWS exposta no código Go.", severity: "critical" },
@@ -43,7 +43,7 @@ export class NebulaPersona extends BaseActivePersona {
             { regex: /jwt\.Parse\(.*nil\)/, issue: "Broken Security: Verificação de token JWT sem validação de segurança.", severity: "critical" },
             { regex: /sql\.Open\(.*"mysql",\s*".*@tcp/, issue: "DB Credential: String de conexão com senha exposta.", severity: "high" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const cloudFindings = GoCloudEngine.scan(this.projectRoot || "");
@@ -81,3 +81,4 @@ export class NebulaPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Segurança de Nuvem Go. Sua missão é garantir que a infraestrutura seja impenetrável.`;
     }
 }
+

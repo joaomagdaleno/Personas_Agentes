@@ -14,7 +14,7 @@ export class MetricPersona extends BaseActivePersona {
         self.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /print\(.*\)/, issue: "Cegueira: print em produção — use logging estruturado PhD.", severity: "high" },
@@ -23,7 +23,7 @@ export class MetricPersona extends BaseActivePersona {
             { regex: /logging\.basicConfig\(/, issue: "Telemetria Fraca: Configuração global inadequada em sistemas complexos.", severity: "low" },
             { regex: /json\.dumps\(.*\)/, issue: "Soberania de Dados: Verifique se dados sensíveis são anonimizados antes do log.", severity: "medium" }
         ];
-        const results = this.findPatterns([".py"], rules);
+        const results = await this.findPatterns([".py"], rules);
 
         // Advanced Logic: Telemetry Depth
         if (results.length === 0) {
@@ -59,3 +59,4 @@ export class MetricPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Estatística e Instrumentação Python. Sua missão é garantir paridade de dados total.`;
     }
 }
+

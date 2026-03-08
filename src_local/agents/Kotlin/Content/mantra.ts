@@ -14,9 +14,9 @@ export class MantraPersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = this.findPatterns([".kt"], [
+        const results = await this.findPatterns([".kt"], [
             { regex: /var\s+\w+:\s*\w+\?\s*=\s*null/, issue: "Entropia: Uso de estado mutável nullable detectado. Prefira imutabilidade (val).", severity: "medium" },
             { regex: /catch\s*\(\w+:\s*Exception\)\s*\{\s*\}/, issue: "Anti-padrão: Exceção capturada e ignorada. Isso silencia falhas de integridade.", severity: "critical" }
         ]);
@@ -48,3 +48,4 @@ export class MantraPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Arquitetura de Qualidade e Pureza Kotlin.`;
     }
 }
+

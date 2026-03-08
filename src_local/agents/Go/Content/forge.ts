@@ -33,7 +33,7 @@ export class ForgePersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /go:generate/, issue: "Direct Codegen: Uso de go:generate detectado; verifique se as ferramentas necessárias estão no PATH do CI.", severity: "low" },
@@ -43,7 +43,7 @@ export class ForgePersona extends BaseActivePersona {
             { regex: /Stringer/, issue: "Enum Stringer: Uso de tool stringer detectado; verifique se novos enums dispararam a regeneração.", severity: "medium" },
             { regex: /MockGen/, issue: "Mock Generation: Verifique se os mocks gerados não estão introduzindo acoplamento excessivo.", severity: "medium" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const forgeFindings = GoForgeEngine.audit(this.projectRoot || "");
@@ -81,3 +81,4 @@ export class ForgePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Geração de Código Go. Sua missão é garantir que o código gerado seja tão puro quanto o artesanal.`;
     }
 }
+

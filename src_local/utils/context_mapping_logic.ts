@@ -1,17 +1,16 @@
 import winston from "winston";
-import * as cp from "node:child_process";
-import * as path from "node:path";
-import * as fs from "node:fs";
 import { Path } from "../core/path_utils.ts";
+import { HubManagerGRPC } from "../core/hub_manager_grpc";
 
 const logger = winston.child({ module: "ContextMappingLogic" });
 
 /**
- * Lógica de Mapeamento de Contexto (Rust-Enhanced).
+ * Lógica de Mapeamento de Contexto (gRPC Proxy).
  */
 export class ContextMappingLogic {
-    private static BINARY_PATH = path.resolve(process.cwd(), "src_native/analyzer/target/release/analyzer.exe");
     public metadataCache: Record<string, any> = {};
+
+    constructor(private hubManager?: HubManagerGRPC) { }
 
     async processBatch(scanner: any, engine: any, goMap: Record<string, any> = {}): Promise<Record<string, string>> {
         const startTime = Date.now();
@@ -19,7 +18,7 @@ export class ContextMappingLogic {
 
         const filePaths = await this.getAllFiles(scanner);
 
-        if (fs.existsSync(ContextMappingLogic.BINARY_PATH) && filePaths.length > 5) {
+        if (this.hubManager && filePaths.length > 5) {
             try {
                 const results = await this.processBatchRust(filePaths, engine.projectRoot);
                 for (const res of results) {
@@ -33,7 +32,7 @@ export class ContextMappingLogic {
                     }
                 }
             } catch (err) {
-                logger.warn("Rust batch processing failed, falling back to TypeScript", { error: err });
+                logger.warn("gRPC batch processing failed, falling back to TypeScript", { error: err });
                 await this.readFilesIntoCache(filePaths, engine, contentCache);
             }
         } else {
@@ -53,18 +52,8 @@ export class ContextMappingLogic {
             project_root: projectRoot.toString()
         };
 
-        const tmpFile = path.join(process.cwd(), `tmp_batch_${Date.now()}.json`);
-        fs.writeFileSync(tmpFile, JSON.stringify(request));
-
-        try {
-            const output = cp.execSync(`${ContextMappingLogic.BINARY_PATH} batch ${tmpFile}`, {
-                encoding: "utf8",
-                maxBuffer: 200 * 1024 * 1024 // 200MB for large projects
-            });
-            return JSON.parse(output);
-        } finally {
-            if (fs.existsSync(tmpFile)) fs.unlinkSync(tmpFile);
-        }
+        if (!this.hubManager) return [];
+        return await this.hubManager.batch(request);
     }
 
     private async getAllFiles(scanner: any): Promise<any[]> {

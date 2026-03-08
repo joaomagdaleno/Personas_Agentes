@@ -14,9 +14,9 @@ export class NexusPersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = this.findPatterns([".kt", ".kts"], [
+        const results = await this.findPatterns([".kt", ".kts"], [
             { regex: /GlobalScope\.launch/, issue: "Quebra de Concorrência: Uso de GlobalScope detectado. Use escopos controlados (viewModelScope).", severity: "high" },
             { regex: /allowMainThreadQueries\(\)/, issue: "Violação Crítica: I/O bloqueante detectado na UI Thread do Android.", severity: "critical" }
         ]);
@@ -48,3 +48,4 @@ export class NexusPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Sistemas Distribuídos e Guardião da Conectividade Kotlin.`;
     }
 }
+

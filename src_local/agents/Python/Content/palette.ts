@@ -14,7 +14,7 @@ export class PalettePersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /COLOR_.* = "#[0-9a-fA-F]{6}"/, issue: "Token de Cor: Verifique se a cor hexadecimal segue a paleta PhD oficial.", severity: "low" },
@@ -22,7 +22,7 @@ export class PalettePersona extends BaseActivePersona {
             { regex: /background_color = .*/, issue: "Soberania Visual: Verifique se as cores de fundo suportam contrastes dinâmicos para acessibilidade.", severity: "medium" },
             { regex: /Tkinter|PyQt|Kivy/, issue: "Framework de UI: Uso de frameworks legados detectado. Verifique se a lógica de UI está desacoplada do core.", severity: "high" }
         ];
-        const results = this.findPatterns([".py"], rules);
+        const results = await this.findPatterns([".py"], rules);
 
         // Advanced Logic: Visual Integrity Audit
         if (results.some(r => r.severity === "high")) {
@@ -58,3 +58,4 @@ export class PalettePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Estratégia de UI Python. Sua missão é garantir a beleza e a consistência visual do sistema.`;
     }
 }
+

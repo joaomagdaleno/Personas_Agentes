@@ -14,7 +14,7 @@ export class StreamPersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /StreamController\.broadcast\(/, issue: "Broadcasting: Verifique se os ouvintes são gerenciados para evitar processamento paralelo desnecessário.", severity: "low" },
@@ -22,7 +22,7 @@ export class StreamPersona extends BaseActivePersona {
             { regex: /pause\(\)|resume\(\)/, issue: "Controle de Fluxo: Verifique se o Backpressure é respeitado em conexões de rede lentas.", severity: "medium" },
             { regex: /Socket\.connect\(/, issue: "Conexão de Baixo Nível: Verifique se há timeout e lógica de retry exponencial para streams de socket.", severity: "high" }
         ];
-        const results = this.findPatterns([".dart"], rules);
+        const results = await this.findPatterns([".dart"], rules);
 
         // Advanced Logic: Data Pipe Audit
         if (results.some(r => r.severity === "high")) {
@@ -58,3 +58,4 @@ export class StreamPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Engenharia de Dados Flutter. Sua missão é garantir que o fluxo de informação nunca seja interrompido.`;
     }
 }
+

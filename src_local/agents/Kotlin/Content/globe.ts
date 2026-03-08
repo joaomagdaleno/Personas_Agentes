@@ -14,7 +14,7 @@ export class GlobePersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /res\/values.*\/strings\.xml/, issue: "Recurso de String: Verifique se todas as chaves estão traduzidas nos locales suportados.", severity: "low" },
@@ -22,7 +22,7 @@ export class GlobePersona extends BaseActivePersona {
             { regex: /android:supportsRtl="true"/, issue: "Suporte RTL: Verifique a configuração no manifest para garantir espelhamento correto de UI.", severity: "medium" },
             { regex: /"[\w\s]{50,}"/, issue: "Hardcoded String: Mova strings longas para strings.xml para permitir localização e reuso.", severity: "medium" }
         ];
-        const results = this.findPatterns([".kt", ".kts", ".xml"], rules);
+        const results = await this.findPatterns([".kt", ".kts", ".xml"], rules);
 
         // Advanced Logic: Global Readiness
         if (results.some(r => r.issue.includes("Hardcoded"))) {
@@ -58,3 +58,4 @@ export class GlobePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Engenharia de Localização Kotlin. Sua missão é garantir a onipresença cultural do app.`;
     }
 }
+

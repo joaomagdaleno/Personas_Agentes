@@ -14,7 +14,7 @@ export class PalettePersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /MaterialTheme\./, issue: "Design System: Verifique se as cores e tipografia seguem a versão PhD-2.0 do tema central.", severity: "low" },
@@ -22,7 +22,7 @@ export class PalettePersona extends BaseActivePersona {
             { regex: /@Composable/, issue: "UI Reativa: Verifique se o estado da UI é derivado de ViewModels para garantir testabilidade.", severity: "low" },
             { regex: /"#[0-9a-fA-F]{6}"/, issue: "Hardcoded Color: Evite cores hexadecimais diretas no código Jetpack Compose. Use o sistema de tokens.", severity: "high" }
         ];
-        const results = this.findPatterns([".kt", ".kts"], rules);
+        const results = await this.findPatterns([".kt", ".kts"], rules);
 
         // Advanced Logic: Visual Integrity
         if (results.some(r => r.issue.includes("Hardcoded Color"))) {
@@ -58,3 +58,4 @@ export class PalettePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Estratégia de UI Kotlin. Sua missão é garantir a beleza e conformidade matemática da interface.`;
     }
 }
+

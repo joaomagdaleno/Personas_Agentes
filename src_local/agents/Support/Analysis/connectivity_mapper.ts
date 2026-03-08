@@ -1,52 +1,38 @@
-import winston from "winston";
-import * as cp from "node:child_process";
-import * as path from "node:path";
-import * as fs from "node:fs";
+import { HubManagerGRPC } from "../../../core/hub_manager_grpc";
 import { Path } from "../../../core/path_utils.ts";
+import winston from "winston";
 
 const logger = winston.child({ module: "ConnectivityMapper" });
 
 /**
- * 🌐 Mapeador de Conectividade PhD (Rust-Enhanced).
+ * 🌐 Mapeador de Conectividade PhD (gRPC Proxy).
  */
 export class ConnectivityMapper {
-    private static BINARY_PATH = path.resolve(process.cwd(), "src_native/analyzer/target/release/analyzer.exe");
+    constructor(private hubManager?: HubManagerGRPC) { }
 
     /**
-     * Calcula acoplamento de TODOS os arquivos em uma única passada Rust (O(n)).
+     * Calcula acoplamento de TODOS os arquivos em uma única passada via Hub Proxy.
      */
-    calculateBulk(allMap: Record<string, any>): Record<string, { in: number, out: number, instability: number }> {
-        if (!fs.existsSync(ConnectivityMapper.BINARY_PATH)) {
-            logger.warn("Rust binary missing, bulk connectivity analysis skipped");
+    async calculateBulk(allMap: Record<string, any>): Promise<Record<string, { in: number, out: number, instability: number }>> {
+        if (!this.hubManager) {
+            logger.warn("HubManager missing, bulk connectivity analysis skipped");
             return {};
         }
 
-        const input: Record<string, { dependencies: string[] }> = {};
-        Object.entries(allMap).forEach(([f, data]) => {
-            input[f] = { dependencies: data.dependencies || [] };
-        });
-
-        const tmpFile = path.join(process.cwd(), `tmp_conn_${Date.now()}.json`);
-        fs.writeFileSync(tmpFile, JSON.stringify(input));
-
         try {
-            const output = cp.execSync(`${ConnectivityMapper.BINARY_PATH} connectivity ${tmpFile}`, {
-                encoding: 'utf8',
-                maxBuffer: 50 * 1024 * 1024
-            });
-            const results = JSON.parse(output);
+            const results = await this.hubManager.getConnectivity(allMap);
             const mapping: Record<string, any> = {};
 
-            results.forEach((r: any) => {
-                mapping[r.file] = { in: r.afferent, out: r.eferent, instability: r.instability };
-            });
+            if (results && Array.isArray(results)) {
+                results.forEach((r: any) => {
+                    mapping[r.file] = { in: r.afferent, out: r.eferent, instability: r.instability };
+                });
+            }
 
             return mapping;
         } catch (err) {
-            logger.error("Rust connectivity analysis failed:", err);
+            logger.error("gRPC connectivity analysis failed:", err);
             return {};
-        } finally {
-            if (fs.existsSync(tmpFile)) fs.unlinkSync(tmpFile);
         }
     }
 

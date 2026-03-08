@@ -33,7 +33,7 @@ export class ScribePersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /package\s+\w+\s+\/\//, issue: "Package Doc: Verifique se o pacote possui um comentário de cabeçalho descrevendo sua responsabilidade macro.", severity: "low" },
@@ -43,7 +43,7 @@ export class ScribePersona extends BaseActivePersona {
             { regex: /\/\/\s*\{/, issue: "Commented Code: Código comentado detectado; remova ou arquive para manter a limpeza do arquivo.", severity: "medium" },
             { regex: /Bug:/i, issue: "Open Bug Info: Informação de bug detectada em comentário; verifique se já existe um ticket correspondente.", severity: "high" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const docIssues = GoScribeEngine.audit(this.projectRoot || "");
@@ -81,3 +81,4 @@ export class ScribePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Documentação Técnica Go. Sua missão é garantir que o conhecimento seja eterno e legível.`;
     }
 }
+

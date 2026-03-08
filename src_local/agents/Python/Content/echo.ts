@@ -14,7 +14,7 @@ export class EchoPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /"[\w\s]{50,}"/, issue: "Hardcoded String: Use constantes ou sistemas de l10n para strings longas em Python.", severity: "medium" },
@@ -22,7 +22,7 @@ export class EchoPersona extends BaseActivePersona {
             { regex: /error_message = .*/, issue: "Semântica de Erro: Verifique se as mensagens de erro são descritivas e seguem o padrão forense PhD.", severity: "low" },
             { regex: /raise Exception\(.*\)/, issue: "Exceção Genérica: Use exceções customizadas para garantir que o sistema de diagnóstico identifique a causa raiz.", severity: "high" }
         ];
-        const results = this.findPatterns([".py"], rules);
+        const results = await this.findPatterns([".py"], rules);
 
         // Advanced Logic: Semantic Content Audit
         if (results.some(r => r.severity === "high")) {
@@ -58,3 +58,4 @@ export class EchoPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Semântica de Conteúdo Python. Sua missão é garantir a clareza absoluta das mensagens do sistema.`;
     }
 }
+

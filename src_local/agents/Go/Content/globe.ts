@@ -33,7 +33,7 @@ export class GlobePersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /golang\.org\/x\/text/, issue: "Standard i18n: Uso da biblioteca experimental de texto Go detectada; verifique a maturidade das traduções.", severity: "low" },
@@ -43,7 +43,7 @@ export class GlobePersona extends BaseActivePersona {
             { regex: /unicode\/utf8/, issue: "UTF-8 Validation: Uso de validação explícita detectada; verifique a integridade de strings multisbyte.", severity: "low" },
             { regex: /translation/, issue: "Translation Sync: Verifique se os arquivos de recurso estão em sincronia com o código-fonte.", severity: "medium" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const globeFindings = GoGlobeEngine.audit(this.projectRoot || "");
@@ -81,3 +81,4 @@ export class GlobePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Globalização Go. Sua missão é garantir que o sistema fale todas as línguas e respeite todos os horários.`;
     }
 }
+

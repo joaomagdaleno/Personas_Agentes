@@ -35,7 +35,7 @@ export class VoyagerPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /GET|POST|PUT|DELETE/, issue: "HTTP Verb: Verifique se os métodos HTTP seguem os padrões REST e possuem tratamento de erro adequado.", severity: "low" },
@@ -45,7 +45,7 @@ export class VoyagerPersona extends BaseActivePersona {
             { regex: /github\.com\/gin-gonic|github\.com\/labstack\/echo/, issue: "Web Framework: Framework detectado; verifique se a configuração de CORS e Rate Limiting está ativa.", severity: "medium" },
             { regex: /mux\.Vars/, issue: "Route Params: Verifique a sanitização de parâmetros de rota contra injeção de comandos.", severity: "high" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const routingIssues = GoRoutingEngine.analyze(this.projectRoot || "");
@@ -83,3 +83,4 @@ export class VoyagerPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Arquitetura de APIs Go. Sua missão é garantir a fluidez e segurança das comunicações.`;
     }
 }
+

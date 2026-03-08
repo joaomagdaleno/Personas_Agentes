@@ -14,9 +14,9 @@ export class EchoPersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = this.findPatterns([".kt"], [
+        const results = await this.findPatterns([".kt"], [
             { regex: /println\(/, issue: "Aviso: println() detectado em vez de telemetria estruturada. Use Timber.", severity: "medium" },
             { regex: /catch\s*\(\w+:\s*Exception\)\s*\{\s*\}/, issue: "Cegueira Forense: Bloco catch vazio detectado. Erros silenciados.", severity: "critical" }
         ]);
@@ -48,3 +48,4 @@ export class EchoPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Observabilidade de Sistemas e Especialista Android/Kotlin.`;
     }
 }
+

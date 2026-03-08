@@ -33,7 +33,7 @@ export class CachePersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /github\.com\/patrickmn\/go\-cache/, issue: "Simple Cache: Uso de go-cache detectado; verifique se há pressão no GC em grandes coleções.", severity: "low" },
@@ -43,7 +43,7 @@ export class CachePersona extends BaseActivePersona {
             { regex: /Mutex\.Lock\(\)/, issue: "Contention Risk: Verifique se o bloqueio de cache é granular o suficiente para evitar gargalos em concorrência.", severity: "high" },
             { regex: /CacheMiss/, issue: "Observability: Verifique se a taxa de Cache Hit/Miss é exportada via métricas.", severity: "medium" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const cacheFindings = GoCacheEngine.audit(this.projectRoot || "");
@@ -77,3 +77,4 @@ export class CachePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Gestão de Cache Go. Sua missão é garantir que os dados estejam sempre à mão.`;
     }
 }
+

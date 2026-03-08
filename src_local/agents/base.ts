@@ -16,7 +16,7 @@ export abstract class BaseActivePersona {
     projectRoot: string | null = null; contextData: Record<string, any> = {}; projectDna: Record<string, any> = {};
     ignoredFiles: string[] = ["auto_healing_mission.md", "strategic_mission.txt"];
     auditEngine: any; structuralAnalyst: any; integrityGuardian: any;
-    maturityEvaluator: any; cognitive: any;
+    maturityEvaluator: any; cognitive: any; patternFinder!: PatternFinder;
     private auditStartTime: number = 0;
 
     constructor(projectRoot?: string) { this.projectRoot = projectRoot || null; }
@@ -44,8 +44,9 @@ export abstract class BaseActivePersona {
         return !isTest && !isIgnored;
     }
 
-    findPatterns(ext: string[], rules: AuditRule[]): AuditFinding[] {
-        return PatternFinder.find(this.contextData, ext, rules, this.ignoredFiles, this);
+    async findPatterns(ext: string[], rules: AuditRule[]): Promise<AuditFinding[]> {
+        if (!this.patternFinder) return [];
+        return await this.patternFinder.find(this.contextData, ext, rules, this.ignoredFiles, this);
     }
 
     async readProjectFile(rel: string): Promise<string | null> {
@@ -70,7 +71,7 @@ export abstract class BaseActivePersona {
         return Diagnostician.diagnose(this.name, this.emoji, this.getSystemPrompt());
     }
 
-    abstract performAudit(): AuditFinding[];
+    abstract performAudit(): Promise<AuditFinding[]>;
     abstract reasonAboutObjective(obj: string, f: string, c: string | Promise<string | null>): StrategicFinding | string | null;
     abstract getSystemPrompt(): string;
 

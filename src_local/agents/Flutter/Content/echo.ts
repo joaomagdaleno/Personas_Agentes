@@ -14,7 +14,7 @@ export class EchoPersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /pubspec\.yaml.*assets:/, issue: "Observação: Mapeamento de assets detectado. Verifique se os caminhos existem.", severity: "low" },
@@ -22,7 +22,7 @@ export class EchoPersona extends BaseActivePersona {
             { regex: /TextStyle\(.*\)/, issue: "Estilização Ad-hoc: Verifique se as fontes e estilos seguem o Design System unificado.", severity: "low" },
             { regex: /static const String/, issue: "Constante Semântica: Verifique se o nome é descritivo e evita duplicação de valor.", severity: "low" }
         ];
-        const results = this.findPatterns([".dart", ".yaml"], rules);
+        const results = await this.findPatterns([".dart", ".yaml"], rules);
 
         // Advanced Logic: Content Strategy
         if (results.some(r => r.issue.includes("Hardcoded"))) {
@@ -58,3 +58,4 @@ export class EchoPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Semântica de Conteúdo Flutter. Sua missão é garantir que cada byte de texto faça sentido estratégico.`;
     }
 }
+

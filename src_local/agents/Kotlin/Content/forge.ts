@@ -14,7 +14,7 @@ export class ForgePersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /object .* : .*/, issue: "Singleton Pattern: Verifique se o objeto segurado é thread-safe ou se deve ser injetado via Hilt/Koin.", severity: "low" },
@@ -22,7 +22,7 @@ export class ForgePersona extends BaseActivePersona {
             { regex: /var .*: .*\? = null/, issue: "Nullability: Evite vars nuláveis se o valor puder ser resolvido via encapsulamento ou StateFlow.", severity: "medium" },
             { regex: /Companion object/, issue: "Static Overload: Uso excessivo de companion objects pode indicar falta de modularidade e acoplamento forte.", severity: "low" }
         ];
-        const results = this.findPatterns([".kt", ".kts"], rules);
+        const results = await this.findPatterns([".kt", ".kts"], rules);
 
         // Advanced Logic: Architectual Audit
         if (results.some(r => r.issue.includes("lateinit"))) {
@@ -58,3 +58,4 @@ export class ForgePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Arquitetura de Software Kotlin. Seu foco é modularidade, imutabilidade e segurança de tipos JVM.`;
     }
 }
+

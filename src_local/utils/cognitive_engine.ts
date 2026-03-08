@@ -1,19 +1,22 @@
 import winston from 'winston';
 import { CogHelpers } from "./CogHelpers.ts";
 import { StaticReasoning } from "./StaticReasoning.ts";
+import { HubManagerGRPC } from "../core/hub_manager_grpc";
 
 /**
- * 🧠 CognitiveEngine - PhD in Reasoning Systems (Native Rust Edition)
+ * 🧠 CognitiveEngine - PhD in Reasoning Systems (gRPC Proxy Edition)
  */
 export class CognitiveEngine {
     private static instance: CognitiveEngine;
     private logger!: winston.Logger;
     private defaultMaxTokens: number = 512;
-    private activeModel: string = "qwen3.5:0.6b (Unified)";
+    private activeModel: string = "qwen3.5:1.5b (Unified)";
+    private cogHelpers!: CogHelpers;
 
-    constructor() {
+    constructor(private hubManager?: HubManagerGRPC) {
         if (CognitiveEngine.instance) return CognitiveEngine.instance;
         this.logger = this.initializeLogger();
+        this.cogHelpers = new CogHelpers(hubManager);
         CognitiveEngine.instance = this;
     }
 
@@ -35,12 +38,12 @@ export class CognitiveEngine {
     }
 
     async reason(prompt: string, options: { temperature?: number, max_tokens?: number, deep?: boolean } = {}): Promise<string | null> {
-        this.logger.info(`🧠 [Cognitive] Raciocinando via Rust Brain...`);
+        this.logger.info(`🧠 [Cognitive] Raciocinando via gRPC Brain Proxy...`);
 
         try {
-            const response = await CogHelpers.callRustBrain(prompt);
+            const response = await this.cogHelpers.callRustBrain(prompt);
             if (!response) {
-                this.logger.warn("⚠️ [Cognitive] Falha no Rust Brain. Ativando Raciocínio Estático.");
+                this.logger.warn("⚠️ [Cognitive] Falha no gRPC Brain Proxy. Ativando Raciocínio Estático.");
                 return StaticReasoning.handle(prompt);
             }
             return response;
@@ -55,12 +58,12 @@ export class CognitiveEngine {
     }
 
     async load_model(): Promise<boolean> {
-        this.logger.info(`🧠 [Cognitive] Verificando integridade do motor Rust...`);
+        this.logger.info(`🧠 [Cognitive] Verificando integridade do motor gRPC...`);
         return true;
     }
 
-    static getInstance(): CognitiveEngine {
-        return CognitiveEngine.instance || (CognitiveEngine.instance = new CognitiveEngine());
+    static getInstance(hubManager?: HubManagerGRPC): CognitiveEngine {
+        return CognitiveEngine.instance || (CognitiveEngine.instance = new CognitiveEngine(hubManager));
     }
 
     public get model(): string { return this.activeModel; }

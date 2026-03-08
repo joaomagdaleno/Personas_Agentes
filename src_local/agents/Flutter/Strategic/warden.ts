@@ -14,7 +14,7 @@ export class WardenPersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /Isolate\.spawn\(/, issue: "Concorrência: Isolates detectados. Verifique o fechamento de SendPort/ReceivePort para evitar vazamentos.", severity: "high" },
@@ -22,7 +22,7 @@ export class WardenPersona extends BaseActivePersona {
             { regex: /compute\(.*\)/, issue: "Offloading: Verifique se a função passada para 'compute' é global ou estática conforme exigido.", severity: "low" },
             { regex: /StreamController\(\)/, issue: "Vazamento de Fluxo: Prefira 'StreamController.broadcast()' se houver múltiplos ouvintes ou garanta o dispose.", severity: "high" }
         ];
-        const results = this.findPatterns([".dart"], rules);
+        const results = await this.findPatterns([".dart"], rules);
 
         // Advanced Logic: Resource Audit
         if (results.some(r => r.severity === "high")) {
@@ -58,3 +58,4 @@ export class WardenPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Governança de Recursos Flutter. Sua meta é um sistema com zero memory leaks e performance máxima.`;
     }
 }
+

@@ -14,7 +14,7 @@ export class ProbePersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /except\s*.*:\s*pass/, issue: "Cegueira Total: except vazio engole exceções Python silenciosamente.", severity: "critical" },
@@ -24,7 +24,7 @@ export class ProbePersona extends BaseActivePersona {
             { regex: /#\s*TODO:?\s*handle\s*error/i, issue: "Débito Tech: Tratamento de erro pendente detectado no comentário.", severity: "medium" },
             { regex: /asyncio\.create_task\(.*\)(?![^}]*add_done_callback)/, issue: "Resiliência Async: Task criada sem monitoramento de exceção (done callback).", severity: "high" }
         ];
-        const results = this.findPatterns([".py"], rules);
+        const results = await this.findPatterns([".py"], rules);
 
         // Advanced Logic: Forensic Depth
         if (results.some(r => r.severity === "critical")) {
@@ -60,3 +60,4 @@ export class ProbePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Análise Forense Python. Seu foco é a integridade absoluta do fluxo de dados legacy.`;
     }
 }
+

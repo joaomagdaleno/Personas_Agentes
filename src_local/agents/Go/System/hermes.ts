@@ -30,7 +30,7 @@ export class HermesPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /context\.WithDeadline/, issue: "Service Deadline: Verifique se os SLAs de resposta estão alinhados com os timeouts do contexto.", severity: "medium" },
@@ -40,7 +40,7 @@ export class HermesPersona extends BaseActivePersona {
             { regex: /Graceful/, issue: "Zero Downtime: Verifique se todos os servidores HTTP/gRPC implementam shutdown gracioso para drenar conexões.", severity: "high" },
             { regex: /Backoff/, issue: "Throttling: O uso de backoff exponencial é essencial para a estabilidade da rede sob estresse.", severity: "medium" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         results.push({ file: "RELIABILITY_SCAN", agent: this.name, role: this.role, emoji: this.emoji, issue: "SRE Check: Analisando maturidade operacional do componente Go.", severity: "low", stack: this.stack });
@@ -73,3 +73,4 @@ export class HermesPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Engenharia de Confiabilidade Go. Sua missão é garantir disponibilidade ininterrupta.`;
     }
 }
+

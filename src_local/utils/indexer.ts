@@ -1,9 +1,5 @@
-/**
- * SISTEMA DE PERSONAS AGENTES - INDEXADOR TÉCNICO
- * Delegação total ao Rust Analyzer (walkdir + memmap2).
- */
 import winston from "winston";
-import * as path from "node:path";
+import { HubManagerGRPC } from "../core/hub_manager_grpc";
 
 const logger = winston.child({ module: "Indexer" });
 
@@ -17,29 +13,27 @@ export interface IndexData {
 }
 
 /**
- * 📑 Indexer — Cataloga a estrutura anatômica do projeto via Rust nativo.
+ * 📑 Indexer — Cataloga a estrutura anatômica do projeto via gRPC Proxy (Go Hub).
  */
 export class Indexer {
-    private static BINARY_PATH = path.resolve(process.cwd(), "src_native/analyzer/target/release/analyzer.exe");
-
-    constructor(private projectRoot: string) { }
+    constructor(private projectRoot: string, private hubManager?: HubManagerGRPC) { }
 
     async updateIndex(): Promise<IndexData> {
-        logger.info("📡 Iniciando indexação soberana via Rust Analyzer (walkdir + memmap2)...");
+        logger.info("📡 Iniciando indexação soberana via Hub Proxy (gRPC)...");
         const startTime = Date.now();
         const indexData = this.getEmptyIndex();
 
+        if (!this.hubManager) {
+            logger.warn("⚠️ HubManager not provided to Indexer. Returning empty index.");
+            return indexData;
+        }
+
         try {
-            const proc = Bun.spawnSync([Indexer.BINARY_PATH, "index", this.projectRoot], {
-                cwd: this.projectRoot,
-                env: { ...process.env },
-            });
+            const processedFiles = await this.hubManager.indexProject(this.projectRoot);
 
-            if (proc.exitCode !== 0) {
-                throw new Error(`Rust analyzer index failed: ${proc.stderr.toString()}`);
+            if (!processedFiles || !Array.isArray(processedFiles)) {
+                throw new Error(`Invalid response from Hub indexer.`);
             }
-
-            const processedFiles: any[] = JSON.parse(proc.stdout.toString());
 
             for (const pf of processedFiles) {
                 const metadata: FileMetadata = {

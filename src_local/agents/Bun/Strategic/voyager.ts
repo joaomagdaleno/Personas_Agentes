@@ -28,7 +28,7 @@ export class VoyagerPersona extends BaseActivePersona {
             { regex: '\\bvar\\s+\\w+', issue: 'Legado JS: "var" — use "const" ou "let".', severity: 'medium' },
         ];
 
-        const results = this.findPatterns(['.ts', '.tsx'], auditRules as any);
+        const results = await this.findPatterns(['.ts', '.tsx'], auditRules as any);
         this.endMetrics(results.length);
         return results;
     }
@@ -61,3 +61,4 @@ export class VoyagerPersona extends BaseActivePersona {
             .map(r => `Migrar ${r.file}: ${r.issue}`);
     }
 }
+

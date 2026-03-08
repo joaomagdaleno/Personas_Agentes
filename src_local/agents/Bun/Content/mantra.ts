@@ -28,7 +28,7 @@ export class MantraPersona extends BaseActivePersona {
             { regex: 'Bun\\.file\\([^)]+\\)\\.json\\(\\)(?!\\s*as\\b)', issue: 'Risco: Bun.file().json() sem tipagem — resultado é "any".', severity: 'high' },
         ];
 
-        const results = this.findPatterns(['.ts', '.tsx'], auditRules as any);
+        const results = await this.findPatterns(['.ts', '.tsx'], auditRules as any);
         this.endMetrics(results.length);
         return results;
     }
@@ -51,3 +51,4 @@ export class MantraPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, guardião da pureza de tipos no runtime Bun.`;
     }
 }
+

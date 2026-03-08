@@ -14,9 +14,9 @@ export class BridgePersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = this.findPatterns([".kt", ".kts"], [
+        const results = await this.findPatterns([".kt", ".kts"], [
             { regex: /external\s+fun/, issue: "Aviso: Uso de JNI (Java Native Interface) detectado. Garanta a segurança da memória nativa.", severity: "high" },
             { regex: /@JvmOverloads/, issue: "Otimização: Verifique se as sobrecargas JVM estão gerando código redundante ou inconsistente.", severity: "low" }
         ]);
@@ -48,3 +48,4 @@ export class BridgePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Sistemas Distribuídos e Arquiteto de Pontes JVM/Nativas Kotlin.`;
     }
 }
+

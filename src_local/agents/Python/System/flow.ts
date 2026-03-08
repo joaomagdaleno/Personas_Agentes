@@ -14,7 +14,7 @@ export class FlowPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /async def .*/, issue: "Fluxo Assíncrono: Uso de asyncio detectado. Verifique se há await em todos os pontos de I/O para evitar bloqueios.", severity: "medium" },
@@ -22,7 +22,7 @@ export class FlowPersona extends BaseActivePersona {
             { regex: /asyncio\.gather\(/, issue: "Concorrência Paralela: Verifique se há tratamento de erros individuais (return_exceptions=True) para evitar falhas silenciosas.", severity: "high" },
             { regex: /loop\.run_until_complete\(/, issue: "Gestão de Loop: O uso manual de loops de eventos deve ser centralizado para garantir a soberania do fluxo.", severity: "medium" }
         ];
-        const results = this.findPatterns([".py"], rules);
+        const results = await this.findPatterns([".py"], rules);
 
         // Advanced Logic: Async Integrity Audit
         if (results.some(r => r.issue.includes("asyncio.gather"))) {
@@ -58,3 +58,4 @@ export class FlowPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Engenharia Reativa Python. Sua missão é garantir a fluidez total dos dados legacy.`;
     }
 }
+

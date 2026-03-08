@@ -22,7 +22,7 @@ export class VoyagerPersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /Intent\.setData/, issue: "Deep Link Inseguro: Verifique se os dados do Intent são sanitizados para evitar Path Traversal.", severity: "high" },
@@ -33,7 +33,7 @@ export class VoyagerPersona extends BaseActivePersona {
             { regex: /ActivityNotFoundException/, issue: "Fallback de Rota: Verifique se há tratamento para falhas ao abrir links externos ou implícitos.", severity: "medium" },
             { regex: /addFlags\(Intent\.FLAG_ACTIVITY_NEW_TASK\)/, issue: "Backstack Corruption: Verifique se o flag não está limpando o histórico de navegação indevidamente.", severity: "low" }
         ];
-        const results = this.findPatterns([".kt", ".xml"], rules);
+        const results = await this.findPatterns([".kt", ".xml"], rules);
 
         // Advanced Logic: Map exploration vectors
         this.mapExplorationVectors(results);
@@ -75,3 +75,4 @@ export class VoyagerPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Arquitetura de Navegação Android. Sua missão é garantir fluxos seguros e determinísticos.`;
     }
 }
+

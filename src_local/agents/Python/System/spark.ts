@@ -14,7 +14,7 @@ export class SparkPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /click_handler\(.*\):/, issue: "Interação de UI: Verifique se o handler de clique legacy possui debounce e se a ação é idempotente.", severity: "low" },
@@ -22,7 +22,7 @@ export class SparkPersona extends BaseActivePersona {
             { regex: /PyPubSub\.subscribe\(/, issue: "Mensageria Interna: O uso de PubSub pode ocultar o fluxo de dados. Verifique a rastreabilidade PhD.", severity: "medium" },
             { regex: /@on_exception\(.*\)/, issue: "Reação a Falha: Verifique se o gatilho de erro dispara os reflexos sistêmicos corretos.", severity: "high" }
         ];
-        const results = this.findPatterns([".py"], rules);
+        const results = await this.findPatterns([".py"], rules);
 
         // Advanced Logic: Interaction Health Audit
         if (results.some(r => r.severity === "high")) {
@@ -58,3 +58,4 @@ export class SparkPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Estratégia de Eventos Python. Sua missão é garantir que cada estímulo gere a resposta soberana.`;
     }
 }
+

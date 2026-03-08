@@ -14,9 +14,9 @@ export class NebulaPersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = this.findPatterns([".kt", "build.gradle.kts", "google-services.json"], [
+        const results = await this.findPatterns([".kt", "build.gradle.kts", "google-services.json"], [
             { regex: /AKIA[0-9A-Z]{16}/, issue: "Vulnerabilidade Crítica: Chave AWS exposta no código ou build script.", severity: "critical" },
             { regex: /sk-[a-zA-Z0-9]{20,}|ghp_[a-zA-Z0-9]{36}/, issue: "Vulnerabilidade Crítica: Token (OpenAI/GitHub) exposto.", severity: "critical" },
             { regex: /(?:apiKey|API_KEY|password|secret)\s*[:=]\s*["\'][^"\']{8,}/, issue: "Vazamento: Credencial hardcoded no código-fonte Kotlin.", severity: "critical" },
@@ -52,3 +52,4 @@ export class NebulaPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Arquitetura de Nuvem e Soberania Cloud Kotlin.`;
     }
 }
+

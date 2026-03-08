@@ -27,7 +27,7 @@ export class SentinelPersona extends BaseActivePersona {
             { regex: 'Access-Control-Allow-Origin.*\\*', issue: 'Permissivo: CORS wildcard no Bun.serve.', severity: 'high' },
         ];
 
-        const results = this.findPatterns(['.ts', '.tsx'], auditRules as any);
+        const results = await this.findPatterns(['.ts', '.tsx'], auditRules as any);
         this.endMetrics(results.length);
         return results;
     }
@@ -45,3 +45,4 @@ export class SentinelPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, mestre em segurança de transporte e TLS Bun.`;
     }
 }
+

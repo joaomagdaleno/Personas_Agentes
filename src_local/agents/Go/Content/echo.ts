@@ -33,7 +33,7 @@ export class EchoPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /log\.Printf/, issue: "Unstructured Logging: Prefira loggers estruturados (zap/zerolog) com formato JSON.", severity: "medium" },
@@ -43,7 +43,7 @@ export class EchoPersona extends BaseActivePersona {
             { regex: /Logrus/, issue: "Logger Performance: Logrus é mais lento que zap; verifique se há impacto em caminhos críticos.", severity: "low" },
             { regex: /SpanContext/, issue: "Tracing Context: Verifique se o contexto de rastreio está sendo propagado corretamente entre processos cloud.", severity: "medium" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const echoFindings = GoEchoEngine.inspect(this.projectRoot || "");
@@ -81,3 +81,4 @@ export class EchoPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Telemetria Go. Sua missão é garantir que o sistema fale com clareza e precisão.`;
     }
 }
+

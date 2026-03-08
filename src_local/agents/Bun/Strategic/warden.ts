@@ -27,7 +27,7 @@ export class WardenPersona extends BaseActivePersona {
             { regex: 'Bun\\.file\\([^)]*\\).*(?:cpf|rg|password|ssn)', issue: 'PII em Disco: Bun.file lendo/gravando dados sensíveis.', severity: 'critical' },
         ];
 
-        const results = this.findPatterns(['.ts', '.tsx'], auditRules as any);
+        const results = await this.findPatterns(['.ts', '.tsx'], auditRules as any);
         this.endMetrics(results.length);
         return results;
     }
@@ -45,3 +45,4 @@ export class WardenPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, guardião da governança e ética de dados Bun.`;
     }
 }
+

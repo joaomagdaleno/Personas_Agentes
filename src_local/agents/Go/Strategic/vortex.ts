@@ -33,7 +33,7 @@ export class VortexPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /any\s*\[\w*\]/, issue: "Generic Constraints: Verifique se as restrições de tipo (Type Constraints) são suficientemente granulares.", severity: "low" },
@@ -43,7 +43,7 @@ export class VortexPersona extends BaseActivePersona {
             { regex: /ebpf/, issue: "eBPF Integration: Verifique a segurança dos programas carregados no kernel via Go.", severity: "critical" },
             { regex: /plugin\.Open/, issue: "Dynamic Plugins: O suporte a plugins em Go é frágil; verifique a compatibilidade de versões da biblioteca padrão.", severity: "medium" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const innovationFindings = GoVortexEngine.audit(this.projectRoot || "");
@@ -77,3 +77,4 @@ export class VortexPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Inovação Tecnológica Go. Sua missão é manter o sistema no estado da arte.`;
     }
 }
+

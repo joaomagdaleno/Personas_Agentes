@@ -34,7 +34,7 @@ export class BoltPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /for\s*\{\s*}/, issue: "Busy Wait: Loop infinito sem select detectado.", severity: "critical" },
@@ -43,7 +43,7 @@ export class BoltPersona extends BaseActivePersona {
             { regex: /go\s+func\(\)\s*\{/, issue: "Anonymous Goroutine: Falta de rastreabilidade ou tratamento de erro.", severity: "medium" },
             { regex: /time\.After\(/, issue: "Resource Leak: time.After em loops causa vazamento de timers.", severity: "high" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const runtimeAnomalies = GoRuntimeAnalyzer.inspect(this.projectRoot || "");
@@ -81,3 +81,4 @@ export class BoltPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Sistemas Distribuídos e Performance Go. Sua missão é garantir latência zero.`;
     }
 }
+

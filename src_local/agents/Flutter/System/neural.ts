@@ -14,7 +14,7 @@ export class NeuralPersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /Provider\.of\(context\)/, issue: "Propagação de Estado: Verifique se o 'listen: false' é usado onde apenas métodos são chamados para evitar rebuilds inúteis.", severity: "low" },
@@ -22,7 +22,7 @@ export class NeuralPersona extends BaseActivePersona {
             { regex: /watch\(|read\(|select\(/, issue: "Riverpod/Signals: Verifique a granularidade dos seletores para minimizar a árvore de rebuild.", severity: "low" },
             { regex: /SyncManager\.startSync\(/, issue: "Sincronia Neural: Verifique se há proteção contra race conditions em sincronias paralelas.", severity: "high" }
         ];
-        const results = this.findPatterns([".dart"], rules);
+        const results = await this.findPatterns([".dart"], rules);
 
         // Advanced Logic: Neural Sync Audit
         if (results.some(r => r.issue.includes("race conditions"))) {
@@ -58,3 +58,4 @@ export class NeuralPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Neuroengenharia de Sistemas Flutter. Sua meta é a harmonia perfeita entre estado e UI.`;
     }
 }
+

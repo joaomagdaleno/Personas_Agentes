@@ -33,7 +33,7 @@ export class ScalePersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /runtime\.GOMAXPROCS/, issue: "Manual Processor Tuning: Verifique se o ajuste manual de GOMAXPROCS é realmente necessário em runtimes modernos.", severity: "low" },
@@ -43,7 +43,7 @@ export class ScalePersona extends BaseActivePersona {
             { regex: /Semaphore/, issue: "Rate Limiting: Verifique se a implementação de semáforo via canais bufferizados possui limites adequados.", severity: "medium" },
             { regex: /worker\s+pool/i, issue: "Worker Pattern: Garanta que o pool de workers possui sinal de encerramento para evitar goroutines zumbis.", severity: "high" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const scalingFindings = GoScalingEngine.audit(this.projectRoot || "");
@@ -81,3 +81,4 @@ export class ScalePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Sistemas de Alta Escala Go. Sua missão é garantir a elasticidade ilimitada do código.`;
     }
 }
+

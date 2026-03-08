@@ -14,9 +14,9 @@ export class ScalePersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = this.findPatterns([".kt"], [
+        const results = await this.findPatterns([".kt"], [
             { regex: /\n{400,}/, issue: "God File: Arquivo excessivamente grande; risco de entropia Kotlin.", severity: "high" },
             { regex: /import\s+.*?\.\.\/\.\.\//, issue: "Deep Relative: Importação excessivamente profunda; risco de acoplamento.", severity: "medium" },
             { regex: /object\s+\w+\s*\{(?!.*companion)/, issue: "Singleton Abuse: Uso de 'object' pode dificultar injeção de dependência.", severity: "medium" },
@@ -51,3 +51,4 @@ export class ScalePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Arquitetura de Sistemas e Especialista Android/Kotlin.`;
     }
 }
+

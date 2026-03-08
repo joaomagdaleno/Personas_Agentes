@@ -1,17 +1,19 @@
 import * as path from 'node:path';
-import * as cp from 'node:child_process';
-import * as fs from 'node:fs';
 import winston from 'winston';
+import { HubManagerGRPC } from "../../core/hub_manager_grpc";
 
 const logger = winston.child({ module: "PatternFinder" });
 
+/**
+ * 🦀 PatternFinder - PhD in Structural Auditing (gRPC Proxy).
+ */
 export class PatternFinder {
-    private static BINARY_PATH = path.resolve(process.cwd(), "src_native/analyzer/target/release/analyzer.exe");
+    constructor(private hubManager?: HubManagerGRPC) { }
 
-    static find(context: Record<string, any>, extensions: string[], rules: any[], ignored: string[], agent: any): any[] {
-        if (Object.keys(context).length > 5 && fs.existsSync(this.BINARY_PATH)) {
+    async find(context: Record<string, any>, extensions: string[], rules: any[], ignored: string[], agent: any): Promise<any[]> {
+        if (this.hubManager && Object.keys(context).length > 5) {
             try {
-                return this.findBulk(context, [{
+                return await this.findBulk(context, [{
                     agent: agent.name,
                     role: agent.role,
                     emoji: agent.emoji,
@@ -24,7 +26,7 @@ export class PatternFinder {
                     }))
                 }], agent.projectRoot);
             } catch (err) {
-                logger.warn("Rust audit failed, falling back to TypeScript", { error: err });
+                logger.warn("gRPC patterns audit failed, falling back to TypeScript", { error: err });
             }
         }
 
@@ -38,10 +40,10 @@ export class PatternFinder {
     }
 
     /**
-     * 🦀 Executa auditoria em lote para MÚLTIPLAS personas e TODOS os arquivos em UMA única passada via Mmap no Rust.
+     * 🦀 Executa auditoria em lote via Go Hub Proxy (Rust Mmap + RegexSet).
      */
-    static findBulk(context: Record<string, any>, personaRuleSets: any[], projectRoot: string): any[] {
-        if (!fs.existsSync(this.BINARY_PATH)) return [];
+    async findBulk(context: Record<string, any>, personaRuleSets: any[], projectRoot: string): Promise<any[]> {
+        if (!this.hubManager) return [];
 
         const request = {
             file_paths: Object.keys(context),
@@ -49,28 +51,22 @@ export class PatternFinder {
             persona_rules: personaRuleSets
         };
 
-        const tmpFile = path.join(process.cwd(), `tmp_audit_${Date.now()}.json`);
-        fs.writeFileSync(tmpFile, JSON.stringify(request));
-
         try {
-            const output = cp.execSync(`${this.BINARY_PATH} patterns ${tmpFile}`, {
-                encoding: 'utf8',
-                maxBuffer: 100 * 1024 * 1024
-            });
-            return JSON.parse(output);
-        } finally {
-            if (fs.existsSync(tmpFile)) fs.unlinkSync(tmpFile);
+            return await this.hubManager.patterns(request);
+        } catch (err) {
+            logger.error("❌ [PatternFinder] gRPC patterns call failed:", err);
+            return [];
         }
     }
 
-    private static isAnalyzable(f: string, data: any, extensions: string[], ignored: string[]): boolean {
+    private isAnalyzable(f: string, data: any, extensions: string[], ignored: string[]): boolean {
         const hasExt = extensions.some(e => f.endsWith(e));
         const isIgnored = ignored.includes(path.basename(f));
         const isTest = data.component_type === "TEST";
         return hasExt && !isIgnored && !isTest;
     }
 
-    private static scanFile(file: string, content: string, rules: any[], agent: any): any[] {
+    private scanFile(file: string, content: string, rules: any[], agent: any): any[] {
         if (!content) return [];
         const results: any[] = [];
 

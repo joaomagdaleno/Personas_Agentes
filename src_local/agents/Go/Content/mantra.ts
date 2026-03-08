@@ -33,7 +33,7 @@ export class MantraPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /camelCase/, issue: "Naming Convention: Go prefira nomes curtos para variáveis locais e Exported para campos públicos.", severity: "low" },
@@ -43,7 +43,7 @@ export class MantraPersona extends BaseActivePersona {
             { regex: /interface\s+\w+\s+\{.*\}\s+\/\/\s*deprecated/, issue: "Stale Contract: Remova interfaces depreciadas para manter a pureza do design.", severity: "medium" },
             { regex: /_\s*=\s*append/, issue: "Slice Misuse: Verifique se a mutação de slice não está criando efeitos colaterais em outras referências.", severity: "high" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const qualityIssues = GoMantraEngine.audit(this.projectRoot || "");
@@ -81,3 +81,4 @@ export class MantraPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Qualidade e Idiomas Go. Sua missão é garantir que o código seja puro e conciso.`;
     }
 }
+

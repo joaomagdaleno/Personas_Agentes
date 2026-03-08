@@ -33,7 +33,7 @@ export class BridgePersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /C\.\w+/, issue: "Cgo Pointer Safety: Garanta que ponteiros Go não são passados para C de forma insegura (violação das regras de GC).", severity: "critical" },
@@ -43,7 +43,7 @@ export class BridgePersona extends BaseActivePersona {
             { regex: /net\//, issue: "Network Surface: Verifique se as portas abertas possuem timeouts e limites de recursos para evitar DoS.", severity: "medium" },
             { regex: /ipc/i, issue: "IPC Logic: Verifique a segurança da comunicação entre processos locais (Unix Sockets/Named Pipes).", severity: "medium" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const bridgeFindings = GoBridgeEngine.audit(this.projectRoot || "");
@@ -77,3 +77,4 @@ export class BridgePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Integração de Sistemas Go. Sua missão é garantir conexões sólidas e seguras.`;
     }
 }
+

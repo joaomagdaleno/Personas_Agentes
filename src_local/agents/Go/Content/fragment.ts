@@ -33,7 +33,7 @@ export class FragmentPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /func\s+.*\{\s*/g, issue: "Complexity Check: Verifique se funções longas podem ser extraídas para métodos auxiliares private.", severity: "low" },
@@ -43,7 +43,7 @@ export class FragmentPersona extends BaseActivePersona {
             { regex: /init\(\)/, issue: "Hidden Logic: Funções init() dificultam o teste e a compreensão do fluxo de inicialização.", severity: "medium" },
             { regex: /github\.com\/.*\/internal\//, issue: "Internal Reliance: Verifique se o uso de pacotes internos de terceiros não trará instabilidade futura.", severity: "high" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const modularityIssues = GoFragmentEngine.audit(this.projectRoot || "");
@@ -77,3 +77,4 @@ export class FragmentPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Refatoração Go. Sua missão é garantir a modularidade perfeita.`;
     }
 }
+

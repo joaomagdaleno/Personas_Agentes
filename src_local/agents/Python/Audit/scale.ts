@@ -14,7 +14,7 @@ export class ScalePersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /\n{400,}/, issue: "God File: Arquivo excessivamente grande; risco de entropia Python.", severity: "high" },
@@ -24,7 +24,7 @@ export class ScalePersona extends BaseActivePersona {
             { regex: /resource\.setrlimit/, issue: "System Limits: Ajuste manual de rlimit detectado; risco de instabilidade.", severity: "high" },
             { regex: /import\s+\*/, issue: "Wildcard Import: Poluição de namespace dificulta rastreabilidade e escala.", severity: "low" }
         ];
-        const results = this.findPatterns([".py"], rules);
+        const results = await this.findPatterns([".py"], rules);
 
         // Advanced Logic: Capacity Audit
         if (results.some(r => r.issue.includes("gc.collect"))) {
@@ -60,3 +60,4 @@ export class ScalePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Escalonamento de Sistemas Python. Sua missão é garantir que o sistema cresça sem quebrar.`;
     }
 }
+

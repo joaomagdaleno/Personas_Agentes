@@ -14,7 +14,7 @@ export class CachePersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /@Database|@Entity/, issue: "Persistência Room: Verifique se as queries são indexadas para evitar Full Table Scans lentos.", severity: "low" },
@@ -22,7 +22,7 @@ export class CachePersona extends BaseActivePersona {
             { regex: /context\.cacheDir/, issue: "Diretório de Cache: Verifique se arquivos temporários são limpos periodicamente.", severity: "low" },
             { regex: /DiskLruCache/, issue: "Persistência em Disco: Verifique se há proteção contra corrupção de arquivos em desligamentos súbitos.", severity: "medium" }
         ];
-        const results = this.findPatterns([".kt", ".kts"], rules);
+        const results = await this.findPatterns([".kt", ".kts"], rules);
 
         // Advanced Logic: Disk Thrashing Prevention
         if (results.length > 5) {
@@ -58,3 +58,4 @@ export class CachePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Otimização de Performance Kotlin. Sua missão é garantir que cada byte de cache gere velocidade.`;
     }
 }
+

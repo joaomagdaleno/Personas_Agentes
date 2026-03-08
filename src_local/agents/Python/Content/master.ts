@@ -14,7 +14,7 @@ export class MasterPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /main\(.*\):/, issue: "Ponto de Entrada: Verifique se a lógica de inicialização é idempotente e resiliente a falhas parciais.", severity: "low" },
@@ -22,7 +22,7 @@ export class MasterPersona extends BaseActivePersona {
             { regex: /import os, sys/, issue: "Higiene de Importação: Mantenha as importações organizadas e evite dependências desnecessárias no core.", severity: "low" },
             { regex: /DIRECTIVE_PHD_VIOLATION/, issue: "Violação de Diretriz: Alerta crítico de desvio das normas de soberania sistêmica PhD.", severity: "critical" }
         ];
-        const results = this.findPatterns([".py"], rules);
+        const results = await this.findPatterns([".py"], rules);
 
         // Advanced Logic: Prime Directive Audit
         if (results.some(r => r.severity === "critical")) {
@@ -58,3 +58,4 @@ export class MasterPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Orquestração de Sistemas Python. Sua palavra é a lei final do sistema.`;
     }
 }
+

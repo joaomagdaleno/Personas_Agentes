@@ -1,23 +1,21 @@
 import winston from "winston";
-import * as cp from "node:child_process";
-import * as path from "node:path";
-import * as fs from "node:fs";
 import { AdjustmentCalculator } from "./../Diagnostics/strategies/AdjustmentCalculator.ts";
+import { HubManagerGRPC } from "../../../core/hub_manager_grpc";
 
 const logger = winston.child({ module: "PenaltyEngine" });
 
 /**
- * ⚖️ PenaltyEngine — PhD in Health Penalties (Rust-Enhanced)
+ * ⚖️ PenaltyEngine — PhD in Health Penalties (gRPC Proxy).
  */
 export class PenaltyEngine {
-    private static BINARY_PATH = path.resolve(process.cwd(), "src_native/analyzer/target/release/analyzer.exe");
+    constructor(private hubManager?: HubManagerGRPC) { }
 
-    apply(raw: number, allAlerts: any[], mapData: Record<string, any>, total: number, qaData: any = null, cognitive: any = null): number {
-        if (fs.existsSync(PenaltyEngine.BINARY_PATH)) {
+    async apply(raw: number, allAlerts: any[], mapData: Record<string, any>, total: number, qaData: any = null, cognitive: any = null): Promise<number> {
+        if (this.hubManager) {
             try {
-                return this.applyRust(raw, allAlerts, mapData, qaData, cognitive);
+                return await this.applyRust(raw, allAlerts, mapData, qaData, cognitive);
             } catch (err) {
-                logger.warn("Rust penalty calculation failed, falling back to TypeScript", { error: err });
+                logger.warn("gRPC penalty calculation failed, falling back to TypeScript", { error: err });
             }
         }
 
@@ -38,7 +36,7 @@ export class PenaltyEngine {
         return final;
     }
 
-    private applyRust(raw: number, allAlerts: any[], mapData: Record<string, any>, qaData: any, cognitive: any): number {
+    private async applyRust(raw: number, allAlerts: any[], mapData: Record<string, any>, qaData: any, cognitive: any): Promise<number> {
         const matrix = (qaData?.matrix || []).map((item: any) => {
             const m = item.advanced_metrics || {};
             return {
@@ -67,16 +65,16 @@ export class PenaltyEngine {
             cognitive: cognitive ? { status: cognitive.status } : null
         };
 
-        const tmpFile = path.join(process.cwd(), `tmp_penalty_${Date.now()}.json`);
-        fs.writeFileSync(tmpFile, JSON.stringify(request));
+        if (!this.hubManager) return raw; // Should not happen given apply() check
 
         try {
-            const output = cp.execSync(`${PenaltyEngine.BINARY_PATH} penalty ${tmpFile}`, { encoding: 'utf8' });
-            const response = JSON.parse(output);
-            logger.info(`🏆 [HealthCalculus] (Rust) Raw: ${raw.toFixed(3)} | Ceiling: ${response.ceiling} | Drain: ${response.total_drain} | Final: ${response.final_score}`);
+            const response = await this.hubManager.penalty(request);
+            if (!response) return raw;
+            logger.info(`🏆 [HealthCalculus] (gRPC) Raw: ${raw.toFixed(3)} | Ceiling: ${response.ceiling} | Drain: ${response.total_drain} | Final: ${response.final_score}`);
             return response.final_score;
-        } finally {
-            if (fs.existsSync(tmpFile)) fs.unlinkSync(tmpFile);
+        } catch (error) {
+            logger.error(`❌ [PenaltyEngine] gRPC call failed:`, error);
+            return raw;
         }
     }
 

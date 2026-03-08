@@ -14,9 +14,9 @@ export class MantraPersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = this.findPatterns([".dart"], [
+        const results = await this.findPatterns([".dart"], [
             { regex: /setState\(/, issue: "Acoplamento: Uso excessivo de setState. Considere um State Manager (Bloc/Provider).", severity: "medium" },
             { regex: /catch\s*\(.*?\)\s*\{\s*\}/, issue: "Anti-padrão: Captura de exceção vazia detectada.", severity: "critical" }
         ]);
@@ -48,3 +48,4 @@ export class MantraPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Integridade Estrutural e Pureza de Código Flutter.`;
     }
 }
+

@@ -26,7 +26,7 @@ export class VaultPersona extends BaseActivePersona {
             { regex: 'Math\\.round\\(.*(?:price|amount|total)', issue: 'Gambiarra: Math.round para dinheiro no Bun.', severity: 'medium' },
         ];
 
-        const results = this.findPatterns(['.ts', '.tsx'], auditRules as any);
+        const results = await this.findPatterns(['.ts', '.tsx'], auditRules as any);
         this.endMetrics(results.length);
         return results;
     }
@@ -44,3 +44,4 @@ export class VaultPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, mestre em integridade financeira Bun.`;
     }
 }
+

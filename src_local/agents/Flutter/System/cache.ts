@@ -14,7 +14,7 @@ export class CachePersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /HydratedBloc/, issue: "Persistência de Estado: Verifique se os dados persistidos pelo HydratedBloc são limpos em logout.", severity: "medium" },
@@ -22,7 +22,7 @@ export class CachePersona extends BaseActivePersona {
             { regex: /DefaultCacheManager\(\)/, issue: "Configuração Padrão: Considere uma configuração customizada para gerenciar melhor o stale storage.", severity: "low" },
             { regex: /BaseCacheManager/, issue: "Abstração de Cache: Verifique se a implementação lida com erros de leitura/escrita de forma resiliente.", severity: "medium" }
         ];
-        const results = this.findPatterns([".dart"], rules);
+        const results = await this.findPatterns([".dart"], rules);
 
         // Advanced Logic: Disk Thrashing Prevention
         if (results.length > 5) {
@@ -58,3 +58,4 @@ export class CachePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Otimização de Performance Flutter. Sua missão é garantir que o app seja rápido e o disco esteja limpo.`;
     }
 }
+

@@ -14,7 +14,7 @@ export class NexusPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /import src_local\..*/, issue: "Acoplamento Interno: Verifique se as dependências entre módulos seguem o padrão PhD de modularidade.", severity: "low" },
@@ -22,7 +22,7 @@ export class NexusPersona extends BaseActivePersona {
             { regex: /injector\.get\(.*\)/, issue: "Service Locator: Verifique se o uso de injeção via 'injector' (dependency_injector) está isolado.", severity: "medium" },
             { regex: /circular import/, issue: "Dependência Circular: Verifique se o design permite desacoplamento para evitar travamentos de importação.", severity: "high" }
         ];
-        const results = this.findPatterns([".py"], rules);
+        const results = await this.findPatterns([".py"], rules);
 
         // Advanced Logic: Nexus Integration Audit
         if (results.some(r => r.severity === "critical")) {
@@ -58,3 +58,4 @@ export class NexusPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Orquestração de Sistemas Python. Sua missão é garantir a modularidade e o desacoplamento total.`;
     }
 }
+

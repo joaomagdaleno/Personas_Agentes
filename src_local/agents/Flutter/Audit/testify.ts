@@ -31,7 +31,7 @@ export class TestifyPersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /testWidgets?\s*\(/, issue: "Teste Vazio: Teste Flutter/Dart sem corpo ou framework corrompido.", severity: "critical" },
@@ -41,7 +41,7 @@ export class TestifyPersona extends BaseActivePersona {
             { regex: /Future\.delayed\(/, issue: "Anti-padrão: Uso de delay forçado em teste; prefira pump() ou runAsync().", severity: "high" },
             { regex: /verify\(\s*[^\)]+\s*\)(\.called\(1\))?/, issue: "Verificação Fraca: Especifique se a verificação do Mocktail usou os argumentos corretos.", severity: "medium" }
         ];
-        const results = this.findPatterns([".dart"], rules);
+        const results = await this.findPatterns([".dart"], rules);
 
         // Structural Boost: Integrity Engine
         const mockIssues = MockIntegrityEngine.analyze(this.projectRoot || "");
@@ -95,3 +95,4 @@ export class TestifyPersona extends BaseActivePersona {
     public analyze_test_quality_matrix(): any { return {}; }
     public analyze_test_pyramid(): any { return {}; }
 }
+

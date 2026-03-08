@@ -14,9 +14,9 @@ export class ScopePersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = this.findPatterns([".kt"], [
+        const results = await this.findPatterns([".kt"], [
             { regex: /\/\/\s*TODO[:\s]/, issue: "Dívida: TODO pendente no código Kotlin.", severity: "medium" },
             { regex: /\/\/\s*FIXME[:\s]/, issue: "Dívida Crítica: FIXME detectado na lógica Kotlin.", severity: "high" },
             { regex: /\/\/\s*HACK[:\s]/, issue: "Gambiarra: HACK detectado no projeto Kotlin.", severity: "high" },
@@ -52,3 +52,4 @@ export class ScopePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Estratégia de Produto e Engenharia Kotlin.`;
     }
 }
+

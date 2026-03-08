@@ -14,7 +14,7 @@ export class ScalePersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /\n{400,}/, issue: "God File: Arquivo Flutter excessivamente grande; risco de entropia.", severity: "high" },
@@ -24,7 +24,7 @@ export class ScalePersona extends BaseActivePersona {
             { regex: /class\s+.*\{[\s\S]*class\s+/, issue: "Multi-Class File: Múltiplas classes em um arquivo dificultam a manutenção.", severity: "medium" },
             { regex: /\w+\(.*?,\s*.*?,\s*.*?,\s*.*?,\s*.*?,\s*.*?,\s*.*?,\s*.*?,\s*.*?,\s*.*?\)/, issue: "Massive Constructor: Construtor com mais de 10 parâmetros detectado.", severity: "medium" }
         ];
-        const results = this.findPatterns([".dart"], rules);
+        const results = await this.findPatterns([".dart"], rules);
         this.endMetrics(results.length);
         return results;
     }
@@ -52,3 +52,4 @@ export class ScalePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Arquitetura de Sistemas e Escalabilidade Flutter.`;
     }
 }
+
