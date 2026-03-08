@@ -289,6 +289,7 @@ pub fn find_patterns(request: PatternRequest) -> Vec<crate::audit::AuditFinding>
                     return None;
                 }
 
+                let (evidence, match_count, line_number) = extract_evidence(&content, &rule.regex);
                 Some(crate::audit::AuditFinding {
                     file: rel_path.clone(),
                     agent: persona.agent.clone(),
@@ -297,7 +298,9 @@ pub fn find_patterns(request: PatternRequest) -> Vec<crate::audit::AuditFinding>
                     issue: rule.issue.clone(),
                     severity: rule.severity.clone(),
                     stack: persona.stack.clone(),
-                    evidence: extract_evidence(&content, &rule.regex, rule_idx),
+                    evidence,
+                    match_count,
+                    line_number,
                 })
             }).collect();
             
@@ -324,14 +327,18 @@ fn resolve_rule_index(global_idx: usize, persona_rules: &[crate::audit::PersonaR
     None
 }
 
-fn extract_evidence(content: &str, pattern: &str, _match_idx: usize) -> String {
+fn extract_evidence(content: &str, pattern: &str) -> (String, usize, Option<usize>) {
     if let Ok(re) = regex::Regex::new(pattern) {
-        if let Some(m) = re.find(content) {
-            let s = m.as_str();
-            return s[..s.len().min(100)].to_string();
+        let matches: Vec<_> = re.find_iter(content).collect();
+        let count = matches.len();
+        if let Some(first) = matches.first() {
+            let line = content[..first.start()].matches('\n').count() + 1;
+            let s = first.as_str();
+            let evidence = s[..s.len().min(100)].to_string();
+            return (evidence, count, Some(line));
         }
     }
-    "pattern_match".to_string()
+    ("pattern_match".to_string(), 0, None)
 }
 
 fn detect_obfuscation(content: &str, file_path: &str) -> Vec<crate::audit::AuditFinding> {
@@ -355,6 +362,8 @@ fn detect_obfuscation(content: &str, file_path: &str) -> Vec<crate::audit::Audit
                     severity: "HIGH".to_string(),
                     stack: "Security".to_string(),
                     evidence: matched.chars().take(80).collect(),
+                    match_count: 1,
+                    line_number: Some(content[..cap.get(0).unwrap().start()].matches('\n').count() + 1),
                 });
             }
         }

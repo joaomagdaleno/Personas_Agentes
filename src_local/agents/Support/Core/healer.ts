@@ -1,7 +1,7 @@
 import winston from 'winston';
 import * as fs from 'fs';
 import { Path } from "../../../core/path_utils.ts";
-import { BaseActivePersona } from "../../base_active_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import { CognitiveEngine } from "../../../utils/cognitive_engine.ts";
 import { Orchestrator } from "../../../core/orchestrator.ts";
 import { ObfuscationCleanerEngine } from "../Security/obfuscation_cleaner_engine.ts";
@@ -28,13 +28,18 @@ export class HealerPersona extends BaseActivePersona {
         this.patcher = new PatchManager(projectRoot || process.cwd());
     }
 
-    async performAudit(): Promise<any[]> { return []; }
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [],
+            rules: []
+        };
+    }
 
     getSystemPrompt(): string {
         return "Você é o Dr. Healer, focado em correções de código seguras e minimalistas.";
     }
 
-    async reasonAboutObjective(objective: string, filePath: string, content: string): Promise<string | null> {
+    reasonAboutObjective(objective: string, filePath: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         return null;
     }
 

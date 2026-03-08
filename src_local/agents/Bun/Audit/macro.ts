@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "Bun_Macro" });
@@ -16,39 +16,25 @@ export class MacroPersona extends BaseActivePersona {
         this.stack = "Bun";
     }
 
-    async performAudit(): Promise<any[]> {
-        const start = Date.now();
-        logger.info(`[${this.name}] Analisando Macros Bun...`);
-
-        const auditRules = [
-            { regex: "with\\s*\\{\\s*type:\\s*['\"]macro['\"]", issue: 'Macro Bun: Import com { type: "macro" } — código executado em build-time.', severity: 'medium' },
-            { regex: 'Bun\\.build\\([^)]*\\)(?![\\s\\S]{0,100}sourcemap)', issue: 'Build: Bun.build() sem sourcemap — dificulta debugging.', severity: 'medium' },
-            { regex: 'Bun\\.Transpiler', issue: 'Transpiler: Uso de Bun.Transpiler — verifique se macros são determinísticos.', severity: 'low' },
-            { regex: 'import\\.meta\\.require', issue: 'Bun-Only: import.meta.require é exclusivo Bun — não portável.', severity: 'medium' },
-        ];
-
-        const results: any[] = [];
-        for (const rule of auditRules) {
-            const regex = new RegExp(rule.regex, 'g');
-            for (const [filePath, content] of Object.entries(this.contextData)) {
-                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx')) {
-                    for (const match of (content as string).matchAll(regex)) {
-                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0].substring(0, 60), persona: this.name });
-                    }
-                }
-            }
-        }
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.ts', '.tsx'],
+            rules: [
+                { regex: /with\s*\{\s*type:\s*['"]macro['"]/, issue: 'Macro Bun: Import com { type: "macro" } — código executado em build-time.', severity: 'medium' },
+                { regex: /Bun\.build\([^)]*\)(?![\s\S]{0,100}sourcemap)/, issue: 'Build: Bun.build() sem sourcemap — dificulta debugging.', severity: 'medium' },
+                { regex: /Bun\.Transpiler/, issue: 'Transpiler: Uso de Bun.Transpiler — verifique se macros são determinísticos.', severity: 'low' },
+                { regex: /import\.meta\.require/, issue: 'Bun-Only: import.meta.require é exclusivo Bun — não portável.', severity: 'medium' },
+            ]
+        };
     }
 
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         if (/type:\s*['"]macro['"]/.test(content)) {
             return {
-                file, severity: "MEDIUM", persona: this.name,
-                issue: `Macro Risk: O objetivo '${objective}' exige previsibilidade. Em '${file}', macros Bun executam código em build-time — verifique determinismo.`
+                file, severity: "MEDIUM",
+                issue: `Macro Risk: O objetivo '${objective}' exige previsibilidade. Em '${file}', macros Bun executam código em build-time — verifique determinismo.`,
+                context: "Bun macro detected"
             };
         }
         return null;

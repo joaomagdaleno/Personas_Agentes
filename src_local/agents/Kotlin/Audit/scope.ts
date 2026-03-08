@@ -14,18 +14,18 @@ export class ScopePersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
-        this.startMetrics();
-        const results = this.findPatterns([".kt"], [
-            { regex: /\/\/\s*TODO[:\s]/, issue: "Dívida: TODO pendente no código Kotlin.", severity: "medium" },
-            { regex: /\/\/\s*FIXME[:\s]/, issue: "Dívida Crítica: FIXME detectado na lógica Kotlin.", severity: "high" },
-            { regex: /\/\/\s*HACK[:\s]/, issue: "Gambiarra: HACK detectado no projeto Kotlin.", severity: "high" },
-            { regex: /\/\/\s*XXX[:\s]/, issue: "Alerta: Verifique ponto crítico XXX no código Kotlin.", severity: "medium" },
-            { regex: /TODO\(|throw\s+NotImplementedError/, issue: "Incompleto: Funcionalidade Kotlin declarada com placeholder.", severity: "high" },
-            { regex: /@Suppress/, issue: "Omissão: Supressão manual de avisos; verifique dívida técnica Kotlin.", severity: "low" }
-        ]);
-        this.endMetrics(results.length);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".kt"],
+            rules: [
+                { regex: /\/\/\s*TODO[:\s]/, issue: "Dívida: TODO pendente no código Kotlin.", severity: "medium" },
+                { regex: /\/\/\s*FIXME[:\s]/, issue: "Dívida Crítica: FIXME detectado na lógica Kotlin.", severity: "high" },
+                { regex: /\/\/\s*HACK[:\s]/, issue: "Gambiarra: HACK detectado no projeto Kotlin.", severity: "high" },
+                { regex: /\/\/\s*XXX[:\s]/, issue: "Alerta: Verifique ponto crítico XXX no código Kotlin.", severity: "medium" },
+                { regex: /TODO\(|throw\s+NotImplementedError/, issue: "Incompleto: Funcionalidade Kotlin declarada com placeholder.", severity: "high" },
+                { regex: /@Suppress/, issue: "Omissão: Supressão manual de avisos; verifique dívida técnica Kotlin.", severity: "low" }
+            ]
+        };
     }
 
     public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {

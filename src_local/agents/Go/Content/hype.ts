@@ -33,23 +33,27 @@ export class HypePersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /internal/, issue: "Invisible Logic: Uso extensivo de pacotes 'internal/' garante privacidade mas oculta o design para usuários externos.", severity: "low" },
-            { regex: /deprecated/i, issue: "Stale Logic: Verifique se o código depreciado possui sinalização clara para migração.", severity: "medium" },
-            { regex: /OpenSource/i, issue: "Community Ready: Verifique se o projeto possui licença e guia de contribuição visíveis.", severity: "low" },
-            { regex: /v[0-9]\.[0-9]\.[0-9]/, issue: "Semantic Versioning: Garanta que as tags de versão git estão alinhadas com o estado do código.", severity: "low" },
-            { regex: /awesome-go/i, issue: "Registry Potential: Verifique se as bibliotecas criadas podem ser submetidas ao Awesome Go.", severity: "low" },
-            { regex: /CLI/i, issue: "User Interface: Verifique se a CLI Go possui comandos de 'help' e 'version' intuitivos.", severity: "medium" }
-        ];
-        const results = this.findPatterns([".go", ".md"], rules);
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go", ".md"],
+            rules: [
+                { regex: /internal/, issue: "Invisible Logic: Uso extensivo de pacotes 'internal/' garante privacidade mas oculta o design para usuários externos.", severity: "low" },
+                { regex: /deprecated/i, issue: "Stale Logic: Verifique se o código depreciado possui sinalização clara para migração.", severity: "medium" },
+                { regex: /OpenSource/i, issue: "Community Ready: Verifique se o projeto possui licença e guia de contribuição visíveis.", severity: "low" },
+                { regex: /v[0-9]\.[0-9]\.[0-9]/, issue: "Semantic Versioning: Garanta que as tags de versão git estão alinhadas com o estado do código.", severity: "low" },
+                { regex: /awesome-go/i, issue: "Registry Potential: Verifique se as bibliotecas criadas podem ser submetidas ao Awesome Go.", severity: "low" },
+                { regex: /CLI/i, issue: "User Interface: Verifique se a CLI Go possui comandos de 'help' e 'version' intuitivos.", severity: "medium" }
+            ]
+        };
+    }
 
-        // Advanced Logic Density
+    public override async performAudit(): Promise<AuditFinding[]> {
+        const results = await super.performAudit();
         const hypeFindings = GoHypeEngine.audit(this.projectRoot || "");
-        hypeFindings.forEach(f => results.push({ file: "ENGAGEMENT_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "low", stack: this.stack }));
-
-        this.endMetrics(results.length);
+        hypeFindings.forEach(f => results.push({
+            file: "ENGAGEMENT_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "low", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
         return results;
     }
 

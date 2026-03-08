@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "TS_Metric" });
@@ -32,67 +32,32 @@ export class MetricPersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    async performAudit(): Promise<any[]> {
-        const start = Date.now();
-        logger.info(`[${this.name}] Analisando Observabilidade TypeScript...`);
-
-        const auditRules = this.getMetricRules();
-        const results: any[] = [];
-
-        for (const rule of auditRules) {
-            this.auditWithRule(rule, results);
-        }
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.ts', '.tsx'],
+            rules: [
+                { regex: /console\.log\(/, issue: 'Cegueira: console.log em produção — use logger estruturado.', severity: 'high' },
+                { regex: /console\.error\(/, issue: 'Telemetria Fraca: console.error sem contexto estruturado.', severity: 'medium' },
+                { regex: /console\.warn\(/, issue: 'Telemetria Fraca: console.warn sem nível de severidade.', severity: 'low' },
+                { regex: /catch\s*\([^)]*\)\s*\{\s*\}/, issue: 'Cegueira Total: catch vazio engole erros silenciosamente.', severity: 'critical' },
+                { regex: /catch\s*\([^)]*\)\s*\{[^}]*console\.log/, issue: 'Telemetria Informal: Erro logado via console em vez de logger.', severity: 'medium' },
+            ]
+        };
     }
 
-    private getMetricRules() {
-        return [
-            { regex: 'console\\.log\\(', issue: 'Cegueira: console.log em produção — use logger estruturado.', severity: 'high' },
-            { regex: 'console\\.error\\(', issue: 'Telemetria Fraca: console.error sem contexto estruturado.', severity: 'medium' },
-            { regex: 'console\\.warn\\(', issue: 'Telemetria Fraca: console.warn sem nível de severidade.', severity: 'low' },
-            { regex: 'catch\\s*\\([^)]*\\)\\s*\\{\\s*\\}', issue: 'Cegueira Total: catch vazio engole erros silenciosamente.', severity: 'critical' },
-            { regex: 'catch\\s*\\([^)]*\\)\\s*\\{[^}]*console\\.log', issue: 'Telemetria Informal: Erro logado via console em vez de logger.', severity: 'medium' },
-        ];
-    }
-
-    private auditWithRule(rule: any, results: any[]) {
-        const regex = new RegExp(rule.regex, 'g');
-        for (const [filePath, content] of Object.entries(this.contextData)) {
-            if (this.shouldAuditFile(filePath)) {
-                this.scanContent(filePath, content as string, regex, rule, results);
-            }
-        }
-    }
-
-    private shouldAuditFile(filePath: string): boolean {
-        return filePath.endsWith('.ts') || filePath.endsWith('.tsx');
-    }
-
-    private scanContent(filePath: string, content: string, regex: RegExp, rule: any, results: any[]) {
-        for (const match of content.matchAll(regex)) {
-            results.push({
-                file: filePath,
-                issue: rule.issue,
-                severity: rule.severity,
-                evidence: match[0],
-                persona: this.name
-            });
-        }
-    }
-
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         if (/console\.(log|error|warn)\(/.test(content)) {
             return {
-                file, severity: "HIGH", persona: this.name,
-                issue: `Cegueira Analítica: O objetivo '${objective}' exige observabilidade total. Em '${file}', o uso de console.* impede a gestão centralizada da 'Orquestração de Inteligência Artificial'.`
+                file, severity: "HIGH",
+                issue: `Cegueira Analítica: O objetivo '${objective}' exige observabilidade total. Em '${file}', o uso de console.* impede a gestão centralizada da 'Orquestração de Inteligência Artificial'.`,
+                context: "console usage detected"
             };
         }
         return {
-            file, severity: "INFO", persona: this.name,
-            issue: `PhD Observability: Analisando maturidade de telemetria para ${objective}. Focando em logs estruturados e rastreabilidade soberana.`
+            file, severity: "INFO",
+            issue: `PhD Observability: Analisando maturidade de telemetria para ${objective}. Focando em logs estruturados e rastreabilidade soberana.`,
+            context: "analyzing observability"
         };
     }
 

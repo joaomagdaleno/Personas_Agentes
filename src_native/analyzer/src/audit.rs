@@ -42,6 +42,8 @@ pub struct AuditFinding {
     pub severity: String,
     pub stack: String,
     pub evidence: String,
+    pub match_count: usize,
+    pub line_number: Option<usize>,
 }
 
 /// RESOLVE RULE INDEX:
@@ -58,42 +60,32 @@ fn resolve_rule_index(global_idx: usize, persona_rules: &[PersonaRuleSet]) -> Op
     None
 }
 
-fn extract_evidence(content: &str, pattern: &str, _match_idx: usize) -> String {
-    // For now, just a simple capture or substring.
-    // RegexSet doesn't give us the match location directly, 
-    // we need to re-run the specific regex for the evidence if we want exact location.
-    // But for performance, we might just use a placeholder or a quick scan.
-    
+pub fn extract_evidence(content: &str, pattern: &str) -> (String, usize, Option<usize>) {
     if let Ok(re) = Regex::new(pattern) {
-        if let Some(m) = re.find(content) {
-            let s = m.as_str();
-            return s[..s.len().min(100)].to_string();
+        let matches: Vec<_> = re.find_iter(content).collect();
+        let count = matches.len();
+        if let Some(first) = matches.first() {
+            let line = content[..first.start()].matches('\n').count() + 1;
+            let s = first.as_str();
+            let evidence = s[..s.len().min(100)].to_string();
+            return (evidence, count, Some(line));
         }
     }
-    "pattern_match".to_string()
+    ("pattern_match".to_string(), 0, None)
 }
 
 fn detect_obfuscation(content: &str, file_path: &str) -> Vec<AuditFinding> {
     let mut findings = Vec::new();
     let dangerous = ["eval", "process.env", "require", "exec", "execSync", "spawn", "Buffer.from", "fs.readFile", "document.cookie", "localStorage", "window.crypto", "__dirname", "setTimeout", "setInterval", "Function"];
     
-    // Look for patterns like 'e' + 'v' + 'a' + 'l' or "ev" + "al"
-    // A simple heuristic: check if the file contains the keyword but NOT as a whole word, 
-    // OR look for string concatenation operations that might form these words.
-    // For a highly performant native replacement, we look for concatenation syntax close to each other.
-    
-    // Simplification for Rust regex: 
-    // Look for quotes separated by plus signs: "..." + "..." or '...' + '...'
     let concat_re = Regex::new(r#"(["'][^"']*["']\s*\+\s*)+["'][^"']*["']"#).unwrap();
     
     for cap in concat_re.captures_iter(content) {
         let matched = cap[0].to_string();
-        // Reconstruct the string
         let reconstructed = matched.replace("'", "").replace("\"", "").replace(" ", "").replace("+", "");
         
         for kw in dangerous.iter() {
             if reconstructed.contains(kw) && !matched.contains(kw) {
-                // It contains the keyword when reconstructed, but not in the raw match (meaning it was fragmented!)
                 findings.push(AuditFinding {
                     file: file_path.to_string(),
                     agent: "Security Guard".to_string(),
@@ -103,6 +95,8 @@ fn detect_obfuscation(content: &str, file_path: &str) -> Vec<AuditFinding> {
                     severity: "HIGH".to_string(),
                     stack: "Security".to_string(),
                     evidence: matched.chars().take(80).collect(),
+                    match_count: 1,
+                    line_number: Some(content[..cap.get(0).unwrap().start()].matches('\n').count() + 1),
                 });
             }
         }
@@ -147,6 +141,7 @@ pub fn bulk_audit(request: BulkAuditRequest) -> Vec<AuditFinding> {
                     return None;
                 }
 
+                let (evidence, match_count, line_number) = extract_evidence(&file.content, &rule.regex);
                 Some(AuditFinding {
                     file: file.path.clone(),
                     agent: persona.agent.clone(),
@@ -155,7 +150,9 @@ pub fn bulk_audit(request: BulkAuditRequest) -> Vec<AuditFinding> {
                     issue: rule.issue.clone(),
                     severity: rule.severity.clone(),
                     stack: persona.stack.clone(),
-                    evidence: extract_evidence(&file.content, &rule.regex, rule_idx),
+                    evidence,
+                    match_count,
+                    line_number,
                 })
             }).collect();
             

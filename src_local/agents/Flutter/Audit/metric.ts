@@ -14,24 +14,17 @@ export class MetricPersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /print\(/, issue: "Cegueira: print() em produção — use logger estruturado PhD.", severity: "high" },
-            { regex: /catch\s*\(.*\)\s*\{\s*\}/, issue: "Cegueira Total: Bloco catch vazio engole erros silenciosamente.", severity: "critical" },
-            { regex: /catch\s*\(.*\)\s*\{\s*print\(/, issue: "Telemetria Informal: Erro logado via print no bloco catch.", severity: "medium" },
-            { regex: /FirebaseAnalytics\.instance/, issue: "Acoplamento: Instrumentação direta de analytics sem camada de abstração.", severity: "low" },
-            { regex: /Stopwatch\(\)/, issue: "Profiling: Medição manual de performance via Stopwatch detectada.", severity: "low" }
-        ];
-        const results = this.findPatterns([".dart"], rules);
-
-        // Advanced Logic: Active Healing Trigger for missing telemetry
-        if (results.length === 0) {
-            this.reasonAboutObjective("Telemetry Verification", "Global", "No analytics found in codebase.");
-        }
-
-        this.endMetrics(results.length);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".dart"],
+            rules: [
+                { regex: /print\(/, issue: "Cegueira: print() em produção — use logger estruturado PhD.", severity: "high" },
+                { regex: /catch\s*\(.*\)\s*\{\s*\}/, issue: "Cegueira Total: Bloco catch vazio engole erros silenciosamente.", severity: "critical" },
+                { regex: /catch\s*\(.*\)\s*\{\s*print\(/, issue: "Telemetria Informal: Erro logado via print no bloco catch.", severity: "medium" },
+                { regex: /FirebaseAnalytics\.instance/, issue: "Acoplamento: Instrumentação direta de analytics sem camada de abstração.", severity: "low" },
+                { regex: /Stopwatch\(\)/, issue: "Profiling: Medição manual de performance via Stopwatch detectada.", severity: "low" }
+            ]
+        };
     }
 
     public override performActiveHealing(blindSpots: string[]): void {

@@ -36,28 +36,27 @@ export class TestifyPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /func\s+Test.*\{\s*}/, issue: "Empty Test: Teste sem lógica ou asserções detectado.", severity: "critical" },
-            { regex: /t\.Skip\(\)/, issue: "Suppressed Test: Verifique se o skip é temporário para evitar buracos na cobertura.", severity: "medium" },
-            { regex: /time\.Sleep/, issue: "Flaky Test Risk: O uso de time.Sleep em testes Go indica fragilidade; use canais ou sincronização.", severity: "high" },
-            { regex: /reflect\.DeepEqual/, issue: "Performance: Prefira google/go-cmp para comparações complexas e mais legíveis.", severity: "low" },
-            { regex: /func\s+Test.*t\.Parallel\(\)/, issue: "Performance: Teste não paralelizado detectado; verifique se pode usar t.Parallel().", severity: "low" },
-            { regex: /assert\.Equal\(t,\s*nil,\s*err\)/, issue: "Generic Assert: Prefira assert.NoError(t, err) para mensagens de erro mais claras.", severity: "low" }
-        ];
-        const results = this.findPatterns([".go", "_test.go"], rules);
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go", "_test.go"],
+            rules: [
+                { regex: /func\s+Test.*\{\s*}/, issue: "Empty Test: Teste sem lógica ou asserções detectado.", severity: "critical" },
+                { regex: /t\.Skip\(\)/, issue: "Suppressed Test: Verifique se o skip é temporário para evitar buracos na cobertura.", severity: "medium" },
+                { regex: /time\.Sleep/, issue: "Flaky Test Risk: O uso de time.Sleep em testes Go indica fragilidade; use canais ou sincronização.", severity: "high" },
+                { regex: /reflect\.DeepEqual/, issue: "Performance: Prefira google/go-cmp para comparações complexas e mais legíveis.", severity: "low" },
+                { regex: /func\s+Test.*t\.Parallel\(\)/, issue: "Performance: Teste não paralelizado detectado; verifique se pode usar t.Parallel().", severity: "low" },
+                { regex: /assert\.Equal\(t,\s*nil,\s*err\)/, issue: "Generic Assert: Prefira assert.NoError(t, err) para mensagens de erro mais claras.", severity: "low" }
+            ]
+        };
+    }
 
-        // Advanced Logic Density: Forensic Verification
+    public override async performAudit(): Promise<AuditFinding[]> {
+        const results = await super.performAudit();
         const integrityIssues = GoTestIntegrityEngine.analyze(this.projectRoot || "");
-        integrityIssues.forEach(i => results.push({ file: "TEST_SUITE", agent: this.name, role: this.role, emoji: this.emoji, issue: i, severity: "medium", stack: this.stack }));
-
-        // Structural Complexity Boost
-        if (results.length > 5) {
-            this.performActiveHealing(["GLOBAL_TEST_COVERAGE"]);
-        }
-
-        this.endMetrics(results.length);
+        integrityIssues.forEach(i => results.push({
+            file: "TEST_SUITE", agent: this.name, role: this.role, emoji: this.emoji, issue: i, severity: "medium", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
         return results;
     }
 

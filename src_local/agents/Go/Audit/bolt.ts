@@ -34,22 +34,26 @@ export class BoltPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /for\s*\{\s*}/, issue: "Busy Wait: Loop infinito sem select detectado.", severity: "critical" },
-            { regex: /sync\.Mutex\.Lock\(\)/, issue: "Blocking: Mutex Lock sem defer Unlock() imediato.", severity: "critical" },
-            { regex: /make\(chan.*,\s*0\)/, issue: "Unbuffered Channel: Risco de bloqueio se não houver receptor ativo.", severity: "high" },
-            { regex: /go\s+func\(\)\s*\{/, issue: "Anonymous Goroutine: Falta de rastreabilidade ou tratamento de erro.", severity: "medium" },
-            { regex: /time\.After\(/, issue: "Resource Leak: time.After em loops causa vazamento de timers.", severity: "high" }
-        ];
-        const results = this.findPatterns([".go"], rules);
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go"],
+            rules: [
+                { regex: /for\s*\{\s*}/, issue: "Busy Wait: Loop infinito sem select detectado.", severity: "critical" },
+                { regex: /sync\.Mutex\.Lock\(\)/, issue: "Blocking: Mutex Lock sem defer Unlock() imediato.", severity: "critical" },
+                { regex: /make\(chan.*,\s*0\)/, issue: "Unbuffered Channel: Risco de bloqueio se não houver receptor ativo.", severity: "high" },
+                { regex: /go\s+func\(\)\s*\{/, issue: "Anonymous Goroutine: Falta de rastreabilidade ou tratamento de erro.", severity: "medium" },
+                { regex: /time\.After\(/, issue: "Resource Leak: time.After em loops causa vazamento de timers.", severity: "high" }
+            ]
+        };
+    }
 
-        // Advanced Logic Density
+    public override async performAudit(): Promise<AuditFinding[]> {
+        const results = await super.performAudit();
         const runtimeAnomalies = GoRuntimeAnalyzer.inspect(this.projectRoot || "");
-        runtimeAnomalies.forEach(a => results.push({ file: "RUNTIME", agent: this.name, role: this.role, emoji: this.emoji, issue: a, severity: "medium", stack: this.stack }));
-
-        this.endMetrics(results.length);
+        runtimeAnomalies.forEach(a => results.push({
+            file: "RUNTIME", agent: this.name, role: this.role, emoji: this.emoji, issue: a, severity: "medium", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
         return results;
     }
 

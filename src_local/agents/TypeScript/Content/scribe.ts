@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "TS_Scribe" });
@@ -15,61 +15,31 @@ export class ScribePersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    async performAudit(): Promise<any[]> {
-        const start = Date.now();
-        logger.info(`[${this.name}] Analisando Documentation TypeScript...`);
-
-        const results: any[] = [];
-        for (const [filePath, content] of Object.entries(this.contextData)) {
-            this.auditFile(filePath, content as string, results);
-        }
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.ts', '.tsx'],
+            rules: [
+                { regex: /^export\s+(?:async\s+)?(?:function|class|const|interface|type|enum)\s+\w+/m, issue: 'Amnésia Técnica: Exportação sem JSDoc detectada.', severity: 'high' },
+            ]
+        };
     }
 
-    private auditFile(filePath: string, content: string, results: any[]) {
-        if (!this.isAuditable(filePath)) return;
-
-        const exportMatches = content.match(/export\s+(?:async\s+)?(?:function|class|const|interface|type|enum)\s+\w+/g);
-        const jsdocCount = (content.match(/\/\*\*[\s\S]*?\*\//g) || []).length;
-
-        if (this.isMissingDocumentation(exportMatches, jsdocCount)) {
-            results.push(this.createFinding(filePath, exportMatches!.length, jsdocCount));
-        }
-    }
-
-    private isAuditable(filePath: string): boolean {
-        const isTS = filePath.endsWith('.ts') || filePath.endsWith('.tsx');
-        const isTest = filePath.endsWith('.test.ts') || filePath.endsWith('.spec.ts');
-        return isTS && !isTest;
-    }
-
-    private isMissingDocumentation(exportMatches: RegExpMatchArray | null, jsdocCount: number): boolean {
-        return !!exportMatches && exportMatches.length > 0 && (jsdocCount === 0 || exportMatches.length > jsdocCount * 2);
-    }
-
-    private createFinding(file: string, exports: number, jsdocs: number) {
-        if (jsdocs === 0) {
-            return { file, issue: `Amnésia Técnica: ${exports} exportações sem nenhum JSDoc — caixa preta total.`, severity: 'high', persona: this.name };
-        }
-        return { file, issue: `Documentação Parcial: ${exports} exportações mas apenas ${jsdocs} blocos JSDoc.`, severity: 'medium', persona: this.name };
-    }
-
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         const exports = (content.match(/export\s+(?:async\s+)?(?:function|class)\s+\w+/g) || []).length;
         const docs = (content.match(/\/\*\*[\s\S]*?\*\//g) || []).length;
 
         if (exports > 0 && docs === 0) {
             return {
-                file, severity: "HIGH", persona: this.name,
-                issue: `Amnésia Técnica: O objetivo '${objective}' exige clareza. Em '${file}', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.`
+                file, severity: "HIGH",
+                issue: `Amnésia Técnica: O objetivo '${objective}' exige clareza. Em '${file}', a falta de documentação torna a 'Orquestração de Inteligência Artificial' um sistema de caixa preta.`,
+                context: "Exports without JSDoc detected"
             };
         }
         return {
-            file, severity: "INFO", persona: this.name,
-            issue: `PhD Scribe: Analisando explicabilidade para ${objective}.`
+            file, severity: "INFO",
+            issue: `PhD Scribe: Analisando explicabilidade para ${objective}.`,
+            context: "analyzing explicability"
         };
     }
 

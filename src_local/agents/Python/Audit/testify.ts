@@ -31,23 +31,27 @@ export class TestifyPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /def test_[^\(]*\(\s*\):/, issue: "Teste Vazio: Teste Python declarado sem corpo ou asserção.", severity: "critical" },
-            { regex: /pytest\.skip\(|unittest\.skip\(/, issue: "Teste Desativado: Teste pulado intencionalmente; cobertura incompleta.", severity: "high" },
-            { regex: /assert\s+True|self\.assertTrue\(True\)/, issue: "Asserção Fraca: Teste sem asserção real ou 'assert True'.", severity: "high" },
-            { regex: /time\.sleep\(/, issue: "Teste Frágil: Uso de time.sleep() detectado; risco de flaky tests.", severity: "high" },
-            { regex: /pytest\.mark\.skipif\(/, issue: "Skipped Logic: Teste condicionalmente desativado; verifique se a condição ainda é válida.", severity: "medium" },
-            { regex: /print\(/, issue: "Verbose Testing: Verifique se o log no teste é necessário ou se falhou silenciosamente.", severity: "low" }
-        ];
-        const results = this.findPatterns([".py"], rules);
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".py"],
+            rules: [
+                { regex: /def test_[^\(]*\(\s*\):/, issue: "Teste Vazio: Teste Python declarado sem corpo ou asserção.", severity: "critical" },
+                { regex: /pytest\.skip\(|unittest\.skip\(/, issue: "Teste Desativado: Teste pulado intencionalmente; cobertura incompleta.", severity: "high" },
+                { regex: /assert\s+True|self\.assertTrue\(True\)/, issue: "Asserção Fraca: Teste sem asserção real ou 'assert True'.", severity: "high" },
+                { regex: /time\.sleep\(/, issue: "Teste Frágil: Uso de time.sleep() detectado; risco de flaky tests.", severity: "high" },
+                { regex: /pytest\.mark\.skipif\(/, issue: "Skipped Logic: Teste condicionalmente desativado; verifique se a condição ainda é válida.", severity: "medium" },
+                { regex: /print\(/, issue: "Verbose Testing: Verifique se o log no teste é necessário ou se falhou silenciosamente.", severity: "low" }
+            ]
+        };
+    }
 
-        // Structural Boost: Integrity Engine
+    public override async performAudit(): Promise<AuditFinding[]> {
+        const results = await super.performAudit();
         const mockIssues = MockIntegrityEngine.analyze(this.projectRoot || "");
-        mockIssues.forEach(m => results.push({ file: "DYNAMIC", agent: this.name, role: this.role, emoji: this.emoji, issue: m, severity: "low", stack: this.stack }));
-
-        this.endMetrics(results.length);
+        mockIssues.forEach(m => results.push({
+            file: "DYNAMIC", agent: this.name, role: this.role, emoji: this.emoji, issue: m, severity: "low", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
         return results;
     }
 

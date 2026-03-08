@@ -35,23 +35,27 @@ export class VoyagerPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /GET|POST|PUT|DELETE/, issue: "HTTP Verb: Verifique se os métodos HTTP seguem os padrões REST e possuem tratamento de erro adequado.", severity: "low" },
-            { regex: /func\s+.*\(.*http\.ResponseWriter/, issue: "Raw Handler: Considere usar um framework (Gin/Echo) para gestão de rotas mais segura e escalável.", severity: "medium" },
-            { regex: /JSON\(.*interface\{\}/, issue: "Lazy Serialization: Evite interface{} no retorno de APIs; use structs tipadas para garantir contratos estáveis.", severity: "high" },
-            { regex: /v[0-9]\//, issue: "API Versioning: Versão detectada na rota; garanta a retrocompatibilidade nas alterações de contrato.", severity: "low" },
-            { regex: /github\.com\/gin-gonic|github\.com\/labstack\/echo/, issue: "Web Framework: Framework detectado; verifique se a configuração de CORS e Rate Limiting está ativa.", severity: "medium" },
-            { regex: /mux\.Vars/, issue: "Route Params: Verifique a sanitização de parâmetros de rota contra injeção de comandos.", severity: "high" }
-        ];
-        const results = this.findPatterns([".go"], rules);
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go"],
+            rules: [
+                { regex: /GET|POST|PUT|DELETE/, issue: "HTTP Verb: Verifique se os métodos HTTP seguem os padrões REST e possuem tratamento de erro adequado.", severity: "low" },
+                { regex: /func\s+.*\(.*http\.ResponseWriter/, issue: "Raw Handler: Considere usar um framework (Gin/Echo) para gestão de rotas mais segura e escalável.", severity: "medium" },
+                { regex: /JSON\(.*interface\{\}/, issue: "Lazy Serialization: Evite interface{} no retorno de APIs; use structs tipadas para garantir contratos estáveis.", severity: "high" },
+                { regex: /v[0-9]\//, issue: "API Versioning: Versão detectada na rota; garanta a retrocompatibilidade nas alterações de contrato.", severity: "low" },
+                { regex: /github\.com\/gin-gonic|github\.com\/labstack\/echo/, issue: "Web Framework: Framework detectado; verifique se a configuração de CORS e Rate Limiting está ativa.", severity: "medium" },
+                { regex: /mux\.Vars/, issue: "Route Params: Verifique a sanitização de parâmetros de rota contra injeção de comandos.", severity: "high" }
+            ]
+        };
+    }
 
-        // Advanced Logic Density
+    public override async performAudit(): Promise<AuditFinding[]> {
+        const results = await super.performAudit();
         const routingIssues = GoRoutingEngine.analyze(this.projectRoot || "");
-        routingIssues.forEach(r => results.push({ file: "API_SURFACE", agent: this.name, role: this.role, emoji: this.emoji, issue: r, severity: "medium", stack: this.stack }));
-
-        this.endMetrics(results.length);
+        routingIssues.forEach(r => results.push({
+            file: "API_SURFACE", agent: this.name, role: this.role, emoji: this.emoji, issue: r, severity: "medium", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
         return results;
     }
 

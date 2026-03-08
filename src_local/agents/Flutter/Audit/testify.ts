@@ -31,23 +31,27 @@ export class TestifyPersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /testWidgets?\s*\(/, issue: "Teste Vazio: Teste Flutter/Dart sem corpo ou framework corrompido.", severity: "critical" },
-            { regex: /@Skip\(|skip:\s*true/, issue: "Teste Desativado: Teste pulado intencionalmente; expõe cobertura incompleta.", severity: "high" },
-            { regex: /tester\.pumpAndSettle\(\)/, issue: "Teste Frágil: Evite pumpAndSettle sem limites; pode causar timeout em loops de UI.", severity: "medium" },
-            { regex: /expect\([\w\.]*,\s*(?:true|false)\)/, issue: "Asserção Genérica: Use asserções mais específicas ou custom matchers (isA<Type>).", severity: "low" },
-            { regex: /Future\.delayed\(/, issue: "Anti-padrão: Uso de delay forçado em teste; prefira pump() ou runAsync().", severity: "high" },
-            { regex: /verify\(\s*[^\)]+\s*\)(\.called\(1\))?/, issue: "Verificação Fraca: Especifique se a verificação do Mocktail usou os argumentos corretos.", severity: "medium" }
-        ];
-        const results = this.findPatterns([".dart"], rules);
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".dart"],
+            rules: [
+                { regex: /testWidgets?\s*\(/, issue: "Teste Vazio: Teste Flutter/Dart sem corpo ou framework corrompido.", severity: "critical" },
+                { regex: /@Skip\(|skip:\s*true/, issue: "Teste Desativado: Teste pulado intencionalmente; expõe cobertura incompleta.", severity: "high" },
+                { regex: /tester\.pumpAndSettle\(\)/, issue: "Teste Frágil: Evite pumpAndSettle sem limites; pode causar timeout em loops de UI.", severity: "medium" },
+                { regex: /expect\([\w\.]*,\s*(?:true|false)\)/, issue: "Asserção Genérica: Use asserções mais específicas ou custom matchers (isA<Type>).", severity: "low" },
+                { regex: /Future\.delayed\(/, issue: "Anti-padrão: Uso de delay forçado em teste; prefira pump() ou runAsync().", severity: "high" },
+                { regex: /verify\(\s*[^\)]+\s*\)(\.called\(1\))?/, issue: "Verificação Fraca: Especifique se a verificação do Mocktail usou os argumentos corretos.", severity: "medium" }
+            ]
+        };
+    }
 
-        // Structural Boost: Integrity Engine
+    public override async performAudit(): Promise<AuditFinding[]> {
+        const results = await super.performAudit();
         const mockIssues = MockIntegrityEngine.analyze(this.projectRoot || "");
-        mockIssues.forEach(m => results.push({ file: "DYNAMIC", agent: this.name, role: this.role, emoji: this.emoji, issue: m, severity: "low", stack: this.stack }));
-
-        this.endMetrics(results.length);
+        mockIssues.forEach(m => results.push({
+            file: "DYNAMIC", agent: this.name, role: this.role, emoji: this.emoji, issue: m, severity: "low", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
         return results;
     }
 

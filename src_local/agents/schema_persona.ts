@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "./base_active_persona";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "./base.ts";
 import winston from "winston";
 
 const logger = winston.loggers.get('default_logger') || winston;
@@ -8,67 +8,44 @@ const logger = winston.loggers.get('default_logger') || winston;
  * Instancia personas a partir do PersonaManifest sem precisar de arquivos individuais.
  */
 export class SchemaPersona extends BaseActivePersona {
-    private rules: any[];
+    private personaRules: any[];
     private reasonTemplate: string | null;
 
     constructor(metadata: any, projectRoot: string | null = null) {
-        super(projectRoot);
+        super(projectRoot || undefined);
         this.name = metadata.name;
         this.emoji = metadata.emoji;
         this.role = metadata.role;
         this.stack = metadata.stack;
-        this.rules = metadata.rules || [];
+        this.personaRules = metadata.rules || [];
         this.reasonTemplate = metadata.reasonTemplate;
     }
 
-    async performAudit(): Promise<any[]> {
-        const startT = Date.now();
-        logger.info(`🎭 [${this.name}] Iniciando auditoria dinâmica (${this.stack})...`);
-
-        const results: any[] = [];
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         const extMap: Record<string, string[]> = {
             "Flutter": [".dart"],
             "Kotlin": [".kt"],
             "TypeScript": [".ts", ".tsx"],
             "Bun": [".ts", ".tsx", ".toml"],
+            "Python": [".py"],
+            "Go": [".go"],
         };
-        const extensions = extMap[this.stack] || [".ts", ".py"];
+        const extensions = extMap[this.stack] || [".ts", ".tsx", ".py", ".js"];
 
-        for (const rule of this.rules) {
-            const ruleResults = await this.findPatternsSimple(extensions, rule);
-            results.push(...ruleResults);
-        }
-
-        const duration = (Date.now() - startT) / 1000;
-        logger.info(`🎭 [${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
-        return results;
+        return {
+            extensions,
+            rules: this.personaRules.map(r => ({
+                regex: typeof r.regex === 'string' ? new RegExp(r.regex, 'i') : r.regex,
+                issue: r.issue,
+                severity: r.severity
+            }))
+        };
     }
 
-    private async findPatternsSimple(extensions: string[], rule: any): Promise<any[]> {
-        const findings: any[] = [];
-        const regex = new RegExp(rule.regex, 'g');
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (!this.reasonTemplate || typeof content !== 'string') return null;
 
-        for (const [filePath, content] of Object.entries(this.contextData)) {
-            if (extensions.some(ext => filePath.endsWith(ext))) {
-                const matches = content.matchAll(regex);
-                for (const match of (matches as any)) {
-                    findings.push({
-                        file: filePath,
-                        issue: rule.issue,
-                        severity: rule.severity,
-                        evidence: match[0],
-                        persona: this.name
-                    });
-                }
-            }
-        }
-        return findings;
-    }
-
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
-        if (!this.reasonTemplate) return null;
-
-        const regex = new RegExp(this.rules[0]?.regex || '.*');
+        const regex = new RegExp(this.personaRules[0]?.regex || '.*', 'i');
         if (regex.test(content)) {
             const reason = this.reasonTemplate
                 .replace('{objective}', objective)
@@ -78,7 +55,7 @@ export class SchemaPersona extends BaseActivePersona {
                 file: file,
                 issue: reason,
                 severity: "HIGH",
-                persona: this.name
+                context: `Dynamic rule match: ${regex.source}`
             };
         }
 

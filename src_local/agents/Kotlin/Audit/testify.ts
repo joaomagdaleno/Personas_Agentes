@@ -31,23 +31,27 @@ export class TestifyPersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /@Test\s+(fun\s+[^{]+{\s*})/, issue: "Teste Vazio: Teste Kotlin declarado sem corpo ou asserção.", severity: "critical" },
-            { regex: /@Ignore\(|@Disabled\(/, issue: "Teste Desativado: Teste pulado; cobertura incompleta.", severity: "high" },
-            { regex: /runBlockingTest|runTest\s*{\s*delay\(/, issue: "Teste Frágil: Uso de delay em testes de coroutine. Use TestCoroutineDispatcher.", severity: "high" },
-            { regex: /assertEquals\(true,\s*/, issue: "Asserção Genérica: Prefira assertTrue() ou asserções AssertJ mais legíveis.", severity: "low" },
-            { regex: /Thread\.sleep\(/, issue: "Anti-padrão: Uso de sleep no código de teste Kotlin; risco extremo de flaky tests.", severity: "high" },
-            { regex: /verify\s*{\s*[^\(]+\(\)\s*(wasNot\s*Called\(\))?\s*}/, issue: "Verificação Fraca: Garanta verificações exatas de parâmetros e contagem de chamadas no MockK.", severity: "medium" }
-        ];
-        const results = this.findPatterns([".kt"], rules);
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".kt"],
+            rules: [
+                { regex: /@Test\s+(fun\s+[^{]+{\s*})/, issue: "Teste Vazio: Teste Kotlin declarado sem corpo ou asserção.", severity: "critical" },
+                { regex: /@Ignore\(|@Disabled\(/, issue: "Teste Desativado: Teste pulado; cobertura incompleta.", severity: "high" },
+                { regex: /runBlockingTest|runTest\s*{\s*delay\(/, issue: "Teste Frágil: Uso de delay em testes de coroutine. Use TestCoroutineDispatcher.", severity: "high" },
+                { regex: /assertEquals\(true,\s*/, issue: "Asserção Genérica: Prefira assertTrue() ou asserções AssertJ mais legíveis.", severity: "low" },
+                { regex: /Thread\.sleep\(/, issue: "Anti-padrão: Uso de sleep no código de teste Kotlin; risco extremo de flaky tests.", severity: "high" },
+                { regex: /verify\s*{\s*[^\(]+\(\)\s*(wasNot\s*Called\(\))?\s*}/, issue: "Verificação Fraca: Garanta verificações exatas de parâmetros e contagem de chamadas no MockK.", severity: "medium" }
+            ]
+        };
+    }
 
-        // Structural Boost: Integrity Engine
+    public override async performAudit(): Promise<AuditFinding[]> {
+        const results = await super.performAudit();
         const mockIssues = MockIntegrityEngine.analyze(this.projectRoot || "");
-        mockIssues.forEach(m => results.push({ file: "DYNAMIC", agent: this.name, role: this.role, emoji: this.emoji, issue: m, severity: "low", stack: this.stack }));
-
-        this.endMetrics(results.length);
+        mockIssues.forEach(m => results.push({
+            file: "DYNAMIC", agent: this.name, role: this.role, emoji: this.emoji, issue: m, severity: "low", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
         return results;
     }
 

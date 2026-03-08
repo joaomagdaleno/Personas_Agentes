@@ -14,25 +14,18 @@ export class NebulaPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /AKIA[0-9A-Z]{16}/, issue: "Vulnerabilidade Crítica: Chave AWS exposta no código Python.", severity: "critical" },
-            { regex: /sk-[a-zA-Z0-9]{20,}|ghp_[a-zA-Z0-9]{36}/, issue: "Vulnerabilidade Crítica: Token (OpenAI/GitHub) exposto.", severity: "critical" },
-            { regex: /(?:apiKey|API_KEY|password|secret)\s*[:=]\s*["\'][^"\']{8,}/, issue: "Vazamento: Credencial hardcoded no código-fonte Python.", severity: "critical" },
-            { regex: /verify=False|ssl\._create_unverified_context/, issue: "Segurança Cloud: Desativação de verificação SSL detectada.", severity: "critical" },
-            { regex: /os\.environ\.get\(.*\)\s*or\s*["\'][^"\']{8,}/, issue: "Risco: Fallback de variável de ambiente contém segredo real.", severity: "high" },
-            { regex: /ENV\s+[A-Z_]+\s*=\s*["\'][^"\']{8,}/, issue: "Docker Security: Segredo embutido em instrução ENV do Dockerfile.", severity: "critical" }
-        ];
-        const results = this.findPatterns([".py", "Dockerfile", ".yaml"], rules);
-
-        // Advanced Logic: Infrastructure Audit
-        if (results.some(r => r.severity === "critical")) {
-            this.reasonAboutObjective("Cloud Sovereignty", "Security", "Found critical SSL bypass in Python cloud logic.");
-        }
-
-        this.endMetrics(results.length);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".py", "Dockerfile", ".yaml"],
+            rules: [
+                { regex: /AKIA[0-9A-Z]{16}/, issue: "Vulnerabilidade Crítica: Chave AWS exposta no código Python.", severity: "critical" },
+                { regex: /sk-[a-zA-Z0-9]{20,}|ghp_[a-zA-Z0-9]{36}/, issue: "Vulnerabilidade Crítica: Token (OpenAI/GitHub) exposto.", severity: "critical" },
+                { regex: /(?:apiKey|API_KEY|password|secret)\s*[:=]\s*["'][^"']{8,}/, issue: "Vazamento: Credencial hardcoded no código-fonte Python.", severity: "critical" },
+                { regex: /verify=False|ssl\._create_unverified_context/, issue: "Segurança Cloud: Desativação de verificação SSL detectada.", severity: "critical" },
+                { regex: /os\.environ\.get\(.*\)\s*or\s*["'][^"']{8,}/, issue: "Risco: Fallback de variável de ambiente contém segredo real.", severity: "high" },
+                { regex: /ENV\s+[A-Z_]+\s*=\s*["'][^"']{8,}/, issue: "Docker Security: Segredo embutido em instrução ENV do Dockerfile.", severity: "critical" }
+            ]
+        };
     }
 
     public override performActiveHealing(blindSpots: string[]): void {

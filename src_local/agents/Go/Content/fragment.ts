@@ -33,23 +33,27 @@ export class FragmentPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /func\s+.*\{\s*/g, issue: "Complexity Check: Verifique se funções longas podem ser extraídas para métodos auxiliares private.", severity: "low" },
-            { regex: /type\s+.*\s+struct\s*\{.*interface/s, issue: "Dependency Injection: Uso de interfaces em structs detectado; facilite o mocking nos testes.", severity: "low" },
-            { regex: /var\s+.*\s+=\s+.*\(.*\)/, issue: "Global State: Evite inicialização global de variáveis mutáveis; prefira injeção de dependência.", severity: "high" },
-            { regex: /import\s*\./, issue: "Dot Import: Evite importações de ponto; polui o namespace e dificulta o rastreio de origem de funções.", severity: "medium" },
-            { regex: /init\(\)/, issue: "Hidden Logic: Funções init() dificultam o teste e a compreensão do fluxo de inicialização.", severity: "medium" },
-            { regex: /github\.com\/.*\/internal\//, issue: "Internal Reliance: Verifique se o uso de pacotes internos de terceiros não trará instabilidade futura.", severity: "high" }
-        ];
-        const results = this.findPatterns([".go"], rules);
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go"],
+            rules: [
+                { regex: /func\s+.*\{\s*/, issue: "Complexity Check: Verifique se funções longas podem ser extraídas para métodos auxiliares private.", severity: "low" },
+                { regex: /type\s+.*\s+struct\s*\{.*interface/s, issue: "Dependency Injection: Uso de interfaces em structs detectado; facilite o mocking nos testes.", severity: "low" },
+                { regex: /var\s+.*\s+=\s+.*\(.*\)/, issue: "Global State: Evite inicialização global de variáveis mutáveis; prefira injeção de dependência.", severity: "high" },
+                { regex: /import\s*\./, issue: "Dot Import: Evite importações de ponto; polui o namespace e dificulta o rastreio de origem de funções.", severity: "medium" },
+                { regex: /init\(\)/, issue: "Hidden Logic: Funções init() dificultam o teste e a compreensão do fluxo de inicialização.", severity: "medium" },
+                { regex: /github\.com\/.*\/internal\//, issue: "Internal Reliance: Verifique se o uso de pacotes internos de terceiros não trará instabilidade futura.", severity: "high" }
+            ]
+        };
+    }
 
-        // Advanced Logic Density
+    public override async performAudit(): Promise<AuditFinding[]> {
+        const results = await super.performAudit();
         const modularityIssues = GoFragmentEngine.audit(this.projectRoot || "");
-        modularityIssues.forEach(i => results.push({ file: "MODULARITY_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: i, severity: "medium", stack: this.stack }));
-
-        this.endMetrics(results.length);
+        modularityIssues.forEach(i => results.push({
+            file: "MODULARITY_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: i, severity: "medium", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
         return results;
     }
 

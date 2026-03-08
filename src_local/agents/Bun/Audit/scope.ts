@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "Bun_Scope" });
@@ -16,64 +16,28 @@ export class ScopePersona extends BaseActivePersona {
         this.stack = "Bun";
     }
 
-    async performAudit(): Promise<any[]> {
-        const start = Date.now();
-        logger.info(`[${this.name}] Analisando Gestão de Escopo Bun...`);
-
-        const auditRules = this.getScopeRules();
-        const results: any[] = [];
-
-        for (const rule of auditRules) {
-            this.auditWithRule(rule, results);
-        }
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.ts', '.tsx', '.toml', '.json'],
+            rules: [
+                { regex: /\/\/\s*TODO[:\s]/i, issue: 'Dívida: TODO pendente no código Bun.', severity: 'medium' },
+                { regex: /\/\/\s*FIXME[:\s]/i, issue: 'Dívida Crítica: FIXME no código Bun.', severity: 'high' },
+                { regex: /\/\/\s*HACK[:\s]/i, issue: 'Gambiarra: HACK detectado no projeto Bun.', severity: 'high' },
+                { regex: /\/\/\s*XXX[:\s]/i, issue: 'Alerta: Área de código perigosa XXX no projeto Bun.', severity: 'medium' },
+                { regex: /throw\s+new\s+Error\(["']not\s+implemented/i, issue: 'Incompleto: Funcionalidade Bun declarada mas não implementada.', severity: 'high' },
+                { regex: /as\s+any\s*\/\/.*later|as\s+any\s*\/\/.*temporary/i, issue: 'Supressão Temporária: "any" com promessa de correção futura no Bun.', severity: 'medium' }
+            ]
+        };
     }
 
-    private getScopeRules(): { regex: RegExp; issue: string; severity: string }[] {
-        return [
-            { regex: /\/\/\s*TODO[:\s]/, issue: 'Dívida: TODO pendente no código Bun.', severity: 'medium' },
-            { regex: /\/\/\s*FIXME[:\s]/, issue: 'Dívida Crítica: FIXME no código Bun.', severity: 'high' },
-            { regex: /\/\/\s*HACK[:\s]/, issue: 'Gambiarra: HACK detectado no projeto Bun.', severity: 'high' },
-            { regex: /\/\/\s*XXX[:\s]/, issue: 'Alerta: Área de código perigosa XXX no projeto Bun.', severity: 'medium' },
-            { regex: /throw\s+new\s+Error\(["']not\s+implemented/, issue: 'Incompleto: Funcionalidade Bun declarada mas não implementada.', severity: 'high' },
-            { regex: /as\s+any\s*\/\/.*later|as\s+any\s*\/\/.*temporary/, issue: 'Supressão Temporária: "any" com promessa de correção futura no Bun.', severity: 'medium' }
-        ];
-    }
-
-    private auditWithRule(rule: any, results: any[]) {
-        const regex = new RegExp(rule.regex, 'gi');
-        for (const [filePath, content] of Object.entries(this.contextData)) {
-            if (this.shouldAuditFile(filePath)) {
-                this.scanContent(filePath, content as string, regex, rule, results);
-            }
-        }
-    }
-
-    private shouldAuditFile(filePath: string): boolean {
-        return filePath.endsWith('.ts') || filePath.endsWith('.tsx') || filePath.endsWith('.toml') || filePath.endsWith('.json');
-    }
-
-    private scanContent(filePath: string, content: string, regex: RegExp, rule: any, results: any[]) {
-        for (const match of content.matchAll(regex)) {
-            results.push({
-                file: filePath,
-                issue: rule.issue,
-                severity: rule.severity,
-                evidence: match[0],
-                persona: this.name
-            });
-        }
-    }
-
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         const debtCount = (content.match(/\/\/\s*(TODO|FIXME|HACK)/gi) || []).length;
         if (debtCount > 3) {
             return {
-                file, severity: "HIGH", persona: this.name,
-                issue: `Erosão de Escopo: O objetivo '${objective}' exige completude. O arquivo '${file}' contém ${debtCount} marcadores de dívida técnica Bun.`
+                file, severity: "HIGH",
+                issue: `Erosão de Escopo: O objetivo '${objective}' exige completude. O arquivo '${file}' contém ${debtCount} marcadores de dívida técnica Bun.`,
+                context: `Debt markers: ${debtCount}`
             };
         }
         return null;

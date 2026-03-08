@@ -14,19 +14,18 @@ export class ScalePersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /\n{400,}/, issue: "God File: Arquivo Flutter excessivamente grande; risco de entropia.", severity: "high" },
-            { regex: /import\s+['"]\.\.\/\.\.\/.*?['"]/, issue: "Deep Relative: Importação excessivamente profunda; risco de acoplamento.", severity: "medium" },
-            { regex: /static\s+.*?/, issue: "Static Abuse: Uso excessivo de membros estáticos dificulta a escala e testes.", severity: "low" },
-            { regex: /import\s+['"]package:.*?\/src\/.*?['"]/, issue: "Internal Leak: Importando de /src/ de outros pacotes; risco de quebra de API.", severity: "high" },
-            { regex: /class\s+.*\{[\s\S]*class\s+/, issue: "Multi-Class File: Múltiplas classes em um arquivo dificultam a manutenção.", severity: "medium" },
-            { regex: /\w+\(.*?,\s*.*?,\s*.*?,\s*.*?,\s*.*?,\s*.*?,\s*.*?,\s*.*?,\s*.*?,\s*.*?\)/, issue: "Massive Constructor: Construtor com mais de 10 parâmetros detectado.", severity: "medium" }
-        ];
-        const results = this.findPatterns([".dart"], rules);
-        this.endMetrics(results.length);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".dart"],
+            rules: [
+                { regex: /\n{400,}/, issue: "God File: Arquivo Flutter excessivamente grande; risco de entropia.", severity: "high" },
+                { regex: /import\s+['"]\.\.\/\.\.\/.*?['"]/, issue: "Deep Relative: Importação excessivamente profunda; risco de acoplamento.", severity: "medium" },
+                { regex: /static\s+.*?/, issue: "Static Abuse: Uso excessivo de membros estáticos dificulta a escala e testes.", severity: "low" },
+                { regex: /import\s+['"]package:.*?\/src\/.*?['"]/, issue: "Internal Leak: Importando de /src/ de outros pacotes; risco de quebra de API.", severity: "high" },
+                { regex: /class\s+.*\{[\s\S]*class\s+/, issue: "Multi-Class File: Múltiplas classes em um arquivo dificultam a manutenção.", severity: "medium" },
+                { regex: /\w+\(.*?,\s*.*?,\s*.*?,\s*.*?,\s*.*?,\s*.*?,\s*.*?,\s*.*?,\s*.*?,\s*.*?\)/, issue: "Massive Constructor: Construtor com mais de 10 parâmetros detectado.", severity: "medium" }
+            ]
+        };
     }
 
     public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {

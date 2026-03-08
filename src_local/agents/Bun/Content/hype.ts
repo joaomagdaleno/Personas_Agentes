@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "Bun_Hype" });
@@ -16,16 +16,20 @@ export class HypePersona extends BaseActivePersona {
         this.stack = "Bun";
     }
 
-    async performAudit(): Promise<any[]> {
-        const start = Date.now();
-        logger.info(`[${this.name}] Analisando Visibilidade Bun...`);
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['package.json'],
+            rules: [
+                { regex: /"description":\s*""/, issue: 'Invisível: package.json sem "description".', severity: 'medium' },
+                { regex: /"license":\s*""/, issue: 'Risco Legal: package.json sem "license".', severity: 'high' },
+            ]
+        };
+    }
 
-        const results: any[] = [];
+    async performAudit(): Promise<AuditFinding[]> {
+        const results = await super.performAudit();
         this.auditPackageFiles(results);
         this.auditProjectPresence(results);
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
         return results;
     }
 
@@ -63,11 +67,13 @@ export class HypePersona extends BaseActivePersona {
         }
     }
 
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         if (file.endsWith('package.json') && !content.includes('"module"') && !content.includes('"exports"')) {
             return {
-                file, severity: "HIGH", persona: this.name,
-                issue: `Incompatibilidade Bun: O objetivo '${objective}' exige ESM nativo. Em '${file}', a falta de "module"/"exports" impede a integração Bun.`
+                file, severity: "HIGH",
+                issue: `Incompatibilidade Bun: O objetivo '${objective}' exige ESM nativo. Em '${file}', a falta de "module"/"exports" impede a integração Bun.`,
+                context: "module/exports missing in package.json"
             };
         }
         return null;

@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "TS_Vault" });
@@ -32,66 +32,31 @@ export class VaultPersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    async performAudit(): Promise<any[]> {
-        const start = Date.now();
-        logger.info(`[${this.name}] Analisando Precisão Financeira TypeScript...`);
-
-        const auditRules = this.getVaultRules();
-        const results: any[] = [];
-
-        for (const rule of auditRules) {
-            this.auditWithRule(rule, results);
-        }
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.ts', '.tsx'],
+            rules: [
+                { regex: /(?:price|amount|total|cost|fee|tax|balance|salary|revenue)\s*:\s*number/i, issue: 'Risco Financeiro: Campo monetário tipado como "number" — use Decimal/bigint.', severity: 'high' },
+                { regex: /(?:price|amount|total|cost)\s*\*\s*(?:price|amount|total|cost|\d)/i, issue: 'Imprecisão: Multiplicação de valores monetários com float — erro de centavos.', severity: 'high' },
+                { regex: /parseFloat\s*\(.*(?:price|amount|total|cost)/i, issue: 'Risco: parseFloat para valores monetários perde precisão.', severity: 'high' },
+                { regex: /Math\.round\(.*(?:price|amount|total|cost)/i, issue: 'Gambiarra: Math.round para arredondar dinheiro — use biblioteca de precisão.', severity: 'medium' },
+            ]
+        };
     }
 
-    private getVaultRules() {
-        return [
-            { regex: '(?:price|amount|total|cost|fee|tax|balance|salary|revenue)\\s*:\\s*number', issue: 'Risco Financeiro: Campo monetário tipado como "number" — use Decimal/bigint.', severity: 'high' },
-            { regex: '(?:price|amount|total|cost)\\s*\\*\\s*(?:price|amount|total|cost|\\d)', issue: 'Imprecisão: Multiplicação de valores monetários com float — erro de centavos.', severity: 'high' },
-            { regex: 'parseFloat\\s*\\(.*(?:price|amount|total|cost)', issue: 'Risco: parseFloat para valores monetários perde precisão.', severity: 'high' },
-            { regex: 'Math\\.round\\(.*(?:price|amount|total|cost)', issue: 'Gambiarra: Math.round para arredondar dinheiro — use biblioteca de precisão.', severity: 'medium' },
-        ];
-    }
-
-    private auditWithRule(rule: any, results: any[]) {
-        const regex = new RegExp(rule.regex, 'gi');
-        for (const [filePath, content] of Object.entries(this.contextData)) {
-            if (this.shouldAuditFile(filePath)) {
-                this.scanContent(filePath, content as string, regex, rule, results);
-            }
-        }
-    }
-
-    private shouldAuditFile(filePath: string): boolean {
-        return filePath.endsWith('.ts') || filePath.endsWith('.tsx');
-    }
-
-    private scanContent(filePath: string, content: string, regex: RegExp, rule: any, results: any[]) {
-        for (const match of content.matchAll(regex)) {
-            results.push({
-                file: filePath,
-                issue: rule.issue,
-                severity: rule.severity,
-                evidence: match[0],
-                persona: this.name
-            });
-        }
-    }
-
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         if (/(?:price|amount|total|cost)\s*:\s*number/i.test(content)) {
             return {
-                file, severity: "HIGH", persona: this.name,
-                issue: `Erro de Precisão: O objetivo '${objective}' exige exatidão. Em '${file}', floats monetários invalidam os cálculos da 'Orquestração de Inteligência Artificial'.`
+                file, severity: "HIGH",
+                issue: `Erro de Precisão: O objetivo '${objective}' exige exatidão. Em '${file}', floats monetários invalidam os cálculos da 'Orquestração de Inteligência Artificial'.`,
+                context: "monetary number type detected"
             };
         }
         return {
-            file, severity: "INFO", persona: this.name,
-            issue: `PhD Vault: Analisando integridade financeira para ${objective}. Focando em eliminação de ponto flutuante para moeda.`
+            file, severity: "INFO",
+            issue: `PhD Vault: Analisando integridade financeira para ${objective}. Focando em eliminação de ponto flutuante para moeda.`,
+            context: "analyzing financial integrity"
         };
     }
 

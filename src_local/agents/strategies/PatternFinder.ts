@@ -6,10 +6,24 @@ import winston from 'winston';
 const logger = winston.child({ module: "PatternFinder" });
 
 export class PatternFinder {
-    private static BINARY_PATH = path.resolve(process.cwd(), "src_native/analyzer/target/release/analyzer.exe");
+    private static BINARY_PATH = process.platform === "win32"
+        ? path.resolve(process.cwd(), "src_native/analyzer/target/release/analyzer.exe")
+        : path.resolve(process.cwd(), "src_native/analyzer/target/release/analyzer");
+
+    private static normalizeToRustRegex(regex: RegExp | string): string {
+        if (regex instanceof RegExp) {
+            const flags = regex.flags;
+            let prefix = "";
+            if (flags.includes("i")) prefix += "(?i)";
+            if (flags.includes("s")) prefix += "(?s)";
+            if (flags.includes("m")) prefix += "(?m)";
+            return prefix + regex.source;
+        }
+        return regex;
+    }
 
     static find(context: Record<string, any>, extensions: string[], rules: any[], ignored: string[], agent: any): any[] {
-        if (Object.keys(context).length > 5 && fs.existsSync(this.BINARY_PATH)) {
+        if (fs.existsSync(this.BINARY_PATH)) {
             try {
                 return this.findBulk(context, [{
                     agent: agent.name,
@@ -18,7 +32,7 @@ export class PatternFinder {
                     stack: agent.stack,
                     extensions,
                     rules: rules.map(r => ({
-                        regex: r.regex instanceof RegExp ? r.regex.source : r.regex,
+                        regex: this.normalizeToRustRegex(r.regex),
                         issue: r.issue,
                         severity: r.severity
                     }))
@@ -75,9 +89,17 @@ export class PatternFinder {
         const results: any[] = [];
 
         rules.forEach(rule => {
-            const regex = rule.regex instanceof RegExp ? rule.regex : new RegExp(rule.regex, 'g');
-            const matches = content.matchAll(regex);
-            for (const match of matches) {
+            let regex = rule.regex instanceof RegExp ? rule.regex : new RegExp(rule.regex, "g");
+
+            // matchAll requires global flag. If not present, we must create a new RegExp with it.
+            if (!regex.global) {
+                regex = new RegExp(regex.source, regex.flags + "g");
+            }
+
+            const matches = Array.from(content.matchAll(regex));
+            if (matches.length > 0) {
+                const firstMatch = matches[0];
+                const line = content.substring(0, firstMatch.index).split("\n").length;
                 results.push({
                     file,
                     agent: agent.name,
@@ -86,7 +108,9 @@ export class PatternFinder {
                     issue: rule.issue,
                     severity: rule.severity,
                     stack: agent.stack,
-                    evidence: match[0].substring(0, 100)
+                    evidence: firstMatch[0].substring(0, 100),
+                    match_count: matches.length,
+                    line_number: line
                 });
             }
         });

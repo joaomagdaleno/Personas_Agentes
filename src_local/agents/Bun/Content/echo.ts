@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "Bun_Echo" });
@@ -16,46 +16,25 @@ export class EchoPersona extends BaseActivePersona {
         this.stack = "Bun";
     }
 
-    async performAudit(): Promise<any[]> {
-        const start = Date.now();
-        logger.info(`[${this.name}] Analisando Rastreabilidade Bun...`);
-
-        const rules = [
-            { regex: 'console\\.log\\(', issue: 'Cegueira: console.log sem logger estruturado Bun.', severity: 'high' },
-            { regex: 'debugger;', issue: 'Breakpoint Esquecido: debugger statement em código Bun.', severity: 'critical' },
-            { regex: 'Bun\\.inspect\\(', issue: 'Debug: Bun.inspect() em produção — remover antes de deploy.', severity: 'medium' },
-            { regex: 'process\\.on\\(["\']SIGTERM', issue: 'Signal Handling: Verifique graceful shutdown em Bun.serve.', severity: 'low' },
-        ];
-
-        const results = rules.flatMap(rule => this.auditRule(rule));
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.ts', '.tsx'],
+            rules: [
+                { regex: /console\.log\(/, issue: 'Cegueira: console.log sem logger estruturado Bun.', severity: 'high' },
+                { regex: /debugger;/, issue: 'Breakpoint Esquecido: debugger statement em código Bun.', severity: 'critical' },
+                { regex: /Bun\.inspect\(/, issue: 'Debug: Bun.inspect() em produção — remover antes de deploy.', severity: 'medium' },
+                { regex: /process\.on\(["']SIGTERM/, issue: 'Signal Handling: Verifique graceful shutdown em Bun.serve.', severity: 'low' },
+            ]
+        };
     }
 
-    private auditRule(rule: any): any[] {
-        const regex = new RegExp(rule.regex, 'g');
-        return Object.entries(this.contextData)
-            .filter(([path]) => path.endsWith('.ts') || path.endsWith('.tsx'))
-            .flatMap(([path, content]) => this.findMatches(path, content as string, regex, rule));
-    }
-
-    private findMatches(path: string, content: string, regex: RegExp, rule: any): any[] {
-        return Array.from(content.matchAll(regex)).map(match => ({
-            file: path,
-            issue: rule.issue,
-            severity: rule.severity,
-            evidence: match[0],
-            persona: this.name
-        }));
-    }
-
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         if (/debugger;/.test(content)) {
             return {
-                file, severity: "CRITICAL", persona: this.name,
-                issue: `Artefato de Debug: O objetivo '${objective}' exige produção limpa. Em '${file}', debugger statement pausa a execução da 'Orquestração de Inteligência Artificial' Bun.`
+                file, severity: "CRITICAL",
+                issue: `Artefato de Debug: O objetivo '${objective}' exige produção limpa. Em '${file}', debugger statement pausa a execução da 'Orquestração de Inteligência Artificial' Bun.`,
+                context: "debugger statement detected"
             };
         }
         return null;

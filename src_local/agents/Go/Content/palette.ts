@@ -35,23 +35,27 @@ export class PalettePersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /github\.com\/charmbracelet/, issue: "Bubble Tea UI: O uso de Charmbracelet garante uma experiência premium; verifique a fluidez das animações TUI.", severity: "low" },
-            { regex: /tview/, issue: "Advanced TUI: Verifique se os componentes tview possuem navegação por teclado intuitiva.", severity: "medium" },
-            { regex: /color\.[A-Z]/, issue: "Terminal Color: Verifique se as cores usadas possuem contraste suficiente em fundos claros e escuros.", severity: "low" },
-            { regex: /ProgressBar/, issue: "Visual Progress: Verifique se o feedback visual para operações longas é preciso e não obstrusivo.", severity: "medium" },
-            { regex: /Layout/, issue: "Responsiveness: Verifique se o layout do terminal se adapta a diferentes larguras de janela.", severity: "low" },
-            { regex: /Icon/, issue: "Iconography: Use símbolos Unicode/NerdFonts com cautela para garantir compatibilidade entre terminais.", severity: "medium" }
-        ];
-        const results = this.findPatterns([".go"], rules);
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go"],
+            rules: [
+                { regex: /github\.com\/charmbracelet/, issue: "Bubble Tea UI: O uso de Charmbracelet garante uma experiência premium; verifique a fluidez das animações TUI.", severity: "low" },
+                { regex: /tview/, issue: "Advanced TUI: Verifique se os componentes tview possuem navegação por teclado intuitiva.", severity: "medium" },
+                { regex: /color\.[A-Z]/, issue: "Terminal Color: Verifique se as cores usadas possuem contraste suficiente em fundos claros e escuros.", severity: "low" },
+                { regex: /ProgressBar/, issue: "Visual Progress: Verifique se o feedback visual para operações longas é preciso e não obstrusivo.", severity: "medium" },
+                { regex: /Layout/, issue: "Responsiveness: Verifique se o layout do terminal se adapta a diferentes larguras de janela.", severity: "low" },
+                { regex: /Icon/, issue: "Iconography: Use símbolos Unicode/NerdFonts com cautela para garantir compatibilidade entre terminais.", severity: "medium" }
+            ]
+        };
+    }
 
-        // Advanced Logic Density
+    public override async performAudit(): Promise<AuditFinding[]> {
+        const results = await super.performAudit();
         const paletteIssues = GoPaletteEngine.audit(this.projectRoot || "");
-        paletteIssues.forEach(i => results.push({ file: "AESTHETICS_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: i, severity: "low", stack: this.stack }));
-
-        this.endMetrics(results.length);
+        paletteIssues.forEach(i => results.push({
+            file: "AESTHETICS_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: i, severity: "low", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
         return results;
     }
 

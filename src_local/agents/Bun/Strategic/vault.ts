@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "Bun_Vault" });
@@ -16,27 +16,25 @@ export class VaultPersona extends BaseActivePersona {
         this.stack = "Bun";
     }
 
-    async performAudit(): Promise<any[]> {
-        this.startMetrics();
-        logger.info(`[${this.name}] Analisando Precisão Financeira Bun...`);
-
-        const auditRules = [
-            { regex: '(?:price|amount|total|cost|fee)\\s*:\\s*number', issue: 'Risco Financeiro: Campo monetário como "number" no Bun — use BigInt ou Decimal.', severity: 'high' },
-            { regex: 'parseFloat\\s*\\(.*(?:price|amount|total)', issue: 'Imprecisão: parseFloat para valores monetários Bun.', severity: 'high' },
-            { regex: 'Math\\.round\\(.*(?:price|amount|total)', issue: 'Gambiarra: Math.round para dinheiro no Bun.', severity: 'medium' },
-        ];
-
-        const results = this.findPatterns(['.ts', '.tsx'], auditRules as any);
-        this.endMetrics(results.length);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.ts', '.tsx'],
+            rules: [
+                { regex: /(?:price|amount|total|cost|fee)\s*:\s*number/, issue: 'Risco Financeiro: Campo monetário como "number" no Bun — use BigInt ou Decimal.', severity: 'high' },
+                { regex: /parseFloat\s*\(.*(?:price|amount|total)/, issue: 'Imprecisão: parseFloat para valores monetários Bun.', severity: 'high' },
+                { regex: /Math\.round\(.*(?:price|amount|total)/, issue: 'Gambiarra: Math.round para dinheiro no Bun.', severity: 'medium' },
+            ]
+        };
     }
 
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         if (!/(?:price|amount|total)\s*:\s*number/i.test(content)) return null;
 
         return {
-            file, severity: "HIGH", persona: this.name,
-            issue: `Erro de Precisão: O objetivo '${objective}' exige exatidão financeira. Em '${file}', floats monetários invalidam cálculos Bun.`
+            file, severity: "HIGH",
+            issue: `Erro de Precisão: O objetivo '${objective}' exige exatidão financeira. Em '${file}', floats monetários invalidam cálculos Bun.`,
+            context: "monetary number type detected"
         };
     }
 

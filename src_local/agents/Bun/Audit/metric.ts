@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "Bun_Metric" });
@@ -16,40 +16,26 @@ export class MetricPersona extends BaseActivePersona {
         this.stack = "Bun";
     }
 
-    async performAudit(): Promise<any[]> {
-        const start = Date.now();
-        logger.info(`[${this.name}] Analisando Observabilidade Bun...`);
-
-        const auditRules = [
-            { regex: 'console\\.log\\(', issue: 'Cegueira: console.log em produção — use logger estruturado Bun.', severity: 'high' },
-            { regex: 'console\\.error\\(|console\\.warn\\(', issue: 'Telemetria Fraca: console sem contexto estruturado.', severity: 'medium' },
-            { regex: 'catch\\s*\\([^)]*\\)\\s*\\{\\s*\\}', issue: 'Cegueira Total: catch vazio engole erros silenciosamente.', severity: 'critical' },
-            { regex: 'process\\.hrtime', issue: 'Legado: process.hrtime — use Bun.nanoseconds() para timing nativo.', severity: 'medium' },
-            { regex: 'performance\\.now\\(\\)', issue: 'Alternativa: performance.now() — considere Bun.nanoseconds().', severity: 'low' },
-        ];
-
-        const results: any[] = [];
-        for (const rule of auditRules) {
-            const regex = new RegExp(rule.regex, 'g');
-            for (const [filePath, content] of Object.entries(this.contextData)) {
-                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx')) {
-                    for (const match of (content as string).matchAll(regex)) {
-                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0], persona: this.name });
-                    }
-                }
-            }
-        }
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.ts', '.tsx'],
+            rules: [
+                { regex: /console\.log\(/, issue: 'Cegueira: console.log em produção — use logger estruturado Bun.', severity: 'high' },
+                { regex: /console\.error\(|console\.warn\(/, issue: 'Telemetria Fraca: console sem contexto estruturado.', severity: 'medium' },
+                { regex: /catch\s*\([^)]*\)\s*\{\s*\}/, issue: 'Cegueira Total: catch vazio engole erros silenciosamente.', severity: 'critical' },
+                { regex: /process\.hrtime/, issue: 'Legado: process.hrtime — use Bun.nanoseconds() para timing nativo.', severity: 'medium' },
+                { regex: /performance\.now\(\)/, issue: 'Alternativa: performance.now() — considere Bun.nanoseconds().', severity: 'low' },
+            ]
+        };
     }
 
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         if (/console\.(log|error)\(/.test(content)) {
             return {
-                file, severity: "HIGH", persona: this.name,
-                issue: `Cegueira Analítica: O objetivo '${objective}' exige observabilidade Bun-nativa. Em '${file}', console.* impede gestão centralizada da 'Orquestração de Inteligência Artificial'.`
+                file, severity: "HIGH",
+                issue: `Cegueira Analítica: O objetivo '${objective}' exige observabilidade Bun-nativa. Em '${file}', console.* impede gestão centralizada da 'Orquestração de Inteligência Artificial'.`,
+                context: "console.log/error detected"
             };
         }
         return null;

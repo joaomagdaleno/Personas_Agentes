@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "Bun_Voyager" });
@@ -16,28 +16,26 @@ export class VoyagerPersona extends BaseActivePersona {
         this.stack = "Bun";
     }
 
-    async performAudit(): Promise<any[]> {
-        this.startMetrics();
-        logger.info(`[${this.name}] Analisando Modernidade Bun...`);
-
-        const auditRules = [
-            { regex: '\\brequire\\s*\\(["\'](?!bun:)', issue: 'Legado: require() CommonJS — Bun favorece import ESM.', severity: 'high' },
-            { regex: 'module\\.exports', issue: 'Legado: module.exports CommonJS — use export ESM.', severity: 'high' },
-            { regex: '__dirname|__filename', issue: 'Legado Node: Use import.meta.dir e import.meta.file em Bun.', severity: 'high' },
-            { regex: 'process\\.env', issue: 'Legado Node: Considere Bun.env para variáveis de ambiente Bun-nativas.', severity: 'low' },
-            { regex: '\\bvar\\s+\\w+', issue: 'Legado JS: "var" — use "const" ou "let".', severity: 'medium' },
-        ];
-
-        const results = this.findPatterns(['.ts', '.tsx'], auditRules as any);
-        this.endMetrics(results.length);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.ts', '.tsx'],
+            rules: [
+                { regex: /\brequire\s*\((?!["']bun:)/, issue: 'Legado: require() CommonJS — Bun favorece import ESM.', severity: 'high' },
+                { regex: /module\.exports/, issue: 'Legado: module.exports CommonJS — use export ESM.', severity: 'high' },
+                { regex: /__dirname|__filename/, issue: 'Legado Node: Use import.meta.dir e import.meta.file em Bun.', severity: 'high' },
+                { regex: /process\.env/, issue: 'Legado Node: Considere Bun.env para variáveis de ambiente Bun-nativas.', severity: 'low' },
+                { regex: /\bvar\s+\w+/, issue: 'Legado JS: "var" — use "const" ou "let".', severity: 'medium' },
+            ]
+        };
     }
 
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         if (/__dirname|__filename|require\s*\(/.test(content)) {
             return {
-                file, severity: "HIGH", persona: this.name,
-                issue: `Débito Tecnológico: O objetivo '${objective}' exige Bun nativo. Em '${file}', APIs Node.js legadas retardam a migração.`
+                file, severity: "HIGH",
+                issue: `Débito Tecnológico: O objetivo '${objective}' exige Bun nativo. Em '${file}', APIs Node.js legadas retardam a migração.`,
+                context: "legacy Node APIs detected"
             };
         }
         return null;

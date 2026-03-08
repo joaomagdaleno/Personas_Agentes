@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_active_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import winston from "winston";
 import { ReportSectionsEngine } from "../../Support/Reporting/report_sections_engine.ts";
 import { ReportFormatter } from "../../Support/Diagnostics/strategies/ReportFormatter.ts";
@@ -21,20 +21,17 @@ export class DirectorPersona extends BaseActivePersona {
         this.sectionsEngine = new ReportSectionsEngine();
     }
 
-    async performAudit(): Promise<any[]> {
-        const start = Date.now();
-        logger.info(`[${this.name}] Running Strategic Audit...`);
-        const criticalFiles = Object.keys(this.contextData).filter(f => (f.endsWith('.ts') || f.endsWith('.json')) && /core|security|agent/.test(f));
-        const sample = criticalFiles.sort(() => 0.5 - Math.random()).slice(0, 5);
-        const findings = sample.filter(f => f.includes('security') && !this.contextData[f].includes('crypto')).map(file => ({
-            file, issue: 'Alerta Estratégico: Arquivo de segurança sem referências criptográficas óbvias.', severity: 'low', persona: this.name
-        }));
-        logger.info(`[${this.name}] Audit finished in ${(Date.now() - start) / 1000}s. Findings: ${findings.length}`);
-        return findings;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.ts', '.json'],
+            rules: [
+                { regex: /security(?!.*crypto)/i, issue: 'Alerta Estratégico: Arquivo de segurança sem referências criptográficas óbvias.', severity: 'low' },
+            ]
+        };
     }
 
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
-        return { file, severity: "INFO", persona: this.name, issue: `PhD Governance: Supervising '${objective}' in '${file}'.` };
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        return { file, severity: "INFO", issue: `PhD Governance: Supervising '${objective}' in '${file}'.`, context: "supervising objective" };
     }
 
     async validatePhDCensus(): Promise<any> {

@@ -33,23 +33,27 @@ export class ScalePersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /runtime\.GOMAXPROCS/, issue: "Manual Processor Tuning: Verifique se o ajuste manual de GOMAXPROCS é realmente necessário em runtimes modernos.", severity: "low" },
-            { regex: /sync\.Map/, issue: "Large Scale Sync: Use sync.Map apenas para cenários de escrita esporádica e leitura frequente para evitar overhead.", severity: "medium" },
-            { regex: /channel\s+interface\{\}/, issue: "Untyped Pipeline: Evite interface{} em canais; use tipos concretos ou structs para evitar casting custoso.", severity: "high" },
-            { regex: /sync\.Pool/, issue: "Object Pooling: Uso de Pool detectado; garanta que os objetos são limpos antes de retornar ao pool.", severity: "medium" },
-            { regex: /Semaphore/, issue: "Rate Limiting: Verifique se a implementação de semáforo via canais bufferizados possui limites adequados.", severity: "medium" },
-            { regex: /worker\s+pool/i, issue: "Worker Pattern: Garanta que o pool de workers possui sinal de encerramento para evitar goroutines zumbis.", severity: "high" }
-        ];
-        const results = this.findPatterns([".go"], rules);
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go"],
+            rules: [
+                { regex: /runtime\.GOMAXPROCS/, issue: "Manual Processor Tuning: Verifique se o ajuste manual de GOMAXPROCS é realmente necessário em runtimes modernos.", severity: "low" },
+                { regex: /sync\.Map/, issue: "Large Scale Sync: Use sync.Map apenas para cenários de escrita esporádica e leitura frequente para evitar overhead.", severity: "medium" },
+                { regex: /channel\s+interface\{\}/, issue: "Untyped Pipeline: Evite interface{} em canais; use tipos concretos ou structs para evitar casting custoso.", severity: "high" },
+                { regex: /sync\.Pool/, issue: "Object Pooling: Uso de Pool detectado; garanta que os objetos são limpos antes de retornar ao pool.", severity: "medium" },
+                { regex: /Semaphore/, issue: "Rate Limiting: Verifique se a implementação de semáforo via canais bufferizados possui limites adequados.", severity: "medium" },
+                { regex: /worker\s+pool/i, issue: "Worker Pattern: Garanta que o pool de workers possui sinal de encerramento para evitar goroutines zumbis.", severity: "high" }
+            ]
+        };
+    }
 
-        // Advanced Logic Density
+    public override async performAudit(): Promise<AuditFinding[]> {
+        const results = await super.performAudit();
         const scalingFindings = GoScalingEngine.audit(this.projectRoot || "");
-        scalingFindings.forEach(f => results.push({ file: "SCALING_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "medium", stack: this.stack }));
-
-        this.endMetrics(results.length);
+        scalingFindings.forEach(f => results.push({
+            file: "SCALING_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "medium", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
         return results;
     }
 

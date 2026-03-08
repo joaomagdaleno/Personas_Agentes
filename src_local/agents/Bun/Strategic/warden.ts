@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "Bun_Warden" });
@@ -16,28 +16,26 @@ export class WardenPersona extends BaseActivePersona {
         this.stack = "Bun";
     }
 
-    async performAudit(): Promise<any[]> {
-        this.startMetrics();
-        logger.info(`[${this.name}] Analisando Governança Bun...`);
-
-        const auditRules = [
-            { regex: '(?:cpf|rg|ssn|birthDate|nascimento)\\s*[:=]', issue: 'PII: Dado pessoal sensível no Bun sem criptografia.', severity: 'critical' },
-            { regex: 'localStorage\\.setItem\\(.*(?:user|email|token)', issue: 'LGPD: Dados pessoais em localStorage sem consentimento.', severity: 'high' },
-            { regex: 'document\\.cookie\\s*=', issue: 'Rastreamento: Cookie sendo definido no Bun.', severity: 'high' },
-            { regex: 'Bun\\.file\\([^)]*\\).*(?:cpf|rg|password|ssn)', issue: 'PII em Disco: Bun.file lendo/gravando dados sensíveis.', severity: 'critical' },
-        ];
-
-        const results = this.findPatterns(['.ts', '.tsx'], auditRules as any);
-        this.endMetrics(results.length);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.ts', '.tsx'],
+            rules: [
+                { regex: /(?:cpf|rg|ssn|birthDate|nascimento)\s*[:=]/i, issue: 'PII: Dado pessoal sensível no Bun sem criptografia.', severity: 'critical' },
+                { regex: /localStorage\.setItem\(.*(?:user|email|token)/, issue: 'LGPD: Dados pessoais em localStorage sem consentimento.', severity: 'high' },
+                { regex: /document\.cookie\s*=/, issue: 'Rastreamento: Cookie sendo definido no Bun.', severity: 'high' },
+                { regex: /Bun\.file\([^)]*\).*(?:cpf|rg|password|ssn)/i, issue: 'PII em Disco: Bun.file lendo/gravando dados sensíveis.', severity: 'critical' },
+            ]
+        };
     }
 
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         if (!/cpf|rg|ssn|nascimento/i.test(content)) return null;
 
         return {
-            file, severity: "CRITICAL", persona: this.name,
-            issue: `Risco LGPD: O objetivo '${objective}' exige conformidade. Em '${file}', PII sem proteção viola a legislação no ambiente Bun.`
+            file, severity: "CRITICAL",
+            issue: `Risco LGPD: O objetivo '${objective}' exige conformidade. Em '${file}', PII sem proteção viola a legislação no ambiente Bun.`,
+            context: "PII pattern detected"
         };
     }
 

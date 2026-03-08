@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "TS_Bridge" });
@@ -16,44 +16,31 @@ export class BridgePersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    async performAudit(): Promise<any[]> {
-        const start = Date.now();
-        logger.info(`[${this.name}] Analisando Integrações TypeScript...`);
-
-        const auditRules = [
-            { regex: 'fetch\\s*\\([^)]*\\)\\s*\\.then\\([^)]*\\)\\s*\\.then\\([^)]*as\\s+any', issue: 'Contrato Quebrado: Resposta de API tipada como "any" — sem verificação.', severity: 'high' },
-            { regex: 'axios\\.(?:get|post|put|delete)\\s*<\\s*any\\s*>', issue: 'Contrato Vago: Chamada HTTP sem tipo de resposta definido.', severity: 'high' },
-            { regex: 'JSON\\.parse\\([^)]+\\)(?!\\s*as\\b)', issue: 'Risco de Runtime: JSON.parse sem type assertion — resultado é "any".', severity: 'medium' },
-            { regex: '\\.json\\(\\)(?!\\s*as\\b)', issue: 'Contrato Implícito: .json() sem tipagem de resposta.', severity: 'medium' },
-        ];
-
-        const results: any[] = [];
-        for (const rule of auditRules) {
-            const regex = new RegExp(rule.regex, 'g');
-            for (const [filePath, content] of Object.entries(this.contextData)) {
-                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx')) {
-                    for (const match of (content as string).matchAll(regex)) {
-                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0].substring(0, 60), persona: this.name });
-                    }
-                }
-            }
-        }
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.ts', '.tsx'],
+            rules: [
+                { regex: /fetch\s*\([^)]*\)\s*\.then\([^)]*\)\s*\.then\([^)]*as\s+any/, issue: 'Contrato Quebrado: Resposta de API tipada como "any" — sem verificação.', severity: 'high' },
+                { regex: /axios\.(?:get|post|put|delete)\s*<\s*any\s*>/, issue: 'Contrato Vago: Chamada HTTP sem tipo de resposta definido.', severity: 'high' },
+                { regex: /JSON\.parse\([^)]+\)(?!\s*as\b)/, issue: 'Risco de Runtime: JSON.parse sem type assertion — resultado é "any".', severity: 'medium' },
+                { regex: /\.json\(\)(?!\s*as\b)/, issue: 'Contrato Implícito: .json() sem tipagem de resposta.', severity: 'medium' },
+            ]
+        };
     }
 
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         if (/JSON\.parse\([^)]+\)(?!\s*as\b)/.test(content)) {
             return {
-                file, severity: "MEDIUM", persona: this.name,
-                issue: `Quebra de Contrato: O objetivo '${objective}' exige previsibilidade. Em '${file}', o uso de JSON.parse sem tipagem torna a 'Orquestração de Inteligência Artificial' vulnerável.`
+                file, severity: "MEDIUM",
+                issue: `Quebra de Contrato: O objetivo '${objective}' exige previsibilidade. Em '${file}', o uso de JSON.parse sem tipagem torna a 'Orquestração de Inteligência Artificial' vulnerável.`,
+                context: "JSON.parse without type assertion"
             };
         }
         return {
-            file, severity: "INFO", persona: this.name,
-            issue: `PhD Bridge: Analisando contratos de integração para ${objective}. Focando em tipagem de fronteiras e APIs.`
+            file, severity: "INFO",
+            issue: `PhD Bridge: Analisando contratos de integração para ${objective}. Focando em tipagem de fronteiras e APIs.`,
+            context: "analyzing contracts"
         };
     }
 

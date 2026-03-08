@@ -6,7 +6,7 @@ import { Diagnostician } from "./strategies/Diagnostician.ts";
 import { BaseHelpers } from "./BaseHelpers.ts";
 
 export interface AuditRule { regex: RegExp; issue: string; severity: "critical" | "high" | "medium" | "low"; }
-export interface AuditFinding { file: string; agent: string; role: string; emoji: string; issue: string; severity: string; stack: string; }
+export interface AuditFinding { file: string; agent: string; role: string; emoji: string; issue: string; severity: string; stack: string; evidence: string; match_count: number; line_number?: number; }
 export interface StrategicFinding { file: string; issue: string; severity: string; context: string; objective?: string; analysis?: string; recommendation?: string; }
 
 const logger = winston.child({ module: "BaseActivePersona" });
@@ -94,5 +94,21 @@ export abstract class BaseActivePersona {
             return this.maturityEvaluator.evaluatePersona(this.projectRoot, this.stack, this.name);
         }
         return { score: 0, status: "OFFLINE" };
+    }
+
+    /**
+     * Define as extensões e regras para auditoria de padrões via RegexSet (Rust).
+     */
+    abstract getAuditRules(): { extensions: string[]; rules: AuditRule[] };
+
+    /**
+     * Auditoria padronizada utilizando o motor de alta performance.
+     */
+    async performAudit(): Promise<AuditFinding[]> {
+        this.startMetrics();
+        const { extensions, rules } = this.getAuditRules();
+        const results = this.findPatterns(extensions, rules);
+        this.endMetrics(results.length);
+        return results;
     }
 }

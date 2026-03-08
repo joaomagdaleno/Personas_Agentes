@@ -14,19 +14,18 @@ export class ScopePersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /\/\/\s*TODO[:\s]/, issue: "Dívida: TODO pendente no código Flutter.", severity: "medium" },
-            { regex: /\/\/\s*FIXME[:\s]/, issue: "Dívida Crítica: FIXME detectado na lógica Flutter.", severity: "high" },
-            { regex: /\/\/\s*HACK[:\s]/, issue: "Gambiarra: HACK detectado no projeto Flutter.", severity: "high" },
-            { regex: /\/\/\s*XXX[:\s]/, issue: "Alerta: Verifique ponto crítico XXX no código Flutter.", severity: "medium" },
-            { regex: /throw\s+UnimplementedError\(\)/, issue: "Incompleto: Funcionalidade Flutter declarada mas não implementada.", severity: "high" },
-            { regex: /\/\/\s*ignore[:\s]/, issue: "Omissão: Supressão manual de lint; verifique dívida técnica Flutter.", severity: "low" }
-        ];
-        const results = this.findPatterns([".dart"], rules);
-        this.endMetrics(results.length);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".dart"],
+            rules: [
+                { regex: /\/\/\s*TODO[:\s]/, issue: "Dívida: TODO pendente no código Flutter.", severity: "medium" },
+                { regex: /\/\/\s*FIXME[:\s]/, issue: "Dívida Crítica: FIXME detectado na lógica Flutter.", severity: "high" },
+                { regex: /\/\/\s*HACK[:\s]/, issue: "Gambiarra: HACK detectado no projeto Flutter.", severity: "high" },
+                { regex: /\/\/\s*XXX[:\s]/, issue: "Alerta: Verifique ponto crítico XXX no código Flutter.", severity: "medium" },
+                { regex: /throw\s+UnimplementedError\(\)/, issue: "Incompleto: Funcionalidade Flutter declarada mas não implementada.", severity: "high" },
+                { regex: /\/\/\s*ignore[:\s]/, issue: "Omissão: Supressão manual de lint; verifique dívida técnica Flutter.", severity: "low" }
+            ]
+        };
     }
 
     public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {

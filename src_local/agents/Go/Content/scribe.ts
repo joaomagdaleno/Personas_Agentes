@@ -33,23 +33,27 @@ export class ScribePersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /package\s+\w+\s+\/\//, issue: "Package Doc: Verifique se o pacote possui um comentário de cabeçalho descrevendo sua responsabilidade macro.", severity: "low" },
-            { regex: /Example\w+\(\)/, issue: "Verifiable Examples: O uso de funções Example garante que a documentação é testada; continue assim.", severity: "low" },
-            { regex: /\/\/.*http/, issue: "Reference Link: Links externos em comentários detectados; verifique se os alvos ainda são válidos.", severity: "low" },
-            { regex: /Deprecated:/, issue: "Deprecation Notice: Garanta que a nota de depreciação inclui a alternativa recomendada.", severity: "medium" },
-            { regex: /\/\/\s*\{/, issue: "Commented Code: Código comentado detectado; remova ou arquive para manter a limpeza do arquivo.", severity: "medium" },
-            { regex: /Bug:/i, issue: "Open Bug Info: Informação de bug detectada em comentário; verifique se já existe um ticket correspondente.", severity: "high" }
-        ];
-        const results = this.findPatterns([".go"], rules);
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go"],
+            rules: [
+                { regex: /package\s+\w+\s+\/\//, issue: "Package Doc: Verifique se o pacote possui um comentário de cabeçalho descrevendo sua responsabilidade macro.", severity: "low" },
+                { regex: /Example\w+\(\)/, issue: "Verifiable Examples: O uso de funções Example garante que a documentação é testada; continue assim.", severity: "low" },
+                { regex: /\/\/.*http/, issue: "Reference Link: Links externos em comentários detectados; verifique se os alvos ainda são válidos.", severity: "low" },
+                { regex: /Deprecated:/, issue: "Deprecation Notice: Garanta que a nota de depreciação inclui a alternativa recomendada.", severity: "medium" },
+                { regex: /\/\/\s*\{/, issue: "Commented Code: Código comentado detectado; remova ou arquive para manter a limpeza do arquivo.", severity: "medium" },
+                { regex: /Bug:/i, issue: "Open Bug Info: Informação de bug detectada em comentário; verifique se já existe um ticket correspondente.", severity: "high" }
+            ]
+        };
+    }
 
-        // Advanced Logic Density
+    public override async performAudit(): Promise<AuditFinding[]> {
+        const results = await super.performAudit();
         const docIssues = GoScribeEngine.audit(this.projectRoot || "");
-        docIssues.forEach(i => results.push({ file: "DOCUMENTATION_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: i, severity: "low", stack: this.stack }));
-
-        this.endMetrics(results.length);
+        docIssues.forEach(i => results.push({
+            file: "DOCUMENTATION_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: i, severity: "low", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
         return results;
     }
 

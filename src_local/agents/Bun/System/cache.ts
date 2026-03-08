@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "Bun_Cache" });
@@ -16,39 +16,25 @@ export class CachePersona extends BaseActivePersona {
         this.stack = "Bun";
     }
 
-    async performAudit(): Promise<any[]> {
-        const start = Date.now();
-        logger.info(`[${this.name}] Analisando I/O Bun...`);
-
-        const auditRules = [
-            { regex: 'readFileSync\\(', issue: 'Bloqueio: readFileSync em Bun — use Bun.file().text().', severity: 'high' },
-            { regex: 'writeFileSync\\(', issue: 'Bloqueio: writeFileSync em Bun — use Bun.write().', severity: 'high' },
-            { regex: 'fs\\.readFile\\(', issue: 'Polyfill: fs.readFile em Bun — use Bun.file() nativo.', severity: 'medium' },
-            { regex: 'fs\\.writeFile\\(', issue: 'Polyfill: fs.writeFile em Bun — use Bun.write() nativo.', severity: 'medium' },
-        ];
-
-        const results: any[] = [];
-        for (const rule of auditRules) {
-            const regex = new RegExp(rule.regex, 'g');
-            for (const [filePath, content] of Object.entries(this.contextData)) {
-                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx')) {
-                    for (const match of (content as string).matchAll(regex)) {
-                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0], persona: this.name });
-                    }
-                }
-            }
-        }
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.ts', '.tsx'],
+            rules: [
+                { regex: /readFileSync\(/, issue: 'Bloqueio: readFileSync em Bun — use Bun.file().text().', severity: 'high' },
+                { regex: /writeFileSync\(/, issue: 'Bloqueio: writeFileSync em Bun — use Bun.write().', severity: 'high' },
+                { regex: /fs\.readFile\(/, issue: 'Polyfill: fs.readFile em Bun — use Bun.file() nativo.', severity: 'medium' },
+                { regex: /fs\.writeFile\(/, issue: 'Polyfill: fs.writeFile em Bun — use Bun.write() nativo.', severity: 'medium' },
+            ]
+        };
     }
 
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         if (/readFileSync|writeFileSync/.test(content)) {
             return {
-                file, severity: "HIGH", persona: this.name,
-                issue: `Lentidão: O objetivo '${objective}' exige I/O nativo Bun. Em '${file}', sync I/O desperdiça o potencial do Bun runtime.`
+                file, severity: "HIGH",
+                issue: `Lentidão: O objetivo '${objective}' exige I/O nativo Bun. Em '${file}', sync I/O desperdiça o potencial do Bun runtime.`,
+                context: "Sync I/O detected"
             };
         }
         return null;

@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "TS_Scope" });
@@ -16,47 +16,34 @@ export class ScopePersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    async performAudit(): Promise<any[]> {
-        const start = Date.now();
-        logger.info(`[${this.name}] Analisando Gestão de Escopo TypeScript...`);
-
-        const auditRules = [
-            { regex: '\\/\\/\\s*TODO[:\\s]', issue: 'Dívida Técnica: TODO pendente — tarefa incompleta no código.', severity: 'medium' },
-            { regex: '\\/\\/\\s*FIXME[:\\s]', issue: 'Dívida Crítica: FIXME — bug conhecido e aceito sem correção.', severity: 'high' },
-            { regex: '\\/\\/\\s*HACK[:\\s]', issue: 'Gambiarra: HACK — solução temporária perigosa.', severity: 'high' },
-            { regex: '\\/\\/\\s*XXX[:\\s]', issue: 'Alerta: XXX — área de código perigosa marcada para revisão.', severity: 'medium' },
-            { regex: 'throw\\s+new\\s+Error\\(["\']not\\s+implemented', issue: 'Incompleto: Funcionalidade declarada mas não implementada.', severity: 'high' },
-            { regex: 'as\\s+any\\s*\\/\\/.*later|as\\s+any\\s*\\/\\/.*temporary', issue: 'Supressão Temporária: type assertion "any" com promessa de resolver depois.', severity: 'medium' },
-        ];
-
-        const results: any[] = [];
-        for (const rule of auditRules) {
-            const regex = new RegExp(rule.regex, 'gi');
-            for (const [filePath, content] of Object.entries(this.contextData)) {
-                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx')) {
-                    for (const match of (content as string).matchAll(regex)) {
-                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0], persona: this.name });
-                    }
-                }
-            }
-        }
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.ts', '.tsx'],
+            rules: [
+                { regex: /\/\/\s*TODO[:\s]/i, issue: 'Dívida Técnica: TODO pendente — tarefa incompleta no código.', severity: 'medium' },
+                { regex: /\/\/\s*FIXME[:\s]/i, issue: 'Dívida Crítica: FIXME — bug conhecido e aceito sem correção.', severity: 'high' },
+                { regex: /\/\/\s*HACK[:\s]/i, issue: 'Gambiarra: HACK — solução temporária perigosa.', severity: 'high' },
+                { regex: /\/\/\s*XXX[:\s]/i, issue: 'Alerta: XXX — área de código perigosa marcada para revisão.', severity: 'medium' },
+                { regex: /throw\s+new\s+Error\(["']not\s+implemented/i, issue: 'Incompleto: Funcionalidade declarada mas não implementada.', severity: 'high' },
+                { regex: /as\s+any\s*\/\/.*later|as\s+any\s*\/\/.*temporary/i, issue: 'Supressão Temporária: type assertion "any" com promessa de resolver depois.', severity: 'medium' },
+            ]
+        };
     }
 
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         const todoCount = (content.match(/\/\/\s*(TODO|FIXME|HACK|XXX)/gi) || []).length;
         if (todoCount > 3) {
             return {
-                file, severity: "HIGH", persona: this.name,
-                issue: `Erosão de Escopo: O objetivo '${objective}' exige entrega completa. O arquivo '${file}' contém ${todoCount} marcadores de dívida técnica na 'Orquestração de Inteligência Artificial'.`
+                file, severity: "HIGH",
+                issue: `Erosão de Escopo: O objetivo '${objective}' exige entrega completa. O arquivo '${file}' contém ${todoCount} marcadores de dívida técnica na 'Orquestração de Inteligência Artificial'.`,
+                context: `Debt markers: ${todoCount}`
             };
         }
         return {
-            file, severity: "INFO", persona: this.name,
-            issue: `PhD Scope: Analisando integridade do backlog para ${objective}. Focando em priorização e eliminação de dívida técnica.`
+            file, severity: "INFO",
+            issue: `PhD Scope: Analisando integridade do backlog para ${objective}. Focando em priorização e eliminação de dívida técnica.`,
+            context: `Debt markers: ${todoCount}`
         };
     }
 
