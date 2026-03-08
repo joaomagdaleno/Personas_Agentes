@@ -143,3 +143,150 @@ fn classify_semantic_blocks(content: &str) -> HashMap<usize, String> {
     
     blocks
 }
+
+/// 📑 index_project — walkdir + memmap2 powered file discovery and metadata extraction.
+/// Replaces Bun Glob + batch IPC entirely: one native call does everything.
+pub fn index_project(project_root: &str) -> Vec<ProcessedFile> {
+    let skip_dirs = ["__pycache__", "node_modules", ".agent", "legacy_restore", "legacy_archive", ".git", "target", "dist", ".next", "build"];
+    let valid_exts = ["ts", "tsx", "py", "js", "go", "dart", "kt"];
+
+    let file_paths: Vec<String> = walkdir::WalkDir::new(project_root)
+        .into_iter()
+        .filter_entry(|e| {
+            let name = e.file_name().to_string_lossy();
+            !skip_dirs.iter().any(|s| name == *s)
+        })
+        .filter_map(|e| e.ok())
+        .filter(|e| {
+            e.file_type().is_file() && {
+                let ext = e.path().extension().and_then(|x| x.to_str()).unwrap_or("");
+                valid_exts.contains(&ext)
+            }
+        })
+        .filter_map(|e| {
+            e.path().strip_prefix(project_root).ok()
+                .map(|p| p.to_string_lossy().replace("\\", "/"))
+        })
+        .collect();
+
+    eprintln!("📂 [index] Discovered {} files in {}", file_paths.len(), project_root);
+    process_batch(file_paths, project_root)
+}
+
+#[derive(serde::Deserialize)]
+pub struct PatternRequest {
+    pub file_paths: Vec<String>,
+    pub project_root: String,
+    pub persona_rules: Vec<crate::audit::PersonaRuleSet>,
+}
+
+pub fn find_patterns(request: PatternRequest) -> Vec<crate::audit::AuditFinding> {
+    let all_patterns: Vec<String> = request.persona_rules.iter()
+        .flat_map(|ps| ps.rules.iter().map(|r| r.regex.clone()))
+        .collect();
+
+    if all_patterns.is_empty() || request.file_paths.is_empty() {
+        return Vec::new();
+    }
+
+    let regex_set = regex::RegexSet::new(&all_patterns).unwrap_or_else(|_| {
+        regex::RegexSet::new(vec![r"^$"]).unwrap()
+    });
+
+    request.file_paths.into_par_iter()
+        .filter_map(|rel_path| {
+            let full_path = Path::new(&request.project_root).join(&rel_path);
+            let content = match read_file_content(&full_path) {
+                Ok(c) => c,
+                Err(_) => return None,
+            };
+
+            let matches: Vec<usize> = regex_set.matches(&content).into_iter().collect();
+            
+            let mut file_findings: Vec<_> = matches.into_iter().filter_map(|rule_idx| {
+                let (p_idx, r_idx) = resolve_rule_index(rule_idx, &request.persona_rules)?;
+                let persona = &request.persona_rules[p_idx];
+                let rule = &persona.rules[r_idx];
+
+                let file_ext = Path::new(&rel_path)
+                    .extension()
+                    .and_then(|e| e.to_str())
+                    .map(|e| format!(".{}", e))
+                    .unwrap_or_default();
+
+                if !persona.extensions.iter().any(|ext| ext == &file_ext || rel_path.ends_with(ext)) {
+                    return None;
+                }
+
+                Some(crate::audit::AuditFinding {
+                    file: rel_path.clone(),
+                    agent: persona.agent.clone(),
+                    role: persona.role.clone(),
+                    emoji: persona.emoji.clone(),
+                    issue: rule.issue.clone(),
+                    severity: rule.severity.clone(),
+                    stack: persona.stack.clone(),
+                    evidence: extract_evidence(&content, &rule.regex, rule_idx),
+                })
+            }).collect();
+            
+            let is_code = rel_path.ends_with(".ts") || rel_path.ends_with(".js") || rel_path.ends_with(".py");
+            if is_code {
+                file_findings.extend(detect_obfuscation(&content, &rel_path));
+            }
+            
+            if file_findings.is_empty() { None } else { Some(file_findings) }
+        })
+        .flatten()
+        .collect()
+}
+
+fn resolve_rule_index(global_idx: usize, persona_rules: &[crate::audit::PersonaRuleSet]) -> Option<(usize, usize)> {
+    let mut current = 0;
+    for (p_idx, persona) in persona_rules.iter().enumerate() {
+        let rule_count = persona.rules.len();
+        if global_idx < current + rule_count {
+            return Some((p_idx, global_idx - current));
+        }
+        current += rule_count;
+    }
+    None
+}
+
+fn extract_evidence(content: &str, pattern: &str, _match_idx: usize) -> String {
+    if let Ok(re) = regex::Regex::new(pattern) {
+        if let Some(m) = re.find(content) {
+            let s = m.as_str();
+            return s[..s.len().min(100)].to_string();
+        }
+    }
+    "pattern_match".to_string()
+}
+
+fn detect_obfuscation(content: &str, file_path: &str) -> Vec<crate::audit::AuditFinding> {
+    let mut findings = Vec::new();
+    let dangerous = ["eval", "process.env", "require", "exec", "execSync", "spawn", "Buffer.from", "fs.readFile", "document.cookie", "localStorage", "window.crypto", "__dirname", "setTimeout", "setInterval", "Function"];
+    
+    let concat_re = regex::Regex::new(r#"(["'][^"']*["']\s*\+\s*)+["'][^"']*["']"#).unwrap();
+    
+    for cap in concat_re.captures_iter(content) {
+        let matched = cap[0].to_string();
+        let reconstructed = matched.replace("'", "").replace("\"", "").replace(" ", "").replace("+", "");
+        
+        for kw in dangerous.iter() {
+            if reconstructed.contains(kw) && !matched.contains(kw) {
+                findings.push(crate::audit::AuditFinding {
+                    file: file_path.to_string(),
+                    agent: "Security Guard".to_string(),
+                    role: "Protector".to_string(),
+                    emoji: "🛡️".to_string(),
+                    issue: format!("Possível Ofuscação: '{}' fragmentado", kw),
+                    severity: "HIGH".to_string(),
+                    stack: "Security".to_string(),
+                    evidence: matched.chars().take(80).collect(),
+                });
+            }
+        }
+    }
+    findings
+}

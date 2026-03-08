@@ -1,8 +1,9 @@
 /**
  * SISTEMA DE PERSONAS AGENTES - INDEXADOR TÉCNICO
+ * Delegação total ao Rust Analyzer (walkdir + memmap2).
  */
 import winston from "winston";
-import { Glob } from "bun";
+import * as path from "node:path";
 
 const logger = winston.child({ module: "Indexer" });
 
@@ -16,55 +17,38 @@ export interface IndexData {
 }
 
 /**
- * 📑 Indexer — Cataloga a estrutura anatômica do projeto.
+ * 📑 Indexer — Cataloga a estrutura anatômica do projeto via Rust nativo.
  */
 export class Indexer {
+    private static BINARY_PATH = path.resolve(process.cwd(), "src_native/analyzer/target/release/analyzer.exe");
+
     constructor(private projectRoot: string) { }
 
     async updateIndex(): Promise<IndexData> {
-        logger.info("📡 Iniciando indexação soberana de metadados via Rust Analyzer...");
+        logger.info("📡 Iniciando indexação soberana via Rust Analyzer (walkdir + memmap2)...");
         const startTime = Date.now();
         const indexData = this.getEmptyIndex();
 
         try {
-            const files = await this.getAuditableFiles();
+            const proc = Bun.spawnSync([Indexer.BINARY_PATH, "index", this.projectRoot], {
+                cwd: this.projectRoot,
+                env: { ...process.env },
+            });
 
-            if (files.length > 0) {
-                const batchRequest = {
-                    file_paths: files,
-                    project_root: this.projectRoot
+            if (proc.exitCode !== 0) {
+                throw new Error(`Rust analyzer index failed: ${proc.stderr.toString()}`);
+            }
+
+            const processedFiles: any[] = JSON.parse(proc.stdout.toString());
+
+            for (const pf of processedFiles) {
+                const metadata: FileMetadata = {
+                    classes: pf.classes || [],
+                    functions: pf.functions || [],
+                    exports: pf.exports || [],
+                    lines: pf.lines || 0
                 };
-
-                const tmpPath = `${this.projectRoot}/.agent/tmp_batch_${Date.now()}.json`;
-                await Bun.write(tmpPath, JSON.stringify(batchRequest));
-
-                const binaryPath = `${this.projectRoot}/src_native/analyzer/target/release/analyzer.exe`;
-
-                const proc = Bun.spawnSync([binaryPath, "batch", tmpPath], {
-                    cwd: this.projectRoot,
-                    env: { ...process.env },
-                });
-
-                import("node:fs").then(fs => {
-                    if (fs.existsSync(tmpPath)) fs.unlinkSync(tmpPath);
-                });
-
-                if (proc.exitCode !== 0) {
-                    throw new Error(`Rust analyzer failed with code ${proc.exitCode}: ${proc.stderr.toString()}`);
-                }
-
-                const outputRaw = proc.stdout.toString();
-                const processedFiles: any[] = JSON.parse(outputRaw);
-
-                for (const pf of processedFiles) {
-                    const metadata: FileMetadata = {
-                        classes: pf.classes || [],
-                        functions: pf.functions || [],
-                        exports: pf.exports || [],
-                        lines: pf.lines || 0
-                    };
-                    this.integrateResult(indexData, pf.path, metadata);
-                }
+                this.integrateResult(indexData, pf.path, metadata);
             }
 
             const duration = ((Date.now() - startTime) / 1000).toFixed(2);
@@ -82,17 +66,6 @@ export class Indexer {
         };
     }
 
-    private async getAuditableFiles(): Promise<string[]> {
-        const glob = new Glob("**/*.{ts,py}");
-        const files: string[] = [];
-        for await (const file of glob.scan({ cwd: this.projectRoot, absolute: false })) {
-            if (!this._shouldSkip(file)) {
-                files.push(file);
-            }
-        }
-        return files;
-    }
-
     private integrateResult(indexData: IndexData, file: string, metadata: FileMetadata) {
         indexData.files[file] = metadata;
         indexData.stats.totalFiles++;
@@ -100,13 +73,5 @@ export class Indexer {
         indexData.stats.totalFunctions += metadata.functions.length;
         indexData.stats.totalExports += metadata.exports.length;
     }
-
-    private isValidPatternMatch(match: RegExpExecArray): boolean {
-        return !!match[1] && !match[1].startsWith("_");
-    }
-
-    private _shouldSkip(file: string): boolean {
-        const skip = ["__pycache__", "node_modules", ".agent", "legacy_restore", "legacy_archive", ".git"];
-        return skip.some(s => file.includes(s));
-    }
 }
+

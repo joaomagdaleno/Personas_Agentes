@@ -22,7 +22,7 @@ export class PatternFinder {
                         issue: r.issue,
                         severity: r.severity
                     }))
-                }]);
+                }], agent.projectRoot);
             } catch (err) {
                 logger.warn("Rust audit failed, falling back to TypeScript", { error: err });
             }
@@ -38,17 +38,14 @@ export class PatternFinder {
     }
 
     /**
-     * 🦀 Executa auditoria em lote para MÚLTIPLAS personas e TODOS os arquivos em UMA única passada.
-     * Tier 1 High-Performance.
+     * 🦀 Executa auditoria em lote para MÚLTIPLAS personas e TODOS os arquivos em UMA única passada via Mmap no Rust.
      */
-    static findBulk(context: Record<string, any>, personaRuleSets: any[]): any[] {
+    static findBulk(context: Record<string, any>, personaRuleSets: any[], projectRoot: string): any[] {
         if (!fs.existsSync(this.BINARY_PATH)) return [];
 
         const request = {
-            files: Object.entries(context).map(([f, d]) => ({
-                path: f,
-                content: d.content || ""
-            })),
+            file_paths: Object.keys(context),
+            project_root: projectRoot || process.cwd(),
             persona_rules: personaRuleSets
         };
 
@@ -56,9 +53,9 @@ export class PatternFinder {
         fs.writeFileSync(tmpFile, JSON.stringify(request));
 
         try {
-            const output = cp.execSync(`${this.BINARY_PATH} audit ${tmpFile}`, {
+            const output = cp.execSync(`${this.BINARY_PATH} patterns ${tmpFile}`, {
                 encoding: 'utf8',
-                maxBuffer: 100 * 1024 * 1024 // 100MB buffer for large audits
+                maxBuffer: 100 * 1024 * 1024
             });
             return JSON.parse(output);
         } finally {

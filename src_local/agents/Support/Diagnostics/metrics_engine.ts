@@ -1,6 +1,4 @@
 import winston from "winston";
-import { CyclomaticAnalyst } from "./strategies/CyclomaticAnalyst.ts";
-import { CognitiveAnalyst } from "./strategies/CognitiveAnalyst.ts";
 import { HalsteadAnalyst } from "./strategies/HalsteadAnalyst.ts";
 import { SizeAnalyst } from "./strategies/SizeAnalyst.ts";
 import { RelationshipAnalyst } from "./strategies/RelationshipAnalyst.ts";
@@ -38,8 +36,8 @@ export class MetricsEngine {
         const isShadow = filePath.includes("_shadow");
         const analysisContent = isShadow ? this.extractSelfCode(content) : content;
 
-        const cc = goMetrics?.totalComplexity ?? CyclomaticAnalyst.calculate(analysisContent);
-        const cog = goMetrics?.cognitiveComplexity ?? CognitiveAnalyst.calculate(analysisContent);
+        const cc = goMetrics?.totalComplexity ?? 1;
+        const cog = goMetrics?.cognitiveComplexity ?? 0;
         const halstead = HalsteadAnalyst.calculate(analysisContent);
         const loc = goMetrics?.loc ?? SizeAnalyst.countLOC(content);
         const sloc = goMetrics?.sloc ?? SizeAnalyst.countExecutableLOC(analysisContent);
@@ -61,7 +59,7 @@ export class MetricsEngine {
             cbo, ca, dit, maintainabilityIndex: Math.max(0, mi),
             defectDensity, testCoverage: 0, riskLevel: risk,
             qualityGate: gate, isShadow,
-            shadowComplexity: isShadow ? this.calculateShadowSelfComplexity(content) : 0,
+            shadowComplexity: isShadow ? Math.min(cc, 15) : 0,
             telemetry: ["telemetry", "log_performance", "winston", "logger"].some(kw => content.includes(kw))
         };
 
@@ -71,10 +69,6 @@ export class MetricsEngine {
 
     private extractSelfCode(content: string): string {
         return content.split('\n').filter(line => !line.trim().startsWith('import ') && !line.trim().startsWith('export ') && !line.trim().startsWith('from ')).join('\n');
-    }
-
-    private calculateShadowSelfComplexity(content: string): number {
-        return Math.min(CyclomaticAnalyst.calculate(this.extractSelfCode(content)), 15);
     }
 
     validateShadowCompliance(metrics: MetricsResult): { compliant: boolean; reason: string } {

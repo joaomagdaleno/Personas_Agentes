@@ -21,7 +21,8 @@ use serde::Serialize;
 #[derive(Serialize)]
 struct FunctionMetric {
     name: String,
-    score: i32,
+    cyclomatic_complexity: i32,
+    cognitive_complexity: i32,
     nesting: i32,
     line: usize,
 }
@@ -29,21 +30,37 @@ struct FunctionMetric {
 #[derive(Serialize)]
 struct AnalysisResult {
     path: String,
-    total_complexity: i32,
+    cyclomatic_complexity: i32,
+    cognitive_complexity: i32,
     functions: Vec<FunctionMetric>,
     loc: usize,
     sloc: usize,
     comments: usize,
 }
 
-// Improved walk_ast to handle nested scores
-fn collect_metrics(node: Node, depth: i32, score: &mut i32, max_nesting: &mut i32) {
+// Improved walk_ast to handle separated complexities
+fn collect_metrics(node: Node, depth: i32, cyclomatic: &mut i32, cognitive: &mut i32, max_nesting: &mut i32) {
     let kind = node.kind();
-    let nestable = ["if_statement", "for_statement", "while_statement", "do_statement", "case_clause", "catch_clause", "switch_statement", "conditional_expression"];
+    
+    let is_branch = ["if_statement", "for_statement", "while_statement", "do_statement", "for_in_statement", "case_clause", "catch_clause", "conditional_expression", "ternary_expression", "&&", "||", "??"].contains(&kind);
+    
+    if is_branch {
+        *cyclomatic += 1;
+    }
+
+    let is_nestable = ["if_statement", "for_statement", "while_statement", "do_statement", "for_in_statement", "catch_clause", "switch_statement"].contains(&kind);
     
     let mut current_depth = depth;
-    if nestable.contains(&kind) {
-        *score += 1 + depth;
+    
+    if is_nestable {
+        *cognitive += 1 + depth;
+        current_depth += 1;
+        if current_depth > *max_nesting {
+            *max_nesting = current_depth;
+        }
+    } else if ["conditional_expression", "ternary_expression"].contains(&kind) {
+        *cognitive += 1 + depth;
+    } else if ["arrow_function", "function_declaration", "method_definition", "function"].contains(&kind) {
         current_depth += 1;
         if current_depth > *max_nesting {
             *max_nesting = current_depth;
@@ -53,7 +70,7 @@ fn collect_metrics(node: Node, depth: i32, score: &mut i32, max_nesting: &mut i3
     let mut cursor = node.walk();
     if cursor.goto_first_child() {
         loop {
-            collect_metrics(cursor.node(), current_depth, score, max_nesting);
+            collect_metrics(cursor.node(), current_depth, cyclomatic, cognitive, max_nesting);
             if !cursor.goto_next_sibling() { break; }
         }
     }
@@ -120,13 +137,15 @@ fn run_analyze(path: &str) {
                 }
             }
 
-            let mut score = 0;
+            let mut cyclomatic = 1;
+            let mut cognitive = 0;
             let mut nesting = 0;
-            collect_metrics(node, 0, &mut score, &mut nesting);
+            collect_metrics(node, 0, &mut cyclomatic, &mut cognitive, &mut nesting);
 
             functions.push(FunctionMetric {
                 name,
-                score,
+                cyclomatic_complexity: cyclomatic,
+                cognitive_complexity: cognitive,
                 nesting,
                 line: node.start_position().row + 1,
             });
@@ -142,11 +161,13 @@ fn run_analyze(path: &str) {
         }
     }
 
-    let total_complexity: i32 = functions.iter().map(|f| f.score).sum();
+    let cyclomatic_complexity: i32 = functions.iter().map(|f| f.cyclomatic_complexity).sum();
+    let cognitive_complexity: i32 = functions.iter().map(|f| f.cognitive_complexity).sum();
 
     let result = AnalysisResult {
         path: path.to_string(),
-        total_complexity,
+        cyclomatic_complexity,
+        cognitive_complexity,
         functions,
         loc,
         sloc,
@@ -235,6 +256,14 @@ fn main() {
             let response = penalty::calculate_penalty(request);
             println!("{}", serde_json::to_string_pretty(&response).unwrap());
         }
+        "index" => {
+            if args.len() < 3 {
+                eprintln!("Usage: analyzer index <project_root>");
+                std::process::exit(1);
+            }
+            let results = batch::index_project(&args[2]);
+            println!("{}", serde_json::to_string_pretty(&results).unwrap());
+        }
         "batch" => {
             if args.len() < 3 {
                 eprintln!("Usage: analyzer batch <json_path>");
@@ -277,6 +306,16 @@ fn main() {
             let request: pruner::PruneRequest = serde_json::from_str(&content).expect("Invalid prune request JSON");
             let result = pruner::prune_context(request);
             println!("{}", serde_json::to_string_pretty(&result).unwrap());
+        }
+        "patterns" => {
+            if args.len() < 3 {
+                eprintln!("Usage: analyzer patterns <json_path>");
+                std::process::exit(1);
+            }
+            let content = fs::read_to_string(&args[2]).expect("Unable to read JSON file");
+            let request: batch::PatternRequest = serde_json::from_str(&content).expect("Invalid pattern request JSON");
+            let findings = batch::find_patterns(request);
+            println!("{}", serde_json::to_string_pretty(&findings).unwrap());
         }
         "search" => {
             if args.len() < 3 {

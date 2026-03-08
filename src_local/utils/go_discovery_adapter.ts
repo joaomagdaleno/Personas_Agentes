@@ -54,7 +54,7 @@ export class GoDiscoveryAdapter {
                     path: item.path || "unknown",
                     exists: true,
                     units: [],
-                    total_complexity: item.complexity || 0,
+                    total_complexity: item.cyclomatic_complexity || item.complexity || item.total_complexity || 0,
                     cognitive_complexity: item.cognitive_complexity || 0,
                     loc: item.loc || 0,
                     sloc: item.sloc || 0,
