@@ -22,7 +22,13 @@ import (
 
 	pb "personas-agentes/hub/proto"
 
+	"crypto/tls"
+	"crypto/x509"
+
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/health"
+	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/kardianos/service"
@@ -994,13 +1000,54 @@ func (p *program) run() {
 	go p.hub.startBroadcaster()
 	go p.hub.startWatcher("../..")
 
-	// gRPC Server
+	// gRPC Server with optional mTLS
 	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
-	grpcServer := grpc.NewServer()
+
+	var grpcServer *grpc.Server
+
+	// Try loading mTLS certs from tls_certs/ directory
+	certFile := filepath.Join("tls_certs", "server.crt")
+	keyFile := filepath.Join("tls_certs", "server.key")
+	caFile := filepath.Join("tls_certs", "ca.crt")
+
+	if _, e := os.Stat(certFile); e == nil {
+		cert, err := tls.LoadX509KeyPair(certFile, keyFile)
+		if err != nil {
+			log.Fatalf("failed to load server cert: %v", err)
+		}
+
+		caCert, err := os.ReadFile(caFile)
+		if err != nil {
+			log.Fatalf("failed to read CA cert: %v", err)
+		}
+
+		caPool := x509.NewCertPool()
+		caPool.AppendCertsFromPEM(caCert)
+
+		tlsConfig := &tls.Config{
+			Certificates: []tls.Certificate{cert},
+			ClientAuth:   tls.RequireAndVerifyClientCert,
+			ClientCAs:    caPool,
+		}
+
+		grpcServer = grpc.NewServer(grpc.Creds(credentials.NewTLS(tlsConfig)))
+		log.Println("🔒 mTLS enabled for gRPC server")
+	} else {
+		grpcServer = grpc.NewServer()
+		log.Println("⚠️ mTLS certs not found, running insecure (dev mode)")
+	}
+
 	pb.RegisterHubServiceServer(grpcServer, p.hub)
+
+	// Register standard gRPC Health Check service
+	healthSrv := health.NewServer()
+	healthpb.RegisterHealthServer(grpcServer, healthSrv)
+	healthSrv.SetServingStatus("", healthpb.HealthCheckResponse_SERVING)
+	healthSrv.SetServingStatus("hub.HubService", healthpb.HealthCheckResponse_SERVING)
+
 	go func() {
 		log.Printf("📡 gRPC Server listening on :50051")
 		if err := grpcServer.Serve(lis); err != nil {

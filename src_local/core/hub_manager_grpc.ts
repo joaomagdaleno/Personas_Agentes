@@ -2,20 +2,43 @@ import { GrpcTransport } from "@protobuf-ts/grpc-transport";
 import { HubServiceClient } from "../proto/hub.client";
 import { ChannelCredentials } from "@grpc/grpc-js";
 import winston from "winston";
+import * as fs from "fs";
+import * as path from "path";
 
 const logger = winston.child({ module: "HubManagerGRPC" });
 
 /**
  * HubManagerGRPC handles all native communication via gRPC.
  * This is the primary interface for binary, low-latency interaction with the Go Hub.
+ * Supports mTLS when certificates are present in src_native/hub/tls_certs/.
  */
 export class HubManagerGRPC {
     private client: HubServiceClient;
 
     constructor(host: string = "localhost:50051") {
+        let channelCredentials: ChannelCredentials;
+
+        // Auto-detect mTLS certificates
+        const certDir = path.resolve(__dirname, "../../src_native/hub/tls_certs");
+        const caPath = path.join(certDir, "ca.crt");
+        const clientCertPath = path.join(certDir, "client.crt");
+        const clientKeyPath = path.join(certDir, "client.key");
+
+        if (fs.existsSync(caPath) && fs.existsSync(clientCertPath) && fs.existsSync(clientKeyPath)) {
+            channelCredentials = ChannelCredentials.createSsl(
+                fs.readFileSync(caPath),
+                fs.readFileSync(clientKeyPath),
+                fs.readFileSync(clientCertPath)
+            );
+            logger.info("🔒 mTLS credentials loaded for gRPC client");
+        } else {
+            channelCredentials = ChannelCredentials.createInsecure();
+            logger.info("⚠️ No mTLS certs found, using insecure channel (dev mode)");
+        }
+
         const transport = new GrpcTransport({
             host,
-            channelCredentials: ChannelCredentials.createInsecure(),
+            channelCredentials,
         });
         this.client = new HubServiceClient(transport);
         logger.info(`📡 HubManagerGRPC initialized on ${host}`);

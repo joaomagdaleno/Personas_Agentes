@@ -34,3 +34,15 @@ rand = "=0.8.5"
 rand_distr = "=0.4.3"
 half = "=2.4.1"
 sha2 = "0.10.9"
+
+# WASM (opt-in)
+wasm-bindgen = { version = "0.2", optional = true }
+
+[features]
+default = []
+wasm = ["wasm-bindgen"]
+
+[lib]
+name = "analyzer_lib"
+crate-type = ["cdylib", "rlib"]
+path = "src/lib.rs"
