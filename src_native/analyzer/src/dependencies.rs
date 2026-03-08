@@ -1,7 +1,7 @@
-use serde::Serialize;
+use serde::{Serialize, Deserialize};
 use tree_sitter::{Node, Parser};
 
-#[derive(Serialize, Debug, Default, Clone)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct DependencyInfo {
     pub imports: Vec<String>,
     pub exports: Vec<String>,

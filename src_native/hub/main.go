@@ -8,7 +8,6 @@ import (
 	"io"
 	"log"
 	"net"
-	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -96,140 +95,113 @@ func analyzeFileMetadata(path string, root string) (FileAnalysis, error) {
 	return analysis, nil
 }
 
-func (h *Hub) handleScan(w http.ResponseWriter, r *http.Request) {
-	targetDir := r.URL.Query().Get("dir")
-	targetFile := r.URL.Query().Get("file")
-	rootDir := r.URL.Query().Get("root")
-	if rootDir == "" {
-		rootDir = "."
-	}
-
-	if targetFile != "" {
-		analysis, err := analyzeFileMetadata(targetFile, rootDir)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode([]FileAnalysis{analysis})
-		return
-	}
-
-	if targetDir == "" {
-		http.Error(w, "Missing 'dir' or 'file' parameter", http.StatusBadRequest)
-		return
-	}
-
-	var results []FileAnalysis
-	var mu sync.Mutex
-	var wg sync.WaitGroup
-
-	err := filepath.Walk(targetDir, func(path string, info os.FileInfo, err error) error {
-		if err != nil || info.IsDir() {
-			if info != nil {
-				name := info.Name()
-				if name == "node_modules" || strings.HasPrefix(name, ".") && name != "." {
-					return filepath.SkipDir
-				}
-			}
-			return nil
-		}
-
-		ext := filepath.Ext(path)
-		if ext == ".ts" || ext == ".tsx" || ext == ".js" || ext == ".py" || ext == ".go" {
-			wg.Add(1)
-			go func(p string) {
-				defer wg.Done()
-				analysis, er := analyzeFileMetadata(p, rootDir)
-				if er == nil {
-					mu.Lock()
-					results = append(results, analysis)
-					mu.Unlock()
-				}
-			}(path)
-		}
-		return nil
-	})
-
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	wg.Wait()
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(results)
-}
-
-func (h *Hub) handleAnalyze(w http.ResponseWriter, r *http.Request) {
-	targetPath := r.URL.Query().Get("file")
-	if targetPath == "" {
-		http.Error(w, "Missing 'file' parameter", http.StatusBadRequest)
-		return
-	}
-
-	info, err := os.Stat(targetPath)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Path error: %v", err), http.StatusNotFound)
-		return
-	}
-
-	var results []interface{}
-
-	if info.IsDir() {
-		filepath.Walk(targetPath, func(path string, info os.FileInfo, err error) error {
-			if err != nil || info.IsDir() {
-				return nil
-			}
-			ext := filepath.Ext(path)
-			if ext == ".ts" || ext == ".js" || ext == ".py" || ext == ".go" {
-				res := h.runAnalysis(path)
-				if res != nil {
-					results = append(results, res)
-				}
-			}
-			return nil
-		})
-	} else {
-		res := h.runAnalysis(targetPath)
-		if res != nil {
-			results = append(results, res)
-		}
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	if !info.IsDir() && len(results) == 1 {
-		json.NewEncoder(w).Encode(results[0])
-	} else {
-		json.NewEncoder(w).Encode(results)
-	}
-}
-
 func (h *Hub) runRust(command string, args ...string) (string, error) {
-	fullArgs := append([]string{command}, args...)
-	cmd := exec.Command(h.analyzerPath, fullArgs...)
-	output, err := cmd.Output()
-	if err != nil {
-		if exitErr, ok := err.(*exec.ExitError); ok {
-			return "", fmt.Errorf("analyzer error: %w (stderr: %s)", err, string(exitErr.Stderr))
+	if h.rustClient == nil {
+		// Fallback to exec if client not initialized
+		fullArgs := append([]string{command}, args...)
+		cmd := exec.Command(h.analyzerPath, fullArgs...)
+		output, err := cmd.Output()
+		if err != nil {
+			if exitErr, ok := err.(*exec.ExitError); ok {
+				return "", fmt.Errorf("analyzer error (fallback): %w (stderr: %s)", err, string(exitErr.Stderr))
+			}
+			return "", err
 		}
-		return "", err
+		return string(output), nil
 	}
-	return string(output), nil
+
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	var res *pb.AnalyzeResponse
+	var err error
+
+	// Hub.proto defines many RPCs that take AnalyzeRequest and return AnalyzeResponse.
+	// We can map many "command-style" calls to these RPCs.
+	switch command {
+	case "analyze":
+		res, err = h.rustClient.AnalyzeFile(ctx, &pb.AnalyzeRequest{File: args[0]})
+	case "fingerprint":
+		res, err = h.rustClient.Fingerprint(ctx, &pb.AnalyzeRequest{File: args[0]})
+	case "deps":
+		res, err = h.rustClient.GetDependencies(ctx, &pb.AnalyzeRequest{File: args[0]})
+	case "dna":
+		res, err = h.rustClient.DiscoverIdentity(ctx, &pb.AnalyzeRequest{File: args[0]})
+	case "index":
+		res, err = h.rustClient.IndexProject(ctx, &pb.AnalyzeRequest{File: args[0]})
+	case "topology":
+		res, err = h.rustClient.ScanTopology(ctx, &pb.AnalyzeRequest{File: args[0]})
+	case "context":
+		res, err = h.rustClient.GetContext(ctx, &pb.AnalyzeRequest{File: args[0]})
+	case "score":
+		res, err = h.rustClient.CalculateScore(ctx, &pb.ScoreRequest{ScoreJson: args[0]})
+	case "coverage":
+		res, err = h.rustClient.AuditCoverage(ctx, &pb.CoverageRequest{CoverageJson: args[0]})
+	case "audit":
+		res, err = h.rustClient.Audit(ctx, &pb.AuditRequest{AuditJson: args[0]})
+	case "graph-get":
+		res, err = h.rustClient.GetKnowledgeGraph(ctx, &pb.GraphRequest{GraphJson: args[0]})
+	case "graph-query":
+		res, err = h.rustClient.QueryKnowledgeGraph(ctx, &pb.QueryRequest{QueryJson: args[0]})
+	default:
+		return "", fmt.Errorf("unsupported command via gRPC sidecar: %s", command)
+	}
+
+	if err != nil {
+		return "", fmt.Errorf("grpc sidecar error: %w", err)
+	}
+	return res.JsonData, nil
 }
 
 func (h *Hub) runRustWithStdin(content string, command string, args ...string) (string, error) {
-	fullArgs := append([]string{command}, args...)
-	cmd := exec.Command(h.analyzerPath, fullArgs...)
-	cmd.Stdin = strings.NewReader(content)
-	output, err := cmd.Output()
-	if err != nil {
-		if exitErr, ok := err.(*exec.ExitError); ok {
-			return "", fmt.Errorf("analyzer error: %w (stderr: %s)", err, string(exitErr.Stderr))
+	if h.rustClient == nil {
+		// Fallback to exec if client not initialized
+		fullArgs := append([]string{command}, args...)
+		cmd := exec.Command(h.analyzerPath, fullArgs...)
+		cmd.Stdin = strings.NewReader(content)
+		output, err := cmd.Output()
+		if err != nil {
+			if exitErr, ok := err.(*exec.ExitError); ok {
+				return "", fmt.Errorf("analyzer error (fallback): %w (stderr: %s)", err, string(exitErr.Stderr))
+			}
+			return "", err
 		}
-		return "", err
+		return string(output), nil
 	}
-	return string(output), nil
+
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+	defer cancel()
+
+	var res *pb.AnalyzeResponse
+	var err error
+
+	switch command {
+	case "analyze":
+		file := ""
+		if len(args) > 0 {
+			file = args[0]
+		}
+		res, err = h.rustClient.AnalyzeFile(ctx, &pb.AnalyzeRequest{File: file, Content: content})
+	case "fingerprint":
+		file := ""
+		if len(args) > 0 {
+			file = args[0]
+		}
+		res, err = h.rustClient.Fingerprint(ctx, &pb.AnalyzeRequest{File: file, Content: content})
+	case "heal":
+		res, err = h.rustClient.ExecuteHealing(ctx, &pb.HealingPlan{IssueDescription: content})
+	case "connectivity":
+		res, err = h.rustClient.GetConnectivity(ctx, &pb.ConnectivityRequest{DependencyMapJson: content})
+	case "batch":
+		res, err = h.rustClient.Batch(ctx, &pb.BatchRequest{BatchJson: content})
+	default:
+		return "", fmt.Errorf("unsupported stdin command via gRPC sidecar: %s", command)
+	}
+
+	if err != nil {
+		return "", fmt.Errorf("grpc sidecar error: %w", err)
+	}
+	return res.JsonData, nil
 }
 
 func (h *Hub) runScanner(args ...string) (string, error) {
@@ -284,7 +256,10 @@ type Hub struct {
 	broadcast    chan string
 	db           *sql.DB
 	service      service.Service
-	port         *string
+
+	// gRPC Sidecar for Rust
+	rustConn   *grpc.ClientConn
+	rustClient pb.HubServiceClient
 }
 
 type Task struct {
@@ -419,98 +394,6 @@ func (h *Hub) startSentinel() {
 			h.broadcast <- string(alertJSON)
 		}
 	}
-}
-
-func (h *Hub) handleStatus(w http.ResponseWriter, r *http.Request) {
-	h.metricsLock.RLock()
-	defer h.metricsLock.RUnlock()
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]interface{}{
-		"status":  "HEALTHY",
-		"metrics": h.metrics,
-		"version": "1.0.0-hub",
-	})
-}
-
-func (h *Hub) handleWatch(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/event-stream")
-	w.Header().Set("Cache-Control", "no-cache")
-	w.Header().Set("Connection", "keep-alive")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-
-	clientChan := make(chan string)
-	h.clientsLock.Lock()
-	if h.clients == nil {
-		h.clients = make(map[chan string]bool)
-	}
-	h.clients[clientChan] = true
-	h.clientsLock.Unlock()
-
-	defer func() {
-		h.clientsLock.Lock()
-		delete(h.clients, clientChan)
-		h.clientsLock.Unlock()
-		close(clientChan)
-	}()
-
-	notify := w.(http.CloseNotifier).CloseNotify()
-
-	for {
-		select {
-		case msg := <-clientChan:
-			fmt.Fprintf(w, "data: %s\n\n", msg)
-			w.(http.Flusher).Flush()
-		case <-notify:
-			return
-		}
-	}
-}
-
-func (h *Hub) handleQueueAdd(w http.ResponseWriter, r *http.Request) {
-	var t Task
-	if err := json.NewDecoder(r.Body).Decode(&t); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-	_, err := h.db.Exec("INSERT INTO ai_tasks (task_type, target_file) VALUES (?, ?)", t.TaskType, t.TargetFile)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	h.broadcast <- fmt.Sprintf("TASK_QUEUED: %s", t.TargetFile)
-	w.WriteHeader(http.StatusCreated)
-}
-
-func (h *Hub) handleQueuePending(w http.ResponseWriter, _ *http.Request) {
-	rows, err := h.db.Query("SELECT id, task_type, target_file, status, created_at FROM ai_tasks WHERE status = 'PENDING' ORDER BY created_at ASC LIMIT 10")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	defer rows.Close()
-
-	var tasks []Task
-	for rows.Next() {
-		var t Task
-		rows.Scan(&t.ID, &t.TaskType, &t.TargetFile, &t.Status, &t.CreatedAt)
-		tasks = append(tasks, t)
-	}
-	json.NewEncoder(w).Encode(tasks)
-}
-
-func (h *Hub) handleQueueUpdate(w http.ResponseWriter, r *http.Request) {
-	var t Task
-	if err := json.NewDecoder(r.Body).Decode(&t); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-	_, err := h.db.Exec("UPDATE ai_tasks SET status = ?, result = ? WHERE id = ?", t.Status, t.Result, t.ID)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	h.broadcast <- fmt.Sprintf("TASK_UPDATED: %d -> %s", t.ID, t.Status)
 }
 
 func (h *Hub) startBroadcaster() {
@@ -1000,6 +883,19 @@ func (p *program) run() {
 	go p.hub.startBroadcaster()
 	go p.hub.startWatcher("../..")
 
+	// Connect to Rust gRPC Sidecar
+	go func() {
+		addr := "127.0.0.1:50052"
+		conn, err := grpc.Dial(addr, grpc.WithInsecure())
+		if err != nil {
+			log.Printf("⚠️ Could not connect to Rust sidecar at %s: %v", addr, err)
+			return
+		}
+		p.hub.rustConn = conn
+		p.hub.rustClient = pb.NewHubServiceClient(conn)
+		log.Printf("🔌 Connected to Rust gRPC sidecar at %s", addr)
+	}()
+
 	// gRPC Server with optional mTLS
 	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {
@@ -1048,21 +944,10 @@ func (p *program) run() {
 	healthSrv.SetServingStatus("", healthpb.HealthCheckResponse_SERVING)
 	healthSrv.SetServingStatus("hub.HubService", healthpb.HealthCheckResponse_SERVING)
 
-	go func() {
-		log.Printf("📡 gRPC Server listening on :50051")
-		if err := grpcServer.Serve(lis); err != nil {
-			log.Fatalf("failed to serve: %v", err)
-		}
-	}()
-
-	// Keep HTTP for legacy calls
-	http.HandleFunc("/status", p.hub.handleStatus)
-	http.HandleFunc("/analyze", p.hub.handleAnalyze)
-	http.HandleFunc("/scan", p.hub.handleScan)
-	http.HandleFunc("/watch", p.hub.handleWatch)
-
-	log.Printf("🚀 Hub Service starting on :%s", *p.hub.port)
-	http.ListenAndServe(":"+*p.hub.port, nil)
+	log.Printf("📡 gRPC Server listening on :50051")
+	if err := grpcServer.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
 }
 
 func (p *program) Stop(s service.Service) error {
@@ -1071,7 +956,6 @@ func (p *program) Stop(s service.Service) error {
 
 func main() {
 	action := flag.String("service", "", "Control the system service: install, uninstall, start, stop")
-	port := flag.String("port", "8080", "Port to listen on")
 	flag.Parse()
 
 	svcConfig := &service.Config{
@@ -1093,7 +977,6 @@ func main() {
 	hub := &Hub{
 		analyzerPath: exePath,
 		scannerPath:  scannerPath,
-		port:         port,
 	}
 
 	prg := &program{hub: hub}
