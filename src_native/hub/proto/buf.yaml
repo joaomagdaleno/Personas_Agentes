@@ -1,0 +1,4 @@
+version: v1
+name: buf.build/joaomagdaleno/hub
+deps:
+  - buf.build/googleapis/googleapis

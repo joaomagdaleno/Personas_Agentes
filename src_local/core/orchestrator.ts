@@ -20,6 +20,8 @@ import { TaskWorker } from "../utils/task_worker.ts";
 import type { IAgent, SovereignState } from "./types.ts";
 import { MemoryPruningAgent } from "../agents/Support/Maintenance/memory_pruning_agent.ts";
 import { PredictorEngine } from "../utils/ai/predictor_engine.ts";
+import { HubWatcher } from "../utils/hub_watcher.ts";
+import { HubManagerGRPC } from "./hub_manager_grpc.ts";
 
 const logger = winston.child({ module: "Orchestrator" });
 
@@ -51,6 +53,8 @@ export class Orchestrator {
     worker!: TaskWorker;
     pruningAgent!: MemoryPruningAgent;
     predictorEngine!: PredictorEngine;
+    hubWatcher!: HubWatcher;
+    hubManager!: HubManagerGRPC;
 
     public ready: Promise<void>;
 
@@ -75,7 +79,19 @@ export class Orchestrator {
             const m = await import(assemblerPath);
             console.log("🛠️ [Orchestrator] Carregando Infraestrutura Nativa...");
             await m.InfrastructureAssembler.launchSovereignAPI(projectRoot);
+
+            this.hubManager = new HubManagerGRPC();
             await this._waitForHub();
+
+            this.hubWatcher = new HubWatcher();
+            this.hubWatcher.onChange(async (p) => {
+                console.log(`📡 [Orchestrator] Auditando mudança detectada em: ${p}`);
+                this.lastDetectedChanges.push(p);
+                // Trigger auto-refresh
+                await this._updateCache();
+                await this.runStagedAudit({ dryRun: false });
+            });
+            this.hubWatcher.start();
         } catch (err: any) {
             console.error(`❌ [Orchestrator] Erro ao carregar infrastructure_assembler: ${err.message}`);
         }
@@ -84,13 +100,13 @@ export class Orchestrator {
     private async _waitForHub(retries = 5) {
         for (let i = 0; i < retries; i++) {
             try {
-                const res = await fetch("http://localhost:8080/status");
-                if (res.ok) {
-                    console.log("✅ [Orchestrator] Native Sovereign Hub conectado.");
+                const status = await this.hubManager.getStatus();
+                if (status && status.status === "HEALTHY") {
+                    console.log("✅ [Orchestrator] Native Sovereign Hub (gRPC) conectado.");
                     return;
                 }
             } catch (e) { }
-            console.log(`⏳ [Orchestrator] Aguardando Hub (${i + 1}/${retries})...`);
+            console.log(`⏳ [Orchestrator] Aguardando Hub gRPC (${i + 1}/${retries})...`);
             await new Promise(r => setTimeout(r, 1000));
         }
     }

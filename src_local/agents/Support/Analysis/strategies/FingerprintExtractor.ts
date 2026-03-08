@@ -64,17 +64,15 @@ export class FingerprintExtractor {
     static extractTS(content: string, name: string): AtomicFingerprint {
         this.ensureBinaryPresence();
         try {
-            // Write temp file to pass to Rust as we need a path
-            const tmpDir = path.join(process.cwd(), "tmp_rust");
-            if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir);
-            const tmpFile = path.join(tmpDir, "tmp_fingerprint.ts");
+            // Write a single temp file. We could pass via stdin, but analyzer.exe currently expects a path.
+            const tmpFile = path.join(process.cwd(), `tmp_fp_${Date.now()}.ts`);
             fs.writeFileSync(tmpFile, content);
 
-            const output = cp.execSync(`"${this.BINARY_PATH}" fingerprint "${tmpDir}"`, { encoding: 'utf8' });
-            fs.unlinkSync(tmpFile);
+            const output = cp.execSync(`"${this.BINARY_PATH}" fingerprint "${tmpFile}"`, { encoding: 'utf8' });
+            if (fs.existsSync(tmpFile)) fs.unlinkSync(tmpFile);
 
             const report = JSON.parse(output);
-            const entry = report.entries.find((e: any) => e.agent === "tmp_fingerprint");
+            const entry = report.entries[0];
             if (entry) return this.mapRustToAtomic(entry.fingerprint);
             throw new Error("No fingerprint entry returned by Rust analyzer.");
         } catch (err: any) {

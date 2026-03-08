@@ -1,0 +1,108 @@
+syntax = "proto3";
+
+package hub;
+
+option go_package = "github.com/joaomagdaleno/Personas_Agentes/src_native/hub/proto";
+
+service HubService {
+  // Health & Monitoring
+  rpc GetStatus(Empty) returns (StatusResponse);
+  rpc WatchHealth(Empty) returns (stream HealthUpdate);
+  rpc WatchEvents(Empty) returns (stream Event);
+
+  // Discovery & Analysis
+  rpc ScanProject(ScanRequest) returns (ScanResponse);
+  rpc AnalyzeFile(AnalyzeRequest) returns (AnalyzeResponse);
+
+  // Task Scheduler
+  rpc EnqueueTask(TaskRequest) returns (TaskResponse);
+  rpc GetPendingTasks(PendingRequest) returns (PendingResponse);
+  rpc UpdateTask(UpdateTaskRequest) returns (Empty);
+}
+
+message Empty {}
+
+message StatusResponse {
+  string status = 1;
+  string version = 2;
+  HealthUpdate health = 3;
+}
+
+message HealthUpdate {
+  double cpu_usage = 1;
+  double memory_usage = 2;
+  int32 goroutines = 3;
+  repeated ProcessInfo heavy_processes = 4;
+  string timestamp = 5;
+}
+
+message ProcessInfo {
+  string name = 1;
+  int32 pid = 2;
+  double mem_mb = 3;
+  double cpu_percent = 4;
+}
+
+message Event {
+  string type = 1; // "FILE_WRITE", "FILE_CREATE", "FILE_REMOVE", "HEALTH_ALERT"
+  string path = 2;
+  string data = 3;
+}
+
+message ScanRequest {
+  string directory = 1;
+  string root = 2;
+}
+
+message FileMetadata {
+  string path = 1;
+  int32 loc = 2;
+  int32 sloc = 3;
+  int32 comments = 4;
+  string intent = 5;
+}
+
+message ScanResponse {
+  repeated FileMetadata files = 1;
+}
+
+message AnalyzeRequest {
+  string file = 1;
+}
+
+message AnalyzeResponse {
+  string json_data = 1; // Full analysis from Rust as JSON string
+}
+
+message TaskRequest {
+  string task_type = 1;
+  string target_file = 2;
+}
+
+message TaskResponse {
+  int32 task_id = 1;
+  bool success = 2;
+}
+
+message PendingRequest {
+  int32 limit = 1;
+}
+
+message Task {
+  int32 id = 1;
+  string task_type = 2;
+  string target_file = 3;
+  string status = 4;
+  string result = 5;
+  string created_at = 6;
+}
+
+message PendingResponse {
+  repeated Task tasks = 1;
+}
+
+message UpdateTaskRequest {
+  int32 task_id = 1;
+  string status = 2;
+  string result = 3;
+}

@@ -16,6 +16,7 @@ rayon = "1.10"
 regex = "1.10"
 aho-corasick = "1.1"
 memmap2 = "0.9"
+chrono = "0.4"
 petgraph = { version = "0.6", features = ["serde-1"] }
 ureq = { version = "2.9", features = ["json"] }
 bincode = "1.3"

@@ -14,6 +14,11 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@grpc/grpc-js": "^1.14.3",
+    "@protobuf-ts/grpc-transport": "^2.11.1",
+    "@protobuf-ts/plugin": "^2.11.1",
+    "@protobuf-ts/runtime": "^2.11.1",
+    "@protobuf-ts/runtime-rpc": "^2.11.1",
     "@types/node": "^25.2.3",
     "winston": "^3.19.0"
   },

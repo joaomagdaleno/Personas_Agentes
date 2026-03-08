@@ -10,6 +10,7 @@ mod pruner;
 mod search;
 mod brain;
 mod chat;
+mod dependencies;
 
 use std::env;
 use std::fs;
@@ -33,6 +34,7 @@ struct AnalysisResult {
     cyclomatic_complexity: i32,
     cognitive_complexity: i32,
     functions: Vec<FunctionMetric>,
+    dependencies: dependencies::DependencyInfo,
     loc: usize,
     sloc: usize,
     comments: usize,
@@ -164,11 +166,14 @@ fn run_analyze(path: &str) {
     let cyclomatic_complexity: i32 = functions.iter().map(|f| f.cyclomatic_complexity).sum();
     let cognitive_complexity: i32 = functions.iter().map(|f| f.cognitive_complexity).sum();
 
+    let deps = dependencies::extract_dependencies(&source_code, extension);
+
     let result = AnalysisResult {
         path: path.to_string(),
         cyclomatic_complexity,
         cognitive_complexity,
         functions,
+        dependencies: deps,
         loc,
         sloc,
         comments,
@@ -177,15 +182,37 @@ fn run_analyze(path: &str) {
     println!("{}", serde_json::to_string_pretty(&result).unwrap());
 }
 
-fn run_fingerprint(agents_root: &str) {
-    let root = Path::new(agents_root);
-    if !root.exists() {
-        eprintln!("Error: directory '{}' does not exist", agents_root);
+fn run_fingerprint(target_path: &str) {
+    let path = Path::new(target_path);
+    if !path.exists() {
+        eprintln!("Error: path '{}' does not exist", target_path);
         std::process::exit(1);
     }
 
-    let report = fingerprint::extract_all(root);
-    println!("{}", serde_json::to_string_pretty(&report).unwrap());
+    if path.is_dir() {
+        let report = fingerprint::extract_all(path);
+        println!("{}", serde_json::to_string_pretty(&report).unwrap());
+    } else {
+        // Single file mode
+        let source = fs::read_to_string(path).expect("Unable to read file");
+        let stem = path.file_stem().and_then(|s| s.to_str()).unwrap_or("unknown");
+        let agent_name = stem.to_string(); // Or capitalize if needed, following convention
+        
+        let fp = fingerprint::extract_fingerprint(&source, &agent_name);
+        let entry = fingerprint::AgentEntry {
+            agent: agent_name,
+            stack: "Unknown".to_string(), // Will be refined in the map if needed
+            category: "Direct".to_string(),
+            path: path.to_string_lossy().to_string(),
+            fingerprint: fp,
+        };
+        
+        let report = fingerprint::FingerprintReport {
+            total: 1,
+            entries: vec![entry],
+        };
+        println!("{}", serde_json::to_string_pretty(&report).unwrap());
+    }
 }
 
 fn main() {
@@ -198,6 +225,7 @@ fn main() {
         eprintln!("  analyzer audit <json_path>               — Bulk audit via RegexSet");
         eprintln!("  analyzer deduplicate <json_path>         — O(n) finding deduplication");
         eprintln!("  analyzer connectivity <json_path>        — O(n) file coupling analysis");
+        eprintln!("  analyzer deps <file_path>                — AST dependency extraction");
         std::process::exit(1);
     }
 
@@ -263,6 +291,14 @@ fn main() {
             }
             let results = batch::index_project(&args[2]);
             println!("{}", serde_json::to_string_pretty(&results).unwrap());
+        }
+        "topology" => {
+            if args.len() < 3 {
+                eprintln!("Usage: analyzer topology <project_root>");
+                std::process::exit(1);
+            }
+            let map = batch::scan_topology(&args[2]);
+            println!("{}", serde_json::to_string_pretty(&map).unwrap());
         }
         "batch" => {
             if args.len() < 3 {
@@ -398,6 +434,16 @@ fn main() {
         }
         "chat" => {
             chat::start_chat();
+        }
+        "deps" => {
+            if args.len() < 3 {
+                eprintln!("Usage: analyzer deps <file_path>");
+                std::process::exit(1);
+            }
+            let source = fs::read_to_string(&args[2]).expect("Unable to read file");
+            let extension = Path::new(&args[2]).extension().and_then(|s| s.to_str()).unwrap_or("");
+            let deps = dependencies::extract_dependencies(&source, extension);
+            println!("{}", serde_json::to_string_pretty(&deps).unwrap());
         }
         // Legacy
         other => {
