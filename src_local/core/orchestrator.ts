@@ -11,6 +11,7 @@ import { HistoryAgent } from "../utils/history_agent.ts";
 import { TaskQueue } from "../utils/task_queue.ts";
 import { MemoryEngine } from "../utils/memory_engine.ts";
 import { ReflexEngine } from "./reflex_engine.ts";
+import { eventBus } from "./event_bus.ts";
 import { CoreValidator } from "./validator.ts";
 import { DiagnosticStrategist } from "../agents/Support/Diagnostics/diagnostic_strategist.ts";
 import { UpdateTransaction } from "../utils/update_transaction.ts";
@@ -70,8 +71,24 @@ export class Orchestrator {
         this._registerAgents();
         this._initEngines();
         this._initTools();
+        this._registerEventListeners();
 
         this.ready = this._initNativeInfrastructure(projectRoot);
+    }
+
+    /**
+     * Registers event listeners on the global Event Bus.
+     * This is the Orchestrator's side of the Mediator pattern.
+     */
+    private _registerEventListeners(): void {
+        eventBus.on("system:halt-experimentation", () => {
+            logger.warn("🚨 [Orchestrator] Recebido evento de emergência. Travando experimentações...");
+            for (const persona of this.personas) {
+                if ('haltExperimentation' in persona && typeof (persona as any).haltExperimentation === 'function') {
+                    (persona as any).haltExperimentation();
+                }
+            }
+        });
     }
 
     private async _initNativeInfrastructure(projectRoot: string): Promise<void> {
@@ -121,11 +138,11 @@ export class Orchestrator {
         this.historyAgent = new HistoryAgent(root);
         this.taskQueue = new TaskQueue(root);
         this.memoryEngine = new MemoryEngine(root);
-        this.reflexEngine = new ReflexEngine(this);
+        this.reflexEngine = new ReflexEngine();
         this.updateTransaction = new UpdateTransaction();
         this.sentinel = new SystemSentinel();
         this.behaviorAnalyst = new BehaviorAnalyst(root);
-        this.worker = new TaskWorker(this);
+        this.worker = new TaskWorker(this.taskQueue);
         this.pruningAgent = new MemoryPruningAgent(root);
         this.predictorEngine = new PredictorEngine(root);
     }

@@ -1,5 +1,5 @@
 import winston from "winston";
-import { Orchestrator } from "../core/orchestrator.ts";
+import { TaskQueue } from "./task_queue.ts";
 
 const logger = winston.child({ module: "TaskWorker" });
 
@@ -7,11 +7,12 @@ const logger = winston.child({ module: "TaskWorker" });
  * Operário de Fundo PhD.
  * Consome tarefas da fila (ai_tasks) e executa ações pesadas 
  * (como geração de docs e testes via IA).
+ * Recebe TaskQueue diretamente — sem referência ao Orchestrator.
  */
 export class TaskWorker {
     private running: boolean = false;
 
-    constructor(private orc: Orchestrator) { }
+    constructor(private taskQueue: TaskQueue) { }
 
     /**
      * Inicia o ciclo de processamento em background.
@@ -23,7 +24,7 @@ export class TaskWorker {
 
         while (this.running) {
             try {
-                const tasks = this.orc.taskQueue.getPendingTasks(1);
+                const tasks = await this.taskQueue.getPendingTasks(1);
                 if (tasks.length > 0) {
                     await this.processTask(tasks[0]);
                 } else {
@@ -44,7 +45,7 @@ export class TaskWorker {
 
     private async processTask(task: any) {
         logger.info(`🔨 [Worker] Processando tarefa ${task.id}: ${task.task_type} -> ${task.target_file}`);
-        this.orc.taskQueue.updateTaskStatus(task.id, 'RUNNING');
+        this.taskQueue.updateTaskStatus(task.id, 'RUNNING');
 
         try {
             if (task.task_type === "DOC_GEN") {
@@ -53,10 +54,10 @@ export class TaskWorker {
                 await this.generateTests(task.target_file);
             }
 
-            this.orc.taskQueue.updateTaskStatus(task.id, 'COMPLETED', 'Success');
+            this.taskQueue.updateTaskStatus(task.id, 'COMPLETED', 'Success');
         } catch (e: any) {
             logger.error(`🚨 Falha ao processar tarefa ${task.id}: ${e.message}`);
-            this.orc.taskQueue.updateTaskStatus(task.id, 'FAILED', e.message);
+            this.taskQueue.updateTaskStatus(task.id, 'FAILED', e.message);
         }
     }
 

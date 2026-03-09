@@ -1,14 +1,23 @@
 import winston from "winston";
-import { Orchestrator } from "./orchestrator.ts";
+import { eventBus } from "./event_bus.ts";
 
 const logger = winston.child({ module: "ReflexEngine" });
 
 /**
  * Motor de Reflexos PhD.
  * Reage autonomamente a flutuações na saúde sistêmica.
+ * Usa o EventBus para comunicação — sem referência direta ao Orchestrator.
  */
 export class ReflexEngine {
-    constructor(private orc: Orchestrator) { }
+    constructor() {
+        this.registerListeners();
+    }
+
+    private registerListeners(): void {
+        eventBus.on("system:health-check", ({ score, findings }) => {
+            this.triggerReflexes({ health_score: score }, findings);
+        });
+    }
 
     /**
      * Analisa o snapshot de saúde e dispara reações se necessário.
@@ -26,16 +35,11 @@ export class ReflexEngine {
     }
 
     /**
-     * Entra em modo de emergência: trava experimentações e foca em estabilidade.
+     * Entra em modo de emergência: emite evento para travar experimentações.
      */
     private activateEmergencyMode() {
         logger.warn("🚨 [Reflex] MODO DE EMERGÊNCIA ATIVADO (Saúde < 40%)");
-
-        for (const persona of this.orc.personas) {
-            if ('haltExperimentation' in persona && typeof persona.haltExperimentation === 'function') {
-                persona.haltExperimentation();
-            }
-        }
+        eventBus.emit("system:halt-experimentation");
     }
 
     /**
