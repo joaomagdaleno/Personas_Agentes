@@ -66,20 +66,45 @@ export class FingerprintExtractor {
 
     async extractTS(content: string, name: string): Promise<AtomicFingerprint> {
         if (!this.hubManager) {
-            throw new Error("HubManager not provided to FingerprintExtractor.");
+            logger.warn(`⚠️ [Fingerprint] Hub offline. Using local regex extraction for ${name}.`);
+            return this.extractLocally(content, name);
         }
 
         try {
-            logger.warn(`🧬 [Fingerprint] Ad-hoc content extraction requested for ${name}. This currently uses a disk fallback approach in the Hub.`);
-
+            logger.debug(`🧬 [Fingerprint] Ad-hoc gRPC extraction for ${name}.`);
             const fingerprint = await this.hubManager.fingerprint(name);
             if (fingerprint && fingerprint.entries && fingerprint.entries[0]) {
                 return this.mapRustToAtomic(fingerprint.entries[0].fingerprint);
             }
-            throw new Error("No fingerprint returned.");
+            return this.extractLocally(content, name);
         } catch (err: any) {
-            throw new Error(`[FingerprintExtractor] Falha na extração de fingerprint (gRPC): ${err.message}`);
+            logger.warn(`⚠️ [Fingerprint] gRPC extraction failed for ${name}: ${err.message}. Falling back to local.`);
+            return this.extractLocally(content, name);
         }
+    }
+
+    private extractLocally(content: string, name: string): AtomicFingerprint {
+        const { ParserHelpers } = require("./ParserHelpers.ts");
+        const parts = ParserHelpers.getParts(content);
+        return {
+            name: name,
+            emoji: "🛡️",
+            role: "Local Fallback Agent",
+            stack: "Local",
+            rulesCount: 0,
+            rulePatterns: [],
+            ruleIssues: [],
+            ruleSeverities: [],
+            fileExtensions: [],
+            hasReasoning: false,
+            reasoningTrigger: "",
+            systemPrompt: "",
+            hasExtraMethods: [],
+            methods: [...new Set([...parts.functions, ...parts.arrows, ...parts.methods])],
+            halsteadVolume: 0,
+            halsteadDifficulty: 0,
+            halsteadEffort: 0
+        };
     }
 
     async extractPython(content: string, name: string): Promise<AtomicFingerprint> {

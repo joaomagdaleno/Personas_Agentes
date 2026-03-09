@@ -21,18 +21,22 @@ export class HubWatcher {
     }
 
     private listen() {
-        const call = this.manager.watchEvents((event) => {
-            if (event.type === "FILE_EVENT") {
-                this.notify(event.path);
-            }
-        });
+        try {
+            this.manager.watchEvents((event) => {
+                if (event.type === "FILE_EVENT") {
+                    this.notify(event.path);
+                }
+            });
 
-        const healthCall = this.manager.watchHealth((update) => {
-            // Emite para o sistema se necessário, ou loga
-            if (update.cpuUsage > 80 || update.memoryUsage > 80) {
-                logger.warn(`⚠️ [HubWatcher] ALERTA DE SAÚDE: CPU ${update.cpuUsage}%, MEM ${update.memoryUsage}%`);
-            }
-        });
+            this.manager.watchHealth((update) => {
+                // Emite para o sistema se necessário, ou loga
+                if (update.cpuUsage > 80 || update.memoryUsage > 80) {
+                    logger.warn(`⚠️ [HubWatcher] ALERTA DE SAÚDE: CPU ${update.cpuUsage}%, MEM ${update.memoryUsage}%`);
+                }
+            });
+        } catch (err) {
+            logger.warn(`⚠️ [HubWatcher] Falha ao iniciar streams gRPC: ${err}`);
+        }
     }
 
 

@@ -6,12 +6,14 @@ import { DeltaEngine } from "./strategies/DeltaEngine.ts";
  * 🛠️ ParityUtils — PhD in Semantic Consistency & Delta Mapping.
  */
 
-export function extractPythonFingerprint(content: string, name: string): AtomicFingerprint {
-    return FingerprintExtractor.extractPython(content, name);
+export async function extractPythonFingerprint(content: string, name: string): Promise<AtomicFingerprint> {
+    const extractor = new FingerprintExtractor();
+    return await extractor.extractPython(content, name);
 }
 
-export function extractTSFingerprint(content: string, name: string): AtomicFingerprint | null {
-    return FingerprintExtractor.extractTS(content, name);
+export async function extractTSFingerprint(content: string, name: string): Promise<AtomicFingerprint | null> {
+    const extractor = new FingerprintExtractor();
+    return await extractor.extractTS(content, name);
 }
 
 export function computeDeltas(legacy: AtomicFingerprint, current: AtomicFingerprint, agent: string): AgentDelta[] {

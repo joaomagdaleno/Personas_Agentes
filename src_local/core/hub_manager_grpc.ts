@@ -116,7 +116,7 @@ export class HubManagerGRPC {
      * Sends files concurrently and collects results as they arrive.
      */
     async analyzeStream(files: { file: string; content?: string }[]): Promise<any[]> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             try {
                 const call = this.client.analyzeStream();
                 const results: any[] = [];
@@ -373,13 +373,23 @@ export class HubManagerGRPC {
      * Gets pending tasks from the native scheduler.
      */
     async getPendingTasks(limit: number = 5) {
-        return await this.client.getPendingTasks({ limit });
+        try {
+            return await this.client.getPendingTasks({ limit });
+        } catch (e) {
+            logger.error(`❌ gRPC getPendingTasks failed: ${e}`);
+            return { tasks: [] };
+        }
     }
 
     /**
      * Updates a task status in the native scheduler.
      */
     async updateTask(taskId: number, status: string, result: string) {
-        return await this.client.updateTask({ taskId, status, result });
+        try {
+            return await this.client.updateTask({ taskId, status, result });
+        } catch (e) {
+            logger.error(`❌ gRPC updateTask failed: ${e}`);
+            return null;
+        }
     }
 }

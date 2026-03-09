@@ -11,14 +11,14 @@ const logger = winston.child({ module: "HealthSynthesizer" });
 export class HealthSynthesizer {
     private calculator: ScoreCalculator;
 
-    constructor(private hubManager?: HubManagerGRPC) {
+    constructor(hubManager?: HubManagerGRPC) {
         this.calculator = new ScoreCalculator(hubManager);
     }
 
     /**
      * Síntese 360 do sistema.
      */
-    async synthesize360(context: any, metrics: any, personas: any, ledger: any, qaData: any): Promise<any> {
+    async synthesize360(context: any, _metrics: any, _personas: any, _ledger: any, qaData: any): Promise<any> {
         logger.info("🩺 [Synthesizer] Sintetizando visão 360 do sistema via Hub Proxy...");
 
         const allAlerts = context.alerts || [];
@@ -46,7 +46,7 @@ export class HealthSynthesizer {
         const { ParityAnalyst } = await import("../Analysis/parity_analyst");
         const parityRoot = context.projectRoot ? `${context.projectRoot}/src_local/agents` : "src_local/agents";
         const analyst = new ParityAnalyst(parityRoot);
-        const nativeReport = analyst.analyzeAtomicParity();
+        const nativeReport = await analyst.analyzeAtomicParity();
 
         const parityStats = {
             total_atoms: nativeReport.totalAgents,

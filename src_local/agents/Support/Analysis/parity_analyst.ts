@@ -1,12 +1,7 @@
-import winston from "winston";
-import * as fs from "node:fs";
-import * as path from "node:path";
-import type { ParityReport, DepthMetric, AgentParityResult, AtomicFingerprint } from "./parity_types";
+import type { ParityReport, DepthMetric, AgentParityResult } from "./parity_types";
 import { computeDeltas, computeScore } from "./parity_utils";
 import { InstanceGrouper } from "./InstanceGrouper.ts";
 import { ParityReporter } from "./ParityReporter.ts";
-
-const logger = winston.child({ module: "ParityAnalyst" });
 
 /**
  * ⚖️ ParityAnalyst — PhD in Atomic Symmetry & Forensic Audit
@@ -15,10 +10,10 @@ export class ParityAnalyst {
     private tsRoot: string;
     constructor(tsRoot = "src_local/agents", _metrics: DepthMetric[] = []) { this.tsRoot = tsRoot; }
 
-    analyzeStackGaps(_personas: any[]): ParityReport { return this.analyzeAtomicParity(); }
+    async analyzeStackGaps(_personas: any[]): Promise<ParityReport> { return await this.analyzeAtomicParity(); }
 
-    public analyzeAtomicParity(): ParityReport {
-        const groups = InstanceGrouper.group(this.tsRoot);
+    public async analyzeAtomicParity(): Promise<ParityReport> {
+        const groups = await InstanceGrouper.group(this.tsRoot);
         const results = Array.from(groups.entries()).flatMap(([name, insts]) => this.compareInstances(name, insts));
 
         const byStack = this.aggregateBy(results, "stack");
@@ -62,5 +57,4 @@ export class ParityAnalyst {
     }
 
     getVitalStatus(report: ParityReport): string { return `${report.overallParity}% ${report.overallParity >= 95 ? "Atômica" : (report.overallParity >= 80 ? "Parcial" : "Crítica")}`; }
-    private _detect_gaps(results: any[]) { return results.filter(r => r.depth === "PARITY_GAP" || r.depth === "SHALLOW"); }
 }

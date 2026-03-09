@@ -23,7 +23,7 @@ export class DiscoveryAgent {
         const { agents, findings: enrichFindings } = await this.enrich(filtered, root);
         const findings: any[] = [...goFindings, ...enrichFindings];
         this.mapDisparities(this.groupByPersona(agents), findings);
-        const depth = await DepthIntelligence.calculateDepthAudit(root, this._getFiles(root), [], agents);
+        const depth = await DepthIntelligence.calculateDepthAudit(root, this._getFiles(root), {});
         const ctx = await this.orc.contextEngine.analyzeProject();
         ctx.atomicUnits = agents; ctx.depthAudit = depth;
         findings.push(...await this.orc.runStrategicAudit(ctx, null, false), ...await this.orc.runObfuscationScan());
@@ -35,8 +35,8 @@ export class DiscoveryAgent {
         const agents = await Promise.all(raw.map(async f => {
             try {
                 const c = await fs.promises.readFile(path.join(root, f.path), "utf-8");
-                const a = this.parser.analyze_file_logic(c, f.path);
-                return a ? { ...f, units: [...a.classes.map((n: any) => ({ name: n, type: "class", line: 1 })), ...(a.functions || []).map((n: any) => ({ name: n, type: "function", line: 1 }))] } : f;
+                const a = await this.parser.analyze_file_logic(c, f.path);
+                return a ? { ...f, units: [...(a.classes || []).map((n: any) => ({ name: n, type: "class", line: 1 })), ...(a.functions || []).map((n: any) => ({ name: n, type: "function", line: 1 }))] } : f;
             } catch (e: any) {
                 findings.push({
                     type: "ERROR",
