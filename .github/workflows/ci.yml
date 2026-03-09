@@ -1,0 +1,42 @@
+name: Sentinel CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  verify:
+    name: Verify Project (Bun, Go, Rust)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+      
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+          
+      - name: Install Root Dependencies
+        run: bun install
+        
+      - name: Install Dashboard Dependencies
+        working-directory: ./src_local/dashboard
+        run: bun install
+        
+      - name: Run Tests
+        run: bun test
+        
+      - name: Ensure Native Binaries
+        run: bun run ensure-binaries
+        
+      - name: Run Full Diagnostic
+        run: bun run diagnostic
