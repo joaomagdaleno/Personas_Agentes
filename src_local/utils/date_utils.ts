@@ -1,8 +1,13 @@
 import winston from "winston";
-import * as shadow from "./date_utils_shadow";
 
 const logger = winston.child({ module: "DateUtils" });
 
 export const DATE_FORMAT = "YYYY-MM-DD HH:mm:ss.SSS";
-export const formatDate = shadow.formatDate;
-export const getPhdTimestamp = shadow.getPhdTimestamp;
+
+export function formatDate(date: Date = new Date()): string {
+    return getPhdTimestamp(date);
+}
+
+export function getPhdTimestamp(date: Date = new Date()): string {
+    return date.toISOString().replace('T', ' ').replace('Z', '');
+}

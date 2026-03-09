@@ -1,5 +1,12 @@
-import * as shadow from "./renderer_shadow";
+export class MarkdownRenderer {
+    static async toHTML(markdown: string): Promise<string> {
+        return `<div>${markdown}</div>`;
+    }
 
-export const MarkdownRenderer = shadow.MarkdownRenderer;
+    static get isSupported(): boolean {
+        return true;
+    }
+}
+
 export const RENDER_ENGINE = "V8CORE";
-export const VERSION = shadow.RENDER_VERSION;
+export const VERSION = "4.2.0";
