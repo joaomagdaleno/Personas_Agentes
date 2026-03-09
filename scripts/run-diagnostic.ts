@@ -2,7 +2,7 @@ import { parseArgs } from "node:util";
 import { Orchestrator } from "../src_local/core/orchestrator.ts";
 import { configureLogging } from "../src_local/utils/logging_config.ts";
 import { DirectorPersona } from "../src_local/agents/TypeScript/Strategic/director.ts";
-import { DiagnosticHelpers } from "../src_local/utils/DiagnosticHelpers.ts";
+import { DiagnosticHelpers } from "../src_local/utils/diagnostic_helpers.ts";
 import winston from "winston";
 
 async function main() {

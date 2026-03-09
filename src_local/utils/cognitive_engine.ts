@@ -1,6 +1,6 @@
 import winston from 'winston';
-import { CogHelpers } from "./CogHelpers.ts";
-import { StaticReasoning } from "./StaticReasoning.ts";
+import { CogHelpers } from "./cog_helpers.ts";
+import { StaticReasoning } from "./static_reasoning.ts";
 import { HubManagerGRPC } from "../core/hub_manager_grpc";
 
 /**

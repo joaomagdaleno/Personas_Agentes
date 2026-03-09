@@ -2,7 +2,7 @@ import { Database } from "bun:sqlite";
 import winston from "winston";
 import { execSync } from "node:child_process";
 import { Path } from "../core/path_utils.ts";
-import { ActivityClassifier } from "./ActivityClassifier.ts";
+import { ActivityClassifier } from "./activity_classifier.ts";
 
 const logger = winston.child({ module: "BehaviorAnalyst" });
 
@@ -109,9 +109,9 @@ export class BehaviorAnalyst {
             );
         } catch (e: any) {
             if (e.message?.includes("no such table")) {
-                 logger.debug("👀 [Behavior] Skiping save: user_activity table not initialized.");
+                logger.debug("👀 [Behavior] Skiping save: user_activity table not initialized.");
             } else {
-                 logger.warn(`❌ [Behavior] Database error: ${e.message}`);
+                logger.warn(`❌ [Behavior] Database error: ${e.message}`);
             }
         }
     }

@@ -1,7 +1,7 @@
 import winston from "winston";
 import { TaskExecutor } from "./task_executor.ts";
-import { RemoteDiscoverer } from "./RemoteDiscoverer.ts";
-import { LockCleaner } from "./LockCleaner.ts";
+import { RemoteDiscoverer } from "./remote_discoverer.ts";
+import { LockCleaner } from "./lock_cleaner.ts";
 
 const logger = winston.child({ module: "GitClient" });
 

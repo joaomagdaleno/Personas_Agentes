@@ -5,7 +5,7 @@ import { GitClient } from "./git_client.ts";
 import { DependencyHelpers } from "./dependency_helpers.ts";
 import { ConflictPolicy } from "./conflict_policy.ts";
 import { GitSyncManager } from "./git_sync_manager.ts";
-import { TopologyInfoProvider } from "./TopologyInfoProvider.ts";
+import { TopologyInfoProvider } from "./topology_info_provider.ts";
 
 const logger = winston.child({ module: "DependencyAuditor" });
 

@@ -2,7 +2,7 @@ import winston from "winston";
 import { Path } from "../core/path_utils.ts";
 import { readdir } from "node:fs/promises";
 import { join, dirname } from "node:path";
-import { ForbiddenPolicy } from "./ForbiddenPolicy.ts";
+import { ForbiddenPolicy } from "./forbidden_policy.ts";
 
 const logger = winston.child({ module: "FileSystemScanner" });
 
