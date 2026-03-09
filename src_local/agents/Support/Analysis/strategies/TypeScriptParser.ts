@@ -1,4 +1,4 @@
-import { HubManagerGRPC } from "../../../../core/hub_manager_grpc";
+import { HubManagerGRPC } from "../../../../core/hub_manager_grpc.ts";
 import { ParserHelpers } from "./ParserHelpers.ts";
 
 export interface TypeScriptAnalysis {

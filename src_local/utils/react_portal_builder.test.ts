@@ -13,7 +13,7 @@ describe('react_portal_builder.ts Parity Check', () => {
             const module = await import('./react_portal_builder.ts');
             expect(module).toBeDefined();
         } catch (e) {
-            console.warn(`⚠️ Module load warning for ${moduleName}: ${e}`);
+            console.warn(`⚠️ Module load warning for react_portal_builder.ts: ${e}`);
             // Non-critical failures (e.g. top-level await or side effects) are allowed for smoke tests
         }
     });

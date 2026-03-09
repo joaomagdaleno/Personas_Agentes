@@ -13,7 +13,7 @@ describe('persona_registry.ts Parity Check', () => {
             const module = await import('./persona_registry.ts');
             expect(module).toBeDefined();
         } catch (e) {
-            console.warn(`⚠️ Module load warning for ${moduleName}: ${e}`);
+            console.warn(`⚠️ Module load warning for persona_registry.ts: ${e}`);
             // Non-critical failures (e.g. top-level await or side effects) are allowed for smoke tests
         }
     });

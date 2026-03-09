@@ -1,5 +1,5 @@
 import winston from "winston";
-import { HubManagerGRPC } from "../core/hub_manager_grpc";
+import { HubManagerGRPC } from "../core/hub_manager_grpc.ts";
 import { Path } from "../core/path_utils.ts";
 import { DNAProfiler } from "../agents/Support/Analysis/dna_profiler.ts";
 import { ContextMappingLogic } from "./context_mapping_logic.ts";

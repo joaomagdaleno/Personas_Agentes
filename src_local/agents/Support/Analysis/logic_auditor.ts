@@ -4,6 +4,8 @@ import { SilentErrorStrategy } from "./logic_strategies/silent_error_strategy.ts
 import { ObservabilityStrategy } from "./logic_strategies/observability_strategy.ts";
 import { MetaAnalysisStrategy } from "./logic_strategies/meta_analysis_strategy.ts";
 import { SafetyStrategy } from "./logic_strategies/safety_strategy.ts";
+import { TestQualityStrategy } from "./logic_strategies/test_quality_strategy.ts";
+
 
 const logger = winston.child({ module: "LogicAuditor" });
 
@@ -74,6 +76,20 @@ export class LogicAuditor {
                     severity: "strategic",
                     context: "LogicAuditor"
                 });
+            }
+
+            // Test Quality Check (for .test.ts files)
+            if (sourceFile.fileName.endsWith(".test.ts")) {
+                const testCheck = TestQualityStrategy.audit(node, sourceFile);
+                if (!testCheck.isSafe) {
+                    issues.push({
+                        file: sourceFile.fileName,
+                        line: sourceFile.getLineAndCharacterOfPosition(node.getStart()).line + 1,
+                        issue: testCheck.reason,
+                        severity: "high",
+                        context: "LogicAuditor"
+                    });
+                }
             }
 
             ts.forEachChild(node, visitor);

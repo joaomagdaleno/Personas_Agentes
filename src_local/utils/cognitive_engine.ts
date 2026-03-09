@@ -1,7 +1,7 @@
 import winston from 'winston';
 import { CogHelpers } from "./cog_helpers.ts";
 import { StaticReasoning } from "./static_reasoning.ts";
-import { HubManagerGRPC } from "../core/hub_manager_grpc";
+import { HubManagerGRPC } from "../core/hub_manager_grpc.ts";
 
 /**
  * 🧠 CognitiveEngine - PhD in Reasoning Systems (gRPC Proxy Edition)

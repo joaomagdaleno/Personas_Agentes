@@ -17,9 +17,13 @@ export class BehaviorAnalyst {
     private windowCache: { data: { app: string, title: string }, timestamp: number } | null = null;
     private readonly CACHE_TTL = 30000;
 
-    constructor(projectRoot: string) {
-        const dbPath = new Path(projectRoot).join("system_vault.db").toString();
-        this.db = new Database(dbPath);
+    constructor(projectRoot: string, db?: Database) {
+        if (db) {
+            this.db = db;
+        } else {
+            const dbPath = new Path(projectRoot).join("system_vault.db").toString();
+            this.db = new Database(dbPath);
+        }
     }
 
     /**

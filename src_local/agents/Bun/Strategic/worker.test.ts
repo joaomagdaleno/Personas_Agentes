@@ -13,7 +13,7 @@ describe('worker.ts Parity Check', () => {
             const module = await import('./worker.ts');
             expect(module).toBeDefined();
         } catch (e) {
-            console.warn(`⚠️ Module load warning for ${moduleName}: ${e}`);
+            console.warn(`⚠️ Module load warning for worker.ts: ${e}`);
             // Non-critical failures (e.g. top-level await or side effects) are allowed for smoke tests
         }
     });

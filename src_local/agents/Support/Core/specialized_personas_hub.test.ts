@@ -13,7 +13,7 @@ describe('specialized_personas_hub.ts Parity Check', () => {
             const module = await import('./specialized_personas_hub.ts');
             expect(module).toBeDefined();
         } catch (e) {
-            console.warn(`⚠️ Module load warning for ${moduleName}: ${e}`);
+            console.warn(`⚠️ Module load warning for specialized_personas_hub.ts: ${e}`);
             // Non-critical failures (e.g. top-level await or side effects) are allowed for smoke tests
         }
     });

@@ -23,7 +23,7 @@ import { MaturityEvaluator } from "./../Diagnostics/maturity_evaluator";
 import { TopologyGraphAgent } from "./topology_graph_agent";
 import { DirectorPersona } from "../../TypeScript/Strategic/director";
 
-import { HubManagerGRPC } from "../../../core/hub_manager_grpc";
+import { HubManagerGRPC } from "../../../core/hub_manager_grpc.ts";
 
 const logger = winston.child({ module: "InfrastructureAssembler" });
 

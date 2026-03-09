@@ -1,5 +1,5 @@
 import winston from "winston";
-import { HubManagerGRPC } from "../core/hub_manager_grpc";
+import { HubManagerGRPC } from "../core/hub_manager_grpc.ts";
 
 const logger = winston.child({ module: "TaskQueue" });
 
@@ -9,9 +9,11 @@ const logger = winston.child({ module: "TaskQueue" });
  */
 export class TaskQueue {
     private hubManager: HubManagerGRPC;
+    private projectRoot: string;
 
-    constructor(projectRoot: string) {
-        this.hubManager = new HubManagerGRPC();
+    constructor(projectRoot: string, hubManager?: HubManagerGRPC) {
+        this.projectRoot = projectRoot;
+        this.hubManager = hubManager || new HubManagerGRPC();
     }
 
     /**

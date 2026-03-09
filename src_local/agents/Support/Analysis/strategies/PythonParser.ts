@@ -1,4 +1,4 @@
-import { HubManagerGRPC } from "../../../../core/hub_manager_grpc";
+import { HubManagerGRPC } from "../../../../core/hub_manager_grpc.ts";
 
 export interface PythonAnalysis {
     functions: string[];

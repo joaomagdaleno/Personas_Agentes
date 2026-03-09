@@ -5,7 +5,7 @@ import { PolyglotParser } from "./strategies/PolyglotParser.ts";
 
 import { ComponentMappingStrategy } from "./strategies/ComponentMappingStrategy.ts";
 
-import { HubManagerGRPC } from "../../../core/hub_manager_grpc";
+import { HubManagerGRPC } from "../../../core/hub_manager_grpc.ts";
 
 const logger = winston.child({ module: "SourceCodeParser" });
 

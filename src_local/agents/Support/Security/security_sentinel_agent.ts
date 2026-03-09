@@ -1,6 +1,6 @@
 import winston from "winston";
 import { AuditExpertEngine } from "../../../utils/audit_expert_engine";
-import { HubManagerGRPC } from "../../../core/hub_manager_grpc";
+import { HubManagerGRPC } from "../../../core/hub_manager_grpc.ts";
 
 const logger = winston.child({ module: "SecuritySentinel" });
 

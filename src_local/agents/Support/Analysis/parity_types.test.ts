@@ -13,7 +13,7 @@ describe('parity_types.ts Parity Check', () => {
             const module = await import('./parity_types.ts');
             expect(module).toBeDefined();
         } catch (e) {
-            console.warn(`⚠️ Module load warning for ${moduleName}: ${e}`);
+            console.warn(`⚠️ Module load warning for parity_types.ts: ${e}`);
             // Non-critical failures (e.g. top-level await or side effects) are allowed for smoke tests
         }
     });

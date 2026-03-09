@@ -1,5 +1,5 @@
 import winston from "winston";
-import { HubManagerGRPC } from "../core/hub_manager_grpc";
+import { HubManagerGRPC } from "../core/hub_manager_grpc.ts";
 
 const logger = winston.child({ module: "HubWatcher" });
 
@@ -11,8 +11,8 @@ export class HubWatcher {
     private manager: HubManagerGRPC;
     private onChangeCallbacks: ((path: string) => void)[] = [];
 
-    constructor(host: string = "localhost:50051") {
-        this.manager = new HubManagerGRPC(host);
+    constructor(host: string = "localhost:50051", manager?: HubManagerGRPC) {
+        this.manager = manager || new HubManagerGRPC(host);
     }
 
     start() {

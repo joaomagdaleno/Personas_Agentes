@@ -13,7 +13,7 @@ describe('safety_supreme_judge.ts Parity Check', () => {
             const module = await import('./safety_supreme_judge.ts');
             expect(module).toBeDefined();
         } catch (e) {
-            console.warn(`⚠️ Module load warning for ${moduleName}: ${e}`);
+            console.warn(`⚠️ Module load warning for safety_supreme_judge.ts: ${e}`);
             // Non-critical failures (e.g. top-level await or side effects) are allowed for smoke tests
         }
     });

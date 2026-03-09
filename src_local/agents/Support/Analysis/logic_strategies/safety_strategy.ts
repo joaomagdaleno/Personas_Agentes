@@ -12,17 +12,21 @@ export class SafetyStrategy {
             let result = { isSafe: true, reason: "Uso validado como seguro ou não-executável." };
 
             function visitor(node: ts.Node) {
-                if (ASTIntelligence.isDangerousCall(node)) {
-                    if (!ASTIntelligence.isNodeSafe(node, sourceFile)) {
-                        result = {
-                            isSafe: false,
-                            reason: `Chamada perigosa detectada em contexto de execução real: ${node.getText()}`
-                        };
-                    } else {
-                        result = {
-                            isSafe: true,
-                            reason: "Execução perigosa em contexto seguro (Teste/Log/Definição)."
-                        };
+                if (ts.isCallExpression(node)) {
+                    const dangerous = ASTIntelligence.isDangerousCall(node);
+                    if (dangerous) {
+                        const safe = ASTIntelligence.isNodeSafe(node, sourceFile);
+                        if (!safe) {
+                            result = {
+                                isSafe: false,
+                                reason: `Chamada perigosa detectada em contexto de execução real: ${node.getText()}`
+                            };
+                        } else {
+                            result = {
+                                isSafe: true,
+                                reason: "Execução perigosa em contexto seguro (Teste/Log/Definição)."
+                            };
+                        }
                     }
                 }
                 ts.forEachChild(node, visitor);

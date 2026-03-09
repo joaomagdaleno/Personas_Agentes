@@ -13,7 +13,7 @@ describe('doc_gen_agent.ts Parity Check', () => {
             const module = await import('./doc_gen_agent.ts');
             expect(module).toBeDefined();
         } catch (e) {
-            console.warn(`⚠️ Module load warning for ${moduleName}: ${e}`);
+            console.warn(`⚠️ Module load warning for doc_gen_agent.ts: ${e}`);
             // Non-critical failures (e.g. top-level await or side effects) are allowed for smoke tests
         }
     });

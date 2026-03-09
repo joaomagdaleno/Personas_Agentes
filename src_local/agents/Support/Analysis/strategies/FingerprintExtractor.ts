@@ -4,7 +4,7 @@
  * Philosophy: hub-proxy style — ALL analysis via Go Hub gRPC bridge.
  * Strictly depends on HubManagerGRPC.
  */
-import { HubManagerGRPC } from "../../../../core/hub_manager_grpc";
+import { HubManagerGRPC } from "../../../../core/hub_manager_grpc.ts";
 import type { AtomicFingerprint } from "../parity_types.ts";
 import winston from "winston";
 

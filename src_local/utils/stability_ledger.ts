@@ -69,7 +69,12 @@ export class StabilityLedger {
         const entry = this.ledger[file] || { occurrences: 0, history: [], status: "UNSTABLE" };
         entry.occurrences += 1;
         entry.history.push(new Date().toISOString());
-        entry.status = "UNSTABLE";
+
+        // Only set status to UNSTABLE if it's not a REFERENCE
+        if (entry.status !== "REFERENCE") {
+            entry.status = "UNSTABLE";
+        }
+
         this.ledger[file] = entry;
     }
 

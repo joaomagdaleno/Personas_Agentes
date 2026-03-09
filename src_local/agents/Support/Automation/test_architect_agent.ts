@@ -2,7 +2,7 @@ import * as ts from "typescript";
 import { CognitiveEngine } from "../../../utils/cognitive_engine";
 import winston from "winston";
 import { TopologyEngine } from "../../../utils/topology_engine";
-import { HubManagerGRPC } from "../../../core/hub_manager_grpc";
+import { HubManagerGRPC } from "../../../core/hub_manager_grpc.ts";
 import * as fs from "node:fs";
 import * as path from "node:path";
 

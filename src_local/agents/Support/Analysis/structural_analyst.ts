@@ -7,7 +7,7 @@ import { IntegrityGuardian } from "./../Core/integrity_guardian.ts";
 import { AnalysisPolicy } from "./strategies/AnalysisPolicy.ts";
 import { IntentClassifier } from "./strategies/IntentClassifier.ts";
 
-import { HubManagerGRPC } from "../../../core/hub_manager_grpc";
+import { HubManagerGRPC } from "../../../core/hub_manager_grpc.ts";
 
 const logger = winston.child({ module: "StructuralAnalyst" });
 

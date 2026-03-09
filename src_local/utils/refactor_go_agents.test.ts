@@ -13,7 +13,7 @@ describe('refactor_go_agents.ts Parity Check', () => {
             const module = await import('./refactor_go_agents.ts');
             expect(module).toBeDefined();
         } catch (e) {
-            console.warn(`⚠️ Module load warning for ${moduleName}: ${e}`);
+            console.warn(`⚠️ Module load warning for refactor_go_agents.ts: ${e}`);
             // Non-critical failures (e.g. top-level await or side effects) are allowed for smoke tests
         }
     });
