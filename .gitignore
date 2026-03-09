@@ -23,6 +23,10 @@ files_at_6dec891.txt
 current_files.txt
 *_legacy.py
 *.log
+# Runtime generated manifests
+src_local/utils/persona_manifest.json
+
+# Logs
 src_native/analyzer/errors.json
 src_native/analyzer/rust_check.json
 

@@ -1,8 +1,12 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { fileURLToPath } from 'url';
 import { extractPersonaMetadata } from './persona_extractor_utils';
 
-const baseDir = path.join(process.cwd(), 'src_local/agents');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const baseDir = path.join(__dirname, '..', 'src_local/agents');
 const stacks = ['Python', 'Flutter', 'Kotlin', 'TypeScript', 'Go'];
 const categories = ['Audit', 'Content', 'Strategic', 'System'];
 
@@ -40,7 +44,7 @@ function isAuditableFile(f: string): boolean {
 }
 
 function saveManifest() {
-    const outputPath = path.join(process.cwd(), 'src_local/utils/persona_manifest.json');
+    const outputPath = path.join(__dirname, '..', 'src_local/utils/persona_manifest.json');
     fs.writeFileSync(outputPath, JSON.stringify(manifest, null, 2));
     console.log(`✅ Extraídos ${manifest.personas.length} personas para o manifesto.`);
 }
