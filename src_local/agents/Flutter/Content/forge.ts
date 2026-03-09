@@ -14,7 +14,7 @@ export class ForgePersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /class .* extends StatelessWidget/, issue: "Padrão de UI: Widget sem estado detectado. Verifique se a imutabilidade é respeitada.", severity: "low" },
@@ -22,7 +22,7 @@ export class ForgePersona extends BaseActivePersona {
             { regex: /setState\(/, issue: "Gerenciamento Local: Uso de setState em widgets complexos prejudica a testabilidade e performance.", severity: "high" },
             { regex: /Column\(.*children: \[/, issue: "Layout Flex: Verifique se o overflow é tratado com SingleChildScrollView ou Expanded.", severity: "low" }
         ];
-        const results = this.findPatterns([".dart"], rules);
+        const results = await this.findPatterns([".dart"], rules);
 
         // Advanced Logic: Architectual Audit
         if (results.some(r => r.issue.includes("setState"))) {
@@ -61,3 +61,4 @@ export class ForgePersona extends BaseActivePersona {
     /** Parity: validate_code_safety — Matches legacy forge.py gap. */
     public validate_code_safety(code: string): boolean { return true; }
 }
+

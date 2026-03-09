@@ -33,7 +33,7 @@ export class FlowPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /select\s*\{\s*case/, issue: "Multiplexing: Verifique se há um caso 'default' ou timeout para evitar bloqueios permanentes no select.", severity: "high" },
@@ -43,7 +43,7 @@ export class FlowPersona extends BaseActivePersona {
             { regex: /sync\.Cond/, issue: "Complex Sync: Condicionais detectadas; verifique se a lógica de sinalização não possui race conditions.", severity: "high" },
             { regex: /<-time\.After/, issue: "Timeout Leak: Evite em loops; prefira context ou time.NewTimer para evitar acúmulo de timers não disparados.", severity: "high" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const flowIssues = GoFlowEngine.analyze(this.projectRoot || "");
@@ -81,3 +81,4 @@ export class FlowPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Processamento de Fluxos Go. Sua missão é garantir a fluidez ininterrupta dos dados.`;
     }
 }
+

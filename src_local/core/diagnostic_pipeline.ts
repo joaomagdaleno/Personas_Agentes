@@ -14,7 +14,7 @@ export class DiagnosticPipeline {
 
     constructor(orchestrator: any) {
         this.orc = orchestrator;
-        this.deduplicator = new FindingDeduplicator();
+        this.deduplicator = new FindingDeduplicator(this.orc.hubManager);
     }
 
     async execute(options: { skipTests?: boolean, autoHeal?: boolean, dryRun?: boolean } = {}): Promise<Path> {
@@ -84,11 +84,13 @@ export class DiagnosticPipeline {
 
         this.orc.recordSystemEvent("PIPELINE_FINISHED");
 
+        const dedupedFindings = await this.deduplicator.deduplicate(findings);
+
         const result = await DiagnosticFinalizer.finalize(
             this,
             ctx,
             health,
-            this.deduplicator.deduplicate(findings),
+            dedupedFindings,
             dryRun
         );
 

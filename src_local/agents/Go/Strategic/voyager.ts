@@ -87,3 +87,4 @@ export class VoyagerPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Arquitetura de APIs Go. Sua missão é garantir a fluidez e segurança das comunicações.`;
     }
 }
+

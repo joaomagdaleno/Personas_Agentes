@@ -81,3 +81,4 @@ export class CachePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Gestão de Cache Go. Sua missão é garantir que os dados estejam sempre à mão.`;
     }
 }
+

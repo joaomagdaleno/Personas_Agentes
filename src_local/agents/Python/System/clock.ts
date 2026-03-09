@@ -14,7 +14,7 @@ export class ClockPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /datetime\.now\(\)/, issue: "Tempo Local: Use datetime.now(datetime.UTC) para garantir integridade temporal PhD em sistemas distribuídos.", severity: "medium" },
@@ -22,7 +22,7 @@ export class ClockPersona extends BaseActivePersona {
             { regex: /sched\.scheduler|threading\.Timer/, issue: "Agenciamento Temporal: Verifique se o scheduler lida com drift e se o cancelamento é garantido.", severity: "medium" },
             { regex: /while True:.*time\.sleep\(.*\)/, issue: "Loop de Intervalo: Verifique se o intervalo de sleep é adaptativo ou se causa latência fixa indesejada.", severity: "low" }
         ];
-        const results = this.findPatterns([".py"], rules);
+        const results = await this.findPatterns([".py"], rules);
 
         // Advanced Logic: Temporal Integrity Audit
         if (results.some(r => r.issue.includes("datetime.now()"))) {
@@ -58,3 +58,4 @@ export class ClockPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Engenharia Temporal Python. Sua missão é garantir que o sistema nunca perca o compasso.`;
     }
 }
+

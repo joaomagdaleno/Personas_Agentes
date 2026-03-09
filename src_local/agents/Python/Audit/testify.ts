@@ -93,3 +93,4 @@ export class TestifyPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Automação de Testes Python. Sua missão é garantir o 'Zero Gap' entre código e verificação.`;
     }
 }
+

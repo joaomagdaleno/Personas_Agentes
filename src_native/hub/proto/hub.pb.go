@@ -496,6 +496,7 @@ func (x *ScanResponse) GetFiles() []*FileMetadata {
 type AnalyzeRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	File          string                 `protobuf:"bytes,1,opt,name=file,proto3" json:"file,omitempty"`
+	Content       string                 `protobuf:"bytes,2,opt,name=content,proto3" json:"content,omitempty"` // Optional raw content to bypass disk I/O
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -533,6 +534,13 @@ func (*AnalyzeRequest) Descriptor() ([]byte, []int) {
 func (x *AnalyzeRequest) GetFile() string {
 	if x != nil {
 		return x.File
+	}
+	return ""
+}
+
+func (x *AnalyzeRequest) GetContent() string {
+	if x != nil {
+		return x.Content
 	}
 	return ""
 }
@@ -917,6 +925,558 @@ func (x *UpdateTaskRequest) GetResult() string {
 	return ""
 }
 
+type DeduplicateRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FindingsJson  string                 `protobuf:"bytes,1,opt,name=findings_json,json=findingsJson,proto3" json:"findings_json,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeduplicateRequest) Reset() {
+	*x = DeduplicateRequest{}
+	mi := &file_hub_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeduplicateRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeduplicateRequest) ProtoMessage() {}
+
+func (x *DeduplicateRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_hub_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeduplicateRequest.ProtoReflect.Descriptor instead.
+func (*DeduplicateRequest) Descriptor() ([]byte, []int) {
+	return file_hub_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *DeduplicateRequest) GetFindingsJson() string {
+	if x != nil {
+		return x.FindingsJson
+	}
+	return ""
+}
+
+type ConnectivityRequest struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	DependencyMapJson string                 `protobuf:"bytes,1,opt,name=dependency_map_json,json=dependencyMapJson,proto3" json:"dependency_map_json,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *ConnectivityRequest) Reset() {
+	*x = ConnectivityRequest{}
+	mi := &file_hub_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ConnectivityRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ConnectivityRequest) ProtoMessage() {}
+
+func (x *ConnectivityRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_hub_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ConnectivityRequest.ProtoReflect.Descriptor instead.
+func (*ConnectivityRequest) Descriptor() ([]byte, []int) {
+	return file_hub_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *ConnectivityRequest) GetDependencyMapJson() string {
+	if x != nil {
+		return x.DependencyMapJson
+	}
+	return ""
+}
+
+type AuditRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	AuditJson     string                 `protobuf:"bytes,1,opt,name=audit_json,json=auditJson,proto3" json:"audit_json,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AuditRequest) Reset() {
+	*x = AuditRequest{}
+	mi := &file_hub_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AuditRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AuditRequest) ProtoMessage() {}
+
+func (x *AuditRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_hub_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AuditRequest.ProtoReflect.Descriptor instead.
+func (*AuditRequest) Descriptor() ([]byte, []int) {
+	return file_hub_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *AuditRequest) GetAuditJson() string {
+	if x != nil {
+		return x.AuditJson
+	}
+	return ""
+}
+
+type BatchRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	BatchJson     string                 `protobuf:"bytes,1,opt,name=batch_json,json=batchJson,proto3" json:"batch_json,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BatchRequest) Reset() {
+	*x = BatchRequest{}
+	mi := &file_hub_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BatchRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BatchRequest) ProtoMessage() {}
+
+func (x *BatchRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_hub_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BatchRequest.ProtoReflect.Descriptor instead.
+func (*BatchRequest) Descriptor() ([]byte, []int) {
+	return file_hub_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *BatchRequest) GetBatchJson() string {
+	if x != nil {
+		return x.BatchJson
+	}
+	return ""
+}
+
+type ReasonRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Prompt        string                 `protobuf:"bytes,1,opt,name=prompt,proto3" json:"prompt,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReasonRequest) Reset() {
+	*x = ReasonRequest{}
+	mi := &file_hub_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReasonRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReasonRequest) ProtoMessage() {}
+
+func (x *ReasonRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_hub_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReasonRequest.ProtoReflect.Descriptor instead.
+func (*ReasonRequest) Descriptor() ([]byte, []int) {
+	return file_hub_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *ReasonRequest) GetPrompt() string {
+	if x != nil {
+		return x.Prompt
+	}
+	return ""
+}
+
+type PatternRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PatternJson   string                 `protobuf:"bytes,1,opt,name=pattern_json,json=patternJson,proto3" json:"pattern_json,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PatternRequest) Reset() {
+	*x = PatternRequest{}
+	mi := &file_hub_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PatternRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PatternRequest) ProtoMessage() {}
+
+func (x *PatternRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_hub_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PatternRequest.ProtoReflect.Descriptor instead.
+func (*PatternRequest) Descriptor() ([]byte, []int) {
+	return file_hub_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *PatternRequest) GetPatternJson() string {
+	if x != nil {
+		return x.PatternJson
+	}
+	return ""
+}
+
+type PenaltyRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PenaltyJson   string                 `protobuf:"bytes,1,opt,name=penalty_json,json=penaltyJson,proto3" json:"penalty_json,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PenaltyRequest) Reset() {
+	*x = PenaltyRequest{}
+	mi := &file_hub_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PenaltyRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PenaltyRequest) ProtoMessage() {}
+
+func (x *PenaltyRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_hub_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PenaltyRequest.ProtoReflect.Descriptor instead.
+func (*PenaltyRequest) Descriptor() ([]byte, []int) {
+	return file_hub_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *PenaltyRequest) GetPenaltyJson() string {
+	if x != nil {
+		return x.PenaltyJson
+	}
+	return ""
+}
+
+type ScoreRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ScoreJson     string                 `protobuf:"bytes,1,opt,name=score_json,json=scoreJson,proto3" json:"score_json,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ScoreRequest) Reset() {
+	*x = ScoreRequest{}
+	mi := &file_hub_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ScoreRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ScoreRequest) ProtoMessage() {}
+
+func (x *ScoreRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_hub_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ScoreRequest.ProtoReflect.Descriptor instead.
+func (*ScoreRequest) Descriptor() ([]byte, []int) {
+	return file_hub_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *ScoreRequest) GetScoreJson() string {
+	if x != nil {
+		return x.ScoreJson
+	}
+	return ""
+}
+
+type CoverageRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CoverageJson  string                 `protobuf:"bytes,1,opt,name=coverage_json,json=coverageJson,proto3" json:"coverage_json,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CoverageRequest) Reset() {
+	*x = CoverageRequest{}
+	mi := &file_hub_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CoverageRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CoverageRequest) ProtoMessage() {}
+
+func (x *CoverageRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_hub_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CoverageRequest.ProtoReflect.Descriptor instead.
+func (*CoverageRequest) Descriptor() ([]byte, []int) {
+	return file_hub_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *CoverageRequest) GetCoverageJson() string {
+	if x != nil {
+		return x.CoverageJson
+	}
+	return ""
+}
+
+type GraphRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	GraphJson     string                 `protobuf:"bytes,1,opt,name=graph_json,json=graphJson,proto3" json:"graph_json,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GraphRequest) Reset() {
+	*x = GraphRequest{}
+	mi := &file_hub_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GraphRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GraphRequest) ProtoMessage() {}
+
+func (x *GraphRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_hub_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GraphRequest.ProtoReflect.Descriptor instead.
+func (*GraphRequest) Descriptor() ([]byte, []int) {
+	return file_hub_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *GraphRequest) GetGraphJson() string {
+	if x != nil {
+		return x.GraphJson
+	}
+	return ""
+}
+
+type QueryRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	QueryJson     string                 `protobuf:"bytes,1,opt,name=query_json,json=queryJson,proto3" json:"query_json,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *QueryRequest) Reset() {
+	*x = QueryRequest{}
+	mi := &file_hub_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *QueryRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryRequest) ProtoMessage() {}
+
+func (x *QueryRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_hub_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryRequest.ProtoReflect.Descriptor instead.
+func (*QueryRequest) Descriptor() ([]byte, []int) {
+	return file_hub_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *QueryRequest) GetQueryJson() string {
+	if x != nil {
+		return x.QueryJson
+	}
+	return ""
+}
+
+type HealingPlan struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	IssueDescription string                 `protobuf:"bytes,1,opt,name=issue_description,json=issueDescription,proto3" json:"issue_description,omitempty"`
+	FilePath         string                 `protobuf:"bytes,2,opt,name=file_path,json=filePath,proto3" json:"file_path,omitempty"`
+	FileContent      string                 `protobuf:"bytes,3,opt,name=file_content,json=fileContent,proto3" json:"file_content,omitempty"`
+	Context          string                 `protobuf:"bytes,4,opt,name=context,proto3" json:"context,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *HealingPlan) Reset() {
+	*x = HealingPlan{}
+	mi := &file_hub_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HealingPlan) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HealingPlan) ProtoMessage() {}
+
+func (x *HealingPlan) ProtoReflect() protoreflect.Message {
+	mi := &file_hub_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HealingPlan.ProtoReflect.Descriptor instead.
+func (*HealingPlan) Descriptor() ([]byte, []int) {
+	return file_hub_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *HealingPlan) GetIssueDescription() string {
+	if x != nil {
+		return x.IssueDescription
+	}
+	return ""
+}
+
+func (x *HealingPlan) GetFilePath() string {
+	if x != nil {
+		return x.FilePath
+	}
+	return ""
+}
+
+func (x *HealingPlan) GetFileContent() string {
+	if x != nil {
+		return x.FileContent
+	}
+	return ""
+}
+
+func (x *HealingPlan) GetContext() string {
+	if x != nil {
+		return x.Context
+	}
+	return ""
+}
+
 var File_hub_proto protoreflect.FileDescriptor
 
 const file_hub_proto_rawDesc = "" +
@@ -955,9 +1515,10 @@ const file_hub_proto_rawDesc = "" +
 	"\bcomments\x18\x04 \x01(\x05R\bcomments\x12\x16\n" +
 	"\x06intent\x18\x05 \x01(\tR\x06intent\"7\n" +
 	"\fScanResponse\x12'\n" +
-	"\x05files\x18\x01 \x03(\v2\x11.hub.FileMetadataR\x05files\"$\n" +
+	"\x05files\x18\x01 \x03(\v2\x11.hub.FileMetadataR\x05files\">\n" +
 	"\x0eAnalyzeRequest\x12\x12\n" +
-	"\x04file\x18\x01 \x01(\tR\x04file\".\n" +
+	"\x04file\x18\x01 \x01(\tR\x04file\x12\x18\n" +
+	"\acontent\x18\x02 \x01(\tR\acontent\".\n" +
 	"\x0fAnalyzeResponse\x12\x1b\n" +
 	"\tjson_data\x18\x01 \x01(\tR\bjsonData\"K\n" +
 	"\vTaskRequest\x12\x1b\n" +
@@ -983,7 +1544,39 @@ const file_hub_proto_rawDesc = "" +
 	"\x11UpdateTaskRequest\x12\x17\n" +
 	"\atask_id\x18\x01 \x01(\x05R\x06taskId\x12\x16\n" +
 	"\x06status\x18\x02 \x01(\tR\x06status\x12\x16\n" +
-	"\x06result\x18\x03 \x01(\tR\x06result2\xa5\x03\n" +
+	"\x06result\x18\x03 \x01(\tR\x06result\"9\n" +
+	"\x12DeduplicateRequest\x12#\n" +
+	"\rfindings_json\x18\x01 \x01(\tR\ffindingsJson\"E\n" +
+	"\x13ConnectivityRequest\x12.\n" +
+	"\x13dependency_map_json\x18\x01 \x01(\tR\x11dependencyMapJson\"-\n" +
+	"\fAuditRequest\x12\x1d\n" +
+	"\n" +
+	"audit_json\x18\x01 \x01(\tR\tauditJson\"-\n" +
+	"\fBatchRequest\x12\x1d\n" +
+	"\n" +
+	"batch_json\x18\x01 \x01(\tR\tbatchJson\"'\n" +
+	"\rReasonRequest\x12\x16\n" +
+	"\x06prompt\x18\x01 \x01(\tR\x06prompt\"3\n" +
+	"\x0ePatternRequest\x12!\n" +
+	"\fpattern_json\x18\x01 \x01(\tR\vpatternJson\"3\n" +
+	"\x0ePenaltyRequest\x12!\n" +
+	"\fpenalty_json\x18\x01 \x01(\tR\vpenaltyJson\"-\n" +
+	"\fScoreRequest\x12\x1d\n" +
+	"\n" +
+	"score_json\x18\x01 \x01(\tR\tscoreJson\"6\n" +
+	"\x0fCoverageRequest\x12#\n" +
+	"\rcoverage_json\x18\x01 \x01(\tR\fcoverageJson\"-\n" +
+	"\fGraphRequest\x12\x1d\n" +
+	"\n" +
+	"graph_json\x18\x01 \x01(\tR\tgraphJson\"-\n" +
+	"\fQueryRequest\x12\x1d\n" +
+	"\n" +
+	"query_json\x18\x01 \x01(\tR\tqueryJson\"\x94\x01\n" +
+	"\vHealingPlan\x12+\n" +
+	"\x11issue_description\x18\x01 \x01(\tR\x10issueDescription\x12\x1b\n" +
+	"\tfile_path\x18\x02 \x01(\tR\bfilePath\x12!\n" +
+	"\ffile_content\x18\x03 \x01(\tR\vfileContent\x12\x18\n" +
+	"\acontext\x18\x04 \x01(\tR\acontext2\x81\f\n" +
 	"\n" +
 	"HubService\x12,\n" +
 	"\tGetStatus\x12\n" +
@@ -994,7 +1587,27 @@ const file_hub_proto_rawDesc = "" +
 	".hub.Empty\x1a\n" +
 	".hub.Event0\x01\x122\n" +
 	"\vScanProject\x12\x10.hub.ScanRequest\x1a\x11.hub.ScanResponse\x128\n" +
-	"\vAnalyzeFile\x12\x13.hub.AnalyzeRequest\x1a\x14.hub.AnalyzeResponse\x122\n" +
+	"\vAnalyzeFile\x12\x13.hub.AnalyzeRequest\x1a\x14.hub.AnalyzeResponse\x12>\n" +
+	"\rAnalyzeStream\x12\x13.hub.AnalyzeRequest\x1a\x14.hub.AnalyzeResponse(\x010\x01\x12<\n" +
+	"\x0fGetDependencies\x12\x13.hub.AnalyzeRequest\x1a\x14.hub.AnalyzeResponse\x12<\n" +
+	"\vDeduplicate\x12\x17.hub.DeduplicateRequest\x1a\x14.hub.AnalyzeResponse\x128\n" +
+	"\vFingerprint\x12\x13.hub.AnalyzeRequest\x1a\x14.hub.AnalyzeResponse\x12=\n" +
+	"\x10DiscoverIdentity\x12\x13.hub.AnalyzeRequest\x1a\x14.hub.AnalyzeResponse\x129\n" +
+	"\fIndexProject\x12\x13.hub.AnalyzeRequest\x1a\x14.hub.AnalyzeResponse\x129\n" +
+	"\fScanTopology\x12\x13.hub.AnalyzeRequest\x1a\x14.hub.AnalyzeResponse\x127\n" +
+	"\n" +
+	"GetContext\x12\x13.hub.AnalyzeRequest\x1a\x14.hub.AnalyzeResponse\x12A\n" +
+	"\x0fGetConnectivity\x12\x18.hub.ConnectivityRequest\x1a\x14.hub.AnalyzeResponse\x120\n" +
+	"\x05Audit\x12\x11.hub.AuditRequest\x1a\x14.hub.AnalyzeResponse\x120\n" +
+	"\x05Batch\x12\x11.hub.BatchRequest\x1a\x14.hub.AnalyzeResponse\x122\n" +
+	"\x06Reason\x12\x12.hub.ReasonRequest\x1a\x14.hub.AnalyzeResponse\x125\n" +
+	"\bPatterns\x12\x13.hub.PatternRequest\x1a\x14.hub.AnalyzeResponse\x124\n" +
+	"\aPenalty\x12\x13.hub.PenaltyRequest\x1a\x14.hub.AnalyzeResponse\x129\n" +
+	"\x0eCalculateScore\x12\x11.hub.ScoreRequest\x1a\x14.hub.AnalyzeResponse\x12;\n" +
+	"\rAuditCoverage\x12\x14.hub.CoverageRequest\x1a\x14.hub.AnalyzeResponse\x12<\n" +
+	"\x11GetKnowledgeGraph\x12\x11.hub.GraphRequest\x1a\x14.hub.AnalyzeResponse\x12>\n" +
+	"\x13QueryKnowledgeGraph\x12\x11.hub.QueryRequest\x1a\x14.hub.AnalyzeResponse\x128\n" +
+	"\x0eExecuteHealing\x12\x10.hub.HealingPlan\x1a\x14.hub.AnalyzeResponse\x122\n" +
 	"\vEnqueueTask\x12\x10.hub.TaskRequest\x1a\x11.hub.TaskResponse\x12<\n" +
 	"\x0fGetPendingTasks\x12\x13.hub.PendingRequest\x1a\x14.hub.PendingResponse\x120\n" +
 	"\n" +
@@ -1013,24 +1626,36 @@ func file_hub_proto_rawDescGZIP() []byte {
 	return file_hub_proto_rawDescData
 }
 
-var file_hub_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
+var file_hub_proto_msgTypes = make([]protoimpl.MessageInfo, 28)
 var file_hub_proto_goTypes = []any{
-	(*Empty)(nil),             // 0: hub.Empty
-	(*StatusResponse)(nil),    // 1: hub.StatusResponse
-	(*HealthUpdate)(nil),      // 2: hub.HealthUpdate
-	(*ProcessInfo)(nil),       // 3: hub.ProcessInfo
-	(*Event)(nil),             // 4: hub.Event
-	(*ScanRequest)(nil),       // 5: hub.ScanRequest
-	(*FileMetadata)(nil),      // 6: hub.FileMetadata
-	(*ScanResponse)(nil),      // 7: hub.ScanResponse
-	(*AnalyzeRequest)(nil),    // 8: hub.AnalyzeRequest
-	(*AnalyzeResponse)(nil),   // 9: hub.AnalyzeResponse
-	(*TaskRequest)(nil),       // 10: hub.TaskRequest
-	(*TaskResponse)(nil),      // 11: hub.TaskResponse
-	(*PendingRequest)(nil),    // 12: hub.PendingRequest
-	(*Task)(nil),              // 13: hub.Task
-	(*PendingResponse)(nil),   // 14: hub.PendingResponse
-	(*UpdateTaskRequest)(nil), // 15: hub.UpdateTaskRequest
+	(*Empty)(nil),               // 0: hub.Empty
+	(*StatusResponse)(nil),      // 1: hub.StatusResponse
+	(*HealthUpdate)(nil),        // 2: hub.HealthUpdate
+	(*ProcessInfo)(nil),         // 3: hub.ProcessInfo
+	(*Event)(nil),               // 4: hub.Event
+	(*ScanRequest)(nil),         // 5: hub.ScanRequest
+	(*FileMetadata)(nil),        // 6: hub.FileMetadata
+	(*ScanResponse)(nil),        // 7: hub.ScanResponse
+	(*AnalyzeRequest)(nil),      // 8: hub.AnalyzeRequest
+	(*AnalyzeResponse)(nil),     // 9: hub.AnalyzeResponse
+	(*TaskRequest)(nil),         // 10: hub.TaskRequest
+	(*TaskResponse)(nil),        // 11: hub.TaskResponse
+	(*PendingRequest)(nil),      // 12: hub.PendingRequest
+	(*Task)(nil),                // 13: hub.Task
+	(*PendingResponse)(nil),     // 14: hub.PendingResponse
+	(*UpdateTaskRequest)(nil),   // 15: hub.UpdateTaskRequest
+	(*DeduplicateRequest)(nil),  // 16: hub.DeduplicateRequest
+	(*ConnectivityRequest)(nil), // 17: hub.ConnectivityRequest
+	(*AuditRequest)(nil),        // 18: hub.AuditRequest
+	(*BatchRequest)(nil),        // 19: hub.BatchRequest
+	(*ReasonRequest)(nil),       // 20: hub.ReasonRequest
+	(*PatternRequest)(nil),      // 21: hub.PatternRequest
+	(*PenaltyRequest)(nil),      // 22: hub.PenaltyRequest
+	(*ScoreRequest)(nil),        // 23: hub.ScoreRequest
+	(*CoverageRequest)(nil),     // 24: hub.CoverageRequest
+	(*GraphRequest)(nil),        // 25: hub.GraphRequest
+	(*QueryRequest)(nil),        // 26: hub.QueryRequest
+	(*HealingPlan)(nil),         // 27: hub.HealingPlan
 }
 var file_hub_proto_depIdxs = []int32{
 	2,  // 0: hub.StatusResponse.health:type_name -> hub.HealthUpdate
@@ -1042,19 +1667,57 @@ var file_hub_proto_depIdxs = []int32{
 	0,  // 6: hub.HubService.WatchEvents:input_type -> hub.Empty
 	5,  // 7: hub.HubService.ScanProject:input_type -> hub.ScanRequest
 	8,  // 8: hub.HubService.AnalyzeFile:input_type -> hub.AnalyzeRequest
-	10, // 9: hub.HubService.EnqueueTask:input_type -> hub.TaskRequest
-	12, // 10: hub.HubService.GetPendingTasks:input_type -> hub.PendingRequest
-	15, // 11: hub.HubService.UpdateTask:input_type -> hub.UpdateTaskRequest
-	1,  // 12: hub.HubService.GetStatus:output_type -> hub.StatusResponse
-	2,  // 13: hub.HubService.WatchHealth:output_type -> hub.HealthUpdate
-	4,  // 14: hub.HubService.WatchEvents:output_type -> hub.Event
-	7,  // 15: hub.HubService.ScanProject:output_type -> hub.ScanResponse
-	9,  // 16: hub.HubService.AnalyzeFile:output_type -> hub.AnalyzeResponse
-	11, // 17: hub.HubService.EnqueueTask:output_type -> hub.TaskResponse
-	14, // 18: hub.HubService.GetPendingTasks:output_type -> hub.PendingResponse
-	0,  // 19: hub.HubService.UpdateTask:output_type -> hub.Empty
-	12, // [12:20] is the sub-list for method output_type
-	4,  // [4:12] is the sub-list for method input_type
+	8,  // 9: hub.HubService.AnalyzeStream:input_type -> hub.AnalyzeRequest
+	8,  // 10: hub.HubService.GetDependencies:input_type -> hub.AnalyzeRequest
+	16, // 11: hub.HubService.Deduplicate:input_type -> hub.DeduplicateRequest
+	8,  // 12: hub.HubService.Fingerprint:input_type -> hub.AnalyzeRequest
+	8,  // 13: hub.HubService.DiscoverIdentity:input_type -> hub.AnalyzeRequest
+	8,  // 14: hub.HubService.IndexProject:input_type -> hub.AnalyzeRequest
+	8,  // 15: hub.HubService.ScanTopology:input_type -> hub.AnalyzeRequest
+	8,  // 16: hub.HubService.GetContext:input_type -> hub.AnalyzeRequest
+	17, // 17: hub.HubService.GetConnectivity:input_type -> hub.ConnectivityRequest
+	18, // 18: hub.HubService.Audit:input_type -> hub.AuditRequest
+	19, // 19: hub.HubService.Batch:input_type -> hub.BatchRequest
+	20, // 20: hub.HubService.Reason:input_type -> hub.ReasonRequest
+	21, // 21: hub.HubService.Patterns:input_type -> hub.PatternRequest
+	22, // 22: hub.HubService.Penalty:input_type -> hub.PenaltyRequest
+	23, // 23: hub.HubService.CalculateScore:input_type -> hub.ScoreRequest
+	24, // 24: hub.HubService.AuditCoverage:input_type -> hub.CoverageRequest
+	25, // 25: hub.HubService.GetKnowledgeGraph:input_type -> hub.GraphRequest
+	26, // 26: hub.HubService.QueryKnowledgeGraph:input_type -> hub.QueryRequest
+	27, // 27: hub.HubService.ExecuteHealing:input_type -> hub.HealingPlan
+	10, // 28: hub.HubService.EnqueueTask:input_type -> hub.TaskRequest
+	12, // 29: hub.HubService.GetPendingTasks:input_type -> hub.PendingRequest
+	15, // 30: hub.HubService.UpdateTask:input_type -> hub.UpdateTaskRequest
+	1,  // 31: hub.HubService.GetStatus:output_type -> hub.StatusResponse
+	2,  // 32: hub.HubService.WatchHealth:output_type -> hub.HealthUpdate
+	4,  // 33: hub.HubService.WatchEvents:output_type -> hub.Event
+	7,  // 34: hub.HubService.ScanProject:output_type -> hub.ScanResponse
+	9,  // 35: hub.HubService.AnalyzeFile:output_type -> hub.AnalyzeResponse
+	9,  // 36: hub.HubService.AnalyzeStream:output_type -> hub.AnalyzeResponse
+	9,  // 37: hub.HubService.GetDependencies:output_type -> hub.AnalyzeResponse
+	9,  // 38: hub.HubService.Deduplicate:output_type -> hub.AnalyzeResponse
+	9,  // 39: hub.HubService.Fingerprint:output_type -> hub.AnalyzeResponse
+	9,  // 40: hub.HubService.DiscoverIdentity:output_type -> hub.AnalyzeResponse
+	9,  // 41: hub.HubService.IndexProject:output_type -> hub.AnalyzeResponse
+	9,  // 42: hub.HubService.ScanTopology:output_type -> hub.AnalyzeResponse
+	9,  // 43: hub.HubService.GetContext:output_type -> hub.AnalyzeResponse
+	9,  // 44: hub.HubService.GetConnectivity:output_type -> hub.AnalyzeResponse
+	9,  // 45: hub.HubService.Audit:output_type -> hub.AnalyzeResponse
+	9,  // 46: hub.HubService.Batch:output_type -> hub.AnalyzeResponse
+	9,  // 47: hub.HubService.Reason:output_type -> hub.AnalyzeResponse
+	9,  // 48: hub.HubService.Patterns:output_type -> hub.AnalyzeResponse
+	9,  // 49: hub.HubService.Penalty:output_type -> hub.AnalyzeResponse
+	9,  // 50: hub.HubService.CalculateScore:output_type -> hub.AnalyzeResponse
+	9,  // 51: hub.HubService.AuditCoverage:output_type -> hub.AnalyzeResponse
+	9,  // 52: hub.HubService.GetKnowledgeGraph:output_type -> hub.AnalyzeResponse
+	9,  // 53: hub.HubService.QueryKnowledgeGraph:output_type -> hub.AnalyzeResponse
+	9,  // 54: hub.HubService.ExecuteHealing:output_type -> hub.AnalyzeResponse
+	11, // 55: hub.HubService.EnqueueTask:output_type -> hub.TaskResponse
+	14, // 56: hub.HubService.GetPendingTasks:output_type -> hub.PendingResponse
+	0,  // 57: hub.HubService.UpdateTask:output_type -> hub.Empty
+	31, // [31:58] is the sub-list for method output_type
+	4,  // [4:31] is the sub-list for method input_type
 	4,  // [4:4] is the sub-list for extension type_name
 	4,  // [4:4] is the sub-list for extension extendee
 	0,  // [0:4] is the sub-list for field type_name
@@ -1071,7 +1734,7 @@ func file_hub_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_hub_proto_rawDesc), len(file_hub_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   16,
+			NumMessages:   28,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

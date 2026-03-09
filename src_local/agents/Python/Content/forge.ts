@@ -14,7 +14,7 @@ export class ForgePersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /import src_local/, issue: "Padrão de Import: Verifique se as importações seguem a estrutura modular PhD e se não há imports circulares.", severity: "low" },
@@ -22,7 +22,7 @@ export class ForgePersona extends BaseActivePersona {
             { regex: /def .*\(\) -> None:/, issue: "Tipagem Estática: O uso de Type Hints é obrigatório para garantir a soberania de tipo na camada Python.", severity: "medium" },
             { regex: /lambda .*: .*/, issue: "Lógica Corrompida: Evite lambdas complexos que dificultam o diagnóstico e a legibilidade.", severity: "medium" }
         ];
-        const results = this.findPatterns([".py"], rules);
+        const results = await this.findPatterns([".py"], rules);
 
         // Advanced Logic: Architectual Depth
         if (results.some(r => r.issue.includes("None"))) {
@@ -58,3 +58,4 @@ export class ForgePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Arquitetura de Software Python. Seu foco é modularidade e baixo acoplamento.`;
     }
 }
+

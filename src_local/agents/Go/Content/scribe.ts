@@ -85,3 +85,4 @@ export class ScribePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Documentação Técnica Go. Sua missão é garantir que o conhecimento seja eterno e legível.`;
     }
 }
+

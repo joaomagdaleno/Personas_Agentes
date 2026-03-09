@@ -14,9 +14,9 @@ export class SparkPersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = this.findPatterns([".kt"], [
+        const results = await this.findPatterns([".kt"], [
             { regex: /animate.*AsState\((?!.*animationSpec)/, issue: "Movimento Padrão: Falta especificação de animação PhD (animationSpec).", severity: "low" },
             { regex: /performHapticFeedback/, issue: "Engajamento Tátil: Feedback háptico detectado. Verifique consistência sensorial.", severity: "low" }
         ]);
@@ -48,3 +48,4 @@ export class SparkPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Psicologia da Interface e Mestre em Deleite UX Kotlin.`;
     }
 }
+

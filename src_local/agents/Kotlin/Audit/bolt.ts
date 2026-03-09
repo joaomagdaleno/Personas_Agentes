@@ -52,3 +52,4 @@ export class BoltPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Performance JVM e Kotlin. Sua missão é garantir que o código voe com estabilidade.`;
     }
 }
+

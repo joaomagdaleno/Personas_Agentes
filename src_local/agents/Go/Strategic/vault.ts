@@ -81,3 +81,4 @@ export class VaultPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Criptografia Go. Sua missão é garantir o sigilo absoluto dos dados.`;
     }
 }
+

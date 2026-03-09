@@ -56,3 +56,4 @@ export class ScopePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Escopo de Lógica e Dívida Técnica Python. Sua missão é garantir a pureza e a completude do código.`;
     }
 }
+

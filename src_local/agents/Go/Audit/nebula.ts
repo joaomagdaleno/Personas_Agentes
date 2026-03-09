@@ -85,3 +85,4 @@ export class NebulaPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Segurança de Nuvem Go. Sua missão é garantir que a infraestrutura seja impenetrável.`;
     }
 }
+

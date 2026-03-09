@@ -85,3 +85,4 @@ export class WardenPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Governança de Recursos Go. Sua missão é garantir a ordem e a limpeza sistêmica.`;
     }
 }
+

@@ -13,9 +13,9 @@ export class HypePersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = this.findPatterns([".py"], [
+        const results = await this.findPatterns([".py"], [
             { regex: /README\.md/, issue: "Documentação de Tração: Verifique se os benefícios técnicos são evidenciados.", severity: "low" }
         ]);
         this.endMetrics(results.length);
@@ -39,3 +39,4 @@ export class HypePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Vetores de Crescimento Python.`;
     }
 }
+

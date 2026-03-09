@@ -14,9 +14,9 @@ export class SentinelPersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = this.findPatterns([".kt", ".xml"], [
+        const results = await this.findPatterns([".kt", ".xml"], [
             { regex: /http:\/\//, issue: "Vulnerabilidade: Cleartext HTTP detectado. Risco de ataque MITM.", severity: "critical" },
             { regex: /android:usesCleartextTraffic="true"/, issue: "Risco: Tráfego cleartext expressamente habilitado no Manifest.", severity: "critical" },
             { regex: /\.allowBackup\s*=\s*true/, issue: "Risco: Backup ADB habilitado. Vulnerável a exfiltração de dados físicos.", severity: "high" }
@@ -49,3 +49,4 @@ export class SentinelPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Segurança de Arquitetura e Guardião Sênior Kotlin.`;
     }
 }
+

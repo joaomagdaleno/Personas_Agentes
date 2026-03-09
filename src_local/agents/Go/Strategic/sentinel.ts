@@ -85,3 +85,4 @@ export class SentinelPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Segurança Cibernética Go. Sua missão é proteger a soberania do código contra toda forma de intrusão.`;
     }
 }
+

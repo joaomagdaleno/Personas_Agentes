@@ -35,7 +35,7 @@ export class NexusPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /grpc\.NewServer/, issue: "gRPC Server: Verifique se o interceptor de logging e auth está devidamente configurado.", severity: "medium" },
@@ -45,7 +45,7 @@ export class NexusPersona extends BaseActivePersona {
             { regex: /CircuitBreaker/, issue: "Fault Tolerance: Circuito detectado; verifique se há sinalização de fallback para o usuário.", severity: "medium" },
             { regex: /ServiceDiscovery/, issue: "Registry Integration: Verifique a saúde do healthcheck remoto para evitar tráfego em nós mortos.", severity: "high" }
         ];
-        const results = this.findPatterns([".go"], rules);
+        const results = await this.findPatterns([".go"], rules);
 
         // Advanced Logic Density
         const orchestrationIssues = GoOrchestrationEngine.audit(this.projectRoot || "");
@@ -83,3 +83,4 @@ export class NexusPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Orquestração de Sistemas Go. Sua missão é garantir a harmonia da rede distribuída.`;
     }
 }
+

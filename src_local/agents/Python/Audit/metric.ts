@@ -52,3 +52,4 @@ export class MetricPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Estatística e Instrumentação Python. Sua missão é garantir paridade de dados total.`;
     }
 }
+

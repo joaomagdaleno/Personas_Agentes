@@ -14,7 +14,7 @@ export class FragmentPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /def .*\(.*\):[\s\S]{1000,}/, issue: "Função Gigante: A lógica ultrapassa o limite PhD de granularidade. Divida em funções menores e coesas.", severity: "high" },
@@ -22,7 +22,7 @@ export class FragmentPersona extends BaseActivePersona {
             { regex: /import .*/, issue: "Análise de Acoplamento: Verifique se o módulo possui responsabilidades excessivas (Deus-módulo).", severity: "medium" },
             { regex: /# fragment: .*/, issue: "Soberania Atômica: Marcador de fragmento detectado. Verifique se a unidade é realmente atômica.", severity: "low" }
         ];
-        const results = this.findPatterns([".py"], rules);
+        const results = await this.findPatterns([".py"], rules);
 
         // Advanced Logic: Granularity Audit
         if (results.some(r => r.severity === "high")) {
@@ -58,3 +58,4 @@ export class FragmentPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Decomposição Modular Python. Sua missão é garantir a atomicidade total da lógica.`;
     }
 }
+

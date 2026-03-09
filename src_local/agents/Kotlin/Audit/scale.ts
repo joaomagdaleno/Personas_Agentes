@@ -51,3 +51,4 @@ export class ScalePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Arquitetura de Sistemas e Especialista Android/Kotlin.`;
     }
 }
+

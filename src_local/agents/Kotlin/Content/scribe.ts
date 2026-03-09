@@ -14,7 +14,7 @@ export class ScribePersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /\/\*\*[\s\S]*?\*\//, issue: "KDoc: Documentação KDoc detectada. Verifique se os @param e @return estão precisos.", severity: "low" },
@@ -22,7 +22,7 @@ export class ScribePersona extends BaseActivePersona {
             { regex: /\/\/ FIXME:/, issue: "Erro Crítico: Marcação de correção urgente detectada. Priorize a análise forense.", severity: "high" },
             { regex: /@Deprecated/, issue: "Código Obsoleto: Verifique a versão de substituição no parâmentro 'replaceWith'.", severity: "medium" }
         ];
-        const results = this.findPatterns([".kt", ".kts"], rules);
+        const results = await this.findPatterns([".kt", ".kts"], rules);
 
         // Advanced Logic: Documentation Fidelity
         if (results.some(r => r.issue.includes("FIXME"))) {
@@ -58,3 +58,4 @@ export class ScribePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Escrita Técnica Kotlin. Sua meta é tornar o sistema uma obra de arte documentada.`;
     }
 }
+

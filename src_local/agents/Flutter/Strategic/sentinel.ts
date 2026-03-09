@@ -14,7 +14,7 @@ export class SentinelPersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /TrustManager/, issue: "Segurança de Certificado: Verifique se há pinning de SSL para evitar interceptação de rede.", severity: "high" },
@@ -22,7 +22,7 @@ export class SentinelPersona extends BaseActivePersona {
             { regex: /checkRoot\(/, issue: "Detecção de Root: Sistema de proteção ativa detectado. Verifique a robustez da detecção.", severity: "low" },
             { regex: /encrypt\(|decrypt\(/, issue: "Criptografia: Verifique se os vetores de inicialização (IV) são únicos e randômicos.", severity: "critical" }
         ];
-        const results = this.findPatterns([".dart"], rules);
+        const results = await this.findPatterns([".dart"], rules);
 
         // Advanced Logic: Shielding Audit
         if (results.some(r => r.severity === "critical")) {
@@ -58,3 +58,4 @@ export class SentinelPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Proteção de Sistemas Flutter. Sua missão é ser o escudo intransponível do código.`;
     }
 }
+

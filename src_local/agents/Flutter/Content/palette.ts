@@ -14,9 +14,9 @@ export class PalettePersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = this.findPatterns([".dart"], [
+        const results = await this.findPatterns([".dart"], [
             { regex: /color\s*:\s*Colors\.\w+/, issue: "Aviso: Cor hardcoded detectada. Prefira usar o sistema de temas (Theme.of) para garantir consistência de marca.", severity: "low" },
             { regex: /semanticsLabel\s*:\s*null/, issue: "Acessibilidade: Elemento visual sem rótulo de semântica (Ponto Cego para leitores de tela).", severity: "medium" }
         ]);
@@ -48,3 +48,4 @@ export class PalettePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Design Sistêmico e Harmonia UX Flutter.`;
     }
 }
+

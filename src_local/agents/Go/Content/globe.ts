@@ -85,3 +85,4 @@ export class GlobePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Globalização Go. Sua missão é garantir que o sistema fale todas as línguas e respeite todos os horários.`;
     }
 }
+

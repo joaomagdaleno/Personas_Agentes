@@ -14,9 +14,9 @@ export class HypePersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = this.findPatterns([".kt", ".xml", ".gradle", ".gradle.kts"], [
+        const results = await this.findPatterns([".kt", ".xml", ".gradle", ".gradle.kts"], [
             { regex: /com\.example/, issue: "Amadorismo: Package name padrão detectado. Isso impede a publicação na Play Store.", severity: "high" },
             { regex: /versionName\s*=\s*"0\.0\.\d"/, issue: "Aviso: Versão pré-release (experimental) detectada.", severity: "medium" }
         ]);
@@ -48,3 +48,4 @@ export class HypePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Vetores de Crescimento e Especialista Android/Kotlin.`;
     }
 }
+

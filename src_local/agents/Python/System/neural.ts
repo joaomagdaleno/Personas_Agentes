@@ -14,7 +14,7 @@ export class NeuralPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /SyncManager\.start_sync\(/, issue: "Sincronia Neural: Verifique se há proteção contra race conditions em sincronias paralelas legacy.", severity: "high" },
@@ -22,7 +22,7 @@ export class NeuralPersona extends BaseActivePersona {
             { regex: /threading\.Lock\(\)/, issue: "Sincronização de Estado: Verifique se o lock é liberado em blocos 'finally' para evitar deadlocks sistêmicos.", severity: "high" },
             { regex: /dict_update_event = .*/, issue: "Propagação de Evento: Verifique se a atualização de dicionários de estado dispara os observers corretos.", severity: "medium" }
         ];
-        const results = this.findPatterns([".py"], rules);
+        const results = await this.findPatterns([".py"], rules);
 
         // Advanced Logic: Neural Sync Audit
         if (results.some(r => r.severity === "high")) {
@@ -58,3 +58,4 @@ export class NeuralPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Neuroengenharia de Sistemas Python. Sua meta é a harmonia perfeita entre estado e suporte legacy.`;
     }
 }
+

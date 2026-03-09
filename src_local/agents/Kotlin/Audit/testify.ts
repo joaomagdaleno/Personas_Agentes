@@ -93,3 +93,4 @@ export class TestifyPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Qualidade JVM. Sua missão é garantir que o código Kotlin seja à prova de falhas sob carga.`;
     }
 }
+

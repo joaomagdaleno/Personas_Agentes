@@ -1,6 +1,4 @@
-import * as cp from "child_process";
-import * as path from "path";
-import * as fs from "fs";
+import { HubManagerGRPC } from "../../../../core/hub_manager_grpc";
 
 export interface PythonAnalysis {
     functions: string[];
@@ -8,38 +6,31 @@ export interface PythonAnalysis {
     tree: boolean | null;
 }
 
+/**
+ * 🐍 PythonParser - PhD in Structural Analysis (gRPC Proxy).
+ */
 export class PythonParser {
-    private static BINARY_PATH = path.resolve(process.cwd(), "src_native/analyzer/target/release/analyzer.exe");
+    constructor(private hubManager?: HubManagerGRPC) { }
 
-    static analyze(content: string): PythonAnalysis {
+    async analyze(content: string, filename: string): Promise<PythonAnalysis> {
         const functions = [...content.matchAll(/def\s+(\w+)\s*\(/g)].map(m => m[1] || '');
         const classes = [...content.matchAll(/class\s+(\w+)\s*[:\(]/g)].map(m => m[1] || '');
         return { functions, classes, tree: true };
     }
 
-    static calculateComplexity(content: string): number {
-        this.ensureBinaryPresence();
+    async calculateComplexity(filename: string): Promise<number> {
+        if (!this.hubManager) return 1;
 
         try {
-            // Write temp file for analysis
-            const tmpDir = path.join(process.cwd(), "tmp_rust");
-            if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir);
-            const tmpFile = path.join(tmpDir, `tmp_complexity_${Date.now()}.py`);
-            fs.writeFileSync(tmpFile, content);
-
-            // Execute native analyzer
-            const output = cp.execSync(`"${this.BINARY_PATH}" analyze "${tmpFile}"`, { encoding: 'utf8' });
-            fs.unlinkSync(tmpFile);
-
-            const result = JSON.parse(output);
-            return result.total_complexity || 1;
+            const result = await this.hubManager.analyzeFile(filename);
+            return result?.total_complexity || 1;
         } catch (err) {
-            console.error(`[PythonParser] Native complexity calculation failed:`, err);
-            return 1; // Fallback to minimum
+            console.error(`[PythonParser] gRPC complexity calculation failed:`, err);
+            return 1;
         }
     }
 
-    static extractImports(content: string): string[] {
+    extractImports(content: string): string[] {
         const imports: string[] = [];
         const lines = content.split('\n');
         for (const line of lines) {
@@ -58,12 +49,5 @@ export class PythonParser {
             }
         }
         return [...new Set(imports)];
-    }
-
-    private static ensureBinaryPresence() {
-        if (!fs.existsSync(this.BINARY_PATH)) {
-            console.error(`[FATAL] Rust binary not found at ${this.BINARY_PATH}.`);
-            process.exit(1);
-        }
     }
 }

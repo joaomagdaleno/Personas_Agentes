@@ -13,6 +13,7 @@ export class BaseHelpers {
             persona.auditEngine = support.auditEngine;
             persona.structuralAnalyst = support.analyst;
             persona.integrityGuardian = support.guardian;
+            persona.patternFinder = support.patternFinder;
             persona.maturityEvaluator = tools.maturity;
             winston.child({ module: persona.name }).info(`✅ Ponte Neural Ativa.`);
         } catch (e: any) { winston.child({ module: persona.name }).error(`❌ Falha na ponte: ${e.message}`); }

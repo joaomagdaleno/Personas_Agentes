@@ -1,5 +1,4 @@
-import * as path from "path";
-import * as cp from "child_process";
+import { HubManagerGRPC } from "../core/hub_manager_grpc";
 import winston from "winston";
 
 const logger = winston.child({ module: "TopologyEngine" });
@@ -22,21 +21,22 @@ export interface TopologyMap {
 }
 
 /**
- * 🗺️ TopologyEngine — Delegação total ao Rust Analyzer (walkdir + serde_json).
+ * 🗺️ TopologyEngine — Proxy centralizado via gRPC (Go Hub).
  */
 export class TopologyEngine {
-    private static BINARY_PATH = path.resolve(process.cwd(), "src_native/analyzer/target/release/analyzer.exe");
+    constructor(private hubManager?: HubManagerGRPC) { }
 
-    static scanProject(projectRoot: string): TopologyMap {
+    async scanProject(projectRoot: string): Promise<TopologyMap> {
         try {
-            const absRoot = path.resolve(projectRoot);
-            const output = cp.execSync(`"${this.BINARY_PATH}" topology "${absRoot}"`, {
-                encoding: "utf8",
-                maxBuffer: 50 * 1024 * 1024
-            });
-            return JSON.parse(output);
+            if (!this.hubManager) {
+                logger.warn("⚠️ HubManager not provided to TopologyEngine. Returning empty map.");
+                return { timestamp: new Date().toISOString(), sovereign: [], shadow: [], scripts: [], gaps: [] };
+            }
+            logger.info(`🗺️ [Topology] Requesting scan for: ${projectRoot}`);
+            const results = await this.hubManager.scanTopology(projectRoot);
+            return results || { timestamp: new Date().toISOString(), sovereign: [], shadow: [], scripts: [], gaps: [] };
         } catch (e: any) {
-            logger.error(`🚨 Rust topology scan failed: ${e.message}`);
+            logger.error(`🚨 gRPC topology scan failed: ${e.message}`);
             return { timestamp: new Date().toISOString(), sovereign: [], shadow: [], scripts: [], gaps: [] };
         }
     }

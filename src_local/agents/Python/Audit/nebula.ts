@@ -53,3 +53,4 @@ export class NebulaPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Arquitetura de Nuvem Python. Sua missão é garantir que a infraestrutura seja elástica e impenetrável.`;
     }
 }
+

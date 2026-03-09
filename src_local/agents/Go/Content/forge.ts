@@ -85,3 +85,4 @@ export class ForgePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Geração de Código Go. Sua missão é garantir que o código gerado seja tão puro quanto o artesanal.`;
     }
 }
+

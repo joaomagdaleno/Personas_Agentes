@@ -14,7 +14,7 @@ export class VaultPersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /EncryptedSharedPreferences/, issue: "Soberania de Dados: Verifique se o MasterKey é gerenciado pelo Android Keystore.", severity: "low" },
@@ -22,7 +22,7 @@ export class VaultPersona extends BaseActivePersona {
             { regex: /"password" : ".*"/, issue: "Risco de Credencial: Senhas hardcoded em código Kotlin violam a soberania PhD de segurança.", severity: "critical" },
             { regex: /Base64\.decode/, issue: "Ofuscação vs Segurança: Verifique se dados sensíveis estão apenas em base64 e não criptografados.", severity: "high" }
         ];
-        const results = this.findPatterns([".kt", ".kts"], rules);
+        const results = await this.findPatterns([".kt", ".kts"], rules);
 
         // Advanced Logic: Cryptographic Audit
         if (results.some(r => r.severity === "critical")) {
@@ -58,3 +58,4 @@ export class VaultPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Criptografia Kotlin. Sua missão é garantir que a fortaleza digital seja impenetrável.`;
     }
 }
+

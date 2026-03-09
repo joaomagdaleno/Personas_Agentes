@@ -49,3 +49,4 @@ export class MantraPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, guardião da pureza de tipos no runtime Bun.`;
     }
 }
+

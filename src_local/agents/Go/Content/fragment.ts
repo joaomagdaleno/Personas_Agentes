@@ -81,3 +81,4 @@ export class FragmentPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Refatoração Go. Sua missão é garantir a modularidade perfeita.`;
     }
 }
+

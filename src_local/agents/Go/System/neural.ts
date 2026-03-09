@@ -80,3 +80,4 @@ export class NeuralPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Inteligência Artificial Go. Sua missão é garantir o surgimento ético e eficiente da inteligência.`;
     }
 }
+

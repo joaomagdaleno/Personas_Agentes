@@ -85,3 +85,4 @@ export class MantraPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Qualidade e Idiomas Go. Sua missão é garantir que o código seja puro e conciso.`;
     }
 }
+

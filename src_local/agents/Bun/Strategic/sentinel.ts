@@ -43,3 +43,4 @@ export class SentinelPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, mestre em segurança de transporte e TLS Bun.`;
     }
 }
+

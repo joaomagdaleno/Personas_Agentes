@@ -13,9 +13,9 @@ export class WardenPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = this.findPatterns([".py"], [
+        const results = await this.findPatterns([".py"], [
             { regex: /os\.system/, issue: "Execução Fora de Controle: O Warden exige o uso de subprocess.run para conformidade.", severity: "high" }
         ]);
         this.endMetrics(results.length);
@@ -39,3 +39,4 @@ export class WardenPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Execução de Conformidade Python.`;
     }
 }
+

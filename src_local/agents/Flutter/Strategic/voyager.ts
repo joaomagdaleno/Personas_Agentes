@@ -22,7 +22,7 @@ export class VoyagerPersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /Navigator\.pushNamed/, issue: "Navegação por Nome: Verifique se a rota está definida no 'onGenerateRoute' para evitar falhas silenciosas.", severity: "medium" },
@@ -33,7 +33,7 @@ export class VoyagerPersona extends BaseActivePersona {
             { regex: /WillPopScope|PopScope/, issue: "Interceptação de Voltar: Verifique se a lógica de 'pop' não quebra o fluxo esperado do usuário.", severity: "low" },
             { regex: /context\.go|context\.push/, issue: "Extensão de Contexto: Verifique se a extensão 'go_router' está sendo usada corretamente sem vazamento de contexto.", severity: "low" }
         ];
-        const results = this.findPatterns([".dart"], rules);
+        const results = await this.findPatterns([".dart"], rules);
 
         // Advanced Logic: Map exploration vectors
         this.mapExplorationVectors(results);
@@ -78,3 +78,4 @@ export class VoyagerPersona extends BaseActivePersona {
     /** Parity: suggest_auto_healing — Matches legacy voyager.py gap. */
     public suggest_auto_healing(spot: string): string { return ""; }
 }
+

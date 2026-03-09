@@ -87,3 +87,4 @@ export class PalettePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Estética de Sistemas Go. Sua missão é garantir que o sistema seja funcional e belo.`;
     }
 }
+

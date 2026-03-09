@@ -14,7 +14,7 @@ export class StreamPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /yield .*/, issue: "Gerador Python: Verifique se o gerador possui mecanismos de consumo eficiente para evitar estouro de memória em pipes longos.", severity: "low" },
@@ -22,7 +22,7 @@ export class StreamPersona extends BaseActivePersona {
             { regex: /stream\.read\(.*\)/, issue: "Leitura de Stream: Verifique se o chunk size é fixo e adequado para evitar picos de memória.", severity: "medium" },
             { regex: /pipe\.flush\(\)/, issue: "Sincronia de Pipe: O uso excessivo de flush pode degradar a performance de I/O na camada legacy.", severity: "low" }
         ];
-        const results = this.findPatterns([".py"], rules);
+        const results = await this.findPatterns([".py"], rules);
 
         // Advanced Logic: Data Pipe Audit
         if (results.some(r => r.issue.includes("stream.read"))) {
@@ -58,3 +58,4 @@ export class StreamPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Processamento de Dados Python. Sua missão é garantir que a informação flua sem atrito.`;
     }
 }
+

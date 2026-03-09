@@ -1,57 +1,34 @@
 import winston from "winston";
 import { ScoreCalculator } from "./score_calculator";
+import { HubManagerGRPC } from "../../../core/hub_manager_grpc";
 
 const logger = winston.child({ module: "HealthSynthesizer" });
 
 /**
- * 🩺 HealthSynthesizer PhD (Bridge Version).
- * Sintetiza a saúde global do sistema usando o ScoreCalculator.
+ * 🩺 HealthSynthesizer PhD (gRPC Proxy Edition).
+ * Sintetiza a saúde global do sistema usando o ScoreCalculator proxied.
  */
 export class HealthSynthesizer {
     private calculator: ScoreCalculator;
 
-    constructor() {
-        this.calculator = new ScoreCalculator();
+    constructor(private hubManager?: HubManagerGRPC) {
+        this.calculator = new ScoreCalculator(hubManager);
     }
 
     /**
      * Síntese 360 do sistema.
      */
     async synthesize360(context: any, metrics: any, personas: any, ledger: any, qaData: any): Promise<any> {
-        logger.info("🩺 [Synthesizer] Sintetizando visão 360 do sistema...");
-
-        // Debug what's available in context and qaData
-        logger.debug("Context structure:", Object.keys(context));
-        logger.debug("QA Data structure:", Object.keys(qaData || {}));
+        logger.info("🩺 [Synthesizer] Sintetizando visão 360 do sistema via Hub Proxy...");
 
         const allAlerts = context.alerts || [];
         const mapData = context.map || {};
 
-        logger.debug(`Alerts found: ${allAlerts.length}`);
-        logger.debug(`Map data entries: ${Object.keys(mapData).length}`);
+        // Calculate score asynchronously via gRPC
+        const { score, breakdown } = await this.calculator.calculateFinalScore(mapData, allAlerts, qaData, context.cognitive);
 
-        // Calculate score
-        const { score, breakdown } = this.calculator.calculateFinalScore(mapData, allAlerts, qaData, context.cognitive);
-
-        logger.debug(`Calculated score: ${score}`);
-        logger.debug("Score breakdown:", breakdown);
-
-        // Verify calculations manually
         const { ScoringMetricsEngine } = await import("./scoring_metrics_engine");
         const metricsEngine = new ScoringMetricsEngine();
-        const [stability, ,] = metricsEngine.calcStability(mapData);
-        const [purity,] = metricsEngine.calcPurity(mapData, Object.keys(mapData).length);
-        const [observability, ,] = metricsEngine.calcObservability(mapData);
-        const [security,] = metricsEngine.calcSecurity(allAlerts);
-        const [excellence,] = metricsEngine.calcExcellence(mapData, Object.keys(mapData).length);
-
-        logger.debug(`Manual calculation breakdown:`);
-        logger.debug(`- Stability: ${stability}`);
-        logger.debug(`- Purity: ${purity}`);
-        logger.debug(`- Observability: ${observability}`);
-        logger.debug(`- Security: ${security}`);
-        logger.debug(`- Excellence: ${excellence}`);
-
         const vitals = metricsEngine.getVitals(mapData);
 
         // 🌪️ Enriquecendo Mapa de Entropia com Métricas de Auditoria
@@ -60,7 +37,6 @@ export class HealthSynthesizer {
             for (const metric of qaData.depth_audit.metrics) {
                 const pathKey = metric.path;
                 if (enrichedMap[pathKey]) {
-                    // Do not overwrite complexity anymore, just add tsDepth for visibility
                     enrichedMap[pathKey].ts_depth = metric.tsDepth;
                 }
             }

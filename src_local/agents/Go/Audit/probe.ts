@@ -85,3 +85,4 @@ export class ProbePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Observabilidade Go. Sua missão é garantir que nenhum erro passe despercebido.`;
     }
 }
+

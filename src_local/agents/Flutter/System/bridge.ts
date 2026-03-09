@@ -14,9 +14,9 @@ export class BridgePersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = this.findPatterns([".dart"], [
+        const results = await this.findPatterns([".dart"], [
             { regex: /MethodChannel\(/, issue: "Aviso: Uso de canal nativo detectado. Garanta tipagem estrita no lado Dart e Nativo.", severity: "medium" },
             { regex: /dynamic\s+\w+\s*\(/, issue: "Fragilidade: Uso de dynamic em assinaturas de método. Use tipos fortes para evitar quebras de runtime.", severity: "high" }
         ]);
@@ -48,3 +48,4 @@ export class BridgePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Sistemas Distribuídos e Arquiteto de Integrações Flutter.`;
     }
 }
+

@@ -19,14 +19,33 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	HubService_GetStatus_FullMethodName       = "/hub.HubService/GetStatus"
-	HubService_WatchHealth_FullMethodName     = "/hub.HubService/WatchHealth"
-	HubService_WatchEvents_FullMethodName     = "/hub.HubService/WatchEvents"
-	HubService_ScanProject_FullMethodName     = "/hub.HubService/ScanProject"
-	HubService_AnalyzeFile_FullMethodName     = "/hub.HubService/AnalyzeFile"
-	HubService_EnqueueTask_FullMethodName     = "/hub.HubService/EnqueueTask"
-	HubService_GetPendingTasks_FullMethodName = "/hub.HubService/GetPendingTasks"
-	HubService_UpdateTask_FullMethodName      = "/hub.HubService/UpdateTask"
+	HubService_GetStatus_FullMethodName           = "/hub.HubService/GetStatus"
+	HubService_WatchHealth_FullMethodName         = "/hub.HubService/WatchHealth"
+	HubService_WatchEvents_FullMethodName         = "/hub.HubService/WatchEvents"
+	HubService_ScanProject_FullMethodName         = "/hub.HubService/ScanProject"
+	HubService_AnalyzeFile_FullMethodName         = "/hub.HubService/AnalyzeFile"
+	HubService_AnalyzeStream_FullMethodName       = "/hub.HubService/AnalyzeStream"
+	HubService_GetDependencies_FullMethodName     = "/hub.HubService/GetDependencies"
+	HubService_Deduplicate_FullMethodName         = "/hub.HubService/Deduplicate"
+	HubService_Fingerprint_FullMethodName         = "/hub.HubService/Fingerprint"
+	HubService_DiscoverIdentity_FullMethodName    = "/hub.HubService/DiscoverIdentity"
+	HubService_IndexProject_FullMethodName        = "/hub.HubService/IndexProject"
+	HubService_ScanTopology_FullMethodName        = "/hub.HubService/ScanTopology"
+	HubService_GetContext_FullMethodName          = "/hub.HubService/GetContext"
+	HubService_GetConnectivity_FullMethodName     = "/hub.HubService/GetConnectivity"
+	HubService_Audit_FullMethodName               = "/hub.HubService/Audit"
+	HubService_Batch_FullMethodName               = "/hub.HubService/Batch"
+	HubService_Reason_FullMethodName              = "/hub.HubService/Reason"
+	HubService_Patterns_FullMethodName            = "/hub.HubService/Patterns"
+	HubService_Penalty_FullMethodName             = "/hub.HubService/Penalty"
+	HubService_CalculateScore_FullMethodName      = "/hub.HubService/CalculateScore"
+	HubService_AuditCoverage_FullMethodName       = "/hub.HubService/AuditCoverage"
+	HubService_GetKnowledgeGraph_FullMethodName   = "/hub.HubService/GetKnowledgeGraph"
+	HubService_QueryKnowledgeGraph_FullMethodName = "/hub.HubService/QueryKnowledgeGraph"
+	HubService_ExecuteHealing_FullMethodName      = "/hub.HubService/ExecuteHealing"
+	HubService_EnqueueTask_FullMethodName         = "/hub.HubService/EnqueueTask"
+	HubService_GetPendingTasks_FullMethodName     = "/hub.HubService/GetPendingTasks"
+	HubService_UpdateTask_FullMethodName          = "/hub.HubService/UpdateTask"
 )
 
 // HubServiceClient is the client API for HubService service.
@@ -40,6 +59,26 @@ type HubServiceClient interface {
 	// Discovery & Analysis
 	ScanProject(ctx context.Context, in *ScanRequest, opts ...grpc.CallOption) (*ScanResponse, error)
 	AnalyzeFile(ctx context.Context, in *AnalyzeRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error)
+	AnalyzeStream(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[AnalyzeRequest, AnalyzeResponse], error)
+	GetDependencies(ctx context.Context, in *AnalyzeRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error)
+	Deduplicate(ctx context.Context, in *DeduplicateRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error)
+	Fingerprint(ctx context.Context, in *AnalyzeRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error)
+	DiscoverIdentity(ctx context.Context, in *AnalyzeRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error)
+	IndexProject(ctx context.Context, in *AnalyzeRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error)
+	ScanTopology(ctx context.Context, in *AnalyzeRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error)
+	GetContext(ctx context.Context, in *AnalyzeRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error)
+	GetConnectivity(ctx context.Context, in *ConnectivityRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error)
+	Audit(ctx context.Context, in *AuditRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error)
+	Batch(ctx context.Context, in *BatchRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error)
+	Reason(ctx context.Context, in *ReasonRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error)
+	Patterns(ctx context.Context, in *PatternRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error)
+	Penalty(ctx context.Context, in *PenaltyRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error)
+	CalculateScore(ctx context.Context, in *ScoreRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error)
+	AuditCoverage(ctx context.Context, in *CoverageRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error)
+	GetKnowledgeGraph(ctx context.Context, in *GraphRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error)
+	QueryKnowledgeGraph(ctx context.Context, in *QueryRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error)
+	// Auto-Healing
+	ExecuteHealing(ctx context.Context, in *HealingPlan, opts ...grpc.CallOption) (*AnalyzeResponse, error)
 	// Task Scheduler
 	EnqueueTask(ctx context.Context, in *TaskRequest, opts ...grpc.CallOption) (*TaskResponse, error)
 	GetPendingTasks(ctx context.Context, in *PendingRequest, opts ...grpc.CallOption) (*PendingResponse, error)
@@ -122,6 +161,199 @@ func (c *hubServiceClient) AnalyzeFile(ctx context.Context, in *AnalyzeRequest, 
 	return out, nil
 }
 
+func (c *hubServiceClient) AnalyzeStream(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[AnalyzeRequest, AnalyzeResponse], error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	stream, err := c.cc.NewStream(ctx, &HubService_ServiceDesc.Streams[2], HubService_AnalyzeStream_FullMethodName, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &grpc.GenericClientStream[AnalyzeRequest, AnalyzeResponse]{ClientStream: stream}
+	return x, nil
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type HubService_AnalyzeStreamClient = grpc.BidiStreamingClient[AnalyzeRequest, AnalyzeResponse]
+
+func (c *hubServiceClient) GetDependencies(ctx context.Context, in *AnalyzeRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AnalyzeResponse)
+	err := c.cc.Invoke(ctx, HubService_GetDependencies_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hubServiceClient) Deduplicate(ctx context.Context, in *DeduplicateRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AnalyzeResponse)
+	err := c.cc.Invoke(ctx, HubService_Deduplicate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hubServiceClient) Fingerprint(ctx context.Context, in *AnalyzeRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AnalyzeResponse)
+	err := c.cc.Invoke(ctx, HubService_Fingerprint_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hubServiceClient) DiscoverIdentity(ctx context.Context, in *AnalyzeRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AnalyzeResponse)
+	err := c.cc.Invoke(ctx, HubService_DiscoverIdentity_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hubServiceClient) IndexProject(ctx context.Context, in *AnalyzeRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AnalyzeResponse)
+	err := c.cc.Invoke(ctx, HubService_IndexProject_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hubServiceClient) ScanTopology(ctx context.Context, in *AnalyzeRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AnalyzeResponse)
+	err := c.cc.Invoke(ctx, HubService_ScanTopology_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hubServiceClient) GetContext(ctx context.Context, in *AnalyzeRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AnalyzeResponse)
+	err := c.cc.Invoke(ctx, HubService_GetContext_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hubServiceClient) GetConnectivity(ctx context.Context, in *ConnectivityRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AnalyzeResponse)
+	err := c.cc.Invoke(ctx, HubService_GetConnectivity_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hubServiceClient) Audit(ctx context.Context, in *AuditRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AnalyzeResponse)
+	err := c.cc.Invoke(ctx, HubService_Audit_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hubServiceClient) Batch(ctx context.Context, in *BatchRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AnalyzeResponse)
+	err := c.cc.Invoke(ctx, HubService_Batch_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hubServiceClient) Reason(ctx context.Context, in *ReasonRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AnalyzeResponse)
+	err := c.cc.Invoke(ctx, HubService_Reason_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hubServiceClient) Patterns(ctx context.Context, in *PatternRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AnalyzeResponse)
+	err := c.cc.Invoke(ctx, HubService_Patterns_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hubServiceClient) Penalty(ctx context.Context, in *PenaltyRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AnalyzeResponse)
+	err := c.cc.Invoke(ctx, HubService_Penalty_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hubServiceClient) CalculateScore(ctx context.Context, in *ScoreRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AnalyzeResponse)
+	err := c.cc.Invoke(ctx, HubService_CalculateScore_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hubServiceClient) AuditCoverage(ctx context.Context, in *CoverageRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AnalyzeResponse)
+	err := c.cc.Invoke(ctx, HubService_AuditCoverage_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hubServiceClient) GetKnowledgeGraph(ctx context.Context, in *GraphRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AnalyzeResponse)
+	err := c.cc.Invoke(ctx, HubService_GetKnowledgeGraph_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hubServiceClient) QueryKnowledgeGraph(ctx context.Context, in *QueryRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AnalyzeResponse)
+	err := c.cc.Invoke(ctx, HubService_QueryKnowledgeGraph_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hubServiceClient) ExecuteHealing(ctx context.Context, in *HealingPlan, opts ...grpc.CallOption) (*AnalyzeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AnalyzeResponse)
+	err := c.cc.Invoke(ctx, HubService_ExecuteHealing_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *hubServiceClient) EnqueueTask(ctx context.Context, in *TaskRequest, opts ...grpc.CallOption) (*TaskResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(TaskResponse)
@@ -163,6 +395,26 @@ type HubServiceServer interface {
 	// Discovery & Analysis
 	ScanProject(context.Context, *ScanRequest) (*ScanResponse, error)
 	AnalyzeFile(context.Context, *AnalyzeRequest) (*AnalyzeResponse, error)
+	AnalyzeStream(grpc.BidiStreamingServer[AnalyzeRequest, AnalyzeResponse]) error
+	GetDependencies(context.Context, *AnalyzeRequest) (*AnalyzeResponse, error)
+	Deduplicate(context.Context, *DeduplicateRequest) (*AnalyzeResponse, error)
+	Fingerprint(context.Context, *AnalyzeRequest) (*AnalyzeResponse, error)
+	DiscoverIdentity(context.Context, *AnalyzeRequest) (*AnalyzeResponse, error)
+	IndexProject(context.Context, *AnalyzeRequest) (*AnalyzeResponse, error)
+	ScanTopology(context.Context, *AnalyzeRequest) (*AnalyzeResponse, error)
+	GetContext(context.Context, *AnalyzeRequest) (*AnalyzeResponse, error)
+	GetConnectivity(context.Context, *ConnectivityRequest) (*AnalyzeResponse, error)
+	Audit(context.Context, *AuditRequest) (*AnalyzeResponse, error)
+	Batch(context.Context, *BatchRequest) (*AnalyzeResponse, error)
+	Reason(context.Context, *ReasonRequest) (*AnalyzeResponse, error)
+	Patterns(context.Context, *PatternRequest) (*AnalyzeResponse, error)
+	Penalty(context.Context, *PenaltyRequest) (*AnalyzeResponse, error)
+	CalculateScore(context.Context, *ScoreRequest) (*AnalyzeResponse, error)
+	AuditCoverage(context.Context, *CoverageRequest) (*AnalyzeResponse, error)
+	GetKnowledgeGraph(context.Context, *GraphRequest) (*AnalyzeResponse, error)
+	QueryKnowledgeGraph(context.Context, *QueryRequest) (*AnalyzeResponse, error)
+	// Auto-Healing
+	ExecuteHealing(context.Context, *HealingPlan) (*AnalyzeResponse, error)
 	// Task Scheduler
 	EnqueueTask(context.Context, *TaskRequest) (*TaskResponse, error)
 	GetPendingTasks(context.Context, *PendingRequest) (*PendingResponse, error)
@@ -191,6 +443,63 @@ func (UnimplementedHubServiceServer) ScanProject(context.Context, *ScanRequest) 
 }
 func (UnimplementedHubServiceServer) AnalyzeFile(context.Context, *AnalyzeRequest) (*AnalyzeResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method AnalyzeFile not implemented")
+}
+func (UnimplementedHubServiceServer) AnalyzeStream(grpc.BidiStreamingServer[AnalyzeRequest, AnalyzeResponse]) error {
+	return status.Error(codes.Unimplemented, "method AnalyzeStream not implemented")
+}
+func (UnimplementedHubServiceServer) GetDependencies(context.Context, *AnalyzeRequest) (*AnalyzeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetDependencies not implemented")
+}
+func (UnimplementedHubServiceServer) Deduplicate(context.Context, *DeduplicateRequest) (*AnalyzeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Deduplicate not implemented")
+}
+func (UnimplementedHubServiceServer) Fingerprint(context.Context, *AnalyzeRequest) (*AnalyzeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Fingerprint not implemented")
+}
+func (UnimplementedHubServiceServer) DiscoverIdentity(context.Context, *AnalyzeRequest) (*AnalyzeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DiscoverIdentity not implemented")
+}
+func (UnimplementedHubServiceServer) IndexProject(context.Context, *AnalyzeRequest) (*AnalyzeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method IndexProject not implemented")
+}
+func (UnimplementedHubServiceServer) ScanTopology(context.Context, *AnalyzeRequest) (*AnalyzeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ScanTopology not implemented")
+}
+func (UnimplementedHubServiceServer) GetContext(context.Context, *AnalyzeRequest) (*AnalyzeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetContext not implemented")
+}
+func (UnimplementedHubServiceServer) GetConnectivity(context.Context, *ConnectivityRequest) (*AnalyzeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetConnectivity not implemented")
+}
+func (UnimplementedHubServiceServer) Audit(context.Context, *AuditRequest) (*AnalyzeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Audit not implemented")
+}
+func (UnimplementedHubServiceServer) Batch(context.Context, *BatchRequest) (*AnalyzeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Batch not implemented")
+}
+func (UnimplementedHubServiceServer) Reason(context.Context, *ReasonRequest) (*AnalyzeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Reason not implemented")
+}
+func (UnimplementedHubServiceServer) Patterns(context.Context, *PatternRequest) (*AnalyzeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Patterns not implemented")
+}
+func (UnimplementedHubServiceServer) Penalty(context.Context, *PenaltyRequest) (*AnalyzeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Penalty not implemented")
+}
+func (UnimplementedHubServiceServer) CalculateScore(context.Context, *ScoreRequest) (*AnalyzeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CalculateScore not implemented")
+}
+func (UnimplementedHubServiceServer) AuditCoverage(context.Context, *CoverageRequest) (*AnalyzeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AuditCoverage not implemented")
+}
+func (UnimplementedHubServiceServer) GetKnowledgeGraph(context.Context, *GraphRequest) (*AnalyzeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetKnowledgeGraph not implemented")
+}
+func (UnimplementedHubServiceServer) QueryKnowledgeGraph(context.Context, *QueryRequest) (*AnalyzeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method QueryKnowledgeGraph not implemented")
+}
+func (UnimplementedHubServiceServer) ExecuteHealing(context.Context, *HealingPlan) (*AnalyzeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ExecuteHealing not implemented")
 }
 func (UnimplementedHubServiceServer) EnqueueTask(context.Context, *TaskRequest) (*TaskResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method EnqueueTask not implemented")
@@ -298,6 +607,337 @@ func _HubService_AnalyzeFile_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _HubService_AnalyzeStream_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(HubServiceServer).AnalyzeStream(&grpc.GenericServerStream[AnalyzeRequest, AnalyzeResponse]{ServerStream: stream})
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type HubService_AnalyzeStreamServer = grpc.BidiStreamingServer[AnalyzeRequest, AnalyzeResponse]
+
+func _HubService_GetDependencies_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AnalyzeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HubServiceServer).GetDependencies(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: HubService_GetDependencies_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HubServiceServer).GetDependencies(ctx, req.(*AnalyzeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _HubService_Deduplicate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeduplicateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HubServiceServer).Deduplicate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: HubService_Deduplicate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HubServiceServer).Deduplicate(ctx, req.(*DeduplicateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _HubService_Fingerprint_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AnalyzeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HubServiceServer).Fingerprint(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: HubService_Fingerprint_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HubServiceServer).Fingerprint(ctx, req.(*AnalyzeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _HubService_DiscoverIdentity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AnalyzeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HubServiceServer).DiscoverIdentity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: HubService_DiscoverIdentity_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HubServiceServer).DiscoverIdentity(ctx, req.(*AnalyzeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _HubService_IndexProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AnalyzeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HubServiceServer).IndexProject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: HubService_IndexProject_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HubServiceServer).IndexProject(ctx, req.(*AnalyzeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _HubService_ScanTopology_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AnalyzeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HubServiceServer).ScanTopology(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: HubService_ScanTopology_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HubServiceServer).ScanTopology(ctx, req.(*AnalyzeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _HubService_GetContext_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AnalyzeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HubServiceServer).GetContext(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: HubService_GetContext_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HubServiceServer).GetContext(ctx, req.(*AnalyzeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _HubService_GetConnectivity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ConnectivityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HubServiceServer).GetConnectivity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: HubService_GetConnectivity_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HubServiceServer).GetConnectivity(ctx, req.(*ConnectivityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _HubService_Audit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AuditRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HubServiceServer).Audit(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: HubService_Audit_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HubServiceServer).Audit(ctx, req.(*AuditRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _HubService_Batch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BatchRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HubServiceServer).Batch(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: HubService_Batch_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HubServiceServer).Batch(ctx, req.(*BatchRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _HubService_Reason_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReasonRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HubServiceServer).Reason(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: HubService_Reason_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HubServiceServer).Reason(ctx, req.(*ReasonRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _HubService_Patterns_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatternRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HubServiceServer).Patterns(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: HubService_Patterns_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HubServiceServer).Patterns(ctx, req.(*PatternRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _HubService_Penalty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PenaltyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HubServiceServer).Penalty(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: HubService_Penalty_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HubServiceServer).Penalty(ctx, req.(*PenaltyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _HubService_CalculateScore_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ScoreRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HubServiceServer).CalculateScore(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: HubService_CalculateScore_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HubServiceServer).CalculateScore(ctx, req.(*ScoreRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _HubService_AuditCoverage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CoverageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HubServiceServer).AuditCoverage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: HubService_AuditCoverage_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HubServiceServer).AuditCoverage(ctx, req.(*CoverageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _HubService_GetKnowledgeGraph_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GraphRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HubServiceServer).GetKnowledgeGraph(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: HubService_GetKnowledgeGraph_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HubServiceServer).GetKnowledgeGraph(ctx, req.(*GraphRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _HubService_QueryKnowledgeGraph_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HubServiceServer).QueryKnowledgeGraph(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: HubService_QueryKnowledgeGraph_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HubServiceServer).QueryKnowledgeGraph(ctx, req.(*QueryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _HubService_ExecuteHealing_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HealingPlan)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HubServiceServer).ExecuteHealing(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: HubService_ExecuteHealing_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HubServiceServer).ExecuteHealing(ctx, req.(*HealingPlan))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _HubService_EnqueueTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(TaskRequest)
 	if err := dec(in); err != nil {
@@ -372,6 +1012,78 @@ var HubService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _HubService_AnalyzeFile_Handler,
 		},
 		{
+			MethodName: "GetDependencies",
+			Handler:    _HubService_GetDependencies_Handler,
+		},
+		{
+			MethodName: "Deduplicate",
+			Handler:    _HubService_Deduplicate_Handler,
+		},
+		{
+			MethodName: "Fingerprint",
+			Handler:    _HubService_Fingerprint_Handler,
+		},
+		{
+			MethodName: "DiscoverIdentity",
+			Handler:    _HubService_DiscoverIdentity_Handler,
+		},
+		{
+			MethodName: "IndexProject",
+			Handler:    _HubService_IndexProject_Handler,
+		},
+		{
+			MethodName: "ScanTopology",
+			Handler:    _HubService_ScanTopology_Handler,
+		},
+		{
+			MethodName: "GetContext",
+			Handler:    _HubService_GetContext_Handler,
+		},
+		{
+			MethodName: "GetConnectivity",
+			Handler:    _HubService_GetConnectivity_Handler,
+		},
+		{
+			MethodName: "Audit",
+			Handler:    _HubService_Audit_Handler,
+		},
+		{
+			MethodName: "Batch",
+			Handler:    _HubService_Batch_Handler,
+		},
+		{
+			MethodName: "Reason",
+			Handler:    _HubService_Reason_Handler,
+		},
+		{
+			MethodName: "Patterns",
+			Handler:    _HubService_Patterns_Handler,
+		},
+		{
+			MethodName: "Penalty",
+			Handler:    _HubService_Penalty_Handler,
+		},
+		{
+			MethodName: "CalculateScore",
+			Handler:    _HubService_CalculateScore_Handler,
+		},
+		{
+			MethodName: "AuditCoverage",
+			Handler:    _HubService_AuditCoverage_Handler,
+		},
+		{
+			MethodName: "GetKnowledgeGraph",
+			Handler:    _HubService_GetKnowledgeGraph_Handler,
+		},
+		{
+			MethodName: "QueryKnowledgeGraph",
+			Handler:    _HubService_QueryKnowledgeGraph_Handler,
+		},
+		{
+			MethodName: "ExecuteHealing",
+			Handler:    _HubService_ExecuteHealing_Handler,
+		},
+		{
 			MethodName: "EnqueueTask",
 			Handler:    _HubService_EnqueueTask_Handler,
 		},
@@ -394,6 +1106,12 @@ var HubService_ServiceDesc = grpc.ServiceDesc{
 			StreamName:    "WatchEvents",
 			Handler:       _HubService_WatchEvents_Handler,
 			ServerStreams: true,
+		},
+		{
+			StreamName:    "AnalyzeStream",
+			Handler:       _HubService_AnalyzeStream_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
 		},
 	},
 	Metadata: "hub.proto",

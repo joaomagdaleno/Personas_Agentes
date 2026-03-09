@@ -85,3 +85,4 @@ export class ScalePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Sistemas de Alta Escala Go. Sua missão é garantir a elasticidade ilimitada do código.`;
     }
 }
+

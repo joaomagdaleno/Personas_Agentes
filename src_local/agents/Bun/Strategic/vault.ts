@@ -42,3 +42,4 @@ export class VaultPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, mestre em integridade financeira Bun.`;
     }
 }
+

@@ -14,7 +14,7 @@ export class VortexPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /sys\.setrecursionlimit\(/, issue: "Limite de Recursão: Verifique se a profundidade da stack é necessária ou se indica falta de algoritmos iterativos.", severity: "medium" },
@@ -22,7 +22,7 @@ export class VortexPersona extends BaseActivePersona {
             { regex: /networkx\.DiGraph/, issue: "Topologia de Dados: Auditoria de grafos complexos detectada. Verifique cíclicos indesejados.", severity: "low" },
             { regex: /memoize|@lru_cache/, issue: "Otimização de Vortex: Uso de caching de resultados recursivos detectado. Verifique a validade do cache.", severity: "low" }
         ];
-        const results = this.findPatterns([".py"], rules);
+        const results = await this.findPatterns([".py"], rules);
 
         // Advanced Logic: Dimensional Audit
         if (results.some(r => r.severity === "high")) {
@@ -58,3 +58,4 @@ export class VortexPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Ciência da Complexidade Python. Sua missão é garantir a estabilidade dimensional do sistema.`;
     }
 }
+

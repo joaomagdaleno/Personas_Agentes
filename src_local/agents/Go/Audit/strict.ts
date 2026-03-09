@@ -85,3 +85,4 @@ export class StrictPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Sistemas de Tipagem Go. Sua missão é garantir a precisão matemática dos contratos.`;
     }
 }
+

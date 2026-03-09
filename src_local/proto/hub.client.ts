@@ -9,6 +9,19 @@ import type { PendingResponse } from "./hub";
 import type { PendingRequest } from "./hub";
 import type { TaskResponse } from "./hub";
 import type { TaskRequest } from "./hub";
+import type { HealingPlan } from "./hub";
+import type { QueryRequest } from "./hub";
+import type { GraphRequest } from "./hub";
+import type { CoverageRequest } from "./hub";
+import type { ScoreRequest } from "./hub";
+import type { PenaltyRequest } from "./hub";
+import type { PatternRequest } from "./hub";
+import type { ReasonRequest } from "./hub";
+import type { BatchRequest } from "./hub";
+import type { AuditRequest } from "./hub";
+import type { ConnectivityRequest } from "./hub";
+import type { DeduplicateRequest } from "./hub";
+import type { DuplexStreamingCall } from "@protobuf-ts/runtime-rpc";
 import type { AnalyzeResponse } from "./hub";
 import type { AnalyzeRequest } from "./hub";
 import type { ScanResponse } from "./hub";
@@ -49,6 +62,84 @@ export interface IHubServiceClient {
      * @generated from protobuf rpc: AnalyzeFile
      */
     analyzeFile(input: AnalyzeRequest, options?: RpcOptions): UnaryCall<AnalyzeRequest, AnalyzeResponse>;
+    /**
+     * @generated from protobuf rpc: AnalyzeStream
+     */
+    analyzeStream(options?: RpcOptions): DuplexStreamingCall<AnalyzeRequest, AnalyzeResponse>;
+    /**
+     * @generated from protobuf rpc: GetDependencies
+     */
+    getDependencies(input: AnalyzeRequest, options?: RpcOptions): UnaryCall<AnalyzeRequest, AnalyzeResponse>;
+    /**
+     * @generated from protobuf rpc: Deduplicate
+     */
+    deduplicate(input: DeduplicateRequest, options?: RpcOptions): UnaryCall<DeduplicateRequest, AnalyzeResponse>;
+    /**
+     * @generated from protobuf rpc: Fingerprint
+     */
+    fingerprint(input: AnalyzeRequest, options?: RpcOptions): UnaryCall<AnalyzeRequest, AnalyzeResponse>;
+    /**
+     * @generated from protobuf rpc: DiscoverIdentity
+     */
+    discoverIdentity(input: AnalyzeRequest, options?: RpcOptions): UnaryCall<AnalyzeRequest, AnalyzeResponse>;
+    /**
+     * @generated from protobuf rpc: IndexProject
+     */
+    indexProject(input: AnalyzeRequest, options?: RpcOptions): UnaryCall<AnalyzeRequest, AnalyzeResponse>;
+    /**
+     * @generated from protobuf rpc: ScanTopology
+     */
+    scanTopology(input: AnalyzeRequest, options?: RpcOptions): UnaryCall<AnalyzeRequest, AnalyzeResponse>;
+    /**
+     * @generated from protobuf rpc: GetContext
+     */
+    getContext(input: AnalyzeRequest, options?: RpcOptions): UnaryCall<AnalyzeRequest, AnalyzeResponse>;
+    /**
+     * @generated from protobuf rpc: GetConnectivity
+     */
+    getConnectivity(input: ConnectivityRequest, options?: RpcOptions): UnaryCall<ConnectivityRequest, AnalyzeResponse>;
+    /**
+     * @generated from protobuf rpc: Audit
+     */
+    audit(input: AuditRequest, options?: RpcOptions): UnaryCall<AuditRequest, AnalyzeResponse>;
+    /**
+     * @generated from protobuf rpc: Batch
+     */
+    batch(input: BatchRequest, options?: RpcOptions): UnaryCall<BatchRequest, AnalyzeResponse>;
+    /**
+     * @generated from protobuf rpc: Reason
+     */
+    reason(input: ReasonRequest, options?: RpcOptions): UnaryCall<ReasonRequest, AnalyzeResponse>;
+    /**
+     * @generated from protobuf rpc: Patterns
+     */
+    patterns(input: PatternRequest, options?: RpcOptions): UnaryCall<PatternRequest, AnalyzeResponse>;
+    /**
+     * @generated from protobuf rpc: Penalty
+     */
+    penalty(input: PenaltyRequest, options?: RpcOptions): UnaryCall<PenaltyRequest, AnalyzeResponse>;
+    /**
+     * @generated from protobuf rpc: CalculateScore
+     */
+    calculateScore(input: ScoreRequest, options?: RpcOptions): UnaryCall<ScoreRequest, AnalyzeResponse>;
+    /**
+     * @generated from protobuf rpc: AuditCoverage
+     */
+    auditCoverage(input: CoverageRequest, options?: RpcOptions): UnaryCall<CoverageRequest, AnalyzeResponse>;
+    /**
+     * @generated from protobuf rpc: GetKnowledgeGraph
+     */
+    getKnowledgeGraph(input: GraphRequest, options?: RpcOptions): UnaryCall<GraphRequest, AnalyzeResponse>;
+    /**
+     * @generated from protobuf rpc: QueryKnowledgeGraph
+     */
+    queryKnowledgeGraph(input: QueryRequest, options?: RpcOptions): UnaryCall<QueryRequest, AnalyzeResponse>;
+    /**
+     * Auto-Healing
+     *
+     * @generated from protobuf rpc: ExecuteHealing
+     */
+    executeHealing(input: HealingPlan, options?: RpcOptions): UnaryCall<HealingPlan, AnalyzeResponse>;
     /**
      * Task Scheduler
      *
@@ -113,26 +204,161 @@ export class HubServiceClient implements IHubServiceClient, ServiceInfo {
         return stackIntercept<AnalyzeRequest, AnalyzeResponse>("unary", this._transport, method, opt, input);
     }
     /**
+     * @generated from protobuf rpc: AnalyzeStream
+     */
+    analyzeStream(options?: RpcOptions): DuplexStreamingCall<AnalyzeRequest, AnalyzeResponse> {
+        const method = this.methods[5], opt = this._transport.mergeOptions(options);
+        return stackIntercept<AnalyzeRequest, AnalyzeResponse>("duplex", this._transport, method, opt);
+    }
+    /**
+     * @generated from protobuf rpc: GetDependencies
+     */
+    getDependencies(input: AnalyzeRequest, options?: RpcOptions): UnaryCall<AnalyzeRequest, AnalyzeResponse> {
+        const method = this.methods[6], opt = this._transport.mergeOptions(options);
+        return stackIntercept<AnalyzeRequest, AnalyzeResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: Deduplicate
+     */
+    deduplicate(input: DeduplicateRequest, options?: RpcOptions): UnaryCall<DeduplicateRequest, AnalyzeResponse> {
+        const method = this.methods[7], opt = this._transport.mergeOptions(options);
+        return stackIntercept<DeduplicateRequest, AnalyzeResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: Fingerprint
+     */
+    fingerprint(input: AnalyzeRequest, options?: RpcOptions): UnaryCall<AnalyzeRequest, AnalyzeResponse> {
+        const method = this.methods[8], opt = this._transport.mergeOptions(options);
+        return stackIntercept<AnalyzeRequest, AnalyzeResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: DiscoverIdentity
+     */
+    discoverIdentity(input: AnalyzeRequest, options?: RpcOptions): UnaryCall<AnalyzeRequest, AnalyzeResponse> {
+        const method = this.methods[9], opt = this._transport.mergeOptions(options);
+        return stackIntercept<AnalyzeRequest, AnalyzeResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: IndexProject
+     */
+    indexProject(input: AnalyzeRequest, options?: RpcOptions): UnaryCall<AnalyzeRequest, AnalyzeResponse> {
+        const method = this.methods[10], opt = this._transport.mergeOptions(options);
+        return stackIntercept<AnalyzeRequest, AnalyzeResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: ScanTopology
+     */
+    scanTopology(input: AnalyzeRequest, options?: RpcOptions): UnaryCall<AnalyzeRequest, AnalyzeResponse> {
+        const method = this.methods[11], opt = this._transport.mergeOptions(options);
+        return stackIntercept<AnalyzeRequest, AnalyzeResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: GetContext
+     */
+    getContext(input: AnalyzeRequest, options?: RpcOptions): UnaryCall<AnalyzeRequest, AnalyzeResponse> {
+        const method = this.methods[12], opt = this._transport.mergeOptions(options);
+        return stackIntercept<AnalyzeRequest, AnalyzeResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: GetConnectivity
+     */
+    getConnectivity(input: ConnectivityRequest, options?: RpcOptions): UnaryCall<ConnectivityRequest, AnalyzeResponse> {
+        const method = this.methods[13], opt = this._transport.mergeOptions(options);
+        return stackIntercept<ConnectivityRequest, AnalyzeResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: Audit
+     */
+    audit(input: AuditRequest, options?: RpcOptions): UnaryCall<AuditRequest, AnalyzeResponse> {
+        const method = this.methods[14], opt = this._transport.mergeOptions(options);
+        return stackIntercept<AuditRequest, AnalyzeResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: Batch
+     */
+    batch(input: BatchRequest, options?: RpcOptions): UnaryCall<BatchRequest, AnalyzeResponse> {
+        const method = this.methods[15], opt = this._transport.mergeOptions(options);
+        return stackIntercept<BatchRequest, AnalyzeResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: Reason
+     */
+    reason(input: ReasonRequest, options?: RpcOptions): UnaryCall<ReasonRequest, AnalyzeResponse> {
+        const method = this.methods[16], opt = this._transport.mergeOptions(options);
+        return stackIntercept<ReasonRequest, AnalyzeResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: Patterns
+     */
+    patterns(input: PatternRequest, options?: RpcOptions): UnaryCall<PatternRequest, AnalyzeResponse> {
+        const method = this.methods[17], opt = this._transport.mergeOptions(options);
+        return stackIntercept<PatternRequest, AnalyzeResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: Penalty
+     */
+    penalty(input: PenaltyRequest, options?: RpcOptions): UnaryCall<PenaltyRequest, AnalyzeResponse> {
+        const method = this.methods[18], opt = this._transport.mergeOptions(options);
+        return stackIntercept<PenaltyRequest, AnalyzeResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: CalculateScore
+     */
+    calculateScore(input: ScoreRequest, options?: RpcOptions): UnaryCall<ScoreRequest, AnalyzeResponse> {
+        const method = this.methods[19], opt = this._transport.mergeOptions(options);
+        return stackIntercept<ScoreRequest, AnalyzeResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: AuditCoverage
+     */
+    auditCoverage(input: CoverageRequest, options?: RpcOptions): UnaryCall<CoverageRequest, AnalyzeResponse> {
+        const method = this.methods[20], opt = this._transport.mergeOptions(options);
+        return stackIntercept<CoverageRequest, AnalyzeResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: GetKnowledgeGraph
+     */
+    getKnowledgeGraph(input: GraphRequest, options?: RpcOptions): UnaryCall<GraphRequest, AnalyzeResponse> {
+        const method = this.methods[21], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GraphRequest, AnalyzeResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: QueryKnowledgeGraph
+     */
+    queryKnowledgeGraph(input: QueryRequest, options?: RpcOptions): UnaryCall<QueryRequest, AnalyzeResponse> {
+        const method = this.methods[22], opt = this._transport.mergeOptions(options);
+        return stackIntercept<QueryRequest, AnalyzeResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * Auto-Healing
+     *
+     * @generated from protobuf rpc: ExecuteHealing
+     */
+    executeHealing(input: HealingPlan, options?: RpcOptions): UnaryCall<HealingPlan, AnalyzeResponse> {
+        const method = this.methods[23], opt = this._transport.mergeOptions(options);
+        return stackIntercept<HealingPlan, AnalyzeResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
      * Task Scheduler
      *
      * @generated from protobuf rpc: EnqueueTask
      */
     enqueueTask(input: TaskRequest, options?: RpcOptions): UnaryCall<TaskRequest, TaskResponse> {
-        const method = this.methods[5], opt = this._transport.mergeOptions(options);
+        const method = this.methods[24], opt = this._transport.mergeOptions(options);
         return stackIntercept<TaskRequest, TaskResponse>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: GetPendingTasks
      */
     getPendingTasks(input: PendingRequest, options?: RpcOptions): UnaryCall<PendingRequest, PendingResponse> {
-        const method = this.methods[6], opt = this._transport.mergeOptions(options);
+        const method = this.methods[25], opt = this._transport.mergeOptions(options);
         return stackIntercept<PendingRequest, PendingResponse>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: UpdateTask
      */
     updateTask(input: UpdateTaskRequest, options?: RpcOptions): UnaryCall<UpdateTaskRequest, Empty> {
-        const method = this.methods[7], opt = this._transport.mergeOptions(options);
+        const method = this.methods[26], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdateTaskRequest, Empty>("unary", this._transport, method, opt, input);
     }
 }

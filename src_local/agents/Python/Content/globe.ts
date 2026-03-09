@@ -14,7 +14,7 @@ export class GlobePersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /_\(".*"\)/, issue: "Suporte i18n: Uso de gettext detectado. Verifique se as chaves existem no arquivo de tradução principal.", severity: "low" },
@@ -22,7 +22,7 @@ export class GlobePersona extends BaseActivePersona {
             { regex: /babel\.support/, issue: "Configuração de Localização: Verifique se os formatos de data e moeda seguem as regras PhD regionais.", severity: "low" },
             { regex: /"[\w\s]{40,}"/, issue: "Hardcoded String: Mova strings longas para o sistema gettext para permitir tradução e soberania linguística.", severity: "medium" }
         ];
-        const results = this.findPatterns([".py", ".po", ".mo"], rules);
+        const results = await this.findPatterns([".py", ".po", ".mo"], rules);
 
         // Advanced Logic: Cultural Depth Audit
         if (results.some(r => r.issue.includes("Hardcoded"))) {
@@ -58,3 +58,4 @@ export class GlobePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Engenharia de Localização Python. Sua missão é garantir a voz universal do sistema.`;
     }
 }
+

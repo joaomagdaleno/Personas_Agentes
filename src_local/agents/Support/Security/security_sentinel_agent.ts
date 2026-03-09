@@ -1,16 +1,17 @@
 import winston from "winston";
 import { AuditExpertEngine } from "../../../utils/audit_expert_engine";
+import { HubManagerGRPC } from "../../../core/hub_manager_grpc";
 
 const logger = winston.child({ module: "SecuritySentinel" });
 
 /**
- * 🛡️ SecuritySentinelAgent PhD (Bridge Version).
+ * 🛡️ SecuritySentinelAgent PhD (gRPC Proxy Bridge).
  * Especialista em segurança que utiliza o AuditExpertEngine para scans de vulnerabilidade.
  */
 export class SecuritySentinelAgent {
     private engine: AuditExpertEngine;
 
-    constructor() {
+    constructor(private hubManager?: HubManagerGRPC) {
         this.engine = new AuditExpertEngine();
     }
 

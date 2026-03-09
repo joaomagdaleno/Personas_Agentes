@@ -14,7 +14,7 @@ export class CachePersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /@functools\.lru_cache/, issue: "Cache de Função: Verifique se o tamanho do cache é adequado e se não há vazamento de memória em processos longos.", severity: "low" },
@@ -22,7 +22,7 @@ export class CachePersona extends BaseActivePersona {
             { regex: /diskcache\.Cache/, issue: "Cache em Disco: Verifique a política de limpeza e se há risco de corrupção de arquivos em acessos concorrentes.", severity: "medium" },
             { regex: /shred .*/, issue: "Limpeza de Disco: Verifique se a purga de dados sensíveis segue o padrão PhD de segurança.", severity: "high" }
         ];
-        const results = this.findPatterns([".py"], rules);
+        const results = await this.findPatterns([".py"], rules);
 
         // Advanced Logic: Disk Thrashing Prevention
         if (results.some(r => r.issue.includes("global_cache"))) {
@@ -58,3 +58,4 @@ export class CachePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Otimização de Performance Python. Sua missão é garantir que o cache acelere o sistema sem comprometer a memória.`;
     }
 }
+

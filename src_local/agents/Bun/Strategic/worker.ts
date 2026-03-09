@@ -43,3 +43,4 @@ export class WorkerPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, mestre em workers e paralelismo Bun.`;
     }
 }
+

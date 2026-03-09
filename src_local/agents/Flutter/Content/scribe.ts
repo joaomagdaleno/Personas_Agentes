@@ -14,7 +14,7 @@ export class ScribePersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /\/\/\/ .*/, issue: "Doc Comment: Documentação Dart detectada. Verifique se os parâmetros estão explicados.", severity: "low" },
@@ -22,7 +22,7 @@ export class ScribePersona extends BaseActivePersona {
             { regex: /FIXME:/, issue: "Bug Latente: Marcação de correção urgente detectada. Priorize a resolução.", severity: "high" },
             { regex: /@deprecated/, issue: "Código Obsoleto: Verifique a alternativa moderna e planeje a migração.", severity: "medium" }
         ];
-        const results = this.findPatterns([".dart"], rules);
+        const results = await this.findPatterns([".dart"], rules);
 
         // Advanced Logic: Documentation Quality
         if (results.some(r => r.issue.includes("FIXME"))) {
@@ -58,3 +58,4 @@ export class ScribePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Escrita Técnica Flutter. Sua meta é tornar o código auto-explicativo e impecavelmente documentado.`;
     }
 }
+

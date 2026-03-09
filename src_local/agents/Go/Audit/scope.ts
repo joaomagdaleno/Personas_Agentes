@@ -85,3 +85,4 @@ export class ScopePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Gestão de Módulos Go. Sua missão é garantir a integridade absoluta da cadeia de suprimentos de código.`;
     }
 }
+

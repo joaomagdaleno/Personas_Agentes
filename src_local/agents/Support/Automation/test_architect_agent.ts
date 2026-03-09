@@ -2,6 +2,7 @@ import * as ts from "typescript";
 import { CognitiveEngine } from "../../../utils/cognitive_engine";
 import winston from "winston";
 import { TopologyEngine } from "../../../utils/topology_engine";
+import { HubManagerGRPC } from "../../../core/hub_manager_grpc";
 import * as fs from "node:fs";
 import * as path from "node:path";
 
@@ -9,9 +10,11 @@ const logger = winston.child({ module: "TestArchitect" });
 
 export class TestArchitectAgent {
     private brain: CognitiveEngine;
+    private topologyEngine: TopologyEngine;
 
-    constructor() {
+    constructor(hubManager?: HubManagerGRPC) {
         this.brain = new CognitiveEngine();
+        this.topologyEngine = new TopologyEngine(hubManager);
     }
 
     /**
@@ -77,7 +80,7 @@ IMPORTANTE: Responda APENAS com o bloco de código TYPECRIPT. Sem explicações 
      * Identifica arquivos sem testes e gera esqueletos.
      */
     async generateMissingTests(projectRoot: string): Promise<string[]> {
-        const topology = TopologyEngine.scanProject(projectRoot);
+        const topology = await this.topologyEngine.scanProject(projectRoot);
         const generated: string[] = [];
         const darkMatter = this.filterDarkMatter(topology);
 

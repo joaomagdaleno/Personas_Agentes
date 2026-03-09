@@ -150,7 +150,10 @@ export interface AnalyzeRequest {
      * @generated from protobuf field: string file = 1
      */
     file: string;
-}
+    /**
+     * @generated from protobuf field: string content = 2
+     */
+    content: string; // Optional raw content to bypass disk I/O}
 /**
  * @generated from protobuf message hub.AnalyzeResponse
  */
@@ -248,6 +251,126 @@ export interface UpdateTaskRequest {
      * @generated from protobuf field: string result = 3
      */
     result: string;
+}
+/**
+ * @generated from protobuf message hub.DeduplicateRequest
+ */
+export interface DeduplicateRequest {
+    /**
+     * @generated from protobuf field: string findings_json = 1
+     */
+    findingsJson: string;
+}
+/**
+ * @generated from protobuf message hub.ConnectivityRequest
+ */
+export interface ConnectivityRequest {
+    /**
+     * @generated from protobuf field: string dependency_map_json = 1
+     */
+    dependencyMapJson: string;
+}
+/**
+ * @generated from protobuf message hub.AuditRequest
+ */
+export interface AuditRequest {
+    /**
+     * @generated from protobuf field: string audit_json = 1
+     */
+    auditJson: string;
+}
+/**
+ * @generated from protobuf message hub.BatchRequest
+ */
+export interface BatchRequest {
+    /**
+     * @generated from protobuf field: string batch_json = 1
+     */
+    batchJson: string;
+}
+/**
+ * @generated from protobuf message hub.ReasonRequest
+ */
+export interface ReasonRequest {
+    /**
+     * @generated from protobuf field: string prompt = 1
+     */
+    prompt: string;
+}
+/**
+ * @generated from protobuf message hub.PatternRequest
+ */
+export interface PatternRequest {
+    /**
+     * @generated from protobuf field: string pattern_json = 1
+     */
+    patternJson: string;
+}
+/**
+ * @generated from protobuf message hub.PenaltyRequest
+ */
+export interface PenaltyRequest {
+    /**
+     * @generated from protobuf field: string penalty_json = 1
+     */
+    penaltyJson: string;
+}
+/**
+ * @generated from protobuf message hub.ScoreRequest
+ */
+export interface ScoreRequest {
+    /**
+     * @generated from protobuf field: string score_json = 1
+     */
+    scoreJson: string;
+}
+/**
+ * @generated from protobuf message hub.CoverageRequest
+ */
+export interface CoverageRequest {
+    /**
+     * @generated from protobuf field: string coverage_json = 1
+     */
+    coverageJson: string;
+}
+/**
+ * @generated from protobuf message hub.GraphRequest
+ */
+export interface GraphRequest {
+    /**
+     * @generated from protobuf field: string graph_json = 1
+     */
+    graphJson: string;
+}
+/**
+ * @generated from protobuf message hub.QueryRequest
+ */
+export interface QueryRequest {
+    /**
+     * @generated from protobuf field: string query_json = 1
+     */
+    queryJson: string;
+}
+/**
+ * @generated from protobuf message hub.HealingPlan
+ */
+export interface HealingPlan {
+    /**
+     * @generated from protobuf field: string issue_description = 1
+     */
+    issueDescription: string;
+    /**
+     * @generated from protobuf field: string file_path = 2
+     */
+    filePath: string;
+    /**
+     * @generated from protobuf field: string file_content = 3
+     */
+    fileContent: string;
+    /**
+     * @generated from protobuf field: string context = 4
+     */
+    context: string;
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class Empty$Type extends MessageType<Empty> {
@@ -747,12 +870,14 @@ export const ScanResponse = new ScanResponse$Type();
 class AnalyzeRequest$Type extends MessageType<AnalyzeRequest> {
     constructor() {
         super("hub.AnalyzeRequest", [
-            { no: 1, name: "file", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "file", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "content", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<AnalyzeRequest>): AnalyzeRequest {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.file = "";
+        message.content = "";
         if (value !== undefined)
             reflectionMergePartial<AnalyzeRequest>(this, message, value);
         return message;
@@ -764,6 +889,9 @@ class AnalyzeRequest$Type extends MessageType<AnalyzeRequest> {
             switch (fieldNo) {
                 case /* string file */ 1:
                     message.file = reader.string();
+                    break;
+                case /* string content */ 2:
+                    message.content = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -780,6 +908,9 @@ class AnalyzeRequest$Type extends MessageType<AnalyzeRequest> {
         /* string file = 1; */
         if (message.file !== "")
             writer.tag(1, WireType.LengthDelimited).string(message.file);
+        /* string content = 2; */
+        if (message.content !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.content);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -1191,6 +1322,594 @@ class UpdateTaskRequest$Type extends MessageType<UpdateTaskRequest> {
  * @generated MessageType for protobuf message hub.UpdateTaskRequest
  */
 export const UpdateTaskRequest = new UpdateTaskRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class DeduplicateRequest$Type extends MessageType<DeduplicateRequest> {
+    constructor() {
+        super("hub.DeduplicateRequest", [
+            { no: 1, name: "findings_json", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<DeduplicateRequest>): DeduplicateRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.findingsJson = "";
+        if (value !== undefined)
+            reflectionMergePartial<DeduplicateRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeduplicateRequest): DeduplicateRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string findings_json */ 1:
+                    message.findingsJson = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: DeduplicateRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string findings_json = 1; */
+        if (message.findingsJson !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.findingsJson);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message hub.DeduplicateRequest
+ */
+export const DeduplicateRequest = new DeduplicateRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ConnectivityRequest$Type extends MessageType<ConnectivityRequest> {
+    constructor() {
+        super("hub.ConnectivityRequest", [
+            { no: 1, name: "dependency_map_json", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<ConnectivityRequest>): ConnectivityRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.dependencyMapJson = "";
+        if (value !== undefined)
+            reflectionMergePartial<ConnectivityRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ConnectivityRequest): ConnectivityRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string dependency_map_json */ 1:
+                    message.dependencyMapJson = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ConnectivityRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string dependency_map_json = 1; */
+        if (message.dependencyMapJson !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.dependencyMapJson);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message hub.ConnectivityRequest
+ */
+export const ConnectivityRequest = new ConnectivityRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class AuditRequest$Type extends MessageType<AuditRequest> {
+    constructor() {
+        super("hub.AuditRequest", [
+            { no: 1, name: "audit_json", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<AuditRequest>): AuditRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.auditJson = "";
+        if (value !== undefined)
+            reflectionMergePartial<AuditRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: AuditRequest): AuditRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string audit_json */ 1:
+                    message.auditJson = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: AuditRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string audit_json = 1; */
+        if (message.auditJson !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.auditJson);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message hub.AuditRequest
+ */
+export const AuditRequest = new AuditRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class BatchRequest$Type extends MessageType<BatchRequest> {
+    constructor() {
+        super("hub.BatchRequest", [
+            { no: 1, name: "batch_json", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<BatchRequest>): BatchRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.batchJson = "";
+        if (value !== undefined)
+            reflectionMergePartial<BatchRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: BatchRequest): BatchRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string batch_json */ 1:
+                    message.batchJson = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: BatchRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string batch_json = 1; */
+        if (message.batchJson !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.batchJson);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message hub.BatchRequest
+ */
+export const BatchRequest = new BatchRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ReasonRequest$Type extends MessageType<ReasonRequest> {
+    constructor() {
+        super("hub.ReasonRequest", [
+            { no: 1, name: "prompt", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<ReasonRequest>): ReasonRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.prompt = "";
+        if (value !== undefined)
+            reflectionMergePartial<ReasonRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ReasonRequest): ReasonRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string prompt */ 1:
+                    message.prompt = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ReasonRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string prompt = 1; */
+        if (message.prompt !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.prompt);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message hub.ReasonRequest
+ */
+export const ReasonRequest = new ReasonRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class PatternRequest$Type extends MessageType<PatternRequest> {
+    constructor() {
+        super("hub.PatternRequest", [
+            { no: 1, name: "pattern_json", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<PatternRequest>): PatternRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.patternJson = "";
+        if (value !== undefined)
+            reflectionMergePartial<PatternRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: PatternRequest): PatternRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string pattern_json */ 1:
+                    message.patternJson = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: PatternRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string pattern_json = 1; */
+        if (message.patternJson !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.patternJson);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message hub.PatternRequest
+ */
+export const PatternRequest = new PatternRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class PenaltyRequest$Type extends MessageType<PenaltyRequest> {
+    constructor() {
+        super("hub.PenaltyRequest", [
+            { no: 1, name: "penalty_json", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<PenaltyRequest>): PenaltyRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.penaltyJson = "";
+        if (value !== undefined)
+            reflectionMergePartial<PenaltyRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: PenaltyRequest): PenaltyRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string penalty_json */ 1:
+                    message.penaltyJson = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: PenaltyRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string penalty_json = 1; */
+        if (message.penaltyJson !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.penaltyJson);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message hub.PenaltyRequest
+ */
+export const PenaltyRequest = new PenaltyRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ScoreRequest$Type extends MessageType<ScoreRequest> {
+    constructor() {
+        super("hub.ScoreRequest", [
+            { no: 1, name: "score_json", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<ScoreRequest>): ScoreRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.scoreJson = "";
+        if (value !== undefined)
+            reflectionMergePartial<ScoreRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ScoreRequest): ScoreRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string score_json */ 1:
+                    message.scoreJson = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ScoreRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string score_json = 1; */
+        if (message.scoreJson !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.scoreJson);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message hub.ScoreRequest
+ */
+export const ScoreRequest = new ScoreRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class CoverageRequest$Type extends MessageType<CoverageRequest> {
+    constructor() {
+        super("hub.CoverageRequest", [
+            { no: 1, name: "coverage_json", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<CoverageRequest>): CoverageRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.coverageJson = "";
+        if (value !== undefined)
+            reflectionMergePartial<CoverageRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: CoverageRequest): CoverageRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string coverage_json */ 1:
+                    message.coverageJson = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: CoverageRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string coverage_json = 1; */
+        if (message.coverageJson !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.coverageJson);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message hub.CoverageRequest
+ */
+export const CoverageRequest = new CoverageRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GraphRequest$Type extends MessageType<GraphRequest> {
+    constructor() {
+        super("hub.GraphRequest", [
+            { no: 1, name: "graph_json", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GraphRequest>): GraphRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.graphJson = "";
+        if (value !== undefined)
+            reflectionMergePartial<GraphRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GraphRequest): GraphRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string graph_json */ 1:
+                    message.graphJson = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GraphRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string graph_json = 1; */
+        if (message.graphJson !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.graphJson);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message hub.GraphRequest
+ */
+export const GraphRequest = new GraphRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class QueryRequest$Type extends MessageType<QueryRequest> {
+    constructor() {
+        super("hub.QueryRequest", [
+            { no: 1, name: "query_json", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<QueryRequest>): QueryRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.queryJson = "";
+        if (value !== undefined)
+            reflectionMergePartial<QueryRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: QueryRequest): QueryRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string query_json */ 1:
+                    message.queryJson = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: QueryRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string query_json = 1; */
+        if (message.queryJson !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.queryJson);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message hub.QueryRequest
+ */
+export const QueryRequest = new QueryRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class HealingPlan$Type extends MessageType<HealingPlan> {
+    constructor() {
+        super("hub.HealingPlan", [
+            { no: 1, name: "issue_description", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "file_path", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "file_content", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "context", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<HealingPlan>): HealingPlan {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.issueDescription = "";
+        message.filePath = "";
+        message.fileContent = "";
+        message.context = "";
+        if (value !== undefined)
+            reflectionMergePartial<HealingPlan>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: HealingPlan): HealingPlan {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string issue_description */ 1:
+                    message.issueDescription = reader.string();
+                    break;
+                case /* string file_path */ 2:
+                    message.filePath = reader.string();
+                    break;
+                case /* string file_content */ 3:
+                    message.fileContent = reader.string();
+                    break;
+                case /* string context */ 4:
+                    message.context = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: HealingPlan, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string issue_description = 1; */
+        if (message.issueDescription !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.issueDescription);
+        /* string file_path = 2; */
+        if (message.filePath !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.filePath);
+        /* string file_content = 3; */
+        if (message.fileContent !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.fileContent);
+        /* string context = 4; */
+        if (message.context !== "")
+            writer.tag(4, WireType.LengthDelimited).string(message.context);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message hub.HealingPlan
+ */
+export const HealingPlan = new HealingPlan$Type();
 /**
  * @generated ServiceType for protobuf service hub.HubService
  */
@@ -1200,6 +1919,25 @@ export const HubService = new ServiceType("hub.HubService", [
     { name: "WatchEvents", serverStreaming: true, options: {}, I: Empty, O: Event },
     { name: "ScanProject", options: {}, I: ScanRequest, O: ScanResponse },
     { name: "AnalyzeFile", options: {}, I: AnalyzeRequest, O: AnalyzeResponse },
+    { name: "AnalyzeStream", serverStreaming: true, clientStreaming: true, options: {}, I: AnalyzeRequest, O: AnalyzeResponse },
+    { name: "GetDependencies", options: {}, I: AnalyzeRequest, O: AnalyzeResponse },
+    { name: "Deduplicate", options: {}, I: DeduplicateRequest, O: AnalyzeResponse },
+    { name: "Fingerprint", options: {}, I: AnalyzeRequest, O: AnalyzeResponse },
+    { name: "DiscoverIdentity", options: {}, I: AnalyzeRequest, O: AnalyzeResponse },
+    { name: "IndexProject", options: {}, I: AnalyzeRequest, O: AnalyzeResponse },
+    { name: "ScanTopology", options: {}, I: AnalyzeRequest, O: AnalyzeResponse },
+    { name: "GetContext", options: {}, I: AnalyzeRequest, O: AnalyzeResponse },
+    { name: "GetConnectivity", options: {}, I: ConnectivityRequest, O: AnalyzeResponse },
+    { name: "Audit", options: {}, I: AuditRequest, O: AnalyzeResponse },
+    { name: "Batch", options: {}, I: BatchRequest, O: AnalyzeResponse },
+    { name: "Reason", options: {}, I: ReasonRequest, O: AnalyzeResponse },
+    { name: "Patterns", options: {}, I: PatternRequest, O: AnalyzeResponse },
+    { name: "Penalty", options: {}, I: PenaltyRequest, O: AnalyzeResponse },
+    { name: "CalculateScore", options: {}, I: ScoreRequest, O: AnalyzeResponse },
+    { name: "AuditCoverage", options: {}, I: CoverageRequest, O: AnalyzeResponse },
+    { name: "GetKnowledgeGraph", options: {}, I: GraphRequest, O: AnalyzeResponse },
+    { name: "QueryKnowledgeGraph", options: {}, I: QueryRequest, O: AnalyzeResponse },
+    { name: "ExecuteHealing", options: {}, I: HealingPlan, O: AnalyzeResponse },
     { name: "EnqueueTask", options: {}, I: TaskRequest, O: TaskResponse },
     { name: "GetPendingTasks", options: {}, I: PendingRequest, O: PendingResponse },
     { name: "UpdateTask", options: {}, I: UpdateTaskRequest, O: Empty }

@@ -1,10 +1,10 @@
 version: v1
 plugins:
   - name: go
-    out: ..
+    out: .
     opt: paths=source_relative
   - name: go-grpc
-    out: ..
+    out: .
     opt: paths=source_relative
   - name: typescript
     out: ../../../src_local/proto

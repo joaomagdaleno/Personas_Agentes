@@ -53,3 +53,4 @@ export class ProbePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Análise Forense Python. Seu foco é a integridade absoluta do fluxo de dados legacy.`;
     }
 }
+

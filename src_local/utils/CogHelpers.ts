@@ -1,46 +1,32 @@
-import * as cp from "node:child_process";
-import * as path from "node:path";
-import * as fs from "node:fs";
+import { HubManagerGRPC } from "../core/hub_manager_grpc";
 
 /**
- * 🟦 CogHelpers - PhD in AI Connectivity (Rust Unified Brain)
+ * 🟦 CogHelpers - PhD in AI Connectivity (gRPC Proxy).
  */
 export class CogHelpers {
-    private static BINARY_PATH = path.resolve(process.cwd(), "src_native/analyzer/target/release/analyzer.exe");
+    constructor(private hubManager?: HubManagerGRPC) { }
 
-    static getParams(o: any, def: number) {
+    getParams(o: any, def: number) {
         return {
             temperature: o.temperature || 0.7,
             num_predict: o.max_tokens || def
         };
     }
 
-    static async callRustBrain(prompt: string): Promise<string | null> {
-        const tmpDir = path.join(process.cwd(), ".gemini", "tmp");
-        if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
-
-        const tmpFile = path.join(tmpDir, `prompt_${Date.now()}.txt`);
-        fs.writeFileSync(tmpFile, prompt);
+    async callRustBrain(prompt: string): Promise<string | null> {
+        if (!this.hubManager) {
+            console.error("❌ [CogHelpers] HubManager not initialized.");
+            return null;
+        }
 
         try {
-            if (!fs.existsSync(this.BINARY_PATH)) {
-                return null;
-            }
-
-            const output = cp.execSync(`${this.BINARY_PATH} reason ${tmpFile}`, {
-                encoding: "utf8",
-                timeout: 60000, // 60s timeout for safety
-            });
-
-            return output.trim() || null;
+            return await this.hubManager.reason(prompt);
         } catch (error) {
-            console.error("❌ [CogHelpers] Rust Brain Execution Failed:", error);
+            console.error("❌ [CogHelpers] gRPC Reason call failed:", error);
             return null;
-        } finally {
-            if (fs.existsSync(tmpFile)) fs.unlinkSync(tmpFile);
         }
     }
 
     // Legacy Support (No-op)
-    static async unloadModel() { return true; }
+    async unloadModel() { return true; }
 }

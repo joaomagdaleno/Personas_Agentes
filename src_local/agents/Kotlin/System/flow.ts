@@ -14,9 +14,9 @@ export class FlowPersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = this.findPatterns([".kt", ".kts"], [
+        const results = await this.findPatterns([".kt", ".kts"], [
             { regex: /composable\((["\']).*?\1\)/, issue: "Fragilidade: Roteamento via String detectado. Use Type-Safe DSL do Navigation Compose.", severity: "medium" },
             { regex: /popUpTo\((?!.*inclusive\s*=\s*true)/, issue: "Retenção de Pilha: Risco de navegação circular e vazamento de memória na backstack.", severity: "high" }
         ]);
@@ -48,3 +48,4 @@ export class FlowPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Topologia de Informação e Arquiteto de Fluxos Kotlin.`;
     }
 }
+

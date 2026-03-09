@@ -52,3 +52,4 @@ export class ScopePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Estratégia de Produto e Escopo Técnico Flutter.`;
     }
 }
+

@@ -52,3 +52,4 @@ export class NebulaPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Arquitetura de Nuvem e Soberania Cloud Kotlin.`;
     }
 }
+

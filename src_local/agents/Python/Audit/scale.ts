@@ -53,3 +53,4 @@ export class ScalePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Escalonamento de Sistemas Python. Sua missão é garantir que o sistema cresça sem quebrar.`;
     }
 }
+

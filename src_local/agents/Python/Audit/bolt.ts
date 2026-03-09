@@ -52,3 +52,4 @@ export class BoltPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Eficiência Computacional Python. Sua missão é garantir latência zero na camada de suporte.`;
     }
 }
+

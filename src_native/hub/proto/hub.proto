@@ -13,6 +13,27 @@ service HubService {
   // Discovery & Analysis
   rpc ScanProject(ScanRequest) returns (ScanResponse);
   rpc AnalyzeFile(AnalyzeRequest) returns (AnalyzeResponse);
+  rpc AnalyzeStream(stream AnalyzeRequest) returns (stream AnalyzeResponse);
+  rpc GetDependencies(AnalyzeRequest) returns (AnalyzeResponse);
+  rpc Deduplicate(DeduplicateRequest) returns (AnalyzeResponse);
+  rpc Fingerprint(AnalyzeRequest) returns (AnalyzeResponse);
+  rpc DiscoverIdentity(AnalyzeRequest) returns (AnalyzeResponse);
+  rpc IndexProject(AnalyzeRequest) returns (AnalyzeResponse);
+  rpc ScanTopology(AnalyzeRequest) returns (AnalyzeResponse);
+  rpc GetContext(AnalyzeRequest) returns (AnalyzeResponse);
+  rpc GetConnectivity(ConnectivityRequest) returns (AnalyzeResponse);
+  rpc Audit(AuditRequest) returns (AnalyzeResponse);
+  rpc Batch(BatchRequest) returns (AnalyzeResponse);
+  rpc Reason(ReasonRequest) returns (AnalyzeResponse);
+  rpc Patterns(PatternRequest) returns (AnalyzeResponse);
+  rpc Penalty(PenaltyRequest) returns (AnalyzeResponse);
+  rpc CalculateScore(ScoreRequest) returns (AnalyzeResponse);
+  rpc AuditCoverage(CoverageRequest) returns (AnalyzeResponse);
+  rpc GetKnowledgeGraph(GraphRequest) returns (AnalyzeResponse);
+  rpc QueryKnowledgeGraph(QueryRequest) returns (AnalyzeResponse);
+
+  // Auto-Healing
+  rpc ExecuteHealing(HealingPlan) returns (AnalyzeResponse);
 
   // Task Scheduler
   rpc EnqueueTask(TaskRequest) returns (TaskResponse);
@@ -68,6 +89,7 @@ message ScanResponse {
 
 message AnalyzeRequest {
   string file = 1;
+  string content = 2; // Optional raw content to bypass disk I/O
 }
 
 message AnalyzeResponse {
@@ -105,4 +127,55 @@ message UpdateTaskRequest {
   int32 task_id = 1;
   string status = 2;
   string result = 3;
+}
+
+message DeduplicateRequest {
+  string findings_json = 1;
+}
+
+message ConnectivityRequest {
+  string dependency_map_json = 1;
+}
+
+message AuditRequest {
+  string audit_json = 1;
+}
+
+message BatchRequest {
+  string batch_json = 1;
+}
+
+message ReasonRequest {
+  string prompt = 1;
+}
+
+message PatternRequest {
+  string pattern_json = 1;
+}
+
+message PenaltyRequest {
+  string penalty_json = 1;
+}
+
+message ScoreRequest {
+  string score_json = 1;
+}
+
+message CoverageRequest {
+  string coverage_json = 1;
+}
+
+message GraphRequest {
+  string graph_json = 1;
+}
+
+message QueryRequest {
+  string query_json = 1;
+}
+
+message HealingPlan {
+  string issue_description = 1;
+  string file_path = 2;
+  string file_content = 3;
+  string context = 4;
 }

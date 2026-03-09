@@ -52,3 +52,4 @@ export class BoltPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, mestre em performance Flutter. Sua missão é garantir zero jank.`;
     }
 }
+

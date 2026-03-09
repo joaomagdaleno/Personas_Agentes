@@ -14,9 +14,9 @@ export class HypePersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = this.findPatterns([".dart", ".xml", ".yaml"], [
+        const results = await this.findPatterns([".dart", ".xml", ".yaml"], [
             { regex: /com\.example/, issue: "Amadorismo: Package name padrão detectado. Altere para o seu domínio real.", severity: "high" },
             { regex: /displayName:\s*['"]/, issue: "Invisibilidade: Nome de exibição não parametrizado.", severity: "low" }
         ]);
@@ -48,3 +48,4 @@ export class HypePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Vetores de Crescimento e Descoberta de Agentes Flutter.`;
     }
 }
+

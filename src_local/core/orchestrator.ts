@@ -60,6 +60,7 @@ export class Orchestrator {
 
     constructor(projectRoot: string) {
         this.projectRoot = new Path(projectRoot);
+        this.hubManager = new HubManagerGRPC();
         this.state = {
             root: projectRoot,
             metrics: { files_scanned: 0, start_time: Date.now() },
@@ -80,7 +81,6 @@ export class Orchestrator {
             console.log("🛠️ [Orchestrator] Carregando Infraestrutura Nativa...");
             await m.InfrastructureAssembler.launchSovereignAPI(projectRoot);
 
-            this.hubManager = new HubManagerGRPC();
             await this._waitForHub();
 
             this.hubWatcher = new HubWatcher();
@@ -114,7 +114,7 @@ export class Orchestrator {
     private initializeEngines(root: string) {
         this.cacheManager = new CacheManager(root);
         this.executor = new TaskExecutor();
-        this.contextEngine = new ContextEngine(root);
+        this.contextEngine = new ContextEngine(root, this.hubManager);
         this.auditEngine = new AuditEngine(this);
         this.director = new DirectorPersona(root);
         this.stabilityLedger = new StabilityLedger(root);

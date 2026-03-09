@@ -1,4 +1,5 @@
 import winston from "winston";
+import { HubManagerGRPC } from "../core/hub_manager_grpc";
 import { Path } from "../core/path_utils.ts";
 import { DNAProfiler } from "../agents/Support/Analysis/dna_profiler.ts";
 import { ContextMappingLogic } from "./context_mapping_logic.ts";
@@ -17,14 +18,20 @@ const logger = winston.child({ module: "ContextEngine" });
  */
 export class ContextEngine {
     projectRoot: Path; map: Record<string, any> = {}; callGraph: Record<string, any> = {};
-    dnaProfiler = new DNAProfiler(); mappingLogic = new ContextMappingLogic();
-    analyst = new StructuralAnalyst(); coverageAuditor = new CoverageAuditor();
-    connectivityMapper = new ConnectivityMapper(); parityAnalyst = new ParityAnalyst();
+    dnaProfiler: DNAProfiler; mappingLogic: ContextMappingLogic;
+    analyst: StructuralAnalyst; coverageAuditor = new CoverageAuditor();
+    connectivityMapper: ConnectivityMapper; parityAnalyst = new ParityAnalyst();
     metricsEngine = new MetricsEngine(); allFilesIndex: string[] = [];
     projectIdentity: any = {};
     private contentCache: Record<string, string> = {};
 
-    constructor(projectRoot: string) { this.projectRoot = new Path(projectRoot); }
+    constructor(projectRoot: string, private hubManager?: HubManagerGRPC) {
+        this.projectRoot = new Path(projectRoot);
+        this.dnaProfiler = new DNAProfiler(hubManager);
+        this.connectivityMapper = new ConnectivityMapper(hubManager);
+        this.analyst = new StructuralAnalyst(hubManager);
+        this.mappingLogic = new ContextMappingLogic(hubManager);
+    }
 
     async analyzeProject(): Promise<any> {
         this.projectIdentity = await this.dnaProfiler.discoverIdentity(this.projectRoot);
@@ -34,7 +41,7 @@ export class ContextEngine {
         const goMap = await this.getGoDiscoveryMap();
         this.contentCache = await this.mappingLogic.processBatch(scanner, this, goMap);
 
-        this.buildDependencyMap();
+        await this.buildDependencyMap();
         return { identity: this.projectIdentity, map: this.map };
     }
 
@@ -89,16 +96,16 @@ export class ContextEngine {
     }
 
     private async performDeepAnalysis(path: Path, content: string, info: any, ignoreTest: boolean) {
-        this._applyStructuralAnalysis(path, content, info);
+        await this._applyStructuralAnalysis(path, content, info);
         this._applyAdvancedMetrics(path, content, info, info.atomic_go_metrics);
         await this._applySecurityAndTests(path, content, info, ignoreTest, info.rust_metadata);
     }
 
-    private _applyStructuralAnalysis(path: Path, content: string, info: any) {
+    private async _applyStructuralAnalysis(path: Path, content: string, info: any) {
         const name = path.name();
         const structural = path.toString().endsWith('.py')
-            ? this.analyst.analyzePython(content, name)
-            : this.analyst.analyze_file_logic(content, name);
+            ? await this.analyst.analyzePython(content, name)
+            : await this.analyst.analyze_file_logic(content, name);
 
         // Add intent classification using Rust metadata if available
         info.intent = this.analyst.analyze_intent(content, name, info.rust_metadata);
@@ -144,8 +151,8 @@ export class ContextEngine {
         }
     }
 
-    private buildDependencyMap() {
-        const bulkResults = this.connectivityMapper.calculateBulk(this.map);
+    private async buildDependencyMap() {
+        const bulkResults = await this.connectivityMapper.calculateBulk(this.map);
         const hasBulk = Object.keys(bulkResults).length > 0;
 
         Object.keys(this.map).forEach(f => {

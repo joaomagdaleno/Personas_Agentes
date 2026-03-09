@@ -84,3 +84,4 @@ export class MetricPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Telemetria de Sistemas Go. Sua missão é garantir a transparência absoluta do estado do sistema.`;
     }
 }
+

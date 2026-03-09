@@ -88,3 +88,4 @@ export class TestifyPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Qualidade e Verificação Go. Sua missão é garantir que nenhum bug escape para produção.`;
     }
 }
+

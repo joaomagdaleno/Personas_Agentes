@@ -85,3 +85,4 @@ export class EchoPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Telemetria Go. Sua missão é garantir que o sistema fale com clareza e precisão.`;
     }
 }
+

@@ -8,12 +8,42 @@ use std::path::{Path, PathBuf};
 use serde::{Serialize, Deserialize};
 use petgraph::graph::DiGraph;
 
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub enum NodeType {
+    File,
+    Function,
+    Class,
+    Concept,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct NodeData {
+    pub id: String,
+    pub node_type: NodeType,
+    pub metadata: HashMap<String, String>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub enum EdgeType {
+    DependsOn,
+    Calls,
+    Extends,
+    Contains,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct EdgeData {
+    pub edge_type: EdgeType,
+    pub weight: f32,
+}
+
 #[derive(Serialize, Deserialize, Default)]
 pub struct TfidfIndex {
     pub term_doc_freq: HashMap<String, u32>,
     pub num_docs: usize,
     pub vocabulary: Vec<String>,
-    pub graph_data: HashMap<String, Vec<String>>, // Adjacency list: file_path -> its dependencies
+    pub graph_nodes: Vec<NodeData>,
+    pub graph_edges: Vec<(String, String, EdgeData)>, // (source_id, target_id, data)
 }
 
 #[derive(Serialize, Deserialize)]
@@ -29,9 +59,9 @@ pub enum LlmModel {
 pub struct Brain {
     tfidf: TfidfIndex,
     index_path: PathBuf,
-    graph_path: PathBuf,
     templates: Vec<ReasoningTemplate>,
-    graph: DiGraph<String, ()>,
+    graph: DiGraph<NodeData, EdgeData>,
+    node_map: HashMap<String, petgraph::graph::NodeIndex>,
     // Camada Generativa (Lazy)
     llm: Option<LlmModel>,
     tokenizer: Option<Tokenizer>,
@@ -40,16 +70,18 @@ pub struct Brain {
 
 impl Brain {
     pub fn new() -> Option<Self> {
-        let index_path = PathBuf::from(".gemini/brain_index.bin");
-        let graph_path = PathBuf::from(".gemini/brain_graph.bin");
-        let device = Device::Cpu;
-        
+        let index_path = std::path::PathBuf::from("../../.gemini/brain.bin");
+        let device = match Device::new_cuda(0) {
+            Ok(d) => d,
+            Err(_) => Device::Cpu,
+        };
+
         let mut brain = Self {
             tfidf: TfidfIndex::default(),
             index_path: index_path.clone(),
-            graph_path,
             templates: Vec::new(),
             graph: DiGraph::new(),
+            node_map: HashMap::new(),
             llm: None,
             tokenizer: None,
             device,
@@ -59,13 +91,14 @@ impl Brain {
             if let Ok(data) = std::fs::read(&index_path) {
                 if let Ok(index) = bincode::deserialize::<TfidfIndex>(&data) {
                     brain.tfidf = index;
-                    // Rebuild petgraph from adjacency list
-                    let mut nodes = HashMap::new();
-                    for (file, deps) in &brain.tfidf.graph_data {
-                        let u = *nodes.entry(file.clone()).or_insert_with(|| brain.graph.add_node(file.clone()));
-                        for dep in deps {
-                            let v = *nodes.entry(dep.clone()).or_insert_with(|| brain.graph.add_node(dep.clone()));
-                            brain.graph.add_edge(u, v, ());
+                    // Rebuild petgraph from flat memory
+                    for node in &brain.tfidf.graph_nodes {
+                        let idx = brain.graph.add_node(node.clone());
+                        brain.node_map.insert(node.id.clone(), idx);
+                    }
+                    for (u_id, v_id, edge) in &brain.tfidf.graph_edges {
+                        if let (Some(&u), Some(&v)) = (brain.node_map.get(u_id), brain.node_map.get(v_id)) {
+                            brain.graph.add_edge(u, v, edge.clone());
                         }
                     }
                 }
@@ -192,53 +225,76 @@ impl Brain {
             .map(|(k, _)| k.clone())
             .collect();
 
+        let (nodes, edges) = self.build_graph_data(files);
         self.tfidf = TfidfIndex {
             term_doc_freq: df,
             num_docs,
             vocabulary,
-            graph_data: self.build_graph_data(files),
+            graph_nodes: nodes.values().cloned().collect(),
+            graph_edges: edges,
         };
 
         // Populate petgraph for in-memory use
         self.graph.clear();
-        let mut nodes = HashMap::new();
-        for (file, deps) in &self.tfidf.graph_data {
-            let u = *nodes.entry(file.clone()).or_insert_with(|| self.graph.add_node(file.clone()));
-            for dep in deps {
-                let v = *nodes.entry(dep.clone()).or_insert_with(|| self.graph.add_node(dep.clone()));
-                self.graph.add_edge(u, v, ());
+        self.node_map.clear();
+        for node in &self.tfidf.graph_nodes {
+            let idx = self.graph.add_node(node.clone());
+            self.node_map.insert(node.id.clone(), idx);
+        }
+        for (u_id, v_id, edge) in &self.tfidf.graph_edges {
+            if let (Some(&u), Some(&v)) = (self.node_map.get(u_id), self.node_map.get(v_id)) {
+                self.graph.add_edge(u, v, edge.clone());
             }
         }
 
         self.save();
     }
 
-    fn build_graph_data(&self, files: &HashMap<String, String>) -> HashMap<String, Vec<String>> {
-        let mut graph_data = HashMap::new();
+    fn build_graph_data(&self, files: &HashMap<String, String>) -> (HashMap<String, NodeData>, Vec<(String, String, EdgeData)>) {
+        let mut nodes = HashMap::new();
+        let mut edges = Vec::new();
+
         let file_names: HashSet<String> = files.keys().map(|k| Path::new(k).file_stem().map_or("".to_string(), |s| s.to_string_lossy().to_string())).collect();
 
+        // Pass 1: Create all nodes
+        for path in files.keys() {
+            nodes.insert(path.clone(), NodeData {
+                id: path.clone(),
+                node_type: NodeType::File,
+                metadata: HashMap::new(),
+            });
+        }
+
+        // Pass 2: Create edges
         for (path, content) in files {
-            let mut deps = Vec::new();
-            // Simple generic dependency detection (regex for imports/uses)
             let re_rust = regex::Regex::new(r"(?m)^use\s+([^;:]+)").unwrap();
             let re_ts = regex::Regex::new(r#"import\s+.*\s+from\s+['"]([^'"]+)['"]"#).unwrap();
             let re_py = regex::Regex::new(r"(?m)^(?:import|from)\s+([^\s\.]+)").unwrap();
 
+            let mut add_edge = |dep: String, e_type: EdgeType| {
+                // Find full path by stem if possible
+                for target_path in files.keys() {
+                    let stem = Path::new(target_path).file_stem().map_or("", |s| s.to_str().unwrap_or(""));
+                    if stem == dep {
+                        edges.push((path.clone(), target_path.clone(), EdgeData { edge_type: e_type, weight: 1.0 }));
+                        break;
+                    }
+                }
+            };
+
             for cap in re_rust.captures_iter(content) {
-                let dep = cap[1].trim().to_string();
-                if file_names.contains(&dep) { deps.push(dep); }
+                add_edge(cap[1].trim().to_string(), EdgeType::DependsOn);
             }
             for cap in re_ts.captures_iter(content) {
-                let dep = cap[1].trim().to_string();
-                if file_names.contains(&dep) { deps.push(dep); }
+                let d = cap[1].trim().to_string();
+                let stem = Path::new(&d).file_stem().map_or(d.clone(), |s| s.to_string_lossy().to_string());
+                add_edge(stem, EdgeType::DependsOn);
             }
             for cap in re_py.captures_iter(content) {
-                let dep = cap[1].trim().to_string();
-                if file_names.contains(&dep) { deps.push(dep); }
+                add_edge(cap[1].trim().to_string(), EdgeType::DependsOn);
             }
-            graph_data.insert(path.clone(), deps);
         }
-        graph_data
+        (nodes, edges)
     }
 
     fn save(&self) {
@@ -341,23 +397,59 @@ impl Brain {
 
     pub fn get_context_for(&self, file_path: &str) -> Vec<String> {
         let mut context = Vec::new();
-        let mut nodes = HashMap::new();
-        // Temporarily rebuild node map for lookup
-        for idx in self.graph.node_indices() {
-            nodes.insert(self.graph[idx].clone(), idx);
-        }
 
-        if let Some(&u) = nodes.get(file_path) {
+        if let Some(&u) = self.node_map.get(file_path) {
             // Outgoing neighbors (Dependencies)
             for v in self.graph.neighbors(u) {
-                context.push(format!("Depends on: {}", self.graph[v]));
+                context.push(format!("Depends on: {}", self.graph[v].id));
             }
             // Incoming neighbors (Dependents)
             for v in self.graph.neighbors_directed(u, petgraph::Direction::Incoming) {
-                context.push(format!("Required by: {}", self.graph[v]));
+                context.push(format!("Required by: {}", self.graph[v].id));
             }
         }
         context
+    }
+
+    pub fn get_graph_json(&self, focus_path: &str, depth: i32) -> String {
+        // Return a subgraph centered on focus_path
+        let mut subgraph_nodes = HashSet::new();
+        if let Some(&u) = self.node_map.get(focus_path) {
+            subgraph_nodes.insert(u);
+            // Simple depth-1 for now, can expand later
+            for v in self.graph.neighbors(u) { subgraph_nodes.insert(v); }
+            for v in self.graph.neighbors_directed(u, petgraph::Direction::Incoming) { subgraph_nodes.insert(v); }
+        } else {
+            // Return all if no focus
+            for idx in self.graph.node_indices() { subgraph_nodes.insert(idx); }
+        }
+
+        let nodes: Vec<_> = subgraph_nodes.iter().map(|&idx| &self.graph[idx]).collect();
+        let mut edges = Vec::new();
+        for &u in &subgraph_nodes {
+            for v in self.graph.neighbors(u) {
+                if subgraph_nodes.contains(&v) {
+                    if let Some(edge_idx) = self.graph.find_edge(u, v) {
+                        edges.push((&self.graph[u].id, &self.graph[v].id, &self.graph[edge_idx]));
+                    }
+                }
+            }
+        }
+
+        serde_json::to_string(&serde_json::json!({
+            "nodes": nodes,
+            "edges": edges
+        })).unwrap_or_else(|_| "{}".to_string())
+    }
+
+    pub fn query_graph(&self, query: &str) -> String {
+        // Simple filter by ID/Metadata for now
+        let nodes: Vec<_> = self.graph.node_indices()
+            .map(|idx| &self.graph[idx])
+            .filter(|node| node.id.contains(query))
+            .collect();
+        
+        serde_json::to_string(&nodes).unwrap_or_else(|_| "[]".to_string())
     }
 
     pub fn is_trained(&self) -> bool { self.tfidf.num_docs > 0 }

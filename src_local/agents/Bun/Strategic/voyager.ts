@@ -59,3 +59,4 @@ export class VoyagerPersona extends BaseActivePersona {
             .map(r => `Migrar ${r.file}: ${r.issue}`);
     }
 }
+

@@ -14,7 +14,7 @@ export class SparkPersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const rules: AuditRule[] = [
             { regex: /GestureDetector\(|InkWell\(/, issue: "Interação de UI: Verifique se o hitbox é adequado e se há feedback visual (ink splash) para o usuário.", severity: "low" },
@@ -22,7 +22,7 @@ export class SparkPersona extends BaseActivePersona {
             { regex: /EventBus\.fire\(/, issue: "Propagação Global: O uso de EventBus pode tornar o fluxo de dados imprevisível. Considere fluxos unidirecionais.", severity: "medium" },
             { regex: /NotificationListener/, issue: "Bolha de Eventos: Verifique se a interceptação de notificações de scroll ou layout é necessária ou redundante.", severity: "low" }
         ];
-        const results = this.findPatterns([".dart"], rules);
+        const results = await this.findPatterns([".dart"], rules);
 
         // Advanced Logic: Interaction Health
         if (results.some(r => r.issue.includes("debounce"))) {
@@ -58,3 +58,4 @@ export class SparkPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Estratégia de Eventos Flutter. Sua missão é garantir que cada toque do usuário gere a faísca certa.`;
     }
 }
+

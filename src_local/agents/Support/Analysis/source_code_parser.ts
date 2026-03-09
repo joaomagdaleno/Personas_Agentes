@@ -5,20 +5,32 @@ import { PolyglotParser } from "./strategies/PolyglotParser.ts";
 
 import { ComponentMappingStrategy } from "./strategies/ComponentMappingStrategy.ts";
 
+import { HubManagerGRPC } from "../../../core/hub_manager_grpc";
+
 const logger = winston.child({ module: "SourceCodeParser" });
 
 export class SourceCodeParser {
-    analyzePy(content: string) {
-        try { return PythonParser.analyze(content); }
+    private tsParser: TypeScriptParser;
+    private pyParser: PythonParser;
+    private polyParser: PolyglotParser;
+
+    constructor(private hubManager?: HubManagerGRPC) {
+        this.tsParser = new TypeScriptParser(hubManager);
+        this.pyParser = new PythonParser(hubManager);
+        this.polyParser = new PolyglotParser(hubManager);
+    }
+
+    async analyzePy(content: string, filename: string) {
+        try { return await this.pyParser.analyze(content, filename); }
         catch (e) { return { functions: [], classes: [], complexity: 1, dependencies: [] }; }
     }
 
-    analyzePyMetadata(content: string) {
+    async analyzePyMetadata(content: string, filename: string) {
         try {
-            const d = this.analyzePy(content);
+            const d = await this.analyzePy(content, filename);
             return {
-                complexity: PythonParser.calculateComplexity(content),
-                dependencies: PythonParser.extractImports(content),
+                complexity: await this.pyParser.calculateComplexity(filename),
+                dependencies: this.pyParser.extractImports(content),
                 functions: d.functions,
                 classes: d.classes
             };
@@ -27,25 +39,25 @@ export class SourceCodeParser {
         }
     }
 
-    analyzeTs(content: string) {
-        try { return TypeScriptParser.analyze(content); }
+    async analyzeTs(content: string, filename: string) {
+        try { return await this.tsParser.analyze(content, filename); }
         catch (e) { return { functions: [], classes: [], complexity: 1, dependencies: [], tree: false }; }
     }
 
-    calculatePyComplexity(content: string): number { return PythonParser.calculateComplexity(content); }
-    extractPyImports(content: string): string[] { return PythonParser.extractImports(content); }
-    calculateTsComplexity(content: string): number { return TypeScriptParser.calculateComplexity(content); }
-    extractTsImports(content: string): string[] { return TypeScriptParser.extractImports(content); }
-    analyzeKt(content: string) { return PolyglotParser.analyzeKt(content); }
-    calculateKtComplexity(content: string): number { return PolyglotParser.calculateKtComplexity(content); }
+    async calculatePyComplexity(filename: string): Promise<number> { return await this.pyParser.calculateComplexity(filename); }
+    extractPyImports(content: string): string[] { return this.pyParser.extractImports(content); }
+    async calculateTsComplexity(filename: string): Promise<number> { return await this.tsParser.calculateComplexity(filename); }
+    extractTsImports(content: string): string[] { return this.tsParser.extractImports(content); }
+    async analyzeKt(content: string) { return this.polyParser.analyzeKt(content); }
+    async calculateKtComplexity(filename: string): Promise<number> { return await this.polyParser.calculateKtComplexity(filename); }
 
-    analyze_file_logic(content: string, fileName: string) {
+    async analyze_file_logic(content: string, fileName: string) {
         const ext = fileName.split(".").pop()?.toLowerCase();
-        if (ext === "py") return this.analyzePy(content);
-        if (ext === "ts" || ext === "js" || ext === "tsx") return this.analyzeTs(content);
-        if (ext === "kt") return { ...this.analyzeKt(content), complexity: this.calculateKtComplexity(content) };
-        if (ext === "go") return { ...PolyglotParser.analyzeGo(content), complexity: PolyglotParser.calculateGoComplexity(content) };
-        if (ext === "dart") return PolyglotParser.analyzeDart(content);
+        if (ext === "py") return await this.analyzePy(content, fileName);
+        if (ext === "ts" || ext === "js" || ext === "tsx") return await this.analyzeTs(content, fileName);
+        if (ext === "kt") return { ...await this.analyzeKt(content), complexity: await this.calculateKtComplexity(fileName) };
+        if (ext === "go") return { ...this.polyParser.analyzeGo(content), complexity: await this.polyParser.calculateGoComplexity(fileName) };
+        if (ext === "dart") return this.polyParser.analyzeDart(content);
         return null;
     }
 

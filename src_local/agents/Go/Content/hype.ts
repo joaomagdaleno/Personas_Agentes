@@ -85,3 +85,4 @@ export class HypePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Engajamento de Tecnologia Go. Sua missão é fazer o projeto brilhar no ecossistema.`;
     }
 }
+

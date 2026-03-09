@@ -13,9 +13,9 @@ export class DirectorPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override performAudit(): AuditFinding[] {
+    public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = this.findPatterns([".py"], [
+        const results = await this.findPatterns([".py"], [
             { regex: /import orchestrator/, issue: "Integridade de Orquestração: Verifique se o diretor mantém o controle centralizado.", severity: "low" }
         ]);
         this.endMetrics(results.length);
@@ -39,3 +39,4 @@ export class DirectorPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Orquestração Estratégica Python.`;
     }
 }
+

@@ -5,7 +5,7 @@ import { PatternFinder } from "./strategies/PatternFinder.ts";
 import { Diagnostician } from "./strategies/Diagnostician.ts";
 import { BaseHelpers } from "./BaseHelpers.ts";
 
-export interface AuditRule { regex: RegExp; issue: string; severity: "critical" | "high" | "medium" | "low"; }
+export interface AuditRule { regex: RegExp | string; issue: string; severity: "critical" | "high" | "medium" | "low"; }
 export interface AuditFinding { file: string; agent: string; role: string; emoji: string; issue: string; severity: string; stack: string; evidence: string; match_count: number; line_number?: number; }
 export interface StrategicFinding { file: string; issue: string; severity: string; context: string; objective?: string; analysis?: string; recommendation?: string; }
 
@@ -16,7 +16,7 @@ export abstract class BaseActivePersona {
     projectRoot: string | null = null; contextData: Record<string, any> = {}; projectDna: Record<string, any> = {};
     ignoredFiles: string[] = ["auto_healing_mission.md", "strategic_mission.txt"];
     auditEngine: any; structuralAnalyst: any; integrityGuardian: any;
-    maturityEvaluator: any; cognitive: any;
+    maturityEvaluator: any; cognitive: any; patternFinder!: PatternFinder;
     private auditStartTime: number = 0;
 
     constructor(projectRoot?: string) { this.projectRoot = projectRoot || null; }
@@ -34,7 +34,7 @@ export abstract class BaseActivePersona {
         const mission = obj || "Orquestração de Inteligência Artificial";
         return Object.entries(this.contextData)
             .filter(([f, d]) => this.isAuditable(f, d))
-            .map(([f, d]) => this.reasonAboutObjective(mission, f, d.content || this.readProjectFile(f)))
+            .map(([f, d]) => this.reasonAboutObjective(mission, f, d.content || (this.readProjectFile(f) as any)))
             .filter(Boolean);
     }
 
@@ -44,8 +44,9 @@ export abstract class BaseActivePersona {
         return !isTest && !isIgnored;
     }
 
-    findPatterns(ext: string[], rules: AuditRule[]): AuditFinding[] {
-        return PatternFinder.find(this.contextData, ext, rules, this.ignoredFiles, this);
+    async findPatterns(ext: string[], rules: AuditRule[]): Promise<AuditFinding[]> {
+        if (!this.patternFinder) return [];
+        return await this.patternFinder.find(this.contextData, ext, rules, this.ignoredFiles, this);
     }
 
     async readProjectFile(rel: string): Promise<string | null> {
@@ -70,7 +71,6 @@ export abstract class BaseActivePersona {
         return Diagnostician.diagnose(this.name, this.emoji, this.getSystemPrompt());
     }
 
-    abstract performAudit(): AuditFinding[];
     abstract reasonAboutObjective(obj: string, f: string, c: string | Promise<string | null>): StrategicFinding | string | null;
     abstract getSystemPrompt(): string;
 
@@ -86,7 +86,7 @@ export abstract class BaseActivePersona {
         if (this.structuralAnalyst && this.projectRoot) {
             return this.structuralAnalyst.analyzeFileLogic(f, this.projectRoot, this.ignoredFiles, this.name);
         }
-        return this.performAudit();
+        return (this as any).performAudit();
     }
 
     public getMaturityMetrics() {
@@ -107,7 +107,7 @@ export abstract class BaseActivePersona {
     async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
         const { extensions, rules } = this.getAuditRules();
-        const results = this.findPatterns(extensions, rules);
+        const results = await this.findPatterns(extensions, rules);
         this.endMetrics(results.length);
         return results;
     }

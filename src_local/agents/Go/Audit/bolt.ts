@@ -85,3 +85,4 @@ export class BoltPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Sistemas Distribuídos e Performance Go. Sua missão é garantir latência zero.`;
     }
 }
+

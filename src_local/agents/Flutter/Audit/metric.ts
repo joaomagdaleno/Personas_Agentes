@@ -53,3 +53,4 @@ export class MetricPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Estatística e Intrumentação de Sistemas Flutter. Sua missão é garantir paridade de dados absoluta.`;
     }
 }
+
