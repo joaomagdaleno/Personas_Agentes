@@ -14,24 +14,17 @@ export class BoltPersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /while\s*\(\s*true\s*\)/, issue: "Busy Wait: Loop infinito sem suspensão ou interrupção.", severity: "critical" },
-            { regex: /Thread\.sleep\(/, issue: "Blocking Thread: Bloqueio de thread física em pool de coroutines.", severity: "critical" },
-            { regex: /GlobalScope\.launch/, issue: "Unstructured Concurrency: Uso de GlobalScope pode causar vazamentos de memória.", severity: "high" },
-            { regex: /ArrayList<.*>\(\)/, issue: "Sizing de Coleção: Alocação sem capacidade inicial definida.", severity: "low" },
-            { regex: /synchronized\(.*\)/, issue: "Manual Sync: Overhead de sincronização manual; considere Mutex/Flow.", severity: "medium" }
-        ];
-        const results = await this.findPatterns([".kt", ".kts"], rules);
-
-        // Advanced Logic: JVM Performance Audit
-        if (results.some(r => r.issue.includes("GlobalScope"))) {
-            this.reasonAboutObjective("Coroutine Health", "Conccurrency", "Found unstructured concurrency patterns in Kotlin.");
-        }
-
-        this.endMetrics(results.length);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".kt", ".kts"],
+            rules: [
+                { regex: /while\s*\(\s*true\s*\)/, issue: "Busy Wait: Loop infinito sem suspensão ou interrupção.", severity: "critical" },
+                { regex: /Thread\.sleep\(/, issue: "Blocking Thread: Bloqueio de thread física em pool de coroutines.", severity: "critical" },
+                { regex: /GlobalScope\.launch/, issue: "Unstructured Concurrency: Uso de GlobalScope pode causar vazamentos de memória.", severity: "high" },
+                { regex: /ArrayList<.*>\(\)/, issue: "Sizing de Coleção: Alocação sem capacidade inicial definida.", severity: "low" },
+                { regex: /synchronized\(.*\)/, issue: "Manual Sync: Overhead de sincronização manual; considere Mutex/Flow.", severity: "medium" }
+            ]
+        };
     }
 
     public override performActiveHealing(blindSpots: string[]): void {

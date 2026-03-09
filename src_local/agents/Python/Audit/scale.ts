@@ -14,25 +14,18 @@ export class ScalePersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /\n{400,}/, issue: "God File: Arquivo excessivamente grande; risco de entropia Python.", severity: "high" },
-            { regex: /from\s+.*?\.\.\/\.\.\//, issue: "Deep Relative: Importação excessivamente profunda; risco de acoplamento.", severity: "medium" },
-            { regex: /multiprocessing\.Pool/, issue: "Process Scaling: Verifique a gestão de workers para evitar thrashing de CPU.", severity: "medium" },
-            { regex: /gc\.collect\(\)/, issue: "Memory Pressure: Coleta de lixo manual sugere problemas de escala de memória.", severity: "medium" },
-            { regex: /resource\.setrlimit/, issue: "System Limits: Ajuste manual de rlimit detectado; risco de instabilidade.", severity: "high" },
-            { regex: /import\s+\*/, issue: "Wildcard Import: Poluição de namespace dificulta rastreabilidade e escala.", severity: "low" }
-        ];
-        const results = await this.findPatterns([".py"], rules);
-
-        // Advanced Logic: Capacity Audit
-        if (results.some(r => r.issue.includes("gc.collect"))) {
-            this.reasonAboutObjective("System Sustainability", "Memory", "Manual GC collection detected in Python, suggesting memory pressure.");
-        }
-
-        this.endMetrics(results.length);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".py"],
+            rules: [
+                { regex: /\n{400,}/, issue: "God File: Arquivo excessivamente grande; risco de entropia Python.", severity: "high" },
+                { regex: /from\s+.*?\.\.\/\.\.\//, issue: "Deep Relative: Importação excessivamente profunda; risco de acoplamento.", severity: "medium" },
+                { regex: /multiprocessing\.Pool/, issue: "Process Scaling: Verifique a gestão de workers para evitar thrashing de CPU.", severity: "medium" },
+                { regex: /gc\.collect\(\)/, issue: "Memory Pressure: Coleta de lixo manual sugere problemas de escala de memória.", severity: "medium" },
+                { regex: /resource\.setrlimit/, issue: "System Limits: Ajuste manual de rlimit detectado; risco de instabilidade.", severity: "high" },
+                { regex: /import\s+\*/, issue: "Wildcard Import: Poluição de namespace dificulta rastreabilidade e escala.", severity: "low" }
+            ]
+        };
     }
 
     public override performActiveHealing(blindSpots: string[]): void {

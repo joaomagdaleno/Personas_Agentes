@@ -33,23 +33,27 @@ export class MantraPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go"],
+            rules: [
+                { regex: /camelCase/, issue: "Naming Convention: Go prefira nomes curtos para variáveis locais e Exported para campos públicos.", severity: "low" },
+                { regex: /receiver\s+ptr/, issue: "Receiver Safety: Verifique se o receptor de ponteiro é necessário ou se causa cópia indevida.", severity: "medium" },
+                { regex: /new\(.*\)/, issue: "Allocation Mode: Prefira composite literals T{} em vez de new(T) para maior legibilidade.", severity: "low" },
+                { regex: /init\(\)/, issue: "Initialization Order: O excesso de funções init() pode causar dependências circulares e ordens de execução imprevisíveis.", severity: "high" },
+                { regex: /interface\s+\w+\s+\{.*\}\s+\/\/\s*deprecated/, issue: "Stale Contract: Remova interfaces depreciadas para manter a pureza do design.", severity: "medium" },
+                { regex: /_\s*=\s*append/, issue: "Slice Misuse: Verifique se a mutação de slice não está criando efeitos colaterais em outras referências.", severity: "high" }
+            ]
+        };
+    }
+
     public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /camelCase/, issue: "Naming Convention: Go prefira nomes curtos para variáveis locais e Exported para campos públicos.", severity: "low" },
-            { regex: /receiver\s+ptr/, issue: "Receiver Safety: Verifique se o receptor de ponteiro é necessário ou se causa cópia indevida.", severity: "medium" },
-            { regex: /new\(.*\)/, issue: "Allocation Mode: Prefira composite literals T{} em vez de new(T) para maior legibilidade.", severity: "low" },
-            { regex: /init\(\)/, issue: "Initialization Order: O excesso de funções init() pode causar dependências circulares e ordens de execução imprevisíveis.", severity: "high" },
-            { regex: /interface\s+\w+\s+\{.*\}\s+\/\/\s*deprecated/, issue: "Stale Contract: Remova interfaces depreciadas para manter a pureza do design.", severity: "medium" },
-            { regex: /_\s*=\s*append/, issue: "Slice Misuse: Verifique se a mutação de slice não está criando efeitos colaterais em outras referências.", severity: "high" }
-        ];
-        const results = await this.findPatterns([".go"], rules);
-
-        // Advanced Logic Density
+        const results = await super.performAudit();
         const qualityIssues = GoMantraEngine.audit(this.projectRoot || "");
-        qualityIssues.forEach(i => results.push({ file: "QUALITY_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: i, severity: "medium", stack: this.stack }));
-
-        this.endMetrics(results.length);
+        qualityIssues.forEach(i => results.push({
+            file: "QUALITY_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: i, severity: "medium", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
         return results;
     }
 

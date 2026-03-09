@@ -14,18 +14,17 @@ export class BoltPersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    performAudit(): AuditFinding[] {
-        const rules: AuditRule[] = [
-            { regex: /while\s*\(true\)\s*\{\s*\}/, issue: "Busy Wait: Loop infinito sem processamento assíncrono detectado.", severity: "critical" },
-            { regex: /sleep\(/, issue: "Blocking: Uso de sleep() bloqueia a Main Thread do Flutter.", severity: "critical" },
-            { regex: /for\s*\(.*;.*;.*\)\s*\{[^}]*await/, issue: "Sequential Await: await dentro de loop sequencial bloqueia a UI.", severity: "high" },
-            { regex: /jsonDecode\(jsonEncode/, issue: "Ineficiência: Deep clone pesado via JSON roundtrip.", severity: "medium" },
-            { regex: /\.forEach\(async/, issue: "Async Trap: forEach com async não aguarda execução em Dart.", severity: "high" }
-        ];
-        this.startMetrics();
-        const results = await this.findPatterns([".dart"], rules);
-        this.endMetrics(results.length);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".dart"],
+            rules: [
+                { regex: /while\s*\(true\)\s*\{\s*\}/, issue: "Busy Wait: Loop infinito sem processamento assíncrono detectado.", severity: "critical" },
+                { regex: /sleep\(/, issue: "Blocking: Uso de sleep() bloqueia a Main Thread do Flutter.", severity: "critical" },
+                { regex: /for\s*\(.*;.*;.*\)\s*\{[^}]*await/, issue: "Sequential Await: await dentro de loop sequencial bloqueia a UI.", severity: "high" },
+                { regex: /jsonDecode\(jsonEncode/, issue: "Ineficiência: Deep clone pesado via JSON roundtrip.", severity: "medium" },
+                { regex: /\.forEach\(async/, issue: "Async Trap: forEach com async não aguarda execução em Dart.", severity: "high" }
+            ]
+        };
     }
 
     reasonAboutObjective(objective: string, file: string, content: string): StrategicFinding | null {

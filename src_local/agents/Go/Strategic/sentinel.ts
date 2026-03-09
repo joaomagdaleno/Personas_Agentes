@@ -33,23 +33,27 @@ export class SentinelPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go"],
+            rules: [
+                { regex: /crypto\/md5|crypto\/sha1/, issue: "Algoritmo Fraco: MD5/SHA1 detectado. Use SHA-256 ou superior.", severity: "critical" },
+                { regex: /os\.Setenv\(.*PASSWORD|.*KEY|.*SECRET/, issue: "Exposição de Segredos: Evite manipular segredos em variáveis de ambiente diretamente no código.", severity: "high" },
+                { regex: /C\./, issue: "CGO Detected: Uso de CGO introduz riscos de segurança e reduz portabilidade; verifique necessidade.", severity: "medium" },
+                { regex: /ioutil\.ReadFile/, issue: "Legacy API: ioutil está depreciado; use os.ReadFile para melhor suporte e performance.", severity: "low" },
+                { regex: /map\[.*\]/, issue: "Concurrency Risk: Mapas Go não são seguros para concorrência sem sync.Map ou Mutex.", severity: "high" },
+                { regex: /math\/rand/, issue: "Insegurança Criptográfica: Use crypto/rand para valores que exijam segurança (tokens, chaves).", severity: "critical" }
+            ]
+        };
+    }
+
     public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /crypto\/md5|crypto\/sha1/, issue: "Algoritmo Fraco: MD5/SHA1 detectado. Use SHA-256 ou superior.", severity: "critical" },
-            { regex: /os\.Setenv\(.*PASSWORD|.*KEY|.*SECRET/, issue: "Exposição de Segredos: Evite manipular segredos em variáveis de ambiente diretamente no código.", severity: "high" },
-            { regex: /C\./, issue: "CGO Detected: Uso de CGO introduz riscos de segurança e reduz portabilidade; verifique necessidade.", severity: "medium" },
-            { regex: /ioutil\.ReadFile/, issue: "Legacy API: ioutil está depreciado; use os.ReadFile para melhor suporte e performance.", severity: "low" },
-            { regex: /map\[.*\]/, issue: "Concurrency Risk: Mapas Go não são seguros para concorrência sem sync.Map ou Mutex.", severity: "high" },
-            { regex: /math\/rand/, issue: "Insegurança Criptográfica: Use crypto/rand para valores que exijam segurança (tokens, chaves).", severity: "critical" }
-        ];
-        const results = await this.findPatterns([".go"], rules);
-
-        // Advanced Logic Density
+        const results = await super.performAudit();
         const securityThreats = GoSecurityEngine.audit(this.projectRoot || "");
-        securityThreats.forEach(t => results.push({ file: "SECURITY_SCAN", agent: this.name, role: this.role, emoji: this.emoji, issue: t, severity: "high", stack: this.stack }));
-
-        this.endMetrics(results.length);
+        securityThreats.forEach(t => results.push({
+            file: "SECURITY_SCAN", agent: this.name, role: this.role, emoji: this.emoji, issue: t, severity: "high", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
         return results;
     }
 

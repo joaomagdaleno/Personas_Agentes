@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "Bun_Worker" });
@@ -16,28 +16,26 @@ export class WorkerPersona extends BaseActivePersona {
         this.stack = "Bun";
     }
 
-    async performAudit(): Promise<any[]> {
-        this.startMetrics();
-        logger.info(`[${this.name}] Analisando Paralelismo Bun...`);
-
-        const auditRules = [
-            { regex: 'new\\s+Worker\\([^)]*\\)(?![\\s\\S]{0,100}onerror|addEventListener)', issue: 'Worker Frágil: new Worker() sem handler de erro.', severity: 'high' },
-            { regex: 'SharedArrayBuffer', issue: 'Shared Memory: SharedArrayBuffer detectado — verifique race conditions.', severity: 'medium' },
-            { regex: 'Atomics\\.', issue: 'Atomics: Operações atômicas — verifique deadlock potential.', severity: 'medium' },
-            { regex: 'postMessage\\([^)]*\\)(?![\\s\\S]{0,50}transferable|transfer)', issue: 'Performance: postMessage sem transferable objects — dados clonados.', severity: 'low' },
-        ];
-
-        const results = await this.findPatterns(['.ts', '.tsx'], auditRules as any);
-        this.endMetrics(results.length);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.ts', '.tsx'],
+            rules: [
+                { regex: /new\s+Worker\([^)]*\)(?![\s\S]{0,100}onerror|addEventListener)/, issue: 'Worker Frágil: new Worker() sem handler de erro.', severity: 'high' },
+                { regex: /SharedArrayBuffer/, issue: 'Shared Memory: SharedArrayBuffer detectado — verifique race conditions.', severity: 'medium' },
+                { regex: /Atomics\./, issue: 'Atomics: Operações atômicas — verifique deadlock potential.', severity: 'medium' },
+                { regex: /postMessage\([^)]*\)(?![\s\S]{0,50}transferable|transfer)/, issue: 'Performance: postMessage sem transferable objects — dados clonados.', severity: 'low' },
+            ]
+        };
     }
 
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         if (!/SharedArrayBuffer|Atomics\./.test(content)) return null;
 
         return {
-            file, severity: "MEDIUM", persona: this.name,
-            issue: `Concorrência: O objetivo '${objective}' exige estabilidade. Em '${file}', shared memory e atomics introduzem risco de race conditions/deadlocks.`
+            file, severity: "MEDIUM",
+            issue: `Concorrência: O objetivo '${objective}' exige estabilidade. Em '${file}', shared memory e atomics introduzem risco de race conditions/deadlocks.`,
+            context: "Shared memory/Atomics detected"
         };
     }
 

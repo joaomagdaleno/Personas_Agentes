@@ -14,25 +14,18 @@ export class ProbePersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /except\s*.*:\s*pass/, issue: "Cegueira Total: except vazio engole exceções Python silenciosamente.", severity: "critical" },
-            { regex: /except\s*.*:\s*print\(.*\)/, issue: "Telemetria Informal: Erro logado via print no bloco except.", severity: "medium" },
-            { regex: /except\s+Exception:/, issue: "Captura Genérica: Capturar Exception pode esconder bugs de lógica ou erros de sistema.", severity: "high" },
-            { regex: /raise\s+Exception\(\)/, issue: "Vago: Exception lançada sem mensagem ou tipo descritivo.", severity: "medium" },
-            { regex: /#\s*TODO:?\s*handle\s*error/i, issue: "Débito Tech: Tratamento de erro pendente detectado no comentário.", severity: "medium" },
-            { regex: /asyncio\.create_task\(.*\)(?![^}]*add_done_callback)/, issue: "Resiliência Async: Task criada sem monitoramento de exceção (done callback).", severity: "high" }
-        ];
-        const results = await this.findPatterns([".py"], rules);
-
-        // Advanced Logic: Forensic Depth
-        if (results.some(r => r.severity === "critical")) {
-            this.reasonAboutObjective("Security Sovereignty", "Forensics", "Critical vulnerability (eval/exec or SSL bypass) found in Python legacy layer.");
-        }
-
-        this.endMetrics(results.length);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".py"],
+            rules: [
+                { regex: /except\s*.*:\s*pass/, issue: "Cegueira Total: except vazio engole exceções Python silenciosamente.", severity: "critical" },
+                { regex: /except\s*.*:\s*print\(.*\)/, issue: "Telemetria Informal: Erro logado via print no bloco except.", severity: "medium" },
+                { regex: /except\s+Exception:/, issue: "Captura Genérica: Capturar Exception pode esconder bugs de lógica ou erros de sistema.", severity: "high" },
+                { regex: /raise\s+Exception\(\)/, issue: "Vago: Exception lançada sem mensagem ou tipo descritivo.", severity: "medium" },
+                { regex: /#\s*TODO:?\s*handle\s*error/i, issue: "Débito Tech: Tratamento de erro pendente detectado no comentário.", severity: "medium" },
+                { regex: /asyncio\.create_task\(.*\)(?![^}]*add_done_callback)/, issue: "Resiliência Async: Task criada sem monitoramento de exceção (done callback).", severity: "high" }
+            ]
+        };
     }
 
     public override performActiveHealing(blindSpots: string[]): void {

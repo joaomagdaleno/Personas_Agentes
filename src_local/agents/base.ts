@@ -5,8 +5,8 @@ import { PatternFinder } from "./strategies/PatternFinder.ts";
 import { Diagnostician } from "./strategies/Diagnostician.ts";
 import { BaseHelpers } from "./BaseHelpers.ts";
 
-export interface AuditRule { regex: RegExp; issue: string; severity: "critical" | "high" | "medium" | "low"; }
-export interface AuditFinding { file: string; agent: string; role: string; emoji: string; issue: string; severity: string; stack: string; }
+export interface AuditRule { regex: RegExp | string; issue: string; severity: "critical" | "high" | "medium" | "low"; }
+export interface AuditFinding { file: string; agent: string; role: string; emoji: string; issue: string; severity: string; stack: string; evidence: string; match_count: number; line_number?: number; }
 export interface StrategicFinding { file: string; issue: string; severity: string; context: string; objective?: string; analysis?: string; recommendation?: string; }
 
 const logger = winston.child({ module: "BaseActivePersona" });
@@ -34,7 +34,7 @@ export abstract class BaseActivePersona {
         const mission = obj || "Orquestração de Inteligência Artificial";
         return Object.entries(this.contextData)
             .filter(([f, d]) => this.isAuditable(f, d))
-            .map(([f, d]) => this.reasonAboutObjective(mission, f, d.content || this.readProjectFile(f)))
+            .map(([f, d]) => this.reasonAboutObjective(mission, f, d.content || (this.readProjectFile(f) as any)))
             .filter(Boolean);
     }
 
@@ -71,7 +71,6 @@ export abstract class BaseActivePersona {
         return Diagnostician.diagnose(this.name, this.emoji, this.getSystemPrompt());
     }
 
-    abstract performAudit(): Promise<AuditFinding[]>;
     abstract reasonAboutObjective(obj: string, f: string, c: string | Promise<string | null>): StrategicFinding | string | null;
     abstract getSystemPrompt(): string;
 
@@ -87,7 +86,7 @@ export abstract class BaseActivePersona {
         if (this.structuralAnalyst && this.projectRoot) {
             return this.structuralAnalyst.analyzeFileLogic(f, this.projectRoot, this.ignoredFiles, this.name);
         }
-        return this.performAudit();
+        return (this as any).performAudit();
     }
 
     public getMaturityMetrics() {
@@ -95,5 +94,21 @@ export abstract class BaseActivePersona {
             return this.maturityEvaluator.evaluatePersona(this.projectRoot, this.stack, this.name);
         }
         return { score: 0, status: "OFFLINE" };
+    }
+
+    /**
+     * Define as extensões e regras para auditoria de padrões via RegexSet (Rust).
+     */
+    abstract getAuditRules(): { extensions: string[]; rules: AuditRule[] };
+
+    /**
+     * Auditoria padronizada utilizando o motor de alta performance.
+     */
+    async performAudit(): Promise<AuditFinding[]> {
+        this.startMetrics();
+        const { extensions, rules } = this.getAuditRules();
+        const results = await this.findPatterns(extensions, rules);
+        this.endMetrics(results.length);
+        return results;
     }
 }

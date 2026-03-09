@@ -14,25 +14,18 @@ export class ProbePersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /catch\s*\(.*\)\s*\{\s*\}/, issue: "Cegueira Kotlin: Catch vazio detectado; exceção engolida silenciosamente.", severity: "critical" },
-            { regex: /catch\s*\(.*\)\s*\{\s*(println|Log\.)/, issue: "Telemetria Frágil: Erro reportado via log informal no catch.", severity: "medium" },
-            { regex: /try\s*\{.*\}\s*catch\s*\(.*\)\s*\{.*\s*\/\/\s*TODO\s*\}/, issue: "Incompleto: Bloco catch contém TODO; tratamento pendente.", severity: "medium" },
-            { regex: /GlobalScope\.launch/, issue: "Risco de Resiliência: Uso de GlobalScope pode causar vazamento de corrotinas e erros não capturados.", severity: "high" },
-            { regex: /throw\s+Exception\(\)/, issue: "Vago: Lançamento de Exception genérica sem contexto.", severity: "medium" },
-            { regex: /runCatching\s*\{.*\}\.getOrNull\(\)/, issue: "Silenciado: Uso de getOrNull() ignora a falha sem rastro.", severity: "high" }
-        ];
-        const results = await this.findPatterns([".kt", ".kts"], rules);
-
-        // Advanced Logic: Security Audit
-        if (results.some(r => r.severity === "high")) {
-            this.reasonAboutObjective("Data Integrity", "Persistence", "Found high-risk persistence patterns in Kotlin.");
-        }
-
-        this.endMetrics(results.length);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".kt", ".kts"],
+            rules: [
+                { regex: /catch\s*\(.*\)\s*\{\s*\}/, issue: "Cegueira Kotlin: Catch vazio detectado; exceção engolida silenciosamente.", severity: "critical" },
+                { regex: /catch\s*\(.*\)\s*\{\s*(println|Log\.)/, issue: "Telemetria Frágil: Erro reportado via log informal no catch.", severity: "medium" },
+                { regex: /try\s*\{.*\}\s*catch\s*\(.*\)\s*\{.*\s*\/\/\s*TODO\s*\}/, issue: "Incompleto: Bloco catch contém TODO; tratamento pendente.", severity: "medium" },
+                { regex: /GlobalScope\.launch/, issue: "Risco de Resiliência: Uso de GlobalScope pode causar vazamento de corrotinas e erros não capturados.", severity: "high" },
+                { regex: /throw\s+Exception\(\)/, issue: "Vago: Lançamento de Exception genérica sem contexto.", severity: "medium" },
+                { regex: /runCatching\s*\{.*\}\.getOrNull\(\)/, issue: "Silenciado: Uso de getOrNull() ignora a falha sem rastro.", severity: "high" }
+            ]
+        };
     }
 
     public override performActiveHealing(blindSpots: string[]): void {

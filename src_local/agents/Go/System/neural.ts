@@ -32,23 +32,27 @@ export class NeuralPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go"],
+            rules: [
+                { regex: /embedding/i, issue: "Vector Logic: Verifique se o processamento vetorial utiliza operações SIMD/AVX para máxima performance em Go.", severity: "low" },
+                { regex: /TokenCount/i, issue: "Cost Management: Verifique se há limites rígidos de consumo de tokens para evitar custos explosivos.", severity: "high" },
+                { regex: /inference/i, issue: "Inference Latency: Monitore o tempo de resposta da inferência para garantir a interatividade da UI.", severity: "medium" },
+                { regex: /SovereignAI/i, issue: "Agent Independence: Verifique se o agente possui autonomia de decisão ou se depende de heurísticas rígidas.", severity: "low" },
+                { regex: /TrainedData/, issue: "Data Integrity: Garanta que os dados de treino não possuem enviesamento ou informações sensíveis.", severity: "high" },
+                { regex: /PromptInjection/, issue: "Safety Filter: Verifique se as entradas do usuário são saneadas antes de serem passadas para o LLM.", severity: "critical" }
+            ]
+        };
+    }
+
     public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /embedding/i, issue: "Vector Logic: Verifique se o processamento vetorial utiliza operações SIMD/AVX para máxima performance em Go.", severity: "low" },
-            { regex: /TokenCount/i, issue: "Cost Management: Verifique se há limites rígidos de consumo de tokens para evitar custos explosivos.", severity: "high" },
-            { regex: /inference/i, issue: "Inference Latency: Monitore o tempo de resposta da inferência para garantir a interatividade da UI.", severity: "medium" },
-            { regex: /SovereignAI/i, issue: "Agent Independence: Verifique se o agente possui autonomia de decisão ou se depende de heurísticas rígidas.", severity: "low" },
-            { regex: /TrainedData/, issue: "Data Integrity: Garanta que os dados de treino não possuem enviesamento ou informações sensíveis.", severity: "high" },
-            { regex: /PromptInjection/, issue: "Safety Filter: Verifique se as entradas do usuário são saneadas antes de serem passadas para o LLM.", severity: "critical" }
-        ];
-        const results = await this.findPatterns([".go"], rules);
-
-        // Advanced Logic Density
+        const results = await super.performAudit();
         const neuralFindings = GoNeuralEngine.audit(this.projectRoot || "");
-        neuralFindings.forEach(f => results.push({ file: "AI_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "high", stack: this.stack }));
-
-        this.endMetrics(results.length);
+        neuralFindings.forEach(f => results.push({
+            file: "AI_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "high", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
         return results;
     }
 

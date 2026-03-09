@@ -33,23 +33,27 @@ export class GlobePersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go"],
+            rules: [
+                { regex: /golang\.org\/x\/text/, issue: "Standard i18n: Uso da biblioteca experimental de texto Go detectada; verifique a maturidade das traduções.", severity: "low" },
+                { regex: /currency/, issue: "Currency Handing: Verifique se o arredondamento de moeda segue os padrões financeiros internacionais.", severity: "high" },
+                { regex: /Location/, issue: "Timezone Logic: Verifique se as localizações de fuso horário são carregadas via banco de dados IANA.", severity: "medium" },
+                { regex: /locale/, issue: "Locale Detection: Garanta que o locale é propagado via Context em cabeçalhos HTTP.", severity: "medium" },
+                { regex: /unicode\/utf8/, issue: "UTF-8 Validation: Uso de validação explícita detectada; verifique a integridade de strings multisbyte.", severity: "low" },
+                { regex: /translation/, issue: "Translation Sync: Verifique se os arquivos de recurso estão em sincronia com o código-fonte.", severity: "medium" }
+            ]
+        };
+    }
+
     public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /golang\.org\/x\/text/, issue: "Standard i18n: Uso da biblioteca experimental de texto Go detectada; verifique a maturidade das traduções.", severity: "low" },
-            { regex: /currency/, issue: "Currency Handing: Verifique se o arredondamento de moeda segue os padrões financeiros internacionais.", severity: "high" },
-            { regex: /Location/, issue: "Timezone Logic: Verifique se as localizações de fuso horário são carregadas via banco de dados IANA.", severity: "medium" },
-            { regex: /locale/, issue: "Locale Detection: Garanta que o locale é propagado via Context em cabeçalhos HTTP.", severity: "medium" },
-            { regex: /unicode\/utf8/, issue: "UTF-8 Validation: Uso de validação explícita detectada; verifique a integridade de strings multisbyte.", severity: "low" },
-            { regex: /translation/, issue: "Translation Sync: Verifique se os arquivos de recurso estão em sincronia com o código-fonte.", severity: "medium" }
-        ];
-        const results = await this.findPatterns([".go"], rules);
-
-        // Advanced Logic Density
+        const results = await super.performAudit();
         const globeFindings = GoGlobeEngine.audit(this.projectRoot || "");
-        globeFindings.forEach(f => results.push({ file: "GLOBALIZATION_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "medium", stack: this.stack }));
-
-        this.endMetrics(results.length);
+        globeFindings.forEach(f => results.push({
+            file: "GLOBALIZATION_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "medium", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
         return results;
     }
 

@@ -1,8 +1,8 @@
 # 🏛️ RELATÓRIO SISTÊMICO: CONSOLIDAÇÃO DA REALIDADE
 
-> **Status Operacional:** 🟡 `ATENÇÃO` | **Integridade Geral:** `63%`
+> **Status Operacional:** 🟡 `ATENÇÃO` | **Integridade Geral:** `64%`
 > **Sanidade Neural:** `0.0000` | **Estado:** ✅ Sanidade Neural Nominal
-> **Ambiente:** `TS-MASTER-CONTROL` | **Último Check:** `18:25:25`
+> **Ambiente:** `TS-MASTER-CONTROL` | **Último Check:** `12:46:32 PM`
 >
 > 💎 `SITUAÇÃO: SOBERANIA TÉCNICA`
 
@@ -26,18 +26,18 @@
 
 | Métrica | Limite | Violações | Penalidade |
 | :--- | :--- | :---: | ---: |
-| Complexidade Ciclomática (CC > 20) | > 20 | 1/474 | 0 pts |
-| Complexidade Cognitiva (> 15) | > 15 | 92/474 | 0.8 pts |
-| Aninhamento Profundo (> 3) | > 3 | 228/474 | 1.4 pts |
-| Alto Acoplamento (CBO > 10) | > 10 | 4/474 | 0 pts |
-| Herança Profunda (DIT > 5) | > 5 | 0/474 | 0 pts |
-| Baixa Manutenibilidade (MI < 10) | < 10 | 0/474 | 0 pts |
-| Manutenibilidade Crítica (MI < 5) | < 5 | 0/474 | 0 pts |
-| Defect Density (> 1/KLOC) | > 1 | 0/474 | 0 pts |
-| Quality Gate RED | - | 0/474 | 0 pts |
-| Shadow Non-Compliant | - | 1/474 | 0 pts |
+| Complexidade Ciclomática (CC > 20) | > 20 | 0/475 | 0 pts |
+| Complexidade Cognitiva (> 15) | > 15 | 0/475 | 0 pts |
+| Aninhamento Profundo (> 3) | > 3 | 175/475 | 1.1 pts |
+| Alto Acoplamento (CBO > 10) | > 10 | 4/475 | 0 pts |
+| Herança Profunda (DIT > 5) | > 5 | 0/475 | 0 pts |
+| Baixa Manutenibilidade (MI < 10) | < 10 | 0/475 | 0 pts |
+| Manutenibilidade Crítica (MI < 5) | < 5 | 0/475 | 0 pts |
+| Defect Density (> 1/KLOC) | > 1 | 0/475 | 0 pts |
+| Quality Gate RED | - | 0/475 | 0 pts |
+| Shadow Non-Compliant | - | 1/475 | 0 pts |
 
-> **Penalidade Total de Qualidade:** `2.2 pts` (cap: 30) | Base: NIST, SonarQube, Microsoft
+> **Penalidade Total de Qualidade:** `1.1 pts` (cap: 30) | Base: NIST, SonarQube, Microsoft
 
 ### ⚖️ DIRETRIZES DE GOVERNANÇA PHD
 
@@ -58,11 +58,11 @@
 
 | # | Componente | Complexidade | Risco | Ação Recomendada |
 | :---: | :--- | :---: | :---: | :--- |
-| 1 | `audit_expert_engine.ts` | `22` | 🟠 HIGH | Desmembrar / Refatorar |
-| 2 | `finding_deduplicator.ts` | `20` | 🟠 MODERATE | Desmembrar / Refatorar |
-| 3 | `context_engine.ts` | `19` | 🟠 MODERATE | Desmembrar / Refatorar |
-| 4 | `healer.ts` | `18` | 🟠 MODERATE | Desmembrar / Refatorar |
-| 5 | `penalty_engine.ts` | `18` | 🟠 MODERATE | Desmembrar / Refatorar |
+| 1 | `tmp_fingerprint.ts` | `1` | 🟠 LOW | Desmembrar / Refatorar |
+| 2 | `ensure_binaries.ts` | `1` | 🟠 LOW | Desmembrar / Refatorar |
+| 3 | `find_fragile.ts` | `1` | 🟠 LOW | Desmembrar / Refatorar |
+| 4 | `persona_extractor_utils.ts` | `1` | 🟠 LOW | Desmembrar / Refatorar |
+| 5 | `debug_metrics.ts` | `1` | 🟠 LOW | Desmembrar / Refatorar |
 
 ---
 
@@ -74,13 +74,13 @@
 
 | Dimensão de Integridade | Valor | Status | Contexto de Realidade |
 | :--- | :--- | :--- | :--- |
-| 🧨 **Gaps de Paridade** | `112` | 🔴 `CRÍTICO` | 224% de desalinhamento |
+| 🧨 **Gaps de Paridade** | `98` | 🔴 `CRÍTICO` | 196% de desalinhamento |
 | 🌫️ **Pontos Cegos** | `0` | 🟢 `ESTÁVEL` | Ativos sem qualquer monitoramento |
-| 💎 **Deep Parity** | `73` | 🟢 `ATÔMICO` | `146%` de fidelidade sistêmica |
+| 💎 **Deep Parity** | `87` | 🟢 `ATÔMICO` | `174%` de fidelidade sistêmica |
 | 🚧 **Shallow Parity** | `0` | 🟡 `ADAPTADO` | Componentes com lógica parcial |
 | 🧊 **Fragilidades** | `0` | 🟢 `ESTÁVEL` | Pontos de ruptura identificados |
 
-**Sincronia Nativa:** `66%` | **Personas Ativas:** `50` | **Audit Score:** `63%`
+**Sincronia Nativa:** `72%` | **Personas Ativas:** `50` | **Audit Score:** `64%`
 
 > 💎 **Sistema em estado de soberania técnica.** Requisitos de 100% atingidos.
 
@@ -90,69 +90,57 @@
 
 | Nível | Qtd | Impacto | Resposta |
 | :--- | :---: | :--- | :--- |
-| **CRITICAL** | `0` | 🔴 `BLOQUEANTE` | 🟢 `LIVRE` |
-| **HIGH** | `4` | 🟡 `RISCO ALTO` | 🟡 `INTERVENÇÃO` |
-| **MEDIUM** | `316` | 🔵 `DÉBITO TÉC.` | 🔵 `INTERVENÇÃO` |
+| **CRITICAL** | `1` | 🔴 `BLOQUEANTE` | 🔴 `INTERVENÇÃO` |
+| **HIGH** | `0` | 🟡 `RISCO ALTO` | 🟢 `LIVRE` |
+| **MEDIUM** | `175` | 🔵 `DÉBITO TÉC.` | 🔵 `INTERVENÇÃO` |
 | **LOW** | `0` | ⚪ `MENOR` | 🟢 `LIVRE` |
 | **STRATEGIC** | `0` | 🟣 `MELHORIA` | 🟢 `LIVRE` |
 
 ### 🏷️ Achados Detalhados (Limitado a 10 por nível)
 
-> #### 🔴 `CRÍTICO` [1] `context_engine.ts`
+> #### 🔴 `CRÍTICO` [1] `hub.exe`
 >
-> - Complexidade Cognitiva Elevada (26 > 15)
+> - 🚨 Falha na comunicação com o Hub: Unable to connect. Is the computer able to access the url?
 >
-> #### 🔴 `CRÍTICO` [2] `semantic_context_analyst.ts`
+> #### 🟡 `ATENÇÃO` [2] `tmp_fingerprint.ts`
 >
-> - Complexidade Cognitiva Elevada (29 > 15)
+> - Aninhamento Excessivo (6 > 3)
 >
-> #### 🔴 `CRÍTICO` [3] `PythonParser.ts`
->
-> - Complexidade Cognitiva Elevada (26 > 15)
->
-> #### 🔴 `CRÍTICO` [4] `context_mapping_logic.ts`
->
-> - Complexidade Cognitiva Elevada (27 > 15)
->
-> #### 🟡 `ATENÇÃO` [5] `audit_expert_engine.ts`
->
-> - Complexidade Cognitiva Elevada (22 > 15)
->
-> #### 🟡 `ATENÇÃO` [6] `finding_deduplicator.ts`
->
-> - Complexidade Cognitiva Elevada (21 > 15)
->
-> #### 🟡 `ATENÇÃO` [7] `finding_deduplicator.ts`
+> #### 🟡 `ATENÇÃO` [3] `update_imports.ts`
 >
 > - Aninhamento Excessivo (4 > 3)
 >
-> #### 🟡 `ATENÇÃO` [8] `context_engine.ts`
+> #### 🟡 `ATENÇÃO` [4] `debug_stability_count.js`
 >
 > - Aninhamento Excessivo (5 > 3)
 >
-> #### 🟡 `ATENÇÃO` [9] `healer.ts`
+> #### 🟡 `ATENÇÃO` [5] `debug_quality_matrix.ts`
 >
-> - Complexidade Cognitiva Elevada (22 > 15)
+> - Aninhamento Excessivo (5 > 3)
 >
-> #### 🟡 `ATENÇÃO` [10] `penalty_engine.ts`
->
-> - Complexidade Cognitiva Elevada (20 > 15)
->
-> #### 🟡 `ATENÇÃO` [11] `penalty_engine.ts`
+> #### 🟡 `ATENÇÃO` [6] `debug_metrics_quality.ts`
 >
 > - Aninhamento Excessivo (4 > 3)
 >
-> #### 🟡 `ATENÇÃO` [12] `score_calculator.ts`
->
-> - Complexidade Cognitiva Elevada (16 > 15)
->
-> #### 🟡 `ATENÇÃO` [13] `orchestrator.ts`
->
-> - Complexidade Cognitiva Elevada (23 > 15)
->
-> #### 🟡 `ATENÇÃO` [14] `orchestrator.ts`
+> #### 🟡 `ATENÇÃO` [7] `debug_shadows_quality.ts`
 >
 > - Aninhamento Excessivo (4 > 3)
 >
-> *... e mais 306 achados de nível MEDIUM omitidos para brevidade.*
+> #### 🟡 `ATENÇÃO` [8] `reorganize_support.ts`
+>
+> - Aninhamento Excessivo (4 > 3)
+>
+> #### 🟡 `ATENÇÃO` [9] `import_helpers.ts`
+>
+> - Aninhamento Excessivo (4 > 3)
+>
+> #### 🟡 `ATENÇÃO` [10] `visualize_attention.ts`
+>
+> - Aninhamento Excessivo (5 > 3)
+>
+> #### 🟡 `ATENÇÃO` [11] `benchmark_rust_vs_ts.ts`
+>
+> - Aninhamento Excessivo (5 > 3)
+>
+> *... e mais 165 achados de nível MEDIUM omitidos para brevidade.*
 >

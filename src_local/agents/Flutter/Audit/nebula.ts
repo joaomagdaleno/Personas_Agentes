@@ -14,19 +14,18 @@ export class NebulaPersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /AKIA[0-9A-Z]{16}/, issue: "Vulnerabilidade Crítica: Chave AWS exposta no código Flutter.", severity: "critical" },
-            { regex: /(?:api[_-]?key|apiKey|API_KEY)\s*[:=]\s*["\'][^"\']{8,}/, issue: "Vazamento: API Key hardcoded no código Flutter.", severity: "critical" },
-            { regex: /(?:password|passwd|secret)\s*[:=]\s*["\'][^"\']+["\']/, issue: "Vazamento: Credencial hardcoded no código Flutter.", severity: "critical" },
-            { regex: /sk-[a-zA-Z0-9]{20,}/, issue: "Vulnerabilidade Crítica: Chave OpenAI exposta.", severity: "critical" },
-            { regex: /ghp_[a-zA-Z0-9]{36}/, issue: "Vulnerabilidade Crítica: Token GitHub exposto.", severity: "critical" },
-            { regex: /String\.fromEnvironment\(.*,\s*defaultValue:\s*["\'][^"\']{8,}/, issue: "Risco: Fallback de ambiente contém segredo real.", severity: "high" }
-        ];
-        const results = await this.findPatterns([".dart", ".json", ".yaml"], rules);
-        this.endMetrics(results.length);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".dart", ".json", ".yaml"],
+            rules: [
+                { regex: /AKIA[0-9A-Z]{16}/, issue: "Vulnerabilidade Crítica: Chave AWS exposta no código Flutter.", severity: "critical" },
+                { regex: /(?:api[_-]?key|apiKey|API_KEY)\s*[:=]\s*["'][^"']{8,}/, issue: "Vazamento: API Key hardcoded no código Flutter.", severity: "critical" },
+                { regex: /(?:password|passwd|secret)\s*[:=]\s*["'][^"']+["']/, issue: "Vazamento: Credencial hardcoded no código Flutter.", severity: "critical" },
+                { regex: /sk-[a-zA-Z0-9]{20,}/, issue: "Vulnerabilidade Crítica: Chave OpenAI exposta.", severity: "critical" },
+                { regex: /ghp_[a-zA-Z0-9]{36}/, issue: "Vulnerabilidade Crítica: Token GitHub exposto.", severity: "critical" },
+                { regex: /String\.fromEnvironment\(.*,\s*defaultValue:\s*["'][^"']{8,}/, issue: "Risco: Fallback de ambiente contém segredo real.", severity: "high" }
+            ]
+        };
     }
 
     public override reasonAboutObjective(objective: string, file: string, content: string): StrategicFinding | null {

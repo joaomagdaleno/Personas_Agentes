@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "TS_Hype" });
@@ -16,16 +16,21 @@ export class HypePersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    async performAudit(): Promise<any[]> {
-        const start = Date.now();
-        logger.info(`[${this.name}] Analisando Visibilidade de Produto TypeScript...`);
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['package.json'],
+            rules: [
+                { regex: /"description":\s*""/, issue: 'Invisível: package.json sem campo "description".', severity: 'medium' },
+                { regex: /"license":\s*""/, issue: 'Risco Legal: package.json sem campo "license".', severity: 'high' },
+                { regex: /"name":\s*"(my-app|project|untitled|test|app)"/, issue: 'Genérico: Nome de pacote genérico impede a identidade do projeto.', severity: 'medium' },
+            ]
+        };
+    }
 
-        const results: any[] = [];
+    async performAudit(): Promise<AuditFinding[]> {
+        const results = await super.performAudit();
         this.auditPackageJson(results);
         this.auditProjectPresence(results);
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
         return results;
     }
 
@@ -81,16 +86,19 @@ export class HypePersona extends BaseActivePersona {
         }
     }
 
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         if (file.endsWith('package.json') && !content.includes('"description"')) {
             return {
-                file, severity: "MEDIUM", persona: this.name,
-                issue: `Invisibilidade: O objetivo '${objective}' exige tração. Em '${file}', a falta de metadados prejudica a descoberta da 'Orquestração de Inteligência Artificial'.`
+                file, severity: "MEDIUM",
+                issue: `Invisibilidade: O objetivo '${objective}' exige tração. Em '${file}', a falta de metadados prejudica a descoberta da 'Orquestração de Inteligência Artificial'.`,
+                context: "description missing in package.json"
             };
         }
         return {
-            file, severity: "INFO", persona: this.name,
-            issue: `PhD Hype: Analisando visibilidade para ${objective}. Focando em SEO de pacotes e identidade de produto.`
+            file, severity: "INFO",
+            issue: `PhD Hype: Analisando visibilidade para ${objective}. Focando em SEO de pacotes e identidade de produto.`,
+            context: "analyzing visibility"
         };
     }
 

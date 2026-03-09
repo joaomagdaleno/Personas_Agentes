@@ -14,20 +14,18 @@ export class ScopePersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /#\s*TODO[:\s]/, issue: "Dívida: TODO pendente no código Python.", severity: "medium" },
-            { regex: /#\s*FIXME[:\s]/, issue: "Dívida Crítica: FIXME detectado na lógica Python.", severity: "high" },
-            { regex: /#\s*HACK[:\s]/, issue: "Gambiarra: HACK detectado; risco de instabilidade Python.", severity: "high" },
-            { regex: /#\s*XXX[:\s]/, issue: "Alerta: Verifique ponto crítico XXX no código Python.", severity: "medium" },
-            { regex: /raise\s+NotImplementedError/, issue: "Incompleto: Funcionalidade Python declarada mas não implementada.", severity: "high" },
-            { regex: /#\s*type:\s*ignore/, issue: "Omissão: Supressão manual de tipos; verifique dívida técnica Python.", severity: "low" }
-        ];
-        const results = await this.findPatterns([".py"], rules);
-
-        this.endMetrics(results.length);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".py"],
+            rules: [
+                { regex: /#\s*TODO[:\s]/, issue: "Dívida: TODO pendente no código Python.", severity: "medium" },
+                { regex: /#\s*FIXME[:\s]/, issue: "Dívida Crítica: FIXME detectado na lógica Python.", severity: "high" },
+                { regex: /#\s*HACK[:\s]/, issue: "Gambiarra: HACK detectado; risco de instabilidade Python.", severity: "high" },
+                { regex: /#\s*XXX[:\s]/, issue: "Alerta: Verifique ponto crítico XXX no código Python.", severity: "medium" },
+                { regex: /raise\s+NotImplementedError/, issue: "Incompleto: Funcionalidade Python declarada mas não implementada.", severity: "high" },
+                { regex: /#\s*type:\s*ignore/, issue: "Omissão: Supressão manual de tipos; verifique dívida técnica Python.", severity: "low" }
+            ]
+        };
     }
 
     public override performActiveHealing(blindSpots: string[]): void {

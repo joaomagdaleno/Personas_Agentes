@@ -14,24 +14,17 @@ export class BoltPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /while True:\s+pass|while True:\s+continue/, issue: "Busy Wait: Loop infinito sem processamento útil detectado.", severity: "critical" },
-            { regex: /os\.system|subprocess\.check_call/, issue: "Blocking: Chamada de sistema síncrona que bloqueia a execução.", severity: "critical" },
-            { regex: /for .* in .*:\s+await/, issue: "Sequential Await: await dentro de loop sequencial em Python.", severity: "high" },
-            { regex: /copy\.deepcopy\(|pickle\.dumps\(/, issue: "Ineficiência: Deep clone pesado ou serialização desnecessária.", severity: "medium" },
-            { regex: /time\.sleep\(0\)|time\.sleep\(0\.001\)/, issue: "Yield Ineficiente: Polling de curto intervalo consome CPU excessiva.", severity: "high" }
-        ];
-        const results = await this.findPatterns([".py"], rules);
-
-        // Advanced Logic: Active Healing Trigger
-        if (results.some(r => r.severity === "critical")) {
-            this.reasonAboutObjective("Computational Sovereignty", "Loops", "Critical busy-waiting pattern detected in Python legacy layer.");
-        }
-
-        this.endMetrics(results.length);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".py"],
+            rules: [
+                { regex: /while True:\s+pass|while True:\s+continue/, issue: "Busy Wait: Loop infinito sem processamento útil detectado.", severity: "critical" },
+                { regex: /os\.system|subprocess\.check_call/, issue: "Blocking: Chamada de sistema síncrona que bloqueia a execução.", severity: "critical" },
+                { regex: /for .* in .*:\s+await/, issue: "Sequential Await: await dentro de loop sequencial em Python.", severity: "high" },
+                { regex: /copy\.deepcopy\(|pickle\.dumps\(/, issue: "Ineficiência: Deep clone pesado ou serialização desnecessária.", severity: "medium" },
+                { regex: /time\.sleep\(0\)|time\.sleep\(0\.001\)/, issue: "Yield Ineficiente: Polling de curto intervalo consome CPU excessiva.", severity: "high" }
+            ]
+        };
     }
 
     public override performActiveHealing(blindSpots: string[]): void {

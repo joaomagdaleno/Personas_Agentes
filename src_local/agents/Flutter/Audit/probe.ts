@@ -14,25 +14,18 @@ export class ProbePersona extends BaseActivePersona {
         this.stack = "Flutter";
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /catch\s*\(.*\)\s*\{\s*\}/, issue: "Cegueira Flutter: catch vazio engole exceção silenciosamente.", severity: "critical" },
-            { regex: /\.catchError\(\(.*\)\s*\{\s*\}\)/, issue: "Promise Silenciada: .catchError vazio engole erro de Future.", severity: "critical" },
-            { regex: /catch\s*\(.*\)\s*\{\s*print\(/, issue: "Telemetria Informal: Erro logado via print no bloco catch.", severity: "medium" },
-            { regex: /onError:\s*\(.*\)\s*\{\s*\}/, issue: "Stream Frágil: Handler onError vazio detectado.", severity: "high" },
-            { regex: /throw\s+Exception\(\)/, issue: "Vago: Exception lançada sem mensagem descritiva.", severity: "medium" },
-            { regex: /\/\/\s*TODO:?\s*handle\s*error/i, issue: "Débito Tech: Tratamento de erro pendente detectado no comentário.", severity: "medium" }
-        ];
-        const results = await this.findPatterns([".dart"], rules);
-
-        // Advanced Logic: Security Probing
-        if (results.some(r => r.severity === "critical")) {
-            this.reasonAboutObjective("Data Sovereignty", "Persistence", "Critical security leak in local storage detected.");
-        }
-
-        this.endMetrics(results.length);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".dart"],
+            rules: [
+                { regex: /catch\s*\(.*\)\s*\{\s*\}/, issue: "Cegueira Flutter: catch vazio engole exceção silenciosamente.", severity: "critical" },
+                { regex: /\.catchError\(\(.*\)\s*\{\s*\}\)/, issue: "Promise Silenciada: .catchError vazio engole erro de Future.", severity: "critical" },
+                { regex: /catch\s*\(.*\)\s*\{\s*print\(/, issue: "Telemetria Informal: Erro logado via print no bloco catch.", severity: "medium" },
+                { regex: /onError:\s*\(.*\)\s*\{\s*\}/, issue: "Stream Frágil: Handler onError vazio detectado.", severity: "high" },
+                { regex: /throw\s+Exception\(\)/, issue: "Vago: Exception lançada sem mensagem descritiva.", severity: "medium" },
+                { regex: /\/\/\s*TODO:?\s*handle\s*error/i, issue: "Débito Tech: Tratamento de erro pendente detectado no comentário.", severity: "medium" }
+            ]
+        };
     }
 
     public override performActiveHealing(blindSpots: string[]): void {

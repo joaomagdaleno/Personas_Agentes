@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_active_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "TS_Cache" });
@@ -16,44 +16,31 @@ export class CachePersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    async performAudit(): Promise<any[]> {
-        const start = Date.now();
-        logger.info(`[${this.name}] Analisando Camada de Dados TypeScript...`);
-
-        const auditRules = [
-            { regex: 'readFileSync\\(', issue: 'Bloqueio de I/O: readFileSync trava o event loop.', severity: 'high' },
-            { regex: 'writeFileSync\\(', issue: 'Bloqueio de I/O: writeFileSync trava o event loop.', severity: 'high' },
-            { regex: 'fs\\.(?:read|write|stat|access)(?!.*Sync)(?!.*await|promise)', issue: 'Callback I/O: Operação de arquivo via callback — use fs/promises.', severity: 'medium' },
-            { regex: 'new Map\\(\\).*(?:set|get).*(?:set|get).*(?:set|get)', issue: 'Cache Ingênuo: Map como cache sem TTL ou eviction — risco de memory leak.', severity: 'medium' },
-        ];
-
-        const results: any[] = [];
-        for (const rule of auditRules) {
-            const regex = new RegExp(rule.regex, 'g');
-            for (const [filePath, content] of Object.entries(this.contextData)) {
-                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx')) {
-                    for (const match of (content as string).matchAll(regex)) {
-                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0].substring(0, 60), persona: this.name });
-                    }
-                }
-            }
-        }
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.ts', '.tsx'],
+            rules: [
+                { regex: /readFileSync\(/, issue: 'Bloqueio de I/O: readFileSync trava o event loop.', severity: 'high' },
+                { regex: /writeFileSync\(/, issue: 'Bloqueio de I/O: writeFileSync trava o event loop.', severity: 'high' },
+                { regex: /fs\.(?:read|write|stat|access)(?!.*Sync)(?!.*await|promise)/, issue: 'Callback I/O: Operação de arquivo via callback — use fs/promises.', severity: 'medium' },
+                { regex: /new Map\(\).*(?:set|get).*(?:set|get).*(?:set|get)/, issue: 'Cache Ingênuo: Map como cache sem TTL ou eviction — risco de memory leak.', severity: 'medium' },
+            ]
+        };
     }
 
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         if (/readFileSync|writeFileSync/.test(content)) {
             return {
-                file, severity: "HIGH", persona: this.name,
-                issue: `Lentidão Sistêmica: O objetivo '${objective}' exige velocidade. Em '${file}', operações síncronas de arquivo prejudicam a 'Orquestração de Inteligência Artificial'.`
+                file, severity: "HIGH",
+                issue: `Lentidão Sistêmica: O objetivo '${objective}' exige velocidade. Em '${file}', operações síncronas de arquivo prejudicam a 'Orquestração de Inteligência Artificial'.`,
+                context: "Sync I/O detected"
             };
         }
         return {
-            file, severity: "INFO", persona: this.name,
-            issue: `PhD Cache: Analisando performance de I/O para ${objective}. Focando em eliminação de bloqueios síncronos.`
+            file, severity: "INFO",
+            issue: `PhD Cache: Analisando performance de I/O para ${objective}. Focando em eliminação de bloqueios síncronos.`,
+            context: "analyzing I/O performance"
         };
     }
 

@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_active_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
 import winston from "winston";
 import { StrictAuditHelpers } from "./StrictAuditHelpers.ts";
 
@@ -16,25 +16,30 @@ export class StrictPersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    async performAudit(): Promise<any[]> {
-        const start = Date.now(), results: any[] = [];
-        logger.info(`[${this.name}] Analisando Strictness...`);
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.ts', '.tsx', 'tsconfig.json'],
+            rules: [
+                { regex: /"strict":\s*false/, issue: 'Compilador Desarmado: Modo strict desativado no tsconfig.', severity: 'critical' },
+                { regex: /@ts-ignore|@ts-nocheck/, issue: 'Supressão detectada.', severity: 'high' },
+            ]
+        };
+    }
 
+    async performAudit(): Promise<AuditFinding[]> {
+        const results = await super.performAudit();
         Object.entries(this.contextData).forEach(([f, c]) => {
             if (f.endsWith('tsconfig.json')) StrictAuditHelpers.auditTSConfig(c as string, results, f, this.name);
-            if (f.endsWith('.ts') || f.endsWith('.tsx')) StrictAuditHelpers.detectSuppressions(c as string, results, f, this.name);
         });
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
         return results;
     }
 
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         if (file.endsWith('tsconfig.json') && !content.includes('"strict": true') && !content.includes('"strict":true')) {
-            return { file, severity: "CRITICAL", persona: this.name, issue: `Compilador Desarmado para ${objective}.` };
+            return { file, severity: "CRITICAL", issue: `Compilador Desarmado para ${objective}.`, context: "tsconfig strict false" };
         }
-        return { file, severity: "INFO", persona: this.name, issue: `PhD Strictness: Analisando ${objective}.` };
+        return { file, severity: "INFO", issue: `PhD Strictness: Analisando ${objective}.`, context: "analyzing strictness" };
     }
 
     selfDiagnostic(): any { return { status: "Soberano", score: 100, details: "OK" }; }

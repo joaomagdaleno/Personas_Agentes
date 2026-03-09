@@ -33,22 +33,26 @@ export class MetricPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go"],
+            rules: [
+                { regex: /log\.Printf|fmt\.Print|fmt\.Println/, issue: "Cegueira: Logging amador (desestruturado) detectado.", severity: "high" },
+                { regex: /panic\(.*\)/, issue: "Interrupção Brusca: Pânicos sem contexto estruturado prejudicam a telemetria.", severity: "high" },
+                { regex: /Recover\(\)/, issue: "Abstração de Falha: Verifique se o recover() garante a telemetria do erro.", severity: "medium" },
+                { regex: /expvar\.Publish|prometheus\.NewCounter/, issue: "Instrumentação: Verifique se as réguas de telemetria seguem o padrão forense.", severity: "low" },
+                { regex: /pprof/, issue: "Profiling: Endpoint pprof exposto sem proteção em telemetria de produção.", severity: "high" }
+            ]
+        };
+    }
+
     public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /log\.Printf|fmt\.Print|fmt\.Println/, issue: "Cegueira: Logging amador (desestruturado) detectado.", severity: "high" },
-            { regex: /panic\(.*\)/, issue: "Interrupção Brusca: Pânicos sem contexto estruturado prejudicam a telemetria.", severity: "high" },
-            { regex: /Recover\(\)/, issue: "Abstração de Falha: Verifique se o recover() garante a telemetria do erro.", severity: "medium" },
-            { regex: /expvar\.Publish|prometheus\.NewCounter/, issue: "Instrumentação: Verifique se as réguas de telemetria seguem o padrão forense.", severity: "low" },
-            { regex: /pprof/, issue: "Profiling: Endpoint pprof exposto sem proteção em telemetria de produção.", severity: "high" }
-        ];
-        const results = await this.findPatterns([".go"], rules);
-
-        // Advanced Logic Density
+        const results = await super.performAudit();
         const metricFindings = GoMetricEngine.validate(this.projectRoot || "");
-        metricFindings.forEach(f => results.push({ file: "METRIC_SOURCE", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "medium", stack: this.stack }));
-
-        this.endMetrics(results.length);
+        metricFindings.forEach(f => results.push({
+            file: "METRIC_SOURCE", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "medium", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
         return results;
     }
 

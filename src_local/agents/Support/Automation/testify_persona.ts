@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_active_persona";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import { TestRunner } from "./test_runner";
 import { QualityAnalyst } from "./../Diagnostics/quality_analyst";
 import { PyramidAnalyst } from "./../Analysis/pyramid_analyst";
@@ -23,16 +23,14 @@ export class TestifyPersona extends BaseActivePersona {
         this.pyramidAnalyst = new PyramidAnalyst();
     }
 
-    async performAudit(): Promise<any[]> {
-        winston.info(`[${this.name}] Analisando Confiabilidade Estratégica...`);
-
-        const auditRules = [
-            { regex: 'def test_.*:\\s+pass', issue: 'Vazio: Teste sem asserções.', severity: 'critical' },
-            { regex: "hypothesis", issue: 'Avançado: Teste de Propriedade detectado.', severity: 'low' }
-        ];
-
-        // Use logic from base if needed or custom
-        return [];
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.py', '.ts', '.tsx'],
+            rules: [
+                { regex: /def test_.*:\s+pass/, issue: 'Vazio: Teste sem asserções.', severity: 'critical' },
+                { regex: /hypothesis/, issue: 'Avançado: Teste de Propriedade detectado.', severity: 'low' }
+            ]
+        };
     }
 
     async runTestSuite(): Promise<any> {
@@ -47,14 +45,15 @@ export class TestifyPersona extends BaseActivePersona {
         return await this.pyramidAnalyst.analyze(mapData, this.readProjectFile.bind(this));
     }
 
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         if (file.endsWith('.py') || file.endsWith('.ts')) {
             if (!content.includes('test') && !content.includes('spec')) {
                 return {
                     file: file,
                     issue: `Exposição de Risco: O objetivo '${objective}' exige confiança. O módulo '${file}' é Matéria Escura.`,
                     severity: "HIGH",
-                    persona: this.name
+                    context: "Untested module"
                 };
             }
         }

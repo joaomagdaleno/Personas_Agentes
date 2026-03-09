@@ -33,23 +33,27 @@ export class CachePersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go"],
+            rules: [
+                { regex: /github\.com\/patrickmn\/go\-cache/, issue: "Simple Cache: Uso de go-cache detectado; verifique se há pressão no GC em grandes coleções.", severity: "low" },
+                { regex: /SetWithTTL/, issue: "TTL Strategy: Garanta que a expiração de cache não cause 'thundering herd' em caso de queda simultânea de chaves.", severity: "high" },
+                { regex: /LRU/, issue: "Eviction Policy: O uso de LRU é recomendado; verifique se o limite de itens está adequado à memória disponível.", severity: "medium" },
+                { regex: /bigcache/, issue: "Zero GC Cache: Uso de BigCache detectado; excelente para alta vazão e baixa pressão de GC.", severity: "low" },
+                { regex: /Mutex\.Lock\(\)/, issue: "Contention Risk: Verifique se o bloqueio de cache é granular o suficiente para evitar gargalos em concorrência.", severity: "high" },
+                { regex: /CacheMiss/, issue: "Observability: Verifique se a taxa de Cache Hit/Miss é exportada via métricas.", severity: "medium" }
+            ]
+        };
+    }
+
     public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /github\.com\/patrickmn\/go\-cache/, issue: "Simple Cache: Uso de go-cache detectado; verifique se há pressão no GC em grandes coleções.", severity: "low" },
-            { regex: /SetWithTTL/, issue: "TTL Strategy: Garanta que a expiração de cache não cause 'thundering herd' em caso de queda simultânea de chaves.", severity: "high" },
-            { regex: /LRU/, issue: "Eviction Policy: O uso de LRU é recomendado; verifique se o limite de itens está adequado à memória disponível.", severity: "medium" },
-            { regex: /bigcache/, issue: "Zero GC Cache: Uso de BigCache detectado; excelente para alta vazão e baixa pressão de GC.", severity: "low" },
-            { regex: /Mutex\.Lock\(\)/, issue: "Contention Risk: Verifique se o bloqueio de cache é granular o suficiente para evitar gargalos em concorrência.", severity: "high" },
-            { regex: /CacheMiss/, issue: "Observability: Verifique se a taxa de Cache Hit/Miss é exportada via métricas.", severity: "medium" }
-        ];
-        const results = await this.findPatterns([".go"], rules);
-
-        // Advanced Logic Density
+        const results = await super.performAudit();
         const cacheFindings = GoCacheEngine.audit(this.projectRoot || "");
-        cacheFindings.forEach(f => results.push({ file: "CACHE_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "medium", stack: this.stack }));
-
-        this.endMetrics(results.length);
+        cacheFindings.forEach(f => results.push({
+            file: "CACHE_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "medium", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
         return results;
     }
 

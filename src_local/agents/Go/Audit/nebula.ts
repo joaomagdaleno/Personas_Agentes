@@ -33,23 +33,27 @@ export class NebulaPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go"],
+            rules: [
+                { regex: /AKIA[0-9A-Z]{16}/, issue: "Vulnerabilidade Crítica: Chave AWS exposta no código Go.", severity: "critical" },
+                { regex: /sk-[a-zA-Z0-9]{20,}|ghp_[a-zA-Z0-9]{36}/, issue: "Vulnerabilidade Crítica: Token (OpenAI/GitHub) exposto.", severity: "critical" },
+                { regex: /(?:apiKey|API_KEY|password|secret)\s*=\s*".{8,}"/i, issue: "Vazamento: Credencial hardcoded no código-fonte Go.", severity: "critical" },
+                { regex: /https:\/\/hooks\.slack\.com/, issue: "Slack Webhook: Webhook exposto detectado; alto risco de vazamento.", severity: "high" },
+                { regex: /jwt\.Parse\(.*nil\)/, issue: "Broken Security: Verificação de token JWT sem validação de segurança.", severity: "critical" },
+                { regex: /sql\.Open\(.*"mysql",\s*".*@tcp/, issue: "DB Credential: String de conexão com senha exposta.", severity: "high" }
+            ]
+        };
+    }
+
     public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /AKIA[0-9A-Z]{16}/, issue: "Vulnerabilidade Crítica: Chave AWS exposta no código Go.", severity: "critical" },
-            { regex: /sk-[a-zA-Z0-9]{20,}|ghp_[a-zA-Z0-9]{36}/, issue: "Vulnerabilidade Crítica: Token (OpenAI/GitHub) exposto.", severity: "critical" },
-            { regex: /(?:apiKey|API_KEY|password|secret)\s*=\s*".{8,}"/i, issue: "Vazamento: Credencial hardcoded no código-fonte Go.", severity: "critical" },
-            { regex: /https:\/\/hooks\.slack\.com/, issue: "Slack Webhook: Webhook exposto detectado; alto risco de vazamento.", severity: "high" },
-            { regex: /jwt\.Parse\(.*nil\)/, issue: "Broken Security: Verificação de token JWT sem validação de segurança.", severity: "critical" },
-            { regex: /sql\.Open\(.*"mysql",\s*".*@tcp/, issue: "DB Credential: String de conexão com senha exposta.", severity: "high" }
-        ];
-        const results = await this.findPatterns([".go"], rules);
-
-        // Advanced Logic Density
+        const results = await super.performAudit();
         const cloudFindings = GoCloudEngine.scan(this.projectRoot || "");
-        cloudFindings.forEach(f => results.push({ file: "CLOUD_SCAN", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "high", stack: this.stack }));
-
-        this.endMetrics(results.length);
+        cloudFindings.forEach(f => results.push({
+            file: "CLOUD_SCAN", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "high", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
         return results;
     }
 

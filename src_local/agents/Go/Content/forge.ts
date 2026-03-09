@@ -33,23 +33,27 @@ export class ForgePersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go"],
+            rules: [
+                { regex: /go:generate/, issue: "Direct Codegen: Uso de go:generate detectado; verifique se as ferramentas necessárias estão no PATH do CI.", severity: "low" },
+                { regex: /protobuf/, issue: "Protobuf Logic: Verifique se os arquivos .pb.go estão atualizados em relação aos arquivos .proto.", severity: "medium" },
+                { regex: /sqlc/, issue: "SQL Compiler: Uso de sqlc detectado; garanta que as queries SQL estão versionadas e auditadas.", severity: "low" },
+                { regex: /EasyJSON/, issue: "Fast JSON: Uso de gerador EasyJSON detectado; verifique a compatibilidade com a biblioteca padrão.", severity: "low" },
+                { regex: /Stringer/, issue: "Enum Stringer: Uso de tool stringer detectado; verifique se novos enums dispararam a regeneração.", severity: "medium" },
+                { regex: /MockGen/, issue: "Mock Generation: Verifique se os mocks gerados não estão introduzindo acoplamento excessivo.", severity: "medium" }
+            ]
+        };
+    }
+
     public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /go:generate/, issue: "Direct Codegen: Uso de go:generate detectado; verifique se as ferramentas necessárias estão no PATH do CI.", severity: "low" },
-            { regex: /protobuf/, issue: "Protobuf Logic: Verifique se os arquivos .pb.go estão atualizados em relação aos arquivos .proto.", severity: "medium" },
-            { regex: /sqlc/, issue: "SQL Compiler: Uso de sqlc detectado; garanta que as queries SQL estão versionadas e auditadas.", severity: "low" },
-            { regex: /EasyJSON/, issue: "Fast JSON: Uso de gerador EasyJSON detectado; verifique a compatibilidade com a biblioteca padrão.", severity: "low" },
-            { regex: /Stringer/, issue: "Enum Stringer: Uso de tool stringer detectado; verifique se novos enums dispararam a regeneração.", severity: "medium" },
-            { regex: /MockGen/, issue: "Mock Generation: Verifique se os mocks gerados não estão introduzindo acoplamento excessivo.", severity: "medium" }
-        ];
-        const results = await this.findPatterns([".go"], rules);
-
-        // Advanced Logic Density
+        const results = await super.performAudit();
         const forgeFindings = GoForgeEngine.audit(this.projectRoot || "");
-        forgeFindings.forEach(f => results.push({ file: "CODEGEN_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "medium", stack: this.stack }));
-
-        this.endMetrics(results.length);
+        forgeFindings.forEach(f => results.push({
+            file: "CODEGEN_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "medium", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
         return results;
     }
 

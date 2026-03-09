@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "Bun_Scribe" });
@@ -15,42 +15,26 @@ export class ScribePersona extends BaseActivePersona {
         this.stack = "Bun";
     }
 
-    async performAudit(): Promise<any[]> {
-        const start = Date.now();
-        logger.info(`[${this.name}] Analisando Documentação Bun...`);
-
-        const results: any[] = [];
-        for (const [filePath, content] of Object.entries(this.contextData)) {
-            this.auditFile(filePath, content as string, results);
-        }
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.ts', '.tsx'],
+            rules: [
+                {
+                    regex: /^(?:export\s+(?:async\s+)?(?:function|class|const|interface|type|enum)\s+\w+)/m,
+                    issue: 'Amnésia: Exportação Bun detectada (verifique se há JSDoc correspondente).',
+                    severity: 'high'
+                },
+            ]
+        };
     }
 
-    private auditFile(filePath: string, content: string, results: any[]) {
-        if (!this.isAuditable(filePath)) return;
+    // Scribe is a bit special as it compares exports with JSDocs,
+    // which simple regex auditing doesn't fully capture in a single pass
+    // (unless we use complex lookaheads which are fragile).
+    // For now, we standardize the audit rules for the exports.
 
-        const exportMatches = content.match(/export\s+(?:async\s+)?(?:function|class|const|interface|type|enum)\s+\w+/g);
-        const jsdocCount = (content.match(/\/\*\*[\s\S]*?\*\//g) || []).length;
-
-        if (exportMatches && exportMatches.length > 0 && jsdocCount === 0) {
-            results.push({
-                file: filePath,
-                issue: `Amnésia: ${exportMatches.length} exportações Bun sem nenhum JSDoc.`,
-                severity: 'high', persona: this.name
-            });
-        }
-    }
-
-    private isAuditable(filePath: string): boolean {
-        const isTS = filePath.endsWith('.ts') || filePath.endsWith('.tsx');
-        const isTest = filePath.endsWith('.test.ts') || filePath.endsWith('.spec.ts');
-        return isTS && !isTest;
-    }
-
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         const exports = (content.match(/export\s+(?:async\s+)?(?:function|class)\s+\w+/g) || []).length;
         const docs = (content.match(/\/\*\*[\s\S]*?\*\//g) || []).length;
         if (exports > 0 && docs === 0) {

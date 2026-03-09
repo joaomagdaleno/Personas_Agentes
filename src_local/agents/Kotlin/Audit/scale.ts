@@ -14,18 +14,18 @@ export class ScalePersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const results = await this.findPatterns([".kt"], [
-            { regex: /\n{400,}/, issue: "God File: Arquivo excessivamente grande; risco de entropia Kotlin.", severity: "high" },
-            { regex: /import\s+.*?\.\.\/\.\.\//, issue: "Deep Relative: Importação excessivamente profunda; risco de acoplamento.", severity: "medium" },
-            { regex: /object\s+\w+\s*\{(?!.*companion)/, issue: "Singleton Abuse: Uso de 'object' pode dificultar injeção de dependência.", severity: "medium" },
-            { regex: /import\s+.*?\.\*/, issue: "Wildcard Import: Poluição de namespace Kotlin detectada.", severity: "low" },
-            { regex: /import\s+.*?\.internal\..*?/, issue: "Internal Leak: Importando de pacotes internos de outros módulos.", severity: "high" },
-            { regex: /lateinit\s+var/, issue: "State Risk: 'lateinit var' pode causar UninitializedPropertyAccessException em escala.", severity: "medium" }
-        ]);
-        this.endMetrics(results.length);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".kt"],
+            rules: [
+                { regex: /\n{400,}/, issue: "God File: Arquivo excessivamente grande; risco de entropia Kotlin.", severity: "high" },
+                { regex: /import\s+.*?\.\.\/\.\.\//, issue: "Deep Relative: Importação excessivamente profunda; risco de acoplamento.", severity: "medium" },
+                { regex: /object\s+\w+\s*\{(?!.*companion)/, issue: "Singleton Abuse: Uso de 'object' pode dificultar injeção de dependência.", severity: "medium" },
+                { regex: /import\s+.*?\.\*/, issue: "Wildcard Import: Poluição de namespace Kotlin detectada.", severity: "low" },
+                { regex: /import\s+.*?\.internal\..*?/, issue: "Internal Leak: Importando de pacotes internos de outros módulos.", severity: "high" },
+                { regex: /lateinit\s+var/, issue: "State Risk: 'lateinit var' pode causar UninitializedPropertyAccessException em escala.", severity: "medium" }
+            ]
+        };
     }
 
     public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {

@@ -33,23 +33,27 @@ export class StrictPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go"],
+            rules: [
+                { regex: /type\s+.*\s+struct\s*\{\s*\}/, issue: "Empty Struct: Struct sem campos detectada; considere se é necessária ou se um sinal de canal basta.", severity: "low" },
+                { regex: /func\s+.*\(.*interface\{\}/, issue: "Parameter Laxity: Uso de interface{} como argumento de função; prefira generics ou interfaces específicas.", severity: "high" },
+                { regex: /type\s+.*\s+alias/, issue: "Type Alias: Verifique se o alias é necessário ou se introduz confusão semântica.", severity: "low" },
+                { regex: /const\s+.*\s+=\s+iota/, issue: "Iota Usage: Verifique se o iota possui um valor zero inválido para evitar estados não inicializados.", severity: "medium" },
+                { regex: /ptr\s+:=\s+&/, issue: "Pointer Inflation: Verifique se o uso de ponteiros é necessário ou se causa pressão indevida no GC via escape analysis.", severity: "medium" },
+                { regex: /\w+:.*interface\{\}/, issue: "Map Generic: Mapas com valor interface{} impedem otimizações de tipagem estática.", severity: "high" }
+            ]
+        };
+    }
+
     public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /type\s+.*\s+struct\s*\{\s*\}/, issue: "Empty Struct: Struct sem campos detectada; considere se é necessária ou se um sinal de canal basta.", severity: "low" },
-            { regex: /func\s+.*\(.*interface\{\}/, issue: "Parameter Laxity: Uso de interface{} como argumento de função; prefira generics ou interfaces específicas.", severity: "high" },
-            { regex: /type\s+.*\s+alias/, issue: "Type Alias: Verifique se o alias é necessário ou se introduz confusão semântica.", severity: "low" },
-            { regex: /const\s+.*\s+=\s+iota/, issue: "Iota Usage: Verifique se o iota possui um valor zero inválido para evitar estados não inicializados.", severity: "medium" },
-            { regex: /ptr\s+:=\s+&/, issue: "Pointer Inflation: Verifique se o uso de ponteiros é necessário ou se causa pressão indevida no GC via escape analysis.", severity: "medium" },
-            { regex: /\w+:.*interface\{\}/, issue: "Map Generic: Mapas com valor interface{} impedem otimizações de tipagem estática.", severity: "high" }
-        ];
-        const results = await this.findPatterns([".go"], rules);
-
-        // Advanced Logic Density
+        const results = await super.performAudit();
         const strictFindings = GoStrictEngine.inspect(this.projectRoot || "");
-        strictFindings.forEach(f => results.push({ file: "STRICT_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "medium", stack: this.stack }));
-
-        this.endMetrics(results.length);
+        strictFindings.forEach(f => results.push({
+            file: "STRICT_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "medium", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
         return results;
     }
 

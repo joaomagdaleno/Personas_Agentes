@@ -8,30 +8,23 @@ import { BaseActivePersona } from "../../base.ts";
 export class MetricPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
         super(projectRoot);
-        self.name = "Metric";
-        self.emoji = "📊";
-        self.role = "PhD Telemetry Engineer";
-        self.stack = "Python";
+        this.name = "Metric";
+        this.emoji = "📊";
+        this.role = "PhD Telemetry Engineer";
+        this.stack = "Python";
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /print\(.*\)/, issue: "Cegueira: print em produção — use logging estruturado PhD.", severity: "high" },
-            { regex: /except\s*.*:\s*pass/, issue: "Cegueira Total: except vazio engole erros silenciosamente.", severity: "critical" },
-            { regex: /except\s*.*:\s*print\(.*\)/, issue: "Telemetria Informal: Erro logado via print no bloco except.", severity: "medium" },
-            { regex: /logging\.basicConfig\(/, issue: "Telemetria Fraca: Configuração global inadequada em sistemas complexos.", severity: "low" },
-            { regex: /json\.dumps\(.*\)/, issue: "Soberania de Dados: Verifique se dados sensíveis são anonimizados antes do log.", severity: "medium" }
-        ];
-        const results = await this.findPatterns([".py"], rules);
-
-        // Advanced Logic: Telemetry Depth
-        if (results.length === 0) {
-            this.reasonAboutObjective("Telemetry Verification", "Global", "Python legacy layer lacks standardized instrumentation.");
-        }
-
-        this.endMetrics(results.length);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".py"],
+            rules: [
+                { regex: /print\(.*\)/, issue: "Cegueira: print em produção — use logging estruturado PhD.", severity: "high" },
+                { regex: /except\s*.*:\s*pass/, issue: "Cegueira Total: except vazio engole erros silenciosamente.", severity: "critical" },
+                { regex: /except\s*.*:\s*print\(.*\)/, issue: "Telemetria Informal: Erro logado via print no bloco except.", severity: "medium" },
+                { regex: /logging\.basicConfig\(/, issue: "Telemetria Fraca: Configuração global inadequada em sistemas complexos.", severity: "low" },
+                { regex: /json\.dumps\(.*\)/, issue: "Soberania de Dados: Verifique se dados sensíveis são anonimizados antes do log.", severity: "medium" }
+            ]
+        };
     }
 
     public override performActiveHealing(blindSpots: string[]): void {

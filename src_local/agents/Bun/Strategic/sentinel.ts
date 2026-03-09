@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "Bun_Sentinel" });
@@ -16,28 +16,26 @@ export class SentinelPersona extends BaseActivePersona {
         this.stack = "Bun";
     }
 
-    async performAudit(): Promise<any[]> {
-        this.startMetrics();
-        logger.info(`[${this.name}] Analisando Segurança de Transporte Bun...`);
-
-        const auditRules = [
-            { regex: 'http:\\/\\/(?!localhost|127\\.0\\.0\\.1)', issue: 'Inseguro: URL HTTP sem TLS no Bun.', severity: 'high' },
-            { regex: 'Bun\\.serve\\([^)]*\\)(?![\\s\\S]{0,200}tls|cert)', issue: 'Sem TLS: Bun.serve sem configuração de TLS/certificado.', severity: 'high' },
-            { regex: 'rejectUnauthorized:\\s*false', issue: 'Crítico: Verificação TLS desativada no Bun.', severity: 'critical' },
-            { regex: 'Access-Control-Allow-Origin.*\\*', issue: 'Permissivo: CORS wildcard no Bun.serve.', severity: 'high' },
-        ];
-
-        const results = await this.findPatterns(['.ts', '.tsx'], auditRules as any);
-        this.endMetrics(results.length);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.ts', '.tsx'],
+            rules: [
+                { regex: /http:\/\/(?!localhost|127\.0\.0\.1)/, issue: 'Inseguro: URL HTTP sem TLS no Bun.', severity: 'high' },
+                { regex: /Bun\.serve\([^)]*\)(?![\s\S]{0,200}tls|cert)/, issue: 'Sem TLS: Bun.serve sem configuração de TLS/certificado.', severity: 'high' },
+                { regex: /rejectUnauthorized:\s*false/, issue: 'Crítico: Verificação TLS desativada no Bun.', severity: 'critical' },
+                { regex: /Access-Control-Allow-Origin.*[\*]/, issue: 'Permissivo: CORS wildcard no Bun.serve.', severity: 'high' },
+            ]
+        };
     }
 
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         if (!/http:\/\/(?!localhost|127\.0\.0\.1)/.test(content)) return null;
 
         return {
-            file, severity: "HIGH", persona: this.name,
-            issue: `Vulnerabilidade: O objetivo '${objective}' exige segurança. Em '${file}', HTTP sem TLS expõe o Bun.serve a ataques MITM.`
+            file, severity: "HIGH",
+            issue: `Vulnerabilidade: O objetivo '${objective}' exige segurança. Em '${file}', HTTP sem TLS expõe o Bun.serve a ataques MITM.`,
+            context: "Insecure HTTP URL detected"
         };
     }
 

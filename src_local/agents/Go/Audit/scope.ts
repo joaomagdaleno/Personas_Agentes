@@ -33,23 +33,27 @@ export class ScopePersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go", "go.mod"],
+            rules: [
+                { regex: /\/\/\s*TODO[:\s]/, issue: "Dívida: TODO pendente no código Go.", severity: "medium" },
+                { regex: /\/\/\s*FIXME[:\s]/, issue: "Dívida Crítica: FIXME detectado na lógica Go.", severity: "high" },
+                { regex: /\/\/\s*HACK[:\s]/, issue: "Gambiarra: HACK detectado; risco de instabilidade Go.", severity: "high" },
+                { regex: /\/\/\s*XXX[:\s]/, issue: "Alerta: Verifique ponto crítico XXX no código Go.", severity: "medium" },
+                { regex: /panic\(.*"not\s+implemented"/, issue: "Incompleto: Funcionalidade Go declarada com panic placeholder.", severity: "high" },
+                { regex: /\/\/\s*no-lint[:\s]|\/\/\s*ignore[:\s]/, issue: "Omissão: Supressão manual de avisos; verifique dívida técnica.", severity: "low" }
+            ]
+        };
+    }
+
     public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /\/\/\s*TODO[:\s]/, issue: "Dívida: TODO pendente no código Go.", severity: "medium" },
-            { regex: /\/\/\s*FIXME[:\s]/, issue: "Dívida Crítica: FIXME detectado na lógica Go.", severity: "high" },
-            { regex: /\/\/\s*HACK[:\s]/, issue: "Gambiarra: HACK detectado; risco de instabilidade Go.", severity: "high" },
-            { regex: /\/\/\s*XXX[:\s]/, issue: "Alerta: Verifique ponto crítico XXX no código Go.", severity: "medium" },
-            { regex: /panic\(.*"not\s+implemented"/, issue: "Incompleto: Funcionalidade Go declarada com panic placeholder.", severity: "high" },
-            { regex: /\/\/\s*no-lint[:\s]|\/\/\s*ignore[:\s]/, issue: "Omissão: Supressão manual de avisos; verifique dívida técnica.", severity: "low" }
-        ];
-        const results = await this.findPatterns([".go", "go.mod"], rules);
-
-        // Advanced Logic Density
+        const results = await super.performAudit();
         const moduleIssues = GoModuleEngine.audit(this.projectRoot || "");
-        moduleIssues.forEach(m => results.push({ file: "GO_MOD", agent: this.name, role: this.role, emoji: this.emoji, issue: m, severity: "medium", stack: this.stack }));
-
-        this.endMetrics(results.length);
+        moduleIssues.forEach(m => results.push({
+            file: "GO_MOD", agent: this.name, role: this.role, emoji: this.emoji, issue: m, severity: "medium", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
         return results;
     }
 

@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "Bun_Globe" });
@@ -16,38 +16,24 @@ export class GlobePersona extends BaseActivePersona {
         this.stack = "Bun";
     }
 
-    async performAudit(): Promise<any[]> {
-        const start = Date.now();
-        logger.info(`[${this.name}] Analisando i18n Bun...`);
-
-        const auditRules = [
-            { regex: '(?:message|label|title|text)\\s*[:=]\\s*["\'][A-Z][a-zÀ-ú]', issue: 'Hardcoded: Texto de interface no código Bun.', severity: 'medium' },
-            { regex: 'import\\.meta\\.dir', issue: 'Cross-Platform: import.meta.dir é Bun-only — pode quebrar em Node.', severity: 'low' },
-            { regex: 'Bun\\.which\\(', issue: 'Cross-Platform: Bun.which() é Bun-only — verifique portabilidade.', severity: 'low' },
-        ];
-
-        const results: any[] = [];
-        for (const rule of auditRules) {
-            const regex = new RegExp(rule.regex, 'g');
-            for (const [filePath, content] of Object.entries(this.contextData)) {
-                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx')) {
-                    for (const match of (content as string).matchAll(regex)) {
-                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0].substring(0, 60), persona: this.name });
-                    }
-                }
-            }
-        }
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.ts', '.tsx'],
+            rules: [
+                { regex: /(?:message|label|title|text)\s*[:=]\s*["'][A-Z][a-zÀ-ú]/, issue: 'Hardcoded: Texto de interface no código Bun.', severity: 'medium' },
+                { regex: /import\.meta\.dir/, issue: 'Cross-Platform: import.meta.dir é Bun-only — pode quebrar em Node.', severity: 'low' },
+                { regex: /Bun\.which\(/, issue: 'Cross-Platform: Bun.which() é Bun-only — verifique portabilidade.', severity: 'low' },
+            ]
+        };
     }
 
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         if (/import\.meta\.dir|Bun\.which/.test(content)) {
             return {
-                file, severity: "LOW", persona: this.name,
-                issue: `Portabilidade: O objetivo '${objective}' pode exigir cross-runtime. Em '${file}', APIs Bun-only limitam a portabilidade.`
+                file, severity: "LOW",
+                issue: `Portabilidade: O objetivo '${objective}' pode exigir cross-runtime. Em '${file}', APIs Bun-only limitam a portabilidade.`,
+                context: "Bun-only API detected"
             };
         }
         return null;

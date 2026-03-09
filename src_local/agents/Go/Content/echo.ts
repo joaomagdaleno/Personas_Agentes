@@ -33,23 +33,27 @@ export class EchoPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go"],
+            rules: [
+                { regex: /log\.Printf/, issue: "Unstructured Logging: Prefira loggers estruturados (zap/zerolog) com formato JSON.", severity: "medium" },
+                { regex: /Prometheus/, issue: "Metric Export: Verifique se os nomes das métricas seguem o padrão Prometheus (letras minúsculas e underscores).", severity: "low" },
+                { regex: /Counter\.Inc\(\)/, issue: "Metric Monitoring: Garanta que os contadores são persistentes e monitorados em dashboards.", severity: "low" },
+                { regex: /logger\.Info\(.*%v/, issue: "Lazy Formatting: Evite %v em logs de info; prefira campos estruturados logger.Info(msg, \"error\", err).", severity: "medium" },
+                { regex: /Logrus/, issue: "Logger Performance: Logrus é mais lento que zap; verifique se há impacto em caminhos críticos.", severity: "low" },
+                { regex: /SpanContext/, issue: "Tracing Context: Verifique se o contexto de rastreio está sendo propagado corretamente entre processos cloud.", severity: "medium" }
+            ]
+        };
+    }
+
     public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /log\.Printf/, issue: "Unstructured Logging: Prefira loggers estruturados (zap/zerolog) com formato JSON.", severity: "medium" },
-            { regex: /Prometheus/, issue: "Metric Export: Verifique se os nomes das métricas seguem o padrão Prometheus (letras minúsculas e underscores).", severity: "low" },
-            { regex: /Counter\.Inc\(\)/, issue: "Metric Monitoring: Garanta que os contadores são persistentes e monitorados em dashboards.", severity: "low" },
-            { regex: /logger\.Info\(.*%v/, issue: "Lazy Formatting: Evite %v em logs de info; prefira campos estruturados logger.Info(msg, \"error\", err).", severity: "medium" },
-            { regex: /Logrus/, issue: "Logger Performance: Logrus é mais lento que zap; verifique se há impacto em caminhos críticos.", severity: "low" },
-            { regex: /SpanContext/, issue: "Tracing Context: Verifique se o contexto de rastreio está sendo propagado corretamente entre processos cloud.", severity: "medium" }
-        ];
-        const results = await this.findPatterns([".go"], rules);
-
-        // Advanced Logic Density
+        const results = await super.performAudit();
         const echoFindings = GoEchoEngine.inspect(this.projectRoot || "");
-        echoFindings.forEach(f => results.push({ file: "TELEMETRY_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "medium", stack: this.stack }));
-
-        this.endMetrics(results.length);
+        echoFindings.forEach(f => results.push({
+            file: "TELEMETRY_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "medium", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
         return results;
     }
 

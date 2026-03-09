@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "TS_Generic" });
@@ -16,44 +16,31 @@ export class GenericPersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    async performAudit(): Promise<any[]> {
-        const start = Date.now();
-        logger.info(`[${this.name}] Analisando Complexidade de Generics TypeScript...`);
-
-        const auditRules = [
-            { regex: '<[^>]*<[^>]*<[^>]*>>', issue: 'Complexidade: Generics com 3+ níveis de aninhamento — simplificar com type aliases.', severity: 'medium' },
-            { regex: 'extends\\s+infer\\s+\\w+.*extends\\s+infer', issue: 'Magia Negra: Múltiplos "infer" condicionais — difícil de manter.', severity: 'high' },
-            { regex: 'type\\s+\\w+<[^>]*>\\s*=\\s*\\w+<[^>]*>\\s*extends\\s', issue: 'Tipo Condicional: Conditional type — verifique se não há alternativa simples.', severity: 'low' },
-            { regex: 'as\\s+unknown\\s+as\\s+', issue: 'Double Cast: "as unknown as X" — forte indicador de design errado.', severity: 'high' },
-        ];
-
-        const results: any[] = [];
-        for (const rule of auditRules) {
-            const regex = new RegExp(rule.regex, 'g');
-            for (const [filePath, content] of Object.entries(this.contextData)) {
-                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx')) {
-                    for (const match of (content as string).matchAll(regex)) {
-                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0].substring(0, 60), persona: this.name });
-                    }
-                }
-            }
-        }
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.ts', '.tsx'],
+            rules: [
+                { regex: /<[^>]*<[^>]*<[^>]*>>/, issue: 'Complexidade: Generics com 3+ níveis de aninhamento — simplificar com type aliases.', severity: 'medium' },
+                { regex: /extends\s+infer\s+\w+.*extends\s+infer/, issue: 'Magia Negra: Múltiplos "infer" condicionais — difícil de manter.', severity: 'high' },
+                { regex: /type\s+\w+<[^>]*>\s*=\s*\w+<[^>]*>\s*extends\s/, issue: 'Tipo Condicional: Conditional type — verifique se não há alternativa simples.', severity: 'low' },
+                { regex: /as\s+unknown\s+as\s+/, issue: 'Double Cast: "as unknown as X" — forte indicador de design errado.', severity: 'high' },
+            ]
+        };
     }
 
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         if (/as\s+unknown\s+as\s+/.test(content)) {
             return {
-                file, severity: "HIGH", persona: this.name,
-                issue: `Magia Negra de Tipos: O objetivo '${objective}' exige clareza. Em '${file}', double casts indicam design inadequado na 'Orquestração de Inteligência Artificial'.`
+                file, severity: "HIGH",
+                issue: `Magia Negra de Tipos: O objetivo '${objective}' exige clareza. Em '${file}', double casts indicam design inadequado na 'Orquestração de Inteligência Artificial'.`,
+                context: "Double cast detected"
             };
         }
         return {
-            file, severity: "INFO", persona: this.name,
-            issue: `PhD Generics: Analisando álgebra de tipos para ${objective}. Focando em simplificação e inferência.`
+            file, severity: "INFO",
+            issue: `PhD Generics: Analisando álgebra de tipos para ${objective}. Focando em simplificação e inferência.`,
+            context: "analyzing generics"
         };
     }
 

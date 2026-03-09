@@ -14,18 +14,18 @@ export class NebulaPersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const results = await this.findPatterns([".kt", "build.gradle.kts", "google-services.json"], [
-            { regex: /AKIA[0-9A-Z]{16}/, issue: "Vulnerabilidade Crítica: Chave AWS exposta no código ou build script.", severity: "critical" },
-            { regex: /sk-[a-zA-Z0-9]{20,}|ghp_[a-zA-Z0-9]{36}/, issue: "Vulnerabilidade Crítica: Token (OpenAI/GitHub) exposto.", severity: "critical" },
-            { regex: /(?:apiKey|API_KEY|password|secret)\s*[:=]\s*["\'][^"\']{8,}/, issue: "Vazamento: Credencial hardcoded no código-fonte Kotlin.", severity: "critical" },
-            { regex: /Firebase\.getInstance\(/, issue: "Cloud Config: Verifique o isolamento de instâncias Firebase por ambiente.", severity: "medium" },
-            { regex: /signingConfigs\s*\{\s*.*\s*password\s*=\s*".*"/, issue: "Gradle Security: Senha de assinatura exposta no build.gradle.", severity: "critical" },
-            { regex: /"api_key":\s*\[\s*\{\s*"current_key":\s*".*"/, issue: "Metadata Leak: API Key exposta no google-services.json.", severity: "high" }
-        ]);
-        this.endMetrics(results.length);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".kt", "build.gradle.kts", "google-services.json"],
+            rules: [
+                { regex: /AKIA[0-9A-Z]{16}/, issue: "Vulnerabilidade Crítica: Chave AWS exposta no código ou build script.", severity: "critical" },
+                { regex: /sk-[a-zA-Z0-9]{20,}|ghp_[a-zA-Z0-9]{36}/, issue: "Vulnerabilidade Crítica: Token (OpenAI/GitHub) exposto.", severity: "critical" },
+                { regex: /(?:apiKey|API_KEY|password|secret)\s*[:=]\s*["'][^"']{8,}/, issue: "Vazamento: Credencial hardcoded no código-fonte Kotlin.", severity: "critical" },
+                { regex: /Firebase\.getInstance\(/, issue: "Cloud Config: Verifique o isolamento de instâncias Firebase por ambiente.", severity: "medium" },
+                { regex: /signingConfigs\s*\{\s*.*\s*password\s*=\s*".*"/, issue: "Gradle Security: Senha de assinatura exposta no build.gradle.", severity: "critical" },
+                { regex: /"api_key":\s*\[\s*\{\s*"current_key":\s*".*"/, issue: "Metadata Leak: API Key exposta no google-services.json.", severity: "high" }
+            ]
+        };
     }
 
     public override reasonAboutObjective(objective: string, file: string, content: string): StrategicFinding | null {

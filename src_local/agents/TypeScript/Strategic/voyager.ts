@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "TS_Voyager" });
@@ -16,48 +16,33 @@ export class VoyagerPersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    async performAudit(): Promise<any[]> {
-        const start = Date.now();
-        logger.info(`[${this.name}] Analisando Modernidade TypeScript...`);
-
-        const results: any[] = [];
-        Object.entries(this.contextData).forEach(([file, content]) => {
-            if (file.endsWith('.ts') || file.endsWith('.tsx')) {
-                results.push(...this.auditSingleFile(file, content));
-            }
-        });
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.ts', '.tsx'],
+            rules: [
+                { regex: /\bvar\s+\w+/, issue: 'Legado: "var" — use "const" ou "let" para escopo seguro.', severity: 'high' },
+                { regex: /\brequire\s*\(/, issue: 'CommonJS: require() — use ESM "import" para compatibilidade TypeScript.', severity: 'high' },
+                { regex: /module\.exports/, issue: 'CommonJS: module.exports — use "export" ESM.', severity: 'high' },
+                { regex: /arguments\b/, issue: 'Legado: "arguments" — use rest parameters (...args).', severity: 'medium' },
+                { regex: /\.apply\(|\bcall\(/, issue: 'Legado: .apply()/.call() — use spread operator ou arrow functions.', severity: 'low' },
+                { regex: /new\s+Promise\(.*resolve.*reject/, issue: 'Verboso: Promise constructor manual — prefira async/await.', severity: 'low' },
+            ]
+        };
     }
 
-    private auditSingleFile(file: string, content: string): any[] {
-        const rules = [
-            { regex: '\\bvar\\s+\\w+', issue: 'Legado: "var" — use "const" ou "let" para escopo seguro.', severity: 'high' },
-            { regex: '\\brequire\\s*\\(', issue: 'CommonJS: require() — use ESM "import" para compatibilidade TypeScript.', severity: 'high' },
-            { regex: 'module\\.exports', issue: 'CommonJS: module.exports — use "export" ESM.', severity: 'high' },
-            { regex: 'arguments\\b', issue: 'Legado: "arguments" — use rest parameters (...args).', severity: 'medium' },
-            { regex: '\\.apply\\(|\\bcall\\(', issue: 'Legado: .apply()/.call() — use spread operator ou arrow functions.', severity: 'low' },
-            { regex: 'new\\s+Promise\\(.*resolve.*reject', issue: 'Verboso: Promise constructor manual — prefira async/await.', severity: 'low' },
-        ];
-
-        return rules.flatMap(rule => {
-            const matches = [...content.matchAll(new RegExp(rule.regex, 'g'))];
-            return matches.map(m => ({ file, issue: rule.issue, severity: rule.severity, evidence: m[0], persona: this.name }));
-        });
-    }
-
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         if (/\bvar\s+\w+|\brequire\s*\(/.test(content)) {
             return {
-                file, severity: "HIGH", persona: this.name,
-                issue: `Débito Tecnológico: O objetivo '${objective}' exige modernidade. Em '${file}', padrões legados retardam a evolução da 'Orquestração de Inteligência Artificial'.`
+                file, severity: "HIGH",
+                issue: `Débito Tecnológico: O objetivo '${objective}' exige modernidade. Em '${file}', padrões legados retardam a evolução da 'Orquestração de Inteligência Artificial'.`,
+                context: "legacy patterns detected"
             };
         }
         return {
-            file, severity: "INFO", persona: this.name,
-            issue: `PhD Voyager: Analisando modernidade de stack para ${objective}. Focando em ESM e eliminação de var.`
+            file, severity: "INFO",
+            issue: `PhD Voyager: Analisando modernidade de stack para ${objective}. Focando em ESM e eliminação de var.`,
+            context: "analyzing stack modernity"
         };
     }
 

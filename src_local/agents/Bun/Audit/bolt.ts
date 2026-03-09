@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "Bun_Bolt" });
@@ -16,40 +16,26 @@ export class BoltPersona extends BaseActivePersona {
         this.stack = "Bun";
     }
 
-    async performAudit(): Promise<any[]> {
-        const start = Date.now();
-        logger.info(`[${this.name}] Analisando Performance Bun...`);
-
-        const auditRules = [
-            { regex: 'while\\s*\\(\\s*true\\s*\\)', issue: 'Gargalo: Loop infinito sem break condicional (Busy-waiting).', severity: 'critical' },
-            { regex: 'readFileSync|writeFileSync|require\\(["\']fs["\']\\)|from\\s+["\']fs["\']', issue: 'Bloqueio: Operação síncrona ou Node "fs" — use Bun.file() para I/O nativo.', severity: 'critical' },
-            { regex: 'for\\s*\\(.*;.*;.*\\)\\s*\\{[^}]*await', issue: 'Serialização: await dentro de for-loop sequencializa operações paralelas.', severity: 'high' },
-            { regex: 'JSON\\.parse\\(JSON\\.stringify|Buffer\\.from\\(', issue: 'Ineficiência: Deep clone ou Buffer legado — use structuredClone ou Uint8Array.', severity: 'medium' },
-            { regex: '\\.forEach\\(async', issue: 'Armadilha: forEach com async não aguarda — use for...of ou Promise.all.', severity: 'high' },
-        ];
-
-        const results: any[] = [];
-        for (const rule of auditRules) {
-            const regex = new RegExp(rule.regex, 'g');
-            for (const [filePath, content] of Object.entries(this.contextData)) {
-                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx')) {
-                    for (const match of (content as string).matchAll(regex)) {
-                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0], persona: this.name });
-                    }
-                }
-            }
-        }
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.ts', '.tsx'],
+            rules: [
+                { regex: /while\s*\(\s*true\s*\)/, issue: 'Gargalo: Loop infinito sem break condicional (Busy-waiting).', severity: 'critical' },
+                { regex: /readFileSync|writeFileSync|require\(["']fs["']\)|from\s+["']fs["']/, issue: 'Bloqueio: Operação síncrona ou Node "fs" — use Bun.file() para I/O nativo.', severity: 'critical' },
+                { regex: /for\s*\(.*;.*;.*\)\s*\{[^}]*await/, issue: 'Serialização: await dentro de for-loop sequencializa operações paralelas.', severity: 'high' },
+                { regex: /JSON\.parse\(JSON\.stringify|Buffer\.from\(/, issue: 'Ineficiência: Deep clone ou Buffer legado — use structuredClone ou Uint8Array.', severity: 'medium' },
+                { regex: /\.forEach\(async/, issue: 'Armadilha: forEach com async não aguarda — use for...of ou Promise.all.', severity: 'high' },
+            ]
+        };
     }
 
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         if (/require\(['"]fs['"]|from\s+['"]fs['"]/.test(content)) {
             return {
-                file, severity: "HIGH", persona: this.name,
-                issue: `Desperdício de Performance: O objetivo '${objective}' exige velocidade nativa. Em '${file}', usar Node.js "fs" em vez de Bun.file() desperdiça o potencial da 'Orquestração de Inteligência Artificial'.`
+                file, severity: "HIGH",
+                issue: `Desperdício de Performance: O objetivo '${objective}' exige velocidade nativa. Em '${file}', usar Node.js "fs" em vez de Bun.file() desperdiça o potencial da 'Orquestração de Inteligência Artificial'.`,
+                context: "Node.js 'fs' module detected"
             };
         }
         return null;

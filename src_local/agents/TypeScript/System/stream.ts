@@ -1,4 +1,4 @@
-import { BaseActivePersona } from "../../base_persona.ts";
+import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
 import winston from "winston";
 
 const logger = winston.child({ module: "TS_Stream" });
@@ -16,45 +16,32 @@ export class StreamPersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    async performAudit(): Promise<any[]> {
-        const start = Date.now();
-        logger.info(`[${this.name}] Analisando Reatividade TypeScript...`);
-
-        const auditRules = [
-            { regex: 'addEventListener\\([^)]*\\)(?![\\s\\S]{0,200}removeEventListener)', issue: 'Memory Leak: addEventListener sem removeEventListener correspondente.', severity: 'high' },
-            { regex: '\\.on\\([^)]*\\)(?![\\s\\S]{0,200}\\.off\\(|\\.removeListener)', issue: 'Vazamento: .on() sem .off() — event handler nunca removido.', severity: 'high' },
-            { regex: 'setInterval\\([^)]*\\)(?![\\s\\S]{0,200}clearInterval)', issue: 'Timer Leak: setInterval sem clearInterval — acumula execuções.', severity: 'high' },
-            { regex: 'new\\s+EventEmitter\\(\\)(?![\\s\\S]{0,200}setMaxListeners)', issue: 'Risco de Overflow: EventEmitter sem limite de listeners.', severity: 'medium' },
-            { regex: 'process\\.on\\(["\']uncaughtException', issue: 'Controle Global: uncaughtException handler — garanta re-throw ou exit.', severity: 'medium' },
-        ];
-
-        const results: any[] = [];
-        for (const rule of auditRules) {
-            const regex = new RegExp(rule.regex, 'gs');
-            for (const [filePath, content] of Object.entries(this.contextData)) {
-                if (filePath.endsWith('.ts') || filePath.endsWith('.tsx')) {
-                    for (const match of (content as string).matchAll(regex)) {
-                        results.push({ file: filePath, issue: rule.issue, severity: rule.severity, evidence: match[0].substring(0, 80), persona: this.name });
-                    }
-                }
-            }
-        }
-
-        const duration = (Date.now() - start) / 1000;
-        logger.info(`[${this.name}] Auditoria concluída em ${duration.toFixed(4)}s. Achados: ${results.length}`);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: ['.ts', '.tsx'],
+            rules: [
+                { regex: /addEventListener\([^)]*\)(?![\s\S]{0,200}removeEventListener)/, issue: 'Memory Leak: addEventListener sem removeEventListener correspondente.', severity: 'high' },
+                { regex: /\.on\([^)]*\)(?![\s\S]{0,200}\.off\(|\.removeListener)/, issue: 'Vazamento: .on() sem .off() — event handler nunca removido.', severity: 'high' },
+                { regex: /setInterval\([^)]*\)(?![\s\S]{0,200}clearInterval)/, issue: 'Timer Leak: setInterval sem clearInterval — acumula execuções.', severity: 'high' },
+                { regex: /new\s+EventEmitter\(\)(?![\s\S]{0,200}setMaxListeners)/, issue: 'Risco de Overflow: EventEmitter sem limite de listeners.', severity: 'medium' },
+                { regex: /process\.on\(["']uncaughtException/, issue: 'Controle Global: uncaughtException handler — garanta re-throw ou exit.', severity: 'medium' },
+            ]
+        };
     }
 
-    async reasonAboutObjective(objective: string, file: string, content: string): Promise<any | null> {
+    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
         if (/addEventListener/.test(content) && !/removeEventListener/.test(content)) {
             return {
-                file, severity: "HIGH", persona: this.name,
-                issue: `Instabilidade Reativa: O objetivo '${objective}' exige resiliência. Em '${file}', event listeners sem cleanup causam memory leaks na 'Orquestração de Inteligência Artificial'.`
+                file, severity: "HIGH",
+                issue: `Instabilidade Reativa: O objetivo '${objective}' exige resiliência. Em '${file}', event listeners sem cleanup causam memory leaks na 'Orquestração de Inteligência Artificial'.`,
+                context: "addEventListener without cleanup detected"
             };
         }
         return {
-            file, severity: "INFO", persona: this.name,
-            issue: `PhD Stream: Analisando arquitetura reativa para ${objective}. Focando em lifecycle de eventos e memory leaks.`
+            file, severity: "INFO",
+            issue: `PhD Stream: Analisando arquitetura reativa para ${objective}. Focando em lifecycle de eventos e memory leaks.`,
+            context: "analyzing reactive architecture"
         };
     }
 

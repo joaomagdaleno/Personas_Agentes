@@ -14,24 +14,17 @@ export class MetricPersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /System\.out\.println|Log\.[di]\(/, issue: "Cegueira: Saída não gerenciada ou log de debug em produção.", severity: "high" },
-            { regex: /catch\s*\(.*\)\s*\{\s*\}/, issue: "Cegueira Total: Bloco catch vazio engole exceções silenciosamente.", severity: "critical" },
-            { regex: /catch\s*\(.*\)\s*\{\s*(println|Log\.)/, issue: "Telemetria Informal: Erro logado sem contexto estruturado no catch.", severity: "medium" },
-            { regex: /FirebaseAnalytics\.logEvent/, issue: "Acoplamento: Instrumentação direta de analytics sem camada de abstração.", severity: "low" },
-            { regex: /measureTimeMillis/, issue: "Profiling: Medição ad-hoc de performance detectada.", severity: "low" }
-        ];
-        const results = await this.findPatterns([".kt", ".kts"], rules);
-
-        // Advanced Logic: Telemetry Depth
-        if (results.length === 0) {
-            this.reasonAboutObjective("Telemetry Depth", "Global", "No standardized telemetry markers found in Kotlin source.");
-        }
-
-        this.endMetrics(results.length);
-        return results;
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".kt", ".kts"],
+            rules: [
+                { regex: /System\.out\.println|Log\.[di]\(/, issue: "Cegueira: Saída não gerenciada ou log de debug em produção.", severity: "high" },
+                { regex: /catch\s*\(.*\)\s*\{\s*\}/, issue: "Cegueira Total: Bloco catch vazio engole exceções silenciosamente.", severity: "critical" },
+                { regex: /catch\s*\(.*\)\s*\{\s*(println|Log\.)/, issue: "Telemetria Informal: Erro logado sem contexto estruturado no catch.", severity: "medium" },
+                { regex: /FirebaseAnalytics\.logEvent/, issue: "Acoplamento: Instrumentação direta de analytics sem camada de abstração.", severity: "low" },
+                { regex: /measureTimeMillis/, issue: "Profiling: Medição ad-hoc de performance detectada.", severity: "low" }
+            ]
+        };
     }
 
     public override performActiveHealing(blindSpots: string[]): void {

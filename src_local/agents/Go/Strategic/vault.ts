@@ -33,23 +33,27 @@ export class VaultPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go"],
+            rules: [
+                { regex: /crypto\/tls/, issue: "TLS Configuration: Verifique se as versões mínimas de TLS e ciphers seguros estão configurados.", severity: "high" },
+                { regex: /bcrypt\.GenerateFromPassword/, issue: "Password Hashing: Uso de Bcrypt detectado; garanta que o 'cost' é adequado para a carga computacional atual.", severity: "medium" },
+                { regex: /AES\-GCM/, issue: "Authenticated Encryption: O uso de GCM é recomendado; verifique se o Nonce é único para cada operação.", severity: "low" },
+                { regex: /x509\.Certificate/, issue: "PKI Management: Verifique se a validação de certificados inclui checagem de expiração e revogação.", severity: "high" },
+                { regex: /crypto\/rsa/, issue: "RSA Encryption: Verifique se o tamanho da chave é no mínimo 2048 bits; considere migrar para Ed25519.", severity: "medium" },
+                { regex: /HMAC/, issue: "Message Integrity: Verifique se as chaves HMAC são geradas aleatoriamente e armazenadas com segurança.", severity: "high" }
+            ]
+        };
+    }
+
     public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /crypto\/tls/, issue: "TLS Configuration: Verifique se as versões mínimas de TLS e ciphers seguros estão configurados.", severity: "high" },
-            { regex: /bcrypt\.GenerateFromPassword/, issue: "Password Hashing: Uso de Bcrypt detectado; garanta que o 'cost' é adequado para a carga computacional atual.", severity: "medium" },
-            { regex: /AES\-GCM/, issue: "Authenticated Encryption: O uso de GCM é recomendado; verifique se o Nonce é único para cada operação.", severity: "low" },
-            { regex: /x509\.Certificate/, issue: "PKI Management: Verifique se a validação de certificados inclui checagem de expiração e revogação.", severity: "high" },
-            { regex: /crypto\/rsa/, issue: "RSA Encryption: Verifique se o tamanho da chave é no mínimo 2048 bits; considere migrar para Ed25519.", severity: "medium" },
-            { regex: /HMAC/, issue: "Message Integrity: Verifique se as chaves HMAC são geradas aleatoriamente e armazenadas com segurança.", severity: "high" }
-        ];
-        const results = await this.findPatterns([".go"], rules);
-
-        // Advanced Logic Density
+        const results = await super.performAudit();
         const cryptoFindings = GoVaultEngine.audit(this.projectRoot || "");
-        cryptoFindings.forEach(f => results.push({ file: "CRYPTO_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "high", stack: this.stack }));
-
-        this.endMetrics(results.length);
+        cryptoFindings.forEach(f => results.push({
+            file: "CRYPTO_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "high", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
         return results;
     }
 
