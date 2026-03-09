@@ -15,15 +15,21 @@ __pycache__/
 *.pyc
 .env
 system_vault.db
+project_map.json
 .gemini/microgpt_weights.json
 missing_python_files.txt
 missing_py.txt
 files_at_6dec891.txt
 current_files.txt
 *_legacy.py
+*.log
+src_native/analyzer/errors.json
+src_native/analyzer/rust_check.json
 
 # Build and binaries
 target/
+target_alt/
+target_v3/
 *.exe
 *.bin
 
