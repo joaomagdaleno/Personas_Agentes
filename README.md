@@ -35,6 +35,22 @@ Bem-vindo ao sistema de **Personas & Agents**! Este projeto utiliza uma arquitet
    cd ..
    ```
 
+## 🔐 Variáveis de Ambiente
+
+Copie `.env.example` para `.env` e ajuste conforme necessário:
+
+```bash
+cp .env.example .env
+```
+
+| Variável | Default | Descrição |
+|---|---|---|
+| `NODE_ENV` | `development` | Modo de execução (`development` / `production`) |
+| `DIAGNOSTIC_TEST_MODE` | `0` | Modo de teste do diagnóstico (`1` = sem side-effects) |
+| `HUB_GRPC_HOST` | `localhost:50051` | Endereço do Go Hub Proxy (gRPC) |
+| `ANALYZER_GRPC_HOST` | `localhost:50052` | Endereço do Rust Analyzer Sidecar (gRPC) |
+| `LOG_LEVEL` | `info` | Nível de logging Winston (`error` / `warn` / `info` / `debug`) |
+
 ## ⚡ Como Usar (Comandos Principais)
 
 Todos os fluxos vitais do sistema estão encapsulados em scripts do `bun`.

@@ -23,8 +23,21 @@
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
     // Some stricter flags (disabled by default)
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "noPropertyAccessFromIndexSignature": false
-  }
+  },
+  "include": [
+    "src_local/**/*",
+    "scripts/**/*",
+    "*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    ".agent",
+    ".gemini",
+    "src_native"
+  ]
 }

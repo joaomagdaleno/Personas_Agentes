@@ -69,3 +69,22 @@ fn detect_frameworks(content: &str, frameworks: &mut HashSet<String>, stacks: &m
         stacks.insert("Python".to_string());
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::collections::HashSet;
+
+    #[test]
+    fn test_detect_frameworks() {
+        let mut frameworks = HashSet::new();
+        let mut stacks = HashSet::new();
+        
+        detect_frameworks("import { PrismaClient }", &mut frameworks, &mut stacks);
+        assert!(frameworks.contains("Prisma"));
+        
+        detect_frameworks("from fastpi import FastAPI", &mut frameworks, &mut stacks);
+        assert!(frameworks.contains("FastAPI"));
+        assert!(stacks.contains("Python"));
+    }
+}

@@ -16,15 +16,16 @@ describe('LanguagePersonaOrchestrator core logic', () => {
         expect(detection.stacks).toContain('flutter');
         expect(detection.stacks).toContain('kotlin');
         expect(detection.stacks).toContain('python');
+        expect(detection.stacks).toContain('typescript');
         expect(detection.fileCount.flutter).toBe(1);
     });
 
-    it('should return agents for specific stacks', () => {
-        const flutterAgents = orchestrator.getAgentsForStack('flutter');
+    it('should return agents for specific stacks', async () => {
+        const flutterAgents = await orchestrator.getAgentsForStack('flutter');
         expect(flutterAgents.length).toBeGreaterThan(0);
         expect(flutterAgents[0]?.stack).toBe('Flutter');
 
-        const pythonAgents = orchestrator.getAgentsForStack('python');
+        const pythonAgents = await orchestrator.getAgentsForStack('python');
         expect(pythonAgents.length).toBeGreaterThan(0);
         expect(pythonAgents[0]?.stack).toBe('Python');
     });

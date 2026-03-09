@@ -41,3 +41,6 @@ target_v3/
 .agent/
 src_native/analyzer/.gemini/
 .gemini/models/
+
+# Generated Protobuf
+*.pb.go

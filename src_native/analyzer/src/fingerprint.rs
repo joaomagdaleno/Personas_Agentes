@@ -1,4 +1,4 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::fs;
 use std::path::{Path, PathBuf};
 use tree_sitter::{Node, Parser};
@@ -7,7 +7,7 @@ use walkdir::WalkDir;
 
 // ─── Output Structures ──────────────────────────────────────────────────────
 
-#[derive(Serialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct AtomicFingerprint {
     pub name: String,
     pub emoji: String,
@@ -28,7 +28,7 @@ pub struct AtomicFingerprint {
     pub halstead_effort: f64,
 }
 
-#[derive(Serialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct AgentEntry {
     pub agent: String,
     pub stack: String,
@@ -37,7 +37,7 @@ pub struct AgentEntry {
     pub fingerprint: AtomicFingerprint,
 }
 
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct FingerprintReport {
     pub total: usize,
     pub entries: Vec<AgentEntry>,

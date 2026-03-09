@@ -170,3 +170,27 @@ pub fn bulk_audit(request: BulkAuditRequest) -> Vec<AuditFinding> {
         })
         .collect()
 }
+
+#[cfg(test)]
+
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_extract_evidence() {
+        let content = "line 1\nconsole.log('hello');\nline 3";
+        let (evidence, count, line_num) = extract_evidence(content, "console\\.log");
+        assert_eq!(count, 1);
+        assert_eq!(line_num, Some(2));
+        assert!(evidence.contains("console.log"));
+    }
+
+    #[test]
+    fn test_detect_obfuscation() {
+        let content = "let a = 'e' + 'v' + 'a' + 'l';";
+        let findings = detect_obfuscation(content, "test.js");
+        assert_eq!(findings.len(), 1);
+        assert_eq!(findings[0].issue, "Possível Ofuscação: 'eval' fragmentado");
+        assert_eq!(findings[0].severity, "HIGH");
+    }
+}

@@ -1,0 +1,37 @@
+{
+  "entries": {
+    "test.ts": {
+      "hash": "ef5a3324f0077d71328eaae5020869e64ad1d8d52ab7458e7a652c9b2582468b",
+      "analysis": null,
+      "fingerprint": {
+        "entries": [
+          {
+            "agent": "test",
+            "category": "Direct",
+            "fingerprint": {
+              "dynamic_findings_count": 0,
+              "emoji": "👤",
+              "extra_methods": [],
+              "file_extensions": [],
+              "halstead_difficulty": 0.0,
+              "halstead_effort": 0.0,
+              "halstead_volume": 2.0,
+              "has_reasoning": false,
+              "methods": [],
+              "name": "test",
+              "role": "PhD Agent",
+              "rule_issues": [],
+              "rule_severities": [],
+              "rules_count": 0,
+              "stack": "TypeScript",
+              "system_prompt": ""
+            },
+            "path": "test.ts",
+            "stack": "Unknown"
+          }
+        ],
+        "total": 1
+      }
+    }
+  }
+}

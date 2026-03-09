@@ -35,7 +35,6 @@ struct HealingPlan {
     context: String,
 }
 
-#[derive(Serialize, Deserialize)]
 use analysis::{AnalysisResult, FunctionMetric};
 
 // Metrics collection moved to analysis.rs
@@ -112,7 +111,7 @@ async fn main() {
             if args[2] == "-" && args.len() >= 4 {
                 let mut buffer = String::new();
                 std::io::stdin().read_to_string(&mut buffer).expect("Unable to read stdin");
-                let result = run_analyze_core(&args[3], buffer);
+                let result = analysis::run_analyze_core(&args[3], buffer);
                 println!("{}", serde_json::to_string_pretty(&result).unwrap());
             } else {
                 run_analyze(&args[2]);

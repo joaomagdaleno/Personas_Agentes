@@ -87,3 +87,34 @@ impl CacheManager {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use serde_json::json;
+
+    #[test]
+    fn test_compute_hash() {
+        let hash1 = CacheManager::compute_hash("test content");
+        let hash2 = CacheManager::compute_hash("test content");
+        let hash3 = CacheManager::compute_hash("different");
+        assert_eq!(hash1, hash2);
+        assert_ne!(hash1, hash3);
+    }
+
+    #[test]
+    fn test_cache_set_and_get() {
+        let mut mgr = CacheManager::new();
+        let hash = "fakehash123";
+        
+        let json_val = json!({"hello": "world"});
+        mgr.set_analysis("fake_file.ts", hash, json_val.clone());
+        
+        let retrieved = mgr.get_analysis("fake_file.ts", hash);
+        assert!(retrieved.is_some());
+        assert_eq!(retrieved.unwrap(), json_val);
+        
+        let retrieved_wrong = mgr.get_analysis("fake_file.ts", "wronghash");
+        assert!(retrieved_wrong.is_none());
+    }
+}

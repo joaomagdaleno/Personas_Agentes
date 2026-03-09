@@ -208,7 +208,19 @@ fn collect_metrics(node: Node, depth: i32, cyclomatic: &mut i32, cognitive: &mut
     if cursor.goto_first_child() {
         loop {
             collect_metrics(cursor.node(), current_depth, cyclomatic, cognitive, max_nesting);
-            if !cursor.goto_next_sibling() { break; }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_fingerprint_core() {
+        let code = "function test() { return 1; }".to_string();
+        let report = run_fingerprint_core("test.ts", code);
+        assert_eq!(report.total, 1);
+        assert_eq!(report.entries[0].agent, "test");
     }
 }

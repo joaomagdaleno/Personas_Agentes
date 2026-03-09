@@ -57,3 +57,33 @@ pub fn calculate_all_connectivity(
         })
         .collect()
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_extract_stem() {
+        assert_eq!(extract_stem("src/utils/helper.ts").unwrap(), "helper");
+        assert_eq!(extract_stem("C:\\project\\main.rs").unwrap(), "main");
+        assert_eq!(extract_stem("file_no_ext").unwrap(), "file_no_ext");
+    }
+
+    #[test]
+    fn test_calculate_all_connectivity() {
+        let mut files = HashMap::new();
+        files.insert("file_a.ts".to_string(), FileInfo { dependencies: vec!["file_b.ts".to_string()] });
+        files.insert("file_b.ts".to_string(), FileInfo { dependencies: vec![] });
+        
+        let results = calculate_all_connectivity(files);
+        assert_eq!(results.len(), 2);
+        
+        let res_a = results.iter().find(|r| r.file == "file_a.ts").unwrap();
+        assert_eq!(res_a.eferent, 1);
+        assert_eq!(res_a.afferent, 0);
+        
+        let res_b = results.iter().find(|r| r.file == "file_b.ts").unwrap();
+        assert_eq!(res_b.eferent, 0);
+        assert_eq!(res_b.afferent, 1);
+    }
+}

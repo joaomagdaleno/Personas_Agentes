@@ -247,3 +247,37 @@ fn calc_quality_bonus(qa: &Option<QaData>) -> f64 {
         }).sum()
     } else { 0.0 }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_calc_security() {
+        let alerts = vec![
+            Alert { severity: "critical".to_string() },
+            Alert { severity: "high".to_string() },
+            Alert { severity: "low".to_string() }
+        ];
+        let (score, count) = calc_security(&alerts);
+        assert_eq!(count, 2.0); // critical and high
+        assert_eq!(score, 5.0); // 15 - 10
+    }
+
+    #[test]
+    fn test_calc_observability() {
+        let mut map = HashMap::new();
+        map.insert("f1".to_string(), FileInfo {
+            component_type: "LOGIC".to_string(), complexity: 2.0, has_test: false, has_telemetry: true,
+            purpose: "UNKNOWN".to_string(), advanced_metrics: None
+        });
+        map.insert("f2".to_string(), FileInfo {
+            component_type: "LOGIC".to_string(), complexity: 2.0, has_test: false, has_telemetry: false,
+            purpose: "UNKNOWN".to_string(), advanced_metrics: None
+        });
+        let (score, tel_count, total) = calc_observability(&map);
+        assert_eq!(tel_count, 1.0);
+        assert_eq!(total, 2.0);
+        assert_eq!(score, 7.5); // (1/2) * 15
+    }
+}
