@@ -91,9 +91,11 @@ export class PatternFinder {
             }
 
             const matches = Array.from(content.matchAll(regex));
-            if (matches.length > 0) {
-                const firstMatch = matches[0];
-                const line = content.substring(0, firstMatch.index).split("\n").length;
+            const firstMatch = matches[0];
+
+            if (firstMatch) {
+                const matchIndex = firstMatch.index ?? 0;
+                const line = content.substring(0, matchIndex).split("\n").length;
                 results.push({
                     file,
                     agent: agent.name,
@@ -102,7 +104,7 @@ export class PatternFinder {
                     issue: rule.issue,
                     severity: rule.severity,
                     stack: agent.stack,
-                    evidence: firstMatch[0].substring(0, 100),
+                    evidence: (firstMatch[0] || "").substring(0, 100),
                     match_count: matches.length,
                     line_number: line
                 });
