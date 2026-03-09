@@ -1,7 +1,12 @@
 # Personas & Agents System
 
-Bem-vindo ao sistema de **Personas & Agents**! Este projeto utiliza uma arquitetura de- **Native Performance**: Heavy logic (Analysis, Metrics, AI) moved to Rust and Go.
+Bem-vindo ao sistema de **Personas & Agents**! Este projeto utiliza uma arquitetura híbrida de alta performance:
+
+- **Native Performance**: Heavy logic (Analysis, Metrics, AI) moved to Rust and Go.
 - **Sovereign Brain**: Fully native AI reasoning and knowledge graph in Rust (Model: Qwen2.5-Coder-0.5B via Candle).
+  - **Knowledge Graph**: Robust `petgraph`-based representation of the codebase.
+  - **Semantic Reasoning**: Context-aware analysis without external dependencies.
+  - **High Performance**: sub-100ms reasoning for local tasks.
 - **Go Hub Proxy**: Central persistent service for gRPC orchestration and file persistence.
 - **TypeScript Intelligence**: Lean agents focused on high-level strategy and collaboration.
 
@@ -76,12 +81,7 @@ Este índice (abaixo) mapeia e descreve a especialidade de cada agente disponív
 | 🗣️ **Echo** | a customer success and feedback specialist who bridges the gap between the user's voice and the development team. | build channels for feedback, manage in-app support, automate changelogs, and turn user frustration i... | [Echo](Flutter\Echo%20-%20Customer%20Success%20and%20Feedback%20Specialist.txt) |
 | 🌊 **Flow** | a navigation and routing specialist who ensures Flutter applications have seamless, predictable, and robust user journeys. | identify and implement improvements in navigation flows, route management, screen transitions, and d... | [Flow](Flutter\Flow%20-%20Navigation%20and%20Routing%20Specialist.txt) |
 | 🌎 **Globe** | an i18n (Internationalization) and localization specialist who ensures Flutter applications are ready for a global audience across different languages and cultures. | identify and implement robust localization strategies, cultural adaptations, and right-to-left (RTL)... | [Globe](Flutter\Globe%20-%20i18n%20and%20Localization%20Specialist.txt) |
-| 📦 **Hermes** | a DevOps and delivery specialist who ensures Flutter applications are built, tested,### 🧠 Sovereign Brain (Rust)
-The AI reasoning is now 100% native. The Rust analyzer loads a quantizied Qwen2.5-Coder model using the `candle` crate.
-- **Knowledge Graph**: Robust `petgraph`-based representation of the codebase.
-- **Semantic Reasoning**: Context-aware analysis without external dependencies.
-- **High Performance**: sub-100ms reasoning for local tasks.
-es](Flutter\Hermes%20-%20DevOps%20and%20Delivery%20Specialist.txt) |
+| 📦 **Hermes** | a DevOps and delivery specialist who ensures Flutter applications are built, tested, and shipped to users with speed and precision. | automate the "path to production", optimizing CI/CD pipelines, build systems, and release cadences | [Hermes](Flutter\Hermes%20-%20DevOps%20and%20Delivery%20Specialist.txt) |
 | 📣 **Hype** | an ASO (App Store Optimization), marketing, and growth engineering specialist who ensures the app is discoverable, installable, and sharable. | optimize the "Acquisition" funnel: from App Store search -> Deep Link click -> Install -> First Open | [Hype](Flutter\Hype%20-%20ASO%20and%20Marketing%20Specialist.txt) |
 | 📊 **Metric** | an analytics and growth specialist who ensures user behavior is tracked accurately, privately, and usefully. | transform application usage into data, implement robust telemetry, and ensure every feature release ... | [Metric](Flutter\Metric%20-%20Analytics%20and%20Growth%20Specialist.txt) |
 | ☁️ **Nebula** | a serverless and backend infrastructure specialist who empowers the frontend with robust cloud capabilities without managing servers. | architect and implement secure, scalable backends using platforms like Firebase, Supabase, or Appwri... | [Nebula](Flutter\Nebula%20-%20Backend%20Serverless%20Specialist.txt) |
