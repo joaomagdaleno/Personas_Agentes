@@ -170,19 +170,19 @@ export class LanguagePersonaOrchestrator {
 
     private async _executeAllAgents(stacks: StackType[], contextMap: Record<string, any>, root?: string): Promise<AuditFinding[]> {
         const all: AuditFinding[] = [];
-        stacks.forEach(stack => {
+        for (const stack of stacks) {
             const agents = this.getAgentsForStack(stack, root);
-            all.push(...this._runAgentBatch(agents, contextMap));
-        });
+            all.push(...await this._runAgentBatch(agents, contextMap));
+        }
         return all;
     }
 
-    private _runAgentBatch(agents: BaseActivePersona[], contextMap: any): AuditFinding[] {
+    private async _runAgentBatch(agents: BaseActivePersona[], contextMap: any): Promise<AuditFinding[]> {
         const findings: AuditFinding[] = [];
-        agents.forEach(agent => {
+        for (const agent of agents) {
             agent.setContext({ map: contextMap });
-            findings.push(...agent.performAudit());
-        });
+            findings.push(...await agent.performAudit());
+        }
         return findings;
     }
 

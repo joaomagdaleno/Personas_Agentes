@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 import { PatternFinder } from "./strategies/PatternFinder.ts";
 import { Diagnostician } from "./strategies/Diagnostician.ts";
 import { BaseHelpers } from "./BaseHelpers.ts";
+import type { IAgent, ProjectContext, FileContextData } from "../core/types.ts";
 
 export interface AuditRule { regex: RegExp | string; issue: string; severity: "critical" | "high" | "medium" | "low"; }
 export interface AuditFinding { file: string; agent: string; role: string; emoji: string; issue: string; severity: string; stack: string; evidence: string; match_count: number; line_number?: number; }
@@ -11,9 +12,10 @@ export interface StrategicFinding { file: string; issue: string; severity: strin
 
 const logger = winston.child({ module: "BaseActivePersona" });
 
-export abstract class BaseActivePersona {
+export abstract class BaseActivePersona implements IAgent {
+    id: string = "base_agent"; category: string = "General";
     name: string = "Base"; emoji: string = "👤"; role: string = "Generalist"; stack: string = "Universal";
-    projectRoot: string | null = null; contextData: Record<string, any> = {}; projectDna: Record<string, any> = {};
+    projectRoot: string | null = null; contextData: Record<string, FileContextData> = {}; projectDna: Record<string, any> = {};
     ignoredFiles: string[] = ["auto_healing_mission.md", "strategic_mission.txt"];
     auditEngine: any; structuralAnalyst: any; integrityGuardian: any;
     maturityEvaluator: any; cognitive: any; patternFinder!: PatternFinder;
@@ -21,7 +23,12 @@ export abstract class BaseActivePersona {
 
     constructor(projectRoot?: string) { this.projectRoot = projectRoot || null; }
 
-    setContext(data: any): void {
+    async execute(context: ProjectContext): Promise<any> {
+        this.setContext(context);
+        return await this.performAudit();
+    }
+
+    setContext(data: ProjectContext): void {
         this.projectDna = data.identity || {};
         this.contextData = data.map || {};
     }
@@ -38,7 +45,7 @@ export abstract class BaseActivePersona {
             .filter(Boolean);
     }
 
-    private isAuditable(f: string, d: any): boolean {
+    private isAuditable(f: string, d: FileContextData): boolean {
         const isTest = d.component_type === "TEST";
         const isIgnored = this.ignoredFiles.includes(path.basename(f));
         return !isTest && !isIgnored;
@@ -67,7 +74,7 @@ export abstract class BaseActivePersona {
         logger.info(`${this.emoji} [${this.name}] Finalizado: ${cnt} pts (${duration}ms)`);
     }
 
-    public selfDiagnostic(): any {
+    public selfDiagnostic(): Record<string, any> {
         return Diagnostician.diagnose(this.name, this.emoji, this.getSystemPrompt());
     }
 

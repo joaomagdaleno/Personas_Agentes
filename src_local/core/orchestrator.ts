@@ -17,7 +17,7 @@ import { UpdateTransaction } from "../utils/update_transaction.ts";
 import { SystemSentinel } from "../utils/system_sentinel.ts";
 import { BehaviorAnalyst } from "../utils/behavior_analyst.ts";
 import { TaskWorker } from "../utils/task_worker.ts";
-import type { IAgent, SovereignState } from "./types.ts";
+import type { IAgent, SovereignState, ProjectContext, DiagnosticFinding, SystemHealth360 } from "./types.ts";
 import { MemoryPruningAgent } from "../agents/Support/Maintenance/memory_pruning_agent.ts";
 import { PredictorEngine } from "../utils/ai/predictor_engine.ts";
 import { HubWatcher } from "../utils/hub_watcher.ts";
@@ -29,8 +29,8 @@ export class Orchestrator {
     private state: SovereignState;
     projectRoot: Path;
     lastDetectedChanges: string[] = [];
-    metrics: any = { files_scanned: 0, health_score: 100, start_time: Date.now(), efficiency: {} };
-    personas: any[] = [];
+    metrics: Record<string, any> = { files_scanned: 0, health_score: 100, start_time: Date.now(), efficiency: {} };
+    personas: IAgent[] = [];
     private agentRegistry: Map<string, IAgent> = new Map();
 
     // Core Engines
@@ -134,7 +134,7 @@ export class Orchestrator {
         this.agentRegistry.set(this.pruningAgent.id, this.pruningAgent);
     }
 
-    async dispatch(agentId: string, context: any = {}): Promise<any> {
+    async dispatch(agentId: string, context: ProjectContext = {}): Promise<any> {
         const agent = this.agentRegistry.get(agentId);
         if (!agent) {
             logger.warn(`⚠️ [Orchestrator] Agent ${agentId} não encontrado.`);
@@ -170,16 +170,16 @@ export class Orchestrator {
         this.personas.push(persona);
     }
 
-    async runStrategicAudit(context: any, objective: string | null = null, includeHistory: boolean = true) {
+    async runStrategicAudit(context: ProjectContext, objective: string | null = null, includeHistory: boolean = true): Promise<DiagnosticFinding[]> {
         logger.info("Auditoria Estratégica: Acionando AuditEngine...");
         const [findings, startT] = await this.auditEngine.runStrategicAudit(context, objective);
         this._logPerformance(startT, "Auditoria Estratégica");
         return findings;
     }
 
-    async runStagedAudit(options: { dryRun?: boolean }) {
+    async runStagedAudit(options: { dryRun?: boolean }): Promise<DiagnosticFinding[]> {
         logger.info("Auditoria Staged: Acionando AuditEngine...");
-        const context = { identity: { stacks: new Set(["TypeScript", "Python"]) } };
+        const context: ProjectContext = { identity: { stacks: new Set(["TypeScript", "Python"]) } };
         const [findings, startT] = await this.auditEngine.runStagedAudit(context, options.dryRun);
         this._logPerformance(startT, "Auditoria Staged");
         return findings;
@@ -205,12 +205,12 @@ export class Orchestrator {
         await this.cacheManager.updateAll();
     }
 
-    _buildAuditReportQueue(findings: any[]) {
+    _buildAuditReportQueue(findings: DiagnosticFinding[]): DiagnosticFinding[] {
         logger.info(`📋 [Orchestrator] Construindo fila de relatório com ${findings.length} achados.`);
         return findings.sort((a, b) => (b.severity === "CRITICAL" ? 1 : -1));
     }
 
-    async runAutoHealing(findings: any[]) {
+    async runAutoHealing(findings: DiagnosticFinding[]): Promise<number> {
         const { HealerPersona } = await import("../agents/Support/Core/healer.ts");
         const healer = new HealerPersona(this.projectRoot.toString());
 
@@ -218,23 +218,23 @@ export class Orchestrator {
         return results.filter(Boolean).length;
     }
 
-    private async healSingleFinding(healer: any, finding: any): Promise<boolean> {
+    private async healSingleFinding(healer: any, finding: DiagnosticFinding): Promise<boolean> {
         if (this.isHighPriority(finding)) {
             return await healer.healFinding(finding, this);
         }
         return false;
     }
 
-    private isHighPriority(finding: any): boolean {
+    private isHighPriority(finding: DiagnosticFinding): boolean {
         return finding.severity === "CRITICAL" || finding.severity === "HIGH";
     }
 
-    async runTargetedVerification(plan: any) {
+    async runTargetedVerification(plan: any): Promise<any[]> {
         logger.info("Executando verificações direcionadas...");
         return [];
     }
 
-    async getSystemHealth360(ctx: any, health: any, findings: any[]) {
+    async getSystemHealth360(ctx: ProjectContext, health: any, findings: DiagnosticFinding[]): Promise<SystemHealth360> {
         this._enrichPathMetrics(ctx);
         const qaData = await this.collectQAData(ctx);
 
@@ -244,10 +244,10 @@ export class Orchestrator {
             this.personas,
             this.stabilityLedger,
             qaData
-        );
+        ) as SystemHealth360;
     }
 
-    private async collectQAData(ctx: any) {
+    private async collectQAData(ctx: ProjectContext): Promise<any> {
         const { PyramidAnalyst } = await import("../agents/Support/Analysis/pyramid_analyst.ts");
         const { QualityAnalyst } = await import("../agents/Support/Diagnostics/quality_analyst.ts");
         const { TopologyGraphAgent } = await import("../agents/Support/Automation/topology_graph_agent.ts");
@@ -261,7 +261,7 @@ export class Orchestrator {
         };
     }
 
-    private _enrichPathMetrics(ctx: any) {
+    private _enrichPathMetrics(ctx: ProjectContext): void {
         if (!ctx.depthAudit?.metrics) return;
         const mapKeys = Object.keys(ctx.map || {});
         ctx.depthAudit.metrics.forEach((metric: any) => this.applyMetricToMap(ctx.map, mapKeys, metric));

@@ -64,3 +64,21 @@ export interface SovereignState {
         stacks: string[];
     };
 }
+
+/**
+ * 🗃️ Shared File Context Content
+ */
+export interface FileContextData {
+    content?: string;
+    component_type?: string;
+    [key: string]: any; // Allow extensibility for dynamic properties returned by scanners
+}
+
+/**
+ * 🌐 Core Project Operations Context
+ */
+export interface ProjectContext {
+    identity?: Record<string, any>;
+    map?: Record<string, FileContextData>;
+    [key: string]: any;
+}

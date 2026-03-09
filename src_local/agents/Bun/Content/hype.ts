@@ -34,9 +34,9 @@ export class HypePersona extends BaseActivePersona {
     }
 
     private auditPackageFiles(results: any[]) {
-        for (const [filePath, content] of Object.entries(this.contextData)) {
-            if (filePath.endsWith('package.json')) {
-                this.analyzePackageJson(filePath, content as string, results);
+        for (const [filePath, fileData] of Object.entries(this.contextData)) {
+            if (filePath.endsWith('package.json') && fileData.content) {
+                this.analyzePackageJson(filePath, fileData.content, results);
             }
         }
     }
