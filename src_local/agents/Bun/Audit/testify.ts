@@ -1,21 +1,41 @@
-import { BaseActivePersona, AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
-import winston from "winston";
-
-const logger = winston.child({ module: "Bun_Testify" });
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 /**
  * 🧪 Dr. Testify — PhD in Bun Testing & bun:test Quality
  */
 export class TestifyPersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Testify";
         this.emoji = "🧪";
         this.role = "PhD Bun Testing Engineer";
+        this.phd_identity = "Bun Testing & bun:test Quality";
         this.stack = "Bun";
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override async execute(context: ProjectContext): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            // QA Intelligence: Find untested Bun modules
+            const untestedQuery = await this.hub.queryKnowledgeGraph("untested", "high");
+            
+            // PhD QA Reasoning
+            const reasoning = await this.hub.reason(`Generate a PhD test strategy for a Bun system with ${untestedQuery.length} untested modules and current audit findings.`);
+
+            findings.push({
+                file: "Verification Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Bun Verification: Cobertura auditada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Quality Audit", match_count: 1
+            } as any);
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: ['.test.ts', '.spec.ts', 'tests/'],
             rules: [
@@ -29,7 +49,7 @@ export class TestifyPersona extends BaseActivePersona {
         };
     }
 
-    async performAudit(): Promise<AuditFinding[]> {
+    override async performAudit(): Promise<AuditFinding[]> {
         const results = await super.performAudit();
         this.findModulesWithoutTests(results);
         return results;
@@ -103,25 +123,5 @@ export class TestifyPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, mestre em qualidade e cobertura de testes bun:test.`;
     }
 
-    async run_test_suite(): Promise<any[]> { return this.performAudit(); }
-
-    private _interpret_failures(results: any[]): any[] {
-        return results.filter(r => r.severity === "critical" || r.severity === "high");
-    }
-
-    async analyze_test_quality_matrix(): Promise<Record<string, number>> {
-        const results = await this.performAudit();
-        const matrix: Record<string, number> = { critical: 0, high: 0, medium: 0, low: 0 };
-        for (const r of results) matrix[r.severity] = (matrix[r.severity] || 0) + 1;
-        return matrix;
-    }
-
-    async analyze_test_pyramid(): Promise<{ unit: number; integration: number; e2e: number }> {
-        const files = Object.keys(this.contextData);
-        return {
-            unit: files.filter(f => f.includes(".test.") || f.includes(".spec.")).length,
-            integration: files.filter(f => f.includes("integration")).length,
-            e2e: files.filter(f => f.includes("e2e")).length
-        };
-    }
+    // HubManagerGRPC handles run_test_suite logic
 }

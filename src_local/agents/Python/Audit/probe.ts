@@ -2,19 +2,43 @@
  * 🕵️ Probe - PhD in Security & Forensic Analysis (Python Stack)
  * Analisa a integridade de chamadas de rede e persistência de dados em Python.
  */
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
 
 export class ProbePersona extends BaseActivePersona {
-    constructor(projectRoot?: string) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Probe";
         this.emoji = "🕵️";
         this.role = "PhD Forensic Analyst";
+        this.phd_identity = "Security & Forensic Analysis (Python)";
         this.stack = "Python";
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            // Forensic Intelligence: Knowledge Graph analysis of error propagation
+            const graph = await this.hub.getKnowledgeGraph("src_local/core/types.ts", 2);
+            
+            // Search for "pass" in except blocks (Silent Killers)
+            const silentKillers = await this.hub.queryKnowledgeGraph("except", "critical");
+
+            // PhD Forensic Reasoning
+            const reasoning = await this.hub.reason(`Analyze the Python security baseline given ${silentKillers.length} silent catch-all issues found in the dependency graph of ${graph.nodes.length} nodes.`);
+
+            findings.push({
+                file: "Forensic Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Forensic: Integridade validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Graph Forensic Trace", match_count: 1
+            } as any);
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".py"],
             rules: [

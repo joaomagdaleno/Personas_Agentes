@@ -28,15 +28,36 @@ export class GoTestIntegrityEngine {
 }
 
 export class TestifyPersona extends BaseActivePersona {
-    constructor(projectRoot?: string) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Testify";
         this.emoji = "🧪";
         this.role = "PhD Verification Specialist";
+        this.phd_identity = "Go Testing & Verification Specialist";
         this.stack = "Go";
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            // QA Intelligence: Find untested Go packages
+            const untestedQuery = await this.hub.queryKnowledgeGraph("untested", "high");
+            
+            // PhD QA Reasoning
+            const reasoning = await this.hub.reason(`Generate a PhD test strategy for a Go system with ${untestedQuery.length} untested packages and existing audit findings.`);
+
+            findings.push({
+                file: "Verification Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Verification: Cobertura Go validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Quality Audit", match_count: 1
+            } as any);
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".go", "_test.go"],
             rules: [

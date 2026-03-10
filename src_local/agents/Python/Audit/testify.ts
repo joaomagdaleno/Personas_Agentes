@@ -23,15 +23,36 @@ export class MockIntegrityEngine {
 }
 
 export class TestifyPersona extends BaseActivePersona {
-    constructor(projectRoot?: string) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Testify";
         this.emoji = "🧪";
         this.role = "PhD Test Architect";
+        this.phd_identity = "Python Test Coverage & QA";
         this.stack = "Python";
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            // QA Intelligence: Find untested areas
+            const untestedQuery = await this.hub.queryKnowledgeGraph("untested", "high");
+            
+            // PhD QA Reasoning
+            const reasoning = await this.hub.reason(`Analyze the "Zero Gap" security of a system with ${untestedQuery.length} untested Python modules and current audit findings.`);
+
+            findings.push({
+                file: "QA Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign QA: Cobertura auditada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Quality Audit", match_count: 1
+            } as any);
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".py"],
             rules: [

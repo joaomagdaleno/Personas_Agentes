@@ -25,15 +25,39 @@ export class GoProbeEngine {
 }
 
 export class ProbePersona extends BaseActivePersona {
-    constructor(projectRoot?: string) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Probe";
         this.emoji = "🔍";
         this.role = "PhD Observability Expert";
+        this.phd_identity = "Go Observability & Tracing Specialist";
         this.stack = "Go";
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            // Observability Intelligence: Trace error handling in the dependency graph
+            const graph = await this.hub.getKnowledgeGraph("src_local/core/types.ts", 2);
+            
+            // Search for "err != nil" omissions (Silent Failures)
+            const silentFailures = await this.hub.queryKnowledgeGraph("if err != nil", "critical");
+
+            // PhD Observability Reasoning
+            const reasoning = await this.hub.reason(`Analyze the Go observability baseline given ${silentFailures.length} missing error checks in a graph of ${graph.nodes.length} nodes.`);
+
+            findings.push({
+                file: "Observability Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Observability: Rastreamento validado via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Graph Trace Analysis", match_count: 1
+            } as any);
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".go"],
             rules: [

@@ -2,19 +2,43 @@
  * 🕵️ Probe - PhD in Security & Forensic Analysis (Kotlin)
  * Analisa a integridade de chamadas de rede e persistência de dados na JVM.
  */
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
 
 export class ProbePersona extends BaseActivePersona {
-    constructor(projectRoot?: string) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Probe";
         this.emoji = "🕵️";
         this.role = "PhD Forensic Analyst";
+        this.phd_identity = "Security & Forensic Analysis (Kotlin)";
         this.stack = "Kotlin";
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            // JVM Resilience: Blast Radius of Exception propagation
+            const graph = await this.hub.getKnowledgeGraph("src_local/core/types.ts", 2);
+            
+            // Search for Swallowed Exceptions in Kotlin
+            const errorLeaks = await this.hub.queryKnowledgeGraph("catch", "critical");
+
+            // PhD Resilience Reasoning
+            const reasoning = await this.hub.reason(`Analyze the Kotlin resilience baseline given ${errorLeaks.length} empty catch blocks in a JVM graph of ${graph.nodes.length} nodes.`);
+
+            findings.push({
+                file: "Resilience Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Kotlin Resilience: Integridade JVM validada. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Graph Error propagation Analysis", match_count: 1
+            } as any);
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".kt", ".kts"],
             rules: [
@@ -34,7 +58,7 @@ export class ProbePersona extends BaseActivePersona {
 
     public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {
         return {
-            file,
+            file: _file,
             issue: `PhD Resilience: Analisando integridade de falhas para ${objective}. Focando em eliminação de catch-alls silenciosos.`,
             severity: "INFO",
             context: this.name

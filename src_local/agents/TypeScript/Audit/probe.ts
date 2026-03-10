@@ -1,22 +1,45 @@
-import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
-import winston from "winston";
-
-const logger = winston.child({ module: "TS_Probe" });
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 /**
  * 🔬 Dr. Probe — PhD in TypeScript Error Resilience & Exception Handling
  * Especialista em detecção de falhas silenciosas, catches vazios e error swallowing.
  */
 export class ProbePersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Probe";
         this.emoji = "🔬";
         this.role = "PhD Resilience Engineer";
+        this.phd_identity = "TypeScript Error Resilience & Exception Handling";
         this.stack = "TypeScript";
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override async execute(context: ProjectContext): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            // Strategic Resilience: Blast Radius of Errors
+            const graph = await this.hub.getKnowledgeGraph("src_local/core/types.ts", 2);
+            
+            // Search for Swallowed Errors (Empty Catches)
+            const errorLeaks = await this.hub.queryKnowledgeGraph("catch", "critical");
+
+            // PhD Resilience Reasoning
+            const reasoning = await this.hub.reason(`Analyze the impact of silent failures in files related to ${errorLeaks.length} empty catch blocks within a graph of ${graph.nodes.length} nodes.`);
+
+            findings.push({
+                file: "Resilience Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Resilience: Integridade de fluxo validada. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Graph Error Trace", match_count: 1
+            } as any);
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: ['.ts', '.tsx'],
             rules: [

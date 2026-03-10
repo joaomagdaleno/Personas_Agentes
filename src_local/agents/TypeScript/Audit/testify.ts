@@ -1,21 +1,41 @@
-import { BaseActivePersona, AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
-import winston from "winston";
-
-const logger = winston.child({ module: "TS_Testify" });
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 /**
  * 🧪 Dr. Testify — PhD in TypeScript Testing & Quality Assurance
  */
 export class TestifyPersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Testify";
         this.emoji = "🧪";
         this.role = "PhD Quality Assurance Engineer";
+        this.phd_identity = "TypeScript Testing & Quality Assurance";
         this.stack = "TypeScript";
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override async execute(context: ProjectContext): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            // Quality Intelligence: Find untested critical paths
+            const untestedQuery = await this.hub.queryKnowledgeGraph("untested", "high");
+            
+            // PhD Quality Reasoning
+            const reasoning = await this.hub.reason(`Generate a PhD test strategy for a system with ${untestedQuery.length} untested critical modules and "Dark Matter" modules detected in findings.`);
+
+            findings.push({
+                file: "Quality Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Quality: Estratégia de cobertura validada. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Quality Audit", match_count: 1
+            } as any);
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: ['.test.ts', '.spec.ts', 'tests/'],
             rules: [
@@ -29,7 +49,7 @@ export class TestifyPersona extends BaseActivePersona {
         };
     }
 
-    async performAudit(): Promise<AuditFinding[]> {
+    override async performAudit(): Promise<AuditFinding[]> {
         const results = await super.performAudit();
         this.findModulesWithoutTests(results);
         return results;
