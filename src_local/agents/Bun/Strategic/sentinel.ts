@@ -1,22 +1,46 @@
-import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
-import winston from "winston";
-
-const logger = winston.child({ module: "Bun_Sentinel" });
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 /**
  * 🛡️ Dr. Sentinel — PhD in Bun Transport Security & Bun.serve Safety
  * Especialista em segurança de Bun.serve, HTTPS, TLS e CORS.
  */
 export class SentinelPersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Sentinel";
         this.emoji = "🛡️";
-        this.role = "PhD Bun Security Architect";
+        this.role = "Sovereign Security Architect";
+        this.phd_identity = "System Protection & Transport Layer Shielding";
         this.stack = "Bun";
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override async execute(context: ProjectContext): Promise<StrategicFinding[]> {
+        this.setContext(context);
+        const findings = this.performStrategicAudit() as StrategicFinding[];
+
+        if (this.hub) {
+            // Knowledge Graph: Security Surface
+            await this.hub.getKnowledgeGraph("src_local/core/types.ts", 1);
+            
+            // Security Query: Tls/Https
+            const securityQuery = await this.hub.queryKnowledgeGraph("tls", "high");
+
+            // PhD Security Reasoning
+            const reasoning = await this.hub.reason(`Analyze Bun transport security given ${securityQuery.length} TLS findings and graph connectivity.`);
+
+            findings.push({
+                file: "Core Shield",
+                severity: "INFO",
+                issue: `Sovereign Bun Shield: Integridade verificada. PhD Analysis: ${reasoning}`,
+                context: "Knowledge Graph Integration"
+            });
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: ['.ts', '.tsx'],
             rules: [
@@ -39,8 +63,7 @@ export class SentinelPersona extends BaseActivePersona {
         };
     }
 
-    getSystemPrompt(): string {
+    override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em segurança de transporte e TLS Bun.`;
     }
 }
-

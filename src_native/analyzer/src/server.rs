@@ -15,8 +15,9 @@ use hub_proto::{
     PendingRequest, PendingResponse, UpdateTaskRequest
 };
 
-use crate::{analysis, fingerprint};
+use crate::{analysis, fingerprint, dna, batch, graph, connectivity, audit, penalty, brain, search};
 use std::fs;
+use std::collections::HashMap;
 
 pub struct HubServerImpl;
 
@@ -81,8 +82,13 @@ impl HubService for HubServerImpl {
         Ok(Response::new(AnalyzeResponse { json_data }))
     }
 
-    async fn deduplicate(&self, _request: Request<DeduplicateRequest>) -> Result<Response<AnalyzeResponse>, Status> {
-        Err(Status::unimplemented("Logic not moved yet"))
+    async fn deduplicate(&self, request: Request<DeduplicateRequest>) -> Result<Response<AnalyzeResponse>, Status> {
+        let req = request.into_inner();
+        let findings: Vec<crate::deduplicator::RawFinding> = serde_json::from_str(&req.findings_json)
+            .map_err(|e| Status::invalid_argument(format!("Invalid findings JSON: {}", e)))?;
+        let deduped = crate::deduplicator::deduplicate(findings);
+        let json_data = serde_json::to_string(&deduped).map_err(|e| Status::internal(format!("Serialization error: {}", e)))?;
+        Ok(Response::new(AnalyzeResponse { json_data }))
     }
 
     async fn fingerprint(&self, request: Request<AnalyzeRequest>) -> Result<Response<AnalyzeResponse>, Status> {
@@ -100,44 +106,88 @@ impl HubService for HubServerImpl {
         Ok(Response::new(AnalyzeResponse { json_data }))
     }
 
-    async fn discover_identity(&self, _request: Request<AnalyzeRequest>) -> Result<Response<AnalyzeResponse>, Status> {
-        Err(Status::unimplemented("Not implemented"))
+    async fn discover_identity(&self, request: Request<AnalyzeRequest>) -> Result<Response<AnalyzeResponse>, Status> {
+        let req = request.into_inner();
+        let identity = dna::discover_identity(&req.file);
+        let json_data = serde_json::to_string(&identity).map_err(|e| Status::internal(format!("Serialization error: {}", e)))?;
+        Ok(Response::new(AnalyzeResponse { json_data }))
     }
 
-    async fn index_project(&self, _request: Request<AnalyzeRequest>) -> Result<Response<AnalyzeResponse>, Status> {
-        Err(Status::unimplemented("Not implemented"))
+    async fn index_project(&self, request: Request<AnalyzeRequest>) -> Result<Response<AnalyzeResponse>, Status> {
+        let req = request.into_inner();
+        let results = batch::index_project(&req.file);
+        let json_data = serde_json::to_string(&results).map_err(|e| Status::internal(format!("Serialization error: {}", e)))?;
+        Ok(Response::new(AnalyzeResponse { json_data }))
     }
 
-    async fn scan_topology(&self, _request: Request<AnalyzeRequest>) -> Result<Response<AnalyzeResponse>, Status> {
-        Err(Status::unimplemented("Not implemented"))
+    async fn scan_topology(&self, request: Request<AnalyzeRequest>) -> Result<Response<AnalyzeResponse>, Status> {
+        let req = request.into_inner();
+        let map = batch::scan_topology(&req.file);
+        let json_data = serde_json::to_string(&map).map_err(|e| Status::internal(format!("Serialization error: {}", e)))?;
+        Ok(Response::new(AnalyzeResponse { json_data }))
     }
 
-    async fn get_context(&self, _request: Request<AnalyzeRequest>) -> Result<Response<AnalyzeResponse>, Status> {
-        Err(Status::unimplemented("Not implemented"))
+    async fn get_context(&self, request: Request<AnalyzeRequest>) -> Result<Response<AnalyzeResponse>, Status> {
+        let req = request.into_inner();
+        let brain = brain::Brain::new().ok_or_else(|| Status::internal("Failed to initialize Brain"))?;
+        let ctx = brain.get_context_for(&req.file);
+        let json_data = serde_json::to_string(&ctx).map_err(|e| Status::internal(format!("Serialization error: {}", e)))?;
+        Ok(Response::new(AnalyzeResponse { json_data }))
     }
 
-    async fn get_connectivity(&self, _request: Request<ConnectivityRequest>) -> Result<Response<AnalyzeResponse>, Status> {
-        Err(Status::unimplemented("Not implemented"))
+    async fn get_connectivity(&self, request: Request<ConnectivityRequest>) -> Result<Response<AnalyzeResponse>, Status> {
+        let req = request.into_inner();
+        let files: HashMap<String, connectivity::FileInfo> = serde_json::from_str(&req.dependency_map_json)
+            .map_err(|e| Status::invalid_argument(format!("Invalid connectivity JSON: {}", e)))?;
+        let results = connectivity::calculate_all_connectivity(files);
+        let json_data = serde_json::to_string(&results).map_err(|e| Status::internal(format!("Serialization error: {}", e)))?;
+        Ok(Response::new(AnalyzeResponse { json_data }))
     }
 
-    async fn audit(&self, _request: Request<AuditRequest>) -> Result<Response<AnalyzeResponse>, Status> {
-        Err(Status::unimplemented("Not implemented"))
+    async fn audit(&self, request: Request<AuditRequest>) -> Result<Response<AnalyzeResponse>, Status> {
+        let req = request.into_inner();
+        let audit_req: audit::BulkAuditRequest = serde_json::from_str(&req.audit_json)
+            .map_err(|e| Status::invalid_argument(format!("Invalid audit JSON: {}", e)))?;
+        let findings = audit::bulk_audit(audit_req);
+        let json_data = serde_json::to_string(&findings).map_err(|e| Status::internal(format!("Serialization error: {}", e)))?;
+        Ok(Response::new(AnalyzeResponse { json_data }))
     }
 
-    async fn batch(&self, _request: Request<BatchRequest>) -> Result<Response<AnalyzeResponse>, Status> {
-        Err(Status::unimplemented("Not implemented"))
+    async fn batch(&self, request: Request<BatchRequest>) -> Result<Response<AnalyzeResponse>, Status> {
+        let req = request.into_inner();
+        #[derive(serde::Deserialize)]
+        struct BatchInternal { file_paths: Vec<String>, project_root: String }
+        let batch_req: BatchInternal = serde_json::from_str(&req.batch_json)
+            .map_err(|e| Status::invalid_argument(format!("Invalid batch JSON: {}", e)))?;
+        let results = batch::process_batch(batch_req.file_paths, &batch_req.project_root);
+        let json_data = serde_json::to_string(&results).map_err(|e| Status::internal(format!("Serialization error: {}", e)))?;
+        Ok(Response::new(AnalyzeResponse { json_data }))
     }
 
-    async fn reason(&self, _request: Request<ReasonRequest>) -> Result<Response<AnalyzeResponse>, Status> {
-        Err(Status::unimplemented("Not implemented"))
+    async fn reason(&self, request: Request<ReasonRequest>) -> Result<Response<AnalyzeResponse>, Status> {
+        let req = request.into_inner();
+        let mut brain = brain::Brain::new().ok_or_else(|| Status::internal("Failed to initialize Brain"))?;
+        let result = brain.reason(&req.prompt, 512);
+        let json_data = result.unwrap_or_else(|| "Error: Brain unable to reason".to_string());
+        Ok(Response::new(AnalyzeResponse { json_data }))
     }
 
-    async fn patterns(&self, _request: Request<PatternRequest>) -> Result<Response<AnalyzeResponse>, Status> {
-        Err(Status::unimplemented("Not implemented"))
+    async fn patterns(&self, request: Request<PatternRequest>) -> Result<Response<AnalyzeResponse>, Status> {
+        let req = request.into_inner();
+        let pattern_req: batch::PatternRequest = serde_json::from_str(&req.pattern_json)
+            .map_err(|e| Status::invalid_argument(format!("Invalid pattern JSON: {}", e)))?;
+        let findings = batch::find_patterns(pattern_req);
+        let json_data = serde_json::to_string(&findings).map_err(|e| Status::internal(format!("Serialization error: {}", e)))?;
+        Ok(Response::new(AnalyzeResponse { json_data }))
     }
 
-    async fn penalty(&self, _request: Request<PenaltyRequest>) -> Result<Response<AnalyzeResponse>, Status> {
-        Err(Status::unimplemented("Not implemented"))
+    async fn penalty(&self, request: Request<PenaltyRequest>) -> Result<Response<AnalyzeResponse>, Status> {
+        let req = request.into_inner();
+        let penalty_req: penalty::PenaltyRequest = serde_json::from_str(&req.penalty_json)
+            .map_err(|e| Status::invalid_argument(format!("Invalid penalty JSON: {}", e)))?;
+        let resp = penalty::calculate_penalty(penalty_req);
+        let json_data = serde_json::to_string(&resp).map_err(|e| Status::internal(format!("Serialization error: {}", e)))?;
+        Ok(Response::new(AnalyzeResponse { json_data }))
     }
 
     async fn calculate_score(&self, request: Request<ScoreRequest>) -> Result<Response<AnalyzeResponse>, Status> {
@@ -162,16 +212,34 @@ impl HubService for HubServerImpl {
         Ok(Response::new(AnalyzeResponse { json_data }))
     }
 
-    async fn get_knowledge_graph(&self, _request: Request<GraphRequest>) -> Result<Response<AnalyzeResponse>, Status> {
-        Err(Status::unimplemented("Not implemented"))
+    async fn get_knowledge_graph(&self, request: Request<GraphRequest>) -> Result<Response<AnalyzeResponse>, Status> {
+        let req = request.into_inner();
+        #[derive(serde::Deserialize)]
+        struct GraphParam { focus: String, depth: i32 }
+        let param: GraphParam = serde_json::from_str(&req.graph_json).unwrap_or(GraphParam { focus: "".to_string(), depth: 1 });
+        
+        let brain = brain::Brain::new().ok_or_else(|| Status::internal("Failed to initialize Brain"))?;
+        let result = brain.get_graph_json(&param.focus, param.depth);
+        Ok(Response::new(AnalyzeResponse { json_data: result }))
     }
 
-    async fn query_knowledge_graph(&self, _request: Request<QueryRequest>) -> Result<Response<AnalyzeResponse>, Status> {
-        Err(Status::unimplemented("Not implemented"))
+    async fn query_knowledge_graph(&self, request: Request<QueryRequest>) -> Result<Response<AnalyzeResponse>, Status> {
+        let req = request.into_inner();
+        let brain = brain::Brain::new().ok_or_else(|| Status::internal("Failed to initialize Brain"))?;
+        let result = brain.query_graph(&req.query_json);
+        Ok(Response::new(AnalyzeResponse { json_data: result }))
     }
 
-    async fn execute_healing(&self, _request: Request<HealingPlan>) -> Result<Response<AnalyzeResponse>, Status> {
-        Err(Status::unimplemented("Not implemented"))
+    async fn execute_healing(&self, request: Request<HealingPlan>) -> Result<Response<AnalyzeResponse>, Status> {
+        let plan = request.into_inner();
+        let prompt = format!(
+            "You are an expert engineer. Fix the following code based on the context.\nFile: {}\nIssue: {}\nContext: {}\n\nCode:\n{}",
+            plan.file_path, plan.issue_description, plan.context, plan.file_content
+        );
+        let mut brain = brain::Brain::new().ok_or_else(|| Status::internal("Failed to initialize Brain"))?;
+        let result = brain.reason(&prompt, 1024);
+        let json_data = result.unwrap_or_else(|| "Error: Healing failed".to_string());
+        Ok(Response::new(AnalyzeResponse { json_data }))
     }
 
     async fn enqueue_task(&self, _request: Request<TaskRequest>) -> Result<Response<TaskResponse>, Status> {

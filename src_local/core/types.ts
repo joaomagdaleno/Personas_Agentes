@@ -80,5 +80,6 @@ export interface FileContextData {
 export interface ProjectContext {
     identity?: Record<string, any>;
     map?: Record<string, FileContextData>;
+    hub?: any;
     [key: string]: any;
 }

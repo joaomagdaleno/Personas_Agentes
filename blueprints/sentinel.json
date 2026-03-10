@@ -1,0 +1,44 @@
+{
+  "id": "strategic:sentinel",
+  "name": "Sentinel",
+  "emoji": "🛡️",
+  "role": "Sovereign Security Architect",
+  "phd_identity": "System Protection & Transport Layer Shielding",
+  "global_rules": [
+    {
+      "id": "insecure_transport",
+      "issue": "Vulnerabilidade: Uso de protocolo inseguro (HTTP).",
+      "severity": "high"
+    }
+  ],
+  "stacks": {
+    "typescript": {
+      "class": "SentinelPersona",
+      "path": "src_local/agents/TypeScript/Strategic/sentinel.ts"
+    },
+    "python": {
+      "class": "SentinelPersona",
+      "path": "src_local/agents/Python/Strategic/sentinel.ts"
+    },
+    "go": {
+      "class": "SentinelPersona",
+      "path": "src_local/agents/Go/Strategic/sentinel.ts"
+    },
+    "rust": {
+      "class": "SentinelRustAgent",
+      "path": "src_local/agents/Rust/Strategic/sentinel.ts"
+    },
+    "bun": {
+      "class": "SentinelPersona",
+      "path": "src_local/agents/Bun/Strategic/sentinel.ts"
+    },
+    "kotlin": {
+      "class": "SentinelPersona",
+      "path": "src_local/agents/Kotlin/Strategic/sentinel.ts"
+    },
+    "flutter": {
+      "class": "SentinelPersona",
+      "path": "src_local/agents/Flutter/Strategic/sentinel.ts"
+    }
+  }
+}

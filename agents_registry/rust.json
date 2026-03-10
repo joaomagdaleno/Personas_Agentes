@@ -1,0 +1,31 @@
+[
+    {
+        "name": "bolt",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Audit",
+        "capabilities": [
+            "performAudit",
+            "regexAnalysis",
+            "codeSmellDetection"
+        ],
+        "dependencies": [],
+        "updatedAt": "2026-03-10T13:33:53.127Z"
+    },
+    {
+        "name": "sentinel",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Strategic",
+        "capabilities": [
+            "strategicReasoning",
+            "objectiveAlignment",
+            "riskAssessment"
+        ],
+        "dependencies": [
+            "bolt",
+            "metric"
+        ],
+        "updatedAt": "2026-03-10T13:33:54.759Z"
+    }
+]

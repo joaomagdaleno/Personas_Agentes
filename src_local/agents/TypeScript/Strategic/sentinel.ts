@@ -1,7 +1,7 @@
-import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
-import winston from "winston";
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
-const logger = winston.child({ module: "TS_Sentinel" });
 
 export enum SecurityPosturesTS {
     HARDENED = "HARDENED",
@@ -25,11 +25,38 @@ export class TSSecurityEngine {
  */
 export class SentinelPersona extends BaseActivePersona {
     constructor(projectRoot: string | null = null) {
-        super(projectRoot);
+        super(projectRoot || undefined);
         this.name = "Sentinel";
         this.emoji = "🛡️";
-        this.role = "PhD Security Architect";
+        this.role = "Sovereign Security Architect";
+        this.phd_identity = "System Protection & Transport Layer Shielding";
         this.stack = "TypeScript";
+    }
+
+    override async execute(context: ProjectContext): Promise<StrategicFinding[]> {
+        this.setContext(context);
+        const findings = this.performStrategicAudit() as StrategicFinding[];
+
+        if (this.hub) {
+            // Level 1: Deep DNA Discovery
+            const identity = await this.hub.discoverIdentity(this.projectRoot || ".");
+            
+            // Level 2: Knowledge Graph Analysis (Full Power)
+            const graph = await this.hub.getKnowledgeGraph("src_local/core/orchestrator.ts", 2);
+            if (graph && graph.edges && graph.edges.length > 10) {
+                // High coupling detected via graph
+                const reasonPrompt = `Evaluate the security risks of high architectural coupling in the core orchestrator. Project DNA: ${JSON.stringify(identity)}`;
+                const reasoning = await this.hub.reason(reasonPrompt);
+
+                findings.push({
+                    file: "Global Architecture",
+                    severity: "HIGH",
+                    issue: `Sovereign Security Analysis: Acoplamento crítico detectado no Grafo de Conhecimento. Raciocínio PhD: ${reasoning}`,
+                    context: "Knowledge Graph Blast Radius"
+                });
+            }
+        }
+        return findings;
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
@@ -61,7 +88,7 @@ export class SentinelPersona extends BaseActivePersona {
         };
     }
 
-    selfDiagnostic(): any {
+    override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,

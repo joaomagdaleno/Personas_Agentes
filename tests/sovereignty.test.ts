@@ -1,11 +1,11 @@
 import { expect, test, describe } from "bun:test";
-import { HealerPersona } from "../src_local/agents/Support/Core/healer";
-import { CognitiveAnalyst } from "../src_local/agents/Support/Diagnostics/strategies/CognitiveAnalyst";
-import { CyclomaticAnalyst } from "../src_local/agents/Support/Diagnostics/strategies/CyclomaticAnalyst";
-import { LintRules } from "../src_local/agents/Support/Reporting/strategies/LintRules";
-import { FingerprintExtractor } from "../src_local/agents/Support/Analysis/strategies/FingerprintExtractor";
-import { StructuralAnalyst } from "../src_local/agents/Support/Analysis/structural_analyst";
-import { QualityEvaluator } from "../src_local/agents/Support/Diagnostics/strategies/QualityEvaluator";
+import { HealerPersona } from "../src_local/agents/Support/Core/healer.ts";
+import { CognitiveAnalyst } from "../src_local/agents/Support/Diagnostics/strategies/CognitiveAnalyst.ts";
+import { CyclomaticAnalyst } from "../src_local/agents/Support/Diagnostics/strategies/CyclomaticAnalyst.ts";
+import { LintRules } from "../src_local/agents/Support/Reporting/strategies/LintRules.ts";
+import { FingerprintExtractor } from "../src_local/agents/Support/Analysis/strategies/FingerprintExtractor.ts";
+import { StructuralAnalyst } from "../src_local/agents/Support/Analysis/structural_analyst.ts";
+import { QualityEvaluator } from "../src_local/agents/Support/Diagnostics/strategies/QualityEvaluator.ts";
 
 describe("🏛️ Sovereignty Bridge: Baseline Validation", () => {
     test("Healer Persona Integrity", () => {

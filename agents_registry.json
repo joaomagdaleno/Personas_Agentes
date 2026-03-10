@@ -1,6 +1,6 @@
 {
     "$schema": "agents_registry/v2",
-    "last_sync": 1773063812.998,
+    "last_sync": 1773149697.979,
     "stacks": {
         "Flutter": [
             {
@@ -2424,6 +2424,37 @@
                 ],
                 "dependencies": [],
                 "updatedAt": "2026-03-09T11:13:16.852Z"
+            }
+        ],
+        "Rust": [
+            {
+                "name": "bolt",
+                "version": "1.0.0",
+                "status": "STABLE",
+                "category": "Audit",
+                "capabilities": [
+                    "performAudit",
+                    "regexAnalysis",
+                    "codeSmellDetection"
+                ],
+                "dependencies": [],
+                "updatedAt": "2026-03-10T13:33:53.127Z"
+            },
+            {
+                "name": "sentinel",
+                "version": "1.0.0",
+                "status": "STABLE",
+                "category": "Strategic",
+                "capabilities": [
+                    "strategicReasoning",
+                    "objectiveAlignment",
+                    "riskAssessment"
+                ],
+                "dependencies": [
+                    "bolt",
+                    "metric"
+                ],
+                "updatedAt": "2026-03-10T13:33:54.759Z"
             }
         ]
     }

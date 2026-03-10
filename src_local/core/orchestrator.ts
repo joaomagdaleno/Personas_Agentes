@@ -18,16 +18,17 @@ import { UpdateTransaction } from "../utils/update_transaction.ts";
 import { SystemSentinel } from "../utils/system_sentinel.ts";
 import { BehaviorAnalyst } from "../utils/behavior_analyst.ts";
 import { TaskWorker } from "../utils/task_worker.ts";
-import type { IAgent, SovereignState, ProjectContext, DiagnosticFinding, SystemHealth360 } from "./types.ts";
+import type { IAgent, ProjectContext, DiagnosticFinding, SystemHealth360 } from "./types.ts";
 import { MemoryPruningAgent } from "../agents/Support/Maintenance/memory_pruning_agent.ts";
 import { PredictorEngine } from "../utils/ai/predictor_engine.ts";
 import { HubWatcher } from "../utils/hub_watcher.ts";
 import { HubManagerGRPC } from "./hub_manager_grpc.ts";
+import { RegistryManager } from "./registry_manager.ts";
+import { ParityDaemon } from "./parity_daemon.ts";
 
 const logger = winston.child({ module: "Orchestrator" });
 
 export class Orchestrator {
-    private state: SovereignState;
     projectRoot: Path;
     lastDetectedChanges: string[] = [];
     metrics: Record<string, any> = { files_scanned: 0, health_score: 100, start_time: Date.now(), efficiency: {} };
@@ -56,17 +57,15 @@ export class Orchestrator {
     predictorEngine!: PredictorEngine;
     hubWatcher!: HubWatcher;
     hubManager!: HubManagerGRPC;
+    registryManager!: RegistryManager;
+    parityDaemon!: ParityDaemon;
 
     public ready: Promise<void>;
 
     constructor(projectRoot: string) {
         this.projectRoot = new Path(projectRoot);
         this.hubManager = new HubManagerGRPC();
-        this.state = {
-            root: projectRoot,
-            metrics: { files_scanned: 0, start_time: Date.now() },
-            identity: { core_mission: "Integrity Maintenance", stacks: ["TypeScript", "Python"] }
-        };
+        this.registryManager = new RegistryManager(projectRoot);
         this.initializeEngines(projectRoot);
         this._registerAgents();
         this._initEngines();
@@ -109,6 +108,9 @@ export class Orchestrator {
                 await this.runStagedAudit({ dryRun: false });
             });
             this.hubWatcher.start();
+
+            this.parityDaemon = new ParityDaemon(projectRoot, this.hubWatcher, this.stabilityLedger);
+            this.parityDaemon.start();
         } catch (err: any) {
             console.error(`❌ [Orchestrator] Erro ao carregar infrastructure_assembler: ${err.message}`);
         }
@@ -174,7 +176,7 @@ export class Orchestrator {
     _initTools() {
         this.coreValidator = new CoreValidator(this);
         this.synthesizer = {
-            getTopologyIssues: (ctx: any) => [],
+            getTopologyIssues: (_ctx: any) => [],
             synthesize360: async (ctx: any, m_orc: any, personas: any, ledger: any, qa: any) => {
                 const { HealthSynthesizer } = await import("../agents/Support/Diagnostics/health_synthesizer.ts");
                 const syn = new HealthSynthesizer();
@@ -187,7 +189,7 @@ export class Orchestrator {
         this.personas.push(persona);
     }
 
-    async runStrategicAudit(context: ProjectContext, objective: string | null = null, includeHistory: boolean = true): Promise<DiagnosticFinding[]> {
+    async runStrategicAudit(context: ProjectContext, objective: string | null = null, _includeHistory: boolean = true): Promise<DiagnosticFinding[]> {
         logger.info("Auditoria Estratégica: Acionando AuditEngine...");
         const [findings, startT] = await this.auditEngine.runStrategicAudit(context, objective);
         this._logPerformance(startT, "Auditoria Estratégica");
@@ -224,7 +226,7 @@ export class Orchestrator {
 
     _buildAuditReportQueue(findings: DiagnosticFinding[]): DiagnosticFinding[] {
         logger.info(`📋 [Orchestrator] Construindo fila de relatório com ${findings.length} achados.`);
-        return findings.sort((a, b) => (b.severity === "CRITICAL" ? 1 : -1));
+        return findings.sort((_a, b) => (b.severity === "CRITICAL" ? 1 : -1));
     }
 
     async runAutoHealing(findings: DiagnosticFinding[]): Promise<number> {
@@ -246,12 +248,12 @@ export class Orchestrator {
         return finding.severity === "CRITICAL" || finding.severity === "HIGH";
     }
 
-    async runTargetedVerification(plan: any): Promise<any[]> {
+    async runTargetedVerification(_plan: any): Promise<any[]> {
         logger.info("Executando verificações direcionadas...");
         return [];
     }
 
-    async getSystemHealth360(ctx: ProjectContext, health: any, findings: DiagnosticFinding[]): Promise<SystemHealth360> {
+    async getSystemHealth360(ctx: ProjectContext, _health: any, findings: DiagnosticFinding[]): Promise<SystemHealth360> {
         this._enrichPathMetrics(ctx);
         const qaData = await this.collectQAData(ctx);
 

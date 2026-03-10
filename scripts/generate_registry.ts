@@ -7,7 +7,7 @@ import * as path from "path";
 
 const projectRoot = process.cwd();
 const agentsDir = path.join(projectRoot, "src_local", "agents");
-const LANGUAGES = ["Flutter", "Kotlin", "Python", "TypeScript", "Go", "Bun"];
+const LANGUAGES = ["Flutter", "Kotlin", "Python", "TypeScript", "Go", "Bun", "Rust"];
 const CATEGORIES = ["Audit", "Content", "Strategic", "System"];
 
 const CAPABILITY_MAP: Record<string, string[]> = {

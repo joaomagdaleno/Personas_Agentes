@@ -4,17 +4,44 @@
  */
 import { BaseActivePersona } from "../../base.ts";
 import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 export class BoltPersona extends BaseActivePersona {
-    constructor(projectRoot?: string) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Bolt";
         this.emoji = "⚡";
-        this.role = "PhD Performance Engineer";
+        this.role = "Sovereign Performance Architect";
+        this.phd_identity = "Computational Efficiency & Runtime Optimization";
         this.stack = "Flutter";
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            for (const file of Object.keys(this.contextData)) {
+                if (file.endsWith(".dart")) {
+                    const res = await this.hub.analyzeFile(file);
+                    if (res && res.complexity > 14) {
+                        const neighbors = await this.hub.getContext(file);
+                        const reasonPrompt = `Analyze the UI performance and frame-drop risks of high complexity (${res.complexity}) in the Flutter file ${file}. Neighbors: ${neighbors.join(", ")}`;
+                        const reasoning = await this.hub.reason(reasonPrompt);
+
+                        findings.push({
+                            file, agent: this.name, role: this.role, emoji: this.emoji,
+                            issue: `Sovereign Alert: Gargalo de UI Flutter (${res.complexity}). Raciocínio PhD: ${reasoning}`,
+                            severity: "HIGH", stack: this.stack, evidence: "Local AI reasoning", match_count: 1
+                        });
+                    }
+                }
+            }
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".dart"],
             rules: [
@@ -27,7 +54,7 @@ export class BoltPersona extends BaseActivePersona {
         };
     }
 
-    reasonAboutObjective(objective: string, file: string, content: string): StrategicFinding | null {
+    override reasonAboutObjective(objective: string, file: string, content: string): StrategicFinding | null {
         if (content.includes("sleep(")) {
             return {
                 file,
@@ -48,7 +75,7 @@ export class BoltPersona extends BaseActivePersona {
         return diag;
     }
 
-    getSystemPrompt(): string {
+    override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em performance Flutter. Sua missão é garantir zero jank.`;
     }
 }

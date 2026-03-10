@@ -1,8 +1,3 @@
-import winston from "winston";
-import { Path } from "./path_utils.ts";
-
-const logger = winston.child({ module: "TaskOrchestrator" });
-
 /**
  * Orquestrador de Tarefas (Bun Version).
  */
@@ -17,7 +12,7 @@ export class TaskOrchestrator {
         /** Executa o ciclo paralelo de auditoria para os PhDs selecionados. */
         const auditTask = async (agent: any) => {
             if (typeof agent.setContext === 'function') {
-                agent.setContext({ identity: context.identity, map: context.map });
+                agent.setContext({ identity: context.identity, map: context.map, hub: this.orc.hubManager });
             }
             const res: any[] = [];
             if (Object.keys(changedFiles).length > 0 && typeof agent.performAudit === 'function') {
@@ -60,14 +55,10 @@ export class TaskOrchestrator {
         return findings;
     }
 
-    selectActivePhds(objective: string, stacks: Set<string>, personas: any[]): any[] {
+    selectActivePhds(_objective: string, stacks: Set<string>, personas: any[]): any[] {
         /** Filtra PhDs aptos para a missão baseado no objetivo e stack. */
-        const lowObj = objective.toLowerCase();
-        const isCrit = ["segurança", "crítico", "vulnerabilidade"].some(k => lowObj.includes(k));
-
         const isEligible = (p: any) => {
             if (p.stack && !stacks.has(p.stack) && p.stack !== "Universal") return false;
-            // Simplified criticality filtering for now
             return true;
         };
 

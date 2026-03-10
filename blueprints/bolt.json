@@ -1,0 +1,44 @@
+{
+  "id": "audit:bolt",
+  "name": "Bolt",
+  "emoji": "⚡",
+  "role": "Sovereign Performance Architect",
+  "phd_identity": "Computational Efficiency & Runtime Optimization",
+  "global_rules": [
+    {
+      "id": "infinite_loop",
+      "issue": "Gargalo: Loop infinito ou busy-waiting detectado.",
+      "severity": "critical"
+    }
+  ],
+  "stacks": {
+    "typescript": {
+      "class": "BoltPersona",
+      "path": "src_local/agents/TypeScript/Audit/bolt.ts"
+    },
+    "python": {
+      "class": "BoltPersona",
+      "path": "src_local/agents/Python/Audit/bolt.ts"
+    },
+    "go": {
+      "class": "BoltPersona",
+      "path": "src_local/agents/Go/Audit/bolt.ts"
+    },
+    "rust": {
+      "class": "BoltRustAgent",
+      "path": "src_local/agents/Rust/Audit/bolt.ts"
+    },
+    "bun": {
+      "class": "BoltPersona",
+      "path": "src_local/agents/Bun/Audit/bolt.ts"
+    },
+    "kotlin": {
+      "class": "BoltPersona",
+      "path": "src_local/agents/Kotlin/Audit/bolt.ts"
+    },
+    "flutter": {
+      "class": "BoltPersona",
+      "path": "src_local/agents/Flutter/Audit/bolt.ts"
+    }
+  }
+}

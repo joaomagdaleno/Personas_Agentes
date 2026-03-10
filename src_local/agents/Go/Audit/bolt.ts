@@ -4,6 +4,7 @@
  */
 import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 export enum EfficiencyState {
     OPTIMIZED = "OPTIMIZED",
@@ -26,15 +27,41 @@ export class GoRuntimeAnalyzer {
 }
 
 export class BoltPersona extends BaseActivePersona {
-    constructor(projectRoot?: string) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Bolt";
         this.emoji = "⚡";
-        this.role = "PhD Performance Architect";
+        this.role = "Sovereign Performance Architect";
+        this.phd_identity = "Computational Efficiency & Runtime Optimization";
         this.stack = "Go";
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            for (const file of Object.keys(this.contextData)) {
+                if (file.endsWith(".go")) {
+                    const res = await this.hub.analyzeFile(file);
+                    if (res && res.complexity > 20) {
+                        const neighbors = await this.hub.getContext(file);
+                        const reasonPrompt = `Analyze the concurrency risks and performance of high complexity (${res.complexity}) in the Go file ${file}. Neighbors: ${neighbors.join(", ")}`;
+                        const reasoning = await this.hub.reason(reasonPrompt);
+
+                        findings.push({
+                            file, agent: this.name, role: this.role, emoji: this.emoji,
+                            issue: `Sovereign Alert: Complexidade crítica Go (${res.complexity}). Raciocínio PhD: ${reasoning}`,
+                            severity: "HIGH", stack: this.stack, evidence: "Local AI reasoning", match_count: 1
+                        });
+                    }
+                }
+            }
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".go"],
             rules: [

@@ -1,0 +1,364 @@
+[
+    {
+        "name": "bolt",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Audit",
+        "capabilities": [
+            "performAudit",
+            "regexAnalysis",
+            "codeSmellDetection"
+        ],
+        "dependencies": [],
+        "updatedAt": "2026-03-09T11:13:16.886Z"
+    },
+    {
+        "name": "metric",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Audit",
+        "capabilities": [
+            "performAudit",
+            "regexAnalysis",
+            "codeSmellDetection"
+        ],
+        "dependencies": [
+            "bolt"
+        ],
+        "updatedAt": "2026-03-09T11:13:16.887Z"
+    },
+    {
+        "name": "nebula",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Audit",
+        "capabilities": [
+            "performAudit",
+            "regexAnalysis",
+            "codeSmellDetection"
+        ],
+        "dependencies": [],
+        "updatedAt": "2026-03-09T11:13:16.887Z"
+    },
+    {
+        "name": "probe",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Audit",
+        "capabilities": [
+            "performAudit",
+            "regexAnalysis",
+            "codeSmellDetection"
+        ],
+        "dependencies": [],
+        "updatedAt": "2026-03-09T11:13:16.888Z"
+    },
+    {
+        "name": "scale",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Audit",
+        "capabilities": [
+            "performAudit",
+            "regexAnalysis",
+            "codeSmellDetection"
+        ],
+        "dependencies": [
+            "metric"
+        ],
+        "updatedAt": "2026-03-09T11:13:16.888Z"
+    },
+    {
+        "name": "scope",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Audit",
+        "capabilities": [
+            "performAudit",
+            "regexAnalysis",
+            "codeSmellDetection"
+        ],
+        "dependencies": [
+            "probe"
+        ],
+        "updatedAt": "2026-03-09T11:13:16.888Z"
+    },
+    {
+        "name": "testify",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Audit",
+        "capabilities": [
+            "performAudit",
+            "regexAnalysis",
+            "codeSmellDetection"
+        ],
+        "dependencies": [
+            "probe",
+            "scope"
+        ],
+        "updatedAt": "2026-03-09T11:13:16.889Z"
+    },
+    {
+        "name": "echo",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Content",
+        "capabilities": [
+            "contentGeneration",
+            "templateReasoning",
+            "documentationAnalysis"
+        ],
+        "dependencies": [],
+        "updatedAt": "2026-03-09T11:13:16.890Z"
+    },
+    {
+        "name": "forge",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Content",
+        "capabilities": [
+            "contentGeneration",
+            "templateReasoning",
+            "documentationAnalysis"
+        ],
+        "dependencies": [
+            "echo"
+        ],
+        "updatedAt": "2026-03-09T11:13:16.890Z"
+    },
+    {
+        "name": "globe",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Content",
+        "capabilities": [
+            "contentGeneration",
+            "templateReasoning",
+            "documentationAnalysis"
+        ],
+        "dependencies": [],
+        "updatedAt": "2026-03-09T11:13:16.891Z"
+    },
+    {
+        "name": "hype",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Content",
+        "capabilities": [
+            "contentGeneration",
+            "templateReasoning",
+            "documentationAnalysis"
+        ],
+        "dependencies": [],
+        "updatedAt": "2026-03-09T11:13:16.892Z"
+    },
+    {
+        "name": "mantra",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Content",
+        "capabilities": [
+            "contentGeneration",
+            "templateReasoning",
+            "documentationAnalysis"
+        ],
+        "dependencies": [],
+        "updatedAt": "2026-03-09T11:13:16.892Z"
+    },
+    {
+        "name": "palette",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Content",
+        "capabilities": [
+            "contentGeneration",
+            "templateReasoning",
+            "documentationAnalysis"
+        ],
+        "dependencies": [],
+        "updatedAt": "2026-03-09T11:13:16.892Z"
+    },
+    {
+        "name": "scribe",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Content",
+        "capabilities": [
+            "contentGeneration",
+            "templateReasoning",
+            "documentationAnalysis"
+        ],
+        "dependencies": [
+            "echo"
+        ],
+        "updatedAt": "2026-03-09T11:13:16.892Z"
+    },
+    {
+        "name": "sentinel",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Strategic",
+        "capabilities": [
+            "strategicReasoning",
+            "objectiveAlignment",
+            "riskAssessment"
+        ],
+        "dependencies": [
+            "bolt",
+            "metric"
+        ],
+        "updatedAt": "2026-03-09T11:13:16.892Z"
+    },
+    {
+        "name": "vault",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Strategic",
+        "capabilities": [
+            "strategicReasoning",
+            "objectiveAlignment",
+            "riskAssessment"
+        ],
+        "dependencies": [],
+        "updatedAt": "2026-03-09T11:13:16.895Z"
+    },
+    {
+        "name": "voyager",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Strategic",
+        "capabilities": [
+            "strategicReasoning",
+            "objectiveAlignment",
+            "riskAssessment"
+        ],
+        "dependencies": [
+            "sentinel"
+        ],
+        "updatedAt": "2026-03-09T11:13:16.895Z"
+    },
+    {
+        "name": "warden",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Strategic",
+        "capabilities": [
+            "strategicReasoning",
+            "objectiveAlignment",
+            "riskAssessment"
+        ],
+        "dependencies": [
+            "vault"
+        ],
+        "updatedAt": "2026-03-09T11:13:16.895Z"
+    },
+    {
+        "name": "bridge",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "System",
+        "capabilities": [
+            "systemMonitoring",
+            "infrastructureAnalysis",
+            "performanceInsight"
+        ],
+        "dependencies": [],
+        "updatedAt": "2026-03-09T11:13:16.897Z"
+    },
+    {
+        "name": "cache",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "System",
+        "capabilities": [
+            "systemMonitoring",
+            "infrastructureAnalysis",
+            "performanceInsight"
+        ],
+        "dependencies": [],
+        "updatedAt": "2026-03-09T11:13:16.898Z"
+    },
+    {
+        "name": "flow",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "System",
+        "capabilities": [
+            "systemMonitoring",
+            "infrastructureAnalysis",
+            "performanceInsight"
+        ],
+        "dependencies": [
+            "stream"
+        ],
+        "updatedAt": "2026-03-09T11:13:16.898Z"
+    },
+    {
+        "name": "hermes",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "System",
+        "capabilities": [
+            "systemMonitoring",
+            "infrastructureAnalysis",
+            "performanceInsight"
+        ],
+        "dependencies": [],
+        "updatedAt": "2026-03-09T11:13:16.898Z"
+    },
+    {
+        "name": "neural",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "System",
+        "capabilities": [
+            "systemMonitoring",
+            "infrastructureAnalysis",
+            "performanceInsight"
+        ],
+        "dependencies": [],
+        "updatedAt": "2026-03-09T11:13:16.898Z"
+    },
+    {
+        "name": "nexus",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "System",
+        "capabilities": [
+            "systemMonitoring",
+            "infrastructureAnalysis",
+            "performanceInsight"
+        ],
+        "dependencies": [
+            "bridge"
+        ],
+        "updatedAt": "2026-03-09T11:13:16.900Z"
+    },
+    {
+        "name": "spark",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "System",
+        "capabilities": [
+            "systemMonitoring",
+            "infrastructureAnalysis",
+            "performanceInsight"
+        ],
+        "dependencies": [],
+        "updatedAt": "2026-03-09T11:13:16.900Z"
+    },
+    {
+        "name": "stream",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "System",
+        "capabilities": [
+            "systemMonitoring",
+            "infrastructureAnalysis",
+            "performanceInsight"
+        ],
+        "dependencies": [],
+        "updatedAt": "2026-03-09T11:13:16.900Z"
+    }
+]

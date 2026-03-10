@@ -279,6 +279,34 @@ export class HubManagerGRPC {
     }
 
     /**
+     * Gets the Sovereign Knowledge Graph.
+     */
+    async getKnowledgeGraph(focus: string = "", depth: number = 1) {
+        try {
+            const { response } = await this.client.getKnowledgeGraph({
+                graphJson: JSON.stringify({ focus, depth })
+            });
+            return JSON.parse(response.jsonData);
+        } catch (e) {
+            logger.error(`❌ gRPC getKnowledgeGraph failed: ${e}`);
+            return { nodes: [], edges: [] };
+        }
+    }
+
+    /**
+     * Queries the Sovereign Knowledge Graph.
+     */
+    async queryKnowledgeGraph(query: string) {
+        try {
+            const { response } = await this.client.queryKnowledgeGraph({ queryJson: query });
+            return JSON.parse(response.jsonData);
+        } catch (e) {
+            logger.error(`❌ gRPC queryKnowledgeGraph failed: ${e}`);
+            return [];
+        }
+    }
+
+    /**
      * Performs a native AI reasoning task.
      */
     async reason(prompt: string) {

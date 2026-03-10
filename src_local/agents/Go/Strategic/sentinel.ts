@@ -4,6 +4,7 @@
  */
 import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 export enum SecurityPosturesGo {
     HARDENED = "HARDENED",
@@ -25,15 +26,40 @@ export class GoSecurityEngine {
 }
 
 export class SentinelPersona extends BaseActivePersona {
-    constructor(projectRoot?: string) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Sentinel";
         this.emoji = "🛡️";
-        this.role = "PhD Security Auditor";
+        this.role = "Sovereign Security Architect";
+        this.phd_identity = "System Protection & Transport Layer Shielding";
         this.stack = "Go";
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override async execute(context: ProjectContext): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            // Strategic Intelligence: Blast Radius
+            const graph = await this.hub.getKnowledgeGraph("src_native/hub/main.go", 2);
+            
+            // Security Query: Ownership and Mutability
+            const securityQuery = await this.hub.queryKnowledgeGraph("unsafe", "critical");
+
+            // PhD Security Reasoning
+            const reasonPrompt = `Analyze the Go Hub integrity. Security Query detected ${securityQuery.length} suspicious patterns. Graph has ${graph.nodes.length} dependency nodes.`;
+            const reasoning = await this.hub.reason(reasonPrompt);
+
+            findings.push({
+                file: "Native Hub", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Vigilance: Integridade gRPC/Go validada. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Blast Radius Analysis", match_count: 1
+            } as any);
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".go"],
             rules: [

@@ -15,10 +15,12 @@ const logger = winston.child({ module: "BaseActivePersona" });
 export abstract class BaseActivePersona implements IAgent {
     id: string = "base_agent"; category: string = "General";
     name: string = "Base"; emoji: string = "👤"; role: string = "Generalist"; stack: string = "Universal";
+    phd_identity: string = "General Intelligence";
     projectRoot: string | null = null; contextData: Record<string, FileContextData> = {}; projectDna: Record<string, any> = {};
     ignoredFiles: string[] = ["auto_healing_mission.md", "strategic_mission.txt"];
     auditEngine: any; structuralAnalyst: any; integrityGuardian: any;
     maturityEvaluator: any; cognitive: any; patternFinder!: PatternFinder;
+    protected hub: any = null;
     private auditStartTime: number = 0;
 
     constructor(projectRoot?: string) { this.projectRoot = projectRoot || null; }
@@ -31,6 +33,7 @@ export abstract class BaseActivePersona implements IAgent {
     setContext(data: ProjectContext): void {
         this.projectDna = data.identity || {};
         this.contextData = data.map || {};
+        this.hub = data.hub || null;
     }
 
     performStrategicAudit(obj?: string, fl?: string, ct?: string): (StrategicFinding | string | null)[] {

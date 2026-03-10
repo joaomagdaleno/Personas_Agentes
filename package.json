@@ -21,6 +21,7 @@
   "scripts": {
     "verify-all": "bun run ensure-binaries && bun run --parallel test diagnostic",
     "test": "bun test",
+    "persona": "bun scripts/persona.ts",
     "ensure-binaries": "bun run scripts/ensure_binaries.ts",
     "diagnostic": "bun run scripts/run-diagnostic.ts",
     "benchmark": "bun run scripts/run_benchmark.ts",
