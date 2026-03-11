@@ -26,15 +26,22 @@ export class ScribePersona extends BaseActivePersona {
         return findings;
     }
 
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".kt", ".kts"],
+            rules: [
+                { regex: /\/\*\*[\s\S]*?\*\//, issue: "KDoc: Documentação KDoc detectada. Verifique se os @param e @return estão precisos.", severity: "low" },
+                { regex: /\/\/ TODO:/, issue: "Dívida Técnica: Pendência encontrada. Verifique se há rastreabilidade no Jira/GitHub.", severity: "medium" },
+                { regex: /\/\/ FIXME:/, issue: "Erro Crítico: Marcação de correção urgente detectada. Priorize a análise forense.", severity: "high" },
+                { regex: /@Deprecated/, issue: "Código Obsoleto: Verifique a versão de substituição no parâmentro 'replaceWith'.", severity: "medium" }
+            ]
+        };
+    }
+
     public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /\/\*\*[\s\S]*?\*\//, issue: "KDoc: Documentação KDoc detectada. Verifique se os @param e @return estão precisos.", severity: "low" },
-            { regex: /\/\/ TODO:/, issue: "Dívida Técnica: Pendência encontrada. Verifique se há rastreabilidade no Jira/GitHub.", severity: "medium" },
-            { regex: /\/\/ FIXME:/, issue: "Erro Crítico: Marcação de correção urgente detectada. Priorize a análise forense.", severity: "high" },
-            { regex: /@Deprecated/, issue: "Código Obsoleto: Verifique a versão de substituição no parâmentro 'replaceWith'.", severity: "medium" }
-        ];
-        const results = await this.findPatterns([".kt", ".kts"], rules);
+        const results = await this.findPatterns(this.getAuditRules().extensions, this.getAuditRules().rules);
+
 
         // Advanced Logic: Documentation Fidelity
         if (results.some(r => r.issue.includes("FIXME"))) {

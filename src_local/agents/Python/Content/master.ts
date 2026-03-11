@@ -11,18 +11,42 @@ export class MasterPersona extends BaseActivePersona {
         this.name = "Master";
         this.emoji = "👑";
         this.role = "PhD Principal Architect";
+        this.phd_identity = "System Orchestration & Prime Directive (Python)";
         this.stack = "Python";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const coreNodes = await this.hub.queryKnowledgeGraph("main", "low");
+            const reasoning = await this.hub.reason(`Analyze the prime directive compliance of a Python system with ${coreNodes.length} core entry points. Recommend architectural alignment and sovereignty enforcement.`);
+            findings.push({ 
+                file: "System Audit", agent: this.name, role: this.role, emoji: this.emoji, 
+                issue: `Sovereign Master: Diretrizes PhD validadas via Rust Hub. PhD Analysis: ${reasoning}`, 
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Master Audit", match_count: 1,
+                context: "Prime Directive Enforcement"
+            } as any);
+        }
+        return findings;
+    }
+
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".py"],
+            rules: [
+                { regex: /main\(.*\):/, issue: "Ponto de Entrada: Verifique se a lógica de inicialização é idempotente e resiliente a falhas parciais.", severity: "low" },
+                { regex: /sys\.exit\(/, issue: "Encerramento Abrupto: O uso de sys.exit() deve ser acompanhado de limpeza de recursos e logs forenses.", severity: "medium" },
+                { regex: /import os, sys/, issue: "Higiene de Importação: Mantenha as importações organizadas e evite dependências desnecessárias no core.", severity: "low" },
+                { regex: /DIRECTIVE_PHD_VIOLATION/, issue: "Violação de Diretriz: Alerta crítico de desvio das normas de soberania sistêmica PhD.", severity: "critical" }
+            ]
+        };
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /main\(.*\):/, issue: "Ponto de Entrada: Verifique se a lógica de inicialização é idempotente e resiliente a falhas parciais.", severity: "low" },
-            { regex: /sys\.exit\(/, issue: "Encerramento Abrupto: O uso de sys.exit() deve ser acompanhado de limpeza de recursos e logs forenses.", severity: "medium" },
-            { regex: /import os, sys/, issue: "Higiene de Importação: Mantenha as importações organizadas e evite dependências desnecessárias no core.", severity: "low" },
-            { regex: /DIRECTIVE_PHD_VIOLATION/, issue: "Violação de Diretriz: Alerta crítico de desvio das normas de soberania sistêmica PhD.", severity: "critical" }
-        ];
-        const results = await this.findPatterns([".py"], rules);
+        const results = await this.findPatterns(this.getAuditRules().extensions, this.getAuditRules().rules);
+
 
         // Advanced Logic: Prime Directive Audit
         if (results.some(r => r.severity === "critical")) {

@@ -10,19 +10,43 @@ export class FragmentPersona extends BaseActivePersona {
         super(projectRoot);
         this.name = "Fragment";
         this.emoji = "🧩";
-        this.role = "PhD Logic Engineer";
+        this.role = "PhD Refactoring Expert";
+        this.phd_identity = "Modularity & Structural Cohesion (Python)";
         this.stack = "Python";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const modNodes = await this.hub.queryKnowledgeGraph("import", "low");
+            const reasoning = await this.hub.reason(`Analyze the structural modularity of a Python system with ${modNodes.length} import markers. Recommend decoupling strategies and module organization.`);
+            findings.push({ 
+                file: "Structural Audit", agent: this.name, role: this.role, emoji: this.emoji, 
+                issue: `Sovereign Fragment: Coesão Python validada via Rust Hub. PhD Analysis: ${reasoning}`, 
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Fragment Audit", match_count: 1,
+                context: "Module Modularity & Decoupling"
+            } as any);
+        }
+        return findings;
+    }
+
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".py"],
+            rules: [
+                { regex: /def .*\(.*\):[\s\S]{1000,}/, issue: "Função Gigante: A lógica ultrapassa o limite PhD de granularidade. Divida em funções menores e coesas.", severity: "high" },
+                { regex: /if .*:\n\s+if .*:\n\s+if .*:\n\s+if .*: /, issue: "Nesting Profundo: Complexidade ciclomática excessiva detectada. Use 'guard clauses' para simplificar o fluxo.", severity: "medium" },
+                { regex: /import .*/, issue: "Análise de Acoplamento: Verifique se o módulo possui responsabilidades excessivas (Deus-módulo).", severity: "medium" },
+                { regex: /# fragment: .*/, issue: "Soberania Atômica: Marcador de fragmento detectado. Verifique se a unidade é realmente atômica.", severity: "low" }
+            ]
+        };
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /def .*\(.*\):[\s\S]{1000,}/, issue: "Função Gigante: A lógica ultrapassa o limite PhD de granularidade. Divida em funções menores e coesas.", severity: "high" },
-            { regex: /if .*:\n\s+if .*:\n\s+if .*:\n\s+if .*: /, issue: "Nesting Profundo: Complexidade ciclomática excessiva detectada. Use 'guard clauses' para simplificar o fluxo.", severity: "medium" },
-            { regex: /import .*/, issue: "Análise de Acoplamento: Verifique se o módulo possui responsabilidades excessivas (Deus-módulo).", severity: "medium" },
-            { regex: /# fragment: .*/, issue: "Soberania Atômica: Marcador de fragmento detectado. Verifique se a unidade é realmente atômica.", severity: "low" }
-        ];
-        const results = await this.findPatterns([".py"], rules);
+        const results = await this.findPatterns(this.getAuditRules().extensions, this.getAuditRules().rules);
+
 
         // Advanced Logic: Granularity Audit
         if (results.some(r => r.severity === "high")) {

@@ -26,15 +26,22 @@ export class ScribePersona extends BaseActivePersona {
         return findings;
     }
 
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".py"],
+            rules: [
+                { regex: /""".*"""/, issue: "Docstring: Verifique se os parâmetros e retornos estão documentados seguindo o padrão Google/NumPy.", severity: "low" },
+                { regex: /# TODO:/, issue: "Dívida Técnica: Pendência encontrada no suporte Python. Verifique a rastreabilidade PhD.", severity: "medium" },
+                { regex: /# FIXME:/, issue: "Erro Crítico: Marcação de correção urgente detectada. Priorize a análise forense.", severity: "high" },
+                { regex: /@deprecated/, issue: "Código Obsoleto: Verifique a versão de substituição e planeje a migração para o Bun stack.", severity: "medium" }
+            ]
+        };
+    }
+
     public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /""".*"""/, issue: "Docstring: Verifique se os parâmetros e retornos estão documentados seguindo o padrão Google/NumPy.", severity: "low" },
-            { regex: /# TODO:/, issue: "Dívida Técnica: Pendência encontrada no suporte Python. Verifique a rastreabilidade PhD.", severity: "medium" },
-            { regex: /# FIXME:/, issue: "Erro Crítico: Marcação de correção urgente detectada. Priorize a análise forense.", severity: "high" },
-            { regex: /@deprecated/, issue: "Código Obsoleto: Verifique a versão de substituição e planeje a migração para o Bun stack.", severity: "medium" }
-        ];
-        const results = await this.findPatterns([".py"], rules);
+        const results = await this.findPatterns(this.getAuditRules().extensions, this.getAuditRules().rules);
+
 
         // Advanced Logic: Documentation Integrity Audit
         if (results.some(r => r.issue.includes("FIXME"))) {

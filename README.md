@@ -54,7 +54,7 @@ cp .env.example .env
 ```
 
 | Variável | Default | Descrição |
-|---|---|---|
+| --- | --- | --- |
 | `NODE_ENV` | `development` | Modo de execução (`development` / `production`) |
 | `DIAGNOSTIC_TEST_MODE` | `0` | Modo de teste do diagnóstico (`1` = sem side-effects) |
 | `HUB_GRPC_HOST` | `localhost:50051` | Endereço do Go Hub Proxy (gRPC) |

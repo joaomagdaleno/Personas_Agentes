@@ -30,7 +30,24 @@ export class FragmentPersona extends BaseActivePersona {
         this.name = "Fragment";
         this.emoji = "🧩";
         this.role = "PhD Refactoring Expert";
+        this.phd_identity = "Modularity & Structural Cohesion (Go)";
         this.stack = "Go";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const modNodes = await this.hub.queryKnowledgeGraph("package", "low");
+            const reasoning = await this.hub.reason(`Analyze the package modularity of a Go system with ${modNodes.length} package markers. Recommend decoupling and internalization patterns.`);
+            findings.push({ 
+                file: "Structural Audit", agent: this.name, role: this.role, emoji: this.emoji, 
+                issue: `Sovereign Fragment: Coesão Go validada via Rust Hub. PhD Analysis: ${reasoning}`, 
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Fragment Audit", match_count: 1,
+                context: "Package Modularity & Decoupling"
+            } as any);
+        }
+        return findings;
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {

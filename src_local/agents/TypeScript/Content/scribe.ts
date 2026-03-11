@@ -6,7 +6,7 @@ import type { AuditRule, StrategicFinding } from "../../base.ts";
  * 📝 Dr. Scribe — PhD in TypeScript Documentation & Knowledge
  */
 export class ScribePersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
+    constructor(projectRoot?: string) {
         super(projectRoot);
         this.name = "Scribe";
         this.emoji = "📝";

@@ -6,7 +6,7 @@ import type { AuditRule, StrategicFinding } from "../../base.ts";
  * 📝 Dr. Scribe — PhD in Bun Documentation & API Clarity
  */
 export class ScribePersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
+    constructor(projectRoot?: string) {
         super(projectRoot);
         this.name = "Scribe";
         this.emoji = "📝";
@@ -50,8 +50,9 @@ export class ScribePersona extends BaseActivePersona {
         const docs = (content.match(/\/\*\*[\s\S]*?\*\//g) || []).length;
         if (exports > 0 && docs === 0) {
             return {
-                file, severity: "HIGH", persona: this.name,
-                issue: `Caixa Preta: O objetivo '${objective}' exige transparência. Em '${file}', a falta de JSDoc torna o módulo Bun opaco.`
+                file, severity: "HIGH",
+                issue: `Caixa Preta: O objetivo '${objective}' exige transparência. Em '${file}', a falta de JSDoc torna o módulo Bun opaco.`,
+                context: "Exports without JSDoc"
             };
         }
         return null;

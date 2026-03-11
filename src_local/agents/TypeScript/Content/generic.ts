@@ -7,7 +7,7 @@ import type { AuditRule, StrategicFinding } from "../../base.ts";
  * Especialista em uso de generics, complexidade de tipos e type inference.
  */
 export class GenericPersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
+    constructor(projectRoot?: string) {
         super(projectRoot);
         this.name = "Generic";
         this.emoji = "🧬";
@@ -55,7 +55,7 @@ export class GenericPersona extends BaseActivePersona {
         };
     }
 
-    selfDiagnostic(): any {
+    public override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,
@@ -63,7 +63,7 @@ export class GenericPersona extends BaseActivePersona {
         };
     }
 
-    getSystemPrompt(): string {
+    public override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em álgebra de tipos e generics TypeScript.`;
     }
 }
