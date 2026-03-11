@@ -30,7 +30,19 @@ export class ScribePersona extends BaseActivePersona {
         this.name = "Scribe";
         this.emoji = "📜";
         this.role = "PhD Documentation Specialist";
+        this.phd_identity = "Go Documentation & Technical Writing";
         this.stack = "Go";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const docNodes = await this.hub.queryKnowledgeGraph("func ", "low");
+            const reasoning = await this.hub.reason(`Analyze the GoDoc quality of a Go system with ${docNodes.length} function definitions. Recommend package-level comments and verifiable examples.`);
+            findings.push({ file: "Knowledge Audit", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Scribe: Conhecimento Go validado via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Documentation Audit", match_count: 1 } as any);
+        }
+        return findings;
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {

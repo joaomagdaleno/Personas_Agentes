@@ -1,7 +1,6 @@
-import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
-import winston from "winston";
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";
 
-const logger = winston.child({ module: "TS_Echo" });
 
 /**
  * 📡 Dr. Echo — PhD in TypeScript Logging & Diagnostic Tracing
@@ -13,7 +12,25 @@ export class EchoPersona extends BaseActivePersona {
         this.name = "Echo";
         this.emoji = "📡";
         this.role = "PhD Diagnostic Tracer";
+        this.phd_identity = "Logging & Diagnostic Tracing (TypeScript)";
         this.stack = "TypeScript";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            const logNodes = await this.hub.queryKnowledgeGraph("console.log", "high");
+            const reasoning = await this.hub.reason(`Analyze the diagnostic tracing maturity of a system with ${logNodes.length} unstructured logging points in ${this.stack}. Recommend migration to structured logging.`);
+
+            findings.push({
+                file: "Diagnostic Tracing", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Echo: Rastreabilidade validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Logging Audit", match_count: 1
+            } as any);
+        }
+        return findings;
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {

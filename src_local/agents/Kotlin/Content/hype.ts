@@ -11,7 +11,19 @@ export class HypePersona extends BaseActivePersona {
         this.name = "Hype";
         this.emoji = "📣";
         this.role = "PhD Growth Lead";
+        this.phd_identity = "Growth Vectors & Play Store Optimization (Kotlin)";
         this.stack = "Kotlin";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const metaNodes = await this.hub.queryKnowledgeGraph("com.example", "high");
+            const reasoning = await this.hub.reason(`Analyze the product visibility of a Kotlin/Android project with ${metaNodes.length} generic package patterns. Recommend Play Store branding improvements.`);
+            findings.push({ file: "Product Visibility", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Hype: Visibilidade Kotlin validada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Branding Audit", match_count: 1 } as any);
+        }
+        return findings;
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {

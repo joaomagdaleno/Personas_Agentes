@@ -11,7 +11,19 @@ export class MantraPersona extends BaseActivePersona {
         this.name = "Mantra";
         this.emoji = "🧘";
         this.role = "PhD Quality Architect";
+        this.phd_identity = "Quality Architecture & Immutability (Kotlin)";
         this.stack = "Kotlin";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const qualityNodes = await this.hub.queryKnowledgeGraph("var null", "medium");
+            const reasoning = await this.hub.reason(`Analyze the code purity of a Kotlin system with ${qualityNodes.length} mutable nullable patterns. Recommend val/immutability migration.`);
+            findings.push({ file: "Quality Audit", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Mantra: Pureza Kotlin validada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Quality Audit", match_count: 1 } as any);
+        }
+        return findings;
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {

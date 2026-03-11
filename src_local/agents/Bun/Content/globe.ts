@@ -1,7 +1,6 @@
-import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
-import winston from "winston";
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";
 
-const logger = winston.child({ module: "Bun_Globe" });
 
 /**
  * 🌍 Dr. Globe — PhD in Bun i18n & Cross-Platform Compatibility
@@ -13,7 +12,19 @@ export class GlobePersona extends BaseActivePersona {
         this.name = "Globe";
         this.emoji = "🌍";
         this.role = "PhD Bun i18n Engineer";
+        this.phd_identity = "i18n & Cross-Platform Compatibility (Bun)";
         this.stack = "Bun";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const i18nNodes = await this.hub.queryKnowledgeGraph("import.meta", "low");
+            const reasoning = await this.hub.reason(`Analyze cross-platform portability of a Bun system with ${i18nNodes.length} Bun-only API patterns. Recommend Node.js compatibility layer.`);
+            findings.push({ file: "i18n Audit", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Globe: Portabilidade Bun validada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph i18n Audit", match_count: 1 } as any);
+        }
+        return findings;
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {

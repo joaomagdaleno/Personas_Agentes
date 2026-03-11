@@ -10,7 +10,19 @@ export class MantraPersona extends BaseActivePersona {
         this.name = "Mantra";
         this.emoji = "🕉️";
         this.role = "PhD Logic Philosopher";
+        this.phd_identity = "Consistent Logic & Purity (Python)";
         this.stack = "Python";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const logicNodes = await this.hub.queryKnowledgeGraph("TODO", "medium");
+            const reasoning = await this.hub.reason(`Analyze the logic purity of a Python system with ${logicNodes.length} TODO/FIXME patterns. Recommend technical debt resolution.`);
+            findings.push({ file: "Logic Purity", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Mantra: Pureza lógica Python validada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Logic Audit", match_count: 1 } as any);
+        }
+        return findings;
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {

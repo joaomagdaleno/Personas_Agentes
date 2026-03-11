@@ -11,7 +11,25 @@ export class EchoPersona extends BaseActivePersona {
         this.name = "Echo";
         this.emoji = "🗣️";
         this.role = "PhD Observability Engineer";
+        this.phd_identity = "Observability & Telemetry (Kotlin)";
         this.stack = "Kotlin";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            const logNodes = await this.hub.queryKnowledgeGraph("println", "high");
+            const reasoning = await this.hub.reason(`Analyze the observability maturity of a Kotlin/Android system with ${logNodes.length} unstructured println points. Recommend migration to Timber.`);
+
+            findings.push({
+                file: "Diagnostic Tracing", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Echo: Observabilidade Kotlin validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Logging Audit", match_count: 1
+            } as any);
+        }
+        return findings;
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {

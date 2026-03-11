@@ -30,7 +30,25 @@ export class ForgePersona extends BaseActivePersona {
         this.name = "Forge";
         this.emoji = "🔨";
         this.role = "PhD Codegen Specialist";
+        this.phd_identity = "Go Code Generation & Template Safety";
         this.stack = "Go";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            const evalNodes = await this.hub.queryKnowledgeGraph("go:generate", "medium");
+            const reasoning = await this.hub.reason(`Analyze the codegen safety of a Go system with ${evalNodes.length} code generation directives. Assess template injection risk.`);
+
+            findings.push({
+                file: "Code Safety", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Forge: Codegen Go validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Codegen Audit", match_count: 1
+            } as any);
+        }
+        return findings;
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {

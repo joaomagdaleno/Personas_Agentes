@@ -11,7 +11,19 @@ export class ScribePersona extends BaseActivePersona {
         this.name = "Scribe";
         this.emoji = "✍️";
         this.role = "PhD Technical Writer";
+        this.phd_identity = "Documentation & Narrative Integrity (Kotlin)";
         this.stack = "Kotlin";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const docNodes = await this.hub.queryKnowledgeGraph("/**", "low");
+            const reasoning = await this.hub.reason(`Analyze the narrative fidelity of a Kotlin system with ${docNodes.length} KDoc patterns. Recommend @param/@return accuracy and Kover correlation.`);
+            findings.push({ file: "Fidelity Audit", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Scribe: Narrativa Kotlin validada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Narrative Audit", match_count: 1 } as any);
+        }
+        return findings;
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {

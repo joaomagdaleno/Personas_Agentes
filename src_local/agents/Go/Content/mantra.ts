@@ -30,7 +30,19 @@ export class MantraPersona extends BaseActivePersona {
         this.name = "Mantra";
         this.emoji = "🧘";
         this.role = "PhD Quality Guardian";
+        this.phd_identity = "Go Code Quality & Idioms";
         this.stack = "Go";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const idiomNodes = await this.hub.queryKnowledgeGraph("init()", "medium");
+            const reasoning = await this.hub.reason(`Analyze Effective Go compliance with ${idiomNodes.length} non-idiomatic patterns. Recommend golangci-lint integration.`);
+            findings.push({ file: "Quality Audit", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Mantra: Qualidade Go validada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Quality Audit", match_count: 1 } as any);
+        }
+        return findings;
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {

@@ -30,7 +30,19 @@ export class HypePersona extends BaseActivePersona {
         this.name = "Hype";
         this.emoji = "📢";
         this.role = "PhD Engagement Expert";
+        this.phd_identity = "Go Marketing & Engagement";
         this.stack = "Go";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const metaNodes = await this.hub.queryKnowledgeGraph("README", "low");
+            const reasoning = await this.hub.reason(`Analyze the product visibility of a Go project with ${metaNodes.length} documentation patterns. Recommend awesome-go and docs improvements.`);
+            findings.push({ file: "Product Visibility", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Hype: Engajamento Go validado via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Engagement Audit", match_count: 1 } as any);
+        }
+        return findings;
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {

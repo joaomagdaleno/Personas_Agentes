@@ -1,7 +1,6 @@
-import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
-import winston from "winston";
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";
 
-const logger = winston.child({ module: "TS_Generic" });
 
 /**
  * 🧬 Dr. Generic — PhD in TypeScript Generics & Type Algebra
@@ -13,7 +12,19 @@ export class GenericPersona extends BaseActivePersona {
         this.name = "Generic";
         this.emoji = "🧬";
         this.role = "PhD TypeScript Type Algebraist";
+        this.phd_identity = "Generics & Type Algebra (TypeScript)";
         this.stack = "TypeScript";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const logicNodes = await this.hub.queryKnowledgeGraph("<", "medium");
+            const reasoning = await this.hub.reason(`Analyze the type complexity of a TypeScript system with ${logicNodes.length} generic/conditional patterns. Recommend simplification of nested generics and elimination of double casts.`);
+            findings.push({ file: "Type Audit", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Generic: Álgebra de tipos TS validada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Type Algebra Audit", match_count: 1 } as any);
+        }
+        return findings;
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {

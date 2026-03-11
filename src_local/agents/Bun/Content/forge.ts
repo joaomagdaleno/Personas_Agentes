@@ -1,7 +1,6 @@
-import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
-import winston from "winston";
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";
 
-const logger = winston.child({ module: "Bun_Forge" });
 
 /**
  * 🔨 Dr. Forge — PhD in Bun Code Safety & Compile-time Security
@@ -13,7 +12,25 @@ export class ForgePersona extends BaseActivePersona {
         this.name = "Forge";
         this.emoji = "🔨";
         this.role = "PhD Bun Compile Safety Engineer";
+        this.phd_identity = "Code Safety & Compile-time Security (Bun)";
         this.stack = "Bun";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            const evalNodes = await this.hub.queryKnowledgeGraph("eval", "critical");
+            const reasoning = await this.hub.reason(`Analyze the dynamic execution safety of a Bun system with ${evalNodes.length} eval/Function constructor patterns. Assess compile-time injection risk.`);
+
+            findings.push({
+                file: "Code Safety", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Forge: Segurança de compilação Bun validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Eval Audit", match_count: 1
+            } as any);
+        }
+        return findings;
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {

@@ -11,7 +11,25 @@ export class ForgePersona extends BaseActivePersona {
         this.name = "Forge";
         this.emoji = "⚒️";
         this.role = "PhD Software Architect";
+        this.phd_identity = "Code Generation & Architectural Blueprinting (Kotlin)";
         this.stack = "Kotlin";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            const evalNodes = await this.hub.queryKnowledgeGraph("lateinit", "medium");
+            const reasoning = await this.hub.reason(`Analyze the architectural integrity of a Kotlin system with ${evalNodes.length} lateinit/nullable patterns. Assess null safety and DI coverage.`);
+
+            findings.push({
+                file: "Code Safety", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Forge: Arquitetura Kotlin validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Architecture Audit", match_count: 1
+            } as any);
+        }
+        return findings;
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {

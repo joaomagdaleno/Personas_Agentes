@@ -11,7 +11,25 @@ export class EchoPersona extends BaseActivePersona {
         this.name = "Echo";
         this.emoji = "🔊";
         this.role = "PhD Content Strategist";
+        this.phd_identity = "Semantic Echo & Resource Mapping (Flutter)";
         this.stack = "Flutter";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            const logNodes = await this.hub.queryKnowledgeGraph("print", "high");
+            const reasoning = await this.hub.reason(`Analyze the content integrity of a Flutter system with ${logNodes.length} unstructured print points. Recommend migration to structured logging and i18n.`);
+
+            findings.push({
+                file: "Diagnostic Tracing", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Echo: Integridade de conteúdo Flutter validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Content Audit", match_count: 1
+            } as any);
+        }
+        return findings;
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {

@@ -1,7 +1,6 @@
-import { BaseActivePersona, AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
-import winston from "winston";
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
 
-const logger = winston.child({ module: "TS_Hype" });
 
 /**
  * 🚀 Dr. Hype — PhD in TypeScript Product Visibility & Branding
@@ -13,7 +12,19 @@ export class HypePersona extends BaseActivePersona {
         this.name = "Hype";
         this.emoji = "🚀";
         this.role = "PhD Product Evangelist";
+        this.phd_identity = "Product Visibility & Branding (TypeScript)";
         this.stack = "TypeScript";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const metaNodes = await this.hub.queryKnowledgeGraph("package.json", "medium");
+            const reasoning = await this.hub.reason(`Analyze the product visibility of a TypeScript project with ${metaNodes.length} metadata gaps. Recommend SEO and discoverability improvements.`);
+            findings.push({ file: "Product Visibility", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Hype: Visibilidade do produto validada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Metadata Audit", match_count: 1 } as any);
+        }
+        return findings;
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {

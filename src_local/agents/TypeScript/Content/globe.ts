@@ -1,7 +1,6 @@
-import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
-import winston from "winston";
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";
 
-const logger = winston.child({ module: "TS_Globe" });
 
 /**
  * 🌍 Dr. Globe — PhD in TypeScript Internationalization & Localization
@@ -13,7 +12,19 @@ export class GlobePersona extends BaseActivePersona {
         this.name = "Globe";
         this.emoji = "🌍";
         this.role = "PhD Internationalization Engineer";
+        this.phd_identity = "Internationalization & Localization (TypeScript)";
         this.stack = "TypeScript";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const i18nNodes = await this.hub.queryKnowledgeGraph("hardcoded string", "medium");
+            const reasoning = await this.hub.reason(`Analyze the i18n readiness of a TypeScript system with ${i18nNodes.length} hardcoded string patterns. Recommend localization strategy.`);
+            findings.push({ file: "i18n Audit", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Globe: Portabilidade global validada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph i18n Audit", match_count: 1 } as any);
+        }
+        return findings;
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {

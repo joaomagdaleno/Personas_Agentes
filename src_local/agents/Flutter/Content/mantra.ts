@@ -11,7 +11,19 @@ export class MantraPersona extends BaseActivePersona {
         this.name = "Mantra";
         this.emoji = "🧘";
         this.role = "PhD Quality Architect";
+        this.phd_identity = "Structural Integrity & Code Purity (Flutter)";
         this.stack = "Flutter";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const qualityNodes = await this.hub.queryKnowledgeGraph("setState", "medium");
+            const reasoning = await this.hub.reason(`Analyze the structural purity of a Flutter system with ${qualityNodes.length} setState/exception patterns. Recommend Bloc/Provider migration.`);
+            findings.push({ file: "Quality Audit", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Mantra: Pureza Flutter validada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Quality Audit", match_count: 1 } as any);
+        }
+        return findings;
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {

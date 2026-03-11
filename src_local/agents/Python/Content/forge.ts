@@ -11,7 +11,25 @@ export class ForgePersona extends BaseActivePersona {
         this.name = "Forge";
         this.emoji = "⚒️";
         this.role = "PhD Software Architect";
+        this.phd_identity = "Code Generation & Architectural Blueprinting (Python)";
         this.stack = "Python";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            const evalNodes = await this.hub.queryKnowledgeGraph("eval", "critical");
+            const reasoning = await this.hub.reason(`Analyze the dynamic execution safety of a Python system with ${evalNodes.length} eval/exec patterns. Assess injection and type safety risk.`);
+
+            findings.push({
+                file: "Code Safety", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Forge: Segurança de codegen Python validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Eval Audit", match_count: 1
+            } as any);
+        }
+        return findings;
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {

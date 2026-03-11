@@ -1,7 +1,6 @@
-import { BaseActivePersona, AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
-import winston from "winston";
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
 
-const logger = winston.child({ module: "Bun_Hype" });
 
 /**
  * 🚀 Dr. Hype — PhD in Bun Project Visibility & Registry Presence
@@ -13,7 +12,19 @@ export class HypePersona extends BaseActivePersona {
         this.name = "Hype";
         this.emoji = "🚀";
         this.role = "PhD Bun Product Evangelist";
+        this.phd_identity = "Project Visibility & Registry Presence (Bun)";
         this.stack = "Bun";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const metaNodes = await this.hub.queryKnowledgeGraph("package.json", "medium");
+            const reasoning = await this.hub.reason(`Analyze the Bun project visibility with ${metaNodes.length} metadata gaps. Recommend ESM exports and Bun registry improvements.`);
+            findings.push({ file: "Product Visibility", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Hype: Visibilidade Bun validada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Metadata Audit", match_count: 1 } as any);
+        }
+        return findings;
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {

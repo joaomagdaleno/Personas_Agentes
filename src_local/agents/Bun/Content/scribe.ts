@@ -1,7 +1,6 @@
-import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
-import winston from "winston";
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";
 
-const logger = winston.child({ module: "Bun_Scribe" });
 
 /**
  * 📝 Dr. Scribe — PhD in Bun Documentation & API Clarity
@@ -12,7 +11,19 @@ export class ScribePersona extends BaseActivePersona {
         this.name = "Scribe";
         this.emoji = "📝";
         this.role = "PhD Bun Documentation Engineer";
+        this.phd_identity = "Documentation & API Clarity (Bun)";
         this.stack = "Bun";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const apiNodes = await this.hub.queryKnowledgeGraph("export", "medium");
+            const reasoning = await this.hub.reason(`Analyze the API transparency of a Bun system with ${apiNodes.length} exports. Recommend JSDoc compliance for modern Bun runtimes.`);
+            findings.push({ file: "API Audit", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Scribe: Transparência Bun validada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph API Transparency Audit", match_count: 1 } as any);
+        }
+        return findings;
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {

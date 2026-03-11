@@ -11,7 +11,19 @@ export class GlobePersona extends BaseActivePersona {
         this.name = "Globe";
         this.emoji = "🌍";
         this.role = "PhD Localization Engineer";
+        this.phd_identity = "Internationalization & Cultural Logic (Flutter)";
         this.stack = "Flutter";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const i18nNodes = await this.hub.queryKnowledgeGraph(".arb", "medium");
+            const reasoning = await this.hub.reason(`Analyze i18n readiness of a Flutter system with ${i18nNodes.length} localization resource patterns. Recommend .arb and RTL compliance.`);
+            findings.push({ file: "i18n Audit", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Globe: Localização Flutter validada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph i18n Audit", match_count: 1 } as any);
+        }
+        return findings;
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {

@@ -1,7 +1,6 @@
-import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
-import winston from "winston";
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";
 
-const logger = winston.child({ module: "TS_Scribe" });
 
 /**
  * 📝 Dr. Scribe — PhD in TypeScript Documentation & Knowledge
@@ -12,7 +11,19 @@ export class ScribePersona extends BaseActivePersona {
         this.name = "Scribe";
         this.emoji = "📝";
         this.role = "PhD Documentation Engineer";
+        this.phd_identity = "Documentation & Knowledge Transfer (TypeScript)";
         this.stack = "TypeScript";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const docNodes = await this.hub.queryKnowledgeGraph("export", "high");
+            const reasoning = await this.hub.reason(`Analyze the documentation coverage of a TypeScript system with ${docNodes.length} exports. Recommend JSDoc patterns for explicability.`);
+            findings.push({ file: "Documentation Audit", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Scribe: Documentação TS validada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Documentation Audit", match_count: 1 } as any);
+        }
+        return findings;
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {

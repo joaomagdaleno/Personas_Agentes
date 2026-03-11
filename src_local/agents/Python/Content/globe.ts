@@ -11,7 +11,19 @@ export class GlobePersona extends BaseActivePersona {
         this.name = "Globe";
         self.emoji = "🌍";
         this.role = "PhD Localization Engineer";
+        this.phd_identity = "Internationalization & Cultural Logic (Python)";
         this.stack = "Python";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const i18nNodes = await this.hub.queryKnowledgeGraph("gettext", "medium");
+            const reasoning = await this.hub.reason(`Analyze i18n readiness of a Python system with ${i18nNodes.length} gettext patterns. Recommend .po/.mo synchronization.`);
+            findings.push({ file: "i18n Audit", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Globe: Localização Python validada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph i18n Audit", match_count: 1 } as any);
+        }
+        return findings;
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {

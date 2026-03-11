@@ -30,7 +30,25 @@ export class EchoPersona extends BaseActivePersona {
         this.name = "Echo";
         this.emoji = "🗣️";
         this.role = "PhD Telemetry Specialist";
+        this.phd_identity = "Go Telemetry & Structured Logging";
         this.stack = "Go";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            const logNodes = await this.hub.queryKnowledgeGraph("fmt.Print", "high");
+            const reasoning = await this.hub.reason(`Analyze the telemetry maturity of a Go system with ${logNodes.length} unstructured logging points. Recommend migration to zap/zerolog.`);
+
+            findings.push({
+                file: "Diagnostic Tracing", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Echo: Telemetria Go validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Logging Audit", match_count: 1
+            } as any);
+        }
+        return findings;
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {

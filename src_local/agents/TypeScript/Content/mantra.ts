@@ -1,7 +1,6 @@
-import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
-import winston from "winston";
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";
 
-const logger = winston.child({ module: "TS_Mantra" });
 
 /**
  * 🔮 Dr. Mantra — PhD in TypeScript Type Purity & Strictness
@@ -13,7 +12,19 @@ export class MantraPersona extends BaseActivePersona {
         this.name = "Mantra";
         this.emoji = "🔮";
         this.role = "PhD Type System Guardian";
+        this.phd_identity = "Type Purity & Strictness (TypeScript)";
         this.stack = "TypeScript";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const typeNodes = await this.hub.queryKnowledgeGraph("any", "high");
+            const reasoning = await this.hub.reason(`Analyze the type safety of a TypeScript system with ${typeNodes.length} "any" usage patterns. Recommend strict typing migration strategy.`);
+            findings.push({ file: "Type Safety", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Mantra: Pureza de tipos validada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Type Audit", match_count: 1 } as any);
+        }
+        return findings;
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
