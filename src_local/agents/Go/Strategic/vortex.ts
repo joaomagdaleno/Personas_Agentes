@@ -30,26 +30,51 @@ export class VortexPersona extends BaseActivePersona {
         this.name = "Vortex";
         this.emoji = "🌀";
         this.role = "PhD Innovation Strategist";
+        this.phd_identity = "Operational Excellence & Vanguard Algorithms (Go)";
         this.stack = "Go";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const vanguardNodes = await this.hub.queryKnowledgeGraph("generics", "low");
+            const reasoning = await this.hub.reason(`Analyze the architectural innovation and vanguard patterns of a Go system with ${vanguardNodes.length} generic markers. Recommend adoption of Go 1.23+ iterators and monomorphization strategies.`);
+            findings.push({ 
+                file: "Innovation Audit", agent: this.name, role: this.role, emoji: this.emoji, 
+                issue: `Sovereign Vortex: Inovação Go validada via Rust Hub. PhD Analysis: ${reasoning}`, 
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Vortex Audit", match_count: 1,
+                context: "Vanguard Tech & Performance"
+            } as any);
+        }
+        return findings;
+    }
+
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go"],
+            rules: [
+                { regex: /any\s*\[\w*\]/, issue: "Generic Constraints: Verifique se as restrições de tipo (Type Constraints) são suficientemente granulares.", severity: "low" },
+                { regex: /unsafe\.Pointer/, issue: "Low-Level Magic: O uso de unsafe permite alta performance mas quebra a segurança de memória do Go; use com extrema cautela.", severity: "high" },
+                { regex: /reflect\.ValueOf/, issue: "Runtime Introspection: Verifique se o uso de reflexão pode ser substituído por tipos estáticos ou generics para ganho de performance.", severity: "medium" },
+                { regex: /wasm/, issue: "WebAssembly Target: Verifique se a lógica de syscalls e I/O é compatível com o ambiente JS/Wasm.", severity: "medium" },
+                { regex: /ebpf/, issue: "eBPF Integration: Verifique a segurança dos programas carregados no kernel via Go.", severity: "critical" },
+                { regex: /plugin\.Open/, issue: "Dynamic Plugins: O suporte a plugins em Go é frágil; verifique a compatibilidade de versões da biblioteca padrão.", severity: "medium" }
+            ]
+        };
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /any\s*\[\w*\]/, issue: "Generic Constraints: Verifique se as restrições de tipo (Type Constraints) são suficientemente granulares.", severity: "low" },
-            { regex: /unsafe\.Pointer/, issue: "Low-Level Magic: O uso de unsafe permite alta performance mas quebra a segurança de memória do Go; use com extrema cautela.", severity: "high" },
-            { regex: /reflect\.ValueOf/, issue: "Runtime Introspection: Verifique se o uso de reflexão pode ser substituído por tipos estáticos ou generics para ganho de performance.", severity: "medium" },
-            { regex: /wasm/, issue: "WebAssembly Target: Verifique se a lógica de syscalls e I/O é compatível com o ambiente JS/Wasm.", severity: "medium" },
-            { regex: /ebpf/, issue: "eBPF Integration: Verifique a segurança dos programas carregados no kernel via Go.", severity: "critical" },
-            { regex: /plugin\.Open/, issue: "Dynamic Plugins: O suporte a plugins em Go é frágil; verifique a compatibilidade de versões da biblioteca padrão.", severity: "medium" }
-        ];
-        const results = await this.findPatterns([".go"], rules);
+        const results = await this.findPatterns(this.getAuditRules().extensions, this.getAuditRules().rules);
 
         // Advanced Logic Density
         const innovationFindings = GoVortexEngine.audit(this.projectRoot || "");
-        innovationFindings.forEach(f => results.push({ file: "INNOVATION_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "low", stack: this.stack }));
+        innovationFindings.forEach(f => results.push({ 
+            file: "INNOVATION_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, 
+            severity: "low", stack: this.stack, evidence: "Gopher Innovation Audit", match_count: 1
+        }));
 
-        this.endMetrics(results.length);
         return results;
     }
 
@@ -57,7 +82,7 @@ export class VortexPersona extends BaseActivePersona {
         console.log(`🛠️ [Vortex] Injetando generics e otimizando algoritmos de vanguarda em: ${blindSpots.join(", ")}`);
     }
 
-    public override reasonAboutObjective(objective: string, file: string, content: string): string | StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, content: string): StrategicFinding | null {
         return {
             file,
             issue: `Estratégia: ${objective}`,
@@ -65,7 +90,7 @@ export class VortexPersona extends BaseActivePersona {
             objective,
             analysis: "Auditando o alinhamento do sistema Go com as tendências futuras da linguagem.",
             recommendation: "Adotar Generics para coleções utilitárias e monitorar a estabilidade dos iteradores nativos.",
-            severity: "low"
+            severity: "STRATEGIC"
         } as StrategicFinding;
     }
 

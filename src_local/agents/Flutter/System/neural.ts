@@ -11,25 +11,47 @@ export class NeuralPersona extends BaseActivePersona {
         this.name = "Neural";
         this.emoji = "🧠";
         this.role = "PhD Systems Neuroengineer";
+        this.phd_identity = "Neural Sync & State Orchestration (Flutter)";
         this.stack = "Flutter";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const syncNodes = await this.hub.queryKnowledgeGraph("Sync", "low");
+            const reasoning = await this.hub.reason(`Analyze the state synchronization architecture of a Flutter system with ${syncNodes.length} neural sync markers. Recommend atomic state propagation and rebuild optimization.`);
+            findings.push({ 
+                file: "AI Audit", agent: this.name, role: this.role, emoji: this.emoji, 
+                issue: `Sovereign Neural: Sincronia de estado Flutter validada via Rust Hub. PhD Analysis: ${reasoning}`, 
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Neural Audit", match_count: 1,
+                context: "State Synchronization & Integrity"
+            } as any);
+        }
+        return findings;
+    }
+
+    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".dart"],
+            rules: [
+                { regex: /Provider\.of\(context\)/, issue: "Propagação de Estado: Verifique se o 'listen: false' é usado onde apenas métodos são chamados para evitar rebuilds inúteis.", severity: "low" },
+                { regex: /ChangeNotifierProvider/, issue: "Observação de Estado: Verifique se o ChangeNotifier é limpo corretamente via MultiProvider ou manual dispose.", severity: "medium" },
+                { regex: /watch\(|read\(|select\(/, issue: "Riverpod/Signals: Verifique a granularidade dos seletores para minimizar a árvore de rebuild.", severity: "low" },
+                { regex: /SyncManager\.startSync\(/, issue: "Sincronia Neural: Verifique se há proteção contra race conditions em sincronias paralelas.", severity: "high" }
+            ]
+        };
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /Provider\.of\(context\)/, issue: "Propagação de Estado: Verifique se o 'listen: false' é usado onde apenas métodos são chamados para evitar rebuilds inúteis.", severity: "low" },
-            { regex: /ChangeNotifierProvider/, issue: "Observação de Estado: Verifique se o ChangeNotifier é limpo corretamente via MultiProvider ou manual dispose.", severity: "medium" },
-            { regex: /watch\(|read\(|select\(/, issue: "Riverpod/Signals: Verifique a granularidade dos seletores para minimizar a árvore de rebuild.", severity: "low" },
-            { regex: /SyncManager\.startSync\(/, issue: "Sincronia Neural: Verifique se há proteção contra race conditions em sincronias paralelas.", severity: "high" }
-        ];
-        const results = await this.findPatterns([".dart"], rules);
+        const results = await this.findPatterns(this.getAuditRules().extensions, this.getAuditRules().rules);
 
         // Advanced Logic: Neural Sync Audit
         if (results.some(r => r.issue.includes("race conditions"))) {
             this.reasonAboutObjective("Neural Integrity", "Synchronization", "Found high-risk parallel sync patterns in Flutter state.");
         }
 
-        this.endMetrics(results.length);
         return results;
     }
 

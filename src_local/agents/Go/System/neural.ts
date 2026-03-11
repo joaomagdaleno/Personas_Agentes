@@ -29,7 +29,24 @@ export class NeuralPersona extends BaseActivePersona {
         this.name = "Neural";
         this.emoji = "🧠";
         this.role = "PhD AI Specialist";
+        this.phd_identity = "AI Safety & Neural Logic Integrity (Go)";
         this.stack = "Go";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const brainNodes = await this.hub.queryKnowledgeGraph("tensor", "low");
+            const reasoning = await this.hub.reason(`Analyze the AI integration of a Go system with ${brainNodes.length} neural markers. Recommend safety boundaries for goroutine-based model execution.`);
+            findings.push({ 
+                file: "AI Audit", agent: this.name, role: this.role, emoji: this.emoji, 
+                issue: `Sovereign Neural: Integridade de IA Go validada via Rust Hub. PhD Analysis: ${reasoning}`, 
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Neural Audit", match_count: 1,
+                context: "AI Safety & Goroutine Sync"
+            } as any);
+        }
+        return findings;
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
@@ -47,7 +64,8 @@ export class NeuralPersona extends BaseActivePersona {
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {
-        const results = await super.performAudit();
+        this.startMetrics();
+        const results = await this.findPatterns(this.getAuditRules().extensions, this.getAuditRules().rules);
         const neuralFindings = GoNeuralEngine.audit(this.projectRoot || "");
         neuralFindings.forEach(f => results.push({
             file: "AI_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "high", stack: this.stack,

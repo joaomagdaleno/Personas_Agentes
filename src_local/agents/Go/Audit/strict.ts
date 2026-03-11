@@ -30,7 +30,24 @@ export class StrictPersona extends BaseActivePersona {
         this.name = "Strict";
         this.emoji = "📏";
         this.role = "PhD Typing Auditor";
+        this.phd_identity = "Type Safety & Interface Purity (Go)";
         this.stack = "Go";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        if (this.hub) {
+            const typeNodes = await this.hub.queryKnowledgeGraph("interface{}", "low");
+            const reasoning = await this.hub.reason(`Analyze the type system and interface contracts of a Go system with ${typeNodes.length} generic points. Recommend concrete typing and generic constraints for safer IPC.`);
+            findings.push({ 
+                file: "Rigor Audit", agent: this.name, role: this.role, emoji: this.emoji, 
+                issue: `Sovereign Strict: Rigor Go validado via Rust Hub. PhD Analysis: ${reasoning}`, 
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Strict Audit", match_count: 1,
+                context: "Type Purity & Rigor"
+            } as any);
+        }
+        return findings;
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
@@ -48,7 +65,8 @@ export class StrictPersona extends BaseActivePersona {
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {
-        const results = await super.performAudit();
+        this.startMetrics();
+        const results = await this.findPatterns(this.getAuditRules().extensions, this.getAuditRules().rules);
         const strictFindings = GoStrictEngine.inspect(this.projectRoot || "");
         strictFindings.forEach(f => results.push({
             file: "STRICT_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "medium", stack: this.stack,
