@@ -27,7 +27,28 @@ export class DirectorPersona extends BaseActivePersona {
         this.name = "Director";
         this.emoji = "🏛️";
         this.role = "PhD Strategic Director";
+        this.phd_identity = "Go Architecture & Executive Orchestration";
         this.stack = "Go";
+    }
+
+    public override async execute(context: any): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            // Sovereign Orchestration
+            const orchestratorNodes = await this.hub.queryKnowledgeGraph("orchestrator", "high");
+            
+            // PhD Director Reasoning
+            const reasoning = await this.hub.reason(`Synthesize an executive summary of the system's architecture and orchestration balance, given ${orchestratorNodes.length} orchestrator control nodes in ${this.stack}.`);
+
+            findings.push({
+                file: "Executive Summary", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Direction: Alinhamento estratégico validado via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "STRATEGIC", stack: this.stack, evidence: "Knowledge Graph Orchestration Analysis", match_count: 1
+            } as any);
+        }
+        return findings;
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {
@@ -44,11 +65,19 @@ export class DirectorPersona extends BaseActivePersona {
 
         // Advanced Logic Density
         const strategyIssues = GoDirectorEngine.audit(this.projectRoot || "");
-        strategyIssues.forEach(i => results.push({ file: "EXECUTIVE_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: i, severity: "high", stack: this.stack }));
+        strategyIssues.forEach(i => results.push({ file: "EXECUTIVE_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: i, severity: "high", stack: this.stack, evidence: "Strategy Engine", match_count: 1 } as any));
 
         this.endMetrics(results.length);
         return results;
     }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go", "go.mod"],
+            rules: []
+        };
+    }
+
 
     public override performActiveHealing(blindSpots: string[]): void {
         console.log(`🛠️ [Director] Harmonizando governança e orquestrando agentes em: ${blindSpots.join(", ")}`);
