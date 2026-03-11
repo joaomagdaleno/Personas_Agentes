@@ -4,6 +4,7 @@
  */
 import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 export enum ResourceHealthGo {
     LEAK_FREE = "LEAK_FREE",
@@ -29,11 +30,39 @@ export class WardenPersona extends BaseActivePersona {
         super(projectRoot);
         this.name = "Warden";
         this.emoji = "⚖️";
-        this.role = "PhD Lifecycle Architect";
+        this.role = "PhD Data Governance & Ethics Engineer";
+        this.phd_identity = "Go Resource Lifecycle & Governance";
         this.stack = "Go";
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        
+        // Go-specific lifecycle engine inspection
+        const lifecycleIssues = GoLifecycleEngine.inspect(this.projectRoot || "");
+        lifecycleIssues.forEach(l => findings.push({
+            file: "LIFECYCLE_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: l, severity: "medium", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
+
+        if (this.hub) {
+            // Governance Intelligence via Knowledge Graph
+            const leakQuery = await this.hub.queryKnowledgeGraph("Leak", "medium");
+            
+            // PhD Ethics Reasoning
+            const reasoning = await this.hub.reason(`Analyze the resource governance of a Go system with ${leakQuery.length} potential resource leaks.`);
+
+            findings.push({
+                file: "Governance Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Warden: Governança de recursos validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Resource Audit", match_count: 1
+            } as any);
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".go"],
             rules: [
@@ -47,15 +76,6 @@ export class WardenPersona extends BaseActivePersona {
         };
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        const results = await super.performAudit();
-        const lifecycleIssues = GoLifecycleEngine.inspect(this.projectRoot || "");
-        lifecycleIssues.forEach(l => results.push({
-            file: "LIFECYCLE_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: l, severity: "medium", stack: this.stack,
-            evidence: "Structural Analysis", match_count: 1
-        }));
-        return results;
-    }
 
     public override performActiveHealing(blindSpots: string[]): void {
         console.log(`🛠️ [Warden] Injetando defer de fechamento e propagando contextos em: ${blindSpots.join(", ")}`);

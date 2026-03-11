@@ -4,6 +4,7 @@
  */
 import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 export class VaultPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
@@ -11,26 +12,40 @@ export class VaultPersona extends BaseActivePersona {
         this.name = "Vault";
         this.emoji = "🔒";
         this.role = "PhD Cryptographer";
+        this.phd_identity = "Flutter Cryptography & Secure Persistence";
         this.stack = "Flutter";
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /flutter_secure_storage/, issue: "Observação: Uso de Secure Storage detectado. Verifique a configuração de acessibilidade do Keychain/Keystore.", severity: "low" },
-            { regex: /hive\.openBox\(.*\)/, issue: "Storage Não Criptografado: Hive boxes devem ser abertas com chaves de criptografia para garantir soberania de dados.", severity: "high" },
-            { regex: /ByteData\.view/, issue: "Manipulação de Binários: Auditar se buffers de memória sensível são limpos após o uso.", severity: "medium" },
-            { regex: /kSecretKey|API_KEY/, issue: "Risco de Exposição: Chaves mestre não devem estar no código. Use variáveis de ambiente ou Vault seguro.", severity: "critical" }
-        ];
-        const results = await this.findPatterns([".dart"], rules);
+    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+        this.setContext(context);
+        const findings = await this.performAudit();
 
-        // Advanced Logic: Cryptographic Audit
-        if (results.some(r => r.severity === "critical")) {
-            this.reasonAboutObjective("Data Sovereignty", "Encryption", "Critical exposure of static secret keys in Flutter source.");
+        if (this.hub) {
+            // Cryptographic Intelligence via Knowledge Graph
+            const secretQuery = await this.hub.queryKnowledgeGraph("Secret", "critical");
+            
+            // PhD Security Reasoning
+            const reasoning = await this.hub.reason(`Analyze the cryptographic health of a Flutter system with ${secretQuery.length} critical secret exposure points.`);
+
+            findings.push({
+                file: "Security Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Vault: Higiene criptográfica Flutter validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Secret Audit", match_count: 1
+            } as any);
         }
+        return findings;
+    }
 
-        this.endMetrics(results.length);
-        return results;
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".dart"],
+            rules: [
+                { regex: /flutter_secure_storage/, issue: "Observação: Uso de Secure Storage detectado. Verifique a configuração de acessibilidade do Keychain/Keystore.", severity: "low" },
+                { regex: /hive\.openBox\(.*\)/, issue: "Storage Não Criptografado: Hive boxes devem ser abertas com chaves de criptografia para garantir soberania de dados.", severity: "high" },
+                { regex: /ByteData\.view/, issue: "Manipulação de Binários: Auditar se buffers de memória sensível são limpos após o uso.", severity: "medium" },
+                { regex: /kSecretKey|API_KEY/, issue: "Risco de Exposição: Chaves mestre não devem estar no código. Use variáveis de ambiente ou Vault seguro.", severity: "critical" }
+            ]
+        };
     }
 
     public override performActiveHealing(blindSpots: string[]): void {

@@ -4,33 +4,48 @@
  */
 import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 export class WardenPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
         super(projectRoot);
         this.name = "Warden";
-        this.emoji = "💂";
-        this.role = "PhD Resource Governor";
+        this.emoji = "⚖️";
+        this.role = "PhD Data Governance & Ethics Engineer";
+        this.phd_identity = "Kotlin Thread Safety & Resource Lifecycle";
         this.stack = "Kotlin";
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /CoroutineScope\(.*\)/, issue: "Escopo de Coroutine: Verifique se o escopo é cancelado no onDestroy ou se é um supervisor scope.", severity: "medium" },
-            { regex: /@OnLifecycleEvent/, issue: "Lifecycle Obsoleto: Use LifecycleObserver ou DefaultLifecycleObserver para melhor integração nativa.", severity: "low" },
-            { regex: /ViewModel\(\)/, issue: "Gestão de Estado: Verifique se o ViewModel lida com o cancelamento de jobs no onCleared.", severity: "high" },
-            { regex: /BroadcastReceiver/, issue: "Vazamento de Receptor: Verifique se o receiver é desregistrado para evitar vazamentos de contexto de sistema.", severity: "high" }
-        ];
-        const results = await this.findPatterns([".kt", ".kts"], rules);
+    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+        this.setContext(context);
+        const findings = await this.performAudit();
 
-        // Advanced Logic: Lifecycle Depth Analysis
-        if (results.some(r => r.severity === "high")) {
-            this.reasonAboutObjective("System Integrity", "Lifecycle", "Critical resource leaks detected in Kotlin components.");
+        if (this.hub) {
+            // Governance Intelligence via Knowledge Graph
+            const resourceQuery = await this.hub.queryKnowledgeGraph("Resource", "medium");
+            
+            // PhD Ethics Reasoning
+            const reasoning = await this.hub.reason(`Analyze the thread safety and lifecycle health of a Kotlin system with ${resourceQuery.length} active resource handlers.`);
+
+            findings.push({
+                file: "Governance Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Warden: Governança Kotlin validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Resource Audit", match_count: 1
+            } as any);
         }
+        return findings;
+    }
 
-        this.endMetrics(results.length);
-        return results;
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".kt", ".kts"],
+            rules: [
+                { regex: /CoroutineScope\(.*\)/, issue: "Escopo de Coroutine: Verifique se o escopo é cancelado no onDestroy ou se é um supervisor scope.", severity: "medium" },
+                { regex: /@OnLifecycleEvent/, issue: "Lifecycle Obsoleto: Use LifecycleObserver ou DefaultLifecycleObserver para melhor integração nativa.", severity: "low" },
+                { regex: /ViewModel\(\)/, issue: "Gestão de Estado: Verifique se o ViewModel lida com o cancelamento de jobs no onCleared.", severity: "high" },
+                { regex: /BroadcastReceiver/, issue: "Vazamento de Receptor: Verifique se o receiver é desregistrado para evitar vazamentos de contexto de sistema.", severity: "high" }
+            ]
+        };
     }
 
     public override performActiveHealing(blindSpots: string[]): void {

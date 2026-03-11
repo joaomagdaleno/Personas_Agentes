@@ -4,6 +4,7 @@
  */
 import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 export enum CryptoStateGo {
     ENCRYPTED = "ENCRYPTED",
@@ -29,11 +30,39 @@ export class VaultPersona extends BaseActivePersona {
         super(projectRoot);
         this.name = "Vault";
         this.emoji = "🔐";
-        this.role = "PhD Crypto Specialist";
+        this.role = "PhD Cryptographer";
+        this.phd_identity = "Go Cryptography & Secrets";
         this.stack = "Go";
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        
+        // Go-specific crypto engine audit
+        const cryptoFindings = GoVaultEngine.audit(this.projectRoot || "");
+        cryptoFindings.forEach(f => findings.push({
+            file: "CRYPTO_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "high", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
+
+        if (this.hub) {
+            // Cryptographic Intelligence via Knowledge Graph
+            const cryptoQuery = await this.hub.queryKnowledgeGraph("Cipher", "high");
+            
+            // PhD Security Reasoning
+            const reasoning = await this.hub.reason(`Analyze the cryptographic compliance of a Go system with ${cryptoQuery.length} raw cipher patterns.`);
+
+            findings.push({
+                file: "Security Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Vault: Higiene criptográfica validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Crypto Audit", match_count: 1
+            } as any);
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".go"],
             rules: [
@@ -47,15 +76,6 @@ export class VaultPersona extends BaseActivePersona {
         };
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        const results = await super.performAudit();
-        const cryptoFindings = GoVaultEngine.audit(this.projectRoot || "");
-        cryptoFindings.forEach(f => results.push({
-            file: "CRYPTO_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "high", stack: this.stack,
-            evidence: "Structural Analysis", match_count: 1
-        }));
-        return results;
-    }
 
     public override performActiveHealing(blindSpots: string[]): void {
         console.log(`🛠️ [Vault] Rotacionando chaves e atualizando algoritmos de hash em: ${blindSpots.join(", ")}`);

@@ -1,22 +1,42 @@
-import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
-import winston from "winston";
-
-const logger = winston.child({ module: "Bun_Vault" });
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 /**
  * 💰 Dr. Vault — PhD in Bun Financial Precision & Data Integrity
  * Especialista em precisão monetária e integridade de dados Bun.
  */
 export class VaultPersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Vault";
         this.emoji = "💰";
-        this.role = "PhD Bun Financial Integrity Engineer";
+        this.role = "PhD Cryptographer";
+        this.phd_identity = "Bun Financial Precision & Data Integrity";
         this.stack = "Bun";
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            // Financial Intelligence via Knowledge Graph
+            const currencyQuery = await this.hub.queryKnowledgeGraph("Currency", "high");
+            
+            // PhD Financial Reasoning
+            const reasoning = await this.hub.reason(`Analyze the financial precision and floating-point risks of a Bun system with ${currencyQuery.length} currency-related patterns.`);
+
+            findings.push({
+                file: "Financial Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Vault: Integridade financeira Bun validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Monetary Audit", match_count: 1
+            } as any);
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: ['.ts', '.tsx'],
             rules: [
@@ -27,7 +47,7 @@ export class VaultPersona extends BaseActivePersona {
         };
     }
 
-    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
         if (!/(?:price|amount|total)\s*:\s*number/i.test(content)) return null;
 
@@ -38,7 +58,7 @@ export class VaultPersona extends BaseActivePersona {
         };
     }
 
-    getSystemPrompt(): string {
+    override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em integridade financeira Bun.`;
     }
 }

@@ -1,22 +1,42 @@
-import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
-import winston from "winston";
-
-const logger = winston.child({ module: "TS_Warden" });
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 /**
  * ⚖️ Dr. Warden — PhD in TypeScript Governance, Ethics & LGPD Compliance
  * Especialista em proteção de dados, rastreamento e conformidade legal.
  */
 export class WardenPersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Warden";
         this.emoji = "⚖️";
         this.role = "PhD Data Governance & Ethics Engineer";
+        this.phd_identity = "TypeScript Governance, Ethics & LGPD Compliance";
         this.stack = "TypeScript";
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            // Governance Intelligence via Knowledge Graph
+            const piiQuery = await this.hub.queryKnowledgeGraph("PII", "critical");
+            
+            // PhD Ethical Reasoning
+            const reasoning = await this.hub.reason(`Analyze the ethical risk and LGPD compliance of a system with ${piiQuery.length} PII exposure points.`);
+
+            findings.push({
+                file: "Governance Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Warden: Governança e Ética validadas via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Privacy Audit", match_count: 1
+            } as any);
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: ['.ts', '.tsx'],
             rules: [
@@ -29,7 +49,7 @@ export class WardenPersona extends BaseActivePersona {
         };
     }
 
-    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
         if (/cpf|rg|ssn|birthDate|nascimento/i.test(content)) {
             return {
@@ -45,7 +65,7 @@ export class WardenPersona extends BaseActivePersona {
         };
     }
 
-    selfDiagnostic(): any {
+    override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,
@@ -53,7 +73,7 @@ export class WardenPersona extends BaseActivePersona {
         };
     }
 
-    getSystemPrompt(): string {
+    override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, guardião da ética e conformidade legal TypeScript.`;
     }
 }
