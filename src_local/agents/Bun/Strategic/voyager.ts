@@ -1,22 +1,43 @@
-import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
-import winston from "winston";
-
-const logger = winston.child({ module: "Bun_Voyager" });
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 /**
  * 🧭 Dr. Voyager — PhD in Bun Modernization & Node.js Legacy Detection
  * Especialista em migração Node→Bun, APIs legadas e CommonJS.
  */
 export class VoyagerPersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
+        this.id = "bun:strategic:voyager";
         this.name = "Voyager";
         this.emoji = "🧭";
         this.role = "PhD Bun Modernization Engineer";
+        this.phd_identity = "Bun Modernization & Node.js Legacy Detection";
         this.stack = "Bun";
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override async execute(context: ProjectContext): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            // Modernity Intelligence via Knowledge Graph
+            const legacyQuery = await this.hub.queryKnowledgeGraph("require", "high");
+            
+            // PhD Modernization Reasoning
+            const reasoning = await this.hub.reason(`Generate a PhD modernization roadmap for a Bun system with ${legacyQuery.length} legacy require() calls.`);
+
+            findings.push({
+                file: "Modernization Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Voyager: Modernidade Bun validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Modernity Audit", match_count: 1
+            } as any);
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: ['.ts', '.tsx'],
             rules: [
@@ -41,22 +62,13 @@ export class VoyagerPersona extends BaseActivePersona {
         return null;
     }
 
-    getSystemPrompt(): string {
+    override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em modernização e migração Node→Bun.`;
     }
 
-    /** Parity: perform_active_healing — Heals legacy patterns in blind spots. */
-    async perform_active_healing(blindSpots: string[]): Promise<void> {
-        logger.info(`🧭 [Voyager] Análise de cura ativa em ${blindSpots.length} alvos.`);
-        // In TS, healing is delegated to the orchestrator; this logs the intent.
-    }
-
-    /** Parity: suggest_auto_healing — Generates auto-healing suggestions from audit. */
-    async suggest_auto_healing(): Promise<string[]> {
-        const results = await this.performAudit();
-        return results
-            .filter(r => r.severity === "high")
-            .map(r => `Migrar ${r.file}: ${r.issue}`);
+    /** Parity: performActiveHealing — Heals legacy patterns in blind spots. */
+    public override performActiveHealing(blindSpots: string[]): void {
+        console.log(`🧭 [Voyager] Análise de cura ativa em ${blindSpots.length} alvos.`);
     }
 }
 

@@ -4,6 +4,7 @@
  */
 import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 export interface ExplorationVector {
     route: string;
@@ -19,27 +20,44 @@ export class VoyagerPersona extends BaseActivePersona {
         this.name = "Voyager";
         this.emoji = "🧭";
         this.role = "PhD Navigation Architect";
+        this.phd_identity = "Kotlin/Android Navigation & Deep Linking";
         this.stack = "Kotlin";
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /Intent\.setData/, issue: "Deep Link Inseguro: Verifique se os dados do Intent são sanitizados para evitar Path Traversal.", severity: "high" },
-            { regex: /findNavController\(\)\.navigate/, issue: "SafeArgs Enforcement: Use SafeArgs para garantir que parâmetros de rota sejam tipados e seguros.", severity: "medium" },
-            { regex: /nav_graph\.xml/, issue: "Configuração de Rotas: Verifique se há 'deepLink' tags sem 'autoVerify=true' no manifesto.", severity: "medium" },
-            { regex: /onNewIntent/, issue: "Ciclo de Vida: Garanta que intents de navegação sejam processados sem recriar a Activity desnecessariamente.", severity: "low" },
-            { regex: /PendingIntent\.getActivity/, issue: "Notificação Insegura: Use FLAG_IMMUTABLE para evitar que terceiros modifiquem a rota de disparo.", severity: "high" },
-            { regex: /ActivityNotFoundException/, issue: "Fallback de Rota: Verifique se há tratamento para falhas ao abrir links externos ou implícitos.", severity: "medium" },
-            { regex: /addFlags\(Intent\.FLAG_ACTIVITY_NEW_TASK\)/, issue: "Backstack Corruption: Verifique se o flag não está limpando o histórico de navegação indevidamente.", severity: "low" }
-        ];
-        const results = await this.findPatterns([".kt", ".xml"], rules);
+    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        this.mapExplorationVectors(findings);
 
-        // Advanced Logic: Map exploration vectors
-        this.mapExplorationVectors(results);
+        if (this.hub) {
+            // Navigation Intelligence via Knowledge Graph
+            const legacyQuery = await this.hub.queryKnowledgeGraph("Intent", "high");
+            
+            // PhD Modernization Reasoning
+            const reasoning = await this.hub.reason(`Generate a PhD navigation modernization roadmap for a Kotlin system with ${legacyQuery.length} raw Intent patterns.`);
 
-        this.endMetrics(results.length);
-        return results;
+            findings.push({
+                file: "Navigation Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Voyager: Integridade de navegação validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: `KG Navigation Audit (Vectors: ${this.explorationVectors.length})`, match_count: 1
+            } as any);
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".kt", ".xml"],
+            rules: [
+                { regex: /Intent\.setData/, issue: "Deep Link Inseguro: Verifique se os dados do Intent são sanitizados para evitar Path Traversal.", severity: "high" },
+                { regex: /findNavController\(\)\.navigate/, issue: "SafeArgs Enforcement: Use SafeArgs para garantir que parâmetros de rota sejam tipados e seguros.", severity: "medium" },
+                { regex: /nav_graph\.xml/, issue: "Configuração de Rotas: Verifique se há 'deepLink' tags sem 'autoVerify=true' no manifesto.", severity: "medium" },
+                { regex: /onNewIntent/, issue: "Ciclo de Vida: Garanta que intents de navegação sejam processados sem recriar a Activity desnecessariamente.", severity: "low" },
+                { regex: /PendingIntent\.getActivity/, issue: "Notificação Insegura: Use FLAG_IMMUTABLE para evitar que terceiros modifiquem a rota de disparo.", severity: "high" },
+                { regex: /ActivityNotFoundException/, issue: "Fallback de Rota: Verifique se há tratamento para falhas ao abrir links externos ou implícitos.", severity: "medium" },
+                { regex: /addFlags\(Intent\.FLAG_ACTIVITY_NEW_TASK\)/, issue: "Backstack Corruption: Verifique se o flag não está limpando o histórico de navegação indevidamente.", severity: "low" }
+            ]
+        };
     }
 
     private mapExplorationVectors(findings: AuditFinding[]): void {

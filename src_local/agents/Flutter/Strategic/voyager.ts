@@ -4,6 +4,7 @@
  */
 import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 export interface ExplorationVector {
     route: string;
@@ -19,29 +20,45 @@ export class VoyagerPersona extends BaseActivePersona {
         this.name = "Voyager";
         this.emoji = "🧭";
         this.role = "PhD Navigation Architect";
+        this.phd_identity = "Flutter Navigation & Deep Linking";
         this.stack = "Flutter";
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /Navigator\.pushNamed/, issue: "Navegação por Nome: Verifique se a rota está definida no 'onGenerateRoute' para evitar falhas silenciosas.", severity: "medium" },
-            { regex: /GoRouter|go_router/, issue: "Router Avançado: O uso de GoRouter é encorajado. Verifique a gestão de 'state' e 'params'.", severity: "low" },
-            { regex: /path: ['"]\/.*:id['"]/, issue: "Deep Link Dinâmico: Verifique a sanitização de parâmetros de rota contra injeção de navegação.", severity: "high" },
-            { regex: /MaterialPageRoute/, issue: "Acoplamento de UI: Evite instanciar rotas diretamente nos widgets; use um roteador centralizado.", severity: "low" },
-            { regex: /onGenerateInitialRoutes/, issue: "Deep Link Inicial: Verifique se o app trata estados de erro ao abrir rotas inexistentes via link externo.", severity: "medium" },
-            { regex: /WillPopScope|PopScope/, issue: "Interceptação de Voltar: Verifique se a lógica de 'pop' não quebra o fluxo esperado do usuário.", severity: "low" },
-            { regex: /context\.go|context\.push/, issue: "Extensão de Contexto: Verifique se a extensão 'go_router' está sendo usada corretamente sem vazamento de contexto.", severity: "low" }
-        ];
-        const results = await this.findPatterns([".dart"], rules);
+    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        this.mapExplorationVectors(findings);
 
-        // Advanced Logic: Map exploration vectors
-        this.mapExplorationVectors(results);
+        if (this.hub) {
+            // Navigation Intelligence via Knowledge Graph
+            const legacyQuery = await this.hub.queryKnowledgeGraph("Navigator", "medium");
+            
+            // PhD Modernization Reasoning
+            const reasoning = await this.hub.reason(`Generate a PhD navigation modernization roadmap for a Flutter system with ${legacyQuery.length} raw Navigator patterns.`);
 
-        this.endMetrics(results.length);
-        return results;
+            findings.push({
+                file: "Navigation Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Voyager: Integridade de navegação validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: `KG Navigation Audit (Vectors: ${this.explorationVectors.length})`, match_count: 1
+            } as any);
+        }
+        return findings;
     }
 
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".dart"],
+            rules: [
+                { regex: /Navigator\.pushNamed/, issue: "Navegação por Nome: Verifique se a rota está definida no 'onGenerateRoute' para evitar falhas silenciosas.", severity: "medium" },
+                { regex: /GoRouter|go_router/, issue: "Router Avançado: O uso de GoRouter é encorajado. Verifique a gestão de 'state' e 'params'.", severity: "low" },
+                { regex: /path: ['"]\/.*:id['"]/, issue: "Deep Link Dinâmico: Verifique a sanitização de parâmetros de rota contra injeção de navegação.", severity: "high" },
+                { regex: /MaterialPageRoute/, issue: "Acoplamento de UI: Evite instanciar rotas diretamente nos widgets; use um roteador centralizado.", severity: "low" },
+                { regex: /onGenerateInitialRoutes/, issue: "Deep Link Inicial: Verifique se o app trata estados de erro ao abrir rotas inexistentes via link externo.", severity: "medium" },
+                { regex: /WillPopScope|PopScope/, issue: "Interceptação de Voltar: Verifique se a lógica de 'pop' não quebra o fluxo esperado do usuário.", severity: "low" },
+                { regex: /context\.go|context\.push/, issue: "Extensão de Contexto: Verifique se a extensão 'go_router' está sendo usada corretamente sem vazamento de contexto.", severity: "low" }
+            ]
+        };
+    }
     private mapExplorationVectors(findings: AuditFinding[]): void {
         this.explorationVectors = findings.map(f => ({
             route: "DYNAMIC_DISCOVERY",
@@ -76,6 +93,6 @@ export class VoyagerPersona extends BaseActivePersona {
     }
 
     /** Parity: suggest_auto_healing — Matches legacy voyager.py gap. */
-    public suggest_auto_healing(spot: string): string { return ""; }
+    public suggest_auto_healing(_spot: string): string { return ""; }
 }
 

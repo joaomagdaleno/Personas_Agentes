@@ -4,6 +4,7 @@
  */
 import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 export interface ExplorationVector {
     route: string;
@@ -19,27 +20,44 @@ export class VoyagerPersona extends BaseActivePersona {
         this.name = "Voyager";
         this.emoji = "🧭";
         this.role = "PhD Navigation Architect";
+        this.phd_identity = "Navigation Architect & Routing Integrity";
         this.stack = "Python";
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /flask\.url_for|django\.urls\.reverse/, issue: "Navegação por Link: Verifique se o endpoint existe na tabela de rotas centralizada.", severity: "low" },
-            { regex: /os\.path\.join\(.*request\.args/, issue: "Path Traversal: Risco crítico ao construir caminhos de arquivo baseados em parâmetros URL.", severity: "critical" },
-            { regex: /redirect\(.*\)/, issue: "Open Redirect: Verifique se o destino do redirecionamento é validado contra uma whitelist de domínios.", severity: "high" },
-            { regex: /@app\.route\(.*<id>\)/, issue: "Roteamento Dinâmico: Verifique a sanitização e o tipo do parâmetro (ex: <int:id>) para evitar injeções.", severity: "medium" },
-            { regex: /urllib\.parse\.urljoin/, issue: "Manipulação de URL: Garanta que URLs base sejam confiáveis ao concatenar caminhos de navegação.", severity: "medium" },
-            { regex: /FastAPI\(.*openapi_url=None\)/, issue: "Configuração de Segurança: Verifique se a exposição da documentação de rotas é necessária em produção.", severity: "low" },
-            { regex: /requests\.get\(.*stream=True\)/, issue: "Navegação de Fluxo: Verifique o fechamento do stream para evitar vazamento de sockets em pipes de rede.", severity: "medium" }
-        ];
-        const results = await this.findPatterns([".py"], rules);
+    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+        this.mapExplorationVectors(findings);
 
-        // Advanced Logic: Map exploration vectors
-        this.mapExplorationVectors(results);
+        if (this.hub) {
+            // Modernity Intelligence: Find legacy routes in the graph
+            const legacyQuery = await this.hub.queryKnowledgeGraph("url_for", "high");
+            
+            // PhD Modernization Reasoning
+            const reasoning = await this.hub.reason(`Generate a PhD routing modernization roadmap for a Python system with ${legacyQuery.length} legacy route patterns.`);
 
-        this.endMetrics(results.length);
-        return results;
+            findings.push({
+                file: "Navigation Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Voyager: Integridade de navegação validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: `KG Routing Audit (Vectors: ${this.explorationVectors.length})`, match_count: 1
+            } as any);
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".py"],
+            rules: [
+                { regex: /flask\.url_for|django\.urls\.reverse/, issue: "Navegação por Link: Verifique se o endpoint existe na tabela de rotas centralizada.", severity: "low" },
+                { regex: /os\.path\.join\(.*request\.args/, issue: "Path Traversal: Risco crítico ao construir caminhos de arquivo baseados em parâmetros URL.", severity: "critical" },
+                { regex: /redirect\(.*\)/, issue: "Open Redirect: Verifique se o destino do redirecionamento é validado contra uma whitelist de domínios.", severity: "high" },
+                { regex: /@app\.route\(.*<id>\)/, issue: "Roteamento Dinâmico: Verifique a sanitização e o tipo do parâmetro (ex: <int:id>) para evitar injeções.", severity: "medium" },
+                { regex: /urllib\.parse\.urljoin/, issue: "Manipulação de URL: Garanta que URLs base sejam confiáveis ao concatenar caminhos de navegação.", severity: "medium" },
+                { regex: /FastAPI\(.*openapi_url=None\)/, issue: "Configuração de Segurança: Verifique se a exposição da documentação de rotas é necessária em produção.", severity: "low" },
+                { regex: /requests\.get\(.*stream=True\)/, issue: "Navegação de Fluxo: Verifique o fechamento do stream para evitar vazamento de sockets em pipes de rede.", severity: "medium" }
+            ]
+        };
     }
 
     private mapExplorationVectors(findings: AuditFinding[]): void {

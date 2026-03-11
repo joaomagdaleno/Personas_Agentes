@@ -39,7 +39,7 @@ export class ProbePersona extends BaseActivePersona {
         return findings;
     }
 
-    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    public override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: ['.ts', '.tsx'],
             rules: [
@@ -69,7 +69,7 @@ export class ProbePersona extends BaseActivePersona {
         };
     }
 
-    selfDiagnostic(): any {
+    public override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,
@@ -77,7 +77,7 @@ export class ProbePersona extends BaseActivePersona {
         };
     }
 
-    getSystemPrompt(): string {
+    override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em resiliência e tolerância a falhas TypeScript.`;
     }
 }

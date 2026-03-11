@@ -4,6 +4,7 @@
  */
 import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 export enum RouteDensityGo {
     COMPLEX = "COMPLEX",
@@ -32,10 +33,31 @@ export class VoyagerPersona extends BaseActivePersona {
         this.name = "Voyager";
         this.emoji = "🧭";
         this.role = "PhD API Architect";
+        this.phd_identity = "Go API Strategy & Navigation";
         this.stack = "Go";
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            // API Intelligence via Knowledge Graph
+            const legacyQuery = await this.hub.queryKnowledgeGraph("HandleFunc", "medium");
+            
+            // PhD Modernization Reasoning
+            const reasoning = await this.hub.reason(`Generate a PhD API modernization roadmap for a Go system with ${legacyQuery.length} raw HandleFunc patterns.`);
+
+            findings.push({
+                file: "API Surface", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Voyager: Superfície de API validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph API Audit", match_count: 1
+            } as any);
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".go"],
             rules: [

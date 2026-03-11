@@ -1,22 +1,42 @@
-import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
-import winston from "winston";
-
-const logger = winston.child({ module: "TS_Voyager" });
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 /**
  * 🧭 Dr. Voyager — PhD in TypeScript Modernization & Innovation
  * Especialista em detecção de padrões legados, var, require() e CommonJS.
  */
 export class VoyagerPersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Voyager";
         this.emoji = "🧭";
         this.role = "PhD Innovation & Modernization Engineer";
+        this.phd_identity = "TypeScript Modernization & Innovation";
         this.stack = "TypeScript";
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override async execute(context: ProjectContext): Promise<any> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            // Modernity Intelligence: Find legacy patterns in the graph
+            const legacyQuery = await this.hub.queryKnowledgeGraph("var", "high");
+            
+            // PhD Modernization Reasoning
+            const reasoning = await this.hub.reason(`Generate a PhD modernization roadmap for a TypeScript system with ${legacyQuery.length} legacy patterns and current ESM status.`);
+
+            findings.push({
+                file: "Innovation Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Voyager: Modernidade validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Modernity Audit", match_count: 1
+            } as any);
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: ['.ts', '.tsx'],
             rules: [
@@ -50,9 +70,10 @@ export class VoyagerPersona extends BaseActivePersona {
      * Cura Física Determinística (Legacy perform_active_healing logic).
      * Corrige padrões de silenciamento crítico em produção.
      */
-    public async performActiveHealing(blindSpots: string[]): Promise<number> {
+    public override async performActiveHealing(blindSpots: string[]): Promise<number> {
         let healedCount = 0;
-        logger.info(`✨ [Voyager] Iniciando Cura Ativa em ${blindSpots.length} pontos cegos...`);
+        // console used as fallback for legacy logger
+        console.log(`✨ [Voyager] Iniciando Cura Ativa em ${blindSpots.length} pontos cegos...`);
 
         for (const spot of blindSpots) {
             if (await this.healFile(spot)) healedCount++;
@@ -71,11 +92,11 @@ export class VoyagerPersona extends BaseActivePersona {
 
             if (changed) {
                 fs.writeFileSync(fullPath, result, 'utf-8');
-                logger.info(`✨ [Voyager] Arquivo ${spot} curado com sucesso.`);
+                console.log(`✨ [Voyager] Arquivo ${spot} curado com sucesso.`);
                 return true;
             }
         } catch (e) {
-            logger.error(`❌ [Voyager] Falha ao curar ${spot}: ${e}`);
+            console.error(`❌ [Voyager] Falha ao curar ${spot}: ${e}`);
         }
         return false;
     }
@@ -90,7 +111,7 @@ export class VoyagerPersona extends BaseActivePersona {
             if (emptyCatch.includes(trimmed)) {
                 changed = true;
                 const indent = line.split('catch')[0];
-                return `${indent}catch (e) {\n${indent}    logger.error(\`🚨 [Cura Ativa] Falha crítica silenciada detectada em ${spot}\`, e);\n${indent}}`;
+                return `${indent}catch (e) {\n${indent}    console.error(\`🚨 [Cura Ativa] Falha crítica silenciada detectada em ${spot}\`, e);\n${indent}}`;
             }
             return line;
         });
@@ -102,7 +123,7 @@ export class VoyagerPersona extends BaseActivePersona {
         return path.isAbsolute(relPath) ? relPath : path.join(this.projectRoot || "", relPath);
     }
 
-    selfDiagnostic(): any {
+    override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,
@@ -110,7 +131,7 @@ export class VoyagerPersona extends BaseActivePersona {
         };
     }
 
-    getSystemPrompt(): string {
+    override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em inovação e modernização de código TypeScript.`;
     }
 }

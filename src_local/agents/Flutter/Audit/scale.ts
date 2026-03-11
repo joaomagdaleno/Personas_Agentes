@@ -4,6 +4,7 @@
  */
 import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 export class ScalePersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
@@ -11,10 +12,31 @@ export class ScalePersona extends BaseActivePersona {
         this.name = "Scale";
         this.emoji = "🏗️";
         this.role = "PhD Software Architect";
+        this.phd_identity = "Flutter Architecture & Scalability";
         this.stack = "Flutter";
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            // Architectural Intelligence via Knowledge Graph
+            const graph = await this.hub.getKnowledgeGraph("lib/main.dart", 1);
+            
+            // PhD Architectural Reasoning
+            const reasoning = await this.hub.reason(`Analyze the architectural scalability of a Flutter system with a core graph of ${graph.nodes.length} nodes and identify state management bottlenecks.`);
+
+            findings.push({
+                file: "Architecture Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Scale: Escalabilidade Flutter validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Complexity Audit", match_count: 1
+            } as any);
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".dart"],
             rules: [

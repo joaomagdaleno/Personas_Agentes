@@ -4,6 +4,7 @@
  */
 import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 export enum ScalingStateGo {
     ELASTIC = "ELASTIC",
@@ -30,10 +31,31 @@ export class ScalePersona extends BaseActivePersona {
         this.name = "Scale";
         this.emoji = "⚖️";
         this.role = "PhD Concurrency Specialist";
+        this.phd_identity = "Go Concurrency & Scaling";
         this.stack = "Go";
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            // Concurrency Intelligence: Goroutines and Sync primitives
+            const graph = await this.hub.getKnowledgeGraph("main.go", 2);
+            
+            // PhD Scalability Reasoning
+            const reasoning = await this.hub.reason(`Analyze the concurrent scalability of a Go system with a core graph of ${graph.nodes.length} nodes and identify goroutine leak risks.`);
+
+            findings.push({
+                file: "Concurrency Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Scale: Escalabilidade concorrente validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Concurrency Audit", match_count: 1
+            } as any);
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".go"],
             rules: [
