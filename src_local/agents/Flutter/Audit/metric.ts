@@ -4,6 +4,7 @@
  */
 import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 export class MetricPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
@@ -11,10 +12,28 @@ export class MetricPersona extends BaseActivePersona {
         this.name = "Metric";
         this.emoji = "📊";
         this.role = "PhD Telemetry Engineer";
+        this.phd_identity = "Flutter Data Telemetry & Logging";
         this.stack = "Flutter";
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            const telemetryQuery = await this.hub.queryKnowledgeGraph("Telemetry", "high");
+            const reasoning = await this.hub.reason(`Analyze the observability and telemetry depth of a Flutter system given ${telemetryQuery.length} logging or metrics nodes.`);
+            
+            findings.push({
+                file: "Observability Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Metric: Telemetria Flutter validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Telemetry", match_count: 1
+            } as any);
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".dart"],
             rules: [

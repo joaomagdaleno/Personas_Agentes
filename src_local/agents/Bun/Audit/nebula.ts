@@ -1,22 +1,39 @@
-import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
-import winston from "winston";
-
-const logger = winston.child({ module: "Bun_Nebula" });
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 /**
  * ☁️ Dr. Nebula — PhD in Bun Security & Secrets Management
  * Especialista em Bun.password, segurança de hashing e proteção de credenciais.
  */
 export class NebulaPersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Nebula";
         this.emoji = "☁️";
         this.role = "PhD Bun Security Architect";
+        this.phd_identity = "Bun Security & Secrets Management";
         this.stack = "Bun";
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            const secretsQuery = await this.hub.queryKnowledgeGraph("Secret", "critical");
+            const reasoning = await this.hub.reason(`Analyze the cloud security and secrets exposure of a Bun infrastructure given ${secretsQuery.length} potential secret nodes in the graph.`);
+            
+            findings.push({
+                file: "Cloud Security Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Nebula: Soberania cloud Bun validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Secrets", match_count: 1
+            } as any);
+        }
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: ['.ts', '.tsx', '.json'],
             rules: [
@@ -30,7 +47,7 @@ export class NebulaPersona extends BaseActivePersona {
         };
     }
 
-    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
         if (file.includes('persona_manifest')) return null;
 
@@ -44,7 +61,7 @@ export class NebulaPersona extends BaseActivePersona {
         return null;
     }
 
-    getSystemPrompt(): string {
+    override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em segurança e proteção de segredos Bun.`;
     }
 }

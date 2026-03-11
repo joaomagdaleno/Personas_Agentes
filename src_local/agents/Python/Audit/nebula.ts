@@ -4,6 +4,7 @@
  */
 import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 export class NebulaPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
@@ -11,7 +12,25 @@ export class NebulaPersona extends BaseActivePersona {
         this.name = "Nebula";
         this.emoji = "🌌";
         this.role = "PhD Cloud Architect";
+        this.phd_identity = "Python Cloud Sovereignty & Secrets Management";
         this.stack = "Python";
+    }
+
+    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            const secretsQuery = await this.hub.queryKnowledgeGraph("Secret", "critical");
+            const reasoning = await this.hub.reason(`Analyze the cloud security and secrets exposure of a Python infrastructure given ${secretsQuery.length} potential secret nodes in the graph.`);
+            
+            findings.push({
+                file: "Cloud Security Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Nebula: Soberania cloud Python validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Secrets", match_count: 1
+            } as any);
+        }
+        return findings;
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {

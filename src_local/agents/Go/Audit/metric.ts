@@ -4,6 +4,7 @@
  */
 import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 export enum MetricDensity {
     INSTRUMENTED = "INSTRUMENTED",
@@ -30,7 +31,30 @@ export class MetricPersona extends BaseActivePersona {
         this.name = "Metric";
         this.emoji = "📊";
         this.role = "PhD Metric Architect";
+        this.phd_identity = "Go Performance Telemetry & Tracing";
         this.stack = "Go";
+    }
+
+    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+        this.setContext(context);
+        const results = await this.performAudit();
+        const metricFindings = GoMetricEngine.validate(this.projectRoot || "");
+        metricFindings.forEach(f => results.push({
+            file: "METRIC_SOURCE", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "medium", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        } as AuditFinding));
+
+        if (this.hub) {
+            const telemetryQuery = await this.hub.queryKnowledgeGraph("Telemetry", "high");
+            const reasoning = await this.hub.reason(`Analyze the observability and telemetry depth of a Go system given ${telemetryQuery.length} logging or metrics nodes.`);
+            
+            results.push({
+                file: "Observability Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Metric: Telemetria Go validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Telemetry", match_count: 1
+            } as any);
+        }
+        return results;
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
@@ -44,16 +68,6 @@ export class MetricPersona extends BaseActivePersona {
                 { regex: /pprof/, issue: "Profiling: Endpoint pprof exposto sem proteção em telemetria de produção.", severity: "high" }
             ]
         };
-    }
-
-    public override async performAudit(): Promise<AuditFinding[]> {
-        const results = await super.performAudit();
-        const metricFindings = GoMetricEngine.validate(this.projectRoot || "");
-        metricFindings.forEach(f => results.push({
-            file: "METRIC_SOURCE", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "medium", stack: this.stack,
-            evidence: "Structural Analysis", match_count: 1
-        }));
-        return results;
     }
 
     public override performActiveHealing(blindSpots: string[]): void {

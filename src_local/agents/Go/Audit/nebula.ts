@@ -4,6 +4,7 @@
  */
 import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 export enum CloudPostureGo {
     FORTIFIED = "FORTIFIED",
@@ -30,7 +31,30 @@ export class NebulaPersona extends BaseActivePersona {
         this.name = "Nebula";
         this.emoji = "🌌";
         this.role = "PhD Cloud Specialist";
+        this.phd_identity = "Go Cloud Security & Infrastructure Integrity";
         this.stack = "Go";
+    }
+
+    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+        this.setContext(context);
+        const results = await this.performAudit();
+        const cloudFindings = GoCloudEngine.scan(this.projectRoot || "");
+        cloudFindings.forEach(f => results.push({
+            file: "CLOUD_SCAN", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "high", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        } as AuditFinding));
+
+        if (this.hub) {
+            const secretsQuery = await this.hub.queryKnowledgeGraph("Secret", "critical");
+            const reasoning = await this.hub.reason(`Analyze the cloud security and secrets exposure of a Go infrastructure given ${secretsQuery.length} potential secret nodes in the graph.`);
+            
+            results.push({
+                file: "Cloud Security Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Nebula: Soberania cloud Go validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Secrets", match_count: 1
+            } as any);
+        }
+        return results;
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
@@ -45,16 +69,6 @@ export class NebulaPersona extends BaseActivePersona {
                 { regex: /sql\.Open\(.*"mysql",\s*".*@tcp/, issue: "DB Credential: String de conexão com senha exposta.", severity: "high" }
             ]
         };
-    }
-
-    public override async performAudit(): Promise<AuditFinding[]> {
-        const results = await super.performAudit();
-        const cloudFindings = GoCloudEngine.scan(this.projectRoot || "");
-        cloudFindings.forEach(f => results.push({
-            file: "CLOUD_SCAN", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "high", stack: this.stack,
-            evidence: "Structural Analysis", match_count: 1
-        }));
-        return results;
     }
 
     public override performActiveHealing(blindSpots: string[]): void {

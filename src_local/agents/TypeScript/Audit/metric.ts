@@ -1,7 +1,6 @@
-import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
-import winston from "winston";
-
-const logger = winston.child({ module: "TS_Metric" });
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 export enum MetricDensity {
     INSTRUMENTED = "INSTRUMENTED",
@@ -24,12 +23,30 @@ export class TSMetricEngine {
  * Especialista em logging estruturado, métricas e rastreabilidade.
  */
 export class MetricPersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Metric";
         this.emoji = "📊";
         this.role = "PhD Observability Engineer";
+        this.phd_identity = "TypeScript Data Telemetry & Logging";
         this.stack = "TypeScript";
+    }
+
+    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            const telemetryQuery = await this.hub.queryKnowledgeGraph("Telemetry", "high");
+            const reasoning = await this.hub.reason(`Analyze the observability and telemetry depth given ${telemetryQuery.length} logging or metrics nodes.`);
+            
+            findings.push({
+                file: "Observability Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Metric: Telemetria validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Telemetry", match_count: 1
+            } as any);
+        }
+        return findings;
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
@@ -45,7 +62,7 @@ export class MetricPersona extends BaseActivePersona {
         };
     }
 
-    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
         if (/console\.(log|error|warn)\(/.test(content)) {
             return {
@@ -61,7 +78,7 @@ export class MetricPersona extends BaseActivePersona {
         };
     }
 
-    selfDiagnostic(): any {
+    override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,
@@ -69,7 +86,7 @@ export class MetricPersona extends BaseActivePersona {
         };
     }
 
-    getSystemPrompt(): string {
+    override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em telemetria e análise TypeScript.`;
     }
 }

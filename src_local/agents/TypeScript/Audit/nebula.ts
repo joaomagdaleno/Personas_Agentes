@@ -1,19 +1,36 @@
-import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
-import winston from "winston";
-
-const logger = winston.child({ module: "TS_Nebula" });
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
 /**
  * ☁️ Dr. Nebula — PhD in TypeScript Cloud Security & Secrets Management
  * Especialista em segurança de credenciais, chaves expostas e vazamento de segredos.
  */
 export class NebulaPersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Nebula";
         this.emoji = "☁️";
         this.role = "PhD Cloud Security Architect";
+        this.phd_identity = "TypeScript Secrets Management & Cloud Sovereignty";
         this.stack = "TypeScript";
+    }
+
+    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+        this.setContext(context);
+        const findings = await this.performAudit();
+
+        if (this.hub) {
+            const secretsQuery = await this.hub.queryKnowledgeGraph("Secret", "critical");
+            const reasoning = await this.hub.reason(`Analyze the cloud security and secrets exposure given ${secretsQuery.length} potential secret nodes in the graph.`);
+            
+            findings.push({
+                file: "Cloud Security Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Nebula: Soberania cloud validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Secrets", match_count: 1
+            } as any);
+        }
+        return findings;
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
@@ -30,7 +47,7 @@ export class NebulaPersona extends BaseActivePersona {
         };
     }
 
-    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
         if (file.includes('persona_manifest') || file.includes('rules')) return null;
         if (/AKIA|sk-[a-zA-Z0-9]{20}|ghp_/.test(content) && !/rules\s*=/.test(content)) {
@@ -47,7 +64,7 @@ export class NebulaPersona extends BaseActivePersona {
         };
     }
 
-    selfDiagnostic(): any {
+    override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,
@@ -55,7 +72,7 @@ export class NebulaPersona extends BaseActivePersona {
         };
     }
 
-    getSystemPrompt(): string {
+    override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em soberania cloud e segurança de segredos TypeScript.`;
     }
 }
