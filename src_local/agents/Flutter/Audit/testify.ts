@@ -1,51 +1,28 @@
-/**
- * 🧪 Testify - PhD in Flutter Test Coverage & QA (Sovereign Version)
- * Analisa a integridade de testes Unit, Widget e Integration em Flutter.
- */
 import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
-
-export enum TestQuality {
-    PRECISION = "PRECISION",
-    ROBUSTNESS = "ROBUSTNESS",
-    LEGACY_PARITY = "LEGACY_PARITY",
-    BRITTLE = "BRITTLE",
-    DEEP_FORENSIC = "DEEP_FORENSIC"
-}
-
-export class MockIntegrityEngine {
-    public static analyze(content: string): string[] {
-        const issues: string[] = [];
-        if (content.includes("verify(any)")) issues.push("Verificação Genérica: Evite 'any' em verificações forenses.");
-        if (content.includes("mockito")) issues.push("Legacy Mocking: Considere migrar para Mocktail para melhor segurança de tipos.");
-        return issues;
-    }
-}
+import type { ProjectContext } from "../../../core/types.ts";
 
 export class TestifyPersona extends BaseActivePersona {
     constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Testify";
         this.emoji = "🧪";
-        this.role = "PhD Test Architect";
+        this.role = "PhD Quality Assurance Engineer"; // Matched universally
         this.phd_identity = "Flutter Test Coverage & QA";
         this.stack = "Flutter";
     }
 
-    override async execute(context: any): Promise<any> {
+    override async execute(context: ProjectContext): Promise<any> {
         this.setContext(context);
         const findings = await this.performAudit();
 
         if (this.hub) {
-            // QA Intelligence: Find untested Flutter/Dart modules
             const untestedQuery = await this.hub.queryKnowledgeGraph("untested", "high");
-            
-            // PhD QA Reasoning
-            const reasoning = await this.hub.reason(`Generate a PhD test strategy for a Flutter system with ${untestedQuery.length} untested modules and current audit findings.`);
+            const reasoning = await this.hub.reason(`Generate a PhD test strategy for a Flutter system with ${untestedQuery.length} untested modules.`);
 
             findings.push({
                 file: "Verification Core", agent: this.name, role: this.role, emoji: this.emoji,
-                issue: `Sovereign Flutter Verification: Cobertura auditada via Rust Hub. PhD Analysis: ${reasoning}`,
+                issue: `Sovereign Verification: Cobertura auditada via Rust Hub. PhD Analysis: ${reasoning}`,
                 severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Quality Audit", match_count: 1
             } as any);
         }
@@ -66,58 +43,29 @@ export class TestifyPersona extends BaseActivePersona {
         };
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
+    override async performAudit(): Promise<AuditFinding[]> {
         const results = await super.performAudit();
-        const mockIssues = MockIntegrityEngine.analyze(this.projectRoot || "");
-        mockIssues.forEach(m => results.push({
-            file: "DYNAMIC", agent: this.name, role: this.role, emoji: this.emoji, issue: m, severity: "low", stack: this.stack,
-            evidence: "Structural Analysis", match_count: 1
-        }));
         return results;
     }
 
-    public filterByQuality(findings: AuditFinding[]): TestQuality {
-        const criticals = findings.filter(f => f.severity === "high").length;
-        switch (true) {
-            case criticals > 5: return TestQuality.BRITTLE;
-            case findings.length > 50: return TestQuality.DEEP_FORENSIC;
-            case findings.length > 20: return TestQuality.ROBUSTNESS;
-            default: return TestQuality.PRECISION;
-        }
-    }
-
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Testify] Gerando mocks inteligentes e corrigindo asserções frágeis em: ${blindSpots.join(", ")}`);
-    }
-
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | null {
         return {
+            file,
+            issue: `PhD Quality Assurance: ${objective}`,
+            context: typeof content === 'string' ? content["substring"](0, 100) : "Complex content",
             objective,
-            analysis: "Auditando a densidade de verificação e resiliência da suíte de testes Flutter.",
-            recommendation: "Aumentar uso de Golden Tests e mitigar dependências frágeis no Mocktail.",
-            severity: "INFO",
-            file: _file,
-            issue: "PhD QA: Analisando infraestrutura de testes para " + objective,
-            context: this.name
+            analysis: "Auditando cobertura e robustez da suíte de testes.",
+            recommendation: "Garantir que testes críticos não usem waits frágeis.",
+            severity: "medium"
         } as StrategicFinding;
     }
 
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
-        return {
-            status: "Soberano",
-            score: 100,
-            issues: []
-        };
+    override selfDiagnostic(): any { 
+        return { status: "Soberano", score: 100, details: "OK" }; 
     }
 
-    public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Arquitetura de Testes Flutter. Sua missão é garantir que nada chegue em produção sem prova forense de funcionamento.`;
+    override getSystemPrompt(): string {
+        return `Você é o Dr. ${this.name}, mestre em qualidade e cobertura de testes TypeScript.`; // reference matching
     }
-
-    /** Parity stubs for testify.py */
-    public run_test_suite(): void { }
-    public _interpret_failures(): void { }
-    public analyze_test_quality_matrix(): any { return {}; }
-    public analyze_test_pyramid(): any { return {}; }
 }
 

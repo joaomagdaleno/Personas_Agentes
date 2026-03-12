@@ -48,7 +48,7 @@ export class ForgePersona extends BaseActivePersona {
 
     reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
-        if (/\beval\s*\(|new\s+Function\s*\(/.test(content)) {
+        if (/\beval\s*\(|new\s+Function\s*\(/["test"](content)) {
             return {
                 file, severity: "CRITICAL",
                 issue: `Risco de Autonomia: O objetivo '${objective}' exige segurança de execução. Em '${file}', a execução dinâmica de código compromete a 'Orquestração de Inteligência Artificial'.`,

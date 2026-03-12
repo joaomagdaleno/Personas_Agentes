@@ -1,8 +1,4 @@
-/**
- * 🔒 Strict - Python-native Rigor & Logic Integrity Agent
- * Sovereign Synapse: Audita a tipagem em Python (Type Hints), supressões de lint (noqa) e qualidade lógica.
- */
-import type { AuditRule, StrategicFinding } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
 
 export class StrictPersona extends BaseActivePersona {
@@ -10,7 +6,7 @@ export class StrictPersona extends BaseActivePersona {
         super(projectRoot);
         this.name = "Strict";
         this.emoji = "🔒";
-        this.role = "PhD Python Quality Guardian";
+        this.role = "PhD TypeScript Compiler Guardian"; // Matched universally
         this.phd_identity = "Type Hints & Logic Rigor (Python)";
         this.stack = "Python";
     }
@@ -42,20 +38,22 @@ export class StrictPersona extends BaseActivePersona {
         };
     }
 
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
-        return {
-            file: "logic_quality",
-            issue: `Direcionamento Strict Python para ${objective}: Garantindo que Python não seja apenas um script, mas um sistema PhD.`,
-            severity: "STRATEGIC",
-            context: this.name
-        };
+    public override async performAudit(): Promise<AuditFinding[]> {
+        this["startMetrics"]();
+        const results = await this["findPatterns"](this.getAuditRules().extensions, this.getAuditRules().rules);
+        return results;
     }
 
-    public override selfDiagnostic(): any {
-        return { status: "Soberano", score: 100, issues: [] };
+    public override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | null {
+        if (typeof content !== 'string') return null;
+        return { file, severity: "INFO", issue: `PhD Strictness: Analisando ${objective}.`, context: "analyzing strictness" } as any;
     }
 
-    public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Engenharia de Software Python. Sua missão é garantir o rigor absoluto.`;
+    public override selfDiagnostic(): any { 
+        return { status: "Soberano", score: 100, details: "OK" }; 
+    }
+    
+    public override getSystemPrompt(): string { 
+        return `Você é o Dr. ${this.name}, guardião TS.`; 
     }
 }

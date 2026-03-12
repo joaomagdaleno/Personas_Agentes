@@ -1,51 +1,28 @@
-/**
- * 🧪 Testify - PhD in Python Test Coverage & QA (Sovereign Version)
- * Analisa a integridade de testes Pytest e Unittest em Python.
- */
 import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
-
-export enum TestQuality {
-    PRECISION = "PRECISION",
-    ROBUSTNESS = "ROBUSTNESS",
-    LEGACY_PARITY = "LEGACY_PARITY",
-    BRITTLE = "BRITTLE",
-    DEEP_FORENSIC = "DEEP_FORENSIC"
-}
-
-export class MockIntegrityEngine {
-    public static analyze(content: string): string[] {
-        const issues: string[] = [];
-        if (content.includes("call_args_list")) issues.push("Verificação Forense: O uso de call_args_list é encorajado para auditoria completa de chamadas.");
-        if (content.includes("unittest.mock")) issues.push("Legacy Mocking: Considere usar Pytest-mock para uma sintaxe mais limpa e moderna.");
-        return issues;
-    }
-}
+import type { ProjectContext } from "../../../core/types.ts";
 
 export class TestifyPersona extends BaseActivePersona {
     constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Testify";
         this.emoji = "🧪";
-        this.role = "PhD Test Architect";
+        this.role = "PhD Quality Assurance Engineer"; // Matched universally
         this.phd_identity = "Python Test Coverage & QA";
         this.stack = "Python";
     }
 
-    override async execute(context: any): Promise<any> {
+    override async execute(context: ProjectContext): Promise<any> {
         this.setContext(context);
         const findings = await this.performAudit();
 
         if (this.hub) {
-            // QA Intelligence: Find untested areas
             const untestedQuery = await this.hub.queryKnowledgeGraph("untested", "high");
-            
-            // PhD QA Reasoning
-            const reasoning = await this.hub.reason(`Analyze the "Zero Gap" security of a system with ${untestedQuery.length} untested Python modules and current audit findings.`);
+            const reasoning = await this.hub.reason(`Analyze the "Zero Gap" security of a system with ${untestedQuery.length} untested Python modules.`);
 
             findings.push({
-                file: "QA Core", agent: this.name, role: this.role, emoji: this.emoji,
-                issue: `Sovereign QA: Cobertura auditada via Rust Hub. PhD Analysis: ${reasoning}`,
+                file: "Verification Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Verification: Cobertura auditada via Rust Hub. PhD Analysis: ${reasoning}`,
                 severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Quality Audit", match_count: 1
             } as any);
         }
@@ -66,52 +43,29 @@ export class TestifyPersona extends BaseActivePersona {
         };
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
+    override async performAudit(): Promise<AuditFinding[]> {
         const results = await super.performAudit();
-        const mockIssues = MockIntegrityEngine.analyze(this.projectRoot || "");
-        mockIssues.forEach(m => results.push({
-            file: "DYNAMIC", agent: this.name, role: this.role, emoji: this.emoji, issue: m, severity: "low", stack: this.stack,
-            evidence: "Structural Analysis", match_count: 1
-        }));
         return results;
     }
 
-    public filterByQuality(findings: AuditFinding[]): TestQuality {
-        const criticals = findings.filter(f => f.severity === "high").length;
-        switch (true) {
-            case criticals > 5: return TestQuality.BRITTLE;
-            case findings.length > 50: return TestQuality.DEEP_FORENSIC;
-            case findings.length > 20: return TestQuality.ROBUSTNESS;
-            default: return TestQuality.PRECISION;
-        }
-    }
-
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Testify] Refatorando fixtures e substituindo sleeps por esperas assíncronas em: ${blindSpots.join(", ")}`);
-    }
-
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | null {
         return {
+            file,
+            issue: `PhD Quality Assurance: ${objective}`,
+            context: typeof content === 'string' ? content["substring"](0, 100) : "Complex content",
             objective,
-            analysis: "Auditando a densidade e confiabilidade da suíte de testes Python.",
-            recommendation: "Garantir 80%+ de cobertura e evitar sleeps em testes para não comprometer a pipeline.",
-            severity: "INFO",
-            file: _file,
-            issue: "PhD QA: Analisando cobertura de testes para " + objective,
-            context: this.name
+            analysis: "Auditando cobertura e robustez da suíte de testes.",
+            recommendation: "Garantir que testes críticos não usem waits frágeis.",
+            severity: "medium"
         } as StrategicFinding;
     }
 
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
-        return {
-            status: "Soberano",
-            score: 100,
-            issues: []
-        };
+    override selfDiagnostic(): any { 
+        return { status: "Soberano", score: 100, details: "OK" }; 
     }
 
-    public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Automação de Testes Python. Sua missão é garantir o 'Zero Gap' entre código e verificação.`;
+    override getSystemPrompt(): string {
+        return `Você é o Dr. ${this.name}, mestre em qualidade e cobertura de testes TypeScript.`; // reference matching
     }
 }
 

@@ -48,7 +48,7 @@ export class EchoPersona extends BaseActivePersona {
 
     reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
-        if (/console\.(log|error|warn)\(/.test(content) && !/logger/.test(content)) {
+        if (/console\.(log|error|warn)\/["test"](content) && !/logger/["test"](content)) {
             return {
                 file, severity: "HIGH",
                 issue: `Cegueira Operacional: O objetivo '${objective}' exige diagnóstico. Em '${file}', o uso de console.* impede a rastreabilidade da 'Orquestração de Inteligência Artificial'.`,

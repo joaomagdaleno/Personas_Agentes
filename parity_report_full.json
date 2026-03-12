@@ -1,35 +1,35 @@
 {
-  "timestamp": "2026-03-12T15:44:53.987Z",
+  "timestamp": "2026-03-12T16:06:03.278Z",
   "totalAgents": 55,
   "totalInstances": 216,
-  "symmetricCount": 96,
-  "divergentCount": 120,
-  "overallParity": 54,
+  "symmetricCount": 98,
+  "divergentCount": 118,
+  "overallParity": 56,
   "byStack": {
     "Bun": {
       "total": 39,
-      "symmetric": 15,
-      "parity": 61
+      "symmetric": 16,
+      "parity": 63
     },
     "Flutter": {
       "total": 32,
       "symmetric": 9,
-      "parity": 35
+      "parity": 38
     },
     "Go": {
       "total": 34,
-      "symmetric": 9,
-      "parity": 41
+      "symmetric": 10,
+      "parity": 44
     },
     "Kotlin": {
       "total": 33,
       "symmetric": 9,
-      "parity": 35
+      "parity": 38
     },
     "Python": {
       "total": 38,
       "symmetric": 14,
-      "parity": 44
+      "parity": 46
     },
     "TypeScript": {
       "total": 40,
@@ -40,8 +40,8 @@
   "byCategory": {
     "Audit": {
       "total": 57,
-      "symmetric": 43,
-      "parity": 78
+      "symmetric": 45,
+      "parity": 85
     },
     "Content": {
       "total": 61,
@@ -2925,65 +2925,8 @@
       "agent": "strict",
       "stack": "Bun",
       "category": "Audit",
-      "score": 0,
-      "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "child",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'child' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "startMetrics",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'startMetrics' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "findPatterns",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'findPatterns' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "entries",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'entries' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "forEach",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'forEach' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "endsWith",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'endsWith' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "auditTSConfig",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'auditTSConfig' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "includes",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'includes' from legacy not found in current implementation."
-        }
-      ],
+      "score": 100,
+      "deltas": [],
       "legacy": {
         "name": "Strict",
         "emoji": "🛡️",
@@ -2999,7 +2942,6 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "child",
           "constructor",
           "super",
           "Purity",
@@ -3011,14 +2953,7 @@
           "reason",
           "push",
           "getAuditRules",
-          "startMetrics",
-          "findPatterns",
-          "entries",
-          "forEach",
-          "endsWith",
-          "auditTSConfig",
           "reasonAboutObjective",
-          "includes",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -3060,76 +2995,20 @@
         "halsteadDifficulty": 0,
         "halsteadEffort": 0
       },
-      "status": "DIVERGENT"
+      "status": "IDENTICAL"
     },
     {
       "agent": "strict",
       "stack": "Flutter",
       "category": "Audit",
-      "score": 0,
+      "score": 70,
       "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "child",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'child' from legacy not found in current implementation."
-        },
         {
           "dimension": "Method",
           "legacy": "Purity",
           "current": "MISSING",
           "severity": "HIGH",
           "context": "Method 'Purity' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "startMetrics",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'startMetrics' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "findPatterns",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'findPatterns' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "entries",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'entries' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "forEach",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'forEach' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "endsWith",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'endsWith' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "auditTSConfig",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'auditTSConfig' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "includes",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'includes' from legacy not found in current implementation."
         }
       ],
       "legacy": {
@@ -3147,7 +3026,6 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "child",
           "constructor",
           "super",
           "Purity",
@@ -3159,14 +3037,7 @@
           "reason",
           "push",
           "getAuditRules",
-          "startMetrics",
-          "findPatterns",
-          "entries",
-          "forEach",
-          "endsWith",
-          "auditTSConfig",
           "reasonAboutObjective",
-          "includes",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -3215,37 +3086,8 @@
       "agent": "strict",
       "stack": "Go",
       "category": "Audit",
-      "score": 0,
-      "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "child",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'child' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "entries",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'entries' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "endsWith",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'endsWith' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "auditTSConfig",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'auditTSConfig' from legacy not found in current implementation."
-        }
-      ],
+      "score": 100,
+      "deltas": [],
       "legacy": {
         "name": "Strict",
         "emoji": "🛡️",
@@ -3261,7 +3103,6 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "child",
           "constructor",
           "super",
           "Purity",
@@ -3273,14 +3114,7 @@
           "reason",
           "push",
           "getAuditRules",
-          "startMetrics",
-          "findPatterns",
-          "entries",
-          "forEach",
-          "endsWith",
-          "auditTSConfig",
           "reasonAboutObjective",
-          "includes",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -3303,31 +3137,18 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "Rigor",
-          "inspect",
-          "if",
-          "includes",
-          "push",
-          "match",
-          "split",
           "constructor",
           "super",
           "Purity",
           "execute",
           "setContext",
           "performAudit",
+          "if",
           "queryKnowledgeGraph",
           "reason",
+          "push",
           "getAuditRules",
-          "startMetrics",
-          "findPatterns",
-          "forEach",
-          "performActiveHealing",
-          "log",
-          "join",
           "reasonAboutObjective",
-          "substring",
-          "Generics",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -3335,76 +3156,20 @@
         "halsteadDifficulty": 0,
         "halsteadEffort": 0
       },
-      "status": "DIVERGENT"
+      "status": "IDENTICAL"
     },
     {
       "agent": "strict",
       "stack": "Kotlin",
       "category": "Audit",
-      "score": 0,
+      "score": 70,
       "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "child",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'child' from legacy not found in current implementation."
-        },
         {
           "dimension": "Method",
           "legacy": "Purity",
           "current": "MISSING",
           "severity": "HIGH",
           "context": "Method 'Purity' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "startMetrics",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'startMetrics' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "findPatterns",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'findPatterns' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "entries",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'entries' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "forEach",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'forEach' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "endsWith",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'endsWith' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "auditTSConfig",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'auditTSConfig' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "includes",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'includes' from legacy not found in current implementation."
         }
       ],
       "legacy": {
@@ -3422,7 +3187,6 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "child",
           "constructor",
           "super",
           "Purity",
@@ -3434,14 +3198,7 @@
           "reason",
           "push",
           "getAuditRules",
-          "startMetrics",
-          "findPatterns",
-          "entries",
-          "forEach",
-          "endsWith",
-          "auditTSConfig",
           "reasonAboutObjective",
-          "includes",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -3489,70 +3246,14 @@
       "agent": "strict",
       "stack": "Python",
       "category": "Audit",
-      "score": 0,
+      "score": 70,
       "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "child",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'child' from legacy not found in current implementation."
-        },
         {
           "dimension": "Method",
           "legacy": "Purity",
           "current": "MISSING",
           "severity": "HIGH",
           "context": "Method 'Purity' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "startMetrics",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'startMetrics' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "findPatterns",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'findPatterns' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "entries",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'entries' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "forEach",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'forEach' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "endsWith",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'endsWith' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "auditTSConfig",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'auditTSConfig' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "includes",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'includes' from legacy not found in current implementation."
         }
       ],
       "legacy": {
@@ -3570,7 +3271,6 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "child",
           "constructor",
           "super",
           "Purity",
@@ -3582,14 +3282,7 @@
           "reason",
           "push",
           "getAuditRules",
-          "startMetrics",
-          "findPatterns",
-          "entries",
-          "forEach",
-          "endsWith",
-          "auditTSConfig",
           "reasonAboutObjective",
-          "includes",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -3612,8 +3305,6 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "Python",
-          "lint",
           "constructor",
           "super",
           "Rigor",
@@ -3657,7 +3348,6 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "child",
           "constructor",
           "super",
           "Purity",
@@ -3669,14 +3359,7 @@
           "reason",
           "push",
           "getAuditRules",
-          "startMetrics",
-          "findPatterns",
-          "entries",
-          "forEach",
-          "endsWith",
-          "auditTSConfig",
           "reasonAboutObjective",
-          "includes",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -3699,7 +3382,6 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "child",
           "constructor",
           "super",
           "Purity",
@@ -3711,14 +3393,7 @@
           "reason",
           "push",
           "getAuditRules",
-          "startMetrics",
-          "findPatterns",
-          "entries",
-          "forEach",
-          "endsWith",
-          "auditTSConfig",
           "reasonAboutObjective",
-          "includes",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -3732,7 +3407,7 @@
       "agent": "testify",
       "stack": "Bun",
       "category": "Audit",
-      "score": 0,
+      "score": 10,
       "deltas": [
         {
           "dimension": "Method",
@@ -3754,13 +3429,6 @@
           "current": "MISSING",
           "severity": "HIGH",
           "context": "Method 'for' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "substring",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'substring' from legacy not found in current implementation."
         }
       ],
       "legacy": {
@@ -3790,22 +3458,14 @@
           "getAuditRules",
           "expect",
           "todo",
-          "findModulesWithoutTests",
-          "isTestFile",
-          "endsWith",
-          "includes",
-          "getTestedModules",
-          "keys",
-          "forEach",
-          "isUntestedModule",
-          "createMissingTestFinding",
-          "for",
-          "add",
-          "replace",
-          "has",
           "reasonAboutObjective",
-          "substring",
-          "getSystemPrompt"
+          "getSystemPrompt",
+          "isTestFile",
+          "findModulesWithoutTests",
+          "createMissingTestFinding",
+          "getTestedModules",
+          "for",
+          "isUntestedModule"
         ],
         "halsteadVolume": 0,
         "halsteadDifficulty": 0,
@@ -3836,25 +3496,18 @@
           "reason",
           "push",
           "getAuditRules",
-          "findModulesWithoutTests",
-          "isTestFile",
-          "endsWith",
-          "includes",
-          "getTestedModules",
-          "keys",
-          "forEach",
-          "isUntestedModule",
-          "createMissingTestFinding",
-          "recordIfModuleIsTested",
-          "replace",
-          "add",
-          "shouldSkipUntestedCheck",
-          "has",
-          "some",
-          "check",
           "reasonAboutObjective",
           "test",
-          "getSystemPrompt"
+          "getSystemPrompt",
+          "isTestFile",
+          "findModulesWithoutTests",
+          "createMissingTestFinding",
+          "getTestedModules",
+          "recordIfModuleIsTested",
+          "isUntestedModule",
+          "shouldSkipUntestedCheck",
+          "some",
+          "check"
         ],
         "halsteadVolume": 0,
         "halsteadDifficulty": 0,
@@ -3884,13 +3537,6 @@
         },
         {
           "dimension": "Method",
-          "legacy": "findModulesWithoutTests",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'findModulesWithoutTests' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
           "legacy": "isTestFile",
           "current": "MISSING",
           "severity": "HIGH",
@@ -3898,31 +3544,10 @@
         },
         {
           "dimension": "Method",
-          "legacy": "endsWith",
+          "legacy": "findModulesWithoutTests",
           "current": "MISSING",
           "severity": "HIGH",
-          "context": "Method 'endsWith' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "getTestedModules",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'getTestedModules' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "keys",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'keys' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "isUntestedModule",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'isUntestedModule' from legacy not found in current implementation."
+          "context": "Method 'findModulesWithoutTests' from legacy not found in current implementation."
         },
         {
           "dimension": "Method",
@@ -3933,6 +3558,13 @@
         },
         {
           "dimension": "Method",
+          "legacy": "getTestedModules",
+          "current": "MISSING",
+          "severity": "HIGH",
+          "context": "Method 'getTestedModules' from legacy not found in current implementation."
+        },
+        {
+          "dimension": "Method",
           "legacy": "for",
           "current": "MISSING",
           "severity": "HIGH",
@@ -3940,31 +3572,10 @@
         },
         {
           "dimension": "Method",
-          "legacy": "add",
+          "legacy": "isUntestedModule",
           "current": "MISSING",
           "severity": "HIGH",
-          "context": "Method 'add' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "replace",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'replace' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "has",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'has' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "substring",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'substring' from legacy not found in current implementation."
+          "context": "Method 'isUntestedModule' from legacy not found in current implementation."
         }
       ],
       "legacy": {
@@ -3994,22 +3605,14 @@
           "getAuditRules",
           "expect",
           "todo",
-          "findModulesWithoutTests",
-          "isTestFile",
-          "endsWith",
-          "includes",
-          "getTestedModules",
-          "keys",
-          "forEach",
-          "isUntestedModule",
-          "createMissingTestFinding",
-          "for",
-          "add",
-          "replace",
-          "has",
           "reasonAboutObjective",
-          "substring",
-          "getSystemPrompt"
+          "getSystemPrompt",
+          "isTestFile",
+          "findModulesWithoutTests",
+          "createMissingTestFinding",
+          "getTestedModules",
+          "for",
+          "isUntestedModule"
         ],
         "halsteadVolume": 0,
         "halsteadDifficulty": 0,
@@ -4030,37 +3633,22 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "QA",
-          "analyze",
-          "if",
-          "includes",
-          "verify",
-          "push",
           "constructor",
           "super",
           "execute",
           "setContext",
           "performAudit",
+          "if",
           "queryKnowledgeGraph",
           "reason",
+          "push",
           "getAuditRules",
           "matchers",
           "pump",
           "runAsync",
-          "forEach",
-          "filterByQuality",
-          "filter",
-          "switch",
-          "performActiveHealing",
-          "log",
-          "join",
           "reasonAboutObjective",
           "selfDiagnostic",
-          "getSystemPrompt",
-          "run_test_suite",
-          "_interpret_failures",
-          "analyze_test_quality_matrix",
-          "analyze_test_pyramid"
+          "getSystemPrompt"
         ],
         "halsteadVolume": 0,
         "halsteadDifficulty": 0,
@@ -4090,13 +3678,6 @@
         },
         {
           "dimension": "Method",
-          "legacy": "findModulesWithoutTests",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'findModulesWithoutTests' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
           "legacy": "isTestFile",
           "current": "MISSING",
           "severity": "HIGH",
@@ -4104,31 +3685,10 @@
         },
         {
           "dimension": "Method",
-          "legacy": "endsWith",
+          "legacy": "findModulesWithoutTests",
           "current": "MISSING",
           "severity": "HIGH",
-          "context": "Method 'endsWith' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "getTestedModules",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'getTestedModules' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "keys",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'keys' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "isUntestedModule",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'isUntestedModule' from legacy not found in current implementation."
+          "context": "Method 'findModulesWithoutTests' from legacy not found in current implementation."
         },
         {
           "dimension": "Method",
@@ -4139,6 +3699,13 @@
         },
         {
           "dimension": "Method",
+          "legacy": "getTestedModules",
+          "current": "MISSING",
+          "severity": "HIGH",
+          "context": "Method 'getTestedModules' from legacy not found in current implementation."
+        },
+        {
+          "dimension": "Method",
           "legacy": "for",
           "current": "MISSING",
           "severity": "HIGH",
@@ -4146,24 +3713,10 @@
         },
         {
           "dimension": "Method",
-          "legacy": "add",
+          "legacy": "isUntestedModule",
           "current": "MISSING",
           "severity": "HIGH",
-          "context": "Method 'add' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "replace",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'replace' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "has",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'has' from legacy not found in current implementation."
+          "context": "Method 'isUntestedModule' from legacy not found in current implementation."
         }
       ],
       "legacy": {
@@ -4193,22 +3746,14 @@
           "getAuditRules",
           "expect",
           "todo",
-          "findModulesWithoutTests",
-          "isTestFile",
-          "endsWith",
-          "includes",
-          "getTestedModules",
-          "keys",
-          "forEach",
-          "isUntestedModule",
-          "createMissingTestFinding",
-          "for",
-          "add",
-          "replace",
-          "has",
           "reasonAboutObjective",
-          "substring",
-          "getSystemPrompt"
+          "getSystemPrompt",
+          "isTestFile",
+          "findModulesWithoutTests",
+          "createMissingTestFinding",
+          "getTestedModules",
+          "for",
+          "isUntestedModule"
         ],
         "halsteadVolume": 0,
         "halsteadDifficulty": 0,
@@ -4229,30 +3774,19 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "Verification",
-          "analyze",
-          "if",
-          "includes",
-          "push",
-          "expectativas",
-          "Parallel",
           "constructor",
           "super",
           "execute",
           "setContext",
           "performAudit",
+          "if",
           "queryKnowledgeGraph",
           "reason",
+          "push",
           "getAuditRules",
+          "Parallel",
           "NoError",
-          "forEach",
-          "performActiveHealing",
-          "log",
-          "Cleanup",
-          "join",
           "reasonAboutObjective",
-          "substring",
-          "teste",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -4284,13 +3818,6 @@
         },
         {
           "dimension": "Method",
-          "legacy": "findModulesWithoutTests",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'findModulesWithoutTests' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
           "legacy": "isTestFile",
           "current": "MISSING",
           "severity": "HIGH",
@@ -4298,31 +3825,10 @@
         },
         {
           "dimension": "Method",
-          "legacy": "endsWith",
+          "legacy": "findModulesWithoutTests",
           "current": "MISSING",
           "severity": "HIGH",
-          "context": "Method 'endsWith' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "getTestedModules",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'getTestedModules' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "keys",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'keys' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "isUntestedModule",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'isUntestedModule' from legacy not found in current implementation."
+          "context": "Method 'findModulesWithoutTests' from legacy not found in current implementation."
         },
         {
           "dimension": "Method",
@@ -4333,6 +3839,13 @@
         },
         {
           "dimension": "Method",
+          "legacy": "getTestedModules",
+          "current": "MISSING",
+          "severity": "HIGH",
+          "context": "Method 'getTestedModules' from legacy not found in current implementation."
+        },
+        {
+          "dimension": "Method",
           "legacy": "for",
           "current": "MISSING",
           "severity": "HIGH",
@@ -4340,31 +3853,10 @@
         },
         {
           "dimension": "Method",
-          "legacy": "add",
+          "legacy": "isUntestedModule",
           "current": "MISSING",
           "severity": "HIGH",
-          "context": "Method 'add' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "replace",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'replace' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "has",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'has' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "substring",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'substring' from legacy not found in current implementation."
+          "context": "Method 'isUntestedModule' from legacy not found in current implementation."
         }
       ],
       "legacy": {
@@ -4394,22 +3886,14 @@
           "getAuditRules",
           "expect",
           "todo",
-          "findModulesWithoutTests",
-          "isTestFile",
-          "endsWith",
-          "includes",
-          "getTestedModules",
-          "keys",
-          "forEach",
-          "isUntestedModule",
-          "createMissingTestFinding",
-          "for",
-          "add",
-          "replace",
-          "has",
           "reasonAboutObjective",
-          "substring",
-          "getSystemPrompt"
+          "getSystemPrompt",
+          "isTestFile",
+          "findModulesWithoutTests",
+          "createMissingTestFinding",
+          "getTestedModules",
+          "for",
+          "isUntestedModule"
         ],
         "halsteadVolume": 0,
         "halsteadDifficulty": 0,
@@ -4430,29 +3914,17 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "QA",
-          "Instrumented",
-          "analyze",
-          "if",
-          "includes",
-          "any",
-          "push",
           "constructor",
           "super",
           "execute",
           "setContext",
           "performAudit",
+          "if",
           "queryKnowledgeGraph",
           "reason",
+          "push",
           "getAuditRules",
           "assertTrue",
-          "forEach",
-          "filterByQuality",
-          "filter",
-          "switch",
-          "performActiveHealing",
-          "log",
-          "join",
           "reasonAboutObjective",
           "selfDiagnostic",
           "getSystemPrompt"
@@ -4485,13 +3957,6 @@
         },
         {
           "dimension": "Method",
-          "legacy": "findModulesWithoutTests",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'findModulesWithoutTests' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
           "legacy": "isTestFile",
           "current": "MISSING",
           "severity": "HIGH",
@@ -4499,31 +3964,10 @@
         },
         {
           "dimension": "Method",
-          "legacy": "endsWith",
+          "legacy": "findModulesWithoutTests",
           "current": "MISSING",
           "severity": "HIGH",
-          "context": "Method 'endsWith' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "getTestedModules",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'getTestedModules' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "keys",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'keys' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "isUntestedModule",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'isUntestedModule' from legacy not found in current implementation."
+          "context": "Method 'findModulesWithoutTests' from legacy not found in current implementation."
         },
         {
           "dimension": "Method",
@@ -4534,6 +3978,13 @@
         },
         {
           "dimension": "Method",
+          "legacy": "getTestedModules",
+          "current": "MISSING",
+          "severity": "HIGH",
+          "context": "Method 'getTestedModules' from legacy not found in current implementation."
+        },
+        {
+          "dimension": "Method",
           "legacy": "for",
           "current": "MISSING",
           "severity": "HIGH",
@@ -4541,31 +3992,10 @@
         },
         {
           "dimension": "Method",
-          "legacy": "add",
+          "legacy": "isUntestedModule",
           "current": "MISSING",
           "severity": "HIGH",
-          "context": "Method 'add' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "replace",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'replace' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "has",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'has' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "substring",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'substring' from legacy not found in current implementation."
+          "context": "Method 'isUntestedModule' from legacy not found in current implementation."
         }
       ],
       "legacy": {
@@ -4595,22 +4025,14 @@
           "getAuditRules",
           "expect",
           "todo",
-          "findModulesWithoutTests",
-          "isTestFile",
-          "endsWith",
-          "includes",
-          "getTestedModules",
-          "keys",
-          "forEach",
-          "isUntestedModule",
-          "createMissingTestFinding",
-          "for",
-          "add",
-          "replace",
-          "has",
           "reasonAboutObjective",
-          "substring",
-          "getSystemPrompt"
+          "getSystemPrompt",
+          "isTestFile",
+          "findModulesWithoutTests",
+          "createMissingTestFinding",
+          "getTestedModules",
+          "for",
+          "isUntestedModule"
         ],
         "halsteadVolume": 0,
         "halsteadDifficulty": 0,
@@ -4631,27 +4053,17 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "QA",
-          "analyze",
-          "if",
-          "includes",
-          "push",
           "constructor",
           "super",
           "execute",
           "setContext",
           "performAudit",
+          "if",
           "queryKnowledgeGraph",
           "reason",
+          "push",
           "getAuditRules",
           "sleep",
-          "forEach",
-          "filterByQuality",
-          "filter",
-          "switch",
-          "performActiveHealing",
-          "log",
-          "join",
           "reasonAboutObjective",
           "selfDiagnostic",
           "getSystemPrompt"
@@ -4695,22 +4107,14 @@
           "getAuditRules",
           "expect",
           "todo",
-          "findModulesWithoutTests",
-          "isTestFile",
-          "endsWith",
-          "includes",
-          "getTestedModules",
-          "keys",
-          "forEach",
-          "isUntestedModule",
-          "createMissingTestFinding",
-          "for",
-          "add",
-          "replace",
-          "has",
           "reasonAboutObjective",
-          "substring",
-          "getSystemPrompt"
+          "getSystemPrompt",
+          "isTestFile",
+          "findModulesWithoutTests",
+          "createMissingTestFinding",
+          "getTestedModules",
+          "for",
+          "isUntestedModule"
         ],
         "halsteadVolume": 0,
         "halsteadDifficulty": 0,
@@ -4743,22 +4147,14 @@
           "getAuditRules",
           "expect",
           "todo",
-          "findModulesWithoutTests",
-          "isTestFile",
-          "endsWith",
-          "includes",
-          "getTestedModules",
-          "keys",
-          "forEach",
-          "isUntestedModule",
-          "createMissingTestFinding",
-          "for",
-          "add",
-          "replace",
-          "has",
           "reasonAboutObjective",
-          "substring",
-          "getSystemPrompt"
+          "getSystemPrompt",
+          "isTestFile",
+          "findModulesWithoutTests",
+          "createMissingTestFinding",
+          "getTestedModules",
+          "for",
+          "isUntestedModule"
         ],
         "halsteadVolume": 0,
         "halsteadDifficulty": 0,
