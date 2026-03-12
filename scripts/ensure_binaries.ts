@@ -4,6 +4,52 @@ import { execSync } from "node:child_process";
 
 const projectRoot = process.cwd();
 
+function checkVersion(cmd: string, args: string[], regex: RegExp, minVersion: string): boolean {
+    try {
+        const output = execSync(`${cmd} ${args.join(" ")}`, { stdio: "pipe" }).toString();
+        const match = output.match(regex);
+        if (match && match[1]) {
+            const version = match[1];
+            console.log(`✅ [Env] ${cmd} versão detectada: ${version}`);
+            
+            const vParts = version.split(".").map(Number);
+            const minParts = minVersion.split(".").map(Number);
+            
+            for (let i = 0; i < 2; i++) {
+                if ((vParts[i] || 0) > (minParts[i] || 0)) return true;
+                if ((vParts[i] || 0) < (minParts[i] || 0)) return false;
+            }
+            return (vParts[2] || 0) >= (minParts[2] || 0);
+        }
+    } catch (e) {
+        console.warn(`⚠️ [Env] ${cmd} não encontrado.`);
+    }
+    return false;
+}
+
+function verifyEnvironment() {
+    console.log("📡 Verificando ambiente de desenvolvimento...");
+    
+    const goOk = checkVersion("go", ["version"], /go version go(\d+\.\d+\.\d+)/, "1.22.0");
+    const rustOk = checkVersion("rustc", ["--version"], /rustc (\d+\.\d+\.\d+)/, "1.75.0");
+    const bunOk = checkVersion("bun", ["--version"], /(\d+\.\d+\.\d+)/, "1.1.0");
+
+    if (!goOk || !rustOk || !bunOk) {
+        console.error("\n❌ AMBIENTE INCOMPLETO PARA COMPILAÇÃO NATIVA");
+        if (!goOk) console.error("   - Go (1.22+) é necessário para o Hub e Scanner.");
+        if (!rustOk) console.error("   - Rust/Cargo é necessário para o Analyzer.");
+        if (!bunOk) console.error("   - Bun é o runtime recomendado para o Orquestrador.");
+        
+        console.error("\n💡 Dica: Instale as linguagens e tente novamente.");
+        // We don't exit here because some binaries might already be present,
+        // but we return false to indicate we can't build new ones.
+        return false;
+    }
+    return true;
+}
+
+const envReady = verifyEnvironment();
+
 const binaries = [
     {
         name: "Rust Analyzer",
@@ -21,7 +67,7 @@ const binaries = [
         name: "Go Scanner",
         path: "src_native/go-scanner.exe",
         buildDir: "src_native",
-        buildCmd: "go build -o go-scanner.exe src_native/main.go" // Adjusted based on previous findings
+        buildCmd: "go build -o go-scanner.exe scanner/main.go" // Adjusted based on previous findings
     }
 ];
 
@@ -32,6 +78,12 @@ let allPresent = true;
 for (const bin of binaries) {
     const fullPath = path.resolve(projectRoot, bin.path);
     if (!fs.existsSync(fullPath)) {
+        if (!envReady) {
+            console.warn(`⚠️ [MÍSSIL] Binário ausente e ambiente incompleto: ${bin.name}. Pulando compilação.`);
+            allPresent = false;
+            continue;
+        }
+
         console.warn(`⚠️ [MÍSSIL] Binário ausente: ${bin.name} (${bin.path})`);
 
         try {
