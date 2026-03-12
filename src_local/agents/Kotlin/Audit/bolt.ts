@@ -24,7 +24,7 @@ export class BoltPersona extends BaseActivePersona {
             for (const file of Object.keys(this.contextData)) {
                 if (file.endsWith(".kt")) {
                     const res = await this.hub.analyzeFile(file);
-                    if (res && res.complexity > 18) {
+                    if (res && res.complexity > 15) {
                         const neighbors = await this.hub.getContext(file);
                         const reasonPrompt = `Analyze the memory and performance impact of complexity (${res.complexity}) in the Kotlin file ${file}. Neighbors: ${neighbors.join(", ")}`;
                         const reasoning = await this.hub.reason(reasonPrompt);
@@ -52,10 +52,6 @@ export class BoltPersona extends BaseActivePersona {
                 { regex: /synchronized\(.*\)/, issue: "Manual Sync: Overhead de sincronização manual; considere Mutex/Flow.", severity: "medium" }
             ]
         };
-    }
-
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Bolt] Otimizando loops e ajustando escopos de coroutine em: ${blindSpots.join(", ")}`);
     }
 
     public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {

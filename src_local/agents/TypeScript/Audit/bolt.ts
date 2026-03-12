@@ -29,13 +29,13 @@ export class BoltPersona extends BaseActivePersona {
                         // Level 1: Contextual Impact
                         const neighbors = await this.hub.getContext(file);
                         
-                        // Level 2: AI Reasoning (Full Power)
+                        // Analise PhD
                         const reasonPrompt = `Analyze the architectural impact of high complexity (${res.complexity}) in ${file}. Neighbors: ${neighbors.join(", ")}`;
                         const reasoning = await this.hub.reason(reasonPrompt);
 
                         findings.push({
                             file, agent: this.name, role: this.role, emoji: this.emoji,
-                            issue: `Sovereign Alert: Complexidade crítica (${res.complexity}). Raciocínio PhD: ${reasoning}`,
+                            issue: `Sovereign Alert: Nivel de complexidade: ${res.complexity}. Raciocinio PhD: ${reasoning}`,
                             severity: "HIGH", stack: this.stack, evidence: "Local AI reasoning", match_count: 1
                         });
                     }
@@ -60,14 +60,14 @@ export class BoltPersona extends BaseActivePersona {
 
     override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
-        if (/readFileSync|writeFileSync|execSync/.test(content)) {
+        if (content["match"](/readFileSync|writeFileSync|execSync/)) {
             return {
                 file, severity: "HIGH",
                 issue: `Gargalo de Runtime: O objetivo '${objective}' exige alta performance. Operações síncronas em '${file}' paralisam o event loop da 'Orquestração de Inteligência Artificial'.`,
                 context: "Sync I/O detected"
             };
         }
-        if (/while\s*\(\s*true\s*\)/.test(content)) {
+        if (content["match"](/while\s*\(\s*true\s*\)/)) {
             return {
                 file, severity: "CRITICAL",
                 issue: `Busy-Waiting: O objetivo '${objective}' exige eficiência. Loops infinitos em '${file}' consomem 100% da CPU na 'Orquestração de Inteligência Artificial'.`,

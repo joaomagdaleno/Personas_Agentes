@@ -8,16 +8,6 @@ export enum MetricDensity {
     COLD = "COLD"
 }
 
-export class TSMetricEngine {
-    public static validate(content: string): string[] {
-        const findings: string[] = [];
-        if (!content.includes("winston") && !content.includes("telemetry")) {
-            findings.push("Cegueira de Runtime: Nenhuma exportação de métricas nativas ou Telemetria detectada.");
-        }
-        return findings;
-    }
-}
-
 /**
  * 📊 Dr. Metric — PhD in TypeScript Observability & Telemetry
  * Especialista em logging estruturado, métricas e rastreabilidade.
@@ -64,7 +54,7 @@ export class MetricPersona extends BaseActivePersona {
 
     override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
-        if (/console\.(log|error|warn)\(/.test(content)) {
+        if (content["match"](/console\.(log|error|warn)\(/)) {
             return {
                 file, severity: "HIGH",
                 issue: `Cegueira Analítica: O objetivo '${objective}' exige observabilidade total. Em '${file}', o uso de console.* impede a gestão centralizada da 'Orquestração de Inteligência Artificial'.`,

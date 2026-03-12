@@ -46,10 +46,6 @@ export class MetricPersona extends BaseActivePersona {
         };
     }
 
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Metric] Injetando logging estruturado e métricas de execução em: ${blindSpots.join(", ")}`);
-    }
-
     public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {
         return {
             objective,

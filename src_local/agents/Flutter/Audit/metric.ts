@@ -46,11 +46,6 @@ export class MetricPersona extends BaseActivePersona {
         };
     }
 
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Metric] Iniciando correção ativa para pontos cegos: ${blindSpots.join(", ")}`);
-        // Simulação de injeção de boilerplate de telemetria
-    }
-
     public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {
         return {
             objective,

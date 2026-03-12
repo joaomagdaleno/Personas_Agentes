@@ -58,6 +58,23 @@ export class HealthSynthesizer {
             raw_report: analyst.formatMarkdownReport(nativeReport)
         };
 
+        // 🚩 Exposicão de gaps como achados reais (Não silenciar)
+        if (nativeReport.divergentCount > 0) {
+            for (const res of nativeReport.results.filter(r => r.status === "DIVERGENT")) {
+                allAlerts.push({
+                    file: res.agent,
+                    severity: "CRITICAL",
+                    issue: `Gap de Paridade Atômica: O agente em '${res.stack}' divergiu da referência TypeScript.`,
+                    agent: "ParityAnalyst",
+                    role: "PhD in Atomic Symmetry",
+                    emoji: "⚖️",
+                    stack: res.stack,
+                    impact: "Quebra de fidelidade sistêmica entre stacks.",
+                    evidence: `${res.deltas.length} discrepâncias detectadas: ${res.deltas.map(d => d.dimension).join(", ")}`
+                });
+            }
+        }
+
         return {
             health_score: score,
             health_breakdown: breakdown,

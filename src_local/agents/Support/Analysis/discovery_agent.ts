@@ -18,7 +18,7 @@ export class DiscoveryAgent {
     async runDiscoveryPhase(): Promise<[any, any[]]> {
         logger.info("🔭 Discovery Phase...");
         const root = this.orc.projectRoot.toString();
-        const { results: raw, findings: goFindings } = await GoDiscoveryAdapter.scan(root, root, false);
+        const { results: raw, findings: goFindings } = await GoDiscoveryAdapter.scan(root, root, this.orc.hubManager);
         const filtered = raw.filter(f => f.path.replace(/\\/g, "/").startsWith(`src_local/agents/`));
         const { agents, findings: enrichFindings } = await this.enrich(filtered, root);
         const findings: any[] = [...goFindings, ...enrichFindings];

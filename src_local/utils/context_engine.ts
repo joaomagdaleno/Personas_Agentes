@@ -1,4 +1,4 @@
-import winston from "winston";
+
 import { HubManagerGRPC } from "../core/hub_manager_grpc.ts";
 import { Path } from "../core/path_utils.ts";
 import { DNAProfiler } from "../agents/Support/Analysis/dna_profiler.ts";
@@ -11,7 +11,7 @@ import { ParityAnalyst } from "../agents/Support/Analysis/parity_analyst.ts";
 import { MetricsEngine } from "../agents/Support/Diagnostics/metrics_engine.ts";
 import { ContextHelpers } from "./context_helpers.ts";
 
-const logger = winston.child({ module: "ContextEngine" });
+
 
 /**
  * 🧠 Cérebro Semântico PhD (Bun Version).
@@ -47,7 +47,7 @@ export class ContextEngine {
 
     private async getGoDiscoveryMap(): Promise<Record<string, any>> {
         const { GoDiscoveryAdapter } = await import("./go_discovery_adapter.ts");
-        const { results: goResults } = await GoDiscoveryAdapter.scan(this.projectRoot.toString(), this.projectRoot.toString(), false);
+        const { results: goResults } = await GoDiscoveryAdapter.scan(this.projectRoot.toString(), this.projectRoot.toString(), this.hubManager);
         const goMap: Record<string, any> = {};
         goResults.forEach(r => goMap[r.path.replace(/\\/g, "/")] = r);
         return goMap;
@@ -98,7 +98,7 @@ export class ContextEngine {
     private async performDeepAnalysis(path: Path, content: string, info: any, ignoreTest: boolean) {
         await this._applyStructuralAnalysis(path, content, info);
         this._applyAdvancedMetrics(path, content, info, info.atomic_go_metrics);
-        await this._applySecurityAndTests(path, content, info, ignoreTest, info.rust_metadata);
+        await this._applySecurityAndTests(path, content, info, ignoreTest);
     }
 
     private async _applyStructuralAnalysis(path: Path, content: string, info: any) {
@@ -136,7 +136,7 @@ export class ContextEngine {
         }
     }
 
-    private async _applySecurityAndTests(path: Path, content: string, info: any, ignoreTest: boolean, rustMetadata?: any) {
+    private async _applySecurityAndTests(path: Path, content: string, info: any, ignoreTest: boolean) {
         const vuln = await this.analyst.integrityGuardian.detectVulnerabilities(content, info.component_type, path.name(), ignoreTest);
         Object.assign(info, vuln);
 

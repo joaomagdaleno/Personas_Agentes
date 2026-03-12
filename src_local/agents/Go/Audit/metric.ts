@@ -70,10 +70,6 @@ export class MetricPersona extends BaseActivePersona {
         };
     }
 
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Metric] Injetando middleware de telemetria e configurando Zap em: ${blindSpots.join(", ")}`);
-    }
-
     public override reasonAboutObjective(objective: string, file: string, content: string): string | StrategicFinding | null {
         return {
             file,

@@ -24,7 +24,7 @@ export class BoltPersona extends BaseActivePersona {
             for (const file of Object.keys(this.contextData)) {
                 if (file.endsWith(".dart")) {
                     const res = await this.hub.analyzeFile(file);
-                    if (res && res.complexity > 14) {
+                    if (res && res.complexity > 15) {
                         const neighbors = await this.hub.getContext(file);
                         const reasonPrompt = `Analyze the UI performance and frame-drop risks of high complexity (${res.complexity}) in the Flutter file ${file}. Neighbors: ${neighbors.join(", ")}`;
                         const reasoning = await this.hub.reason(reasonPrompt);

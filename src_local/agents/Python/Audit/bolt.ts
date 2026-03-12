@@ -24,7 +24,7 @@ export class BoltPersona extends BaseActivePersona {
             for (const file of Object.keys(this.contextData)) {
                 if (file.endsWith(".py")) {
                     const res = await this.hub.analyzeFile(file);
-                    if (res && res.complexity > 12) {
+                    if (res && res.complexity > 15) {
                         const neighbors = await this.hub.getContext(file);
                         const reasonPrompt = `Analyze the performance impact of high complexity (${res.complexity}) in the Python script ${file}. Context neighbors: ${neighbors.join(", ")}`;
                         const reasoning = await this.hub.reason(reasonPrompt);
@@ -52,10 +52,6 @@ export class BoltPersona extends BaseActivePersona {
                 { regex: /time\.sleep\(0\)|time\.sleep\(0\.001\)/, issue: "Yield Ineficiente: Polling de curto intervalo consome CPU excessiva.", severity: "high" }
             ]
         };
-    }
-
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Bolt] Injetando delays exponenciais e otimizando loops em: ${blindSpots.join(", ")}`);
     }
 
     public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {

@@ -44,7 +44,7 @@ export class BoltPersona extends BaseActivePersona {
             for (const file of Object.keys(this.contextData)) {
                 if (file.endsWith(".go")) {
                     const res = await this.hub.analyzeFile(file);
-                    if (res && res.complexity > 20) {
+                    if (res && res.complexity > 15) {
                         const neighbors = await this.hub.getContext(file);
                         const reasonPrompt = `Analyze the concurrency risks and performance of high complexity (${res.complexity}) in the Go file ${file}. Neighbors: ${neighbors.join(", ")}`;
                         const reasoning = await this.hub.reason(reasonPrompt);
@@ -82,10 +82,6 @@ export class BoltPersona extends BaseActivePersona {
             evidence: "Structural Analysis", match_count: 1
         }));
         return results;
-    }
-
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Bolt] Injetando Contextos e otimizando canais em: ${blindSpots.join(", ")}`);
     }
 
     public override reasonAboutObjective(objective: string, file: string, content: string): string | StrategicFinding | null {
