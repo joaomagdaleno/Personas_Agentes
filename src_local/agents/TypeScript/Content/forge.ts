@@ -7,8 +7,8 @@ import type { AuditRule, StrategicFinding } from "../../base.ts";
  * Especialista em detecção de eval(), new Function() e execução dinâmica perigosa.
  */
 export class ForgePersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
-        super(projectRoot);
+    constructor(projectRoot?: string) {
+        super(projectRoot as any);
         this.name = "Forge";
         this.emoji = "🔨";
         this.role = "PhD Automation & Safety Engineer";
@@ -33,7 +33,7 @@ export class ForgePersona extends BaseActivePersona {
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: ['.ts', '.tsx'],
             rules: [
@@ -46,9 +46,10 @@ export class ForgePersona extends BaseActivePersona {
         };
     }
 
-    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
-        if (/\beval\s*\(|new\s+Function\s*\(/["test"](content)) {
+        const target = /\beval\s*\(|new\s+Function\s*\(/;
+        if (target["test"](content)) {
             return {
                 file, severity: "CRITICAL",
                 issue: `Risco de Autonomia: O objetivo '${objective}' exige segurança de execução. Em '${file}', a execução dinâmica de código compromete a 'Orquestração de Inteligência Artificial'.`,
@@ -62,7 +63,7 @@ export class ForgePersona extends BaseActivePersona {
         };
     }
 
-    selfDiagnostic(): any {
+    override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,
@@ -70,7 +71,7 @@ export class ForgePersona extends BaseActivePersona {
         };
     }
 
-    getSystemPrompt(): string {
+    override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em automação e segurança de codegen TypeScript.`;
     }
 }

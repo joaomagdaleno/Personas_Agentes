@@ -7,8 +7,8 @@ import type { AuditRule, StrategicFinding } from "../../base.ts";
  * Especialista em rastreabilidade, logging estruturado e observabilidade de runtime.
  */
 export class EchoPersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
-        super(projectRoot);
+    constructor(projectRoot?: string) {
+        super(projectRoot as any);
         this.name = "Echo";
         this.emoji = "📡";
         this.role = "PhD Diagnostic Tracer";
@@ -33,7 +33,7 @@ export class EchoPersona extends BaseActivePersona {
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: ['.ts', '.tsx'],
             rules: [
@@ -46,9 +46,11 @@ export class EchoPersona extends BaseActivePersona {
         };
     }
 
-    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
-        if (/console\.(log|error|warn)\/["test"](content) && !/logger/["test"](content)) {
+        const target = /console\.(log|error|warn)\(/;
+        const ignore = /logger/;
+        if (target["test"](content) && !ignore["test"](content)) {
             return {
                 file, severity: "HIGH",
                 issue: `Cegueira Operacional: O objetivo '${objective}' exige diagnóstico. Em '${file}', o uso de console.* impede a rastreabilidade da 'Orquestração de Inteligência Artificial'.`,
@@ -62,7 +64,7 @@ export class EchoPersona extends BaseActivePersona {
         };
     }
 
-    selfDiagnostic(): any {
+    override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,
@@ -70,7 +72,7 @@ export class EchoPersona extends BaseActivePersona {
         };
     }
 
-    getSystemPrompt(): string {
+    override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em telemetria e rastro digital TypeScript.`;
     }
 }

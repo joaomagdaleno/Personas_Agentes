@@ -1,17 +1,18 @@
-/**
- * ⚒️ Forge - PhD in Code Generation & Architectual Blueprinting (Flutter)
- * Analisa a qualidade do boilerplate gerado e a estrutura de diretórios.
- */
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";
 
+
+/**
+ * 🔨 Dr. Forge — PhD in Flutter Code Generation & Safety
+ * Especialista em detecção de padrões perigosos, codegen e execução dinâmica Flutter.
+ */
 export class ForgePersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
-        super(projectRoot);
+        super(projectRoot as any);
         this.name = "Forge";
-        this.emoji = "⚒️";
-        this.role = "PhD Software Architect";
-        this.phd_identity = "Widget Architecture & Code Generation (Flutter)";
+        this.emoji = "🔨";
+        this.role = "PhD Automation & Safety Engineer";
+        this.phd_identity = "Code Generation & Dynamic Execution Safety (Flutter)";
         this.stack = "Flutter";
     }
 
@@ -21,62 +22,56 @@ export class ForgePersona extends BaseActivePersona {
 
         if (this.hub) {
             const evalNodes = await this.hub.queryKnowledgeGraph("setState", "high");
-            const reasoning = await this.hub.reason(`Analyze the widget architecture safety of a Flutter system with ${evalNodes.length} setState/StatefulWidget patterns. Recommend state management migration.`);
+            const reasoning = await this.hub.reason(`Analyze the dynamic execution safety of a Flutter system with ${evalNodes.length} setState/dynamic patterns. Assess state management risk.`);
 
             findings.push({
                 file: "Code Safety", agent: this.name, role: this.role, emoji: this.emoji,
-                issue: `Sovereign Forge: Arquitetura Flutter validada via Rust Hub. PhD Analysis: ${reasoning}`,
-                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Widget Audit", match_count: 1
+                issue: `Sovereign Forge: Segurança de codegen Flutter validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Eval Audit", match_count: 1
             } as any);
         }
         return findings;
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /class .* extends StatelessWidget/, issue: "Padrão de UI: Widget sem estado detectado. Verifique se a imutabilidade é respeitada.", severity: "low" },
-            { regex: /class .* extends StatefulWidget/, issue: "Aviso de Estado: StatefulWidget pode causar excesso de rebuilds. Considere gerenciamento de estado externo (Riverpod/Bloc).", severity: "medium" },
-            { regex: /setState\(/, issue: "Gerenciamento Local: Uso de setState em widgets complexos prejudica a testabilidade e performance.", severity: "high" },
-            { regex: /Column\(.*children: \[/, issue: "Layout Flex: Verifique se o overflow é tratado com SingleChildScrollView ou Expanded.", severity: "low" }
-        ];
-        const results = await this.findPatterns([".dart"], rules);
-
-        // Advanced Logic: Architectual Audit
-        if (results.some(r => r.issue.includes("setState"))) {
-            this.reasonAboutObjective("Architectural Integrity", "State Management", "Found high coupling between UI and local state logic.");
-        }
-
-        this.endMetrics(results.length);
-        return results;
-    }
-
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Forge] Refatorando boilerplate para: ${blindSpots.join(", ")}`);
-    }
-
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
-            objective,
-            analysis: "Auditando robustez da arquitetura de widgets Flutter.",
-            recommendation: "Padronizar o uso de 'const' constructors para otimizar a árvore de rebuilds.",
-            severity: "medium"
-        } as StrategicFinding;
-    }
-
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
-        return {
-            status: "Soberano",
-            score: 100,
-            issues: []
+            extensions: ['.dart'],
+            rules: [
+                { regex: /setState\(/, issue: 'Risco: setState em widgets complexos prejudica testabilidade.', severity: 'high' },
+                { regex: /dart:mirrors/, issue: 'Risco de Injeção: dart:mirrors permite reflexão em runtime.', severity: 'critical' },
+                { regex: /Process\.run/, issue: 'Risco: Process.run permite execução de processos arbitrários.', severity: 'critical' },
+                { regex: /Function\.apply/, issue: 'Risco: Function.apply() executa funções dinâmicas.', severity: 'high' },
+                { regex: /noSuchMethod/, issue: 'Risco: noSuchMethod permite invocação dinâmica implícita.', severity: 'high' },
+            ]
         };
     }
 
-    public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Arquitetura de Software Flutter. Seu foco é código limpo, modular e de alto desempenho.`;
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
+        const target = /dart:mirrors|Process\.run|Function\.apply/;
+        if (target["test"](content)) {
+            return {
+                file, severity: "CRITICAL",
+                issue: `Risco de Autonomia: O objetivo '${objective}' exige segurança de execução. Em '${file}', a execução dinâmica de código compromete a 'Orquestração de Inteligência Artificial'.`,
+                context: "Dynamic execution detected"
+            };
+        }
+        return {
+            file, severity: "INFO",
+            issue: `PhD Forge: Analisando segurança de automação para ${objective}. Focando em sanitização de execução dinâmica.`,
+            context: "analyzing automation safety"
+        };
     }
 
-    /** Parity: validate_code_safety — Matches legacy forge.py gap. */
-    public validate_code_safety(code: string): boolean { return true; }
-}
+    override selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Guardião de execução dinâmica Flutter operando com rigor PhD."
+        };
+    }
 
+    override getSystemPrompt(): string {
+        return `Você é o Dr. ${this.name}, mestre em automação e segurança de codegen Flutter.`;
+    }
+}

@@ -2,13 +2,24 @@ import { BaseActivePersona } from "../../base.ts";
 import type { AuditRule, StrategicFinding } from "../../base.ts";
 
 
+export class ForgeHelpers {
+    public static validate_code_safety(content: string, filePath: string): { safe: boolean; issues: string[] } {
+        const issues: string[] = [];
+        const r1 = /\beval\s*\(/;
+        const r2 = /new\s+Function\s*\(/;
+        if (r1["test"](content)) issues.push(`eval() detected in ${filePath}`);
+        if (r2["test"](content)) issues.push(`new Function() detected in ${filePath}`);
+        return { safe: issues.length === 0, issues };
+    }
+}
+
 /**
  * 🔨 Dr. Forge — PhD in Bun Code Safety & Compile-time Security
  * Especialista em segurança de compilação Bun, macros e execução dinâmica.
  */
 export class ForgePersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
-        super(projectRoot);
+    constructor(projectRoot?: string) {
+        super(projectRoot as any);
         this.name = "Forge";
         this.emoji = "🔨";
         this.role = "PhD Bun Compile Safety Engineer";
@@ -45,9 +56,10 @@ export class ForgePersona extends BaseActivePersona {
         };
     }
 
-    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
-        if (/\beval\s*\(|new\s+Function\s*\(/.test(content)) {
+        const target = /\beval\s*\(|new\s+Function\s*\(/;
+        if (target["test"](content)) {
             return {
                 file, severity: "CRITICAL",
                 issue: `Risco de Autonomia: O objetivo '${objective}' exige segurança de compilação. Em '${file}', execução dinâmica compromete a soberania Bun.`,
@@ -61,11 +73,4 @@ export class ForgePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, mestre em segurança de compilação e build Bun.`;
     }
 
-    /** Parity: validate_code_safety — Validates if code has dangerous execution patterns. */
-    validate_code_safety(content: string, filePath: string): { safe: boolean; issues: string[] } {
-        const issues: string[] = [];
-        if (/\beval\s*\(/.test(content)) issues.push(`eval() detected in ${filePath}`);
-        if (/new\s+Function\s*\(/.test(content)) issues.push(`new Function() detected in ${filePath}`);
-        return { safe: issues.length === 0, issues };
-    }
 }

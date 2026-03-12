@@ -1,17 +1,18 @@
-/**
- * 🗣️ Echo - PhD in Observability (Kotlin)
- * Especialista em telemetria Android, monitoramento de performance e logs estruturados via Timber.
- */
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";
 
+
+/**
+ * 📡 Dr. Echo — PhD in Kotlin Diagnostic Tracing & Observability
+ * Especialista em rastreabilidade, logging estruturado e observabilidade Android/Kotlin.
+ */
 export class EchoPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
-        super(projectRoot);
+        super(projectRoot as any);
         this.name = "Echo";
-        this.emoji = "🗣️";
-        this.role = "PhD Observability Engineer";
-        this.phd_identity = "Observability & Telemetry (Kotlin)";
+        this.emoji = "📡";
+        this.role = "PhD Diagnostic Tracer";
+        this.phd_identity = "Logging & Diagnostic Tracing (Kotlin)";
         this.stack = "Kotlin";
     }
 
@@ -21,49 +22,56 @@ export class EchoPersona extends BaseActivePersona {
 
         if (this.hub) {
             const logNodes = await this.hub.queryKnowledgeGraph("println", "high");
-            const reasoning = await this.hub.reason(`Analyze the observability maturity of a Kotlin/Android system with ${logNodes.length} unstructured println points. Recommend migration to Timber.`);
+            const reasoning = await this.hub.reason(`Analyze the diagnostic tracing maturity of a Kotlin system with ${logNodes.length} unstructured logging points. Recommend migration to structured logging.`);
 
             findings.push({
                 file: "Diagnostic Tracing", agent: this.name, role: this.role, emoji: this.emoji,
-                issue: `Sovereign Echo: Observabilidade Kotlin validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                issue: `Sovereign Echo: Rastreabilidade Kotlin validada via Rust Hub. PhD Analysis: ${reasoning}`,
                 severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Logging Audit", match_count: 1
             } as any);
         }
         return findings;
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const results = await this.findPatterns([".kt"], [
-            { regex: /println\(/, issue: "Aviso: println() detectado em vez de telemetria estruturada. Use Timber.", severity: "medium" },
-            { regex: /catch\s*\(\w+:\s*Exception\)\s*\{\s*\}/, issue: "Cegueira Forense: Bloco catch vazio detectado. Erros silenciados.", severity: "critical" }
-        ]);
-        this.endMetrics(results.length);
-        return results;
-    }
-
-    public override reasonAboutObjective(objective: string, file: string, content: string): StrategicFinding | null {
-        if (content.includes("println(")) {
-            return {
-                file,
-                issue: `Obsolência de Logs: O objetivo '${objective}' exige observabilidade total. 'println' em '${file}' é invisível para auditoria PhD.`,
-                severity: "STRATEGIC",
-                context: this.name
-            };
-        }
-        return `PhD Observability: Analisando maturidade de telemetria para ${objective}. Focando em rastreabilidade e logs estruturados.`;
-    }
-
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
-            status: "Soberano",
-            score: 100,
-            issues: []
+            extensions: ['.kt', '.kts'],
+            rules: [
+                { regex: /println\(/, issue: 'Cegueira Operacional: println() sem logger estruturado Kotlin.', severity: 'high' },
+                { regex: /Log\.[deiw]\(/, issue: 'Debug em Produção: Android Log.* vazando para runtime.', severity: 'medium' },
+                { regex: /catch\s*\(\w+:\s*Exception\)\s*\{\s*\}/, issue: 'Cegueira Forense: Bloco catch vazio detectado.', severity: 'critical' },
+                { regex: /Timber\./, issue: 'Timber Usage: Verifique se Timber está configurado corretamente para produção.', severity: 'low' },
+            ]
         };
     }
 
-    public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Observabilidade de Sistemas e Especialista Android/Kotlin.`;
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
+        const target = /println\(/;
+        const ignore = /Timber/;
+        if (target["test"](content) && !ignore["test"](content)) {
+            return {
+                file, severity: "HIGH",
+                issue: `Cegueira Operacional: O objetivo '${objective}' exige diagnóstico. Em '${file}', o uso de println impede a rastreabilidade da 'Orquestração de Inteligência Artificial'.`,
+                context: "println usages detected"
+            };
+        }
+        return {
+            file, severity: "INFO",
+            issue: `PhD Echo: Analisando rastreabilidade para ${objective}. Focando em logging estruturado e eliminação de ruído.`,
+            context: "analyzing traceability"
+        };
+    }
+
+    override selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Monitor de rastreabilidade Kotlin operando com consciência PhD."
+        };
+    }
+
+    override getSystemPrompt(): string {
+        return `Você é o Dr. ${this.name}, mestre em telemetria e rastro digital Kotlin.`;
     }
 }
-

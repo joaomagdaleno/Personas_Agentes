@@ -1,17 +1,18 @@
-/**
- * 🔊 Echo - PhD in Semantic Echo & Resource Mapping (Flutter)
- * Analisa a integridade de assets, fontes e constantes de string.
- */
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";
 
+
+/**
+ * 📡 Dr. Echo — PhD in Flutter Diagnostic Tracing & Content Integrity
+ * Especialista em rastreabilidade, logging estruturado e observabilidade Flutter.
+ */
 export class EchoPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
-        super(projectRoot);
+        super(projectRoot as any);
         this.name = "Echo";
-        this.emoji = "🔊";
-        this.role = "PhD Content Strategist";
-        this.phd_identity = "Semantic Echo & Resource Mapping (Flutter)";
+        this.emoji = "📡";
+        this.role = "PhD Diagnostic Tracer";
+        this.phd_identity = "Logging & Diagnostic Tracing (Flutter)";
         this.stack = "Flutter";
     }
 
@@ -21,59 +22,56 @@ export class EchoPersona extends BaseActivePersona {
 
         if (this.hub) {
             const logNodes = await this.hub.queryKnowledgeGraph("print", "high");
-            const reasoning = await this.hub.reason(`Analyze the content integrity of a Flutter system with ${logNodes.length} unstructured print points. Recommend migration to structured logging and i18n.`);
+            const reasoning = await this.hub.reason(`Analyze the diagnostic tracing maturity of a Flutter system with ${logNodes.length} unstructured logging points. Recommend migration to structured logging.`);
 
             findings.push({
                 file: "Diagnostic Tracing", agent: this.name, role: this.role, emoji: this.emoji,
-                issue: `Sovereign Echo: Integridade de conteúdo Flutter validada via Rust Hub. PhD Analysis: ${reasoning}`,
-                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Content Audit", match_count: 1
+                issue: `Sovereign Echo: Rastreabilidade Flutter validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Logging Audit", match_count: 1
             } as any);
         }
         return findings;
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /pubspec\.yaml.*assets:/, issue: "Observação: Mapeamento de assets detectado. Verifique se os caminhos existem.", severity: "low" },
-            { regex: /"[\w\s]{50,}"/, issue: "Hardcoded String: Use o sistema de i18n/l10n para strings longas para permitir localização futura.", severity: "medium" },
-            { regex: /TextStyle\(.*\)/, issue: "Estilização Ad-hoc: Verifique se as fontes e estilos seguem o Design System unificado.", severity: "low" },
-            { regex: /static const String/, issue: "Constante Semântica: Verifique se o nome é descritivo e evita duplicação de valor.", severity: "low" }
-        ];
-        const results = await this.findPatterns([".dart", ".yaml"], rules);
-
-        // Advanced Logic: Content Strategy
-        if (results.some(r => r.issue.includes("Hardcoded"))) {
-            this.reasonAboutObjective("Internationalization", "UI Strings", "Codebase has high density of hardcoded strings.");
-        }
-
-        this.endMetrics(results.length);
-        return results;
-    }
-
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Echo] Normalizando caminhos de assets para: ${blindSpots.join(", ")}`);
-    }
-
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
-            objective,
-            analysis: "Auditando consistência semântica e acessibilidade de conteúdo Flutter.",
-            recommendation: "Migrar todas as strings estáticas para arquivos .arb (App Resource Bundle).",
-            severity: "low"
-        } as StrategicFinding;
-    }
-
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
-        return {
-            status: "Soberano",
-            score: 100,
-            issues: []
+            extensions: ['.dart'],
+            rules: [
+                { regex: /print\(/, issue: 'Cegueira Operacional: print() sem logger estruturado Flutter.', severity: 'high' },
+                { regex: /debugPrint\(/, issue: 'Debug em Produção: debugPrint() vazando para runtime.', severity: 'medium' },
+                { regex: /debugger\(/, issue: 'Breakpoint Esquecido: debugger() statement em produção.', severity: 'critical' },
+                { regex: /assert\(/, issue: 'Assert em Produção: assert() não executa em release mode.', severity: 'low' },
+            ]
         };
     }
 
-    public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Semântica de Conteúdo Flutter. Sua missão é garantir que cada byte de texto faça sentido estratégico.`;
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
+        const target = /print\(/;
+        const ignore = /logger/;
+        if (target["test"](content) && !ignore["test"](content)) {
+            return {
+                file, severity: "HIGH",
+                issue: `Cegueira Operacional: O objetivo '${objective}' exige diagnóstico. Em '${file}', o uso de print() impede a rastreabilidade da 'Orquestração de Inteligência Artificial'.`,
+                context: "print usages detected"
+            };
+        }
+        return {
+            file, severity: "INFO",
+            issue: `PhD Echo: Analisando rastreabilidade para ${objective}. Focando em logging estruturado e eliminação de ruído.`,
+            context: "analyzing traceability"
+        };
+    }
+
+    override selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Monitor de rastreabilidade Flutter operando com consciência PhD."
+        };
+    }
+
+    override getSystemPrompt(): string {
+        return `Você é o Dr. ${this.name}, mestre em telemetria e rastro digital Flutter.`;
     }
 }
-

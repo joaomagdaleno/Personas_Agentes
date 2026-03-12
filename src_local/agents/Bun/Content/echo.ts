@@ -7,8 +7,8 @@ import type { AuditRule, StrategicFinding } from "../../base.ts";
  * Especialista em rastreamento de execução Bun, debugger statements e process signals.
  */
 export class EchoPersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
-        super(projectRoot);
+    constructor(projectRoot?: string) {
+        super(projectRoot as any);
         this.name = "Echo";
         this.emoji = "📡";
         this.role = "PhD Bun Diagnostic Tracer";
@@ -33,7 +33,7 @@ export class EchoPersona extends BaseActivePersona {
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: ['.ts', '.tsx'],
             rules: [
@@ -45,9 +45,10 @@ export class EchoPersona extends BaseActivePersona {
         };
     }
 
-    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
-        if (/debugger;/.test(content)) {
+        const target = /debugger;/;
+        if (target["test"](content)) {
             return {
                 file, severity: "CRITICAL",
                 issue: `Artefato de Debug: O objetivo '${objective}' exige produção limpa. Em '${file}', debugger statement pausa a execução da 'Orquestração de Inteligência Artificial' Bun.`,
@@ -57,7 +58,7 @@ export class EchoPersona extends BaseActivePersona {
         return null;
     }
 
-    getSystemPrompt(): string {
+    override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em rastreabilidade e sinais de runtime Bun.`;
     }
 }

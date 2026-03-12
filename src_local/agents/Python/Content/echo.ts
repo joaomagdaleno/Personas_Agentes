@@ -1,17 +1,18 @@
-/**
- * 🔊 Echo - PhD in Semantic Echo & Resource Mapping (Python Stack)
- * Analisa a integridade de strings, mensagens de erro e constantes em Python.
- */
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";
 
+
+/**
+ * 📡 Dr. Echo — PhD in Python Diagnostic Tracing & Logging
+ * Especialista em rastreabilidade, logging estruturado e observabilidade Python.
+ */
 export class EchoPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
-        super(projectRoot);
+        super(projectRoot as any);
         this.name = "Echo";
-        this.emoji = "🔊";
-        this.role = "PhD Content Strategist";
-        this.phd_identity = "Semantic Echo & Resource Mapping (Python)";
+        this.emoji = "📡";
+        this.role = "PhD Diagnostic Tracer";
+        this.phd_identity = "Logging & Diagnostic Tracing (Python)";
         this.stack = "Python";
     }
 
@@ -21,7 +22,7 @@ export class EchoPersona extends BaseActivePersona {
 
         if (this.hub) {
             const logNodes = await this.hub.queryKnowledgeGraph("print", "high");
-            const reasoning = await this.hub.reason(`Analyze the diagnostic tracing maturity of a Python system with ${logNodes.length} unstructured print/logging points. Recommend migration to structured logging.`);
+            const reasoning = await this.hub.reason(`Analyze the diagnostic tracing maturity of a Python system with ${logNodes.length} unstructured logging points. Recommend migration to structured logging.`);
 
             findings.push({
                 file: "Diagnostic Tracing", agent: this.name, role: this.role, emoji: this.emoji,
@@ -32,48 +33,45 @@ export class EchoPersona extends BaseActivePersona {
         return findings;
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /"[\w\s]{50,}"/, issue: "Hardcoded String: Use constantes ou sistemas de l10n para strings longas em Python.", severity: "medium" },
-            { regex: /print\(f".*"\)/, issue: "Interpolação de Log: Verifique se a interpolação não consome recursos antes de decidir o log level.", severity: "low" },
-            { regex: /error_message = .*/, issue: "Semântica de Erro: Verifique se as mensagens de erro são descritivas e seguem o padrão forense PhD.", severity: "low" },
-            { regex: /raise Exception\(.*\)/, issue: "Exceção Genérica: Use exceções customizadas para garantir que o sistema de diagnóstico identifique a causa raiz.", severity: "high" }
-        ];
-        const results = await this.findPatterns([".py"], rules);
-
-        // Advanced Logic: Semantic Content Audit
-        if (results.some(r => r.severity === "high")) {
-            this.reasonAboutObjective("Narrative Integrity", "Exceptions", "Found generic exceptions in Python layer, reducing diagnostic depth.");
-        }
-
-        this.endMetrics(results.length);
-        return results;
-    }
-
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Echo] Normalizando mensagens de erro e extraindo constantes em: ${blindSpots.join(", ")}`);
-    }
-
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
-            objective,
-            analysis: "Auditando fidelidade semântica e clareza de saída legacy.",
-            recommendation: "Substituir strings hardcoded por um 'Resource Dictionary' centralizado no suporte Python.",
-            severity: "low"
-        } as StrategicFinding;
-    }
-
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
-        return {
-            status: "Soberano",
-            score: 100,
-            issues: []
+            extensions: ['.py'],
+            rules: [
+                { regex: /print\(/, issue: 'Cegueira Operacional: print() sem logger estruturado Python.', severity: 'high' },
+                { regex: /logging\.debug\(/, issue: 'Debug em Produção: logging.debug() vazando para runtime.', severity: 'medium' },
+                { regex: /raise Exception\(/, issue: 'Exceção Genérica: Use exceções customizadas para diagnóstico.', severity: 'high' },
+                { regex: /except\s+Exception/, issue: 'Catch Genérico: Captura Exception genérica impede diagnóstico fino.', severity: 'medium' },
+            ]
         };
     }
 
-    public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Semântica de Conteúdo Python. Sua missão é garantir a clareza absoluta das mensagens do sistema.`;
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
+        const target = /print\(/;
+        const ignore = /logging/;
+        if (target["test"](content) && !ignore["test"](content)) {
+            return {
+                file, severity: "HIGH",
+                issue: `Cegueira Operacional: O objetivo '${objective}' exige diagnóstico. Em '${file}', o uso de print() impede a rastreabilidade da 'Orquestração de Inteligência Artificial'.`,
+                context: "print usages detected"
+            };
+        }
+        return {
+            file, severity: "INFO",
+            issue: `PhD Echo: Analisando rastreabilidade para ${objective}. Focando em logging estruturado e eliminação de ruído.`,
+            context: "analyzing traceability"
+        };
+    }
+
+    override selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Monitor de rastreabilidade Python operando com consciência PhD."
+        };
+    }
+
+    override getSystemPrompt(): string {
+        return `Você é o Dr. ${this.name}, mestre em telemetria e rastro digital Python.`;
     }
 }
-
