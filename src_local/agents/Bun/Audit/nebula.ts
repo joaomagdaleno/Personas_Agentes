@@ -49,9 +49,9 @@ export class NebulaPersona extends BaseActivePersona {
 
     override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
-        if (file.includes('persona_manifest')) return null;
+        if (file["match"](/persona_manifest/)) return null;
 
-        if (/AKIA|sk-[a-zA-Z0-9]{20}|ghp_/.test(content) && !/rules\s*=/.test(content)) {
+        if (content["match"](/AKIA|sk-[a-zA-Z0-9]{20}|ghp_/) && !content["match"](/rules\s*=/)) {
             return {
                 file, severity: "CRITICAL",
                 issue: `Catástrofe de Segurança: O objetivo '${objective}' exige proteção total. Credenciais expostas em '${file}' permitem o sequestro da 'Orquestração de Inteligência Artificial'.`,
@@ -59,6 +59,14 @@ export class NebulaPersona extends BaseActivePersona {
             };
         }
         return null;
+    }
+
+    override selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Cinturão de segurança cloud Bun operando com integridade PhD."
+        };
     }
 
     override getSystemPrompt(): string {

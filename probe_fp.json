@@ -1,0 +1,121 @@
+[
+  {
+    "stack": "Bun",
+    "methods": [
+      "constructor",
+      "super",
+      "execute",
+      "setContext",
+      "performAudit",
+      "if",
+      "getKnowledgeGraph",
+      "queryKnowledgeGraph",
+      "reason",
+      "push",
+      "getAuditRules",
+      "reasonAboutObjective",
+      "selfDiagnostic",
+      "getSystemPrompt"
+    ]
+  },
+  {
+    "stack": "Flutter",
+    "methods": [
+      "constructor",
+      "super",
+      "execute",
+      "setContext",
+      "performAudit",
+      "if",
+      "getKnowledgeGraph",
+      "queryKnowledgeGraph",
+      "reason",
+      "push",
+      "getAuditRules",
+      "reasonAboutObjective",
+      "selfDiagnostic",
+      "getSystemPrompt"
+    ]
+  },
+  {
+    "stack": "Go",
+    "methods": [
+      "constructor",
+      "super",
+      "execute",
+      "setContext",
+      "performAudit",
+      "if",
+      "getKnowledgeGraph",
+      "queryKnowledgeGraph",
+      "reason",
+      "push",
+      "getAuditRules",
+      "recover",
+      "reasonAboutObjective",
+      "silenciosas",
+      "selfDiagnostic",
+      "getSystemPrompt"
+    ]
+  },
+  {
+    "stack": "Kotlin",
+    "methods": [
+      "constructor",
+      "super",
+      "execute",
+      "setContext",
+      "performAudit",
+      "if",
+      "getKnowledgeGraph",
+      "queryKnowledgeGraph",
+      "reason",
+      "push",
+      "getAuditRules",
+      "getOrNull",
+      "reasonAboutObjective",
+      "selfDiagnostic",
+      "getSystemPrompt"
+    ]
+  },
+  {
+    "stack": "Python",
+    "methods": [
+      "constructor",
+      "super",
+      "execute",
+      "setContext",
+      "performAudit",
+      "if",
+      "getKnowledgeGraph",
+      "queryKnowledgeGraph",
+      "reason",
+      "push",
+      "getAuditRules",
+      "reasonAboutObjective",
+      "silenciosas",
+      "selfDiagnostic",
+      "getSystemPrompt"
+    ]
+  },
+  {
+    "stack": "TypeScript",
+    "methods": [
+      "constructor",
+      "super",
+      "execute",
+      "setContext",
+      "performAudit",
+      "if",
+      "getKnowledgeGraph",
+      "Errors",
+      "queryKnowledgeGraph",
+      "reason",
+      "push",
+      "getAuditRules",
+      "reasonAboutObjective",
+      "selfDiagnostic",
+      "getSystemPrompt"
+    ]
+  }
+]

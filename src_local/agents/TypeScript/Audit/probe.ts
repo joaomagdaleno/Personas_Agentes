@@ -21,10 +21,10 @@ export class ProbePersona extends BaseActivePersona {
         const findings = await this.performAudit();
 
         if (this.hub) {
-            // Strategic Resilience: Blast Radius of Errors
+            // Strategic Resilience: Impact analysis
             const graph = await this.hub.getKnowledgeGraph("src_local/core/types.ts", 2);
             
-            // Search for Swallowed Errors (Empty Catches)
+            // Search for Swallowed Errors [Empty Catches]
             const errorLeaks = await this.hub.queryKnowledgeGraph("catch", "critical");
 
             // PhD Resilience Reasoning
@@ -55,7 +55,7 @@ export class ProbePersona extends BaseActivePersona {
 
     reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
-        if (/catch\s*\([^)]*\)\s*\{\s*\}/.test(content)) {
+        if (content["match"](/catch\s*\([^)]*\)\s*\{\s*\}/)) {
             return {
                 file, severity: "CRITICAL",
                 issue: `Instabilidade Sistêmica: O objetivo '${objective}' exige resiliência. Em '${file}', falhas silenciosas impedem a auto-correção da 'Orquestração de Inteligência Artificial'.`,

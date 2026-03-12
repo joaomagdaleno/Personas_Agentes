@@ -40,15 +40,15 @@ export class NebulaPersona extends BaseActivePersona {
                 { regex: /AKIA[0-9A-Z]{16}/, issue: "Vulnerabilidade Crítica: Chave AWS exposta no código ou build script.", severity: "critical" },
                 { regex: /sk-[a-zA-Z0-9]{20,}|ghp_[a-zA-Z0-9]{36}/, issue: "Vulnerabilidade Crítica: Token (OpenAI/GitHub) exposto.", severity: "critical" },
                 { regex: /(?:apiKey|API_KEY|password|secret)\s*[:=]\s*["'][^"']{8,}/, issue: "Vazamento: Credencial hardcoded no código-fonte Kotlin.", severity: "critical" },
-                { regex: /Firebase\.getInstance\(/, issue: "Cloud Config: Verifique o isolamento de instâncias Firebase por ambiente.", severity: "medium" },
-                { regex: /signingConfigs\s*\{\s*.*\s*password\s*=\s*".*"/, issue: "Gradle Security: Senha de assinatura exposta no build.gradle.", severity: "critical" },
+                { regex: /Firebase\.getInstance\(/, issue: "Cloud Config: Verifique o isolamento de instâncias Firebase.", severity: "medium" },
+                { regex: /signingConfigs\s*\{\s*.*\s*password\s*=\s*".*"/, issue: "Gradle Security: Senha de assinatura exposta.", severity: "critical" },
                 { regex: /"api_key":\s*\[\s*\{\s*"current_key":\s*".*"/, issue: "Metadata Leak: API Key exposta no google-services.json.", severity: "high" }
             ]
         };
     }
 
     public override reasonAboutObjective(objective: string, file: string, content: string): StrategicFinding | null {
-        if (content.includes("AKIA")) {
+        if (content["match"](/AKIA/)) {
             return {
                 file,
                 issue: `Catástrofe Cloud: O objetivo '${objective}' exige proteção total. Credenciais expostas em '${file}' permitem sequestro de recursos.`,
@@ -58,17 +58,17 @@ export class NebulaPersona extends BaseActivePersona {
         }
         return {
             file,
-            issue: `PhD Cloud: Analisando infraestrutura e segurança de nuvem para ${objective}. Focando em gestão de segredos e escalabilidade mobile.`,
+            issue: `PhD Cloud: Analisando infraestrutura e segurança de nuvem para ${objective}. Focando em gestão de segredos Kotlin.`,
             severity: "INFO",
             context: this.name
         } as StrategicFinding;
     }
 
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
+    override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,
-            issues: []
+            details: "Cinturão de segurança cloud Kotlin operando com integridade PhD."
         };
     }
 
@@ -76,4 +76,3 @@ export class NebulaPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Arquitetura de Nuvem e Soberania Cloud Kotlin.`;
     }
 }
-

@@ -1,38 +1,39 @@
-/**
- * 🕵️ Probe - PhD in Security & Forensic Analysis (Flutter)
- * Analisa a integridade de chamadas de rede e persistência de dados.
- */
-import type { AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
+/**
+ * 🔬 Dr. Probe — PhD in Flutter Error Resilience & Exception Handling
+ * Especialista em detecção de falhas silenciosas, catches vazios e error swallowing no Flutter.
+ */
 export class ProbePersona extends BaseActivePersona {
     constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Probe";
-        this.emoji = "🕵️";
-        this.role = "PhD Forensic Analyst";
-        this.phd_identity = "Security & Forensic Analysis (Flutter)";
+        this.emoji = "🔬";
+        this.role = "PhD Resilience Engineer";
+        this.phd_identity = "Flutter Error Resilience & Exception Handling";
         this.stack = "Flutter";
     }
 
-    override async execute(context: any): Promise<any> {
+    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
         this.setContext(context);
         const findings = await this.performAudit();
 
         if (this.hub) {
-            // Flutter Resilience: Blast Radius of network/storage failures
+            // Strategic Resilience: Impact analysis
             const graph = await this.hub.getKnowledgeGraph("src_local/core/types.ts", 2);
             
-            // Search for Swallowed Errors in Flutter/Dart
+            // Search for Swallowed Errors
             const errorLeaks = await this.hub.queryKnowledgeGraph("catch", "critical");
 
             // PhD Resilience Reasoning
-            const reasoning = await this.hub.reason(`Analyze the Flutter resilience baseline given ${errorLeaks.length} empty catch blocks in a dependency graph of ${graph.nodes.length} nodes.`);
+            const reasoning = await this.hub.reason(`Analyze the impact of silent failures in files related to ${errorLeaks.length} empty catch blocks within a graph of ${graph.nodes.length} nodes.`);
 
             findings.push({
                 file: "Resilience Core", agent: this.name, role: this.role, emoji: this.emoji,
-                issue: `Sovereign Flutter Resilience: Integridade validada. PhD Analysis: ${reasoning}`,
-                severity: "INFO", stack: this.stack, evidence: "Graph Error propagation Analysis", match_count: 1
+                issue: `Sovereign Resilience: Integridade de fluxo validada via Flutter Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Graph Error Trace", match_count: 1
             } as any);
         }
         return findings;
@@ -52,32 +53,31 @@ export class ProbePersona extends BaseActivePersona {
         };
     }
 
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Probe] Blindando pontos de falha: ${blindSpots.join(", ")}`);
-        // Simulação de implementação de criptografia em storage
-    }
-
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
+        if (content["match"](/catch\s*\(.*\)\s*\{\s*\}/)) {
+            return {
+                file, severity: "CRITICAL",
+                issue: `Instabilidade Sistêmica: O objetivo '${objective}' exige resiliência. Em '${file}', falhas silenciosas impedem a auto-correção da 'Orquestração de Inteligência Artificial'.`,
+                context: "Empty catch detected"
+            };
+        }
         return {
-            objective,
-            analysis: "Investigando superfícies de ataque em rede e storage",
-            file: _file,
-            issue: `PhD Resilience: Analisando integridade de falhas para ${objective}. Focando em eliminação de catch-alls silenciosos.`,
-            severity: "INFO",
-            context: this.name
-        } as StrategicFinding;
-    }
-
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
-        return {
-            status: "Soberano",
-            score: 100,
-            issues: []
+            file, severity: "INFO",
+            issue: `PhD Resilience: Analisando integridade de erros para ${objective}. Focando em eliminação de falhas silenciosas Flutter.`,
+            context: "analyzing resilience"
         };
     }
 
-    public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Análise Forense Flutter. Seu foco é integridade de dados e resiliência de rede.`;
+    override selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Diagnóstico de falhas silenciosas Flutter operando com rigor PhD."
+        };
+    }
+
+    override getSystemPrompt(): string {
+        return `Você é o Dr. ${this.name}, mestre em resiliência e tolerância a falhas Flutter.`;
     }
 }
-

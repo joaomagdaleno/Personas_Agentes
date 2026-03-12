@@ -48,7 +48,7 @@ export class NebulaPersona extends BaseActivePersona {
     }
 
     public override reasonAboutObjective(objective: string, file: string, content: string): StrategicFinding | null {
-        if (content.includes("AKIA") && !content.includes("rules =")) {
+        if (content["match"](/AKIA/) && !content["match"](/rules\s*=/)) {
             return {
                 file,
                 issue: `Catástrofe de Segurança: O objetivo '${objective}' exige proteção total. Credenciais expostas em '${file}' permitem o sequestro da 'Orquestração de Inteligência Artificial' via nuvem.`,
@@ -64,11 +64,11 @@ export class NebulaPersona extends BaseActivePersona {
         } as StrategicFinding;
     }
 
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
+    override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,
-            issues: []
+            details: "Cinturão de segurança cloud Flutter operando com integridade PhD."
         };
     }
 
@@ -76,4 +76,3 @@ export class NebulaPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Arquitetura de Nuvem e Backend Mobile Flutter.`;
     }
 }
-

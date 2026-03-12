@@ -1,57 +1,39 @@
-/**
- * 🔍 Probe - PhD in Go Observability & Tracing (Sovereign Version)
- * Analisa o rastreamento, erros silenciados e monitoramento de fluxo em Go.
- */
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
-export enum TraceStateGo {
-    VISIBLE = "VISIBLE",
-    SILENT = "SILENT",
-    BLIND = "BLIND"
-}
-
-export class GoProbeEngine {
-    public static audit(content: string): string[] {
-        const issues: string[] = [];
-        if (content.includes("err :=") && !content.includes("if err != nil")) {
-            issues.push("Erro Ignorado: Atribuição de erro detectada sem verificação imediata.");
-        }
-        if (content.includes("log.Fatal") && !content.includes("main")) {
-            issues.push("Fatal Fora do Main: O uso de log.Fatal em pacotes mata o processo sem permitir encerramento gracioso.");
-        }
-        return issues;
-    }
-}
-
+/**
+ * 🔬 Dr. Probe — PhD in Go Error Resilience & Exception Handling
+ * Especialista em rastreamento de erros, monitoramento de fluxo e omissões silenciadas em Go.
+ */
 export class ProbePersona extends BaseActivePersona {
     constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Probe";
-        this.emoji = "🔍";
-        this.role = "PhD Observability Expert";
-        this.phd_identity = "Go Observability & Tracing Specialist";
+        this.emoji = "🔬";
+        this.role = "PhD Resilience Engineer";
+        this.phd_identity = "Go Error Resilience & Exception Handling";
         this.stack = "Go";
     }
 
-    override async execute(context: any): Promise<any> {
+    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
         this.setContext(context);
         const findings = await this.performAudit();
 
         if (this.hub) {
-            // Observability Intelligence: Trace error handling in the dependency graph
+            // Strategic Resilience: Impact analysis
             const graph = await this.hub.getKnowledgeGraph("src_local/core/types.ts", 2);
             
-            // Search for "err != nil" omissions (Silent Failures)
+            // Search for "err != nil" omissions
             const silentFailures = await this.hub.queryKnowledgeGraph("if err != nil", "critical");
 
-            // PhD Observability Reasoning
-            const reasoning = await this.hub.reason(`Analyze the Go observability baseline given ${silentFailures.length} missing error checks in a graph of ${graph.nodes.length} nodes.`);
+            // PhD Resilience Reasoning
+            const reasoning = await this.hub.reason(`Analyze the impact of silent failures in files related to ${silentFailures.length} missing error checks within a graph of ${graph.nodes.length} nodes.`);
 
             findings.push({
-                file: "Observability Core", agent: this.name, role: this.role, emoji: this.emoji,
-                issue: `Sovereign Observability: Rastreamento validado via Rust Hub. PhD Analysis: ${reasoning}`,
-                severity: "INFO", stack: this.stack, evidence: "Graph Trace Analysis", match_count: 1
+                file: "Resilience Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Resilience: Integridade de fluxo validada via Go Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Graph Error Trace", match_count: 1
             } as any);
         }
         return findings;
@@ -71,42 +53,31 @@ export class ProbePersona extends BaseActivePersona {
         };
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        const results = await super.performAudit();
-        const probeIssues = GoProbeEngine.audit(this.projectRoot || "");
-        probeIssues.forEach(i => results.push({
-            file: "OBSERVABILITY_SCAN", agent: this.name, role: this.role, emoji: this.emoji, issue: i, severity: "medium", stack: this.stack,
-            evidence: "Structural Analysis", match_count: 1
-        }));
-        return results;
-    }
-
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Probe] Injetando verificações de erro e propagando Context em: ${blindSpots.join(", ")}`);
-    }
-
-    public override reasonAboutObjective(objective: string, file: string, content: string): string | StrategicFinding | null {
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
+        if (content["match"](/_\s*=\s*.*\(.*\)/)) {
+            return {
+                file, severity: "CRITICAL",
+                issue: `Instabilidade Sistêmica: O objetivo '${objective}' exige resiliência. Em '${file}', falhas silenciosas [omissão via _] impedem a auto-correção.`,
+                context: "Error omission detected"
+            };
+        }
         return {
-            file,
-            issue: `Estratégia: ${objective}`,
-            context: content.substring(0, 200),
-            objective,
-            analysis: "Auditando a visibilidade de erros e a integridade do rastreamento do sistema Go.",
-            recommendation: "Padronizar o embrulho de erros (Error Wrapping) e garantir que falhas em goroutines sejam reportadas.",
-            severity: "medium"
-        } as StrategicFinding;
-    }
-
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
-        return {
-            status: "Soberano",
-            score: 100,
-            issues: []
+            file, severity: "INFO",
+            issue: `PhD Resilience: Analisando integridade de erros para ${objective}. Focando em eliminação de falhas silenciosas Go.`,
+            context: "analyzing resilience"
         };
     }
 
-    public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Observabilidade Go. Sua missão é garantir que nenhum erro passe despercebido.`;
+    override selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Diagnóstico de falhas silenciosas Go operando com rigor PhD."
+        };
+    }
+
+    override getSystemPrompt(): string {
+        return `Você é o Dr. ${this.name}, mestre em resiliência e tolerância a falhas Go.`;
     }
 }
-

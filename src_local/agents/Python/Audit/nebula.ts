@@ -47,29 +47,23 @@ export class NebulaPersona extends BaseActivePersona {
         };
     }
 
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Nebula] Sanitizando Dockerfiles e reforçando políticas de segurança cloud em: ${blindSpots.join(", ")}`);
-    }
-
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         return {
-            objective,
-            analysis: "Auditando resiliência e segurança da infraestrutura Python.",
-            recommendation: "Implementar 'Multi-stage builds' no Docker e usar 'Secret Manager' para variáveis sensíveis.",
-            severity: "high"
+            file, severity: "INFO",
+            issue: `PhD Cloud Security: Analisando soberania de segredos para ${objective}. Focando em gestão de segredos e Docker Security.`,
+            context: "analyzing python cloud security"
         } as StrategicFinding;
     }
 
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
+    override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,
-            issues: []
+            details: "Cinturão de segurança cloud Python operando com integridade PhD."
         };
     }
 
     public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Arquitetura de Nuvem Python. Sua missão é garantir que a infraestrutura seja elástica e impenetrável.`;
+        return `Você é o Dr. ${this.name}, PhD em Arquitetura de Nuvem Python.`;
     }
 }
-

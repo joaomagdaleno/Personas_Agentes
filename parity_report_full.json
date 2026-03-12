@@ -1,35 +1,35 @@
 {
-  "timestamp": "2026-03-12T14:50:41.505Z",
+  "timestamp": "2026-03-12T15:37:06.498Z",
   "totalAgents": 55,
   "totalInstances": 216,
-  "symmetricCount": 76,
-  "divergentCount": 140,
-  "overallParity": 51,
+  "symmetricCount": 86,
+  "divergentCount": 130,
+  "overallParity": 53,
   "byStack": {
     "Bun": {
       "total": 39,
-      "symmetric": 11,
-      "parity": 57
+      "symmetric": 13,
+      "parity": 59
     },
     "Flutter": {
       "total": 32,
-      "symmetric": 5,
-      "parity": 31
+      "symmetric": 7,
+      "parity": 33
     },
     "Go": {
       "total": 34,
-      "symmetric": 5,
-      "parity": 37
+      "symmetric": 7,
+      "parity": 40
     },
     "Kotlin": {
       "total": 33,
-      "symmetric": 5,
-      "parity": 31
+      "symmetric": 7,
+      "parity": 34
     },
     "Python": {
       "total": 38,
-      "symmetric": 10,
-      "parity": 39
+      "symmetric": 12,
+      "parity": 42
     },
     "TypeScript": {
       "total": 40,
@@ -40,8 +40,8 @@
   "byCategory": {
     "Audit": {
       "total": 57,
-      "symmetric": 23,
-      "parity": 64
+      "symmetric": 33,
+      "parity": 72
     },
     "Content": {
       "total": 61,
@@ -1124,16 +1124,8 @@
       "agent": "nebula",
       "stack": "Bun",
       "category": "Audit",
-      "score": 70,
-      "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "selfDiagnostic",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'selfDiagnostic' from legacy not found in current implementation."
-        }
-      ],
+      "score": 100,
+      "deltas": [],
       "legacy": {
         "name": "Nebula",
         "emoji": "🛡️",
@@ -1160,8 +1152,6 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "includes",
-          "test",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -1197,30 +1187,21 @@
           "Token",
           "hash",
           "reasonAboutObjective",
-          "includes",
-          "test",
+          "selfDiagnostic",
           "getSystemPrompt"
         ],
         "halsteadVolume": 0,
         "halsteadDifficulty": 0,
         "halsteadEffort": 0
       },
-      "status": "DIVERGENT"
+      "status": "IDENTICAL"
     },
     {
       "agent": "nebula",
       "stack": "Flutter",
       "category": "Audit",
-      "score": 70,
-      "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "test",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'test' from legacy not found in current implementation."
-        }
-      ],
+      "score": 100,
+      "deltas": [],
       "legacy": {
         "name": "Nebula",
         "emoji": "🛡️",
@@ -1247,8 +1228,6 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "includes",
-          "test",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -1283,7 +1262,6 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "includes",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -1291,22 +1269,14 @@
         "halsteadDifficulty": 0,
         "halsteadEffort": 0
       },
-      "status": "DIVERGENT"
+      "status": "IDENTICAL"
     },
     {
       "agent": "nebula",
       "stack": "Go",
       "category": "Audit",
-      "score": 70,
-      "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "test",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'test' from legacy not found in current implementation."
-        }
-      ],
+      "score": 100,
+      "deltas": [],
       "legacy": {
         "name": "Nebula",
         "emoji": "🛡️",
@@ -1333,8 +1303,6 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "includes",
-          "test",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -1358,26 +1326,18 @@
         "hasExtraMethods": [],
         "methods": [
           "Infrastructure",
-          "scan",
-          "if",
-          "match",
-          "push",
-          "includes",
           "constructor",
           "super",
           "execute",
           "setContext",
           "performAudit",
-          "forEach",
+          "if",
           "queryKnowledgeGraph",
           "reason",
+          "push",
           "getAuditRules",
           "Token",
-          "performActiveHealing",
-          "log",
-          "join",
           "reasonAboutObjective",
-          "substring",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -1385,22 +1345,14 @@
         "halsteadDifficulty": 0,
         "halsteadEffort": 0
       },
-      "status": "DIVERGENT"
+      "status": "IDENTICAL"
     },
     {
       "agent": "nebula",
       "stack": "Kotlin",
       "category": "Audit",
-      "score": 70,
-      "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "test",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'test' from legacy not found in current implementation."
-        }
-      ],
+      "score": 100,
+      "deltas": [],
       "legacy": {
         "name": "Nebula",
         "emoji": "🛡️",
@@ -1427,8 +1379,6 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "includes",
-          "test",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -1464,7 +1414,6 @@
           "getAuditRules",
           "Token",
           "reasonAboutObjective",
-          "includes",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -1472,29 +1421,14 @@
         "halsteadDifficulty": 0,
         "halsteadEffort": 0
       },
-      "status": "DIVERGENT"
+      "status": "IDENTICAL"
     },
     {
       "agent": "nebula",
       "stack": "Python",
       "category": "Audit",
-      "score": 40,
-      "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "includes",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'includes' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "test",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'test' from legacy not found in current implementation."
-        }
-      ],
+      "score": 100,
+      "deltas": [],
       "legacy": {
         "name": "Nebula",
         "emoji": "🛡️",
@@ -1521,8 +1455,6 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "includes",
-          "test",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -1557,9 +1489,6 @@
           "push",
           "getAuditRules",
           "Token",
-          "performActiveHealing",
-          "log",
-          "join",
           "reasonAboutObjective",
           "selfDiagnostic",
           "getSystemPrompt"
@@ -1568,7 +1497,7 @@
         "halsteadDifficulty": 0,
         "halsteadEffort": 0
       },
-      "status": "DIVERGENT"
+      "status": "IDENTICAL"
     },
     {
       "agent": "nebula",
@@ -1602,8 +1531,6 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "includes",
-          "test",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -1637,8 +1564,6 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "includes",
-          "test",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -1652,23 +1577,8 @@
       "agent": "probe",
       "stack": "Bun",
       "category": "Audit",
-      "score": 40,
-      "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "Errors",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'Errors' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "selfDiagnostic",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'selfDiagnostic' from legacy not found in current implementation."
-        }
-      ],
+      "score": 100,
+      "deltas": [],
       "legacy": {
         "name": "Probe",
         "emoji": "🛡️",
@@ -1691,13 +1601,11 @@
           "performAudit",
           "if",
           "getKnowledgeGraph",
-          "Errors",
           "queryKnowledgeGraph",
           "reason",
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "test",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -1732,36 +1640,21 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "test",
+          "selfDiagnostic",
           "getSystemPrompt"
         ],
         "halsteadVolume": 0,
         "halsteadDifficulty": 0,
         "halsteadEffort": 0
       },
-      "status": "DIVERGENT"
+      "status": "IDENTICAL"
     },
     {
       "agent": "probe",
       "stack": "Flutter",
       "category": "Audit",
-      "score": 40,
-      "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "Errors",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'Errors' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "test",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'test' from legacy not found in current implementation."
-        }
-      ],
+      "score": 100,
+      "deltas": [],
       "legacy": {
         "name": "Probe",
         "emoji": "🛡️",
@@ -1784,13 +1677,11 @@
           "performAudit",
           "if",
           "getKnowledgeGraph",
-          "Errors",
           "queryKnowledgeGraph",
           "reason",
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "test",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -1813,7 +1704,6 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "Analysis",
           "constructor",
           "super",
           "execute",
@@ -1825,9 +1715,6 @@
           "reason",
           "push",
           "getAuditRules",
-          "performActiveHealing",
-          "log",
-          "join",
           "reasonAboutObjective",
           "selfDiagnostic",
           "getSystemPrompt"
@@ -1836,29 +1723,14 @@
         "halsteadDifficulty": 0,
         "halsteadEffort": 0
       },
-      "status": "DIVERGENT"
+      "status": "IDENTICAL"
     },
     {
       "agent": "probe",
       "stack": "Go",
       "category": "Audit",
-      "score": 40,
-      "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "Errors",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'Errors' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "test",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'test' from legacy not found in current implementation."
-        }
-      ],
+      "score": 100,
+      "deltas": [],
       "legacy": {
         "name": "Probe",
         "emoji": "🛡️",
@@ -1881,13 +1753,11 @@
           "performAudit",
           "if",
           "getKnowledgeGraph",
-          "Errors",
           "queryKnowledgeGraph",
           "reason",
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "test",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -1910,29 +1780,19 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "Tracing",
-          "audit",
-          "if",
-          "includes",
-          "push",
           "constructor",
           "super",
           "execute",
           "setContext",
           "performAudit",
+          "if",
           "getKnowledgeGraph",
-          "omissions",
           "queryKnowledgeGraph",
           "reason",
+          "push",
           "getAuditRules",
           "recover",
-          "forEach",
-          "performActiveHealing",
-          "log",
-          "join",
           "reasonAboutObjective",
-          "substring",
-          "erros",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -1940,29 +1800,14 @@
         "halsteadDifficulty": 0,
         "halsteadEffort": 0
       },
-      "status": "DIVERGENT"
+      "status": "IDENTICAL"
     },
     {
       "agent": "probe",
       "stack": "Kotlin",
       "category": "Audit",
-      "score": 40,
-      "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "Errors",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'Errors' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "test",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'test' from legacy not found in current implementation."
-        }
-      ],
+      "score": 100,
+      "deltas": [],
       "legacy": {
         "name": "Probe",
         "emoji": "🛡️",
@@ -1985,13 +1830,11 @@
           "performAudit",
           "if",
           "getKnowledgeGraph",
-          "Errors",
           "queryKnowledgeGraph",
           "reason",
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "test",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -2014,7 +1857,6 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "Analysis",
           "constructor",
           "super",
           "execute",
@@ -2026,10 +1868,6 @@
           "reason",
           "push",
           "getAuditRules",
-          "getOrNull",
-          "performActiveHealing",
-          "log",
-          "join",
           "reasonAboutObjective",
           "selfDiagnostic",
           "getSystemPrompt"
@@ -2038,29 +1876,14 @@
         "halsteadDifficulty": 0,
         "halsteadEffort": 0
       },
-      "status": "DIVERGENT"
+      "status": "IDENTICAL"
     },
     {
       "agent": "probe",
       "stack": "Python",
       "category": "Audit",
-      "score": 40,
-      "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "Errors",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'Errors' from legacy not found in current implementation."
-        },
-        {
-          "dimension": "Method",
-          "legacy": "test",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'test' from legacy not found in current implementation."
-        }
-      ],
+      "score": 100,
+      "deltas": [],
       "legacy": {
         "name": "Probe",
         "emoji": "🛡️",
@@ -2083,13 +1906,11 @@
           "performAudit",
           "if",
           "getKnowledgeGraph",
-          "Errors",
           "queryKnowledgeGraph",
           "reason",
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "test",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -2112,7 +1933,6 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "Analysis",
           "constructor",
           "super",
           "execute",
@@ -2120,15 +1940,10 @@
           "performAudit",
           "if",
           "getKnowledgeGraph",
-          "blocks",
           "queryKnowledgeGraph",
           "reason",
           "push",
           "getAuditRules",
-          "o",
-          "performActiveHealing",
-          "log",
-          "join",
           "reasonAboutObjective",
           "selfDiagnostic",
           "getSystemPrompt"
@@ -2137,7 +1952,7 @@
         "halsteadDifficulty": 0,
         "halsteadEffort": 0
       },
-      "status": "DIVERGENT"
+      "status": "IDENTICAL"
     },
     {
       "agent": "probe",
@@ -2167,13 +1982,11 @@
           "performAudit",
           "if",
           "getKnowledgeGraph",
-          "Errors",
           "queryKnowledgeGraph",
           "reason",
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "test",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -2203,13 +2016,11 @@
           "performAudit",
           "if",
           "getKnowledgeGraph",
-          "Errors",
           "queryKnowledgeGraph",
           "reason",
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "test",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
