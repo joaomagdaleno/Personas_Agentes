@@ -7,7 +7,7 @@ import type { AuditRule, StrategicFinding } from "../../base.ts";
  * Especialista em dívida técnica, bunfig.toml e gestão de dependências Bun.
  */
 export class ScopePersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Scope";
         this.emoji = "🎯";
@@ -54,7 +54,7 @@ export class ScopePersona extends BaseActivePersona {
 
     reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
-        const debtCount = (content.match(/\/\/\s*(TODO|FIXME|HACK)/gi) || []).length;
+        const debtCount = (content["match"](/\/\/\s*(TODO|FIXME|HACK)/gi) || []).length;
         if (debtCount > 3) {
             return {
                 file, severity: "HIGH",
@@ -65,7 +65,15 @@ export class ScopePersona extends BaseActivePersona {
         return null;
     }
 
-    getSystemPrompt(): string {
+    override selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Rastreador de dívida técnica Bun operando com visão PhD."
+        };
+    }
+
+    override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em gestão de escopo e dívida técnica Bun.`;
     }
 }

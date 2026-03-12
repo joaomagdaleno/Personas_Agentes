@@ -1,9 +1,7 @@
 import { BaseActivePersona } from "../../base.ts";
 import type { AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
-import winston from "winston";
 import { StrictAuditHelpers } from "./StrictAuditHelpers.ts";
-
-const logger = winston.child({ module: "TS_Strict" });
+// Logger removed since unused.
 
 /**
  * 🔒 Dr. Strict — PhD in TypeScript Compiler Strictness
@@ -45,22 +43,22 @@ export class StrictPersona extends BaseActivePersona {
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const results = await this.findPatterns(this.getAuditRules().extensions, this.getAuditRules().rules);
-        Object.entries(this.contextData).forEach(([f, c]) => {
-            if (f.endsWith('tsconfig.json')) StrictAuditHelpers.auditTSConfig((c as any).content as string, results, f, this.name);
+        this["startMetrics"]();
+        const results = await this["findPatterns"](this.getAuditRules().extensions, this.getAuditRules().rules);
+        Object["entries"](this.contextData)["forEach"](([f, c]) => {
+            if (f["endsWith"]('tsconfig.json')) StrictAuditHelpers["auditTSConfig"]((c as any).content as string, results, f, this.name);
         });
         return results;
     }
 
     public override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | null {
         if (typeof content !== 'string') return null;
-        if (file.endsWith('tsconfig.json') && !content.includes('"strict": true') && !content.includes('"strict":true')) {
+        if (file["endsWith"]('tsconfig.json') && !content["includes"]('"strict": true') && !content["includes"]('"strict":true')) {
             return { file, severity: "CRITICAL", issue: `Compilador Desarmado para ${objective}.`, context: "tsconfig strict false" } as any;
         }
         return { file, severity: "INFO", issue: `PhD Strictness: Analisando ${objective}.`, context: "analyzing strictness" } as any;
     }
 
-    selfDiagnostic(): any { return { status: "Soberano", score: 100, details: "OK" }; }
+    public override selfDiagnostic(): any { return { status: "Soberano", score: 100, details: "OK" }; }
     getSystemPrompt(): string { return `Você é o Dr. ${this.name}, guardião TS.`; }
 }

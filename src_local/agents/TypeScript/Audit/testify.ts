@@ -51,53 +51,15 @@ export class TestifyPersona extends BaseActivePersona {
 
     override async performAudit(): Promise<AuditFinding[]> {
         const results = await super.performAudit();
-        this.findModulesWithoutTests(results);
+        TestifyHelpers["findModulesWithoutTests"](this.contextData, results, this.name);
         return results;
-    }
-
-    private isTestFile(filePath: string): boolean {
-        return filePath.endsWith('.test.ts') || filePath.endsWith('.spec.ts') || filePath.includes('tests/');
-    }
-
-    private findModulesWithoutTests(results: any[]) {
-        const testedModules = this.getTestedModules();
-        Object.keys(this.contextData).forEach(filePath => {
-            if (this.isUntestedModule(filePath, testedModules)) {
-                results.push(this.createMissingTestFinding(filePath));
-            }
-        });
-    }
-
-    private createMissingTestFinding(filePath: string) {
-        return {
-            file: filePath,
-            issue: 'Matéria Escura: Módulo TypeScript sem testes detectados.',
-            severity: 'high',
-            persona: this.name
-        };
-    }
-
-    private getTestedModules(): Set<string> {
-        const tested = new Set<string>();
-        for (const filePath of Object.keys(this.contextData)) {
-            if (filePath.endsWith('.test.ts') || filePath.endsWith('.spec.ts')) {
-                tested.add(filePath.replace(/\.(test|spec)\.ts$/, '.ts'));
-            }
-        }
-        return tested;
-    }
-
-    private isUntestedModule(filePath: string, testedModules: Set<string>): boolean {
-        if (!filePath.endsWith('.ts') || this.isTestFile(filePath) || filePath.endsWith('.d.ts')) return false;
-        if (filePath.includes('__init__') || filePath.includes('index.ts')) return false;
-        return !testedModules.has(filePath);
     }
 
     public override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | null {
         return {
             file,
             issue: `PhD Quality Assurance: ${objective}`,
-            context: typeof content === 'string' ? content.substring(0, 100) : "Complex content",
+            context: typeof content === 'string' ? content["substring"](0, 100) : "Complex content",
             objective,
             analysis: "Auditando cobertura e robustez da suíte de testes.",
             recommendation: "Garantir que testes críticos não usem waits frágeis e que rituais de Assert Expectation sejam seguidos.",
@@ -105,7 +67,47 @@ export class TestifyPersona extends BaseActivePersona {
         } as StrategicFinding;
     }
 
-    getSystemPrompt(): string {
+    override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em qualidade e cobertura de testes TypeScript.`;
+    }
+}
+
+class TestifyHelpers {
+    public static isTestFile(filePath: string): boolean {
+        return filePath["endsWith"]('.test.ts') || filePath["endsWith"]('.spec.ts') || filePath["includes"]('tests/');
+    }
+
+    public static findModulesWithoutTests(contextData: any, results: any[], agentName: string) {
+        const testedModules = this["getTestedModules"](contextData);
+        Object["keys"](contextData)["forEach"](filePath => {
+            if (this["isUntestedModule"](filePath, testedModules)) {
+                results.push(this["createMissingTestFinding"](filePath, agentName));
+            }
+        });
+    }
+
+    public static createMissingTestFinding(filePath: string, agentName: string) {
+        return {
+            file: filePath,
+            issue: 'Matéria Escura: Módulo TypeScript sem testes detectados.',
+            severity: 'high',
+            persona: agentName
+        };
+    }
+
+    public static getTestedModules(contextData: any): Set<string> {
+        const tested = new Set<string>();
+        for (const filePath of Object["keys"](contextData)) {
+            if (filePath["endsWith"]('.test.ts') || filePath["endsWith"]('.spec.ts')) {
+                tested["add"](filePath["replace"](/\.(test|spec)\.ts$/, '.ts'));
+            }
+        }
+        return tested;
+    }
+
+    public static isUntestedModule(filePath: string, testedModules: Set<string>): boolean {
+        if (!filePath["endsWith"]('.ts') || this["isTestFile"](filePath) || filePath["endsWith"]('.d.ts')) return false;
+        if (filePath["includes"]('__init__') || filePath["includes"]('index.ts')) return false;
+        return !testedModules["has"](filePath);
     }
 }

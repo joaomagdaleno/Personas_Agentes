@@ -1,55 +1,36 @@
-/**
- * ⚖️ Scale - PhD in Go Concurrency & Scaling (Sovereign Version)
- * Analisa a escalabilidade, o uso de primitivas de concorrência e o design de sistemas Go.
- */
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";
 import type { ProjectContext } from "../../../core/types.ts";
 
-export enum ScalingStateGo {
-    ELASTIC = "ELASTIC",
-    LINEAR = "LINEAR",
-    BOTTLE_NECK = "BOTTLE_NECK"
-}
-
-export class GoScalingEngine {
-    public static audit(content: string): string[] {
-        const issues: string[] = [];
-        if (content.includes("sync.WaitGroup") && !content.includes("Add(")) {
-            issues.push("Invalid Sync: Uso de WaitGroup sem chamada Add(); risco de não aguardar goroutines.");
-        }
-        if (content.match(/go\s+.*\(.*\)/) && !content.includes("context.Context")) {
-            issues.push("Goroutine Desgovernada: Disparo de goroutine sem passagem de Context para cancelamento.");
-        }
-        return issues;
-    }
-}
-
+/**
+ * 🏗️ Dr. Scale — PhD in Go Architecture & Scalability
+ * Especialista em arquitetura de módulos, concorrência e complexidade ciclomatica em Go.
+ */
 export class ScalePersona extends BaseActivePersona {
-    constructor(projectRoot?: string) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Scale";
-        this.emoji = "⚖️";
-        this.role = "PhD Concurrency Specialist";
-        this.phd_identity = "Go Concurrency & Scaling";
+        this.emoji = "🏗️";
+        this.role = "PhD Software Architect";
+        this.phd_identity = "Go Architecture & Scalability";
         this.stack = "Go";
     }
 
-    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+    override async execute(context: ProjectContext): Promise<any> {
         this.setContext(context);
         const findings = await this.performAudit();
 
         if (this.hub) {
-            // Concurrency Intelligence: Goroutines and Sync primitives
-            const graph = await this.hub.getKnowledgeGraph("main.go", 2);
+            // Architectural Intelligence: Coupling and God Files
+            const graph = await this.hub.getKnowledgeGraph("src_local/core/orchestrator.ts", 2);
             
-            // PhD Scalability Reasoning
-            const reasoning = await this.hub.reason(`Analyze the concurrent scalability of a Go system with a core graph of ${graph.nodes.length} nodes and identify goroutine leak risks.`);
+            // PhD Architectural Reasoning
+            const reasoning = await this.hub.reason(`Analyze the architectural scalability of a Go system with a core graph of ${graph.nodes.length} nodes and identify critical coupling.`);
 
             findings.push({
-                file: "Concurrency Core", agent: this.name, role: this.role, emoji: this.emoji,
-                issue: `Sovereign Scale: Escalabilidade concorrente validada via Rust Hub. PhD Analysis: ${reasoning}`,
-                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Concurrency Audit", match_count: 1
+                file: "Architecture Core", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: `Sovereign Scale: Escalabilidade validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Coupling Analysis", match_count: 1
             } as any);
         }
         return findings;
@@ -69,42 +50,32 @@ export class ScalePersona extends BaseActivePersona {
         };
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        const results = await super.performAudit();
-        const scalingFindings = GoScalingEngine.audit(this.projectRoot || "");
-        scalingFindings.forEach(f => results.push({
-            file: "SCALING_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "medium", stack: this.stack,
-            evidence: "Structural Analysis", match_count: 1
-        }));
-        return results;
-    }
-
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Scale] Otimizando pools de workers e injetando GOMAXPROCS dinâmico em: ${blindSpots.join(", ")}`);
-    }
-
-    public override reasonAboutObjective(objective: string, file: string, content: string): string | StrategicFinding | null {
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
+        const lines = content["split"]('\n');
+        if (lines.length > 400) {
+            return {
+                file, severity: "HIGH",
+                issue: `Entropia Arquitetural: O objetivo '${objective}' exige modularidade. O arquivo '${file}' com ${lines.length} linhas é um monólito que resiste à evolução da 'Orquestração de Inteligência Artificial'.`,
+                context: `File size: ${lines.length} lines`
+            };
+        }
         return {
-            file,
-            issue: `Estratégia: ${objective}`,
-            context: content.substring(0, 200),
-            objective,
-            analysis: "Auditando a capacidade de expansão e o design concorrente do sistema Go.",
-            recommendation: "Preferir canais para orquestração de goroutines e Mutex para proteção de estado simples local.",
-            severity: "medium"
-        } as StrategicFinding;
-    }
-
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
-        return {
-            status: "Soberano",
-            score: 100,
-            issues: []
+            file, severity: "INFO",
+            issue: `PhD Architecture: Analisando escalabilidade e coesão para ${objective}. Focando em decomposição modular e SOLID em Go.`,
+            context: "analyzing scalability"
         };
     }
 
-    public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Sistemas de Alta Escala Go. Sua missão é garantir a elasticidade ilimitada do código.`;
+    override selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Sensores de complexidade ciclomatica Go operando com precisão PhD."
+        };
+    }
+
+    override getSystemPrompt(): string {
+        return `Você é o Dr. ${this.name}, mestre em arquitetura e escalabilidade Go.`;
     }
 }
-

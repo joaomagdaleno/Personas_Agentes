@@ -1,21 +1,22 @@
-/**
- * 🔭 Scope - PhD in Product Strategy & Technical Scope (Flutter)
- * Especialista em gestão de débitos técnicos, marcadores de incompletude e alinhamento de visão.
- */
-import type { StrategicFinding, AuditRule } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
+/**
+ * 🎯 Dr. Scope — PhD in Flutter Project Management & Technical Debt
+ * Especialista em detecção de dívida técnica, TODOs pendentes e falhas de planejamento Flutter/Dart.
+ */
 export class ScopePersona extends BaseActivePersona {
-    constructor(projectRoot?: string) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Scope";
-        this.emoji = "🔭";
-        this.role = "PhD Product Engineer";
-        this.phd_identity = "Product Strategy & Technical Scope (Flutter)";
+        this.emoji = "🎯";
+        this.role = "PhD Project Strategist";
+        this.phd_identity = "Flutter Project Management & Technical Debt";
         this.stack = "Flutter";
     }
 
-    public override async execute(context: any): Promise<any> {
+    override async execute(context: any): Promise<any> {
         this.setContext(context);
         const findings = await this.performAudit();
 
@@ -30,49 +31,53 @@ export class ScopePersona extends BaseActivePersona {
 
             findings.push({
                 file: "Tech Debt Core", agent: this.name, role: this.role, emoji: this.emoji,
-                issue: `Sovereign Flutter Scope: Dívida técnica validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                issue: `Sovereign Scope: Dívida técnica validada via Rust Hub. PhD Analysis: ${reasoning}`,
                 severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Debt Audit", match_count: 1
             } as any);
         }
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".dart"],
             rules: [
-                { regex: /\/\/\s*TODO[:\s]/, issue: "Dívida: TODO pendente no código Flutter.", severity: "medium" },
-                { regex: /\/\/\s*FIXME[:\s]/, issue: "Dívida Crítica: FIXME detectado na lógica Flutter.", severity: "high" },
-                { regex: /\/\/\s*HACK[:\s]/, issue: "Gambiarra: HACK detectado no projeto Flutter.", severity: "high" },
-                { regex: /\/\/\s*XXX[:\s]/, issue: "Alerta: Verifique ponto crítico XXX no código Flutter.", severity: "medium" },
-                { regex: /throw\s+UnimplementedError\(\)/, issue: "Incompleto: Funcionalidade Flutter declarada mas não implementada.", severity: "high" },
-                { regex: /\/\/\s*ignore[:\s]/, issue: "Omissão: Supressão manual de lint; verifique dívida técnica Flutter.", severity: "low" }
+                { regex: /\/\/\s*TODO[:\s]/i, issue: 'Dívida Técnica: TODO pendente — tarefa incompleta no código Flutter.', severity: 'medium' },
+                { regex: /\/\/\s*FIXME[:\s]/i, issue: 'Dívida Crítica: FIXME — bug conhecido e aceito sem correção Flutter.', severity: 'high' },
+                { regex: /\/\/\s*HACK[:\s]/i, issue: 'Gambiarra: HACK — solução temporária perigosa Flutter.', severity: 'high' },
+                { regex: /\/\/\s*XXX[:\s]/i, issue: 'Alerta: XXX — área de código perigosa marcada para revisão Flutter.', severity: 'medium' },
+                { regex: /throw\s+UnimplementedError\(/i, issue: 'Incompleto: Funcionalidade declarada mas não implementada com UnimplementedError.', severity: 'high' },
+                { regex: /\/\/\s*ignore:\s*.*|\/\/\s*ignore_for_file:\s*.*/i, issue: 'Supressão Temporária: Omissão manual de linters; verifique dívida técnica Flutter.', severity: 'low' },
             ]
         };
     }
 
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
+        const todoCount = (content["match"](/\/\/\s*(TODO|FIXME|HACK|XXX)/gi) || []).length;
+        if (todoCount > 3) {
+            return {
+                file, severity: "HIGH",
+                issue: `Erosão de Escopo: O objetivo '${objective}' exige entrega completa. O arquivo '${file}' contém ${todoCount} marcadores de dívida técnica Flutter na 'Orquestração de Inteligência Artificial'.`,
+                context: `Debt markers: ${todoCount}`
+            };
+        }
         return {
-            objective,
-            analysis: "Auditando integridade do backlog e dívida técnica Flutter.",
-            recommendation: "Garantir que todos os marcadores de dívida técnica sejam resolvidos para manter a soberania do app.",
-            severity: "INFO",
-            file: _file,
-            issue: "PhD Scope: Analisando integridade do backlog e eliminação de dívida técnica.",
-            context: this.name
-        } as StrategicFinding;
-    }
-
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
-        return {
-            status: "Soberano",
-            score: 100,
-            issues: []
+            file, severity: "INFO",
+            issue: `PhD Scope: Analisando integridade do backlog para ${objective}. Focando em priorização e eliminação de dívida técnica Flutter.`,
+            context: `Debt markers: ${todoCount}`
         };
     }
 
-    public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Estratégia de Produto e Escopo Técnico Flutter.`;
+    override selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Rastreador de dívida técnica Flutter operando com visão PhD."
+        };
+    }
+
+    override getSystemPrompt(): string {
+        return `Você é o Dr. ${this.name}, mestre em gestão de escopo e dívida técnica Flutter.`;
     }
 }
-

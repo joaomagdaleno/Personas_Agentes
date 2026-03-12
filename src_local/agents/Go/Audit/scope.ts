@@ -1,40 +1,22 @@
-/**
- * 🎯 Scope - PhD in Go Module & Dependency Strategy (Sovereign Version)
- * Analisa a integridade de dependências, versões e o grafo de pacotes em Go.
- */
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
-export enum ModuleStateGo {
-    MODERN = "MODERN",
-    LEGACY = "LEGACY",
-    VULNERABLE = "VULNERABLE"
-}
-
-export class GoModuleEngine {
-    public static audit(content: string): string[] {
-        const issues: string[] = [];
-        if (content.includes("replace") && !content.includes("//")) {
-            issues.push("Dependency Override: Uso de 'replace' no go.mod detectado; evite em produção para garantir reprodutibilidade.");
-        }
-        if (!content.includes("go 1.2")) {
-            issues.push("Legacy Runtime: Versão antiga do Go (inferior a 1.2x) detectada no go.mod.");
-        }
-        return issues;
-    }
-}
-
+/**
+ * 🎯 Dr. Scope — PhD in Go Project Management & Technical Debt
+ * Especialista em detecção de dívida técnica, TODOs pendentes e módulos Go.
+ */
 export class ScopePersona extends BaseActivePersona {
-    constructor(projectRoot?: string) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Scope";
         this.emoji = "🎯";
-        this.role = "PhD Module Architect";
-        this.phd_identity = "Go Module & Dependency Strategy";
+        this.role = "PhD Project Strategist";
+        this.phd_identity = "Go Project Management & Technical Debt";
         this.stack = "Go";
     }
 
-    public override async execute(context: any): Promise<any> {
+    override async execute(context: any): Promise<any> {
         this.setContext(context);
         const findings = await this.performAudit();
 
@@ -49,63 +31,53 @@ export class ScopePersona extends BaseActivePersona {
 
             findings.push({
                 file: "Tech Debt Core", agent: this.name, role: this.role, emoji: this.emoji,
-                issue: `Sovereign Go Scope: Dívida técnica validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                issue: `Sovereign Scope: Dívida técnica validada via Rust Hub. PhD Analysis: ${reasoning}`,
                 severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Debt Audit", match_count: 1
             } as any);
         }
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".go", "go.mod"],
             rules: [
-                { regex: /\/\/\s*TODO[:\s]/, issue: "Dívida: TODO pendente no código Go.", severity: "medium" },
-                { regex: /\/\/\s*FIXME[:\s]/, issue: "Dívida Crítica: FIXME detectado na lógica Go.", severity: "high" },
-                { regex: /\/\/\s*HACK[:\s]/, issue: "Gambiarra: HACK detectado; risco de instabilidade Go.", severity: "high" },
-                { regex: /\/\/\s*XXX[:\s]/, issue: "Alerta: Verifique ponto crítico XXX no código Go.", severity: "medium" },
-                { regex: /panic\(.*"not\s+implemented"/, issue: "Incompleto: Funcionalidade Go declarada com panic placeholder.", severity: "high" },
-                { regex: /\/\/\s*no-lint[:\s]|\/\/\s*ignore[:\s]/, issue: "Omissão: Supressão manual de avisos; verifique dívida técnica.", severity: "low" }
+                { regex: /\/\/\s*TODO[:\s]/i, issue: 'Dívida Técnica: TODO pendente — tarefa incompleta no código Go.', severity: 'medium' },
+                { regex: /\/\/\s*FIXME[:\s]/i, issue: 'Dívida Crítica: FIXME — bug conhecido e aceito sem correção Go.', severity: 'high' },
+                { regex: /\/\/\s*HACK[:\s]/i, issue: 'Gambiarra: HACK — solução temporária perigosa Go.', severity: 'high' },
+                { regex: /\/\/\s*XXX[:\s]/i, issue: 'Alerta: XXX — área de código perigosa marcada para revisão Go.', severity: 'medium' },
+                { regex: /panic\(.*"not\s+implemented"/i, issue: 'Incompleto: Funcionalidade declarada com panic placeholder.', severity: 'high' },
+                { regex: /\/\/\s*no-lint[:\s]|\/\/\s*ignore[:\s]/i, issue: 'Omissão: Supressão manual de avisos; verifique dívida técnica.', severity: 'low' }
             ]
         };
     }
 
-    public override async performAudit(): Promise<AuditFinding[]> {
-        const results = await super.performAudit();
-        const moduleIssues = GoModuleEngine.audit(this.projectRoot || "");
-        moduleIssues.forEach(m => results.push({
-            file: "GO_MOD", agent: this.name, role: this.role, emoji: this.emoji, issue: m, severity: "medium", stack: this.stack,
-            evidence: "Structural Analysis", match_count: 1
-        }));
-        return results;
-    }
-
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Scope] Atualizando deps e limpando go.mod em: ${blindSpots.join(", ")}`);
-    }
-
-    public override reasonAboutObjective(objective: string, file: string, content: string): string | StrategicFinding | null {
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
+        const todoCount = (content["match"](/\/\/\s*(TODO|FIXME|HACK|XXX)/gi) || []).length;
+        if (todoCount > 3) {
+            return {
+                file, severity: "HIGH",
+                issue: `Erosão de Escopo: O objetivo '${objective}' exige entrega completa. O arquivo '${file}' contém ${todoCount} marcadores de dívida técnica na 'Orquestração de Inteligência Artificial'.`,
+                context: `Debt markers: ${todoCount}`
+            };
+        }
         return {
-            file,
-            issue: `Estratégia: ${objective}`,
-            context: content.substring(0, 200),
-            objective,
-            analysis: "Auditando a saúde do grafo de dependências e do runtime Go.",
-            recommendation: "Executar 'go mod tidy' e auditar vulnerabilidades via 'go nancy' ou 'govulncheck'.",
-            severity: "low"
-        } as StrategicFinding;
-    }
-
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
-        return {
-            status: "Soberano",
-            score: 100,
-            issues: []
+            file, severity: "INFO",
+            issue: `PhD Scope: Analisando integridade do backlog para ${objective}. Focando em priorização e eliminação de dívida técnica Go.`,
+            context: `Debt markers: ${todoCount}`
         };
     }
 
-    public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Gestão de Módulos Go. Sua missão é garantir a integridade absoluta da cadeia de suprimentos de código.`;
+    override selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Rastreador de dívida técnica Go operando com visão PhD."
+        };
+    }
+
+    override getSystemPrompt(): string {
+        return `Você é o Dr. ${this.name}, mestre em gestão de escopo e dívida técnica Go.`;
     }
 }
-

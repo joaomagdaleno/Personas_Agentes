@@ -1,17 +1,18 @@
-/**
- * 🔬 Scope - PhD in Logic Scoping & Contextual Boundaries (Python Stack)
- * Analisa a integridade de namespaces, globais e acoplamento em Python.
- */
-import type { StrategicFinding, AuditRule } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";
+import type { ProjectContext } from "../../../core/types.ts";
 
+/**
+ * 🎯 Dr. Scope — PhD in Python Project Management & Technical Debt
+ * Especialista em detecção de dívida técnica, TODOs pendentes e falhas de backlogs Python.
+ */
 export class ScopePersona extends BaseActivePersona {
-    constructor(projectRoot?: string) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Scope";
-        this.emoji = "🔬";
-        this.role = "PhD Logic Architect";
-        this.phd_identity = "Logic Scoping & Contextual Boundaries (Python)";
+        this.emoji = "🎯";
+        this.role = "PhD Project Strategist";
+        this.phd_identity = "Python Project Management & Technical Debt";
         this.stack = "Python";
     }
 
@@ -30,53 +31,53 @@ export class ScopePersona extends BaseActivePersona {
 
             findings.push({
                 file: "Tech Debt Core", agent: this.name, role: this.role, emoji: this.emoji,
-                issue: `Sovereign Python Scope: Dívida técnica validada via Rust Hub. PhD Analysis: ${reasoning}`,
+                issue: `Sovereign Scope: Dívida técnica validada via Rust Hub. PhD Analysis: ${reasoning}`,
                 severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Debt Audit", match_count: 1
             } as any);
         }
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".py"],
             rules: [
-                { regex: /#\s*TODO[:\s]/, issue: "Dívida: TODO pendente no código Python.", severity: "medium" },
-                { regex: /#\s*FIXME[:\s]/, issue: "Dívida Crítica: FIXME detectado na lógica Python.", severity: "high" },
-                { regex: /#\s*HACK[:\s]/, issue: "Gambiarra: HACK detectado; risco de instabilidade Python.", severity: "high" },
-                { regex: /#\s*XXX[:\s]/, issue: "Alerta: Verifique ponto crítico XXX no código Python.", severity: "medium" },
-                { regex: /raise\s+NotImplementedError/, issue: "Incompleto: Funcionalidade Python declarada mas não implementada.", severity: "high" },
-                { regex: /#\s*type:\s*ignore/, issue: "Omissão: Supressão manual de tipos; verifique dívida técnica Python.", severity: "low" }
+                { regex: /#\s*TODO[:\s]/i, issue: 'Dívida Técnica: TODO pendente — tarefa incompleta no código Python.', severity: 'medium' },
+                { regex: /#\s*FIXME[:\s]/i, issue: 'Dívida Crítica: FIXME — bug conhecido e aceito sem correção Python.', severity: 'high' },
+                { regex: /#\s*HACK[:\s]/i, issue: 'Gambiarra: HACK — solução temporária perigosa Python.', severity: 'high' },
+                { regex: /#\s*XXX[:\s]/i, issue: 'Alerta: XXX — área de código perigosa marcada para revisão Python.', severity: 'medium' },
+                { regex: /raise\s+NotImplementedError/i, issue: 'Incompleto: Funcionalidade declarada mas não implementada com NotImplementedError.', severity: 'high' },
+                { regex: /#\s*type:\s*ignore/i, issue: 'Supressão Temporária: Omissão manual de type checker; verifique dívida técnica Python.', severity: 'low' },
             ]
         };
     }
 
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Scope] Limpando namespaces e desacoplando globais em: ${blindSpots.join(", ")}`);
-    }
-
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+        if (typeof content !== 'string') return null;
+        const todoCount = (content["match"](/#\s*(TODO|FIXME|HACK|XXX)/gi) || []).length;
+        if (todoCount > 3) {
+            return {
+                file, severity: "HIGH",
+                issue: `Erosão de Escopo: O objetivo '${objective}' exige entrega completa. O arquivo '${file}' contém ${todoCount} marcadores de dívida técnica Python na 'Orquestração de Inteligência Artificial'.`,
+                context: `Debt markers: ${todoCount}`
+            };
+        }
         return {
-            objective,
-            analysis: "Auditando a integridade do backlog e dívida técnica Python.",
-            recommendation: "Resolver marcadores de TODO/FIXME para garantir a soberania do código Python.",
-            severity: "INFO",
-            file: _file,
-            issue: "PhD Scope: Analisando integridade do backlog e eliminação de dívida técnica.",
-            context: this.name
-        } as StrategicFinding;
-    }
-
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
-        return {
-            status: "Soberano",
-            score: 100,
-            issues: []
+            file, severity: "INFO",
+            issue: `PhD Scope: Analisando integridade do backlog para ${objective}. Focando em priorização e eliminação de dívida técnica Python.`,
+            context: `Debt markers: ${todoCount}`
         };
     }
 
-    public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Escopo de Lógica e Dívida Técnica Python. Sua missão é garantir a pureza e a completude do código.`;
+    override selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            details: "Rastreador de dívida técnica Python operando com visão PhD."
+        };
+    }
+
+    override getSystemPrompt(): string {
+        return `Você é o Dr. ${this.name}, mestre em gestão de escopo e dívida técnica Python.`;
     }
 }
-

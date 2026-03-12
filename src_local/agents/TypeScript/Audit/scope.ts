@@ -7,7 +7,7 @@ import type { AuditRule, StrategicFinding } from "../../base.ts";
  * Especialista em detecção de dívida técnica, TODOs pendentes e implementações incompletas.
  */
 export class ScopePersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Scope";
         this.emoji = "🎯";
@@ -54,7 +54,7 @@ export class ScopePersona extends BaseActivePersona {
 
     reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
-        const todoCount = (content.match(/\/\/\s*(TODO|FIXME|HACK|XXX)/gi) || []).length;
+        const todoCount = (content["match"](/\/\/\s*(TODO|FIXME|HACK|XXX)/gi) || []).length;
         if (todoCount > 3) {
             return {
                 file, severity: "HIGH",
@@ -69,7 +69,7 @@ export class ScopePersona extends BaseActivePersona {
         };
     }
 
-    selfDiagnostic(): any {
+    override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,

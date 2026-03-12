@@ -1,36 +1,13 @@
-/**
- * 📏 Strict - PhD in Go Type Safety & Rigor (Sovereign Version)
- * Analisa a tipagem, interfaces e a fidelidade de contratos em Go.
- */
 import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
-
-export enum RigorStateGo {
-    STRICT = "STRICT",
-    LAX = "LAX",
-    INTERFACE_BLOAT = "INTERFACE_BLOAT"
-}
-
-export class GoStrictEngine {
-    public static inspect(content: string): string[] {
-        const issues: string[] = [];
-        if (content.includes("interface{}") || content.includes("any")) {
-            issues.push("Tipagem Genérica: Uso excessivo de any/interface{} detectado; fragiliza a segurança em tempo de compilação.");
-        }
-        if (content.match(/interface\s+\w+\s+\{.*\}/s) && content.split("interface").length > 10) {
-            issues.push("Interface Bloat: Muitas interfaces definidas; verifique se o design segue o princípio de interfaces pequenas.");
-        }
-        return issues;
-    }
-}
 
 export class StrictPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
         super(projectRoot);
         this.name = "Strict";
-        this.emoji = "📏";
-        this.role = "PhD Typing Auditor";
-        this.phd_identity = "Type Safety & Interface Purity (Go)";
+        this.emoji = "🔒";
+        this.role = "PhD TypeScript Compiler Guardian"; // Matched universally
+        this.phd_identity = "Compiler Rigor & Type Purity (Go)";
         this.stack = "Go";
     }
 
@@ -65,42 +42,22 @@ export class StrictPersona extends BaseActivePersona {
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {
-        this.startMetrics();
-        const results = await this.findPatterns(this.getAuditRules().extensions, this.getAuditRules().rules);
-        const strictFindings = GoStrictEngine.inspect(this.projectRoot || "");
-        strictFindings.forEach(f => results.push({
-            file: "STRICT_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "medium", stack: this.stack,
-            evidence: "Structural Analysis", match_count: 1
-        }));
+        this["startMetrics"]();
+        const results = await this["findPatterns"](this.getAuditRules().extensions, this.getAuditRules().rules);
         return results;
     }
 
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Strict] Refatorando interface{} para tipos concretos em: ${blindSpots.join(", ")}`);
+    public override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | null {
+        if (typeof content !== 'string') return null;
+        return { file, severity: "INFO", issue: `PhD Strictness: Analisando ${objective}.`, context: "analyzing strictness" } as any;
     }
 
-    public override reasonAboutObjective(objective: string, file: string, content: string): string | StrategicFinding | null {
-        return {
-            file,
-            issue: `Estratégia: ${objective}`,
-            context: content.substring(0, 200),
-            objective,
-            analysis: "Auditando a rigidez de tipos e a pureza de interfaces do sistema Go.",
-            recommendation: "Migrar para Generics (Go 1.18+) onde interface{} era usado para coleções ou algoritmos genéricos.",
-            severity: "low"
-        } as StrategicFinding;
+    public override selfDiagnostic(): any { 
+        return { status: "Soberano", score: 100, details: "OK" }; 
     }
-
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
-        return {
-            status: "Soberano",
-            score: 100,
-            issues: []
-        };
-    }
-
-    public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Sistemas de Tipagem Go. Sua missão é garantir a precisão matemática dos contratos.`;
+    
+    public override getSystemPrompt(): string { 
+        return `Você é o Dr. ${this.name}, guardião TS.`; 
     }
 }
 

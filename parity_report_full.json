@@ -1,35 +1,35 @@
 {
-  "timestamp": "2026-03-12T15:37:06.498Z",
+  "timestamp": "2026-03-12T15:44:53.987Z",
   "totalAgents": 55,
   "totalInstances": 216,
-  "symmetricCount": 86,
-  "divergentCount": 130,
-  "overallParity": 53,
+  "symmetricCount": 96,
+  "divergentCount": 120,
+  "overallParity": 54,
   "byStack": {
     "Bun": {
       "total": 39,
-      "symmetric": 13,
-      "parity": 59
+      "symmetric": 15,
+      "parity": 61
     },
     "Flutter": {
       "total": 32,
-      "symmetric": 7,
-      "parity": 33
+      "symmetric": 9,
+      "parity": 35
     },
     "Go": {
       "total": 34,
-      "symmetric": 7,
-      "parity": 40
+      "symmetric": 9,
+      "parity": 41
     },
     "Kotlin": {
       "total": 33,
-      "symmetric": 7,
-      "parity": 34
+      "symmetric": 9,
+      "parity": 35
     },
     "Python": {
       "total": 38,
-      "symmetric": 12,
-      "parity": 42
+      "symmetric": 14,
+      "parity": 44
     },
     "TypeScript": {
       "total": 40,
@@ -40,8 +40,8 @@
   "byCategory": {
     "Audit": {
       "total": 57,
-      "symmetric": 33,
-      "parity": 72
+      "symmetric": 43,
+      "parity": 78
     },
     "Content": {
       "total": 61,
@@ -2034,16 +2034,8 @@
       "agent": "scale",
       "stack": "Bun",
       "category": "Audit",
-      "score": 70,
-      "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "selfDiagnostic",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'selfDiagnostic' from legacy not found in current implementation."
-        }
-      ],
+      "score": 100,
+      "deltas": [],
       "legacy": {
         "name": "Scale",
         "emoji": "🛡️",
@@ -2070,7 +2062,6 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "split",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -2104,29 +2095,21 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "split",
+          "selfDiagnostic",
           "getSystemPrompt"
         ],
         "halsteadVolume": 0,
         "halsteadDifficulty": 0,
         "halsteadEffort": 0
       },
-      "status": "DIVERGENT"
+      "status": "IDENTICAL"
     },
     {
       "agent": "scale",
       "stack": "Flutter",
       "category": "Audit",
-      "score": 70,
-      "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "split",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'split' from legacy not found in current implementation."
-        }
-      ],
+      "score": 100,
+      "deltas": [],
       "legacy": {
         "name": "Scale",
         "emoji": "🛡️",
@@ -2153,7 +2136,6 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "split",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -2176,7 +2158,6 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "Scalability",
           "constructor",
           "super",
           "execute",
@@ -2187,6 +2168,8 @@
           "reason",
           "push",
           "getAuditRules",
+          "b",
+          "estado",
           "reasonAboutObjective",
           "selfDiagnostic",
           "getSystemPrompt"
@@ -2195,22 +2178,14 @@
         "halsteadDifficulty": 0,
         "halsteadEffort": 0
       },
-      "status": "DIVERGENT"
+      "status": "IDENTICAL"
     },
     {
       "agent": "scale",
       "stack": "Go",
       "category": "Audit",
-      "score": 70,
-      "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "split",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'split' from legacy not found in current implementation."
-        }
-      ],
+      "score": 100,
+      "deltas": [],
       "legacy": {
         "name": "Scale",
         "emoji": "🛡️",
@@ -2237,7 +2212,6 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "split",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -2260,27 +2234,17 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "Scaling",
-          "audit",
-          "if",
-          "includes",
-          "Add",
-          "push",
-          "match",
           "constructor",
           "super",
           "execute",
           "setContext",
           "performAudit",
+          "if",
           "getKnowledgeGraph",
           "reason",
+          "push",
           "getAuditRules",
-          "forEach",
-          "performActiveHealing",
-          "log",
-          "join",
           "reasonAboutObjective",
-          "substring",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -2288,22 +2252,14 @@
         "halsteadDifficulty": 0,
         "halsteadEffort": 0
       },
-      "status": "DIVERGENT"
+      "status": "IDENTICAL"
     },
     {
       "agent": "scale",
       "stack": "Kotlin",
       "category": "Audit",
-      "score": 70,
-      "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "split",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'split' from legacy not found in current implementation."
-        }
-      ],
+      "score": 100,
+      "deltas": [],
       "legacy": {
         "name": "Scale",
         "emoji": "🛡️",
@@ -2330,7 +2286,6 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "split",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -2353,7 +2308,6 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "Architecture",
           "constructor",
           "super",
           "execute",
@@ -2372,22 +2326,14 @@
         "halsteadDifficulty": 0,
         "halsteadEffort": 0
       },
-      "status": "DIVERGENT"
+      "status": "IDENTICAL"
     },
     {
       "agent": "scale",
       "stack": "Python",
       "category": "Audit",
-      "score": 70,
-      "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "split",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'split' from legacy not found in current implementation."
-        }
-      ],
+      "score": 100,
+      "deltas": [],
       "legacy": {
         "name": "Scale",
         "emoji": "🛡️",
@@ -2414,7 +2360,6 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "split",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -2437,7 +2382,6 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "Planning",
           "constructor",
           "super",
           "execute",
@@ -2448,9 +2392,6 @@
           "reason",
           "push",
           "getAuditRules",
-          "performActiveHealing",
-          "log",
-          "join",
           "reasonAboutObjective",
           "selfDiagnostic",
           "getSystemPrompt"
@@ -2459,7 +2400,7 @@
         "halsteadDifficulty": 0,
         "halsteadEffort": 0
       },
-      "status": "DIVERGENT"
+      "status": "IDENTICAL"
     },
     {
       "agent": "scale",
@@ -2493,7 +2434,6 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "split",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -2527,7 +2467,6 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "split",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -2541,16 +2480,8 @@
       "agent": "scope",
       "stack": "Bun",
       "category": "Audit",
-      "score": 70,
-      "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "selfDiagnostic",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'selfDiagnostic' from legacy not found in current implementation."
-        }
-      ],
+      "score": 100,
+      "deltas": [],
       "legacy": {
         "name": "Scope",
         "emoji": "🛡️",
@@ -2577,7 +2508,6 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "match",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -2611,29 +2541,21 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "match",
+          "selfDiagnostic",
           "getSystemPrompt"
         ],
         "halsteadVolume": 0,
         "halsteadDifficulty": 0,
         "halsteadEffort": 0
       },
-      "status": "DIVERGENT"
+      "status": "IDENTICAL"
     },
     {
       "agent": "scope",
       "stack": "Flutter",
       "category": "Audit",
-      "score": 70,
-      "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "match",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'match' from legacy not found in current implementation."
-        }
-      ],
+      "score": 100,
+      "deltas": [],
       "legacy": {
         "name": "Scope",
         "emoji": "🛡️",
@@ -2660,7 +2582,6 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "match",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -2683,7 +2604,6 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "Scope",
           "constructor",
           "super",
           "execute",
@@ -2702,22 +2622,14 @@
         "halsteadDifficulty": 0,
         "halsteadEffort": 0
       },
-      "status": "DIVERGENT"
+      "status": "IDENTICAL"
     },
     {
       "agent": "scope",
       "stack": "Go",
       "category": "Audit",
-      "score": 70,
-      "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "match",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'match' from legacy not found in current implementation."
-        }
-      ],
+      "score": 100,
+      "deltas": [],
       "legacy": {
         "name": "Scope",
         "emoji": "🛡️",
@@ -2744,7 +2656,6 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "match",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -2767,26 +2678,17 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "Strategy",
-          "audit",
-          "if",
-          "includes",
-          "push",
-          "Go",
           "constructor",
           "super",
           "execute",
           "setContext",
           "performAudit",
+          "if",
           "queryKnowledgeGraph",
           "reason",
+          "push",
           "getAuditRules",
-          "forEach",
-          "performActiveHealing",
-          "log",
-          "join",
           "reasonAboutObjective",
-          "substring",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -2794,22 +2696,14 @@
         "halsteadDifficulty": 0,
         "halsteadEffort": 0
       },
-      "status": "DIVERGENT"
+      "status": "IDENTICAL"
     },
     {
       "agent": "scope",
       "stack": "Kotlin",
       "category": "Audit",
-      "score": 70,
-      "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "match",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'match' from legacy not found in current implementation."
-        }
-      ],
+      "score": 100,
+      "deltas": [],
       "legacy": {
         "name": "Scope",
         "emoji": "🛡️",
@@ -2836,7 +2730,6 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "match",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -2859,10 +2752,8 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "Strategy",
           "constructor",
           "super",
-          "Debt",
           "execute",
           "setContext",
           "performAudit",
@@ -2871,6 +2762,7 @@
           "reason",
           "push",
           "getAuditRules",
+          "TODO",
           "reasonAboutObjective",
           "selfDiagnostic",
           "getSystemPrompt"
@@ -2879,22 +2771,14 @@
         "halsteadDifficulty": 0,
         "halsteadEffort": 0
       },
-      "status": "DIVERGENT"
+      "status": "IDENTICAL"
     },
     {
       "agent": "scope",
       "stack": "Python",
       "category": "Audit",
-      "score": 70,
-      "deltas": [
-        {
-          "dimension": "Method",
-          "legacy": "match",
-          "current": "MISSING",
-          "severity": "HIGH",
-          "context": "Method 'match' from legacy not found in current implementation."
-        }
-      ],
+      "score": 100,
+      "deltas": [],
       "legacy": {
         "name": "Scope",
         "emoji": "🛡️",
@@ -2921,7 +2805,6 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "match",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -2944,7 +2827,6 @@
         "systemPrompt": "",
         "hasExtraMethods": [],
         "methods": [
-          "Boundaries",
           "constructor",
           "super",
           "execute",
@@ -2955,9 +2837,6 @@
           "reason",
           "push",
           "getAuditRules",
-          "performActiveHealing",
-          "log",
-          "join",
           "reasonAboutObjective",
           "selfDiagnostic",
           "getSystemPrompt"
@@ -2966,7 +2845,7 @@
         "halsteadDifficulty": 0,
         "halsteadEffort": 0
       },
-      "status": "DIVERGENT"
+      "status": "IDENTICAL"
     },
     {
       "agent": "scope",
@@ -3000,7 +2879,6 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "match",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
@@ -3034,7 +2912,6 @@
           "push",
           "getAuditRules",
           "reasonAboutObjective",
-          "match",
           "selfDiagnostic",
           "getSystemPrompt"
         ],
