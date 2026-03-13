@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";
 
 /**
  * 🔒 Strict - PhD in Compiler Rigor & Type Purity (Python)
@@ -39,7 +39,7 @@ export class StrictPersona extends BaseActivePersona {
         return true;
     }
 
-    public override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
             file,
             severity: "INFO",
@@ -55,5 +55,5 @@ export class StrictPersona extends BaseActivePersona {
     public override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, PhD em rigor Python. Status: ${this.Analysis()}`;
     }
-    public async performAudit(): Promise<any[]> { return []; }
+    public override async performAudit(): Promise<any[]> { return []; }
 }

@@ -18,6 +18,7 @@ pub mod chat;
 pub mod score_calculator;
 pub mod coverage_auditor;
 pub mod cache;
+pub mod scanner;
 
 #[cfg(feature = "wasm")]
 pub mod wasm_bridge;

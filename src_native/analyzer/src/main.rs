@@ -17,6 +17,7 @@ mod coverage_auditor;
 mod cache;
 mod server;
 mod wasm_bridge;
+mod scanner;
 
 use std::env;
 use std::fs;
@@ -83,6 +84,7 @@ async fn main() {
         eprintln!("  analyzer graph-query <query>             — Knowledge Graph semantic query");
         eprintln!("  analyzer heal <plan_json_path_or_—>     — Native AI Auto-Healing");
         eprintln!("  analyzer serve [port]                    — Start gRPC sidecar server (default: 50052)");
+        eprintln!("  analyzer scan <dir> [--root <root>]      — Ultra-fast project scanner");
         std::process::exit(1);
     }
 
@@ -425,6 +427,19 @@ async fn main() {
                 eprintln!("Error: Brain was unable to initialize.");
                 std::process::exit(1);
             }
+        }
+        "scan" => {
+            if args.len() < 3 {
+                eprintln!("Usage: analyzer scan <directory> [--root <root>]");
+                std::process::exit(1);
+            }
+            let dir = &args[2];
+            let mut root = ".";
+            if args.len() >= 5 && args[3] == "--root" {
+                root = &args[4];
+            }
+            let results = scanner::scan_directory(Path::new(dir), Path::new(root));
+            println!("{}", serde_json::to_string(&results).unwrap());
         }
         // Legacy
         other => {

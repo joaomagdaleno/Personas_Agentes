@@ -42,7 +42,7 @@ export class BoltPersona extends BaseActivePersona {
         return true;
     }
 
-    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+    override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | string | null {
         return {
             file, severity: "INFO",
             issue: `PhD Bolt: Analisando eficiência para ${objective}.`,

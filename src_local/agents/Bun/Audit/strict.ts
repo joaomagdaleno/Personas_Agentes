@@ -58,5 +58,5 @@ export class StrictPersona extends BaseActivePersona {
     public override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, PhD em Sistemas de Tipos. Sua missão é garantir o rigor absoluto.`;
     }
-    public async performAudit(): Promise<any[]> { return []; }
+    public override async performAudit(): Promise<any[]> { return []; }
 }

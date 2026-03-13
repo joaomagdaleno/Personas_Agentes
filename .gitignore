@@ -44,3 +44,16 @@ src_native/analyzer/.gemini/
 
 # Generated Protobuf
 *.pb.go
+
+# Cleanup Patterns
+filtered_parity*.json
+nebula_probe*.json
+next_10_*.json
+parity_report*.json
+phase*_targets.json
+probe_fp.json
+scale_scope_*.json
+scanner_sample.json
+remaining_deltas.json
+test_scan.ts
+get_batch*.py

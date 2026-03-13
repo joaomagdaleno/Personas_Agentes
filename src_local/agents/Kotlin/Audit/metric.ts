@@ -40,7 +40,7 @@ export class MetricPersona extends BaseActivePersona {
         return true;
     }
 
-    public override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): string | StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): string | StrategicFinding | null {
         return {
             file, severity: "INFO",
             issue: `PhD Metric (Kotlin): Analisando telemetria para ${objective}.`,
