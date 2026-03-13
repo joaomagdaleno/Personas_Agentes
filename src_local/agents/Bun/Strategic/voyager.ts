@@ -102,4 +102,5 @@ export class VoyagerPersona extends BaseActivePersona {
     private includes() {}
     private join() {}
     private isAbsolute() {}
+    public override selfDiagnostic(): any { return {}; }
 }

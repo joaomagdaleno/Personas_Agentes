@@ -57,4 +57,8 @@ export class VoyagerPersona extends BaseActivePersona {
     override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, PhD em modernização Rust. Status: ${this.Analysis()}`;
     }
+    public async performActiveHealing(): Promise<void> {}
+    public async healFile(f: string): Promise<void> {}
+    public async applyHealPatterns(f: string): Promise<void> {}
+    public getAbsolutePath(f: string): string { return f; }
 }

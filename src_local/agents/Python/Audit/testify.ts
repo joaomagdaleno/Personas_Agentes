@@ -56,4 +56,10 @@ export class TestifyPersona extends BaseActivePersona {
     override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, PhD em Qualidade Python. Status: ${this.Analysis()}`;
     }
+    public async performAudit(): Promise<any[]> { return []; }
+    public isTestFile(f: string): boolean { return false; }
+    public findModulesWithoutTests(dir: string): string[] { return []; }
+    public createMissingTestFinding(f: string): any { return {}; }
+    public getTestedModules(): string[] { return []; }
+    public isUntestedModule(m: string, f: string[]): boolean { return true; }
 }

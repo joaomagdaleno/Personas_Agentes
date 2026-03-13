@@ -55,4 +55,5 @@ export class StrictPersona extends BaseActivePersona {
     public override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, PhD em rigor Go. Status: ${this.Analysis()}`;
     }
+    public async performAudit(): Promise<any[]> { return []; }
 }

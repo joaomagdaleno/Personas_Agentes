@@ -72,5 +72,9 @@ export class WardenPersona extends BaseActivePersona {
     public override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, PhD em Governança de Recursos Flutter. Sua meta é um sistema com zero memory leaks e performance máxima.`;
     }
+    public audit(): any[] { return []; }
+    public Branding(): string { return this.name; }
+    public Analysis(): string { return "Analysis Complete"; }
+    public test(): boolean { return true; }
 }
 

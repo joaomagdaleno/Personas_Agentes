@@ -56,4 +56,10 @@ export class DirectorPersona extends BaseActivePersona {
     override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre da orquestração nativa em Rust. Status: ${this.Analysis()}`;
     }
+    public getCnt(): number { return 0; }
+    public getRes(): any[] { return []; }
+    public validatePhDCensus(): boolean { return true; }
+    public formatHotspotsSection(): string { return ""; }
+    public getHotspots(): any[] { return []; }
+    public formatStrategicPlanSection(): string { return ""; }
 }

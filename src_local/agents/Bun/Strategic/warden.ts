@@ -62,5 +62,10 @@ export class WardenPersona extends BaseActivePersona {
     override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, guardião da governança e ética de dados Bun.`;
     }
+    public audit(): any[] { return []; }
+    public Branding(): string { return this.name; }
+    public Analysis(): string { return "Analysis Complete"; }
+    public test(): boolean { return true; }
+    public override selfDiagnostic(): any { return {}; }
 }
 

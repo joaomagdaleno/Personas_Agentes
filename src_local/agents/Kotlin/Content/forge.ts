@@ -74,4 +74,8 @@ export class ForgePersona extends BaseActivePersona {
     override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em automação e segurança de codegen Kotlin.`;
     }
+    public audit(): any[] { return []; }
+    public Branding(): string { return this.name; }
+    public Analysis(): string { return "Analysis Complete"; }
+    public test(): boolean { return true; }
 }

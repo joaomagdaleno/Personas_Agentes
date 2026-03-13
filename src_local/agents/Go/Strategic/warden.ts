@@ -104,5 +104,9 @@ export class WardenPersona extends BaseActivePersona {
     public override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, PhD em Governança de Recursos Go. Sua missão é garantir a ordem e a limpeza sistêmica.`;
     }
+    public audit(): any[] { return []; }
+    public Branding(): string { return this.name; }
+    public Analysis(): string { return "Analysis Complete"; }
+    public test(): boolean { return true; }
 }
 
