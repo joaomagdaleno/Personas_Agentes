@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use petgraph::algo::tarjan_scc;
 use petgraph::graph::DiGraph;
 use std::collections::HashMap;

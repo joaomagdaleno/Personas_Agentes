@@ -1,6 +1,7 @@
 use std::io::{self, Write};
 use crate::brain::Brain;
 
+#[allow(dead_code)]
 pub fn start_chat() {
     let mut brain = match Brain::new() {
         Some(b) => b,

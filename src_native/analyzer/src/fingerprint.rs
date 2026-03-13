@@ -111,7 +111,7 @@ pub fn extract_fingerprint(source: &str, agent_name: &str, ext: &str) -> AtomicF
     // Calculate Halstead
     let n1 = collector.unique_operators.len() as f64;
     let n2 = collector.unique_operands.len() as f64;
-    let n1_total = collector.total_operators as f64;
+    let _n1_total = collector.total_operators as f64;
     let n2_total = collector.total_operands as f64;
     
     let total_unique = n1 + n2;

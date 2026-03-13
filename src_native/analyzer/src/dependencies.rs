@@ -8,6 +8,29 @@ pub struct DependencyInfo {
     pub defined_symbols: Vec<String>,
     pub calls: Vec<String>,
 }
+pub fn extract_dependencies_from_node(root_node: Node, source: &str, extension: &str) -> DependencyInfo {
+    let mut deps = DependencyInfo::default();
+
+    match extension {
+        "ts" | "tsx" | "js" | "jsx" => walk_ts(root_node, source, &mut deps),
+        "py" => walk_py(root_node, source, &mut deps),
+        "go" => walk_go(root_node, source, &mut deps),
+        "rs" => walk_rust(root_node, source, &mut deps),
+        _ => {}
+    }
+
+    // Deduplicate and clean
+    deps.imports.sort();
+    deps.imports.dedup();
+    deps.exports.sort();
+    deps.exports.dedup();
+    deps.defined_symbols.sort();
+    deps.defined_symbols.dedup();
+    deps.calls.sort();
+    deps.calls.dedup();
+
+    deps
+}
 
 pub fn extract_dependencies(source: &str, extension: &str) -> DependencyInfo {
     let mut parser = Parser::new();

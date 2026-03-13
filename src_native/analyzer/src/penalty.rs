@@ -15,6 +15,7 @@ pub struct Alert {
 }
 
 #[derive(Deserialize)]
+#[allow(dead_code)]
 pub struct MatrixItem {
     pub file: String,
     pub advanced_metrics: Option<AdvancedMetrics>,

@@ -1,9 +1,9 @@
 use std::fs::File;
 use std::path::Path;
+use std::collections::{HashMap, HashSet};
 use memmap2::Mmap;
 use rayon::prelude::*;
 use serde::Serialize;
-use std::collections::HashMap;
 
 #[derive(Serialize)]
 pub struct ProcessedFile {
@@ -30,8 +30,29 @@ pub fn process_batch(file_paths: Vec<String>, project_root: &str) -> Vec<Process
             Err(_) => return None,
         };
 
-        // AST Analysis (tree-sitter)
-        let deps = crate::dependencies::extract_dependencies(&content, extension);
+        // AST Analysis (tree-sitter) centralized
+        let mut parser = tree_sitter::Parser::new();
+        let language = match extension {
+            "ts" | "tsx" | "js" | "jsx" => Some(tree_sitter_typescript::language_typescript()),
+            "py" => Some(tree_sitter_python::language()),
+            "go" => Some(tree_sitter_go::language()),
+            "rs" => Some(tree_sitter_rust::language()),
+            _ => None,
+        };
+
+        let tree = language.and_then(|lang| {
+            if parser.set_language(lang).is_ok() {
+                parser.parse(&content, None)
+            } else {
+                None
+            }
+        });
+
+        let deps = if let Some(t) = &tree {
+            crate::dependencies::extract_dependencies_from_node(t.root_node(), &content, extension)
+        } else {
+            crate::dependencies::DependencyInfo::default()
+        };
         
         let dna = detect_dna(&deps);
         
@@ -42,7 +63,7 @@ pub fn process_batch(file_paths: Vec<String>, project_root: &str) -> Vec<Process
         let calls = deps.calls;
 
         let lines = content.lines().count();
-        let semantic_blocks = classify_semantic_blocks(&content, extension);
+        let semantic_blocks = classify_semantic_blocks(&content, tree.as_ref().map(|t| t.root_node()));
 
         Some(ProcessedFile {
             path: rel_path,
@@ -105,7 +126,7 @@ fn detect_dna(deps: &crate::dependencies::DependencyInfo) -> Vec<String> {
     hints
 }
 
-fn classify_semantic_blocks(content: &str, ext: &str) -> HashMap<usize, String> {
+fn classify_semantic_blocks(content: &str, root_node: Option<tree_sitter::Node>) -> HashMap<usize, String> {
     let mut blocks = HashMap::new();
     let lines_count = content.lines().count();
     
@@ -114,21 +135,8 @@ fn classify_semantic_blocks(content: &str, ext: &str) -> HashMap<usize, String> 
         blocks.insert(i * 5, "STRUCTURAL".to_string());
     }
 
-    let mut parser = tree_sitter::Parser::new();
-    let language = match ext {
-        "ts" | "tsx" | "js" | "jsx" => tree_sitter_typescript::language_typescript(),
-        "py" => tree_sitter_python::language(),
-        "go" => tree_sitter_go::language(),
-        "rs" => tree_sitter_rust::language(),
-        _ => return blocks,
-    };
-    
-    if parser.set_language(language).is_err() {
-        return blocks;
-    }
-
-    if let Some(tree) = parser.parse(content, None) {
-        let mut cursor = tree.root_node().walk();
+    if let Some(node) = root_node {
+        let mut cursor = node.walk();
         let mut priorities: HashMap<usize, u8> = HashMap::new();
 
         walk_ast_for_semantics(&mut cursor, content.as_bytes(), &mut blocks, &mut priorities);
@@ -198,20 +206,20 @@ fn walk_ast_for_semantics(cursor: &mut tree_sitter::TreeCursor, source: &[u8], b
 /// 📑 index_project — walkdir + memmap2 powered file discovery and metadata extraction.
 /// Replaces Bun Glob + batch IPC entirely: one native call does everything.
 pub fn index_project(project_root: &str) -> Vec<ProcessedFile> {
-    let skip_dirs = ["__pycache__", "node_modules", ".agent", "legacy_restore", "legacy_archive", ".git", "target", "dist", ".next", "build"];
-    let valid_exts = ["ts", "tsx", "py", "js", "go", "dart", "kt"];
+    let skip_dirs: HashSet<&str> = ["__pycache__", "node_modules", ".agent", "legacy_restore", "legacy_archive", ".git", "target", "dist", ".next", "build"].into_iter().collect();
+    let valid_exts: HashSet<&str> = ["ts", "tsx", "py", "js", "go", "dart", "kt"].into_iter().collect();
 
     let file_paths: Vec<String> = walkdir::WalkDir::new(project_root)
         .into_iter()
         .filter_entry(|e| {
-            let name = e.file_name().to_string_lossy();
-            !skip_dirs.iter().any(|s| name == *s)
+            let name = e.file_name().to_str().unwrap_or("");
+            !skip_dirs.contains(name)
         })
         .filter_map(|e| e.ok())
         .filter(|e| {
             e.file_type().is_file() && {
                 let ext = e.path().extension().and_then(|x| x.to_str()).unwrap_or("");
-                valid_exts.contains(&ext)
+                valid_exts.contains(ext)
             }
         })
         .filter_map(|e| {
@@ -247,8 +255,8 @@ pub struct TopologyMap {
 }
 
 pub fn scan_topology(project_root: &str) -> TopologyMap {
-    let ignore_dirs = ["node_modules", ".git", ".idea", ".vscode", "__pycache__", "dist", "build", "coverage", ".gemini", "artifacts", "target", ".next"];
-    let ignore_files = [".DS_Store", "Thumbs.db"];
+    let ignore_dirs: HashSet<&str> = ["node_modules", ".git", ".idea", ".vscode", "__pycache__", "dist", "build", "coverage", ".gemini", "artifacts", "target", ".next"].into_iter().collect();
+    let ignore_files: HashSet<&str> = [".DS_Store", "Thumbs.db"].into_iter().collect();
 
     let scan_dir = |dir_path: &str| -> Vec<TopologyFile> {
         let full = Path::new(project_root).join(dir_path);
@@ -257,14 +265,14 @@ pub fn scan_topology(project_root: &str) -> TopologyMap {
         walkdir::WalkDir::new(&full)
             .into_iter()
             .filter_entry(|e| {
-                let name = e.file_name().to_string_lossy();
-                !ignore_dirs.iter().any(|s| name == *s)
+                let name = e.file_name().to_str().unwrap_or("");
+                !ignore_dirs.contains(name)
             })
             .filter_map(|e| e.ok())
             .filter(|e| {
                 e.file_type().is_file() && {
-                    let name = e.file_name().to_string_lossy();
-                    !ignore_files.iter().any(|s| name == *s)
+                    let name = e.file_name().to_str().unwrap_or("");
+                    !ignore_files.contains(name)
                 }
             })
             .filter_map(|e| {
@@ -332,6 +340,16 @@ pub fn find_patterns(request: PatternRequest) -> Vec<crate::audit::AuditFinding>
         return Vec::new();
     }
 
+    // Pre-compile all regexes once before parallel loop
+    let mut compiled_regexes: HashMap<usize, regex::Regex> = HashMap::new();
+    for (idx, pattern) in all_patterns.iter().enumerate() {
+        if !pattern.is_empty() {
+            if let Ok(re) = regex::Regex::new(pattern) {
+                compiled_regexes.insert(idx, re);
+            }
+        }
+    }
+
     let regex_set = regex::RegexSet::new(&all_patterns).unwrap_or_else(|_| {
         regex::RegexSet::new(vec![r"^$"]).unwrap()
     });
@@ -350,6 +368,8 @@ pub fn find_patterns(request: PatternRequest) -> Vec<crate::audit::AuditFinding>
                 let (p_idx, r_idx) = resolve_rule_index(rule_idx, &request.persona_rules)?;
                 let persona = &request.persona_rules[p_idx];
                 let rule = &persona.rules[r_idx];
+                
+                let re = compiled_regexes.get(&rule_idx)?;
 
                 let file_ext = Path::new(&rel_path)
                     .extension()
@@ -361,7 +381,7 @@ pub fn find_patterns(request: PatternRequest) -> Vec<crate::audit::AuditFinding>
                     return None;
                 }
 
-                let (evidence, match_count, line_number) = crate::audit::extract_evidence(&content, &rule.regex);
+                let (evidence, match_count, line_number) = crate::audit::extract_evidence(&content, re);
                 Some(crate::audit::AuditFinding {
                     file: rel_path.clone(),
                     agent: persona.agent.clone(),

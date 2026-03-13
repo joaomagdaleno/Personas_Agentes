@@ -15,7 +15,7 @@ use hub_proto::{
     PendingRequest, PendingResponse, UpdateTaskRequest
 };
 
-use crate::{analysis, fingerprint, dna, batch, graph, connectivity, audit, penalty, brain, search};
+use crate::{analysis, fingerprint, dna, batch, connectivity, audit, penalty, brain};
 use std::fs;
 use std::collections::HashMap;
 

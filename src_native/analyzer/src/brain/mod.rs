@@ -7,7 +7,6 @@ use std::collections::{HashMap, HashSet};
 use std::path::{Path, PathBuf};
 use serde::{Serialize, Deserialize};
 use petgraph::graph::DiGraph;
-use tree_sitter::Parser;
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 pub enum NodeType {
@@ -551,5 +550,6 @@ impl Brain {
     }
 
     pub fn is_trained(&self) -> bool { self.tfidf.num_docs > 0 }
+    #[allow(dead_code)]
     pub fn is_loaded(&self) -> bool { true }
 }

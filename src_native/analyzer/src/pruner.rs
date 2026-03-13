@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use tree_sitter::{Parser, Node};
 use serde::{Deserialize, Serialize};
 

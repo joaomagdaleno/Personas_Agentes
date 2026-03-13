@@ -62,16 +62,14 @@ fn resolve_rule_index(global_idx: usize, persona_rules: &[PersonaRuleSet]) -> Op
     None
 }
 
-pub fn extract_evidence(content: &str, pattern: &str) -> (String, usize, Option<usize>) {
-    if let Ok(re) = Regex::new(pattern) {
-        let matches: Vec<_> = re.find_iter(content).collect();
-        let count = matches.len();
-        if let Some(first) = matches.first() {
-            let line = content[..first.start()].matches('\n').count() + 1;
-            let s = first.as_str();
-            let evidence = s[..s.len().min(100)].to_string();
-            return (evidence, count, Some(line));
-        }
+pub fn extract_evidence(content: &str, re: &Regex) -> (String, usize, Option<usize>) {
+    let matches: Vec<_> = re.find_iter(content).collect();
+    let count = matches.len();
+    if let Some(first) = matches.first() {
+        let line = content[..first.start()].matches('\n').count() + 1;
+        let s = first.as_str();
+        let evidence = s[..s.len().min(100)].to_string();
+        return (evidence, count, Some(line));
     }
     ("pattern_match".to_string(), 0, None)
 }
@@ -234,6 +232,15 @@ pub fn bulk_audit(request: BulkAuditRequest) -> Vec<AuditFinding> {
         .flat_map(|ps| ps.rules.iter().map(|r| r.regex.clone()))
         .collect();
 
+    let mut compiled_regexes = std::collections::HashMap::new();
+    for (idx, pattern) in all_patterns.iter().enumerate() {
+        if !pattern.is_empty() {
+            if let Ok(re) = Regex::new(pattern) {
+                compiled_regexes.insert(idx, re);
+            }
+        }
+    }
+
     let regex_set = if !all_patterns.is_empty() {
         RegexSet::new(&all_patterns).unwrap_or_else(|_| {
             RegexSet::new(vec![r"^$"]).unwrap()
@@ -254,6 +261,8 @@ pub fn bulk_audit(request: BulkAuditRequest) -> Vec<AuditFinding> {
                 let (p_idx, r_idx) = resolve_rule_index(rule_idx, &request.persona_rules)?;
                 let persona = &request.persona_rules[p_idx];
                 let rule = &persona.rules[r_idx];
+                
+                let re = compiled_regexes.get(&rule_idx)?;
 
                 let file_ext = Path::new(&file.path)
                     .extension()
@@ -265,7 +274,7 @@ pub fn bulk_audit(request: BulkAuditRequest) -> Vec<AuditFinding> {
                     return None;
                 }
 
-                let (evidence, match_count, line_number) = extract_evidence(&file.content, &rule.regex);
+                let (evidence, match_count, line_number) = extract_evidence(&file.content, re);
                 Some(AuditFinding {
                     file: file.path.clone(),
                     agent: persona.agent.clone(),
@@ -303,7 +312,8 @@ mod tests {
     #[test]
     fn test_extract_evidence() {
         let content = "line 1\nconsole.log('hello');\nline 3";
-        let (evidence, count, line_num) = extract_evidence(content, "console\\.log");
+        let re = Regex::new("console\\.log").unwrap();
+        let (evidence, count, line_num) = extract_evidence(content, &re);
         assert_eq!(count, 1);
         assert_eq!(line_num, Some(2));
         assert!(evidence.contains("console.log"));
