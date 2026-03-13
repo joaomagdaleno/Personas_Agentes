@@ -3,7 +3,6 @@ use std::path::Path;
 use serde::{Serialize, Deserialize};
 use walkdir::WalkDir;
 use rayon::prelude::*;
-use regex::RegexSet;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct FileAnalysis {
@@ -27,73 +26,152 @@ pub fn analyze_file(path: &Path, root: &Path) -> Result<FileAnalysis, std::io::E
         .map(|d| d.as_secs())
         .unwrap_or(0);
     let content = fs::read_to_string(path)?;
-    let lines: Vec<&str> = content.lines().collect();
+    let loc = content.lines().count();
     
-    let mut analysis = FileAnalysis {
+    let ext = path.extension().and_then(|s| s.to_str()).unwrap_or("");
+    
+    let mut parser = tree_sitter::Parser::new();
+    let language = match ext {
+        "ts" | "tsx" | "js" | "jsx" => Some(tree_sitter_typescript::language_typescript()),
+        "py" => Some(tree_sitter_python::language()),
+        "go" => Some(tree_sitter_go::language()),
+        "rs" => Some(tree_sitter_rust::language()),
+        _ => None,
+    };
+    
+    let (comments, sloc, intent) = if let Some(lang) = language {
+        if parser.set_language(lang).is_ok() {
+            if let Some(tree) = parser.parse(&content, None) {
+                let mut comment_count = 0;
+                let mut has_import = false;
+                let mut has_function = false;
+                let mut has_test = false;
+                let mut has_config = false;
+                let mut has_observability = false;
+                
+                walk_for_analysis(&mut tree.root_node().walk(), content.as_bytes(), 
+                    &mut comment_count, &mut has_import, &mut has_function, 
+                    &mut has_test, &mut has_config, &mut has_observability);
+                
+                let non_empty = content.lines().filter(|l| !l.trim().is_empty()).count();
+                let sloc_val = non_empty.saturating_sub(comment_count);
+                
+                let intent_val = if has_test { "TEST" }
+                    else if has_observability { "OBSERVABILITY" }
+                    else if has_config { "CONFIGURATION" }
+                    else if has_import && !has_function { "METADATA" }
+                    else { "LOGIC" };
+                
+                (comment_count, sloc_val, intent_val.to_string())
+            } else {
+                fallback_analysis(&content)
+            }
+        } else {
+            fallback_analysis(&content)
+        }
+    } else {
+        fallback_analysis(&content)
+    };
+    
+    Ok(FileAnalysis {
         path: rel_path_str,
         exists: true,
-        loc: lines.len(),
-        sloc: 0,
-        comments: 0,
+        loc,
+        sloc,
+        comments,
         size: metadata.len(),
         modified_at,
-        intent: "LOGIC".to_string(),
-    };
+        intent,
+    })
+}
 
-    let mut in_multiline_comment = false;
-
-    for line in lines {
+fn fallback_analysis(content: &str) -> (usize, usize, String) {
+    let mut comments = 0;
+    let mut sloc = 0;
+    let mut in_multiline = false;
+    for line in content.lines() {
         let trimmed = line.trim();
-        if trimmed.is_empty() {
+        if trimmed.is_empty() { continue; }
+        if in_multiline {
+            comments += 1;
+            if trimmed.contains("*/") { in_multiline = false; }
             continue;
         }
-
-        if in_multiline_comment {
-            analysis.comments += 1;
-            if trimmed.contains("*/") {
-                in_multiline_comment = false;
-            }
-            continue;
-        }
-
         if trimmed.starts_with("/*") {
-            analysis.comments += 1;
-            if !trimmed.contains("*/") {
-                in_multiline_comment = true;
-            }
+            comments += 1;
+            if !trimmed.contains("*/") { in_multiline = true; }
             continue;
         }
-
         if trimmed.starts_with("//") || trimmed.starts_with("*") {
-            analysis.comments += 1;
+            comments += 1;
             continue;
         }
-        
-        analysis.sloc += 1;
+        sloc += 1;
     }
+    (comments, sloc, "LOGIC".to_string())
+}
 
-    // Expanded Intent detection
-    let intents = [
-        ("METADATA", r"(?i)rules|patterns|regex|manifest|metadata|diretriz|heuristics"),
-        ("OBSERVABILITY", r"(?i)logger|log|console|telemetry|winston"),
-        ("TECH/MATH", r"(?i)\b(alpha|progress|offset|lerp|sin|cos|tan)\b"),
-        ("INFRASTRUCTURE", r"(?i)fs\.|path\.|join\(|existsSync|readdir|readFile"),
-        ("TEST", r"(?i)test|spec|mock|suite"),
-        ("STYLE", r"(?i)css|scss|less|style|theme"),
-        ("CONFIGURATION", r"(?i)config|env|setup|\.json|\.toml|\.yaml"),
-        ("DOCUMENTATION", r"(?i)readme|docs|license"),
-    ];
-
-    let patterns: Vec<&str> = intents.iter().map(|(_, p)| *p).collect();
-    let set = RegexSet::new(&patterns).unwrap();
-
-    let matches: Vec<_> = set.matches(&content).into_iter().collect();
-    if !matches.is_empty() {
-        // Find the first match priority
-        analysis.intent = intents[matches[0]].0.to_string();
+fn walk_for_analysis(cursor: &mut tree_sitter::TreeCursor, source: &[u8],
+    comments: &mut usize, has_import: &mut bool, has_function: &mut bool,
+    has_test: &mut bool, has_config: &mut bool, has_observability: &mut bool)
+{
+    let node = cursor.node();
+    let kind = node.kind();
+    
+    match kind {
+        "comment" | "line_comment" | "block_comment" => {
+            // Count unique lines spanned by the comment
+            let start_row = node.start_position().row;
+            let end_row = node.end_position().row;
+            *comments += (end_row - start_row) + 1;
+            
+            if let Ok(text) = node.utf8_text(source) {
+                let low = text.to_lowercase();
+                if low.contains("test") || low.contains("spec") { *has_test = true; }
+                if low.contains("config") || low.contains("setup") { *has_config = true; }
+            }
+        }
+        "import_statement" | "import_declaration" | "use_declaration" | "export_statement" => {
+            *has_import = true;
+        }
+        "function_declaration" | "function_item" | "method_definition" | "class_declaration" => {
+            *has_function = true;
+            if let Some(name_node) = node.child_by_field_name("name") {
+                if let Ok(name) = name_node.utf8_text(source) {
+                    let low = name.to_lowercase();
+                    if low.contains("test") || low.starts_with("test_") || low.starts_with("it_") {
+                        *has_test = true;
+                    }
+                }
+            }
+        }
+        "call_expression" => {
+            if let Some(func_node) = node.child_by_field_name("function") {
+                if let Ok(func_text) = func_node.utf8_text(source) {
+                    if func_text.contains("logger") || func_text.contains("console") || func_text.contains("telemetry") || func_text.contains("winston") {
+                        *has_observability = true;
+                    }
+                    if func_text == "describe" || func_text == "it" || func_text == "test" || func_text == "expect" {
+                        *has_test = true;
+                    }
+                }
+            }
+        }
+        "decorator" => {
+            if let Ok(text) = node.utf8_text(source) {
+                if text.contains("Test") || text.contains("test") { *has_test = true; }
+            }
+        }
+        _ => {}
     }
-
-    Ok(analysis)
+    
+    if cursor.goto_first_child() {
+        loop {
+            walk_for_analysis(cursor, source, comments, has_import, has_function, has_test, has_config, has_observability);
+            if !cursor.goto_next_sibling() { break; }
+        }
+        cursor.goto_parent();
+    }
 }
 
 pub fn scan_directory(dir: &Path, root: &Path) -> Vec<FileAnalysis> {

@@ -33,15 +33,15 @@ pub fn process_batch(file_paths: Vec<String>, project_root: &str) -> Vec<Process
         // AST Analysis (tree-sitter)
         let deps = crate::dependencies::extract_dependencies(&content, extension);
         
-        let classes = Vec::new(); // Distinguished types could be added to dependencies.rs if needed
-        let functions = deps.defined_symbols;
+        let dna = detect_dna(&deps);
         
+        let classes = Vec::new();
+        let functions = deps.defined_symbols;
         let imports = deps.imports;
         let exports = deps.exports;
         let calls = deps.calls;
 
         let lines = content.lines().count();
-        let dna = detect_dna(&content);
         let semantic_blocks = classify_semantic_blocks(&content, extension);
 
         Some(ProcessedFile {
@@ -80,19 +80,28 @@ fn read_file_content(path: &Path) -> std::io::Result<String> {
     }
 }
 
-fn detect_dna(content: &str) -> Vec<String> {
+fn detect_dna(deps: &crate::dependencies::DependencyInfo) -> Vec<String> {
     let mut hints = Vec::new();
     
-    // Common patterns for deep stack detection
-    if content.contains("@Injectable") || content.contains("@Module") { hints.push("NestJS".to_string()); }
-    if content.contains("extends Bloc") || content.contains("on<") { hints.push("Flutter/Bloc".to_string()); }
-    if content.contains("ChangeNotifier") { hints.push("Flutter/Provider".to_string()); }
-    if content.contains("ConsumerStatefulWidget") { hints.push("Flutter/Riverpod".to_string()); }
-    if content.contains("import { Prisma") { hints.push("Prisma".to_string()); }
-    if content.contains("const sequelize") { hints.push("Sequelize".to_string()); }
-    if content.contains("mongoose.model") { hints.push("Mongoose".to_string()); }
-    if content.contains("express()") { hints.push("Express".to_string()); }
+    for import in &deps.imports {
+        let imp = import.to_lowercase();
+        if imp.contains("nestjs") || imp.contains("@nestjs") { hints.push("NestJS".to_string()); }
+        if imp.contains("flutter_bloc") { hints.push("Flutter/Bloc".to_string()); }
+        if imp.contains("changenotifier") || imp.contains("provider") { hints.push("Flutter/Provider".to_string()); }
+        if imp.contains("riverpod") || imp.contains("consumerstatefulwidget") { hints.push("Flutter/Riverpod".to_string()); }
+        if imp.contains("prisma") { hints.push("Prisma".to_string()); }
+        if imp.contains("sequelize") { hints.push("Sequelize".to_string()); }
+        if imp.contains("mongoose") { hints.push("Mongoose".to_string()); }
+        if imp.contains("express") { hints.push("Express".to_string()); }
+    }
     
+    for call in &deps.calls {
+        if call == "Injectable" || call == "Module" { hints.push("NestJS".to_string()); }
+        if call == "express" { hints.push("Express".to_string()); }
+    }
+    
+    hints.sort();
+    hints.dedup();
     hints
 }
 
@@ -352,7 +361,7 @@ pub fn find_patterns(request: PatternRequest) -> Vec<crate::audit::AuditFinding>
                     return None;
                 }
 
-                let (evidence, match_count, line_number) = extract_evidence(&content, &rule.regex);
+                let (evidence, match_count, line_number) = crate::audit::extract_evidence(&content, &rule.regex);
                 Some(crate::audit::AuditFinding {
                     file: rel_path.clone(),
                     agent: persona.agent.clone(),
@@ -369,7 +378,7 @@ pub fn find_patterns(request: PatternRequest) -> Vec<crate::audit::AuditFinding>
             
             let is_code = rel_path.ends_with(".ts") || rel_path.ends_with(".js") || rel_path.ends_with(".py");
             if is_code {
-                file_findings.extend(detect_obfuscation(&content, &rel_path));
+                file_findings.extend(crate::audit::detect_obfuscation(&content, &rel_path));
             }
             
             if file_findings.is_empty() { None } else { Some(file_findings) }
@@ -390,46 +399,3 @@ fn resolve_rule_index(global_idx: usize, persona_rules: &[crate::audit::PersonaR
     None
 }
 
-fn extract_evidence(content: &str, pattern: &str) -> (String, usize, Option<usize>) {
-    if let Ok(re) = regex::Regex::new(pattern) {
-        let matches: Vec<_> = re.find_iter(content).collect();
-        let count = matches.len();
-        if let Some(first) = matches.first() {
-            let line = content[..first.start()].matches('\n').count() + 1;
-            let s = first.as_str();
-            let evidence = s[..s.len().min(100)].to_string();
-            return (evidence, count, Some(line));
-        }
-    }
-    ("pattern_match".to_string(), 0, None)
-}
-
-fn detect_obfuscation(content: &str, file_path: &str) -> Vec<crate::audit::AuditFinding> {
-    let mut findings = Vec::new();
-    let dangerous = ["eval", "process.env", "require", "exec", "execSync", "spawn", "Buffer.from", "fs.readFile", "document.cookie", "localStorage", "window.crypto", "__dirname", "setTimeout", "setInterval", "Function"];
-    
-    let concat_re = regex::Regex::new(r#"(["'][^"']*["']\s*\+\s*)+["'][^"']*["']"#).unwrap();
-    
-    for cap in concat_re.captures_iter(content) {
-        let matched = cap[0].to_string();
-        let reconstructed = matched.replace("'", "").replace("\"", "").replace(" ", "").replace("+", "");
-        
-        for kw in dangerous.iter() {
-            if reconstructed.contains(kw) && !matched.contains(kw) {
-                findings.push(crate::audit::AuditFinding {
-                    file: file_path.to_string(),
-                    agent: "Security Guard".to_string(),
-                    role: "Protector".to_string(),
-                    emoji: "🛡️".to_string(),
-                    issue: format!("Possível Ofuscação: '{}' fragmentado", kw),
-                    severity: "HIGH".to_string(),
-                    stack: "Security".to_string(),
-                    evidence: matched.chars().take(80).collect(),
-                    match_count: 1,
-                    line_number: Some(content[..cap.get(0).unwrap().start()].matches('\n').count() + 1),
-                });
-            }
-        }
-    }
-    findings
-}

@@ -8,6 +8,8 @@ pub struct Rule {
     pub regex: String,
     pub issue: String,
     pub severity: String,
+    #[serde(default)]
+    pub scm_query: Option<String>,
 }
 
 #[derive(Deserialize)]
@@ -74,7 +76,7 @@ pub fn extract_evidence(content: &str, pattern: &str) -> (String, usize, Option<
     ("pattern_match".to_string(), 0, None)
 }
 
-fn detect_obfuscation(content: &str, file_path: &str) -> Vec<AuditFinding> {
+pub fn detect_obfuscation(content: &str, file_path: &str) -> Vec<AuditFinding> {
     let mut findings = Vec::new();
     let dangerous = ["eval", "process.env", "require", "exec", "execSync", "spawn", "Buffer.from", "fs.readFile", "document.cookie", "localStorage", "window.crypto", "__dirname", "setTimeout", "setInterval", "Function"];
     
@@ -152,25 +154,100 @@ fn walk_for_obfuscation(cursor: &mut tree_sitter::TreeCursor, source: &[u8], fil
     }
 }
 
+/// Run Tree-Sitter SCM queries against a file's AST
+fn run_scm_queries(content: &str, file_path: &str, persona_rules: &[PersonaRuleSet]) -> Vec<AuditFinding> {
+    let mut findings = Vec::new();
+    let ext = Path::new(file_path).extension().and_then(|s| s.to_str()).unwrap_or("");
+    
+    let language = match ext {
+        "ts" | "tsx" | "js" | "jsx" => tree_sitter_typescript::language_typescript(),
+        "py" => tree_sitter_python::language(),
+        "go" => tree_sitter_go::language(),
+        "rs" => tree_sitter_rust::language(),
+        _ => return findings,
+    };
+    
+    let mut parser = tree_sitter::Parser::new();
+    if parser.set_language(language).is_err() {
+        return findings;
+    }
+    
+    let tree = match parser.parse(content, None) {
+        Some(t) => t,
+        None => return findings,
+    };
+    
+    let file_ext_dotted = format!(".{}", ext);
+    
+    for persona in persona_rules {
+        if !persona.extensions.iter().any(|e| e == &file_ext_dotted || file_path.ends_with(e)) {
+            continue;
+        }
+        
+        for rule in &persona.rules {
+            if let Some(ref scm) = rule.scm_query {
+                if let Ok(query) = tree_sitter::Query::new(language, scm) {
+                    let mut cursor = tree_sitter::QueryCursor::new();
+                    let matches = cursor.matches(&query, tree.root_node(), content.as_bytes());
+                    
+                    let mut match_count = 0;
+                    let mut first_line: Option<usize> = None;
+                    let mut first_evidence = String::new();
+                    
+                    for m in matches {
+                        match_count += 1;
+                        for cap in m.captures {
+                            if first_line.is_none() {
+                                first_line = Some(cap.node.start_position().row + 1);
+                                if let Ok(text) = cap.node.utf8_text(content.as_bytes()) {
+                                    first_evidence = text.chars().take(100).collect();
+                                }
+                            }
+                        }
+                    }
+                    
+                    if match_count > 0 {
+                        findings.push(AuditFinding {
+                            file: file_path.to_string(),
+                            agent: persona.agent.clone(),
+                            role: persona.role.clone(),
+                            emoji: persona.emoji.clone(),
+                            issue: rule.issue.clone(),
+                            severity: rule.severity.clone(),
+                            stack: persona.stack.clone(),
+                            evidence: first_evidence,
+                            match_count,
+                            line_number: first_line,
+                        });
+                    }
+                }
+            }
+        }
+    }
+    
+    findings
+}
+
 pub fn bulk_audit(request: BulkAuditRequest) -> Vec<AuditFinding> {
-    // 1. Collect and compile patterns
+    // 1. Collect and compile regex patterns (skip rules that only have scm_query)
     let all_patterns: Vec<String> = request.persona_rules.iter()
         .flat_map(|ps| ps.rules.iter().map(|r| r.regex.clone()))
         .collect();
 
-    if all_patterns.is_empty() {
-        return Vec::new();
-    }
-
-    let regex_set = RegexSet::new(&all_patterns).unwrap_or_else(|_| {
-        // Fallback or handle invalid regexes individually?
-        // For now just skip if fail
+    let regex_set = if !all_patterns.is_empty() {
+        RegexSet::new(&all_patterns).unwrap_or_else(|_| {
+            RegexSet::new(vec![r"^$"]).unwrap()
+        })
+    } else {
         RegexSet::new(vec![r"^$"]).unwrap()
-    });
+    };
 
     // 2. Parallel audit
     request.files.par_iter()
         .flat_map(|file| {
+            let mut file_findings = Vec::new();
+            
+            // --- Regex-based findings ---
             let matches: Vec<usize> = regex_set.matches(&file.content).into_iter().collect();
             
             let regex_findings: Vec<_> = matches.into_iter().filter_map(|rule_idx| {
@@ -178,7 +255,6 @@ pub fn bulk_audit(request: BulkAuditRequest) -> Vec<AuditFinding> {
                 let persona = &request.persona_rules[p_idx];
                 let rule = &persona.rules[r_idx];
 
-                // Check extension
                 let file_ext = Path::new(&file.path)
                     .extension()
                     .and_then(|e| e.to_str())
@@ -203,12 +279,12 @@ pub fn bulk_audit(request: BulkAuditRequest) -> Vec<AuditFinding> {
                     line_number,
                 })
             }).collect();
-            
-            // 3. Obfuscation detection
-            let mut file_findings = Vec::new();
             file_findings.extend(regex_findings);
             
-            // Only check for obfuscation if it's TS, JS, or PY
+            // --- SCM Query-based findings (Tree-Sitter AST) ---
+            file_findings.extend(run_scm_queries(&file.content, &file.path, &request.persona_rules));
+            
+            // --- Obfuscation detection ---
             let is_code = file.path.ends_with(".ts") || file.path.ends_with(".js") || file.path.ends_with(".py");
             if is_code {
                 file_findings.extend(detect_obfuscation(&file.content, &file.path));
@@ -240,5 +316,27 @@ mod tests {
         assert_eq!(findings.len(), 1);
         assert_eq!(findings[0].issue, "Possível Ofuscação: 'eval' fragmentado");
         assert_eq!(findings[0].severity, "HIGH");
+    }
+
+    #[test]
+    fn test_scm_query() {
+        let content = "function dangerous() { eval('alert(1)'); }";
+        let rules = vec![PersonaRuleSet {
+            agent: "Sentinel".to_string(),
+            role: "Auditor".to_string(),
+            emoji: "🔍".to_string(),
+            stack: "TypeScript".to_string(),
+            extensions: vec![".js".to_string()],
+            rules: vec![Rule {
+                regex: String::new(),
+                issue: "Uso de eval() detectado via AST".to_string(),
+                severity: "CRITICAL".to_string(),
+                scm_query: Some("(call_expression function: (identifier) @fn (#eq? @fn \"eval\"))".to_string()),
+            }],
+        }];
+        let results = run_scm_queries(content, "test.js", &rules);
+        assert_eq!(results.len(), 1);
+        assert_eq!(results[0].issue, "Uso de eval() detectado via AST");
+        assert_eq!(results[0].line_number, Some(1));
     }
 }

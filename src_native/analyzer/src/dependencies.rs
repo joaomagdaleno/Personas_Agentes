@@ -224,12 +224,21 @@ fn walk_rust(node: Node, source: &str, deps: &mut DependencyInfo) {
 
     match kind {
         "use_declaration" => {
-            let text = node.utf8_text(source_bytes).unwrap_or("");
-            if text.starts_with("use ") {
-                let clean = text.replace("use ", "").replace(";", "").trim().to_string();
-                let main_mod = clean.split("::").next().unwrap_or("").to_string();
-                if !main_mod.is_empty() {
-                    deps.imports.push(main_mod);
+            // Navigate AST children to extract the path
+            let mut cursor = node.walk();
+            if cursor.goto_first_child() {
+                loop {
+                    let child = cursor.node();
+                    let ck = child.kind();
+                    if ck == "scoped_identifier" || ck == "identifier" || ck == "use_wildcard" || ck == "scoped_use_list" {
+                        let text = child.utf8_text(source_bytes).unwrap_or("");
+                        let main_mod = text.split("::").next().unwrap_or("").to_string();
+                        if !main_mod.is_empty() {
+                            deps.imports.push(main_mod);
+                        }
+                        break;
+                    }
+                    if !cursor.goto_next_sibling() { break; }
                 }
             }
         }

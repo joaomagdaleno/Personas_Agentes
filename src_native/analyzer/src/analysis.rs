@@ -38,39 +38,26 @@ pub fn run_analyze_core(path: &str, source_code: String) -> AnalysisResult {
     let source_bytes = source_code.as_bytes();
     
     let loc = source_code.lines().count();
-    let mut sloc = 0;
-    let mut comments = 0;
-
-    for line in source_code.lines() {
-        let trimmed = line.trim();
-        if trimmed.is_empty() { continue; }
-        if trimmed.starts_with("//") || trimmed.starts_with("/*") || trimmed.starts_with("*") {
-            comments += 1;
-        } else {
-            sloc += 1;
-        }
-    }
 
     let mut parser = Parser::new();
     let extension = Path::new(path).extension().and_then(|s| s.to_str()).unwrap_or("");
     
-    match extension {
-        "py" => {
-            let language = tree_sitter_python::language();
-            parser.set_language(language).expect("Error loading Python grammar");
-        }
-        "go" => {
-            let language = tree_sitter_go::language();
-            parser.set_language(language).expect("Error loading Go grammar");
-        }
-        _ => {
-            let language = tree_sitter_typescript::language_typescript();
-            parser.set_language(language).expect("Error loading TypeScript grammar");
-        }
-    }
+    let language = match extension {
+        "py" => tree_sitter_python::language(),
+        "go" => tree_sitter_go::language(),
+        "rs" => tree_sitter_rust::language(),
+        _ => tree_sitter_typescript::language_typescript(),
+    };
+    parser.set_language(language).expect("Error loading grammar");
 
     let tree = parser.parse(&source_code, None).expect("Error parsing file");
     let root_node = tree.root_node();
+
+    // AST-based comment counting
+    let mut comments = 0;
+    count_comments_ast(&mut root_node.walk(), &mut comments);
+    let non_empty = source_code.lines().filter(|l| !l.trim().is_empty()).count();
+    let sloc = non_empty.saturating_sub(comments);
 
     let mut functions = Vec::new();
     
@@ -214,6 +201,24 @@ fn collect_metrics(node: Node, depth: i32, cyclomatic: &mut i32, cognitive: &mut
     }
 }
 
+fn count_comments_ast(cursor: &mut tree_sitter::TreeCursor, count: &mut usize) {
+    let node = cursor.node();
+    let kind = node.kind();
+    
+    if kind == "comment" || kind == "line_comment" || kind == "block_comment" {
+        let start_row = node.start_position().row;
+        let end_row = node.end_position().row;
+        *count += (end_row - start_row) + 1;
+    }
+    
+    if cursor.goto_first_child() {
+        loop {
+            count_comments_ast(cursor, count);
+            if !cursor.goto_next_sibling() { break; }
+        }
+        cursor.goto_parent();
+    }
+}
 #[cfg(test)]
 mod tests {
     use super::*;
