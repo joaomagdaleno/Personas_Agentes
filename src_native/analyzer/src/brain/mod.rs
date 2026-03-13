@@ -8,7 +8,7 @@ use std::path::{Path, PathBuf};
 use serde::{Serialize, Deserialize};
 use petgraph::graph::DiGraph;
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 pub enum NodeType {
     File,
     Function,
@@ -254,7 +254,7 @@ impl Brain {
         let mut nodes = HashMap::new();
         let mut edges = Vec::new();
 
-        let file_names: HashSet<String> = files.keys().map(|k| Path::new(k).file_stem().map_or("".to_string(), |s| s.to_string_lossy().to_string())).collect();
+        let _file_names: HashSet<String> = files.keys().map(|k| Path::new(k).file_stem().map_or("".to_string(), |s| s.to_string_lossy().into_owned())).collect();
 
         // Pass 1: Create all nodes
         for path in files.keys() {
@@ -331,12 +331,57 @@ impl Brain {
         Some(vector)
     }
 
-    pub fn reason(&mut self, prompt: &str, max_tokens: usize) -> Option<String> {
+    pub fn retrieve_context(&self, query: &str) -> String {
+        let mut context_parts = Vec::new();
+
+        // 1. Semantic Retrieval (using existing TF-IDF/Embed logic)
+        if let Some(_query_vec) = self.embed(query) {
+            let mut scores = Vec::new();
+            
+            // We need access to the documents to score them. 
+            // For now, we'll use the graph nodes as our "documents" metadata
+            for node in &self.tfidf.graph_nodes {
+                if node.node_type == NodeType::File {
+                    // In a real RAG, we'd have pre-calculated embeddings for files.
+                    // Here we'll do a quick check against the id/path for relevance
+                    let mut score = 0.0;
+                    if node.id.to_lowercase().contains(&query.to_lowercase()) {
+                        score += 0.5;
+                    }
+                    if score > 0.0 {
+                        scores.push((node.id.clone(), score));
+                    }
+                }
+            }
+            
+            scores.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap_or(std::cmp::Ordering::Equal));
+            scores.truncate(3);
+
+            for (path, _) in scores {
+                context_parts.push(format!("### Relevant File: {}\n", path));
+                // Add dependencies from graph
+                let deps = self.get_context_for(&path);
+                if !deps.is_empty() {
+                    context_parts.push(format!("Context for {}:\n- {}\n", path, deps.join("\n- ")));
+                }
+            }
+        }
+
+        if context_parts.is_empty() {
+            "Nenhum contexto específico encontrado para esta consulta.".to_string()
+        } else {
+            context_parts.join("\n")
+        }
+    }
+
+    pub fn reason(&mut self, prompt: &str, context: Option<&str>, max_tokens: usize) -> Option<String> {
         // Camada 2: Templates Rápidos (Pattern Matching Soberano)
         let p = prompt.to_lowercase();
-        for template in &self.templates {
-            if template.keywords.iter().all(|k| p.contains(k)) {
-                return Some(template.response.clone());
+        if context.is_none() { // Solo checar templates se for query pura (evita conflitos de contexto)
+            for template in &self.templates {
+                if template.keywords.iter().all(|k| p.contains(k)) {
+                    return Some(template.response.clone());
+                }
             }
         }
 
@@ -345,9 +390,12 @@ impl Brain {
 
         let tokenizer = self.tokenizer.as_ref().unwrap();
         
-        // Qwen 2.5 Coder Instruct Chat Template
+        let context_str = context.unwrap_or("No additional context provided.");
+
+        // Qwen 2.5 Coder Instruct Chat Template with Context Injection
         let chat_prompt = format!(
-            "<|im_start|>system\nYou are a helpful code assistant. Respond concisely in the same language as the user.<|im_end|>\n<|im_start|>user\n{}<|im_end|>\n<|im_start|>assistant\n",
+            "<|im_start|>system\nYou are a helpful code assistant. Use the following context to answer the user query concisely in the same language as the user.\n\nCONTEXT:\n{}\n<|im_end|>\n<|im_start|>user\n{}<|im_end|>\n<|im_start|>assistant\n",
+            context_str,
             prompt
         );
 
@@ -411,7 +459,7 @@ impl Brain {
         context
     }
 
-    pub fn get_graph_json(&self, focus_path: &str, depth: i32) -> String {
+    pub fn get_graph_json(&self, focus_path: &str, _depth: i32) -> String {
         // Return a subgraph centered on focus_path
         let mut subgraph_nodes = HashSet::new();
         if let Some(&u) = self.node_map.get(focus_path) {

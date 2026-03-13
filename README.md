@@ -36,14 +36,14 @@ Bem-vindo ao sistema de **Personas & Agents**! Este projeto utiliza uma arquitet
    bun install
    ```
 
-2. **Compile o Go Scanner (obrigatório):**
-   O adaptador `GoDiscoveryAdapter` precisa deste binário para ler a estrutura atômica dos arquivos:
+2. **Compile os binários nativos:**
+   Os adaptadores de análise utilizam binários em Rust e Go:
 
    ```bash
-   cd src_native
-   go build -o go-scanner.exe scanner/main.go
-   cd ..
+   bun run ensure-binaries
    ```
+
+   *Certifique-se de ter `cargo` (Rust) e `go` instalados.*
 
 ## 🔐 Variáveis de Ambiente
 

@@ -11,7 +11,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"regexp"
 	"runtime"
 	"strings"
 	"sync"
@@ -46,54 +45,7 @@ type FileAnalysis struct {
 	Intent   string `json:"intent"`
 }
 
-var (
-	intentRegexes = map[string]*regexp.Regexp{
-		"METADATA":       regexp.MustCompile(`(?i)rules|patterns|regex|manifest|metadata|diretriz|heuristics`),
-		"OBSERVABILITY":  regexp.MustCompile(`(?i)logger|log|console|telemetry|winston`),
-		"TECH/MATH":      regexp.MustCompile(`(?i)\b(alpha|progress|offset|lerp|sin|cos|tan)\b`),
-		"INFRASTRUCTURE": regexp.MustCompile(`(?i)fs\.|path\.|join\(|existsSync|readdir|readFile`),
-	}
-)
-
-func analyzeFileMetadata(path string, root string) (FileAnalysis, error) {
-	rel, _ := filepath.Rel(root, path)
-	rel = strings.ReplaceAll(rel, `\`, "/")
-
-	contentBytes, err := os.ReadFile(path)
-	if err != nil {
-		return FileAnalysis{}, err
-	}
-	content := string(contentBytes)
-	lines := strings.Split(content, "\n")
-
-	analysis := FileAnalysis{
-		Path:   rel,
-		Exists: true,
-		Loc:    len(lines),
-	}
-
-	for _, line := range lines {
-		trimmed := strings.TrimSpace(line)
-		if trimmed == "" {
-			continue
-		}
-		if strings.HasPrefix(trimmed, "//") || strings.HasPrefix(trimmed, "/*") || strings.HasPrefix(trimmed, "*") {
-			analysis.Comments++
-			continue
-		}
-		analysis.Sloc++
-	}
-
-	analysis.Intent = "LOGIC"
-	for intent, re := range intentRegexes {
-		if re.MatchString(content) {
-			analysis.Intent = intent
-			break
-		}
-	}
-
-	return analysis, nil
-}
+// analyzeFileMetadata removed: using Rust scanner instead
 
 func (h *Hub) runRust(command string, args ...string) (string, error) {
 	if h.rustClient == nil {
@@ -205,7 +157,9 @@ func (h *Hub) runRustWithStdin(content string, command string, args ...string) (
 }
 
 func (h *Hub) runScanner(args ...string) (string, error) {
-	cmd := exec.Command(h.scannerPath, args...)
+	// Scanner is now integrated into Analyzer
+	fullArgs := append([]string{"scan"}, args...)
+	cmd := exec.Command(h.analyzerPath, fullArgs...)
 	output, err := cmd.Output()
 	if err != nil {
 		if exitErr, ok := err.(*exec.ExitError); ok {
@@ -249,7 +203,6 @@ type Hub struct {
 	metrics      SystemMetrics
 	metricsLock  sync.RWMutex
 	analyzerPath string
-	scannerPath  string
 	watcher      *fsnotify.Watcher
 	clients      map[chan string]bool
 	clientsLock  sync.Mutex
@@ -502,48 +455,27 @@ func (h *Hub) WatchEvents(in *pb.Empty, stream pb.HubService_WatchEventsServer) 
 }
 
 func (h *Hub) ScanProject(ctx context.Context, in *pb.ScanRequest) (*pb.ScanResponse, error) {
-	var results []*pb.FileMetadata
-	var mu sync.Mutex
-	var wg sync.WaitGroup
-
-	err := filepath.Walk(in.Directory, func(path string, info os.FileInfo, err error) error {
-		if err != nil || info.IsDir() {
-			if info != nil && info.IsDir() {
-				name := info.Name()
-				if name == "node_modules" || (strings.HasPrefix(name, ".") && name != ".") {
-					return filepath.SkipDir
-				}
-			}
-			return nil
-		}
-
-		ext := filepath.Ext(path)
-		if ext == ".ts" || ext == ".tsx" || ext == ".js" || ext == ".py" || ext == ".go" {
-			wg.Add(1)
-			go func(p string) {
-				defer wg.Done()
-				analysis, er := analyzeFileMetadata(p, in.Root)
-				if er == nil {
-					mu.Lock()
-					results = append(results, &pb.FileMetadata{
-						Path:     analysis.Path,
-						Loc:      int32(analysis.Loc),
-						Sloc:     int32(analysis.Sloc),
-						Comments: int32(analysis.Comments),
-						Intent:   analysis.Intent,
-					})
-					mu.Unlock()
-				}
-			}(path)
-		}
-		return nil
-	})
-
+	output, err := h.runScanner(in.Directory, "--root", in.Root)
 	if err != nil {
 		return nil, err
 	}
 
-	wg.Wait()
+	var analysisResults []FileAnalysis
+	if err := json.Unmarshal([]byte(output), &analysisResults); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal scanner output: %w", err)
+	}
+
+	var results []*pb.FileMetadata
+	for _, a := range analysisResults {
+		results = append(results, &pb.FileMetadata{
+			Path:     a.Path,
+			Loc:      int32(a.Loc),
+			Sloc:     int32(a.Sloc),
+			Comments: int32(a.Comments),
+			Intent:   a.Intent,
+		})
+	}
+
 	return &pb.ScanResponse{Files: results}, nil
 }
 
@@ -969,14 +901,8 @@ func main() {
 		exePath = filepath.Join("src_native", "analyzer", "target", "release", "analyzer.exe")
 	}
 
-	scannerPath := filepath.Join("..", "go-scanner.exe")
-	if _, err := os.Stat(scannerPath); os.IsNotExist(err) {
-		scannerPath = filepath.Join("src_native", "go-scanner.exe")
-	}
-
 	hub := &Hub{
 		analyzerPath: exePath,
-		scannerPath:  scannerPath,
 	}
 
 	prg := &program{hub: hub}

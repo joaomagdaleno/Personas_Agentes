@@ -208,6 +208,7 @@ fn collect_metrics(node: Node, depth: i32, cyclomatic: &mut i32, cognitive: &mut
     if cursor.goto_first_child() {
         loop {
             collect_metrics(cursor.node(), current_depth, cyclomatic, cognitive, max_nesting);
+            if !cursor.goto_next_sibling() { break; }
         }
     }
 }

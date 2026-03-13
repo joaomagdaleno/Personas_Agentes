@@ -62,12 +62,6 @@ const binaries = [
         path: "src_native/hub/hub.exe",
         buildDir: "src_native/hub",
         buildCmd: "go build -o hub.exe main.go"
-    },
-    {
-        name: "Go Scanner",
-        path: "src_native/go-scanner.exe",
-        buildDir: "src_native",
-        buildCmd: "go build -o go-scanner.exe scanner/main.go" // Adjusted based on previous findings
     }
 ];
 

@@ -50,17 +50,16 @@ fn get_clean_stem(file_name: &str) -> String {
         .replace("_engine", "")
 }
 
-fn is_test_match(file_name: &str, normalized_stem: &str, comp_type: &str, original_name: &str) -> bool {
+fn is_test_match(file_name: &str, normalized_stem: &str, comp_type: &str, _original_name: &str) -> bool {
     let low_name = file_name.to_lowercase();
     let is_test_file = low_name.starts_with("test_") || low_name.ends_with(".test.ts") || low_name.ends_with(".spec.ts");
 
-    if !is_test_file { return false; }
-
-    let normalized_file = low_name.replace('_', "");
-    if normalized_file.contains(normalized_stem) {
+    if is_test_file && low_name.contains(normalized_stem) {
         return true;
     }
-
-    // Agent specialized matching
-    comp_type == "AGENT" && low_name.contains(normalized_stem)
+    
+    if low_name.contains(comp_type) && low_name.contains(normalized_stem) {
+        return true;
+    }
+    false
 }

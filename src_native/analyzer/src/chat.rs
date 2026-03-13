@@ -48,7 +48,7 @@ pub fn start_chat() {
         print!("🤖 Assistente: ");
         io::stdout().flush().unwrap();
 
-        if let Some(answer) = brain.reason(prompt, 200) {
+        if let Some(answer) = brain.reason(prompt, None, 200) {
             println!("{}", answer);
             println!();
         } else {

@@ -12,6 +12,7 @@ pub struct FileAnalysis {
     pub loc: usize,
     pub sloc: usize,
     pub comments: usize,
+    pub size: u64,
     pub intent: String,
 }
 
@@ -19,6 +20,7 @@ pub fn analyze_file(path: &Path, root: &Path) -> Result<FileAnalysis, std::io::E
     let rel_path = path.strip_prefix(root).unwrap_or(path);
     let rel_path_str = rel_path.to_string_lossy().replace("\\", "/");
 
+    let metadata = fs::metadata(path)?;
     let content = fs::read_to_string(path)?;
     let lines: Vec<&str> = content.lines().collect();
     
@@ -28,45 +30,68 @@ pub fn analyze_file(path: &Path, root: &Path) -> Result<FileAnalysis, std::io::E
         loc: lines.len(),
         sloc: 0,
         comments: 0,
+        size: metadata.len(),
         intent: "LOGIC".to_string(),
     };
+
+    let mut in_multiline_comment = false;
 
     for line in lines {
         let trimmed = line.trim();
         if trimmed.is_empty() {
             continue;
         }
-        if trimmed.starts_with("//") || trimmed.starts_with("/*") || trimmed.starts_with("*") {
+
+        if in_multiline_comment {
+            analysis.comments += 1;
+            if trimmed.contains("*/") {
+                in_multiline_comment = false;
+            }
+            continue;
+        }
+
+        if trimmed.starts_with("/*") {
+            analysis.comments += 1;
+            if !trimmed.contains("*/") {
+                in_multiline_comment = true;
+            }
+            continue;
+        }
+
+        if trimmed.starts_with("//") || trimmed.starts_with("*") {
             analysis.comments += 1;
             continue;
         }
+        
         analysis.sloc += 1;
     }
 
-    // Intent detection
-    let set = RegexSet::new(&[
-        r"(?i)rules|patterns|regex|manifest|metadata|diretriz|heuristics",
-        r"(?i)logger|log|console|telemetry|winston",
-        r"(?i)\b(alpha|progress|offset|lerp|sin|cos|tan)\b",
-        r"(?i)fs\.|path\.|join\(|existsSync|readdir|readFile",
-    ]).unwrap();
+    // Expanded Intent detection
+    let intents = [
+        ("METADATA", r"(?i)rules|patterns|regex|manifest|metadata|diretriz|heuristics"),
+        ("OBSERVABILITY", r"(?i)logger|log|console|telemetry|winston"),
+        ("TECH/MATH", r"(?i)\b(alpha|progress|offset|lerp|sin|cos|tan)\b"),
+        ("INFRASTRUCTURE", r"(?i)fs\.|path\.|join\(|existsSync|readdir|readFile"),
+        ("TEST", r"(?i)test|spec|mock|suite"),
+        ("STYLE", r"(?i)css|scss|less|style|theme"),
+        ("CONFIGURATION", r"(?i)config|env|setup|\.json|\.toml|\.yaml"),
+        ("DOCUMENTATION", r"(?i)readme|docs|license"),
+    ];
+
+    let patterns: Vec<&str> = intents.iter().map(|(_, p)| *p).collect();
+    let set = RegexSet::new(&patterns).unwrap();
 
     let matches: Vec<_> = set.matches(&content).into_iter().collect();
     if !matches.is_empty() {
-        analysis.intent = match matches[0] {
-            0 => "METADATA".to_string(),
-            1 => "OBSERVABILITY".to_string(),
-            2 => "TECH/MATH".to_string(),
-            3 => "INFRASTRUCTURE".to_string(),
-            _ => "LOGIC".to_string(),
-        };
+        // Find the first match priority
+        analysis.intent = intents[matches[0]].0.to_string();
     }
 
     Ok(analysis)
 }
 
 pub fn scan_directory(dir: &Path, root: &Path) -> Vec<FileAnalysis> {
-    let mut entries = Vec::new();
+    let mut paths = Vec::new();
     
     let walker = WalkDir::new(dir).into_iter()
         .filter_entry(|e| {
@@ -79,15 +104,28 @@ pub fn scan_directory(dir: &Path, root: &Path) -> Vec<FileAnalysis> {
         if entry.file_type().is_file() {
             let ext = entry.path().extension().and_then(|s| s.to_str()).unwrap_or("");
             if matches!(ext, "ts" | "tsx" | "js" | "py" | "go" | "rs") {
-                entries.push(entry.path().to_path_buf());
+                paths.push(entry.path().to_path_buf());
             }
         }
     }
 
-    entries.into_par_iter()
-        .map(|path| analyze_file(&path, root))
+    let total = paths.len();
+    let counter = std::sync::atomic::AtomicUsize::new(0);
+
+    let results = paths.into_par_iter()
+        .map(|path| {
+            let res = analyze_file(&path, root);
+            let done = counter.fetch_add(1, std::sync::atomic::Ordering::SeqCst) + 1;
+            if done % 100 == 0 || done == total {
+                eprint!("\r📂 Escaneando arquivos: {}/{}", done, total);
+            }
+            res
+        })
         .filter_map(|res| res.ok())
-        .collect()
+        .collect::<Vec<_>>();
+    
+    eprintln!("\n✅ Escaneamento concluído.");
+    results
 }
 
 
