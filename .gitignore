@@ -57,3 +57,6 @@ scanner_sample.json
 remaining_deltas.json
 test_scan.ts
 get_batch*.py
+*_scan.json
+*_scan_results.json
+*_scan_release.json

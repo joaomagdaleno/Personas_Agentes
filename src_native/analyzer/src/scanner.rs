@@ -71,6 +71,7 @@ pub fn scan_directory(dir: &Path, root: &Path) -> Vec<FileAnalysis> {
     let walker = WalkDir::new(dir).into_iter()
         .filter_entry(|e| {
             let name = e.file_name().to_string_lossy();
+            if name == "." { return true; }
             name != "node_modules" && !name.starts_with(".") && name != "target"
         });
 
