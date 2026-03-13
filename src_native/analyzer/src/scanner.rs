@@ -13,6 +13,7 @@ pub struct FileAnalysis {
     pub sloc: usize,
     pub comments: usize,
     pub size: u64,
+    pub modified_at: u64,
     pub intent: String,
 }
 
@@ -21,6 +22,10 @@ pub fn analyze_file(path: &Path, root: &Path) -> Result<FileAnalysis, std::io::E
     let rel_path_str = rel_path.to_string_lossy().replace("\\", "/");
 
     let metadata = fs::metadata(path)?;
+    let modified_at = metadata.modified().ok()
+        .and_then(|t| t.duration_since(std::time::UNIX_EPOCH).ok())
+        .map(|d| d.as_secs())
+        .unwrap_or(0);
     let content = fs::read_to_string(path)?;
     let lines: Vec<&str> = content.lines().collect();
     
@@ -31,6 +36,7 @@ pub fn analyze_file(path: &Path, root: &Path) -> Result<FileAnalysis, std::io::E
         sloc: 0,
         comments: 0,
         size: metadata.len(),
+        modified_at,
         intent: "LOGIC".to_string(),
     };
 

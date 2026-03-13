@@ -33,8 +33,12 @@ pub fn discover_identity(project_root: &str) -> ProjectIdentity {
         .filter_map(|e| e.ok()) {
         
         if entry.file_type().is_file() {
-            if let Ok(content) = fs::read_to_string(entry.path()) {
-                detect_frameworks(&content, &mut frameworks, &mut stacks);
+            let path = entry.path();
+            if let Some(ext) = path.extension().and_then(|s| s.to_str()) {
+                if let Ok(content) = fs::read_to_string(path) {
+                    let deps = crate::dependencies::extract_dependencies(&content, ext);
+                    detect_frameworks_from_ast(&deps, ext, &mut frameworks, &mut stacks);
+                }
             }
         }
     }
@@ -48,25 +52,41 @@ pub fn discover_identity(project_root: &str) -> ProjectIdentity {
     }
 }
 
-fn detect_frameworks(content: &str, frameworks: &mut HashSet<String>, stacks: &mut HashSet<String>) {
-    if content.contains("@nestjs") || content.contains("@Injectable()") {
-        frameworks.insert("NestJS".to_string());
-        stacks.insert("TypeScript".to_string());
+fn detect_frameworks_from_ast(deps: &crate::dependencies::DependencyInfo, ext: &str, frameworks: &mut HashSet<String>, stacks: &mut HashSet<String>) {
+    for import in &deps.imports {
+        let imp_lower = import.to_lowercase();
+        
+        if imp_lower.contains("nestjs") || imp_lower.contains("@nestjs") {
+            frameworks.insert("NestJS".to_string());
+            stacks.insert("TypeScript".to_string());
+        }
+        if imp_lower.contains("flutter_bloc") {
+            frameworks.insert("Bloc".to_string());
+            stacks.insert("Flutter".to_string());
+        }
+        if imp_lower.contains("fastapi") {
+            frameworks.insert("FastAPI".to_string());
+            stacks.insert("Python".to_string());
+        }
+        if imp_lower.contains("@prisma/client") || imp_lower.contains("prisma") {
+            frameworks.insert("Prisma".to_string());
+            if ext == "ts" || ext == "js" { stacks.insert("TypeScript".to_string()); }
+            if ext == "rs" { stacks.insert("Rust".to_string()); }
+            if ext == "py" { stacks.insert("Python".to_string()); }
+            if ext == "go" { stacks.insert("Go".to_string()); }
+        }
+        if imp_lower == "torch" {
+            frameworks.insert("PyTorch".to_string());
+            stacks.insert("Python".to_string());
+        }
     }
-    if content.contains("import 'package:flutter_bloc/flutter_bloc.dart'") {
-        frameworks.insert("Bloc".to_string());
-        stacks.insert("Flutter".to_string());
-    }
-    if content.contains("from fastpi import FastAPI") {
-        frameworks.insert("FastAPI".to_string());
-        stacks.insert("Python".to_string());
-    }
-    if content.contains("import { PrismaClient }") {
-        frameworks.insert("Prisma".to_string());
-    }
-    if content.contains("import torch") {
-        frameworks.insert("PyTorch".to_string());
-        stacks.insert("Python".to_string());
+    
+    // Fallback for decorators that might be caught in defined_symbols or calls depending on parser structure
+    for call in &deps.calls {
+        if call == "Injectable" || call == "Controller" || call == "Module" {
+            frameworks.insert("NestJS".to_string());
+            stacks.insert("TypeScript".to_string());
+        }
     }
 }
 
@@ -80,10 +100,12 @@ mod tests {
         let mut frameworks = HashSet::new();
         let mut stacks = HashSet::new();
         
-        detect_frameworks("import { PrismaClient }", &mut frameworks, &mut stacks);
+        let deps1 = crate::dependencies::extract_dependencies("import { PrismaClient } from '@prisma/client'", "ts");
+        detect_frameworks_from_ast(&deps1, "ts", &mut frameworks, &mut stacks);
         assert!(frameworks.contains("Prisma"));
         
-        detect_frameworks("from fastpi import FastAPI", &mut frameworks, &mut stacks);
+        let deps2 = crate::dependencies::extract_dependencies("from fastapi import FastAPI", "py");
+        detect_frameworks_from_ast(&deps2, "py", &mut frameworks, &mut stacks);
         assert!(frameworks.contains("FastAPI"));
         assert!(stacks.contains("Python"));
     }

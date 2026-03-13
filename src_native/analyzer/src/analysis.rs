@@ -153,9 +153,10 @@ pub fn run_fingerprint_core(path_str: &str, source: String) -> fingerprint::Fing
     }
 
     let stem = path.file_stem().and_then(|s| s.to_str()).unwrap_or("unknown");
+    let ext = path.extension().and_then(|e| e.to_str()).unwrap_or("");
     let agent_name = stem.to_string();
     
-    let fp = fingerprint::extract_fingerprint(&source, &agent_name);
+    let fp = fingerprint::extract_fingerprint(&source, &agent_name, ext);
     let entry = fingerprint::AgentEntry {
         agent: agent_name,
         stack: "Unknown".to_string(),

@@ -64,10 +64,20 @@ struct ASTCollector {
 
 // ─── Core AST Extraction ────────────────────────────────────────────────────
 
-pub fn extract_fingerprint(source: &str, agent_name: &str) -> AtomicFingerprint {
+pub fn extract_fingerprint(source: &str, agent_name: &str, ext: &str) -> AtomicFingerprint {
     let mut parser = Parser::new();
-    let language = tree_sitter_typescript::language_typescript();
-    parser.set_language(language).expect("Error loading TS grammar");
+    
+    let language = match ext {
+        "ts" | "tsx" | "js" | "jsx" => tree_sitter_typescript::language_typescript(),
+        "py" => tree_sitter_python::language(),
+        "go" => tree_sitter_go::language(),
+        "rs" => tree_sitter_rust::language(),
+        _ => tree_sitter_typescript::language_typescript(), // Fallback
+    };
+    
+    parser.set_language(language).unwrap_or_else(|_| {
+        eprintln!("Error loading grammar for extension: {}", ext);
+    });
 
     let tree = match parser.parse(source, None) {
         Some(t) => t,
@@ -530,7 +540,7 @@ pub fn extract_all(agents_root: &Path) -> FingerprintReport {
     let categories = ["Audit", "Content", "Strategic", "System"];
 
     // Collect all file paths first
-    let mut file_entries: Vec<(PathBuf, String, String, String)> = Vec::new();
+    let mut file_entries: Vec<(PathBuf, String, String, String, String)> = Vec::new();
 
     for stack in &stacks {
         for cat in &categories {
@@ -539,21 +549,24 @@ pub fn extract_all(agents_root: &Path) -> FingerprintReport {
 
             for entry in WalkDir::new(&dir).max_depth(1).into_iter().filter_map(|e| e.ok()) {
                 let path = entry.path().to_path_buf();
-                if let Some(ext) = path.extension() {
-                    if matches!(ext.to_str(), Some("ts" | "tsx" | "go" | "kt" | "py" | "dart")) {
+                if let Some(ext_os) = path.extension() {
+                    let ext = ext_os.to_str().unwrap_or("").to_string();
+                    if matches!(ext.as_str(), "ts" | "tsx" | "go" | "kt" | "py" | "dart" | "rs") {
                         let stem = path.file_stem()
                             .and_then(|s| s.to_str())
-                            .unwrap_or("unknown");
+                            .unwrap_or("unknown")
+                            .to_string();
                         
                         if stem == "__init__" { continue; }
                         
-                        let agent_name = capitalize(stem);
+                        let agent_name = capitalize(&stem);
                         
                         file_entries.push((
                             path,
                             stack.to_string(),
                             cat.to_string(),
                             agent_name,
+                            ext,
                         ));
                     }
                 }
@@ -564,9 +577,9 @@ pub fn extract_all(agents_root: &Path) -> FingerprintReport {
     // Process all files in parallel with rayon
     let entries: Vec<AgentEntry> = file_entries
         .par_iter()
-        .filter_map(|(path, stack, cat, agent)| {
+        .filter_map(|(path, stack, cat, agent, ext)| {
             let source = fs::read_to_string(path).ok()?;
-            let fp = extract_fingerprint(&source, agent);
+            let fp = extract_fingerprint(&source, agent, ext);
             Some(AgentEntry {
                 agent: agent.clone(),
                 stack: stack.clone(),

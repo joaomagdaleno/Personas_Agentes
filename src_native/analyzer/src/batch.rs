@@ -15,6 +15,7 @@ pub struct ProcessedFile {
     pub functions: Vec<String>,
     pub imports: Vec<String>,
     pub exports: Vec<String>,
+    pub calls: Vec<String>,
     pub lines: usize,
 }
 
@@ -32,18 +33,16 @@ pub fn process_batch(file_paths: Vec<String>, project_root: &str) -> Vec<Process
         // AST Analysis (tree-sitter)
         let deps = crate::dependencies::extract_dependencies(&content, extension);
         
-        // Basic Metadata Extraction (could also move to AST later)
-        let mut classes = Vec::new();
-        let mut functions = Vec::new();
+        let classes = Vec::new(); // Distinguished types could be added to dependencies.rs if needed
+        let functions = deps.defined_symbols;
         
-        // For compatibility with legacy fields, we can populate classes/functions from deps or separate AST walk
-        // For now, let's just use the robust AST deps
         let imports = deps.imports;
         let exports = deps.exports;
+        let calls = deps.calls;
 
         let lines = content.lines().count();
         let dna = detect_dna(&content);
-        let semantic_blocks = classify_semantic_blocks(&content);
+        let semantic_blocks = classify_semantic_blocks(&content, extension);
 
         Some(ProcessedFile {
             path: rel_path,
@@ -54,6 +53,7 @@ pub fn process_batch(file_paths: Vec<String>, project_root: &str) -> Vec<Process
             functions,
             imports,
             exports,
+            calls,
             lines,
         })
     }).collect()
@@ -96,31 +96,94 @@ fn detect_dna(content: &str) -> Vec<String> {
     hints
 }
 
-fn classify_semantic_blocks(content: &str) -> HashMap<usize, String> {
+fn classify_semantic_blocks(content: &str, ext: &str) -> HashMap<usize, String> {
     let mut blocks = HashMap::new();
-    let lines: Vec<&str> = content.lines().collect();
-
-    // Compile regexes once (lazy_static would be better but simple regex::Regex is fine for this module)
-    let meta_regex = regex::Regex::new(r"(?i)(export\s+)?(const|let|var|type|interface|enum)\s+|import|from|@deprecated|rules\s*:|patterns\s*:").unwrap();
-    let obs_regex = regex::Regex::new(r"(?i)logger\.(info|warn|error|debug)|console\.(log|warn|error|debug)|telemetry|metrics\.").unwrap();
-    let logic_regex = regex::Regex::new(r"function\s+\w+|=>|async\s+").unwrap();
+    let lines_count = content.lines().count();
     
-    // Process in chunks of 5 lines as requested
-    for (i, chunk) in lines.chunks(5).enumerate() {
-        let chunk_text = chunk.join("\n");
-        let category = if meta_regex.is_match(&chunk_text) {
-            "METADATA"
-        } else if obs_regex.is_match(&chunk_text) {
-            "OBSERVABILITY"
-        } else if logic_regex.is_match(&chunk_text) {
-            "LOGIC"
-        } else {
-            "STRUCTURAL"
-        };
-        blocks.insert(i * 5, category.to_string());
+    // Initialize blocks to STRUCTURAL
+    for i in 0..=(lines_count / 5) {
+        blocks.insert(i * 5, "STRUCTURAL".to_string());
+    }
+
+    let mut parser = tree_sitter::Parser::new();
+    let language = match ext {
+        "ts" | "tsx" | "js" | "jsx" => tree_sitter_typescript::language_typescript(),
+        "py" => tree_sitter_python::language(),
+        "go" => tree_sitter_go::language(),
+        "rs" => tree_sitter_rust::language(),
+        _ => return blocks,
+    };
+    
+    if parser.set_language(language).is_err() {
+        return blocks;
+    }
+
+    if let Some(tree) = parser.parse(content, None) {
+        let mut cursor = tree.root_node().walk();
+        let mut priorities: HashMap<usize, u8> = HashMap::new();
+
+        walk_ast_for_semantics(&mut cursor, content.as_bytes(), &mut blocks, &mut priorities);
     }
     
     blocks
+}
+
+fn walk_ast_for_semantics(cursor: &mut tree_sitter::TreeCursor, source: &[u8], blocks: &mut HashMap<usize, String>, priorities: &mut HashMap<usize, u8>) {
+    let node = cursor.node();
+    let kind = node.kind();
+    
+    let mut category = None;
+    let mut priority = 0;
+
+    // Classification heuristics based on AST Node kind
+    match kind {
+        "import_statement" | "import_declaration" | "use_declaration" | "export_statement" | "export_declaration" => {
+            category = Some("METADATA");
+            priority = 1;
+        }
+        "function_declaration" | "method_definition" | "class_declaration" | "arrow_function" | "function_item" | "impl_item" => {
+            category = Some("LOGIC");
+            priority = 2;
+        }
+        "call_expression" => {
+            if let Some(func_node) = node.child_by_field_name("function") {
+                if let Ok(func_text) = func_node.utf8_text(source) {
+                    if func_text.contains("logger") || func_text.contains("console") || func_text.contains("metrics") {
+                        category = Some("OBSERVABILITY");
+                        priority = 3;
+                    } else {
+                        category = Some("LOGIC");
+                        priority = 2;
+                    }
+                }
+            }
+        }
+        _ => {}
+    }
+
+    if let Some(cat) = category {
+        let start_row = node.start_position().row;
+        let end_row = node.end_position().row;
+        
+        for row in start_row..=end_row {
+            let chunk_idx = (row / 5) * 5;
+            let current_priority = priorities.entry(chunk_idx).or_insert(0);
+            if priority > *current_priority {
+                *current_priority = priority;
+                blocks.insert(chunk_idx, cat.to_string());
+            }
+        }
+    }
+
+    if cursor.goto_first_child() {
+        loop {
+            walk_ast_for_semantics(cursor, source, blocks, priorities);
+            if !cursor.goto_next_sibling() {
+                break;
+            }
+        }
+        cursor.goto_parent();
+    }
 }
 
 /// 📑 index_project — walkdir + memmap2 powered file discovery and metadata extraction.

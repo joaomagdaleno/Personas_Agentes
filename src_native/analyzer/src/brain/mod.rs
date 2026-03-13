@@ -12,8 +12,8 @@ use tree_sitter::Parser;
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 pub enum NodeType {
     File,
-    Function,
-    Class,
+    Symbol,
+    Module,
     Concept,
 }
 
@@ -45,6 +45,7 @@ pub struct TfidfIndex {
     pub vocabulary: Vec<String>,
     pub graph_nodes: Vec<NodeData>,
     pub graph_edges: Vec<(String, String, EdgeData)>, // (source_id, target_id, data)
+    pub file_mtimes: HashMap<String, u64>,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -207,7 +208,24 @@ impl Brain {
         true
     }
 
-    pub fn train(&mut self, files: &HashMap<String, String>) {
+    pub fn train(&mut self, files: &HashMap<String, String>, mtimes: &HashMap<String, u64>) {
+        // Incremental check: if number of files and ALL mtimes match, skip training
+        if files.len() == self.tfidf.num_docs && !mtimes.is_empty() {
+            let mut all_match = true;
+            for (path, mtime) in mtimes {
+                if self.tfidf.file_mtimes.get(path) != Some(mtime) {
+                    all_match = false;
+                    break;
+                }
+            }
+            if all_match {
+                eprintln!("✨ [Brain] Sinronizado (sem alterações detectadas).");
+                return;
+            }
+        }
+
+        eprintln!("🧠 [Brain] Indexando {} arquivos...", files.len());
+        
         let mut df = HashMap::new();
         let num_docs = files.len();
 
@@ -233,6 +251,7 @@ impl Brain {
             vocabulary,
             graph_nodes: nodes.values().cloned().collect(),
             graph_edges: edges,
+            file_mtimes: mtimes.clone(),
         };
 
         // Populate petgraph for in-memory use
@@ -268,65 +287,49 @@ impl Brain {
             });
         }
 
-        // Pass 2: Analyze imports and calls
+        // Pass 2: Extract AST Metadata for all files
+        let mut file_deps = HashMap::new();
+        let mut symbol_to_path: HashMap<String, Vec<String>> = HashMap::new();
+
         for (path, content) in files {
-            // Language-specific detection
             let ext = Path::new(path).extension().and_then(|s| s.to_str()).unwrap_or("");
+            let deps = crate::dependencies::extract_dependencies(content, ext);
             
-            // Generic function call detection: thing(args)
-            // This is heuristic-based but effective for cross-file link discovery
-            let re_call = regex::Regex::new(r"(\w+)\s*\(").unwrap();
+            for symbol in &deps.defined_symbols {
+                symbol_to_path.entry(symbol.clone()).or_insert_with(Vec::new).push(path.clone());
+            }
             
-            // Imports (DependsOn)
-            let re_rust = regex::Regex::new(r"(?m)^use\s+([^;:]+)").unwrap();
-            let re_ts = regex::Regex::new(r#"import\s+.*\s+from\s+['"]([^'"]+)['"]"#).unwrap();
-            let re_py = regex::Regex::new(r"(?m)^(?:import|from)\s+([^\s\.]+)").unwrap();
+            file_deps.insert(path.clone(), deps);
+        }
 
+        // Pass 3: Resolve edges based on AST (Imports and precise Calls)
+        for (path, deps) in &file_deps {
             let mut seen_targets = HashSet::new();
+            let mut edges_count = 0;
+            const MAX_EDGES_PER_FILE: usize = 100;
 
-            // Handle DependsOn
-            match ext {
-                "rs" => {
-                    for cap in re_rust.captures_iter(content) {
-                        let dep = cap[1].trim().split("::").next().unwrap_or("").to_string();
-                        if let Some(target) = stem_to_path.get(&dep) {
-                            if target != path && seen_targets.insert(target.clone()) {
-                                edges.push((path.clone(), target.clone(), EdgeData { edge_type: EdgeType::DependsOn, weight: 1.0 }));
-                            }
-                        }
+            // 1. Resolve Imports (DependsOn)
+            for imp in &deps.imports {
+                let imp_stem = Path::new(imp).file_stem().map_or_else(|| imp.clone(), |s| s.to_string_lossy().to_string());
+                if let Some(target) = stem_to_path.get(&imp_stem) {
+                    if target != path && seen_targets.insert(target.clone()) {
+                        edges.push((path.clone(), target.clone(), EdgeData { edge_type: EdgeType::DependsOn, weight: 1.0 }));
+                        edges_count += 1;
                     }
                 }
-                "ts" | "tsx" | "js" => {
-                    for cap in re_ts.captures_iter(content) {
-                        let d = cap[1].trim().to_string();
-                        let dep = Path::new(&d).file_stem().map_or_else(|| d.clone(), |s| s.to_string_lossy().to_string());
-                        if let Some(target) = stem_to_path.get(&dep) {
-                            if target != path && seen_targets.insert(target.clone()) {
-                                edges.push((path.clone(), target.clone(), EdgeData { edge_type: EdgeType::DependsOn, weight: 1.0 }));
-                            }
-                        }
-                    }
-                }
-                "py" => {
-                    for cap in re_py.captures_iter(content) {
-                        let dep = cap[1].trim().to_string();
-                        if let Some(target) = stem_to_path.get(&dep) {
-                            if target != path && seen_targets.insert(target.clone()) {
-                                edges.push((path.clone(), target.clone(), EdgeData { edge_type: EdgeType::DependsOn, weight: 1.0 }));
-                            }
-                        }
-                    }
-                }
-                _ => {}
             }
 
-            // Handle Calls (Heuristic: symbols matching other filenames)
-            for cap in re_call.captures_iter(content) {
-                let call_target = &cap[1];
-                if let Some(target_path) = stem_to_path.get(call_target) {
-                    if target_path != path && !seen_targets.contains(target_path) {
-                        edges.push((path.clone(), target_path.clone(), EdgeData { edge_type: EdgeType::Calls, weight: 0.5 }));
-                        seen_targets.insert(target_path.clone());
+            // 2. Resolve Precise Calls (Calls)
+            for call in &deps.calls {
+                if edges_count >= MAX_EDGES_PER_FILE { break; }
+                
+                if let Some(targets) = symbol_to_path.get(call) {
+                    for target_path in targets {
+                        if target_path != path && !seen_targets.contains(target_path) {
+                            edges.push((path.clone(), target_path.clone(), EdgeData { edge_type: EdgeType::Calls, weight: 0.5 }));
+                            seen_targets.insert(target_path.clone());
+                            edges_count += 1;
+                        }
                     }
                 }
             }

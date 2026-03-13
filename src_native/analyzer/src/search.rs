@@ -48,7 +48,15 @@ pub fn semantic_search(request: SearchRequest) -> Vec<SearchHit> {
     let mut brain = Brain::new().unwrap();
     if !brain.is_trained() {
         eprintln!("🧠 [Brain] Indexando arquivos pela primeira vez...");
-        brain.train(&request.files);
+        let mtimes: HashMap<String, u64> = request.files.keys().map(|path| {
+            let mtime = fs::metadata(path).ok()
+                .and_then(|m| m.modified().ok())
+                .and_then(|t| t.duration_since(std::time::UNIX_EPOCH).ok())
+                .map(|d| d.as_secs())
+                .unwrap_or(0);
+            (path.clone(), mtime)
+        }).collect();
+        brain.train(&request.files, &mtimes);
     }
     
     let mut cache = load_embedding_cache();

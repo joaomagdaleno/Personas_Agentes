@@ -78,30 +78,78 @@ fn detect_obfuscation(content: &str, file_path: &str) -> Vec<AuditFinding> {
     let mut findings = Vec::new();
     let dangerous = ["eval", "process.env", "require", "exec", "execSync", "spawn", "Buffer.from", "fs.readFile", "document.cookie", "localStorage", "window.crypto", "__dirname", "setTimeout", "setInterval", "Function"];
     
-    let concat_re = Regex::new(r#"(["'][^"']*["']\s*\+\s*)+["'][^"']*["']"#).unwrap();
+    let ext = std::path::Path::new(file_path).extension().and_then(|s| s.to_str()).unwrap_or("");
     
-    for cap in concat_re.captures_iter(content) {
-        let matched = cap[0].to_string();
-        let reconstructed = matched.replace("'", "").replace("\"", "").replace(" ", "").replace("+", "");
-        
-        for kw in dangerous.iter() {
-            if reconstructed.contains(kw) && !matched.contains(kw) {
-                findings.push(AuditFinding {
-                    file: file_path.to_string(),
-                    agent: "Security Guard".to_string(),
-                    role: "Protector".to_string(),
-                    emoji: "🛡️".to_string(),
-                    issue: format!("Possível Ofuscação: '{}' fragmentado", kw),
-                    severity: "HIGH".to_string(),
-                    stack: "Security".to_string(),
-                    evidence: matched.chars().take(80).collect(),
-                    match_count: 1,
-                    line_number: Some(content[..cap.get(0).unwrap().start()].matches('\n').count() + 1),
-                });
+    let mut parser = tree_sitter::Parser::new();
+    let language = match ext {
+        "ts" | "tsx" | "js" | "jsx" => tree_sitter_typescript::language_typescript(),
+        "py" => tree_sitter_python::language(),
+        _ => return findings,
+    };
+    
+    if parser.set_language(language).is_err() {
+        return findings;
+    }
+
+    if let Some(tree) = parser.parse(content, None) {
+        let mut cursor = tree.root_node().walk();
+        walk_for_obfuscation(&mut cursor, content.as_bytes(), file_path, &dangerous, &mut findings);
+    }
+    
+    findings
+}
+
+fn walk_for_obfuscation(cursor: &mut tree_sitter::TreeCursor, source: &[u8], file_path: &str, dangerous: &[&str], findings: &mut Vec<AuditFinding>) {
+    let node = cursor.node();
+    
+    if node.kind() == "binary_expression" || node.kind() == "binary_operator" {
+        if let Ok(text) = node.utf8_text(source) {
+            if text.contains('"') || text.contains('\'') {
+                let reconstructed = text.replace("'", "").replace("\"", "").replace(" ", "").replace("+", "");
+                for kw in dangerous.iter() {
+                    if reconstructed.contains(kw) && !text.contains(kw) {
+                        
+                        // Ensure this is actually a string concatenation tree
+                        let mut is_concat = true;
+                        let mut child_cursor = node.walk();
+                        for child in node.children(&mut child_cursor) {
+                            let k = child.kind();
+                            if k != "string" && k != "template_string" && k != "+" && k != "binary_expression" && k != "binary_operator" {
+                                is_concat = false;
+                                break;
+                            }
+                        }
+                        
+                        if is_concat {
+                            findings.push(AuditFinding {
+                                file: file_path.to_string(),
+                                agent: "Security Guard".to_string(),
+                                role: "Protector".to_string(),
+                                emoji: "🛡️".to_string(),
+                                issue: format!("Possível Ofuscação: '{}' fragmentado", kw),
+                                severity: "HIGH".to_string(),
+                                stack: "Security".to_string(),
+                                evidence: text.chars().take(80).collect(),
+                                match_count: 1,
+                                line_number: Some(node.start_position().row + 1),
+                            });
+                            break; // Log issue and stop checking other keywords for this node
+                        }
+                    }
+                }
             }
         }
     }
-    findings
+
+    if cursor.goto_first_child() {
+        loop {
+            walk_for_obfuscation(cursor, source, file_path, dangerous, findings);
+            if !cursor.goto_next_sibling() {
+                break;
+            }
+        }
+        cursor.goto_parent();
+    }
 }
 
 pub fn bulk_audit(request: BulkAuditRequest) -> Vec<AuditFinding> {

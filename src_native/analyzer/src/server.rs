@@ -99,8 +99,10 @@ impl HubService for HubServerImpl {
             fs::read_to_string(&req.file).map_err(|e| Status::internal(format!("Failed to read file: {}", e)))?
         };
 
-        let stem = std::path::Path::new(&req.file).file_stem().and_then(|s| s.to_str()).unwrap_or("unknown");
-        let fp = fingerprint::extract_fingerprint(&content, stem);
+        let path_obj = std::path::Path::new(&req.file);
+        let stem = path_obj.file_stem().and_then(|s| s.to_str()).unwrap_or("unknown");
+        let ext = path_obj.extension().and_then(|e| e.to_str()).unwrap_or("");
+        let fp = fingerprint::extract_fingerprint(&content, stem, ext);
         let json_data = serde_json::to_string(&fp).map_err(|e| Status::internal(format!("Serialization error: {}", e)))?;
 
         Ok(Response::new(AnalyzeResponse { json_data }))
