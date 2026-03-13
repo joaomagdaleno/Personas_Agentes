@@ -167,7 +167,14 @@ impl HubService for HubServerImpl {
     async fn reason(&self, request: Request<ReasonRequest>) -> Result<Response<AnalyzeResponse>, Status> {
         let req = request.into_inner();
         let mut brain = brain::Brain::new().ok_or_else(|| Status::internal("Failed to initialize Brain"))?;
-        let result = brain.reason(&req.prompt, None, 512);
+        
+        let context = if req.use_rag {
+            Some(brain.retrieve_context(&req.prompt))
+        } else {
+            None
+        };
+
+        let result = brain.reason(&req.prompt, context.as_deref(), 512);
         let json_data = result.unwrap_or_else(|| "Error: Brain unable to reason".to_string());
         Ok(Response::new(AnalyzeResponse { json_data }))
     }

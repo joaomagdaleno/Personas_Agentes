@@ -159,6 +159,7 @@ async fn main() {
         }
         "rag" => {
             if let Some(mut brain) = brain::Brain::new() {
+                println!("🔍 Buscando contexto relevante para: '{}'...", &args[2]);
                 let context = brain.retrieve_context(&args[2]);
                 if let Some(res) = brain.reason(&args[2], Some(&context), 300) { println!("{}", res); }
             }

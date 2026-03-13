@@ -7,6 +7,7 @@ use std::collections::{HashMap, HashSet};
 use std::path::{Path, PathBuf};
 use serde::{Serialize, Deserialize};
 use petgraph::graph::DiGraph;
+use tree_sitter::Parser;
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 pub enum NodeType {
@@ -254,10 +255,12 @@ impl Brain {
         let mut nodes = HashMap::new();
         let mut edges = Vec::new();
 
-        let _file_names: HashSet<String> = files.keys().map(|k| Path::new(k).file_stem().map_or("".to_string(), |s| s.to_string_lossy().into_owned())).collect();
-
-        // Pass 1: Create all nodes
+        // Pass 1: Build file nodes and a stem-to-path index for quick lookup
+        let mut stem_to_path = HashMap::new();
         for path in files.keys() {
+            let stem = Path::new(path).file_stem().map_or("".to_string(), |s| s.to_string_lossy().into_owned());
+            stem_to_path.insert(stem, path.clone());
+            
             nodes.insert(path.clone(), NodeData {
                 id: path.clone(),
                 node_type: NodeType::File,
@@ -265,33 +268,67 @@ impl Brain {
             });
         }
 
-        // Pass 2: Create edges
+        // Pass 2: Analyze imports and calls
         for (path, content) in files {
+            // Language-specific detection
+            let ext = Path::new(path).extension().and_then(|s| s.to_str()).unwrap_or("");
+            
+            // Generic function call detection: thing(args)
+            // This is heuristic-based but effective for cross-file link discovery
+            let re_call = regex::Regex::new(r"(\w+)\s*\(").unwrap();
+            
+            // Imports (DependsOn)
             let re_rust = regex::Regex::new(r"(?m)^use\s+([^;:]+)").unwrap();
             let re_ts = regex::Regex::new(r#"import\s+.*\s+from\s+['"]([^'"]+)['"]"#).unwrap();
             let re_py = regex::Regex::new(r"(?m)^(?:import|from)\s+([^\s\.]+)").unwrap();
 
-            let mut add_edge = |dep: String, e_type: EdgeType| {
-                // Find full path by stem if possible
-                for target_path in files.keys() {
-                    let stem = Path::new(target_path).file_stem().map_or("", |s| s.to_str().unwrap_or(""));
-                    if stem == dep {
-                        edges.push((path.clone(), target_path.clone(), EdgeData { edge_type: e_type, weight: 1.0 }));
-                        break;
+            let mut seen_targets = HashSet::new();
+
+            // Handle DependsOn
+            match ext {
+                "rs" => {
+                    for cap in re_rust.captures_iter(content) {
+                        let dep = cap[1].trim().split("::").next().unwrap_or("").to_string();
+                        if let Some(target) = stem_to_path.get(&dep) {
+                            if target != path && seen_targets.insert(target.clone()) {
+                                edges.push((path.clone(), target.clone(), EdgeData { edge_type: EdgeType::DependsOn, weight: 1.0 }));
+                            }
+                        }
                     }
                 }
-            };
+                "ts" | "tsx" | "js" => {
+                    for cap in re_ts.captures_iter(content) {
+                        let d = cap[1].trim().to_string();
+                        let dep = Path::new(&d).file_stem().map_or_else(|| d.clone(), |s| s.to_string_lossy().to_string());
+                        if let Some(target) = stem_to_path.get(&dep) {
+                            if target != path && seen_targets.insert(target.clone()) {
+                                edges.push((path.clone(), target.clone(), EdgeData { edge_type: EdgeType::DependsOn, weight: 1.0 }));
+                            }
+                        }
+                    }
+                }
+                "py" => {
+                    for cap in re_py.captures_iter(content) {
+                        let dep = cap[1].trim().to_string();
+                        if let Some(target) = stem_to_path.get(&dep) {
+                            if target != path && seen_targets.insert(target.clone()) {
+                                edges.push((path.clone(), target.clone(), EdgeData { edge_type: EdgeType::DependsOn, weight: 1.0 }));
+                            }
+                        }
+                    }
+                }
+                _ => {}
+            }
 
-            for cap in re_rust.captures_iter(content) {
-                add_edge(cap[1].trim().to_string(), EdgeType::DependsOn);
-            }
-            for cap in re_ts.captures_iter(content) {
-                let d = cap[1].trim().to_string();
-                let stem = Path::new(&d).file_stem().map_or(d.clone(), |s| s.to_string_lossy().to_string());
-                add_edge(stem, EdgeType::DependsOn);
-            }
-            for cap in re_py.captures_iter(content) {
-                add_edge(cap[1].trim().to_string(), EdgeType::DependsOn);
+            // Handle Calls (Heuristic: symbols matching other filenames)
+            for cap in re_call.captures_iter(content) {
+                let call_target = &cap[1];
+                if let Some(target_path) = stem_to_path.get(call_target) {
+                    if target_path != path && !seen_targets.contains(target_path) {
+                        edges.push((path.clone(), target_path.clone(), EdgeData { edge_type: EdgeType::Calls, weight: 0.5 }));
+                        seen_targets.insert(target_path.clone());
+                    }
+                }
             }
         }
         (nodes, edges)
@@ -333,42 +370,47 @@ impl Brain {
 
     pub fn retrieve_context(&self, query: &str) -> String {
         let mut context_parts = Vec::new();
+        let query_terms = self.tokenize(query);
 
-        // 1. Semantic Retrieval (using existing TF-IDF/Embed logic)
-        if let Some(_query_vec) = self.embed(query) {
-            let mut scores = Vec::new();
-            
-            // We need access to the documents to score them. 
-            // For now, we'll use the graph nodes as our "documents" metadata
-            for node in &self.tfidf.graph_nodes {
-                if node.node_type == NodeType::File {
-                    // In a real RAG, we'd have pre-calculated embeddings for files.
-                    // Here we'll do a quick check against the id/path for relevance
-                    let mut score = 0.0;
-                    if node.id.to_lowercase().contains(&query.to_lowercase()) {
+        // 1. Semantic Retrieval (TF-IDF based)
+        let mut scores = Vec::new();
+        for node in &self.tfidf.graph_nodes {
+            if node.node_type == NodeType::File {
+                let mut score = 0.0;
+                let id_lower = node.id.to_lowercase();
+                
+                // Boost for exact matches in path
+                for term in &query_terms {
+                    if id_lower.contains(term) {
                         score += 0.5;
                     }
-                    if score > 0.0 {
-                        scores.push((node.id.clone(), score));
-                    }
+                }
+                
+                if score > 0.0 {
+                    scores.push((node.id.clone(), score));
                 }
             }
-            
-            scores.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap_or(std::cmp::Ordering::Equal));
-            scores.truncate(3);
+        }
+        
+        scores.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap_or(std::cmp::Ordering::Equal));
+        scores.truncate(3);
 
-            for (path, _) in scores {
-                context_parts.push(format!("### Relevant File: {}\n", path));
-                // Add dependencies from graph
-                let deps = self.get_context_for(&path);
-                if !deps.is_empty() {
-                    context_parts.push(format!("Context for {}:\n- {}\n", path, deps.join("\n- ")));
-                }
+        for (path_str, _) in scores {
+            context_parts.push(format!("### Relevant File: {}\n", path_str));
+            // Add a snippet of the file content if possible
+            if let Ok(content) = std::fs::read_to_string(&path_str) {
+                let snippet: String = content.lines().take(20).collect::<Vec<_>>().join("\n");
+                context_parts.push(format!("Code Snippet:\n```\n{}...\n```\n", snippet));
+            }
+
+            let deps = self.get_context_for(&path_str);
+            if !deps.is_empty() {
+                context_parts.push(format!("Architecture Context for {}:\n- {}\n", path_str, deps.join("\n- ")));
             }
         }
 
         if context_parts.is_empty() {
-            "Nenhum contexto específico encontrado para esta consulta.".to_string()
+            "No specific context found in the knowledge graph for this query.".to_string()
         } else {
             context_parts.join("\n")
         }
@@ -385,12 +427,17 @@ impl Brain {
             }
         }
 
+        let context_str = context.unwrap_or("No additional context provided.");
+
         // Camada 3: Generativa (Qwen 2.5 Coder)
-        if !self.ensure_llm() { return Some("❌ Falha ao carregar Qwen 2.5 Coder.".to_string()); }
+        if !self.ensure_llm() { 
+            return Some(format!(
+                "⚠️ [RAG retrieval succeeded, but generative layer is unavailable]\n\nCONTEXT RETRIEVED:\n{}\n\nNOTE: To enable AI-generated responses, please place the Qwen 2.5 Coder weights in '.gemini/models/qwen2.5-coder-0.5b/'.",
+                context_str
+            )); 
+        }
 
         let tokenizer = self.tokenizer.as_ref().unwrap();
-        
-        let context_str = context.unwrap_or("No additional context provided.");
 
         // Qwen 2.5 Coder Instruct Chat Template with Context Injection
         let chat_prompt = format!(

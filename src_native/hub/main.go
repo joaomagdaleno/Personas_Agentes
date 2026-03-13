@@ -649,6 +649,13 @@ func (h *Hub) Batch(ctx context.Context, in *pb.BatchRequest) (*pb.AnalyzeRespon
 }
 
 func (h *Hub) Reason(ctx context.Context, in *pb.ReasonRequest) (*pb.AnalyzeResponse, error) {
+	if h.rustClient != nil {
+		ctxT, cancel := context.WithTimeout(ctx, 60*time.Second)
+		defer cancel()
+		return h.rustClient.Reason(ctxT, in)
+	}
+
+	// Fallback to CLI
 	tmpFile := filepath.Join(os.TempDir(), fmt.Sprintf("reason_%d.txt", time.Now().UnixNano()))
 	err := os.WriteFile(tmpFile, []byte(in.Prompt), 0644)
 	if err != nil {

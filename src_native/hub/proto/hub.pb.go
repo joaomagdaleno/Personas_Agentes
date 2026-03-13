@@ -1104,6 +1104,7 @@ func (x *BatchRequest) GetBatchJson() string {
 type ReasonRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Prompt        string                 `protobuf:"bytes,1,opt,name=prompt,proto3" json:"prompt,omitempty"`
+	UseRag        bool                   `protobuf:"varint,2,opt,name=use_rag,json=useRag,proto3" json:"use_rag,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1143,6 +1144,13 @@ func (x *ReasonRequest) GetPrompt() string {
 		return x.Prompt
 	}
 	return ""
+}
+
+func (x *ReasonRequest) GetUseRag() bool {
+	if x != nil {
+		return x.UseRag
+	}
+	return false
 }
 
 type PatternRequest struct {

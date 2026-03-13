@@ -147,6 +147,7 @@ message BatchRequest {
 
 message ReasonRequest {
   string prompt = 1;
+  bool use_rag = 2;
 }
 
 message PatternRequest {
