@@ -5,7 +5,7 @@ import { InfrastructureAssembler } from "./Support/Automation/infrastructure_ass
  * 🧱 BaseHelpers - PhD in Persona Scaffolding
  */
 export class BaseHelpers {
-    static initializeTools(persona: any, root: string | null) {
+    static initializeTools(persona: any, root: string | undefined) {
         if (!root) return;
         try {
             const support = InfrastructureAssembler.assembleCoreSupport(root);

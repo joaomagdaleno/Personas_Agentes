@@ -1,0 +1,856 @@
+[
+  {
+    "agent": "hype",
+    "stack": "Python",
+    "score": 0,
+    "deltas": [
+      {
+        "dimension": "Method",
+        "legacy": "Branding",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'Branding' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "getAuditRules",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'getAuditRules' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "auditPackageJson",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'auditPackageJson' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "auditProjectPresence",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'auditProjectPresence' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "for",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'for' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "entries",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'entries' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "endsWith",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'endsWith' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "analyzePackageContent",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'analyzePackageContent' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "parse",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'parse' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "checkRequiredFields",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'checkRequiredFields' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "checkKeywords",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'checkKeywords' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "checkIdentity",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'checkIdentity' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "forEach",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'forEach' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "test",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'test' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "keys",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'keys' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "some",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'some' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "includes",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'includes' from legacy not found in current implementation."
+      }
+    ]
+  },
+  {
+    "agent": "hype",
+    "stack": "Flutter",
+    "score": 0,
+    "deltas": [
+      {
+        "dimension": "Method",
+        "legacy": "Branding",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'Branding' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "getAuditRules",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'getAuditRules' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "auditPackageJson",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'auditPackageJson' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "auditProjectPresence",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'auditProjectPresence' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "for",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'for' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "entries",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'entries' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "endsWith",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'endsWith' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "analyzePackageContent",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'analyzePackageContent' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "parse",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'parse' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "checkRequiredFields",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'checkRequiredFields' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "checkKeywords",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'checkKeywords' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "checkIdentity",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'checkIdentity' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "forEach",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'forEach' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "test",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'test' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "keys",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'keys' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "some",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'some' from legacy not found in current implementation."
+      }
+    ]
+  },
+  {
+    "agent": "hype",
+    "stack": "Kotlin",
+    "score": 0,
+    "deltas": [
+      {
+        "dimension": "Method",
+        "legacy": "Branding",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'Branding' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "getAuditRules",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'getAuditRules' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "auditPackageJson",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'auditPackageJson' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "auditProjectPresence",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'auditProjectPresence' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "for",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'for' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "entries",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'entries' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "endsWith",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'endsWith' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "analyzePackageContent",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'analyzePackageContent' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "parse",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'parse' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "checkRequiredFields",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'checkRequiredFields' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "checkKeywords",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'checkKeywords' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "checkIdentity",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'checkIdentity' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "forEach",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'forEach' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "test",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'test' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "keys",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'keys' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "some",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'some' from legacy not found in current implementation."
+      }
+    ]
+  },
+  {
+    "agent": "hype",
+    "stack": "Go",
+    "score": 0,
+    "deltas": [
+      {
+        "dimension": "Method",
+        "legacy": "Branding",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'Branding' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "auditPackageJson",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'auditPackageJson' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "auditProjectPresence",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'auditProjectPresence' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "for",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'for' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "entries",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'entries' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "endsWith",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'endsWith' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "analyzePackageContent",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'analyzePackageContent' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "parse",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'parse' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "checkRequiredFields",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'checkRequiredFields' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "checkKeywords",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'checkKeywords' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "checkIdentity",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'checkIdentity' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "test",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'test' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "keys",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'keys' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "some",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'some' from legacy not found in current implementation."
+      }
+    ]
+  },
+  {
+    "agent": "sentinel",
+    "stack": "Flutter",
+    "score": 0,
+    "deltas": [
+      {
+        "dimension": "Method",
+        "legacy": "audit",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'audit' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "includes",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'includes' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "eval",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'eval' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "exec",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'exec' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "performStrategicAudit",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'performStrategicAudit' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "discoverIdentity",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'discoverIdentity' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "Analysis",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'Analysis' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "stringify",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'stringify' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "test",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'test' from legacy not found in current implementation."
+      }
+    ]
+  },
+  {
+    "agent": "sentinel",
+    "stack": "Python",
+    "score": 0,
+    "deltas": [
+      {
+        "dimension": "Method",
+        "legacy": "audit",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'audit' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "includes",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'includes' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "eval",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'eval' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "exec",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'exec' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "performStrategicAudit",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'performStrategicAudit' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "discoverIdentity",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'discoverIdentity' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "Analysis",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'Analysis' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "stringify",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'stringify' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "test",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'test' from legacy not found in current implementation."
+      }
+    ]
+  },
+  {
+    "agent": "hype",
+    "stack": "Bun",
+    "score": 0,
+    "deltas": [
+      {
+        "dimension": "Method",
+        "legacy": "Branding",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'Branding' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "auditPackageJson",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'auditPackageJson' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "analyzePackageContent",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'analyzePackageContent' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "checkRequiredFields",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'checkRequiredFields' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "checkKeywords",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'checkKeywords' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "checkIdentity",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'checkIdentity' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "forEach",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'forEach' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "selfDiagnostic",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'selfDiagnostic' from legacy not found in current implementation."
+      }
+    ]
+  },
+  {
+    "agent": "sentinel",
+    "stack": "Bun",
+    "score": 0,
+    "deltas": [
+      {
+        "dimension": "Method",
+        "legacy": "audit",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'audit' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "includes",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'includes' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "eval",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'eval' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "exec",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'exec' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "discoverIdentity",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'discoverIdentity' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "Analysis",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'Analysis' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "stringify",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'stringify' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "selfDiagnostic",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'selfDiagnostic' from legacy not found in current implementation."
+      }
+    ]
+  },
+  {
+    "agent": "sentinel",
+    "stack": "Kotlin",
+    "score": 0,
+    "deltas": [
+      {
+        "dimension": "Method",
+        "legacy": "audit",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'audit' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "eval",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'eval' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "exec",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'exec' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "performStrategicAudit",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'performStrategicAudit' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "discoverIdentity",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'discoverIdentity' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "Analysis",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'Analysis' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "stringify",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'stringify' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "test",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'test' from legacy not found in current implementation."
+      }
+    ]
+  },
+  {
+    "agent": "sentinel",
+    "stack": "Go",
+    "score": 0,
+    "deltas": [
+      {
+        "dimension": "Method",
+        "legacy": "eval",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'eval' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "exec",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'exec' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "performStrategicAudit",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'performStrategicAudit' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "discoverIdentity",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'discoverIdentity' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "Analysis",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'Analysis' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "stringify",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'stringify' from legacy not found in current implementation."
+      },
+      {
+        "dimension": "Method",
+        "legacy": "test",
+        "current": "MISSING",
+        "severity": "HIGH",
+        "context": "Method 'test' from legacy not found in current implementation."
+      }
+    ]
+  }
+]

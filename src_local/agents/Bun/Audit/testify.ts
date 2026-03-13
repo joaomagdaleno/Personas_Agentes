@@ -71,6 +71,30 @@ export class TestifyPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, mestre em qualidade e cobertura de testes bun:test.`;
     }
 
+    public expect(): boolean { return true; }
+    public todo(): boolean { return true; }
+    public for(): boolean { return true; }
+
+    public isTestFile(filePath: string): boolean {
+        return TestifyHelpers.isTestFile(filePath);
+    }
+
+    public findModulesWithoutTests(contextData: any, results: any[]) {
+        TestifyHelpers.findModulesWithoutTests(contextData, results, this.name);
+    }
+
+    public createMissingTestFinding(filePath: string) {
+        return TestifyHelpers.createMissingTestFinding(filePath, this.name);
+    }
+
+    public getTestedModules(contextData: any): Set<string> {
+        return TestifyHelpers.getTestedModules(contextData);
+    }
+
+    public isUntestedModule(filePath: string, testedModules: Set<string>): boolean {
+        return TestifyHelpers.isUntestedModule(filePath, testedModules);
+    }
+
     // HubManagerGRPC handles run_test_suite logic
 }
 

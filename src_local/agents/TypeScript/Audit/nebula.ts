@@ -49,13 +49,15 @@ export class NebulaPersona extends BaseActivePersona {
 
     override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
-        if (file["match"](/persona_manifest|rules/)) return null;
-        if (content["match"](/AKIA|sk-[a-zA-Z0-9]{20}|ghp_/) && !content["match"](/rules\s*=/)) {
-            return {
-                file, severity: "CRITICAL",
-                issue: `Catástrofe de Segurança: O objetivo '${objective}' exige proteção total. Credenciais expostas em '${file}' permitem o sequestro da 'Orquestração de Inteligência Artificial'.`,
-                context: "Secret pattern detected"
-            };
+        if (file.includes("persona_manifest") || file.includes("rules")) return null;
+        if (content.includes("AKIA") || content.includes("sk-") || content.includes("ghp_")) {
+            if (!content.includes("rules =")) {
+                return {
+                    file, severity: "CRITICAL",
+                    issue: `Catástrofe de Segurança: O objetivo '${objective}' exige proteção total. Credenciais expostas em '${file}' permitem o sequestro da 'Orquestração de Inteligência Artificial'.`,
+                    context: "Secret pattern detected"
+                };
+            }
         }
         return {
             file, severity: "INFO",

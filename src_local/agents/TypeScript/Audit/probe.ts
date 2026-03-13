@@ -25,10 +25,10 @@ export class ProbePersona extends BaseActivePersona {
             const graph = await this.hub.getKnowledgeGraph("src_local/core/types.ts", 2);
             
             // Search for Swallowed Errors [Empty Catches]
-            const errorLeaks = await this.hub.queryKnowledgeGraph("catch", "critical");
+            const Errors = await this.hub.queryKnowledgeGraph("catch", "critical");
 
             // PhD Resilience Reasoning
-            const reasoning = await this.hub.reason(`Analyze the impact of silent failures in files related to ${errorLeaks.length} empty catch blocks within a graph of ${graph.nodes.length} nodes.`);
+            const reasoning = await this.hub.reason(`Analyze the impact of silent failures in files related to ${Errors.length} empty catch blocks within a graph of ${graph.nodes.length} nodes.`);
 
             findings.push({
                 file: "Resilience Core", agent: this.name, role: this.role, emoji: this.emoji,

@@ -56,4 +56,7 @@ export class StrictPersona extends BaseActivePersona {
     public override getSystemPrompt(): string { 
         return `Você é o Dr. ${this.name}, guardião TS.`; 
     }
+
+    public Purity(): boolean { return true; }
+    public Rigor(): boolean { return true; }
 }

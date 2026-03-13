@@ -3,7 +3,7 @@ import type { AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
 import type { ProjectContext } from "../../../core/types.ts";
 
 /**
- * 🔒 VaultPersona (Python Stack) - Sovereign PhD in Financial Logic & Data Integrity
+ * 🔒 VaultPersona (Flutter Stack) - Sovereign PhD in Financial Logic & Data Integrity
  */
 export class VaultPersona extends BaseActivePersona {
     constructor(projectRoot: string | undefined = undefined) {
@@ -12,7 +12,7 @@ export class VaultPersona extends BaseActivePersona {
         this.emoji = "🔒";
         this.role = "PhD Financial Integrity Engineer";
         this.phd_identity = "Sovereign Asset Protection & Strategic Encryption";
-        this.stack = "Python";
+        this.stack = "Flutter";
     }
 
     override async execute(context: ProjectContext): Promise<AuditFinding[]> {
@@ -23,7 +23,7 @@ export class VaultPersona extends BaseActivePersona {
 
     override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
-            extensions: ['.py'],
+            extensions: ['.dart'],
             rules: [
                 { regex: /password|secret|key|token/i, issue: 'Segurança: Potencial credencial exposta.', severity: 'critical' }
             ]
@@ -50,7 +50,7 @@ export class VaultPersona extends BaseActivePersona {
     override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | null {
         return {
             file, severity: "INFO",
-            issue: `PhD Vault (Python): Garantindo integridade para ${objective}.`,
+            issue: `PhD Vault (Flutter): Garantindo integridade para ${objective}.`,
             context: "analyzing financial integrity"
         };
     }
@@ -60,6 +60,6 @@ export class VaultPersona extends BaseActivePersona {
     }
 
     override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em integridade financeira Python. Status: ${this.Analysis()}`;
+        return `Você é o Dr. ${this.name}, PhD em integridade financeira Flutter. Status: ${this.Analysis()}`;
     }
 }

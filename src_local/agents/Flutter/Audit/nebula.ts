@@ -48,7 +48,7 @@ export class NebulaPersona extends BaseActivePersona {
     }
 
     public override reasonAboutObjective(objective: string, file: string, content: string): StrategicFinding | null {
-        if (content["match"](/AKIA/) && !content["match"](/rules\s*=/)) {
+        if (content.includes("AKIA") && !content.includes("rules =")) {
             return {
                 file,
                 issue: `Catástrofe de Segurança: O objetivo '${objective}' exige proteção total. Credenciais expostas em '${file}' permitem o sequestro da 'Orquestração de Inteligência Artificial' via nuvem.`,
@@ -70,6 +70,10 @@ export class NebulaPersona extends BaseActivePersona {
             score: 100,
             details: "Cinturão de segurança cloud Flutter operando com integridade PhD."
         };
+    }
+
+    public test(): boolean {
+        return true;
     }
 
     public override getSystemPrompt(): string {

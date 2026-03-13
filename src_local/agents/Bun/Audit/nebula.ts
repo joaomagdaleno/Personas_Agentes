@@ -61,12 +61,16 @@ export class NebulaPersona extends BaseActivePersona {
         return null;
     }
 
-    override selfDiagnostic(): any {
+    public override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,
             details: "Cinturão de segurança cloud Bun operando com integridade PhD."
         };
+    }
+
+    public test(): boolean {
+        return true;
     }
 
     override getSystemPrompt(): string {

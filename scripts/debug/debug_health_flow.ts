@@ -18,7 +18,7 @@ async function main() {
         console.log(`- Total de alertas: ${allFindings.length}`);
 
         console.log("\n📊 Passo 2: Obtendo QA Data");
-        const { QualityAnalyst } = await import("./src_local/agents/Support/Diagnostics/quality_analyst");
+        const { QualityAnalyst } = await import("../../src_local/agents/Support/Diagnostics/quality_analyst");
         const qa = new QualityAnalyst();
         const qaData = { matrix: qa.calculateConfidenceMatrix(ctx.map) };
         console.log(`- Matriz de confiança: ${qaData.matrix.length} entradas`);
@@ -34,7 +34,7 @@ async function main() {
             console.log(`- ${key}: ${value}`);
         });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error("\n❌ Erro:", error);
         console.error(error.stack);
     }

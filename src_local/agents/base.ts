@@ -16,14 +16,14 @@ export abstract class BaseActivePersona implements IAgent {
     id: string = "base_agent"; category: string = "General";
     name: string = "Base"; emoji: string = "👤"; role: string = "Generalist"; stack: string = "Universal";
     phd_identity: string = "General Intelligence";
-    projectRoot: string | null = null; contextData: Record<string, FileContextData> = {}; projectDna: Record<string, any> = {};
+    projectRoot: string | undefined = undefined; contextData: Record<string, FileContextData> = {}; projectDna: Record<string, any> = {};
     ignoredFiles: string[] = ["auto_healing_mission.md", "strategic_mission.txt"];
     auditEngine: any; structuralAnalyst: any; integrityGuardian: any;
     maturityEvaluator: any; cognitive: any; patternFinder!: PatternFinder;
     protected hub: any = null;
     private auditStartTime: number = 0;
 
-    constructor(projectRoot?: string) { this.projectRoot = projectRoot || null; }
+    constructor(projectRoot?: string) { this.projectRoot = projectRoot; }
 
     async execute(context: ProjectContext): Promise<any> {
         this.setContext(context);

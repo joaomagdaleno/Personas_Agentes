@@ -9,7 +9,7 @@ import { FingerprintExtractor } from "./strategies/FingerprintExtractor";
 export class InstanceGrouper {
     static async group(tsRoot: string): Promise<Map<string, any[]>> {
         const groups = new Map<string, any[]>();
-        const stacks = ["Bun", "Flutter", "Go", "Kotlin", "Python", "TypeScript"];
+        const stacks = ["Bun", "Flutter", "Go", "Kotlin", "Python", "Rust", "TypeScript"];
         const cats = ["Audit", "Content", "Strategic", "System"];
 
         // Try batch extraction first (Rust-powered via gRPC)
