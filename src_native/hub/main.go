@@ -11,6 +11,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"runtime"
 	"strings"
 	"sync"
@@ -200,6 +201,7 @@ type ProcessInfo struct {
 
 type Hub struct {
 	pb.UnimplementedHubServiceServer
+	pb.UnimplementedRuleProviderServer
 	metrics      SystemMetrics
 	metricsLock  sync.RWMutex
 	analyzerPath string
@@ -213,6 +215,53 @@ type Hub struct {
 	// gRPC Sidecar for Rust
 	rustConn   *grpc.ClientConn
 	rustClient pb.HubServiceClient
+
+	// Metadata
+	census map[string]PersonaMetadata
+}
+
+type PersonaMetadata struct {
+	ID             string                 `json:"id"`
+	SystemPrompt   string                 `json:"system_prompt"`
+	PromptTemplate string                 `json:"prompt_template"`
+	HealingPrompt  string                 `json:"healing_prompt"`
+	Stacks         map[string]StackConfig `json:"stacks"`
+}
+
+type StackConfig struct {
+	Extensions    []string `json:"extensions"`
+	HighPrecision bool     `json:"high_precision"`
+	Rules         []struct {
+		Regex    string `json:"regex"`
+		ScmQuery string `json:"scm_query"`
+		Issue    string `json:"issue"`
+		Severity string `json:"severity"`
+	} `json:"rules"`
+}
+
+func (h *Hub) loadMetadata(projectRoot string) {
+	path := filepath.Join(projectRoot, "src_local/metadata/identity_census.json")
+	data, err := os.ReadFile(path)
+	if err != nil {
+		log.Printf("⚠️ Failed to load identity census at %s: %v", path, err)
+		return
+	}
+
+	log.Printf("📂 Read %d bytes from %s", len(data), path)
+
+	var census struct {
+		Personas []PersonaMetadata `json:"personas"`
+	}
+	if err := json.Unmarshal(data, &census); err != nil {
+		log.Printf("⚠️ Failed to parse identity census: %v", err)
+		return
+	}
+
+	h.census = make(map[string]PersonaMetadata)
+	for _, p := range census.Personas {
+		h.census[p.ID] = p
+	}
+	log.Printf("📘 Successfully mapped %d personas from %d raw entries", len(h.census), len(census.Personas))
 }
 
 type Task struct {
@@ -253,6 +302,9 @@ func (h *Hub) startWatcher(root string) {
 	}
 	defer h.watcher.Close()
 
+	censusPath := filepath.Join(root, "src_local/metadata/identity_census.json")
+	fullCensusPath, _ := filepath.Abs(censusPath)
+
 	go func() {
 		for {
 			select {
@@ -260,7 +312,13 @@ func (h *Hub) startWatcher(root string) {
 				if !ok {
 					return
 				}
-				if event.Has(fsnotify.Write) || event.Has(fsnotify.Create) || event.Has(fsnotify.Remove) {
+				if event.Has(fsnotify.Write) || event.Has(fsnotify.Create) {
+					absPath, _ := filepath.Abs(event.Name)
+					if absPath == fullCensusPath {
+						log.Printf("🧠 [Hot-Reload] Identity census changed. Refreshing PhD rules...")
+						h.loadMetadata(root)
+					}
+
 					log.Printf("File event: %v", event)
 					h.broadcast <- event.Name
 				}
@@ -747,31 +805,21 @@ func (h *Hub) QueryKnowledgeGraph(ctx context.Context, in *pb.QueryRequest) (*pb
 }
 
 func (h *Hub) ExecuteHealing(ctx context.Context, in *pb.HealingPlan) (*pb.AnalyzeResponse, error) {
-	// Serialize plan to JSON to pass cleanly over Stdin
+	if h.rustClient != nil {
+		log.Printf("🛠️ [Auto-Healing] Delegating healing plan for %s to Rust Sidecar via gRPC...", in.FilePath)
+		return h.rustClient.ExecuteHealing(ctx, in)
+	}
+
+	// Fallback to CLI-based execution if gRPC client is not initialized
+	log.Printf("⚠️ [Auto-Healing] Rust Sidecar gRPC not available, falling back to CLI for %s", in.FilePath)
 	planJSON, err := json.Marshal(in)
 	if err != nil {
 		return nil, err
 	}
 
-	const maxRetries = 3
-	var data string
-
-	for attempt := 1; attempt <= maxRetries; attempt++ {
-		// Use a 90-second timeout for native AI generation per attempt
-		_, cancel := context.WithTimeout(ctx, 90*time.Second)
-
-		data, err = h.runRustWithStdin(string(planJSON), "heal", "-")
-		cancel()
-
-		if err == nil {
-			break // Success
-		}
-
-		log.Printf("⚠️ Healing attempt %d failed: %v", attempt, err)
-		if attempt == maxRetries {
-			return nil, fmt.Errorf("ExecuteHealing failed after %d attempts: %v", maxRetries, err)
-		}
-		time.Sleep(2 * time.Second)
+	data, err := h.runRustWithStdin(string(planJSON), "heal", "-")
+	if err != nil {
+		return nil, err
 	}
 
 	return &pb.AnalyzeResponse{JsonData: data}, nil
@@ -801,10 +849,137 @@ func (h *Hub) GetPendingTasks(ctx context.Context, in *pb.PendingRequest) (*pb.P
 			TaskType:   t.TaskType,
 			TargetFile: t.TargetFile,
 			Status:     t.Status,
-			CreatedAt:  t.CreatedAt,
 		})
 	}
 	return &pb.PendingResponse{Tasks: tasks}, nil
+}
+
+// RuleProvider Implementation
+func (h *Hub) GetRules(ctx context.Context, in *pb.RuleRequest) (*pb.RuleResponse, error) {
+	p, ok := h.census[in.PersonaId]
+	if !ok {
+		return nil, fmt.Errorf("persona %s not found", in.PersonaId)
+	}
+
+	s, ok := p.Stacks[in.Stack]
+	if !ok {
+		return nil, fmt.Errorf("stack %s not found for persona %s", in.Stack, in.PersonaId)
+	}
+
+	var pbRules []*pb.Rule
+	for _, r := range s.Rules {
+		pbRules = append(pbRules, &pb.Rule{
+			Regex:    r.Regex,
+			ScmQuery: r.ScmQuery,
+			Issue:    r.Issue,
+			Severity: r.Severity,
+		})
+	}
+
+	return &pb.RuleResponse{
+		Rules:          pbRules,
+		Extensions:     s.Extensions,
+		SystemPrompt:   p.SystemPrompt,
+		PromptTemplate: p.PromptTemplate,
+	}, nil
+}
+
+func (h *Hub) AnalyzeCode(ctx context.Context, in *pb.AnalyzeCodeRequest) (*pb.AnalyzeResponse, error) {
+	log.Printf("🔬 Centralized Analysis: %s on %s stack", in.PersonaId, in.Stack)
+
+	p, ok := h.census[in.PersonaId]
+	if !ok {
+		return nil, fmt.Errorf("persona %s not found in census", in.PersonaId)
+	}
+
+	s, ok := p.Stacks[in.Stack]
+	if !ok {
+		// Return empty list if stack not configured for this persona
+		return &pb.AnalyzeResponse{JsonData: "[]"}, nil
+	}
+
+	type Finding struct {
+		File       string `json:"file"`
+		Issue      string `json:"issue"`
+		Severity   string `json:"severity"`
+		Agent      string `json:"agent"`
+		Role       string `json:"role"`
+		Emoji      string `json:"emoji"`
+		Stack      string `json:"stack"`
+		MatchCount int    `json:"match_count"`
+	}
+
+	var findings []Finding
+
+	for _, rule := range s.Rules {
+		re, err := regexp.Compile(rule.Regex)
+		if err != nil {
+			log.Printf("⚠️ Invalid regex for %s/%s: %s", in.PersonaId, in.Stack, rule.Regex)
+			continue
+		}
+
+		matches := re.FindAllStringIndex(in.Content, -1)
+		if len(matches) > 0 {
+			findings = append(findings, Finding{
+				File:       "embedded_content",
+				Issue:      rule.Issue,
+				Severity:   rule.Severity,
+				Agent:      in.PersonaId,
+				Role:       "PhD Specialist",
+				Emoji:      "🎓",
+				Stack:      in.Stack,
+				MatchCount: len(matches),
+			})
+		}
+	}
+
+	// 2. High-Precision PhD Upgrade (Rust Sidecar)
+	if s.HighPrecision && h.rustClient != nil {
+		log.Printf("🧪 [HighPrecision] Delegating %s logic to Rust Sidecar...", in.PersonaId)
+
+		// Match direct expectations of audit::BulkAuditRequest
+		type FileEntry struct {
+			Path    string `json:"path"`
+			Content string `json:"content"`
+		}
+		type PersonaRuleSet struct {
+			Agent      string      `json:"agent"`
+			Role       string      `json:"role"`
+			Emoji      string      `json:"emoji"`
+			Stack      string      `json:"stack"`
+			Extensions []string    `json:"extensions"`
+			Rules      interface{} `json:"rules"`
+		}
+
+		rustAuditReq := struct {
+			Files        []FileEntry      `json:"files"`
+			PersonaRules []PersonaRuleSet `json:"persona_rules"`
+		}{
+			Files: []FileEntry{{Path: "embedded_content", Content: in.Content}},
+			PersonaRules: []PersonaRuleSet{{
+				Agent:      in.PersonaId,
+				Role:       "PhD Specialist",
+				Emoji:      "🎓",
+				Stack:      in.Stack,
+				Extensions: s.Extensions,
+				Rules:      s.Rules,
+			}},
+		}
+
+		rustReq, _ := json.Marshal(rustAuditReq)
+		res, err := h.rustClient.Audit(ctx, &pb.AuditRequest{AuditJson: string(rustReq)})
+		if err == nil {
+			var rustFindings []Finding
+			if err := json.Unmarshal([]byte(res.JsonData), &rustFindings); err == nil {
+				findings = append(findings, rustFindings...)
+			}
+		} else {
+			log.Printf("⚠️ Rust sidecar analysis failed: %v", err)
+		}
+	}
+
+	jsonRes, _ := json.Marshal(findings)
+	return &pb.AnalyzeResponse{JsonData: string(jsonRes)}, nil
 }
 
 func (h *Hub) UpdateTask(ctx context.Context, in *pb.UpdateTaskRequest) (*pb.Empty, error) {
@@ -818,6 +993,7 @@ func (h *Hub) UpdateTask(ctx context.Context, in *pb.UpdateTaskRequest) (*pb.Emp
 
 func (p *program) run() {
 	p.hub.initDB("../..")
+	p.hub.loadMetadata("../..")
 	go p.hub.startSentinel()
 	go p.hub.startBroadcaster()
 	go p.hub.startWatcher("../..")
@@ -876,6 +1052,7 @@ func (p *program) run() {
 	}
 
 	pb.RegisterHubServiceServer(grpcServer, p.hub)
+	pb.RegisterRuleProviderServer(grpcServer, p.hub)
 
 	// Register standard gRPC Health Check service
 	healthSrv := health.NewServer()

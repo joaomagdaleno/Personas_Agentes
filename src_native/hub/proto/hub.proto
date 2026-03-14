@@ -41,6 +41,36 @@ service HubService {
   rpc UpdateTask(UpdateTaskRequest) returns (Empty);
 }
 
+service RuleProvider {
+  rpc GetRules(RuleRequest) returns (RuleResponse);
+  rpc AnalyzeCode(AnalyzeCodeRequest) returns (AnalyzeResponse);
+}
+
+message RuleRequest {
+  string persona_id = 1;
+  string stack = 2;
+}
+
+message Rule {
+  string regex = 1;
+  string issue = 2;
+  string severity = 3;
+  string scm_query = 4;
+}
+
+message RuleResponse {
+  repeated Rule rules = 1;
+  repeated string extensions = 2;
+  string system_prompt = 3;
+  string prompt_template = 4;
+}
+
+message AnalyzeCodeRequest {
+  string content = 1;
+  string persona_id = 2;
+  string stack = 3;
+}
+
 message Empty {}
 
 message StatusResponse {

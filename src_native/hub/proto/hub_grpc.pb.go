@@ -1116,3 +1116,143 @@ var HubService_ServiceDesc = grpc.ServiceDesc{
 	},
 	Metadata: "hub.proto",
 }
+
+const (
+	RuleProvider_GetRules_FullMethodName    = "/hub.RuleProvider/GetRules"
+	RuleProvider_AnalyzeCode_FullMethodName = "/hub.RuleProvider/AnalyzeCode"
+)
+
+// RuleProviderClient is the client API for RuleProvider service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type RuleProviderClient interface {
+	GetRules(ctx context.Context, in *RuleRequest, opts ...grpc.CallOption) (*RuleResponse, error)
+	AnalyzeCode(ctx context.Context, in *AnalyzeCodeRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error)
+}
+
+type ruleProviderClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewRuleProviderClient(cc grpc.ClientConnInterface) RuleProviderClient {
+	return &ruleProviderClient{cc}
+}
+
+func (c *ruleProviderClient) GetRules(ctx context.Context, in *RuleRequest, opts ...grpc.CallOption) (*RuleResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RuleResponse)
+	err := c.cc.Invoke(ctx, RuleProvider_GetRules_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *ruleProviderClient) AnalyzeCode(ctx context.Context, in *AnalyzeCodeRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AnalyzeResponse)
+	err := c.cc.Invoke(ctx, RuleProvider_AnalyzeCode_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// RuleProviderServer is the server API for RuleProvider service.
+// All implementations must embed UnimplementedRuleProviderServer
+// for forward compatibility.
+type RuleProviderServer interface {
+	GetRules(context.Context, *RuleRequest) (*RuleResponse, error)
+	AnalyzeCode(context.Context, *AnalyzeCodeRequest) (*AnalyzeResponse, error)
+	mustEmbedUnimplementedRuleProviderServer()
+}
+
+// UnimplementedRuleProviderServer must be embedded to have
+// forward compatible implementations.
+//
+// NOTE: this should be embedded by value instead of pointer to avoid a nil
+// pointer dereference when methods are called.
+type UnimplementedRuleProviderServer struct{}
+
+func (UnimplementedRuleProviderServer) GetRules(context.Context, *RuleRequest) (*RuleResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetRules not implemented")
+}
+func (UnimplementedRuleProviderServer) AnalyzeCode(context.Context, *AnalyzeCodeRequest) (*AnalyzeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AnalyzeCode not implemented")
+}
+func (UnimplementedRuleProviderServer) mustEmbedUnimplementedRuleProviderServer() {}
+func (UnimplementedRuleProviderServer) testEmbeddedByValue()                      {}
+
+// UnsafeRuleProviderServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to RuleProviderServer will
+// result in compilation errors.
+type UnsafeRuleProviderServer interface {
+	mustEmbedUnimplementedRuleProviderServer()
+}
+
+func RegisterRuleProviderServer(s grpc.ServiceRegistrar, srv RuleProviderServer) {
+	// If the following call panics, it indicates UnimplementedRuleProviderServer was
+	// embedded by pointer and is nil.  This will cause panics if an
+	// unimplemented method is ever invoked, so we test this at initialization
+	// time to prevent it from happening at runtime later due to I/O.
+	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
+		t.testEmbeddedByValue()
+	}
+	s.RegisterService(&RuleProvider_ServiceDesc, srv)
+}
+
+func _RuleProvider_GetRules_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RuleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RuleProviderServer).GetRules(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RuleProvider_GetRules_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RuleProviderServer).GetRules(ctx, req.(*RuleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RuleProvider_AnalyzeCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AnalyzeCodeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RuleProviderServer).AnalyzeCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RuleProvider_AnalyzeCode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RuleProviderServer).AnalyzeCode(ctx, req.(*AnalyzeCodeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// RuleProvider_ServiceDesc is the grpc.ServiceDesc for RuleProvider service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var RuleProvider_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "hub.RuleProvider",
+	HandlerType: (*RuleProviderServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetRules",
+			Handler:    _RuleProvider_GetRules_Handler,
+		},
+		{
+			MethodName: "AnalyzeCode",
+			Handler:    _RuleProvider_AnalyzeCode_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "hub.proto",
+}

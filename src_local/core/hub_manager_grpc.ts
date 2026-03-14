@@ -1,5 +1,5 @@
 import { GrpcTransport } from "@protobuf-ts/grpc-transport";
-import { HubServiceClient } from "../proto/hub.client";
+import { HubServiceClient, RuleProviderClient } from "../proto/hub.client";
 import { ChannelCredentials } from "@grpc/grpc-js";
 import winston from "winston";
 import * as fs from "fs";
@@ -14,6 +14,7 @@ const logger = winston.child({ module: "HubManagerGRPC" });
  */
 export class HubManagerGRPC {
     private client: HubServiceClient;
+    private ruleProvider: RuleProviderClient;
 
     constructor(host: string = "localhost:50051") {
         let channelCredentials: ChannelCredentials;
@@ -41,6 +42,7 @@ export class HubManagerGRPC {
             channelCredentials,
         });
         this.client = new HubServiceClient(transport);
+        this.ruleProvider = new RuleProviderClient(transport);
         logger.info(`📡 HubManagerGRPC initialized on ${host}`);
     }
 
@@ -311,7 +313,7 @@ export class HubManagerGRPC {
      */
     async reason(prompt: string) {
         try {
-            const { response } = await this.client.reason({ prompt });
+            const { response } = await this.client.reason({ prompt, useRag: false });
             return response.jsonData;
         } catch (e) {
             logger.error(`❌ gRPC reason failed: ${e}`);
@@ -324,7 +326,12 @@ export class HubManagerGRPC {
      */
     async executeHealing(plan: any) {
         try {
-            const { response } = await this.client.executeHealing(plan);
+            const { response } = await this.client.executeHealing({
+                issueDescription: plan.issueDescription,
+                filePath: plan.filePath,
+                fileContent: plan.fileContent,
+                context: plan.context
+            });
             return response.jsonData;
         } catch (e) {
             logger.error(`❌ gRPC executeHealing failed: ${e}`);
@@ -418,6 +425,32 @@ export class HubManagerGRPC {
         } catch (e) {
             logger.error(`❌ gRPC updateTask failed: ${e}`);
             return null;
+        }
+    }
+
+    /**
+     * Gets persona-specific audit rules from the Hub.
+     */
+    async getRules(personaId: string, stack: string) {
+        try {
+            const { response } = await this.ruleProvider.getRules({ personaId, stack });
+            return response;
+        } catch (e) {
+            logger.error(`❌ gRPC getRules failed for ${personaId}/${stack}: ${e}`);
+            return null;
+        }
+    }
+
+    /**
+     * Delegates code analysis to the Hub's PhD reasoning engine.
+     */
+    async analyzeCode(content: string, personaId: string, stack: string) {
+        try {
+            const { response } = await this.ruleProvider.analyzeCode({ content, personaId, stack });
+            return JSON.parse(response.jsonData);
+        } catch (e) {
+            logger.error(`❌ gRPC analyzeCode failed for ${personaId}/${stack}: ${e}`);
+            return [];
         }
     }
 }

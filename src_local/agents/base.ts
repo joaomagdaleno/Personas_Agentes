@@ -40,9 +40,9 @@ export abstract class BaseActivePersona implements ISupportableAgent {
     emoji: string = "👤"; 
     role: string = "Generalist"; 
     stack: string = "Universal";
-    phd_identity: string = "General Intelligence";
-    
-    projectRoot: string | undefined = undefined; 
+    public phd_identity: string = "";
+    public healingPrompt: string = "";
+    protected projectRoot: string | undefined = undefined; 
     contextData: Record<string, FileContextData> = {}; 
     projectDna: Record<string, any> = {};
     
@@ -82,16 +82,19 @@ export abstract class BaseActivePersona implements ISupportableAgent {
     /**
      * Strategic reasoning engine loop.
      */
-    performStrategicAudit(obj?: string, fl?: string, ct?: string): (StrategicFinding | string | null)[] {
+    public async performStrategicAudit(obj?: string, fl?: string, ct?: string): Promise<(StrategicFinding | string | null)[]> {
         if (fl && ct) {
-            return [this.reasonAboutObjective(obj || "Verificação", fl, ct)].filter(Boolean);
+            const res = await this.reasonAboutObjective(obj || "Verificação", fl, ct);
+            return [res].filter(Boolean);
         }
 
         const mission = obj || "Orquestração de Inteligência Artificial";
-        return Object.entries(this.contextData)
-            .filter(([f, d]) => this.isAuditable(f, d))
-            .map(([f, d]) => this.reasonAboutObjective(mission, f, d.content || (this.readProjectFile(f) as any)))
-            .filter(Boolean);
+        const results = await Promise.all(
+            Object.entries(this.contextData)
+                .filter(([f, d]) => this.isAuditable(f, d))
+                .map(([f, d]) => this.reasonAboutObjective(mission, f, d.content || (this.readProjectFile(f) as any)))
+        );
+        return results.filter(Boolean);
     }
 
     private isAuditable(f: string, d: FileContextData): boolean {
@@ -116,6 +119,26 @@ export abstract class BaseActivePersona implements ISupportableAgent {
         }
     }
 
+    /**
+     * Delegates auditing to the Hub PhD reasoning engine.
+     */
+    async delegateAuditToHub(fileRelPath: string): Promise<AuditFinding[]> {
+        if (!this.hub) return [];
+        
+        let content: string | null = null;
+        if (this.contextData[fileRelPath]) {
+            content = this.contextData[fileRelPath].content || null;
+        }
+
+        if (!content) {
+            content = await this.readProjectFile(fileRelPath);
+        }
+
+        if (!content) return [];
+        
+        return await this.hub.analyzeCode(content, this.id, this.stack);
+    }
+
     protected startMetrics(): void { this.auditStartTime = Date.now(); }
 
     protected endMetrics(cnt: number): void {
@@ -127,7 +150,28 @@ export abstract class BaseActivePersona implements ISupportableAgent {
         return Diagnostician.diagnose(this.name, this.emoji, this.getSystemPrompt());
     }
 
-    abstract reasonAboutObjective(obj: string, f: string, c: string | Promise<string | null>): StrategicFinding | string | null;
+    public async reasonAboutObjective(objective: string, file: string, context: string): Promise<StrategicFinding | null> {
+        if (this.hub) {
+            const prompt = `Persona: ${this.name}\nPhD Identity: ${this.phd_identity}\nObjective: ${objective}\nContext: ${context}`;
+            const answer = await this.hub.reason(prompt);
+            if (answer) {
+                return {
+                    file,
+                    severity: "INFO",
+                    issue: answer,
+                    context: objective
+                };
+            }
+        }
+        
+        return {
+            file, 
+            severity: "INFO",
+            issue: `PhD ${this.name} (${this.stack}): Analisando '${objective}' em '${file}' com rigor acadêmico.`,
+            context: "analyzing objective"
+        };
+    }
+
     abstract getSystemPrompt(): string;
 
     protected _initializeSupportTools() {
@@ -136,6 +180,24 @@ export abstract class BaseActivePersona implements ISupportableAgent {
 
     public performActiveHealing(blindSpots: string[]): void {
         logger.info(`🛠️ [${this.name}] Iniciando protocolo de cura ativa para ${blindSpots.length} pontos.`);
+    }
+
+    /**
+     * Delegates a code correction task to the Hub's PhD reasoning engine.
+     */
+    public async delegateHealingToHub(file: string, issue: string): Promise<string | null> {
+        if (this.hub && this.projectRoot) {
+            const content = await this.readProjectFile(file);
+            if (!content) return null;
+
+            return await this.hub.executeHealing({
+                filePath: file,
+                issueDescription: issue,
+                fileContent: content,
+                context: `PhD Persona: ${this.id}\nGuidelines: ${this.healingPrompt}`
+            });
+        }
+        return null;
     }
 
     public async analyzeLogic(f: string) {

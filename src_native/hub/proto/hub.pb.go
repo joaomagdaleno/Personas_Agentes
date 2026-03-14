@@ -21,6 +21,254 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type RuleRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PersonaId     string                 `protobuf:"bytes,1,opt,name=persona_id,json=personaId,proto3" json:"persona_id,omitempty"`
+	Stack         string                 `protobuf:"bytes,2,opt,name=stack,proto3" json:"stack,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RuleRequest) Reset() {
+	*x = RuleRequest{}
+	mi := &file_hub_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RuleRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RuleRequest) ProtoMessage() {}
+
+func (x *RuleRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_hub_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RuleRequest.ProtoReflect.Descriptor instead.
+func (*RuleRequest) Descriptor() ([]byte, []int) {
+	return file_hub_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *RuleRequest) GetPersonaId() string {
+	if x != nil {
+		return x.PersonaId
+	}
+	return ""
+}
+
+func (x *RuleRequest) GetStack() string {
+	if x != nil {
+		return x.Stack
+	}
+	return ""
+}
+
+type Rule struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Regex         string                 `protobuf:"bytes,1,opt,name=regex,proto3" json:"regex,omitempty"`
+	Issue         string                 `protobuf:"bytes,2,opt,name=issue,proto3" json:"issue,omitempty"`
+	Severity      string                 `protobuf:"bytes,3,opt,name=severity,proto3" json:"severity,omitempty"`
+	ScmQuery      string                 `protobuf:"bytes,4,opt,name=scm_query,json=scmQuery,proto3" json:"scm_query,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Rule) Reset() {
+	*x = Rule{}
+	mi := &file_hub_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Rule) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Rule) ProtoMessage() {}
+
+func (x *Rule) ProtoReflect() protoreflect.Message {
+	mi := &file_hub_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Rule.ProtoReflect.Descriptor instead.
+func (*Rule) Descriptor() ([]byte, []int) {
+	return file_hub_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *Rule) GetRegex() string {
+	if x != nil {
+		return x.Regex
+	}
+	return ""
+}
+
+func (x *Rule) GetIssue() string {
+	if x != nil {
+		return x.Issue
+	}
+	return ""
+}
+
+func (x *Rule) GetSeverity() string {
+	if x != nil {
+		return x.Severity
+	}
+	return ""
+}
+
+func (x *Rule) GetScmQuery() string {
+	if x != nil {
+		return x.ScmQuery
+	}
+	return ""
+}
+
+type RuleResponse struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Rules          []*Rule                `protobuf:"bytes,1,rep,name=rules,proto3" json:"rules,omitempty"`
+	Extensions     []string               `protobuf:"bytes,2,rep,name=extensions,proto3" json:"extensions,omitempty"`
+	SystemPrompt   string                 `protobuf:"bytes,3,opt,name=system_prompt,json=systemPrompt,proto3" json:"system_prompt,omitempty"`
+	PromptTemplate string                 `protobuf:"bytes,4,opt,name=prompt_template,json=promptTemplate,proto3" json:"prompt_template,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *RuleResponse) Reset() {
+	*x = RuleResponse{}
+	mi := &file_hub_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RuleResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RuleResponse) ProtoMessage() {}
+
+func (x *RuleResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_hub_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RuleResponse.ProtoReflect.Descriptor instead.
+func (*RuleResponse) Descriptor() ([]byte, []int) {
+	return file_hub_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *RuleResponse) GetRules() []*Rule {
+	if x != nil {
+		return x.Rules
+	}
+	return nil
+}
+
+func (x *RuleResponse) GetExtensions() []string {
+	if x != nil {
+		return x.Extensions
+	}
+	return nil
+}
+
+func (x *RuleResponse) GetSystemPrompt() string {
+	if x != nil {
+		return x.SystemPrompt
+	}
+	return ""
+}
+
+func (x *RuleResponse) GetPromptTemplate() string {
+	if x != nil {
+		return x.PromptTemplate
+	}
+	return ""
+}
+
+type AnalyzeCodeRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Content       string                 `protobuf:"bytes,1,opt,name=content,proto3" json:"content,omitempty"`
+	PersonaId     string                 `protobuf:"bytes,2,opt,name=persona_id,json=personaId,proto3" json:"persona_id,omitempty"`
+	Stack         string                 `protobuf:"bytes,3,opt,name=stack,proto3" json:"stack,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AnalyzeCodeRequest) Reset() {
+	*x = AnalyzeCodeRequest{}
+	mi := &file_hub_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AnalyzeCodeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AnalyzeCodeRequest) ProtoMessage() {}
+
+func (x *AnalyzeCodeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_hub_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AnalyzeCodeRequest.ProtoReflect.Descriptor instead.
+func (*AnalyzeCodeRequest) Descriptor() ([]byte, []int) {
+	return file_hub_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *AnalyzeCodeRequest) GetContent() string {
+	if x != nil {
+		return x.Content
+	}
+	return ""
+}
+
+func (x *AnalyzeCodeRequest) GetPersonaId() string {
+	if x != nil {
+		return x.PersonaId
+	}
+	return ""
+}
+
+func (x *AnalyzeCodeRequest) GetStack() string {
+	if x != nil {
+		return x.Stack
+	}
+	return ""
+}
+
 type Empty struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -29,7 +277,7 @@ type Empty struct {
 
 func (x *Empty) Reset() {
 	*x = Empty{}
-	mi := &file_hub_proto_msgTypes[0]
+	mi := &file_hub_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -41,7 +289,7 @@ func (x *Empty) String() string {
 func (*Empty) ProtoMessage() {}
 
 func (x *Empty) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[0]
+	mi := &file_hub_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -54,7 +302,7 @@ func (x *Empty) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Empty.ProtoReflect.Descriptor instead.
 func (*Empty) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{0}
+	return file_hub_proto_rawDescGZIP(), []int{4}
 }
 
 type StatusResponse struct {
@@ -68,7 +316,7 @@ type StatusResponse struct {
 
 func (x *StatusResponse) Reset() {
 	*x = StatusResponse{}
-	mi := &file_hub_proto_msgTypes[1]
+	mi := &file_hub_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -80,7 +328,7 @@ func (x *StatusResponse) String() string {
 func (*StatusResponse) ProtoMessage() {}
 
 func (x *StatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[1]
+	mi := &file_hub_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -93,7 +341,7 @@ func (x *StatusResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StatusResponse.ProtoReflect.Descriptor instead.
 func (*StatusResponse) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{1}
+	return file_hub_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *StatusResponse) GetStatus() string {
@@ -130,7 +378,7 @@ type HealthUpdate struct {
 
 func (x *HealthUpdate) Reset() {
 	*x = HealthUpdate{}
-	mi := &file_hub_proto_msgTypes[2]
+	mi := &file_hub_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -142,7 +390,7 @@ func (x *HealthUpdate) String() string {
 func (*HealthUpdate) ProtoMessage() {}
 
 func (x *HealthUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[2]
+	mi := &file_hub_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -155,7 +403,7 @@ func (x *HealthUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HealthUpdate.ProtoReflect.Descriptor instead.
 func (*HealthUpdate) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{2}
+	return file_hub_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *HealthUpdate) GetCpuUsage() float64 {
@@ -205,7 +453,7 @@ type ProcessInfo struct {
 
 func (x *ProcessInfo) Reset() {
 	*x = ProcessInfo{}
-	mi := &file_hub_proto_msgTypes[3]
+	mi := &file_hub_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -217,7 +465,7 @@ func (x *ProcessInfo) String() string {
 func (*ProcessInfo) ProtoMessage() {}
 
 func (x *ProcessInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[3]
+	mi := &file_hub_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -230,7 +478,7 @@ func (x *ProcessInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProcessInfo.ProtoReflect.Descriptor instead.
 func (*ProcessInfo) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{3}
+	return file_hub_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ProcessInfo) GetName() string {
@@ -272,7 +520,7 @@ type Event struct {
 
 func (x *Event) Reset() {
 	*x = Event{}
-	mi := &file_hub_proto_msgTypes[4]
+	mi := &file_hub_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -284,7 +532,7 @@ func (x *Event) String() string {
 func (*Event) ProtoMessage() {}
 
 func (x *Event) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[4]
+	mi := &file_hub_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -297,7 +545,7 @@ func (x *Event) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Event.ProtoReflect.Descriptor instead.
 func (*Event) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{4}
+	return file_hub_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *Event) GetType() string {
@@ -331,7 +579,7 @@ type ScanRequest struct {
 
 func (x *ScanRequest) Reset() {
 	*x = ScanRequest{}
-	mi := &file_hub_proto_msgTypes[5]
+	mi := &file_hub_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -343,7 +591,7 @@ func (x *ScanRequest) String() string {
 func (*ScanRequest) ProtoMessage() {}
 
 func (x *ScanRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[5]
+	mi := &file_hub_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -356,7 +604,7 @@ func (x *ScanRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScanRequest.ProtoReflect.Descriptor instead.
 func (*ScanRequest) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{5}
+	return file_hub_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ScanRequest) GetDirectory() string {
@@ -386,7 +634,7 @@ type FileMetadata struct {
 
 func (x *FileMetadata) Reset() {
 	*x = FileMetadata{}
-	mi := &file_hub_proto_msgTypes[6]
+	mi := &file_hub_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -398,7 +646,7 @@ func (x *FileMetadata) String() string {
 func (*FileMetadata) ProtoMessage() {}
 
 func (x *FileMetadata) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[6]
+	mi := &file_hub_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -411,7 +659,7 @@ func (x *FileMetadata) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FileMetadata.ProtoReflect.Descriptor instead.
 func (*FileMetadata) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{6}
+	return file_hub_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *FileMetadata) GetPath() string {
@@ -458,7 +706,7 @@ type ScanResponse struct {
 
 func (x *ScanResponse) Reset() {
 	*x = ScanResponse{}
-	mi := &file_hub_proto_msgTypes[7]
+	mi := &file_hub_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -470,7 +718,7 @@ func (x *ScanResponse) String() string {
 func (*ScanResponse) ProtoMessage() {}
 
 func (x *ScanResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[7]
+	mi := &file_hub_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -483,7 +731,7 @@ func (x *ScanResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScanResponse.ProtoReflect.Descriptor instead.
 func (*ScanResponse) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{7}
+	return file_hub_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *ScanResponse) GetFiles() []*FileMetadata {
@@ -503,7 +751,7 @@ type AnalyzeRequest struct {
 
 func (x *AnalyzeRequest) Reset() {
 	*x = AnalyzeRequest{}
-	mi := &file_hub_proto_msgTypes[8]
+	mi := &file_hub_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -515,7 +763,7 @@ func (x *AnalyzeRequest) String() string {
 func (*AnalyzeRequest) ProtoMessage() {}
 
 func (x *AnalyzeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[8]
+	mi := &file_hub_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -528,7 +776,7 @@ func (x *AnalyzeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AnalyzeRequest.ProtoReflect.Descriptor instead.
 func (*AnalyzeRequest) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{8}
+	return file_hub_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *AnalyzeRequest) GetFile() string {
@@ -554,7 +802,7 @@ type AnalyzeResponse struct {
 
 func (x *AnalyzeResponse) Reset() {
 	*x = AnalyzeResponse{}
-	mi := &file_hub_proto_msgTypes[9]
+	mi := &file_hub_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -566,7 +814,7 @@ func (x *AnalyzeResponse) String() string {
 func (*AnalyzeResponse) ProtoMessage() {}
 
 func (x *AnalyzeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[9]
+	mi := &file_hub_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -579,7 +827,7 @@ func (x *AnalyzeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AnalyzeResponse.ProtoReflect.Descriptor instead.
 func (*AnalyzeResponse) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{9}
+	return file_hub_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *AnalyzeResponse) GetJsonData() string {
@@ -599,7 +847,7 @@ type TaskRequest struct {
 
 func (x *TaskRequest) Reset() {
 	*x = TaskRequest{}
-	mi := &file_hub_proto_msgTypes[10]
+	mi := &file_hub_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -611,7 +859,7 @@ func (x *TaskRequest) String() string {
 func (*TaskRequest) ProtoMessage() {}
 
 func (x *TaskRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[10]
+	mi := &file_hub_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -624,7 +872,7 @@ func (x *TaskRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TaskRequest.ProtoReflect.Descriptor instead.
 func (*TaskRequest) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{10}
+	return file_hub_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *TaskRequest) GetTaskType() string {
@@ -651,7 +899,7 @@ type TaskResponse struct {
 
 func (x *TaskResponse) Reset() {
 	*x = TaskResponse{}
-	mi := &file_hub_proto_msgTypes[11]
+	mi := &file_hub_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -663,7 +911,7 @@ func (x *TaskResponse) String() string {
 func (*TaskResponse) ProtoMessage() {}
 
 func (x *TaskResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[11]
+	mi := &file_hub_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -676,7 +924,7 @@ func (x *TaskResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TaskResponse.ProtoReflect.Descriptor instead.
 func (*TaskResponse) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{11}
+	return file_hub_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *TaskResponse) GetTaskId() int32 {
@@ -702,7 +950,7 @@ type PendingRequest struct {
 
 func (x *PendingRequest) Reset() {
 	*x = PendingRequest{}
-	mi := &file_hub_proto_msgTypes[12]
+	mi := &file_hub_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -714,7 +962,7 @@ func (x *PendingRequest) String() string {
 func (*PendingRequest) ProtoMessage() {}
 
 func (x *PendingRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[12]
+	mi := &file_hub_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -727,7 +975,7 @@ func (x *PendingRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PendingRequest.ProtoReflect.Descriptor instead.
 func (*PendingRequest) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{12}
+	return file_hub_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *PendingRequest) GetLimit() int32 {
@@ -751,7 +999,7 @@ type Task struct {
 
 func (x *Task) Reset() {
 	*x = Task{}
-	mi := &file_hub_proto_msgTypes[13]
+	mi := &file_hub_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -763,7 +1011,7 @@ func (x *Task) String() string {
 func (*Task) ProtoMessage() {}
 
 func (x *Task) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[13]
+	mi := &file_hub_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -776,7 +1024,7 @@ func (x *Task) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Task.ProtoReflect.Descriptor instead.
 func (*Task) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{13}
+	return file_hub_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *Task) GetId() int32 {
@@ -830,7 +1078,7 @@ type PendingResponse struct {
 
 func (x *PendingResponse) Reset() {
 	*x = PendingResponse{}
-	mi := &file_hub_proto_msgTypes[14]
+	mi := &file_hub_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -842,7 +1090,7 @@ func (x *PendingResponse) String() string {
 func (*PendingResponse) ProtoMessage() {}
 
 func (x *PendingResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[14]
+	mi := &file_hub_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -855,7 +1103,7 @@ func (x *PendingResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PendingResponse.ProtoReflect.Descriptor instead.
 func (*PendingResponse) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{14}
+	return file_hub_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *PendingResponse) GetTasks() []*Task {
@@ -876,7 +1124,7 @@ type UpdateTaskRequest struct {
 
 func (x *UpdateTaskRequest) Reset() {
 	*x = UpdateTaskRequest{}
-	mi := &file_hub_proto_msgTypes[15]
+	mi := &file_hub_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -888,7 +1136,7 @@ func (x *UpdateTaskRequest) String() string {
 func (*UpdateTaskRequest) ProtoMessage() {}
 
 func (x *UpdateTaskRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[15]
+	mi := &file_hub_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -901,7 +1149,7 @@ func (x *UpdateTaskRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateTaskRequest.ProtoReflect.Descriptor instead.
 func (*UpdateTaskRequest) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{15}
+	return file_hub_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *UpdateTaskRequest) GetTaskId() int32 {
@@ -934,7 +1182,7 @@ type DeduplicateRequest struct {
 
 func (x *DeduplicateRequest) Reset() {
 	*x = DeduplicateRequest{}
-	mi := &file_hub_proto_msgTypes[16]
+	mi := &file_hub_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -946,7 +1194,7 @@ func (x *DeduplicateRequest) String() string {
 func (*DeduplicateRequest) ProtoMessage() {}
 
 func (x *DeduplicateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[16]
+	mi := &file_hub_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -959,7 +1207,7 @@ func (x *DeduplicateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeduplicateRequest.ProtoReflect.Descriptor instead.
 func (*DeduplicateRequest) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{16}
+	return file_hub_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *DeduplicateRequest) GetFindingsJson() string {
@@ -978,7 +1226,7 @@ type ConnectivityRequest struct {
 
 func (x *ConnectivityRequest) Reset() {
 	*x = ConnectivityRequest{}
-	mi := &file_hub_proto_msgTypes[17]
+	mi := &file_hub_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -990,7 +1238,7 @@ func (x *ConnectivityRequest) String() string {
 func (*ConnectivityRequest) ProtoMessage() {}
 
 func (x *ConnectivityRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[17]
+	mi := &file_hub_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1003,7 +1251,7 @@ func (x *ConnectivityRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConnectivityRequest.ProtoReflect.Descriptor instead.
 func (*ConnectivityRequest) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{17}
+	return file_hub_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *ConnectivityRequest) GetDependencyMapJson() string {
@@ -1022,7 +1270,7 @@ type AuditRequest struct {
 
 func (x *AuditRequest) Reset() {
 	*x = AuditRequest{}
-	mi := &file_hub_proto_msgTypes[18]
+	mi := &file_hub_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1034,7 +1282,7 @@ func (x *AuditRequest) String() string {
 func (*AuditRequest) ProtoMessage() {}
 
 func (x *AuditRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[18]
+	mi := &file_hub_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1047,7 +1295,7 @@ func (x *AuditRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuditRequest.ProtoReflect.Descriptor instead.
 func (*AuditRequest) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{18}
+	return file_hub_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *AuditRequest) GetAuditJson() string {
@@ -1066,7 +1314,7 @@ type BatchRequest struct {
 
 func (x *BatchRequest) Reset() {
 	*x = BatchRequest{}
-	mi := &file_hub_proto_msgTypes[19]
+	mi := &file_hub_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1078,7 +1326,7 @@ func (x *BatchRequest) String() string {
 func (*BatchRequest) ProtoMessage() {}
 
 func (x *BatchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[19]
+	mi := &file_hub_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1091,7 +1339,7 @@ func (x *BatchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchRequest.ProtoReflect.Descriptor instead.
 func (*BatchRequest) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{19}
+	return file_hub_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *BatchRequest) GetBatchJson() string {
@@ -1111,7 +1359,7 @@ type ReasonRequest struct {
 
 func (x *ReasonRequest) Reset() {
 	*x = ReasonRequest{}
-	mi := &file_hub_proto_msgTypes[20]
+	mi := &file_hub_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1123,7 +1371,7 @@ func (x *ReasonRequest) String() string {
 func (*ReasonRequest) ProtoMessage() {}
 
 func (x *ReasonRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[20]
+	mi := &file_hub_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1136,7 +1384,7 @@ func (x *ReasonRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReasonRequest.ProtoReflect.Descriptor instead.
 func (*ReasonRequest) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{20}
+	return file_hub_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *ReasonRequest) GetPrompt() string {
@@ -1162,7 +1410,7 @@ type PatternRequest struct {
 
 func (x *PatternRequest) Reset() {
 	*x = PatternRequest{}
-	mi := &file_hub_proto_msgTypes[21]
+	mi := &file_hub_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1174,7 +1422,7 @@ func (x *PatternRequest) String() string {
 func (*PatternRequest) ProtoMessage() {}
 
 func (x *PatternRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[21]
+	mi := &file_hub_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1187,7 +1435,7 @@ func (x *PatternRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PatternRequest.ProtoReflect.Descriptor instead.
 func (*PatternRequest) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{21}
+	return file_hub_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *PatternRequest) GetPatternJson() string {
@@ -1206,7 +1454,7 @@ type PenaltyRequest struct {
 
 func (x *PenaltyRequest) Reset() {
 	*x = PenaltyRequest{}
-	mi := &file_hub_proto_msgTypes[22]
+	mi := &file_hub_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1218,7 +1466,7 @@ func (x *PenaltyRequest) String() string {
 func (*PenaltyRequest) ProtoMessage() {}
 
 func (x *PenaltyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[22]
+	mi := &file_hub_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1231,7 +1479,7 @@ func (x *PenaltyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PenaltyRequest.ProtoReflect.Descriptor instead.
 func (*PenaltyRequest) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{22}
+	return file_hub_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *PenaltyRequest) GetPenaltyJson() string {
@@ -1250,7 +1498,7 @@ type ScoreRequest struct {
 
 func (x *ScoreRequest) Reset() {
 	*x = ScoreRequest{}
-	mi := &file_hub_proto_msgTypes[23]
+	mi := &file_hub_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1262,7 +1510,7 @@ func (x *ScoreRequest) String() string {
 func (*ScoreRequest) ProtoMessage() {}
 
 func (x *ScoreRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[23]
+	mi := &file_hub_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1275,7 +1523,7 @@ func (x *ScoreRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScoreRequest.ProtoReflect.Descriptor instead.
 func (*ScoreRequest) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{23}
+	return file_hub_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *ScoreRequest) GetScoreJson() string {
@@ -1294,7 +1542,7 @@ type CoverageRequest struct {
 
 func (x *CoverageRequest) Reset() {
 	*x = CoverageRequest{}
-	mi := &file_hub_proto_msgTypes[24]
+	mi := &file_hub_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1306,7 +1554,7 @@ func (x *CoverageRequest) String() string {
 func (*CoverageRequest) ProtoMessage() {}
 
 func (x *CoverageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[24]
+	mi := &file_hub_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1319,7 +1567,7 @@ func (x *CoverageRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CoverageRequest.ProtoReflect.Descriptor instead.
 func (*CoverageRequest) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{24}
+	return file_hub_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *CoverageRequest) GetCoverageJson() string {
@@ -1338,7 +1586,7 @@ type GraphRequest struct {
 
 func (x *GraphRequest) Reset() {
 	*x = GraphRequest{}
-	mi := &file_hub_proto_msgTypes[25]
+	mi := &file_hub_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1350,7 +1598,7 @@ func (x *GraphRequest) String() string {
 func (*GraphRequest) ProtoMessage() {}
 
 func (x *GraphRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[25]
+	mi := &file_hub_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1363,7 +1611,7 @@ func (x *GraphRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GraphRequest.ProtoReflect.Descriptor instead.
 func (*GraphRequest) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{25}
+	return file_hub_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *GraphRequest) GetGraphJson() string {
@@ -1382,7 +1630,7 @@ type QueryRequest struct {
 
 func (x *QueryRequest) Reset() {
 	*x = QueryRequest{}
-	mi := &file_hub_proto_msgTypes[26]
+	mi := &file_hub_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1394,7 +1642,7 @@ func (x *QueryRequest) String() string {
 func (*QueryRequest) ProtoMessage() {}
 
 func (x *QueryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[26]
+	mi := &file_hub_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1407,7 +1655,7 @@ func (x *QueryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use QueryRequest.ProtoReflect.Descriptor instead.
 func (*QueryRequest) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{26}
+	return file_hub_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *QueryRequest) GetQueryJson() string {
@@ -1429,7 +1677,7 @@ type HealingPlan struct {
 
 func (x *HealingPlan) Reset() {
 	*x = HealingPlan{}
-	mi := &file_hub_proto_msgTypes[27]
+	mi := &file_hub_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1441,7 +1689,7 @@ func (x *HealingPlan) String() string {
 func (*HealingPlan) ProtoMessage() {}
 
 func (x *HealingPlan) ProtoReflect() protoreflect.Message {
-	mi := &file_hub_proto_msgTypes[27]
+	mi := &file_hub_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1454,7 +1702,7 @@ func (x *HealingPlan) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HealingPlan.ProtoReflect.Descriptor instead.
 func (*HealingPlan) Descriptor() ([]byte, []int) {
-	return file_hub_proto_rawDescGZIP(), []int{27}
+	return file_hub_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *HealingPlan) GetIssueDescription() string {
@@ -1489,7 +1737,28 @@ var File_hub_proto protoreflect.FileDescriptor
 
 const file_hub_proto_rawDesc = "" +
 	"\n" +
-	"\thub.proto\x12\x03hub\"\a\n" +
+	"\thub.proto\x12\x03hub\"B\n" +
+	"\vRuleRequest\x12\x1d\n" +
+	"\n" +
+	"persona_id\x18\x01 \x01(\tR\tpersonaId\x12\x14\n" +
+	"\x05stack\x18\x02 \x01(\tR\x05stack\"k\n" +
+	"\x04Rule\x12\x14\n" +
+	"\x05regex\x18\x01 \x01(\tR\x05regex\x12\x14\n" +
+	"\x05issue\x18\x02 \x01(\tR\x05issue\x12\x1a\n" +
+	"\bseverity\x18\x03 \x01(\tR\bseverity\x12\x1b\n" +
+	"\tscm_query\x18\x04 \x01(\tR\bscmQuery\"\x9d\x01\n" +
+	"\fRuleResponse\x12\x1f\n" +
+	"\x05rules\x18\x01 \x03(\v2\t.hub.RuleR\x05rules\x12\x1e\n" +
+	"\n" +
+	"extensions\x18\x02 \x03(\tR\n" +
+	"extensions\x12#\n" +
+	"\rsystem_prompt\x18\x03 \x01(\tR\fsystemPrompt\x12'\n" +
+	"\x0fprompt_template\x18\x04 \x01(\tR\x0epromptTemplate\"c\n" +
+	"\x12AnalyzeCodeRequest\x12\x18\n" +
+	"\acontent\x18\x01 \x01(\tR\acontent\x12\x1d\n" +
+	"\n" +
+	"persona_id\x18\x02 \x01(\tR\tpersonaId\x12\x14\n" +
+	"\x05stack\x18\x03 \x01(\tR\x05stack\"\a\n" +
 	"\x05Empty\"m\n" +
 	"\x0eStatusResponse\x12\x16\n" +
 	"\x06status\x18\x01 \x01(\tR\x06status\x12\x18\n" +
@@ -1562,9 +1831,10 @@ const file_hub_proto_rawDesc = "" +
 	"audit_json\x18\x01 \x01(\tR\tauditJson\"-\n" +
 	"\fBatchRequest\x12\x1d\n" +
 	"\n" +
-	"batch_json\x18\x01 \x01(\tR\tbatchJson\"'\n" +
+	"batch_json\x18\x01 \x01(\tR\tbatchJson\"@\n" +
 	"\rReasonRequest\x12\x16\n" +
-	"\x06prompt\x18\x01 \x01(\tR\x06prompt\"3\n" +
+	"\x06prompt\x18\x01 \x01(\tR\x06prompt\x12\x17\n" +
+	"\ause_rag\x18\x02 \x01(\bR\x06useRag\"3\n" +
 	"\x0ePatternRequest\x12!\n" +
 	"\fpattern_json\x18\x01 \x01(\tR\vpatternJson\"3\n" +
 	"\x0ePenaltyRequest\x12!\n" +
@@ -1620,7 +1890,10 @@ const file_hub_proto_rawDesc = "" +
 	"\x0fGetPendingTasks\x12\x13.hub.PendingRequest\x1a\x14.hub.PendingResponse\x120\n" +
 	"\n" +
 	"UpdateTask\x12\x16.hub.UpdateTaskRequest\x1a\n" +
-	".hub.EmptyB@Z>github.com/joaomagdaleno/Personas_Agentes/src_native/hub/protob\x06proto3"
+	".hub.Empty2}\n" +
+	"\fRuleProvider\x12/\n" +
+	"\bGetRules\x12\x10.hub.RuleRequest\x1a\x11.hub.RuleResponse\x12<\n" +
+	"\vAnalyzeCode\x12\x17.hub.AnalyzeCodeRequest\x1a\x14.hub.AnalyzeResponseB@Z>github.com/joaomagdaleno/Personas_Agentes/src_native/hub/protob\x06proto3"
 
 var (
 	file_hub_proto_rawDescOnce sync.Once
@@ -1634,101 +1907,110 @@ func file_hub_proto_rawDescGZIP() []byte {
 	return file_hub_proto_rawDescData
 }
 
-var file_hub_proto_msgTypes = make([]protoimpl.MessageInfo, 28)
+var file_hub_proto_msgTypes = make([]protoimpl.MessageInfo, 32)
 var file_hub_proto_goTypes = []any{
-	(*Empty)(nil),               // 0: hub.Empty
-	(*StatusResponse)(nil),      // 1: hub.StatusResponse
-	(*HealthUpdate)(nil),        // 2: hub.HealthUpdate
-	(*ProcessInfo)(nil),         // 3: hub.ProcessInfo
-	(*Event)(nil),               // 4: hub.Event
-	(*ScanRequest)(nil),         // 5: hub.ScanRequest
-	(*FileMetadata)(nil),        // 6: hub.FileMetadata
-	(*ScanResponse)(nil),        // 7: hub.ScanResponse
-	(*AnalyzeRequest)(nil),      // 8: hub.AnalyzeRequest
-	(*AnalyzeResponse)(nil),     // 9: hub.AnalyzeResponse
-	(*TaskRequest)(nil),         // 10: hub.TaskRequest
-	(*TaskResponse)(nil),        // 11: hub.TaskResponse
-	(*PendingRequest)(nil),      // 12: hub.PendingRequest
-	(*Task)(nil),                // 13: hub.Task
-	(*PendingResponse)(nil),     // 14: hub.PendingResponse
-	(*UpdateTaskRequest)(nil),   // 15: hub.UpdateTaskRequest
-	(*DeduplicateRequest)(nil),  // 16: hub.DeduplicateRequest
-	(*ConnectivityRequest)(nil), // 17: hub.ConnectivityRequest
-	(*AuditRequest)(nil),        // 18: hub.AuditRequest
-	(*BatchRequest)(nil),        // 19: hub.BatchRequest
-	(*ReasonRequest)(nil),       // 20: hub.ReasonRequest
-	(*PatternRequest)(nil),      // 21: hub.PatternRequest
-	(*PenaltyRequest)(nil),      // 22: hub.PenaltyRequest
-	(*ScoreRequest)(nil),        // 23: hub.ScoreRequest
-	(*CoverageRequest)(nil),     // 24: hub.CoverageRequest
-	(*GraphRequest)(nil),        // 25: hub.GraphRequest
-	(*QueryRequest)(nil),        // 26: hub.QueryRequest
-	(*HealingPlan)(nil),         // 27: hub.HealingPlan
+	(*RuleRequest)(nil),         // 0: hub.RuleRequest
+	(*Rule)(nil),                // 1: hub.Rule
+	(*RuleResponse)(nil),        // 2: hub.RuleResponse
+	(*AnalyzeCodeRequest)(nil),  // 3: hub.AnalyzeCodeRequest
+	(*Empty)(nil),               // 4: hub.Empty
+	(*StatusResponse)(nil),      // 5: hub.StatusResponse
+	(*HealthUpdate)(nil),        // 6: hub.HealthUpdate
+	(*ProcessInfo)(nil),         // 7: hub.ProcessInfo
+	(*Event)(nil),               // 8: hub.Event
+	(*ScanRequest)(nil),         // 9: hub.ScanRequest
+	(*FileMetadata)(nil),        // 10: hub.FileMetadata
+	(*ScanResponse)(nil),        // 11: hub.ScanResponse
+	(*AnalyzeRequest)(nil),      // 12: hub.AnalyzeRequest
+	(*AnalyzeResponse)(nil),     // 13: hub.AnalyzeResponse
+	(*TaskRequest)(nil),         // 14: hub.TaskRequest
+	(*TaskResponse)(nil),        // 15: hub.TaskResponse
+	(*PendingRequest)(nil),      // 16: hub.PendingRequest
+	(*Task)(nil),                // 17: hub.Task
+	(*PendingResponse)(nil),     // 18: hub.PendingResponse
+	(*UpdateTaskRequest)(nil),   // 19: hub.UpdateTaskRequest
+	(*DeduplicateRequest)(nil),  // 20: hub.DeduplicateRequest
+	(*ConnectivityRequest)(nil), // 21: hub.ConnectivityRequest
+	(*AuditRequest)(nil),        // 22: hub.AuditRequest
+	(*BatchRequest)(nil),        // 23: hub.BatchRequest
+	(*ReasonRequest)(nil),       // 24: hub.ReasonRequest
+	(*PatternRequest)(nil),      // 25: hub.PatternRequest
+	(*PenaltyRequest)(nil),      // 26: hub.PenaltyRequest
+	(*ScoreRequest)(nil),        // 27: hub.ScoreRequest
+	(*CoverageRequest)(nil),     // 28: hub.CoverageRequest
+	(*GraphRequest)(nil),        // 29: hub.GraphRequest
+	(*QueryRequest)(nil),        // 30: hub.QueryRequest
+	(*HealingPlan)(nil),         // 31: hub.HealingPlan
 }
 var file_hub_proto_depIdxs = []int32{
-	2,  // 0: hub.StatusResponse.health:type_name -> hub.HealthUpdate
-	3,  // 1: hub.HealthUpdate.heavy_processes:type_name -> hub.ProcessInfo
-	6,  // 2: hub.ScanResponse.files:type_name -> hub.FileMetadata
-	13, // 3: hub.PendingResponse.tasks:type_name -> hub.Task
-	0,  // 4: hub.HubService.GetStatus:input_type -> hub.Empty
-	0,  // 5: hub.HubService.WatchHealth:input_type -> hub.Empty
-	0,  // 6: hub.HubService.WatchEvents:input_type -> hub.Empty
-	5,  // 7: hub.HubService.ScanProject:input_type -> hub.ScanRequest
-	8,  // 8: hub.HubService.AnalyzeFile:input_type -> hub.AnalyzeRequest
-	8,  // 9: hub.HubService.AnalyzeStream:input_type -> hub.AnalyzeRequest
-	8,  // 10: hub.HubService.GetDependencies:input_type -> hub.AnalyzeRequest
-	16, // 11: hub.HubService.Deduplicate:input_type -> hub.DeduplicateRequest
-	8,  // 12: hub.HubService.Fingerprint:input_type -> hub.AnalyzeRequest
-	8,  // 13: hub.HubService.DiscoverIdentity:input_type -> hub.AnalyzeRequest
-	8,  // 14: hub.HubService.IndexProject:input_type -> hub.AnalyzeRequest
-	8,  // 15: hub.HubService.ScanTopology:input_type -> hub.AnalyzeRequest
-	8,  // 16: hub.HubService.GetContext:input_type -> hub.AnalyzeRequest
-	17, // 17: hub.HubService.GetConnectivity:input_type -> hub.ConnectivityRequest
-	18, // 18: hub.HubService.Audit:input_type -> hub.AuditRequest
-	19, // 19: hub.HubService.Batch:input_type -> hub.BatchRequest
-	20, // 20: hub.HubService.Reason:input_type -> hub.ReasonRequest
-	21, // 21: hub.HubService.Patterns:input_type -> hub.PatternRequest
-	22, // 22: hub.HubService.Penalty:input_type -> hub.PenaltyRequest
-	23, // 23: hub.HubService.CalculateScore:input_type -> hub.ScoreRequest
-	24, // 24: hub.HubService.AuditCoverage:input_type -> hub.CoverageRequest
-	25, // 25: hub.HubService.GetKnowledgeGraph:input_type -> hub.GraphRequest
-	26, // 26: hub.HubService.QueryKnowledgeGraph:input_type -> hub.QueryRequest
-	27, // 27: hub.HubService.ExecuteHealing:input_type -> hub.HealingPlan
-	10, // 28: hub.HubService.EnqueueTask:input_type -> hub.TaskRequest
-	12, // 29: hub.HubService.GetPendingTasks:input_type -> hub.PendingRequest
-	15, // 30: hub.HubService.UpdateTask:input_type -> hub.UpdateTaskRequest
-	1,  // 31: hub.HubService.GetStatus:output_type -> hub.StatusResponse
-	2,  // 32: hub.HubService.WatchHealth:output_type -> hub.HealthUpdate
-	4,  // 33: hub.HubService.WatchEvents:output_type -> hub.Event
-	7,  // 34: hub.HubService.ScanProject:output_type -> hub.ScanResponse
-	9,  // 35: hub.HubService.AnalyzeFile:output_type -> hub.AnalyzeResponse
-	9,  // 36: hub.HubService.AnalyzeStream:output_type -> hub.AnalyzeResponse
-	9,  // 37: hub.HubService.GetDependencies:output_type -> hub.AnalyzeResponse
-	9,  // 38: hub.HubService.Deduplicate:output_type -> hub.AnalyzeResponse
-	9,  // 39: hub.HubService.Fingerprint:output_type -> hub.AnalyzeResponse
-	9,  // 40: hub.HubService.DiscoverIdentity:output_type -> hub.AnalyzeResponse
-	9,  // 41: hub.HubService.IndexProject:output_type -> hub.AnalyzeResponse
-	9,  // 42: hub.HubService.ScanTopology:output_type -> hub.AnalyzeResponse
-	9,  // 43: hub.HubService.GetContext:output_type -> hub.AnalyzeResponse
-	9,  // 44: hub.HubService.GetConnectivity:output_type -> hub.AnalyzeResponse
-	9,  // 45: hub.HubService.Audit:output_type -> hub.AnalyzeResponse
-	9,  // 46: hub.HubService.Batch:output_type -> hub.AnalyzeResponse
-	9,  // 47: hub.HubService.Reason:output_type -> hub.AnalyzeResponse
-	9,  // 48: hub.HubService.Patterns:output_type -> hub.AnalyzeResponse
-	9,  // 49: hub.HubService.Penalty:output_type -> hub.AnalyzeResponse
-	9,  // 50: hub.HubService.CalculateScore:output_type -> hub.AnalyzeResponse
-	9,  // 51: hub.HubService.AuditCoverage:output_type -> hub.AnalyzeResponse
-	9,  // 52: hub.HubService.GetKnowledgeGraph:output_type -> hub.AnalyzeResponse
-	9,  // 53: hub.HubService.QueryKnowledgeGraph:output_type -> hub.AnalyzeResponse
-	9,  // 54: hub.HubService.ExecuteHealing:output_type -> hub.AnalyzeResponse
-	11, // 55: hub.HubService.EnqueueTask:output_type -> hub.TaskResponse
-	14, // 56: hub.HubService.GetPendingTasks:output_type -> hub.PendingResponse
-	0,  // 57: hub.HubService.UpdateTask:output_type -> hub.Empty
-	31, // [31:58] is the sub-list for method output_type
-	4,  // [4:31] is the sub-list for method input_type
-	4,  // [4:4] is the sub-list for extension type_name
-	4,  // [4:4] is the sub-list for extension extendee
-	0,  // [0:4] is the sub-list for field type_name
+	1,  // 0: hub.RuleResponse.rules:type_name -> hub.Rule
+	6,  // 1: hub.StatusResponse.health:type_name -> hub.HealthUpdate
+	7,  // 2: hub.HealthUpdate.heavy_processes:type_name -> hub.ProcessInfo
+	10, // 3: hub.ScanResponse.files:type_name -> hub.FileMetadata
+	17, // 4: hub.PendingResponse.tasks:type_name -> hub.Task
+	4,  // 5: hub.HubService.GetStatus:input_type -> hub.Empty
+	4,  // 6: hub.HubService.WatchHealth:input_type -> hub.Empty
+	4,  // 7: hub.HubService.WatchEvents:input_type -> hub.Empty
+	9,  // 8: hub.HubService.ScanProject:input_type -> hub.ScanRequest
+	12, // 9: hub.HubService.AnalyzeFile:input_type -> hub.AnalyzeRequest
+	12, // 10: hub.HubService.AnalyzeStream:input_type -> hub.AnalyzeRequest
+	12, // 11: hub.HubService.GetDependencies:input_type -> hub.AnalyzeRequest
+	20, // 12: hub.HubService.Deduplicate:input_type -> hub.DeduplicateRequest
+	12, // 13: hub.HubService.Fingerprint:input_type -> hub.AnalyzeRequest
+	12, // 14: hub.HubService.DiscoverIdentity:input_type -> hub.AnalyzeRequest
+	12, // 15: hub.HubService.IndexProject:input_type -> hub.AnalyzeRequest
+	12, // 16: hub.HubService.ScanTopology:input_type -> hub.AnalyzeRequest
+	12, // 17: hub.HubService.GetContext:input_type -> hub.AnalyzeRequest
+	21, // 18: hub.HubService.GetConnectivity:input_type -> hub.ConnectivityRequest
+	22, // 19: hub.HubService.Audit:input_type -> hub.AuditRequest
+	23, // 20: hub.HubService.Batch:input_type -> hub.BatchRequest
+	24, // 21: hub.HubService.Reason:input_type -> hub.ReasonRequest
+	25, // 22: hub.HubService.Patterns:input_type -> hub.PatternRequest
+	26, // 23: hub.HubService.Penalty:input_type -> hub.PenaltyRequest
+	27, // 24: hub.HubService.CalculateScore:input_type -> hub.ScoreRequest
+	28, // 25: hub.HubService.AuditCoverage:input_type -> hub.CoverageRequest
+	29, // 26: hub.HubService.GetKnowledgeGraph:input_type -> hub.GraphRequest
+	30, // 27: hub.HubService.QueryKnowledgeGraph:input_type -> hub.QueryRequest
+	31, // 28: hub.HubService.ExecuteHealing:input_type -> hub.HealingPlan
+	14, // 29: hub.HubService.EnqueueTask:input_type -> hub.TaskRequest
+	16, // 30: hub.HubService.GetPendingTasks:input_type -> hub.PendingRequest
+	19, // 31: hub.HubService.UpdateTask:input_type -> hub.UpdateTaskRequest
+	0,  // 32: hub.RuleProvider.GetRules:input_type -> hub.RuleRequest
+	3,  // 33: hub.RuleProvider.AnalyzeCode:input_type -> hub.AnalyzeCodeRequest
+	5,  // 34: hub.HubService.GetStatus:output_type -> hub.StatusResponse
+	6,  // 35: hub.HubService.WatchHealth:output_type -> hub.HealthUpdate
+	8,  // 36: hub.HubService.WatchEvents:output_type -> hub.Event
+	11, // 37: hub.HubService.ScanProject:output_type -> hub.ScanResponse
+	13, // 38: hub.HubService.AnalyzeFile:output_type -> hub.AnalyzeResponse
+	13, // 39: hub.HubService.AnalyzeStream:output_type -> hub.AnalyzeResponse
+	13, // 40: hub.HubService.GetDependencies:output_type -> hub.AnalyzeResponse
+	13, // 41: hub.HubService.Deduplicate:output_type -> hub.AnalyzeResponse
+	13, // 42: hub.HubService.Fingerprint:output_type -> hub.AnalyzeResponse
+	13, // 43: hub.HubService.DiscoverIdentity:output_type -> hub.AnalyzeResponse
+	13, // 44: hub.HubService.IndexProject:output_type -> hub.AnalyzeResponse
+	13, // 45: hub.HubService.ScanTopology:output_type -> hub.AnalyzeResponse
+	13, // 46: hub.HubService.GetContext:output_type -> hub.AnalyzeResponse
+	13, // 47: hub.HubService.GetConnectivity:output_type -> hub.AnalyzeResponse
+	13, // 48: hub.HubService.Audit:output_type -> hub.AnalyzeResponse
+	13, // 49: hub.HubService.Batch:output_type -> hub.AnalyzeResponse
+	13, // 50: hub.HubService.Reason:output_type -> hub.AnalyzeResponse
+	13, // 51: hub.HubService.Patterns:output_type -> hub.AnalyzeResponse
+	13, // 52: hub.HubService.Penalty:output_type -> hub.AnalyzeResponse
+	13, // 53: hub.HubService.CalculateScore:output_type -> hub.AnalyzeResponse
+	13, // 54: hub.HubService.AuditCoverage:output_type -> hub.AnalyzeResponse
+	13, // 55: hub.HubService.GetKnowledgeGraph:output_type -> hub.AnalyzeResponse
+	13, // 56: hub.HubService.QueryKnowledgeGraph:output_type -> hub.AnalyzeResponse
+	13, // 57: hub.HubService.ExecuteHealing:output_type -> hub.AnalyzeResponse
+	15, // 58: hub.HubService.EnqueueTask:output_type -> hub.TaskResponse
+	18, // 59: hub.HubService.GetPendingTasks:output_type -> hub.PendingResponse
+	4,  // 60: hub.HubService.UpdateTask:output_type -> hub.Empty
+	2,  // 61: hub.RuleProvider.GetRules:output_type -> hub.RuleResponse
+	13, // 62: hub.RuleProvider.AnalyzeCode:output_type -> hub.AnalyzeResponse
+	34, // [34:63] is the sub-list for method output_type
+	5,  // [5:34] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_hub_proto_init() }
@@ -1742,9 +2024,9 @@ func file_hub_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_hub_proto_rawDesc), len(file_hub_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   28,
+			NumMessages:   32,
 			NumExtensions: 0,
-			NumServices:   1,
+			NumServices:   2,
 		},
 		GoTypes:           file_hub_proto_goTypes,
 		DependencyIndexes: file_hub_proto_depIdxs,
