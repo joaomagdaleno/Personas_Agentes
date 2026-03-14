@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"math"
 	"net"
 	"net/http"
 	"os"
@@ -14,6 +15,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"runtime"
+	"sort"
 	"strings"
 	"sync"
 	"time"
@@ -274,6 +276,36 @@ type Task struct {
 	Status     string `json:"status"`
 	Result     string `json:"result"`
 	CreatedAt  string `json:"created_at"`
+}
+
+type Finding struct {
+	File       string `json:"file"`
+	Issue      string `json:"issue"`
+	Severity   string `json:"severity"`
+	Agent      string `json:"agent"`
+	Role       string `json:"role"`
+	Emoji      string `json:"emoji"`
+	Stack      string `json:"stack"`
+	MatchCount int    `json:"match_count"`
+}
+
+type PeerReviewMessage struct {
+	Type            string `json:"type"`
+	RequestID       string `json:"request_id"`
+	RequesterID     string `json:"requester_id"`
+	TargetPersonaID string `json:"target_persona_id"`
+	FilePath        string `json:"file_path"`
+	Context         string `json:"context,omitempty"`
+	Priority        string `json:"priority,omitempty"`
+	Timestamp       string `json:"timestamp"`
+}
+
+type SignalMessage struct {
+	Type        string `json:"type"`
+	SenderID    string `json:"sender_id"`
+	SignalType  string `json:"signal_type"`
+	PayloadJSON string `json:"payload_json"`
+	Timestamp   string `json:"timestamp"`
 }
 
 func (h *Hub) initDB(projectRoot string) {
@@ -543,6 +575,11 @@ func (h *Hub) WatchEvents(in *pb.Empty, stream pb.HubService_WatchEventsServer) 
 }
 
 func (h *Hub) ScanProject(ctx context.Context, in *pb.ScanRequest) (*pb.ScanResponse, error) {
+	if h.rustClient != nil {
+		log.Printf("🔬 [Hub] Delegating ScanProject to Rust Sidecar via gRPC")
+		return h.rustClient.ScanProject(ctx, in)
+	}
+
 	output, err := h.runScanner(in.Directory, "--root", in.Root)
 	if err != nil {
 		return nil, err
@@ -568,6 +605,12 @@ func (h *Hub) ScanProject(ctx context.Context, in *pb.ScanRequest) (*pb.ScanResp
 }
 
 func (h *Hub) AnalyzeFile(ctx context.Context, in *pb.AnalyzeRequest) (*pb.AnalyzeResponse, error) {
+	// Optimization: Prefer gRPC Sidecar for all analysis if available
+	if h.rustClient != nil {
+		log.Printf("🔬 [Hub] Delegating analysis of %s to Rust Sidecar via gRPC", in.File)
+		return h.rustClient.AnalyzeFile(ctx, in)
+	}
+
 	ext := strings.ToLower(filepath.Ext(in.File))
 	var data string
 	var err error
@@ -874,17 +917,52 @@ func (h *Hub) Remember(ctx context.Context, in *pb.MemoryEntry) (*pb.Empty, erro
 	return &pb.Empty{}, nil
 }
 
+type memoryScore struct {
+	entry *pb.MemoryEntry
+	score float64
+}
+
+func cosineSimilarity(a, b []float32) float64 {
+	if len(a) != len(b) || len(a) == 0 {
+		return 0.0
+	}
+	var dotProduct, normA, normB float64
+	for i := range a {
+		valA := float64(a[i])
+		valB := float64(b[i])
+		dotProduct += valA * valB
+		normA += valA * valA
+		normB += valB * valB
+	}
+	if normA == 0 || normB == 0 {
+		return 0.0
+	}
+	return dotProduct / (math.Sqrt(normA) * math.Sqrt(normB))
+}
+
 func (h *Hub) Retrieve(in *pb.MemoryQuery, stream pb.HubService_RetrieveServer) error {
 	log.Printf("🧠 [Memory] Retrieving records for agent %s query: %s", in.AgentId, in.Query)
 
-	// For now, simple keyword match or just return latest for the agent
-	// In the next step, we'll implement vector similarity
-	rows, err := h.db.Query(`SELECT id, agent_id, objective, action, result, timestamp, embedding FROM agent_memory 
-		WHERE agent_id = ? ORDER BY timestamp DESC LIMIT ?`, in.AgentId, in.Limit)
+	var queryEmb []float32
+	if in.Query != "" && h.rustClient != nil {
+		res, err := h.rustClient.Embed(stream.Context(), &pb.EmbedRequest{Text: in.Query})
+		if err == nil && res != nil {
+			queryEmb = res.Embedding
+		}
+	}
+
+	querySQL := `SELECT id, agent_id, objective, action, result, timestamp, embedding FROM agent_memory WHERE agent_id = ? ORDER BY timestamp DESC`
+	if len(queryEmb) == 0 {
+		querySQL += fmt.Sprintf(" LIMIT %d", in.Limit)
+	}
+
+	rows, err := h.db.Query(querySQL, in.AgentId)
 	if err != nil {
 		return err
 	}
 	defer rows.Close()
+
+	var allMemories []memoryScore
 
 	for rows.Next() {
 		var m pb.MemoryEntry
@@ -894,12 +972,33 @@ func (h *Hub) Retrieve(in *pb.MemoryQuery, stream pb.HubService_RetrieveServer) 
 			return err
 		}
 
-		// Convert BLOB back to float32 slice
 		fSlice := make([]float32, len(emb)/4)
-		binary.Read(bytes.NewReader(emb), binary.LittleEndian, &fSlice)
+		if len(emb) > 0 {
+			binary.Read(bytes.NewReader(emb), binary.LittleEndian, &fSlice)
+		}
 		m.Embedding = fSlice
 
-		if err := stream.Send(&m); err != nil {
+		score := 1.0
+		if len(queryEmb) > 0 && len(fSlice) > 0 {
+			score = cosineSimilarity(queryEmb, fSlice)
+		}
+
+		allMemories = append(allMemories, memoryScore{entry: &m, score: score})
+	}
+
+	if len(queryEmb) > 0 {
+		sort.SliceStable(allMemories, func(i, j int) bool {
+			return allMemories[i].score > allMemories[j].score
+		})
+		limit := int(in.Limit)
+		if limit > len(allMemories) {
+			limit = len(allMemories)
+		}
+		allMemories = allMemories[:limit]
+	}
+
+	for _, ms := range allMemories {
+		if err := stream.Send(ms.entry); err != nil {
 			return err
 		}
 	}
@@ -986,17 +1085,6 @@ func (h *Hub) AnalyzeCode(ctx context.Context, in *pb.AnalyzeCodeRequest) (*pb.A
 		return &pb.AnalyzeResponse{JsonData: "[]"}, nil
 	}
 
-	type Finding struct {
-		File       string `json:"file"`
-		Issue      string `json:"issue"`
-		Severity   string `json:"severity"`
-		Agent      string `json:"agent"`
-		Role       string `json:"role"`
-		Emoji      string `json:"emoji"`
-		Stack      string `json:"stack"`
-		MatchCount int    `json:"match_count"`
-	}
-
 	findings := []Finding{}
 
 	for _, rule := range s.Rules {
@@ -1074,17 +1162,17 @@ func (h *Hub) RequestPeerReview(ctx context.Context, in *pb.PeerReviewRequest) (
 	requestID := fmt.Sprintf("rev_%d", time.Now().UnixNano())
 	log.Printf("🤝 [Swarm] Peer review requested by %s for %s (Target: %s)", in.RequesterId, in.FilePath, in.TargetPersonaId)
 
-	msg, _ := json.Marshal(map[string]interface{}{
-		"type":              "PEER_REVIEW_REQUEST",
-		"request_id":        requestID,
-		"requester_id":      in.RequesterId,
-		"target_persona_id": in.TargetPersonaId,
-		"file_path":         in.FilePath,
-		"context":           in.Context,
-		"priority":          in.Priority,
-		"timestamp":         time.Now().Format(time.RFC3339),
+	msgBytes, _ := json.Marshal(PeerReviewMessage{
+		Type:            "PEER_REVIEW_REQUEST",
+		RequestID:       requestID,
+		RequesterID:     in.RequesterId,
+		TargetPersonaID: in.TargetPersonaId,
+		FilePath:        in.FilePath,
+		Context:         in.Context,
+		Priority:        in.Priority,
+		Timestamp:       time.Now().Format(time.RFC3339),
 	})
-	h.broadcast <- string(msg)
+	h.broadcast <- string(msgBytes)
 
 	return &pb.PeerReviewResponse{
 		RequestId: requestID,
@@ -1095,14 +1183,14 @@ func (h *Hub) RequestPeerReview(ctx context.Context, in *pb.PeerReviewRequest) (
 func (h *Hub) BroadcastSignal(ctx context.Context, in *pb.SignalRequest) (*pb.Empty, error) {
 	log.Printf("📢 [Swarm] Signal broadcast by %s: %s", in.SenderId, in.SignalType)
 
-	msg, _ := json.Marshal(map[string]interface{}{
-		"type":         "SIGNAL",
-		"sender_id":    in.SenderId,
-		"signal_type":  in.SignalType,
-		"payload_json": in.PayloadJson,
-		"timestamp":    time.Now().Format(time.RFC3339),
+	msgBytes, _ := json.Marshal(SignalMessage{
+		Type:        "SIGNAL",
+		SenderID:    in.SenderId,
+		SignalType:  in.SignalType,
+		PayloadJSON: in.PayloadJson,
+		Timestamp:   time.Now().Format(time.RFC3339),
 	})
-	h.broadcast <- string(msg)
+	h.broadcast <- string(msgBytes)
 
 	return &pb.Empty{}, nil
 }
@@ -1116,23 +1204,178 @@ func (h *Hub) UpdateTask(ctx context.Context, in *pb.UpdateTaskRequest) (*pb.Emp
 	return &pb.Empty{}, nil
 }
 
+func (h *Hub) ServeGovernanceList(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	var docs []string
+	searchPaths := []string{"../../docs", "../../", "./docs", "."}
+	for _, path := range searchPaths {
+		files, err := os.ReadDir(path)
+		if err != nil {
+			continue
+		}
+		for _, f := range files {
+			if !f.IsDir() && strings.HasSuffix(f.Name(), ".md") {
+				docs = append(docs, f.Name())
+			}
+		}
+	}
+
+	// Deduplicate
+	unique := make(map[string]bool)
+	var result []string
+	for _, d := range docs {
+		if !unique[d] {
+			unique[d] = true
+			result = append(result, d)
+		}
+	}
+
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"documents": result,
+	})
+}
+
 func (h *Hub) ServeGovernance(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
-	data, err := os.ReadFile("../../walkthrough.md")
-	if err != nil {
-		// Try alternative path
-		data, err = os.ReadFile("walkthrough.md")
-		if err != nil {
-			http.Error(w, "Failed to read governance document", http.StatusInternalServerError)
-			return
+	fileName := r.URL.Query().Get("file")
+	if fileName == "" {
+		fileName = "walkthrough.md"
+	}
+
+	// Sanitize fileName to prevent path traversal
+	fileName = filepath.Base(fileName)
+
+	var data []byte
+	var err error
+	searchPaths := []string{"../../" + fileName, "../../docs/" + fileName, "./" + fileName, "./docs/" + fileName}
+
+	for _, p := range searchPaths {
+		data, err = os.ReadFile(p)
+		if err == nil {
+			break
 		}
+	}
+
+	if err != nil {
+		http.Error(w, "Document not found: "+fileName, http.StatusNotFound)
+		return
 	}
 
 	json.NewEncoder(w).Encode(map[string]string{
 		"content": string(data),
+		"file":    fileName,
 	})
+}
+
+func (h *Hub) ServeIntelligenceMemory(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	query := r.URL.Query().Get("q")
+	agentId := r.URL.Query().Get("agent")
+	if agentId == "" {
+		agentId = "healer" // default for demo purposes
+	}
+
+	var queryEmb []float32
+	if query != "" && h.rustClient != nil {
+		res, err := h.rustClient.Embed(r.Context(), &pb.EmbedRequest{Text: query})
+		if err == nil && res != nil {
+			queryEmb = res.Embedding
+		}
+	}
+
+	querySQL := `SELECT id, agent_id, objective, action, result, timestamp, embedding FROM agent_memory WHERE agent_id = ? ORDER BY timestamp DESC`
+	if len(queryEmb) == 0 {
+		querySQL += ` LIMIT 50`
+	}
+
+	rows, err := h.db.Query(querySQL, agentId)
+	if err != nil {
+		http.Error(w, "DB error", http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	var allMemories []memoryScore
+	for rows.Next() {
+		var m pb.MemoryEntry
+		var emb []byte
+		if err := rows.Scan(&m.Id, &m.AgentId, &m.Objective, &m.Action, &m.Result, &m.Timestamp, &emb); err != nil {
+			continue
+		}
+
+		fSlice := make([]float32, len(emb)/4)
+		if len(emb) > 0 {
+			binary.Read(bytes.NewReader(emb), binary.LittleEndian, &fSlice)
+		}
+		
+		score := 1.0
+		if len(queryEmb) > 0 && len(fSlice) > 0 {
+			score = cosineSimilarity(queryEmb, fSlice)
+		}
+		
+		// Omit embedding from JSON response to save bandwidth
+		m.Embedding = nil
+		allMemories = append(allMemories, memoryScore{entry: &m, score: score})
+	}
+
+	if len(queryEmb) > 0 {
+		sort.SliceStable(allMemories, func(i, j int) bool {
+			return allMemories[i].score > allMemories[j].score
+		})
+		if len(allMemories) > 50 {
+			allMemories = allMemories[:50]
+		}
+	}
+
+	type MemoryResponse struct {
+		Id        string  `json:"id"`
+		Objective string  `json:"objective"`
+		Action    string  `json:"action"`
+		Result    string  `json:"result"`
+		Timestamp string  `json:"timestamp"`
+		Score     float64 `json:"score"`
+	}
+
+	var result []MemoryResponse
+	for _, ms := range allMemories {
+		result = append(result, MemoryResponse{
+			Id:        ms.entry.Id,
+			Objective: ms.entry.Objective,
+			Action:    ms.entry.Action,
+			Result:    ms.entry.Result,
+			Timestamp: ms.entry.Timestamp,
+			Score:     ms.score,
+		})
+	}
+
+	json.NewEncoder(w).Encode(result)
+}
+
+func (h *Hub) ServeIntelligenceTasks(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	rows, err := h.db.Query("SELECT id, task_type, target_file, status, result, created_at FROM ai_tasks ORDER BY created_at DESC LIMIT 50")
+	if err != nil {
+		http.Error(w, "DB error", http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	var tasks []Task
+	for rows.Next() {
+		var t Task
+		rows.Scan(&t.ID, &t.TaskType, &t.TargetFile, &t.Status, &t.Result, &t.CreatedAt)
+		tasks = append(tasks, t)
+	}
+
+	json.NewEncoder(w).Encode(tasks)
 }
 
 func (h *Hub) ServeSSE(w http.ResponseWriter, r *http.Request) {
@@ -1184,6 +1427,9 @@ func (p *program) run() {
 	go func() {
 		http.HandleFunc("/events", p.hub.ServeSSE)
 		http.HandleFunc("/governance", p.hub.ServeGovernance)
+		http.HandleFunc("/governance/list", p.hub.ServeGovernanceList)
+		http.HandleFunc("/intelligence/memory", p.hub.ServeIntelligenceMemory)
+		http.HandleFunc("/intelligence/tasks", p.hub.ServeIntelligenceTasks)
 		log.Printf("📊 Sovereign Dashboard SSE Server listening on :8080")
 		if err := http.ListenAndServe(":8080", nil); err != nil {
 			log.Printf("⚠️ Dashboard server failed: %v", err)

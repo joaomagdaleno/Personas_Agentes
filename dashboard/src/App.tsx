@@ -10,12 +10,37 @@ interface Persona {
   phd_identity?: string;
 }
 
+interface ProcessInfo {
+  name: string;
+  pid: number;
+  mem_mb: number;
+  cpu_percent: number;
+}
+
 interface Metrics {
   cpu_usage: number;
   memory_usage: number;
   goroutines: number;
-  heavy_processes: any[];
+  heavy_processes: ProcessInfo[];
   timestamp: string;
+}
+
+interface MemoryResponse {
+  id: string;
+  objective: string;
+  action: string;
+  result: string;
+  timestamp: string;
+  score: number;
+}
+
+interface Task {
+  id: number;
+  task_type: string;
+  target_file: string;
+  status: string;
+  result?: string;
+  created_at: string;
 }
 
 interface Event {
@@ -38,7 +63,14 @@ function App() {
   const [stability, setStability] = useState(100);
   const [screen, setScreen] = useState<Screen>('fleet');
   const [govContent, setGovContent] = useState<string>('');
+  const [docList, setDocList] = useState<string[]>([]);
+  const [selectedDoc, setSelectedDoc] = useState<string>('walkthrough.md');
   
+  // Intelligence State
+  const [memorySearch, setMemorySearch] = useState('');
+  const [memories, setMemories] = useState<MemoryResponse[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
+
   const thoughtStreamRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -74,12 +106,19 @@ function App() {
 
   useEffect(() => {
     if (screen === 'governance') {
-      fetch('http://localhost:8080/governance')
+      // Fetch document list first
+      fetch('http://localhost:8080/governance/list')
+        .then(res => res.json())
+        .then(data => setDocList(data.documents || []))
+        .catch(err => console.error("Failed to fetch doc list:", err));
+
+      // Fetch initial or selected doc
+      fetch(`http://localhost:8080/governance?file=${selectedDoc}`)
         .then(res => res.json())
         .then(data => setGovContent(data.content))
         .catch(err => console.error("Failed to fetch governance:", err));
     }
-  }, [screen]);
+  }, [screen, selectedDoc]);
 
   // Slowly recover stability
   useEffect(() => {
@@ -88,6 +127,32 @@ function App() {
     }, 10000);
     return () => clearInterval(timer);
   }, []);
+
+  // Intelligence data fetching
+  useEffect(() => {
+    if (screen === 'intelligence') {
+      fetchTasks();
+      fetchMemories();
+    }
+  }, [screen]);
+
+  const fetchTasks = () => {
+    fetch('http://localhost:8080/intelligence/tasks')
+      .then(res => res.json())
+      .then(data => setTasks(data || []))
+      .catch(err => console.error("Failed to fetch tasks:", err));
+  };
+
+  const fetchMemories = () => {
+    const url = memorySearch 
+      ? `http://localhost:8080/intelligence/memory?q=${encodeURIComponent(memorySearch)}`
+      : 'http://localhost:8080/intelligence/memory';
+      
+    fetch(url)
+      .then(res => res.json())
+      .then(data => setMemories(data || []))
+      .catch(err => console.error("Failed to fetch memories:", err));
+  };
 
   const getThoughtContent = (t: Event) => {
     if (t.type === 'SYSTEM') return t.message;
@@ -181,46 +246,158 @@ function App() {
 
     return (
       <div className="governance-view">
+        <div className="panel-header" style={{ marginBottom: '20px' }}>
+          <h2 className="panel-title">📜 Document Selector</h2>
+          <select 
+            className="btn-action" 
+            style={{ width: 'auto', background: 'var(--bg-card)', border: '1px solid var(--border-color)', color: 'var(--text-primary)' }}
+            value={selectedDoc}
+            onChange={(e) => setSelectedDoc(e.target.value)}
+          >
+            {docList.map(doc => (
+              <option key={doc} value={doc}>{doc}</option>
+            ))}
+          </select>
+        </div>
+
         <h2 className="section-title">🧬 Identity Synchrony</h2>
         <div className="governance-card">
-          <table className="governance-table">
-            <thead>
-              <tr>
-                {syncTable.length > 0 && Object.keys(syncTable[0]).map(h => <th key={h}>{h}</th>)}
-              </tr>
-            </thead>
-            <tbody>
-              {syncTable.map((row, i) => (
-                <tr key={i}>
-                  {Object.values(row).map((v: any, j) => <td key={j}>{v}</td>)}
+          {syncTable.length > 0 ? (
+            <table className="governance-table">
+              <thead>
+                <tr>
+                  {Object.keys(syncTable[0]).map(h => <th key={h}>{h}</th>)}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {syncTable.map((row, i) => (
+                  <tr key={i}>
+                    {Object.values(row).map((v: any, j) => <td key={j}>{v}</td>)}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <div style={{ padding: '20px', color: 'var(--text-secondary)' }}>No synchrony data found in this document.</div>
+          )}
         </div>
 
         <h2 className="section-title">🗺️ Sovereign Roadmap</h2>
         <div className="governance-card">
-          <table className="governance-table">
-            <thead>
-              <tr>
-                {roadmapTable.length > 0 && Object.keys(roadmapTable[0]).map(h => <th key={h}>{h}</th>)}
-              </tr>
-            </thead>
-            <tbody>
-              {roadmapTable.map((row, i) => (
-                <tr key={i}>
-                  {Object.values(row).map((v: any, j) => <td key={j}>{v}</td>)}
+          {roadmapTable.length > 0 ? (
+            <table className="governance-table">
+              <thead>
+                <tr>
+                  {Object.keys(roadmapTable[0]).map(h => <th key={h}>{h}</th>)}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {roadmapTable.map((row, i) => (
+                  <tr key={i}>
+                    {Object.values(row).map((v: any, j) => <td key={j}>{v}</td>)}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <div style={{ padding: '20px', color: 'var(--text-secondary)' }}>No roadmap data found in this document.</div>
+          )}
         </div>
 
-        <h2 className="section-title">📜 Critical Walkthrough</h2>
+        <h2 className="section-title">📄 Full Document Content</h2>
         <div className="governance-card" style={{ whiteSpace: 'pre-wrap', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-          {govContent.split('## Verificação Final')[0].slice(0, 2000)}...
+          {govContent || "Loading content..."}
         </div>
+      </div>
+    );
+  };
+
+  const renderIntelligence = () => {
+    return (
+      <div className="grid-layout">
+        <section className="panel" style={{ gridColumn: 'span 2' }}>
+          <div className="panel-header">
+            <h2 className="panel-title">🧠 Agent Memory Explorer</h2>
+          </div>
+          <div className="thought-stream" style={{ height: '350px', overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
+             <div style={{ display: 'flex', gap: '10px', padding: '15px', flexShrink: 0 }}>
+                <input 
+                  type="text" 
+                  placeholder="Search memory using vector similarity..." 
+                  className="btn-action" 
+                  style={{ flex: 1, backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)', color: 'var(--text-primary)', textAlign: 'left', cursor: 'text' }}
+                  value={memorySearch}
+                  onChange={(e) => setMemorySearch(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && fetchMemories()}
+                />
+                <button className="btn-action" onClick={fetchMemories}>SEARCH (gRPC)</button>
+             </div>
+             
+             <div style={{ padding: '0 15px', flex: 1 }}>
+               {memories.length === 0 ? (
+                 <p style={{ color: 'var(--text-secondary)', textAlign: 'center', marginTop: '40px' }}>Enter a natural language query to retrieve highly relevant historical agent decisions.</p>
+               ) : (
+                 <table className="governance-table" style={{ width: '100%' }}>
+                   <thead>
+                     <tr>
+                       <th>Score</th>
+                       <th>Objective</th>
+                       <th>Action</th>
+                       <th>Time</th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                     {memories.map(m => (
+                       <tr key={m.id}>
+                         <td style={{ color: m.score > 0.8 ? 'var(--accent-neon)' : 'var(--text-secondary)' }}>
+                           {(m.score * 100).toFixed(1)}%
+                         </td>
+                         <td>{m.objective}</td>
+                         <td>{m.action}</td>
+                         <td style={{ fontSize: '0.8em', color: 'var(--text-secondary)' }}>{new Date(m.timestamp).toLocaleTimeString()}</td>
+                       </tr>
+                     ))}
+                   </tbody>
+                 </table>
+               )}
+             </div>
+          </div>
+        </section>
+
+        <section className="panel" style={{ gridColumn: 'span 2' }}>
+          <div className="panel-header">
+            <h2 className="panel-title">⏳ AI Task Watcher</h2>
+            <div className="status-badge" onClick={fetchTasks} style={{ cursor: 'pointer' }}>🔄 REFRESH</div>
+          </div>
+          <div className="thought-stream" style={{ height: '300px', overflowY: 'auto' }}>
+            {tasks.length === 0 ? (
+              <p style={{ color: 'var(--text-secondary)', padding: '40px', textAlign: 'center' }}>Live monitoring of `ai_tasks` DB and active swarm executions.</p>
+            ) : (
+              <table className="governance-table" style={{ width: '100%', borderCollapse: 'collapse', padding: '10px' }}>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Target</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {tasks.map(t => (
+                    <tr key={t.id}>
+                      <td style={{ color: 'var(--text-secondary)' }}>#{t.id}</td>
+                      <td>{t.task_type}</td>
+                      <td style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85em' }}>{t.target_file}</td>
+                      <td style={{ color: t.status === 'PENDING' ? 'var(--accent-warn)' : t.status === 'COMPLETED' ? 'var(--accent-neon)' : 'var(--accent-err)' }}>
+                        {t.status}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        </section>
       </div>
     );
   };
@@ -263,11 +440,7 @@ function App() {
 
         {screen === 'fleet' && renderFleet()}
         {screen === 'governance' && renderGovernance()}
-        {screen === 'intelligence' && (
-          <div style={{ textAlign: 'center', padding: '100px', color: 'var(--text-secondary)' }}>
-            Intelligence Analysis Coming Soon...
-          </div>
-        )}
+        {screen === 'intelligence' && renderIntelligence()}
       </div>
     </div>
   );

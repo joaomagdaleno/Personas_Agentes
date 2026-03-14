@@ -1,8 +1,12 @@
 import winston from "winston";
 import * as fs from "node:fs";
+import * as fsPromises from "node:fs/promises";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
-import { spawnSync } from "node:child_process";
+import { exec } from "node:child_process";
+import { promisify } from "node:util";
+
+const execAsync = promisify(exec);
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const logger = winston.child({ module: "PersonaRegistry" });
@@ -30,7 +34,7 @@ export class PersonaRegistry {
 
     async loadFleet(orchestrator: any) {
         try {
-            const manifest = this.loadManifest();
+            const manifest = await this.loadManifest();
             logger.info(`🎭 [Registry] Analisando memórias de ${manifest.personas.length} PhDs...`);
 
             for (const metadata of manifest.personas) {
@@ -44,20 +48,23 @@ export class PersonaRegistry {
         }
     }
 
-    private loadManifest(): any {
+    private async loadManifest(): Promise<any> {
         const manifestPath = path.join(__dirname, "persona_manifest.json");
         if (!fs.existsSync(manifestPath)) {
-            logger.warn(`⚠️ [Registry] Manifesto não encontrado em ${manifestPath}. Tentando gerar on-demand...`);
+            logger.warn(`⚠️ [Registry] Manifesto não encontrado em ${manifestPath}. Tentando gerar on-demand (async)...`);
             const scriptPath = path.join(__dirname, "..", "..", "scripts", "extract_personas.ts");
-            const res = spawnSync("bun", ["run", scriptPath], { stdio: "inherit" });
-            if (res.status !== 0) {
-                throw new Error(`Falha ao gerar o manifesto de personas (exit_code: ${res.status}).`);
+            try {
+                await execAsync(`bun run "${scriptPath}"`);
+            } catch (err: any) {
+                throw new Error(`Falha ao gerar o manifesto de personas (exit_code: ${err.code}).`);
             }
             if (!fs.existsSync(manifestPath)) {
                 throw new Error(`Manifesto gerado não foi encontrado em ${manifestPath}`);
             }
         }
-        return JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+        
+        const data = await fsPromises.readFile(manifestPath, 'utf-8');
+        return JSON.parse(data);
     }
 
     private async mobilizePersona(metadata: any): Promise<any> {

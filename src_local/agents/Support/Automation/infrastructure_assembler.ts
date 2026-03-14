@@ -93,53 +93,18 @@ export class InfrastructureAssembler {
     }
 
     /**
-     * 🔌 Inicia a API Soberana via Bun.serve (o Hub Go já deve estar rodando).
+     * 🔌 Inicia a integração com a API Soberana (Go Hub).
      */
     static async launchSovereignAPI(_projectRoot: string): Promise<void> {
-        logger.info(`🔌 [Assembler] Iniciando API TypeScript Soberana em http://localhost:8000...`);
-
-        // Soverign API Implementation
-
-        Bun.serve({
-            port: 8000,
-            async fetch(req) {
-                const url = new URL(req.url);
-
-                if (url.pathname === "/status") {
-                    return Response.json({
-                        project: "Personas Agentes",
-                        status: "HEALTHY",
-                        timestamp: new Date().toISOString()
-                    });
-                }
-
-                if (url.pathname === "/chat") {
-                    const q = url.searchParams.get("q") || "";
-                    const { CognitiveEngine } = await import("../../../utils/cognitive_engine");
-                    const brain = CognitiveEngine.getInstance(InfrastructureAssembler.hubManager);
-                    const response = await brain.reason(q);
-                    return Response.json({ query: q, response });
-                }
-
-                return new Response("Sovereign API - Use /status or /chat?q=...", { status: 404 });
-            },
-        });
+        // Redirecionado para o Sovereign Hub em Go (main.go) na porta 8080.
+        logger.info(`🔌 [Assembler] Integrou-se com o Sovereign Hub (Go) na porta 8080.`);
     }
 
     /**
-     * 🚀 Inicia o Dashboard Nativo via Bridge.
+     * 🚀 Inicia a integração com o Dashboard React Native.
      */
-    static launchSovereignDashboard(projectRoot: string): void {
-        logger.info("🎬 [Assembler] Acionando Dashboard Nativo...");
-        const { spawn } = require("node:child_process");
-
-        // Mantemos a chamada ao script Python por enquanto devido à complexidade da UI Tkinter,
-        // mas o controle é agora do Assembler.
-        const pyPath = path.join(projectRoot, "scripts", "launch_dashboard.py");
-        spawn("python", [pyPath], {
-            cwd: projectRoot,
-            detached: true,
-            stdio: "ignore"
-        }).unref();
+    static launchSovereignDashboard(_projectRoot: string): void {
+        // Redirecionado para o Sovereign Dashboard em React (dashboard/src/App.tsx).
+        logger.info("🎬 [Assembler] O Dashboard nativo React está disponível na interface WEB.");
     }
 }
