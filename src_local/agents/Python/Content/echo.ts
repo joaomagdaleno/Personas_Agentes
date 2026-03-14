@@ -1,6 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding } from "../../base.ts";
-
+import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
 
 /**
  * 📡 Dr. Echo — PhD in Python Diagnostic Tracing & Logging
@@ -8,7 +7,7 @@ import type { AuditRule, StrategicFinding } from "../../base.ts";
  */
 export class EchoPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
-        super(projectRoot as any);
+        super(projectRoot);
         this.name = "Echo";
         this.emoji = "📡";
         this.role = "PhD Diagnostic Tracer";
@@ -16,9 +15,9 @@ export class EchoPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
 
         if (this.hub) {
             const logNodes = await this.hub.queryKnowledgeGraph("print", "high");
@@ -27,7 +26,8 @@ export class EchoPersona extends BaseActivePersona {
             findings.push({
                 file: "Diagnostic Tracing", agent: this.name, role: this.role, emoji: this.emoji,
                 issue: `Sovereign Echo: Rastreabilidade Python validada via Rust Hub. PhD Analysis: ${reasoning}`,
-                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Logging Audit", match_count: 1
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Logging Audit", match_count: 1,
+                context: "Logging & Tracing Analysis"
             } as any);
         }
         return findings;
@@ -47,9 +47,7 @@ export class EchoPersona extends BaseActivePersona {
 
     override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
-        const target = /print\(/;
-        const ignore = /logging/;
-        if (target["test"](content) && !ignore["test"](content)) {
+        if (/print\(/.test(content) && !/logging/.test(content)) {
             return {
                 file, severity: "HIGH",
                 issue: `Cegueira Operacional: O objetivo '${objective}' exige diagnóstico. Em '${file}', o uso de print() impede a rastreabilidade da 'Orquestração de Inteligência Artificial'.`,
@@ -74,8 +72,4 @@ export class EchoPersona extends BaseActivePersona {
     override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em telemetria e rastro digital Python.`;
     }
-    public audit(): any[] { return []; }
-    public Branding(): string { return this.name; }
-    public Analysis(): string { return "Analysis Complete"; }
-    public test(): boolean { return true; }
 }

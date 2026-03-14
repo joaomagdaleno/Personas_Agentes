@@ -7,7 +7,7 @@ import type { AuditRule, StrategicFinding } from "../../base.ts";
  * Especialista em consistência visual no ecossistema Bun.
  */
 export class PalettePersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
+    constructor(projectRoot?: string) {
         super(projectRoot);
         this.name = "Palette";
         this.emoji = "🎨";

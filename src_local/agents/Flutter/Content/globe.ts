@@ -26,15 +26,22 @@ export class GlobePersona extends BaseActivePersona {
         return findings;
     }
 
+    public override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".dart", ".arb"],
+            rules: [
+                { regex: /\.arb$/, issue: "Suporte l10n: Arquivo de tradução detectado. Verifique se todas as chaves estão presentes em todos os locales.", severity: "low" },
+                { regex: /AppLocalizations\.of\(context\)/, issue: "Acesso de Tradução: Verifique se o context é válido e se há fallback configurado.", severity: "low" },
+                { regex: /Directionality\.of\(context\)/, issue: "Suporte RTL: Verifique se o layout se adapta corretamente para idiomas como Árabe/Hebraico.", severity: "medium" },
+                { regex: /Intl\.message\(/, issue: "Legacy i18n: Considere migrar para o sistema de .arb nativo do Flutter para maior integração.", severity: "medium" }
+            ]
+        };
+    }
+
     public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /\.arb$/, issue: "Suporte l10n: Arquivo de tradução detectado. Verifique se todas as chaves estão presentes em todos os locales.", severity: "low" },
-            { regex: /AppLocalizations\.of\(context\)/, issue: "Acesso de Tradução: Verifique se o context é válido e se há fallback configurado.", severity: "low" },
-            { regex: /Directionality\.of\(context\)/, issue: "Suporte RTL: Verifique se o layout se adapta corretamente para idiomas como Árabe/Hebraico.", severity: "medium" },
-            { regex: /Intl\.message\(/, issue: "Legacy i18n: Considere migrar para o sistema de .arb nativo do Flutter para maior integração.", severity: "medium" }
-        ];
-        const results = await this.findPatterns([".dart", ".arb"], rules);
+        const { extensions, rules } = this.getAuditRules();
+        const results = await this.findPatterns(extensions, rules);
 
         // Advanced Logic: Cultural Depth
         if (results.length === 0) {

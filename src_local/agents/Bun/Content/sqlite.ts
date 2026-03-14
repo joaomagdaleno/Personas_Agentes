@@ -1,4 +1,5 @@
-import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";;
 import winston from "winston";
 
 const logger = winston.child({ module: "Bun_Sqlite" });
@@ -8,7 +9,7 @@ const logger = winston.child({ module: "Bun_Sqlite" });
  * Especialista em bun:sqlite, prepared statements e SQL injection.
  */
 export class SqlitePersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
+    constructor(projectRoot?: string) {
         super(projectRoot);
         this.name = "Sqlite";
         this.emoji = "🗄️";

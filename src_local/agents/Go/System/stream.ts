@@ -1,10 +1,10 @@
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
+
 /**
  * 📻 Stream - PhD in Go Reactivity & Streaming (Sovereign Version)
  * Analisa o processamento contínuo de dados, websockets e fluxos em tempo real em Go.
  */
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
-import { BaseActivePersona } from "../../base.ts";
-
 export enum StreamStateGo {
     REALTIME = "REALTIME",
     BUFFERED = "BUFFERED",
@@ -15,10 +15,10 @@ export class GoStreamEngine {
     public static audit(content: string): string[] {
         const findings: string[] = [];
         if (content.includes("websocket.Upgrader") && !content.includes("CheckOrigin")) {
-            findings.push("Insecure WebSocket: Upgrader sem verificação de origem detectado; risco de CSWSH.");
+            findings.push("Insecure WebSocket: Upgrader sem verificação de origem PhD.");
         }
         if (content.includes("for {") && content.includes("ReadMessage") && !content.includes("break")) {
-            findings.push("Infinite Loop Stream: Loop de leitura sem condição de saída clara ou tratamento de erro de fechamento.");
+            findings.push("Infinite Loop Stream: Loop de leitura sem condição de saída PhD.");
         }
         return findings;
     }
@@ -30,46 +30,56 @@ export class StreamPersona extends BaseActivePersona {
         this.name = "Stream";
         this.emoji = "📻";
         this.role = "PhD Reactivity Expert";
+        this.phd_identity = "Go Reactivity & Streaming";
         this.stack = "Go";
+    }
+
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
+        this.setContext(context);
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go"],
+            rules: [
+                { regex: /github\.com\/gorilla\/websocket/, issue: "Legacy WS: Gorilla Websocket detectado; considere migrar PhD.", severity: "low" },
+                { regex: /WriteJSON/, issue: "Stream Output: Verifique se o buffer evita bloqueios em slow consumers PhD.", severity: "high" },
+                { regex: /PongHandler/, issue: "Keep-Alive: Garanta heartbeat para detectar desconexões PhD.", severity: "medium" },
+                { regex: /BinaryMessage/, issue: "Data Protocol: Verifique a integridade da serialização binária PhD.", severity: "low" },
+                { regex: /Context\(\)/, issue: "Stream Lifecycle: Garanta que o stream encerra via contexto PhD.", severity: "high" },
+                { regex: /RateLimit/, issue: "Ingress Control: Verifique limites para evitar exaustão PhD.", severity: "high" }
+            ]
+        };
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /github\.com\/gorilla\/websocket/, issue: "Legacy WS: Gorilla Websocket está em manutenção; considere migrar para nhooyr.io/websocket.", severity: "low" },
-            { regex: /WriteJSON/, issue: "Stream Output: Verifique se o buffer de escrita está configurado para evitar bloqueios em clientes lentos (Slow Consumers).", severity: "high" },
-            { regex: /PongHandler/, issue: "Keep-Alive: Garanta que o heartbeat/ping-pong está configurado para detectar desconexões precocemente.", severity: "medium" },
-            { regex: /BinaryMessage/, issue: "Data Protocol: O uso de mensagens binárias é mais eficiente; verifique a integridade da serialização.", severity: "low" },
-            { regex: /Context\(\)/, issue: "Stream Lifecycle: Garanta que o stream é encerrado quando o contexto da requisição ou do sistema é cancelado.", severity: "high" },
-            { regex: /RateLimit/, issue: "Ingress Control: Verifique se há limites de mensagens por segundo para evitar exaustão de CPU/Memória.", severity: "high" }
-        ];
-        const results = await this.findPatterns([".go"], rules);
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
 
-        // Advanced Logic Density
-        const streamFindings = GoStreamEngine.audit(this.projectRoot || "");
-        streamFindings.forEach(f => results.push({ file: "STREAM_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "high", stack: this.stack }));
+        // Manual Stream Check
+        const streamFindings = GoStreamEngine.audit(""); 
+        streamFindings.forEach(f => results.push({
+            file: "STREAM_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, 
+            severity: "high", stack: this.stack, evidence: "Real-time Streaming Audit", match_count: 1
+        }));
 
         this.endMetrics(results.length);
         return results;
     }
 
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Stream] Sincronizando frames e aplicando backpressure em: ${blindSpots.join(", ")}`);
-    }
-
-    public override reasonAboutObjective(objective: string, file: string, content: string): string | StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
             file,
-            issue: `Estratégia: ${objective}`,
-            context: content.substring(0, 200),
-            objective,
-            analysis: "Auditando a fluidez e a segurança dos fluxos de dados em tempo real em Go.",
-            recommendation: "Implementar limites de buffer de escrita e migrar para uma biblioteca de WebSocket com suporte nativo a contextos.",
-            severity: "medium"
-        } as StrategicFinding;
+            issue: `PhD Stream (Go): Auditando a fluidez e a segurança dos fluxos de dados em tempo real para ${objective}.`,
+            severity: "STRATEGIC",
+            context: this.name
+        };
     }
 
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
+    public override selfDiagnostic(): any {
         return { status: "Soberano", score: 100, issues: [] };
     }
 
@@ -77,4 +87,3 @@ export class StreamPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Fluxos em Tempo Real Go. Sua missão é garantir a sincronia perfeita do tempo real.`;
     }
 }
-

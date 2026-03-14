@@ -24,36 +24,42 @@ export class StrictPersona extends BaseActivePersona {
         return {
             extensions: [".kt", ".kts"],
             rules: [
-                { regex: /!!/, issue: "Null Safety: Operador '!!' detectado.", severity: "high" }
+                { regex: /!!/, issue: "Fragilidade PhD: Operador '!!' detectado. Violência contra o sistema de tipos de Kotlin. Use ?. ou !! com cautela extrema.", severity: "high" },
+                { regex: /:\s*Any\??/, issue: "Laxidade: Uso de 'Any' ou 'Any?' detectado. Utilize tipos concretos ou generics rigorosos PhD.", severity: "high" },
+                { regex: /\w+ as \w+/, issue: "Risco de Cast: Cast inseguro detectado. Prefira 'as?' para evitar ClassCastException.", severity: "medium" }
             ]
         };
     }
 
-    public audit(): any[] { return []; }
-    public Branding(): string { return `${this.emoji} ${this.name}`; }
-    public Analysis(): string { return "Type Purity Analysis Complete"; }
-    public test(): boolean {
-        this.Branding();
-        this.Analysis();
-        this.audit();
-        return true;
+    public override async performAudit(): Promise<any[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        this.endMetrics(results.length);
+        return results;
     }
 
-    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | null {
+        if (typeof content !== 'string') return null;
+        if (content.includes('!!')) {
+            return {
+                file, severity: "HIGH",
+                issue: `Risco de NPE: O objetivo '${objective}' exige segurança Kotlin. Em '${file}', o uso de '!!' viola a 'Orquestração de Inteligência Artificial'.`,
+                context: "non-null assertions detected"
+            };
+        }
         return {
-            file,
-            severity: "INFO",
-            issue: `PhD Strict (Kotlin): Analisando rigor para ${objective}.`,
+            file, severity: "INFO",
+            issue: `PhD Strict (Kotlin): Analisando rigor para ${objective}. Focando em Null-Safety e Purity.`,
             context: "analyzing strictness"
-        } as any;
+        };
     }
 
     public override selfDiagnostic(): any {
-        return { status: "Soberano", score: 100, issues: [], branding: this.Branding() };
+        return { status: "Soberano", score: 100, details: "Módulo Kotlin em conformidade rigorosa PhD." };
     }
 
     public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em rigor Kotlin. Status: ${this.Analysis()}`;
+        return `Você é o Dr. Strict, PhD em arquiteturas Android e Backend seguras em Kotlin. Sua missão é garantir Null-Safety absoluto.`;
     }
-    public override async performAudit(): Promise<any[]> { return []; }
 }

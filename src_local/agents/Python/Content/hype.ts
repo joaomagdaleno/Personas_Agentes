@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
 
 /**
  * 🚀 Dr. Hype — PhD in Python Package Visibility & PyPI Identity
@@ -15,18 +15,23 @@ export class HypePersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         if (this.hub) {
             const pyNodes = await this.hub.queryKnowledgeGraph("pyproject.toml", "medium");
             const reasoning = await this.hub.reason(`Analyze the Python package visibility with ${pyNodes.length} metadata nodes. Recommend PEP 621 compliance and PyPI discoverability.`);
-            findings.push({ file: "Product Visibility", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Hype: Visibilidade Python auditada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "PyProject Knowledge Graph Audit", match_count: 1 } as any);
+            findings.push({ 
+                file: "Product Visibility", agent: this.name, role: this.role, emoji: this.emoji, 
+                issue: `Sovereign Hype: Visibilidade Python auditada via Rust Hub. PhD Analysis: ${reasoning}`, 
+                severity: "INFO", stack: this.stack, evidence: "PyProject Knowledge Graph Audit", match_count: 1,
+                context: "Package Visibility Analysis"
+            } as any);
         }
         return findings;
     }
 
-    public override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: ['setup.py', 'pyproject.toml', 'README.md'],
             rules: [
@@ -39,44 +44,48 @@ export class HypePersona extends BaseActivePersona {
 
     public override async performAudit(): Promise<AuditFinding[]> {
         const results = await super.performAudit();
-        this.auditPackageJson(results);
+        this.auditPackageFiles(results);
         this.auditProjectPresence(results);
         return results;
     }
 
-    public auditPackageJson(results: any[]) {
+    private auditPackageFiles(results: AuditFinding[]) {
         for (const [filePath, fileData] of Object.entries(this.contextData)) {
             const content = (fileData as any).content || fileData;
             if ((filePath.endsWith('setup.py') || filePath.endsWith('pyproject.toml')) && content) {
-                this.analyzePackageContent(filePath, content as string, results);
+                if (!content.includes("version")) {
+                    results.push({ 
+                        file: filePath, 
+                        issue: 'Anônimo: Arquivo de setup sem definição de version.', 
+                        severity: 'high', 
+                        agent: this.name,
+                        role: this.role,
+                        emoji: this.emoji,
+                        stack: this.stack,
+                        evidence: "Missing version field",
+                        match_count: 1,
+                        context: "Package Metadata Audit"
+                    } as any);
+                }
             }
         }
     }
 
-    public analyzePackageContent(filePath: string, content: string, results: any[]) {
-        const pkg = this.parse(content);
-        this.checkRequiredFields(pkg, filePath, results);
-        this.checkKeywords(pkg, filePath, results);
-        this.checkIdentity(pkg, filePath, results);
-    }
-
-    public parse(content: string): any {
-        return { content }; // Python parsing placeholder
-    }
-
-    public checkRequiredFields(pkg: any, filePath: string, results: any[]) {
-        if (!pkg.content.includes("version")) {
-            results.push({ file: filePath, issue: 'Anônimo: Arquivo de setup sem definição de version.', severity: 'high', persona: this.name } as any);
-        }
-    }
-
-    public checkKeywords(_pkg: any, _filePath: string, _results: any[]) { }
-    public checkIdentity(_pkg: any, _filePath: string, _results: any[]) { }
-
-    public auditProjectPresence(results: any[]) {
+    private auditProjectPresence(results: AuditFinding[]) {
         const hasReadme = Object.keys(this.contextData).some(f => /readme\.md$/i.test(f));
         if (!hasReadme) {
-            results.push({ file: 'ROOT', issue: 'Invisibilidade: Projeto Python sem README.md.', severity: 'high', persona: this.name } as any);
+            results.push({ 
+                file: 'ROOT', 
+                issue: 'Invisibilidade: Projeto Python sem README.md.', 
+                severity: 'high', 
+                agent: this.name,
+                role: this.role,
+                emoji: this.emoji,
+                stack: this.stack,
+                evidence: "Documentation Missing",
+                match_count: 1,
+                context: "Project Visibility Audit"
+            } as any);
         }
     }
 
@@ -98,32 +107,15 @@ export class HypePersona extends BaseActivePersona {
 
     public Branding(): string { return `${this.emoji} ${this.name}`; }
 
-    public forEach(items: any[], callback: (item: any) => void) { items.forEach(callback); }
-    public keys(obj: any): string[] { return Object.keys(obj); }
-    public some(items: any[], predicate: (item: any) => boolean): boolean { return items.some(predicate); }
-    public entries(obj: any): [string, any][] { return Object.entries(obj); }
-    public endsWith(str: string, suffix: string): boolean { return str.endsWith(suffix); }
-
-    public test(): boolean {
-        this.forEach([], () => {});
-        this.keys({});
-        this.some([], () => true);
-        this.entries({});
-        this.endsWith("a", "a");
-        return true;
-    }
-
     public override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,
-            issues: [],
-            branding: this.Branding(),
             details: "Evangelista de produto Python operando com persuasão PhD."
         };
     }
 
     public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, mestre em visibilidade Python. Status: ${JSON.stringify(this.selfDiagnostic())}`;
+        return `Você é o Dr. ${this.name}, mestre em visibilidade Python.`;
     }
 }

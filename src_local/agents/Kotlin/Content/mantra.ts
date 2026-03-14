@@ -26,17 +26,25 @@ export class MantraPersona extends BaseActivePersona {
         return findings;
     }
 
+    public override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".kt"],
+            rules: [
+                { regex: /var\s+\w+:\s*\w+\?\s*=\s*null/, issue: "Entropia: Uso de estado mutável nullable detectado. Prefira imutabilidade (val).", severity: "medium" },
+                { regex: /catch\s*\(\w+:\s*Exception\)\s*\{\s*\}/, issue: "Anti-padrão: Exceção capturada e ignorada. Isso silencia falhas de integridade.", severity: "critical" }
+            ]
+        };
+    }
+
     public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = await this.findPatterns([".kt"], [
-            { regex: /var\s+\w+:\s*\w+\?\s*=\s*null/, issue: "Entropia: Uso de estado mutável nullable detectado. Prefira imutabilidade (val).", severity: "medium" },
-            { regex: /catch\s*\(\w+:\s*Exception\)\s*\{\s*\}/, issue: "Anti-padrão: Exceção capturada e ignorada. Isso silencia falhas de integridade.", severity: "critical" }
-        ]);
+        const { extensions, rules } = this.getAuditRules();
+        const results = await this.findPatterns(extensions, rules);
         this.endMetrics(results.length);
         return results;
     }
 
-    public override reasonAboutObjective(objective: string, file: string, content: string): StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, content: string): StrategicFinding | string | null {
         if (content.includes("var") && content.includes("null")) {
             return {
                 file,

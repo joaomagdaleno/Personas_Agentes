@@ -1,10 +1,10 @@
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
+
 /**
  * 🔗 Nexus - PhD in Go Orchestration & Distributed Systems (Sovereign Version)
  * Analisa a conectividade, service mesh, e a orquestração de microserviços em Go.
  */
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
-import { BaseActivePersona } from "../../base.ts";
-
 export enum OrchestrationDensityGo {
     DECENTRALIZED = "DECENTRALIZED",
     MONOLITHIC = "MONOLITHIC",
@@ -15,11 +15,11 @@ export class GoOrchestrationEngine {
     public static audit(content: string): string[] {
         const issues: string[] = [];
         if (content.includes("grpc.Dial") && !content.includes("WithBlock")) {
-            issues.push("Non-Blocking gRPC: Conexão gRPC iniciada sem aguardar disponibilidade do peer; risco de falha em cascata.");
+            issues.push("Non-Blocking gRPC: Conexão gRPC iniciada sem aguardar disponibilidade PhD.");
         }
         if (content.includes("Consul") || content.includes("Etcd")) {
             if (!content.includes("Watch")) {
-                issues.push("Static Service Discovery: Uso de descoberta de serviço sem monitoramento reativo de mudanças.");
+                issues.push("Static Service Discovery: Uso de descoberta sem monitoramento reativo PhD.");
             }
         }
         return issues;
@@ -32,46 +32,56 @@ export class NexusPersona extends BaseActivePersona {
         this.name = "Nexus";
         this.emoji = "🔗";
         this.role = "PhD Orchestration Architect";
+        this.phd_identity = "Go Orchestration & Distributed Systems";
         this.stack = "Go";
+    }
+
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
+        this.setContext(context);
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go"],
+            rules: [
+                { regex: /grpc\.NewServer/, issue: "gRPC Server: Verifique interceptores de logging e auth PhD.", severity: "medium" },
+                { regex: /k8s\.io\/client-go/, issue: "Kubernetes Native: Verifique RBAC e limites de recursos PhD.", severity: "high" },
+                { regex: /Retry\(/, issue: "Retry Logic: Garanta o uso de exponential backoff PhD.", severity: "high" },
+                { regex: /LoadBalancer/, issue: "Cloud Elasticity: Verifique se a infra suporta scaling reativo PhD.", severity: "low" },
+                { regex: /CircuitBreaker/, issue: "Fault Tolerance: Verifique se há sinalização de fallback PhD.", severity: "medium" },
+                { regex: /ServiceDiscovery/, issue: "Registry Integration: Verifique a saúde do healthcheck remoto PhD.", severity: "high" }
+            ]
+        };
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /grpc\.NewServer/, issue: "gRPC Server: Verifique se o interceptor de logging e auth está devidamente configurado.", severity: "medium" },
-            { regex: /k8s\.io\/client-go/, issue: "Kubernetes Native: Verifique se o RBAC e os limites de recursos estão definidos para este controlador.", severity: "high" },
-            { regex: /Retry\(/, issue: "Retry Logic: Garanta o uso de exponential backoff para evitar ataques de 'thundering herd'.", severity: "high" },
-            { regex: /LoadBalancer/, issue: "Cloud Elasticity: Verifique se a infraestrutura suporta auto-scaling reativo.", severity: "low" },
-            { regex: /CircuitBreaker/, issue: "Fault Tolerance: Circuito detectado; verifique se há sinalização de fallback para o usuário.", severity: "medium" },
-            { regex: /ServiceDiscovery/, issue: "Registry Integration: Verifique a saúde do healthcheck remoto para evitar tráfego em nós mortos.", severity: "high" }
-        ];
-        const results = await this.findPatterns([".go"], rules);
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
 
-        // Advanced Logic Density
-        const orchestrationIssues = GoOrchestrationEngine.audit(this.projectRoot || "");
-        orchestrationIssues.forEach(o => results.push({ file: "DISTRIBUTED_SCAN", agent: this.name, role: this.role, emoji: this.emoji, issue: o, severity: "medium", stack: this.stack }));
+        // Manual Orchestration Check
+        const orchestrationIssues = GoOrchestrationEngine.audit(""); 
+        orchestrationIssues.forEach(o => results.push({ 
+            file: "DISTRIBUTED_SCAN", agent: this.name, role: this.role, emoji: this.emoji, issue: o, 
+            severity: "medium", stack: this.stack, evidence: "Distributed Systems Audit", match_count: 1
+        }));
 
         this.endMetrics(results.length);
         return results;
     }
 
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Nexus] Injetando circuit breakers e configurando mTLS em: ${blindSpots.join(", ")}`);
-    }
-
-    public override reasonAboutObjective(objective: string, file: string, content: string): string | StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
             file,
-            issue: `Estratégia: ${objective}`,
-            context: content.substring(0, 200),
-            objective,
-            analysis: "Auditando a coesão e a resiliência da malha de serviços Go.",
-            recommendation: "Migrar comunicações inter-serviços para gRPC com Protobuf para garantir contratos rígidos e performance superior.",
-            severity: "medium"
-        } as StrategicFinding;
+            issue: `PhD Nexus (Go): Auditando a coesão e a resiliência da malha de serviços para ${objective}.`,
+            severity: "STRATEGIC",
+            context: this.name
+        };
     }
 
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
+    public override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,
@@ -83,4 +93,3 @@ export class NexusPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Orquestração de Sistemas Go. Sua missão é garantir a harmonia da rede distribuída.`;
     }
 }
-

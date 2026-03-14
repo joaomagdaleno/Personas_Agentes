@@ -1,6 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
-import type { ProjectContext } from "../../../core/types.ts";
+import type { AuditRule, StrategicFinding, ProjectContext, AuditFinding } from "../../base.ts";
 
 export enum MetricDensity {
     INSTRUMENTED = "INSTRUMENTED",
@@ -22,9 +21,9 @@ export class MetricPersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+    override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
 
         if (this.hub) {
             const telemetryQuery = await this.hub.queryKnowledgeGraph("Telemetry", "high");

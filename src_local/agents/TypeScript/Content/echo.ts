@@ -1,6 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
-import type { ProjectContext } from "../../../core/types.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
 
 /**
  * 🔊 EchoPersona (TypeScript Stack) - PhD in Traceability & Native Auditing
@@ -15,7 +14,7 @@ export class EchoPersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+    override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
         const findings = await this.performAudit();
         return findings;
@@ -30,17 +29,9 @@ export class EchoPersona extends BaseActivePersona {
         };
     }
 
-    public audit(): any[] { return []; }
     public Branding(): string { return `${this.emoji} ${this.name}`; }
-    public Analysis(): string { return "Traceability Analysis Complete"; }
-    public test(): boolean {
-        this.Branding();
-        this.Analysis();
-        this.audit();
-        return true;
-    }
 
-    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | null {
+    override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
             file, severity: "INFO",
             issue: `PhD Echo (TypeScript): Garantindo rastreabilidade para ${objective}.`,
@@ -53,6 +44,6 @@ export class EchoPersona extends BaseActivePersona {
     }
 
     override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em rastreabilidade TypeScript. Status: ${this.Analysis()}`;
+        return `Você é o Dr. ${this.name}, PhD em rastreabilidade TypeScript. Status: Traceability Analysis Ready`;
     }
 }

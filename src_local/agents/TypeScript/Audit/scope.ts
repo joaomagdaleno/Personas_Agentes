@@ -1,6 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding } from "../../base.ts";
-
+import type { AuditRule, StrategicFinding, ProjectContext, AuditFinding } from "../../base.ts";
 
 /**
  * 🎯 Dr. Scope — PhD in TypeScript Project Management & Technical Debt
@@ -16,17 +15,15 @@ export class ScopePersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    override async execute(context: any): Promise<any> {
+    override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
 
         if (this.hub) {
-            // Scope Intelligence: Query Tech Debt
             const debtNodes = await this.hub.queryKnowledgeGraph("TODO", "critical");
             const fixmeNodes = await this.hub.queryKnowledgeGraph("FIXME", "critical");
             const sumDebt = debtNodes.length + fixmeNodes.length;
             
-            // PhD Scope Reasoning
             const reasoning = await this.hub.reason(`Analyze the technical debt of a system with ${sumDebt} critical TODO/FIXME markers in the TypeScript architecture.`);
 
             findings.push({
@@ -38,7 +35,7 @@ export class ScopePersona extends BaseActivePersona {
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: ['.ts', '.tsx'],
             rules: [
@@ -52,9 +49,9 @@ export class ScopePersona extends BaseActivePersona {
         };
     }
 
-    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
-        const todoCount = (content["match"](/\/\/\s*(TODO|FIXME|HACK|XXX)/gi) || []).length;
+        const todoCount = (content.match(/\/\/\s*(TODO|FIXME|HACK|XXX)/gi) || []).length;
         if (todoCount > 3) {
             return {
                 file, severity: "HIGH",
@@ -77,7 +74,7 @@ export class ScopePersona extends BaseActivePersona {
         };
     }
 
-    getSystemPrompt(): string {
+    override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em gestão de escopo e dívida técnica TypeScript.`;
     }
 }

@@ -7,7 +7,7 @@ import type { AuditRule, StrategicFinding } from "../../base.ts";
  * Especialista em type safety no runtime Bun, validação Zod e type guards.
  */
 export class MantraPersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
+    constructor(projectRoot?: string) {
         super(projectRoot);
         this.name = "Mantra";
         this.emoji = "🔮";

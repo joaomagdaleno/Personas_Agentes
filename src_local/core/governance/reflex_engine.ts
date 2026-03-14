@@ -1,5 +1,5 @@
 import winston from "winston";
-import { HealthScore } from "./policy_definitions.ts";
+import type { HealthScore } from "./policy_definitions.ts";;
 
 // Create a local logger since we can't import the global one easily without circular deps
 const logger = winston.child({ module: "ReflexEngine(Gov)" });

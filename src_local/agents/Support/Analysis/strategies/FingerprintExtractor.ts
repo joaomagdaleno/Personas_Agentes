@@ -35,8 +35,8 @@ export class FingerprintExtractor {
                     result.set(key, this.mapRustToAtomic(entry.fingerprint));
                 }
             }
-        } catch (err) {
-            logger.error(`[FingerprintExtractor] gRPC batch extraction failed:`, err);
+        } catch (err: unknown) {
+            logger.error(`[FingerprintExtractor] gRPC batch extraction failed:`, err instanceof Error ? err.message : String(err));
         }
 
         return result;
@@ -77,8 +77,9 @@ export class FingerprintExtractor {
                 return this.mapRustToAtomic(fingerprint.entries[0].fingerprint);
             }
             return this.extractLocally(content, name);
-        } catch (err: any) {
-            logger.warn(`⚠️ [Fingerprint] gRPC extraction failed for ${name}: ${err.message}. Falling back to local.`);
+        } catch (err: unknown) {
+            const msg = err instanceof Error ? err.message : String(err);
+            logger.warn(`⚠️ [Fingerprint] gRPC extraction failed for ${name}: ${msg}. Falling back to local.`);
             return this.extractLocally(content, name);
         }
     }

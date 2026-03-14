@@ -10,7 +10,7 @@ const logger = winston.child({ module: "PatternFinder" });
 export class PatternFinder {
     constructor(private hubManager?: HubManagerGRPC) { }
 
-    private normalizeToRustRegex(regex: RegExp | string): string {
+    public static normalizeToRustRegex(regex: RegExp | string): string {
         if (regex instanceof RegExp) {
             const flags = regex.flags;
             let prefix = "";
@@ -19,24 +19,24 @@ export class PatternFinder {
             if (flags.includes("m")) prefix += "(?m)";
             return prefix + regex.source;
         }
-        return regex;
+        return typeof regex === 'string' ? regex : String(regex);
     }
 
     async find(context: Record<string, any>, extensions: string[], rules: any[], ignored: string[], agent: any): Promise<any[]> {
         if (this.hubManager && Object.keys(context).length > 5) {
             try {
-                return await this.findBulk(context, [{
+                return await PatternFinder.findBulk(context, [{
                     agent: agent.name,
                     role: agent.role,
                     emoji: agent.emoji,
                     stack: agent.stack,
                     extensions,
                     rules: rules.map(r => ({
-                        regex: this.normalizeToRustRegex(r.regex),
+                        regex: PatternFinder.normalizeToRustRegex(r.regex),
                         issue: r.issue,
                         severity: r.severity
                     }))
-                }], agent.projectRoot);
+                }], agent.projectRoot, this.hubManager);
             } catch (err) {
                 logger.warn("gRPC patterns audit failed, falling back to TypeScript", { error: err });
             }
@@ -46,7 +46,7 @@ export class PatternFinder {
         const analyzable = entries.filter(([f, data]) => this.isAnalyzable(f, data, extensions, ignored));
 
         return analyzable.reduce((acc, [file, data]) => {
-            const matches = this.scanFile(file, data.content || "", rules, agent);
+            const matches = PatternFinder.scanFile(file, data.content || "", rules, agent);
             return acc.concat(matches);
         }, [] as any[]);
     }
@@ -54,8 +54,8 @@ export class PatternFinder {
     /**
      * 🦀 Executa auditoria em lote via Go Hub Proxy (Rust Mmap + RegexSet).
      */
-    async findBulk(context: Record<string, any>, personaRuleSets: any[], projectRoot: string): Promise<any[]> {
-        if (!this.hubManager) return [];
+    public static async findBulk(context: Record<string, any>, personaRuleSets: any[], projectRoot: string, hubManager?: HubManagerGRPC): Promise<any[]> {
+        if (!hubManager) return [];
 
         const request = {
             file_paths: Object.keys(context),
@@ -64,7 +64,7 @@ export class PatternFinder {
         };
 
         try {
-            return await this.hubManager.patterns(request);
+            return await hubManager.patterns(request);
         } catch (err) {
             logger.error("❌ [PatternFinder] gRPC patterns call failed:", err);
             return [];
@@ -78,14 +78,13 @@ export class PatternFinder {
         return hasExt && !isIgnored && !isTest;
     }
 
-    private scanFile(file: string, content: string, rules: any[], agent: any): any[] {
+    public static scanFile(file: string, content: string, rules: any[], agent: any): any[] {
         if (!content) return [];
         const results: any[] = [];
 
         rules.forEach(rule => {
             let regex = rule.regex instanceof RegExp ? rule.regex : new RegExp(rule.regex, "g");
 
-            // matchAll requires global flag. If not present, we must create a new RegExp with it.
             if (!regex.global) {
                 regex = new RegExp(regex.source, regex.flags + "g");
             }

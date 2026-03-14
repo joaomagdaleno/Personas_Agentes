@@ -1,6 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
-import type { ProjectContext } from "../../../core/types.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
 
 /**
  * 🏗️ Dr. Scale — PhD in Python Architecture & Scalability
@@ -15,9 +14,9 @@ export class ScalePersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    override async execute(context: ProjectContext): Promise<any> {
+    override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         return findings;
     }
 
@@ -30,17 +29,9 @@ export class ScalePersona extends BaseActivePersona {
         };
     }
 
-    public audit(): any[] { return []; }
     public Branding(): string { return `${this.emoji} ${this.name}`; }
-    public Analysis(): string { return "Scalability Analysis Complete"; }
-    public test(): boolean {
-        this.Branding();
-        this.Analysis();
-        this.audit();
-        return true;
-    }
 
-    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+    override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | string | null {
         return {
             file, severity: "INFO",
             issue: `PhD Scale (Python): Analisando escalabilidade para ${objective}.`,
@@ -53,6 +44,6 @@ export class ScalePersona extends BaseActivePersona {
     }
 
     override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em escalabilidade Python. Status: ${this.Analysis()}`;
+        return `Você é o Dr. ${this.name}, PhD em escalabilidade Python.`;
     }
 }

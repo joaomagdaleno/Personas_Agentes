@@ -2,12 +2,17 @@ import winston from "winston";
 
 const logger = winston.child({ module: "IntegrityGuardian" });
 
+export interface IntegrityVulnerabilities {
+    brittle: boolean;
+    silent_error: boolean;
+}
+
 /**
  * 🛡️ Guardião de Integridade PhD (Bun Version).
  */
 export class IntegrityGuardian {
-    async detectVulnerabilities(content: string, componentType: string, filename: string = "unknown", ignoreTestContext: boolean = false): Promise<any> {
-        const issues = { brittle: false, silent_error: false };
+    async detectVulnerabilities(content: string, componentType: string, filename: string = "unknown", ignoreTestContext: boolean = false): Promise<IntegrityVulnerabilities> {
+        const issues: IntegrityVulnerabilities = { brittle: false, silent_error: false };
 
         if (componentType === "TEST" && !ignoreTestContext) {
             return issues;
@@ -20,7 +25,7 @@ export class IntegrityGuardian {
         return issues;
     }
 
-    private analyzeBrittleContext(content: string, filename: string, issues: any) {
+    private analyzeBrittleContext(content: string, filename: string, issues: IntegrityVulnerabilities) {
         const brittlePattern = /\b(eval|exec|global|shell=true)\b/gi;
         const matches = [...content.matchAll(brittlePattern)];
 
@@ -31,7 +36,7 @@ export class IntegrityGuardian {
         }
     }
 
-    private analyzeErrorSilencing(content: string, filename: string, issues: any) {
+    private analyzeErrorSilencing(content: string, filename: string, issues: IntegrityVulnerabilities) {
         const silentPattern = /except.*:\s*pass/gi;
         const match = content.match(silentPattern);
         if (match) {

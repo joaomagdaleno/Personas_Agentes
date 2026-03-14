@@ -1,4 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
+import type { ProjectContext } from "../../base.ts";;
 import type { AuditRule, StrategicFinding } from "../../base.ts";
 
 
@@ -16,7 +17,7 @@ export class GenericPersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<any> {
         this.setContext(context);
         const findings = await this.performAudit();
         if (this.hub) {

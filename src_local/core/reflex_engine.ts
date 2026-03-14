@@ -1,5 +1,6 @@
 import winston from "winston";
 import { eventBus } from "./event_bus.ts";
+import type { AuditFinding } from "./types.ts";
 
 const logger = winston.child({ module: "ReflexEngine" });
 
@@ -14,16 +15,13 @@ export class ReflexEngine {
     }
 
     private registerListeners(): void {
-        eventBus.on("system:health-check", ({ score, findings }) => {
+        eventBus.on("system:health-check", ({ score, findings }: { score: number, findings: AuditFinding[] }) => {
             this.triggerReflexes({ health_score: score }, findings);
         });
     }
 
-    /**
-     * Analisa o snapshot de saúde e dispara reações se necessário.
-     */
-    triggerReflexes(snapshot: any, findings: any[]) {
-        const score = snapshot.healthScore || snapshot.health_score || 0;
+    triggerReflexes(snapshot: { health_score: number }, findings: AuditFinding[]) {
+        const score = snapshot.health_score || 0;
 
         logger.info(`🧠 [Reflex] Analisando saúde sistêmica: ${score}%`);
 
@@ -45,8 +43,8 @@ export class ReflexEngine {
     /**
      * Verifica se há falhas em submodulos/dependências que exigem resync.
      */
-    private checkDependencyReflex(findings: any[]) {
-        const hasDepIssue = findings.some(f => f.context === 'DependencyAuditor' || f.issue?.includes('submodule'));
+    private checkDependencyReflex(findings: AuditFinding[]) {
+        const hasDepIssue = findings.some(f => (f as any).context === 'DependencyAuditor' || f.issue?.includes('submodule'));
 
         if (hasDepIssue) {
             logger.info("📦 [Reflex] Detectada falha de dependência. Agendando resync de submodulos...");

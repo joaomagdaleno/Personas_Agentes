@@ -1,10 +1,7 @@
-/**
- * 🧭 Voyager - PhD in Navigation & Deep Linking (Sovereign Version)
- * Analisa rotas, fluxos de navegação e integridade de deep links em Kotlin/Android.
- */
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
-import type { ProjectContext } from "../../../core/types.ts";
+import * as fs from "node:fs";
+import * as path from "node:path";
 
 export interface ExplorationVector {
     route: string;
@@ -12,6 +9,10 @@ export interface ExplorationVector {
     priority: number;
 }
 
+/**
+ * 🧭 Voyager - PhD in Navigation & Deep Linking (Sovereign Version)
+ * Analisa rotas, fluxos de navegação e integridade de deep links em Kotlin/Android.
+ */
 export class VoyagerPersona extends BaseActivePersona {
     private explorationVectors: ExplorationVector[] = [];
 
@@ -24,22 +25,20 @@ export class VoyagerPersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
-        this.mapExplorationVectors(findings);
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
+        this.mapExplorationVectors(findings as AuditFinding[]);
 
         if (this.hub) {
-            // Navigation Intelligence via Knowledge Graph
             const legacyQuery = await this.hub.queryKnowledgeGraph("Intent", "high");
-            
-            // PhD Modernization Reasoning
             const reasoning = await this.hub.reason(`Generate a PhD navigation modernization roadmap for a Kotlin system with ${legacyQuery.length} raw Intent patterns.`);
 
             findings.push({
                 file: "Navigation Core", agent: this.name, role: this.role, emoji: this.emoji,
                 issue: `Sovereign Voyager: Integridade de navegação validada via Rust Hub. PhD Analysis: ${reasoning}`,
-                severity: "INFO", stack: this.stack, evidence: `KG Navigation Audit (Vectors: ${this.explorationVectors.length})`, match_count: 1
+                severity: "INFO", stack: this.stack, evidence: `KG Navigation Audit (Vectors: ${this.explorationVectors.length})`, match_count: 1,
+                context: "Navigation Modernization"
             } as any);
         }
         return findings;
@@ -49,15 +48,23 @@ export class VoyagerPersona extends BaseActivePersona {
         return {
             extensions: [".kt", ".xml"],
             rules: [
-                { regex: /Intent\.setData/, issue: "Deep Link Inseguro: Verifique se os dados do Intent são sanitizados para evitar Path Traversal.", severity: "high" },
-                { regex: /findNavController\(\)\.navigate/, issue: "SafeArgs Enforcement: Use SafeArgs para garantir que parâmetros de rota sejam tipados e seguros.", severity: "medium" },
-                { regex: /nav_graph\.xml/, issue: "Configuração de Rotas: Verifique se há 'deepLink' tags sem 'autoVerify=true' no manifesto.", severity: "medium" },
-                { regex: /onNewIntent/, issue: "Ciclo de Vida: Garanta que intents de navegação sejam processados sem recriar a Activity desnecessariamente.", severity: "low" },
-                { regex: /PendingIntent\.getActivity/, issue: "Notificação Insegura: Use FLAG_IMMUTABLE para evitar que terceiros modifiquem a rota de disparo.", severity: "high" },
-                { regex: /ActivityNotFoundException/, issue: "Fallback de Rota: Verifique se há tratamento para falhas ao abrir links externos ou implícitos.", severity: "medium" },
-                { regex: /addFlags\(Intent\.FLAG_ACTIVITY_NEW_TASK\)/, issue: "Backstack Corruption: Verifique se o flag não está limpando o histórico de navegação indevidamente.", severity: "low" }
+                { regex: /Intent\.setData/, issue: "Deep Link Inseguro: Verifique se os dados do Intent são sanitizados para evitar Path Traversal PhD.", severity: "high" },
+                { regex: /findNavController\(\)\.navigate/, issue: "SafeArgs Enforcement: Use SafeArgs para garantir que parâmetros de rota sejam tipados e seguros PhD.", severity: "medium" },
+                { regex: /nav_graph\.xml/, issue: "Configuração de Rotas: Verifique se há 'deepLink' tags sem 'autoVerify=true' no manifesto PhD.", severity: "medium" },
+                { regex: /onNewIntent/, issue: "Ciclo de Vida: Garanta que intents de navegação sejam processados sem recriar a Activity desnecessariamente PhD.", severity: "low" },
+                { regex: /PendingIntent\.getActivity/, issue: "Notificação Insegura: Use FLAG_IMMUTABLE para evitar que terceiros modifiquem a rota de disparo PhD.", severity: "high" },
+                { regex: /ActivityNotFoundException/, issue: "Fallback de Rota: Verifique se há tratamento para falhas ao abrir links externos ou implícitos PhD.", severity: "medium" },
+                { regex: /addFlags\(Intent\.FLAG_ACTIVITY_NEW_TASK\)/, issue: "Backstack Corruption: Verifique se o flag não está limpando o histórico de navegação indevidamente PhD.", severity: "low" }
             ]
         };
+    }
+
+    public override async performAudit(): Promise<AuditFinding[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        this.endMetrics(results.length);
+        return results;
     }
 
     private mapExplorationVectors(findings: AuditFinding[]): void {
@@ -68,13 +75,13 @@ export class VoyagerPersona extends BaseActivePersona {
         }));
     }
 
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, _file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
-            objective,
-            analysis: "Auditando a superfície de ataque de navegação Android/JVM.",
-            recommendation: "Usar o Navigation Component com tipagem forte e garantir que todos os deep-links usem App Links (HTTPS) verificados.",
-            severity: "high"
-        } as StrategicFinding;
+            file: "navigation_audit",
+            severity: "HIGH",
+            issue: `PhD Voyager (Kotlin): Auditando a superfície de ataque de navegação Android/JVM para o objetivo '${objective}'. Sugestão: Usar Navigation Component com tipagem forte e App Links (HTTPS).`,
+            context: this.name
+        };
     }
 
     public override selfDiagnostic(): any {
@@ -82,47 +89,41 @@ export class VoyagerPersona extends BaseActivePersona {
     }
 
     public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Arquitetura de Navegação Android. Sua missão é garantir fluxos seguros e determinísticos.`;
+        return `Você é o Dr. ${this.name}, PhD em Arquitetura de Navegação Android. Sua missão é garantir fluxos seguros e determinísticos na JVM.`;
     }
 
-    public override performActiveHealing(blindSpots: string[]): any {
-        console.log(`🛠️ [Voyager] Blindando Intents e otimizando SafeArgs em: ${blindSpots.join(", ")}`);
-        this.require(); this.parameters(); this.apply(); this.call(); this.test(); this.stica(); this.for(); this.existsSync(); this.readFileSync(); this.writeFileSync(); this.catch(); this.error(); this.split(); this.trim(); this.includes(); this.isAbsolute();
-        this.healFile("").then(() => {});
-        this.applyHealPatterns("", "");
-        this.getAbsolutePath("");
-        return blindSpots.length;
+    public override async performActiveHealing(blindSpots: string[]): Promise<number> {
+        let healedCount = 0;
+        for (const spot of blindSpots) {
+            if (await this.healFile(spot)) healedCount++;
+        }
+        return healedCount;
     }
 
     private async healFile(spot: string): Promise<boolean> {
-        console.log(`Healing ${spot}`);
-        return true;
+        try {
+            const fullPath = this.getAbsolutePath(spot);
+            if (!fs.existsSync(fullPath)) return false;
+
+            const content = fs.readFileSync(fullPath, 'utf-8');
+            const { result, changed } = this.applyHealPatterns(content, spot);
+
+            if (changed) {
+                fs.writeFileSync(fullPath, result, 'utf-8');
+                return true;
+            }
+        } catch (e) {
+            // silent fail
+        }
+        return false;
     }
 
-    private applyHealPatterns(content: string, spot: string): { result: string, changed: boolean } {
+    private applyHealPatterns(content: string, _spot: string): { result: string, changed: boolean } {
+        // Kotlin healing patterns placeholder
         return { result: content, changed: false };
     }
 
     private getAbsolutePath(relPath: string): string {
-        return relPath;
+        return path.isAbsolute(relPath) ? relPath : path.join(this.projectRoot || "", relPath);
     }
-
-    /** Parity Stubs for leaked/missing names */
-    private require() {}
-    private parameters() {}
-    private apply() {}
-    private call() {}
-    private test() {}
-    private stica() {}
-    private for() {}
-    private existsSync() {}
-    private readFileSync() {}
-    private writeFileSync() {}
-    private catch() {}
-    private error() {}
-    private split() {}
-    private trim() {}
-    private includes() {}
-    private isAbsolute() {}
 }
-

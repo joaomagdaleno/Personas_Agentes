@@ -1,6 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
-import type { ProjectContext } from "../../../core/types.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
 
 /**
  * 📊 Metric - PhD in Go Performance Telemetry
@@ -15,45 +14,43 @@ export class MetricPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".go"],
             rules: [
-                { regex: /log\.Printf|fmt\.Print|fmt\.Println/, issue: "Cegueira: Logging amador detectado.", severity: "high" }
+                { regex: /log\.Printf|fmt\.Print|fmt\.Println/, issue: "Cegueira: Logging amador detectado. Use bibliotecas de telemetria PhD (Zap, Zerolog).", severity: "high" }
             ]
         };
     }
 
-    public audit(): any[] { return []; }
-    public Branding(): string { return `${this.emoji} ${this.name}`; }
-    public Analysis(): string { return "Metric Analysis Complete"; }
-    public test(): boolean {
-        this.Branding();
-        this.Analysis();
-        this.audit();
-        return true;
+    public override async performAudit(): Promise<AuditFinding[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        this.endMetrics(results.length);
+        return results;
     }
 
-    public override reasonAboutObjective(objective: string, file: string, _content: string): string | StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
             file,
-            severity: "INFO",
             issue: `PhD Metric (Go): Analisando telemetria para ${objective}.`,
-            context: "analyzing metrics"
-        } as StrategicFinding;
+            severity: "STRATEGIC",
+            context: this.name
+        };
     }
 
     public override selfDiagnostic(): any {
-        return { status: "Soberano", score: 100, issues: [], branding: this.Branding() };
+        return { status: "Soberano", score: 100, issues: [] };
     }
 
     public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em telemetria Go. Status: ${this.Analysis()}`;
+        return `Você é o Dr. ${this.name}, PhD em telemetria Go.`;
     }
 }

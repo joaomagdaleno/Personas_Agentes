@@ -1,13 +1,14 @@
 import winston from 'winston';
 import * as fs from 'fs';
-import { Path } from "../../../core/path_utils.ts";
-import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
-import { CognitiveEngine } from "../../../utils/cognitive_engine.ts";
-import { Orchestrator } from "../../../core/orchestrator.ts";
-import { ObfuscationCleanerEngine } from "../Security/obfuscation_cleaner_engine.ts";
+import { Path } from "../../../core/path_utils.ts";;
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";;
+import { CognitiveEngine } from "../../../utils/cognitive_engine.ts";;
+import { Orchestrator } from "../../../core/orchestrator.ts";;
+import { ObfuscationCleanerEngine } from "../Security/obfuscation_cleaner_engine.ts";;
 import * as ts from 'typescript';
-import { HealerPromptBuilder } from "./healer_prompt_builder.ts";
-import { PatchManager } from "./patch_manager.ts";
+import { HealerPromptBuilder } from "./healer_prompt_builder.ts";;
+import { PatchManager } from "./patch_manager.ts";;
 
 /**
  * 🩹 Agente Healer (PhD in Software Reparation).

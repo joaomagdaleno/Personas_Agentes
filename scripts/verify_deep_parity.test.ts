@@ -5,9 +5,10 @@ import * as path from "node:path";
 
 // Concrete implementation for testing abstract class
 class TestPersona extends BaseActivePersona {
-    performAudit(): any[] { return []; }
-    reasonAboutObjective(objective: string, file: string, content: string): any { return null; }
-    getSystemPrompt(): string { return "System Prompt"; }
+    override async performAudit(): Promise<any[]> { return []; }
+    override reasonAboutObjective(objective: string, file: string, content: string): any { return null; }
+    override getSystemPrompt(): string { return "System Prompt"; }
+    override getAuditRules(): { extensions: string[]; rules: any[] } { return { extensions: [], rules: [] }; }
 
     // Public accessor for protected method
     public initSupport() {

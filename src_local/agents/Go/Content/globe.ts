@@ -1,10 +1,10 @@
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
+
 /**
  * 🌐 Globe - PhD in Go Internationalization & Global UX (Sovereign Version)
  * Analisa o suporte a múltiplos idiomas, fusos horários e padrões globais em Go.
  */
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
-import { BaseActivePersona } from "../../base.ts";
-
 export enum GlobalDensityGo {
     UNIVERSAL = "UNIVERSAL",
     LOCALIZED = "LOCALIZED",
@@ -34,58 +34,61 @@ export class GlobePersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         if (this.hub) {
             const i18nNodes = await this.hub.queryKnowledgeGraph("gotext", "medium");
             const reasoning = await this.hub.reason(`Analyze i18n readiness of a Go system with ${i18nNodes.length} internationalization patterns. Recommend gotext and UTC standardization.`);
-            findings.push({ file: "i18n Audit", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Globe: Globalização Go validada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph i18n Audit", match_count: 1 } as any);
+            findings.push({ 
+                file: "i18n Audit", agent: this.name, role: this.role, emoji: this.emoji, 
+                issue: `Sovereign Globe: Globalização Go validada via Rust Hub. PhD Analysis: ${reasoning}`, 
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph i18n Audit", match_count: 1
+            } as any);
         }
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".go"],
             rules: [
-                { regex: /golang\.org\/x\/text/, issue: "Standard i18n: Uso da biblioteca experimental de texto Go detectada; verifique a maturidade das traduções.", severity: "low" },
-                { regex: /currency/, issue: "Currency Handing: Verifique se o arredondamento de moeda segue os padrões financeiros internacionais.", severity: "high" },
-                { regex: /Location/, issue: "Timezone Logic: Verifique se as localizações de fuso horário são carregadas via banco de dados IANA.", severity: "medium" },
-                { regex: /locale/, issue: "Locale Detection: Garanta que o locale é propagado via Context em cabeçalhos HTTP.", severity: "medium" },
-                { regex: /unicode\/utf8/, issue: "UTF-8 Validation: Uso de validação explícita detectada; verifique a integridade de strings multisbyte.", severity: "low" },
-                { regex: /translation/, issue: "Translation Sync: Verifique se os arquivos de recurso estão em sincronia com o código-fonte.", severity: "medium" }
+                { regex: /golang\.org\/x\/text/, issue: "Standard i18n: Uso da biblioteca experimental de texto Go detectada; verifique a maturidade das traduções PhD.", severity: "low" },
+                { regex: /currency/, issue: "Currency Handing: Verifique se o arredondamento de moeda segue os padrões financeiros internacionais PhD.", severity: "high" },
+                { regex: /Location/, issue: "Timezone Logic: Verifique se as localizações de fuso horário são carregadas via banco de dados IANA PhD.", severity: "medium" },
+                { regex: /locale/, issue: "Locale Detection: Garanta que o locale é propagado via Context em cabeçalhos HTTP PhD.", severity: "medium" },
+                { regex: /unicode\/utf8/, issue: "Unicode Validation: Uso de validação explícita detectada; verifique a integridade de strings multisbyte PhD.", severity: "low" },
+                { regex: /translation/, issue: "Translation Sync: Verifique se os arquivos de recurso estão em sincronia com o código-fonte PhD.", severity: "medium" }
             ]
         };
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {
-        const results = await super.performAudit();
-        const globeFindings = GoGlobeEngine.audit(this.projectRoot || "");
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        
+        // Manual Globalization Check
+        const globeFindings = GoGlobeEngine.audit(""); // Placeholder for content check
         globeFindings.forEach(f => results.push({
             file: "GLOBALIZATION_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: f, severity: "medium", stack: this.stack,
             evidence: "Structural Analysis", match_count: 1
         }));
+
+        this.endMetrics(results.length);
         return results;
     }
 
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Globe] Externalizando strings e normalizando fusos horários em: ${blindSpots.join(", ")}`);
-    }
-
-    public override reasonAboutObjective(objective: string, file: string, content: string): string | StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
             file,
-            issue: `Estratégia: ${objective}`,
-            context: content.substring(0, 200),
-            objective,
-            analysis: "Auditando a capacidade de internacionalização e conformidade global do sistema Go.",
-            recommendation: "Migrar todas as strings de UI para bundle de recursos via 'gotext' e forçar UTC persistente em banco de dados.",
-            severity: "low"
-        } as StrategicFinding;
+            issue: `Auditando a capacidade de internacionalização e conformidade global do sistema Go para ${objective}.`,
+            severity: "STRATEGIC",
+            context: this.name
+        };
     }
 
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
+    public override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,
@@ -97,4 +100,3 @@ export class GlobePersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Globalização Go. Sua missão é garantir que o sistema fale todas as línguas e respeite todos os horários.`;
     }
 }
-

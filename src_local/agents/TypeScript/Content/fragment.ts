@@ -1,9 +1,5 @@
-/**
- * 🧩 Fragment - TypeScript-native Modularity & Cohesion Agent
- * Sovereign Synapse: Audita a coesão de módulos, acoplamento e oportunidades de refatoração para Clean Architecture.
- */
-import type { AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding, ProjectContext, AuditFinding } from "../../base.ts";
 
 export class FragmentPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
@@ -15,9 +11,9 @@ export class FragmentPersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         if (this.hub) {
             const moduleNodes = await this.hub.queryKnowledgeGraph("import", "low");
             const reasoning = await this.hub.reason(`Analyze the structural modularity of a TypeScript system with ${moduleNodes.length} import/export points. Recommend decoupling strategies for Clean Architecture.`);
@@ -31,7 +27,7 @@ export class FragmentPersona extends BaseActivePersona {
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".ts", ".tsx", ".js", ".jsx"],
             rules: [
@@ -43,7 +39,7 @@ export class FragmentPersona extends BaseActivePersona {
         };
     }
 
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, _file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
             file: "architecture",
             issue: `Direcionamento Fragment para ${objective}: Otimizando a coesão de módulos para manutenibilidade.`,

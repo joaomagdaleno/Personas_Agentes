@@ -1,10 +1,10 @@
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
+
 /**
  * 🧩 Fragment - PhD in Modular Deconstruction & Logic Atoms (Python Stack)
  * Analisa a granularidade de funções, métodos e a coesão de módulos Python.
  */
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
-import { BaseActivePersona } from "../../base.ts";
-
 export class FragmentPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
         super(projectRoot);
@@ -15,9 +15,9 @@ export class FragmentPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         if (this.hub) {
             const modNodes = await this.hub.queryKnowledgeGraph("import", "low");
             const reasoning = await this.hub.reason(`Analyze the structural modularity of a Python system with ${modNodes.length} import markers. Recommend decoupling strategies and module organization.`);
@@ -31,7 +31,7 @@ export class FragmentPersona extends BaseActivePersona {
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".py"],
             rules: [
@@ -45,8 +45,8 @@ export class FragmentPersona extends BaseActivePersona {
 
     public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = await this.findPatterns(this.getAuditRules().extensions, this.getAuditRules().rules);
-
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
 
         // Advanced Logic: Granularity Audit
         if (results.some(r => r.severity === "high")) {
@@ -57,20 +57,16 @@ export class FragmentPersona extends BaseActivePersona {
         return results;
     }
 
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Fragment] Decompondo funções complexas e extraindo utilitários em: ${blindSpots.join(", ")}`);
-    }
-
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
-            objective,
-            analysis: "Auditando coesão e granularidade da camada de suporte.",
-            recommendation: "Aplicar o princípio de responsabilidade única (SRP) e refatorar funções com mais de 50 linhas.",
-            severity: "medium"
-        } as StrategicFinding;
+            file,
+            issue: `Auditando coesão e granularidade da camada de suporte para ${objective}.`,
+            severity: "STRATEGIC",
+            context: this.name
+        };
     }
 
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
+    public override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,
@@ -82,4 +78,3 @@ export class FragmentPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Decomposição Modular Python. Sua missão é garantir a atomicidade total da lógica.`;
     }
 }
-

@@ -34,9 +34,13 @@ async function main() {
             console.log(`- ${key}: ${value}`);
         });
 
-    } catch (error: any) {
-        console.error("\n❌ Erro:", error);
-        console.error(error.stack);
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            console.error("\n❌ Erro:", error.message);
+            console.error(error.stack);
+        } else {
+            console.error("\n❌ Erro desconhecido:", error);
+        }
     }
 }
 

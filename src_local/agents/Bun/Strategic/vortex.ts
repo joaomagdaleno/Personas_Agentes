@@ -1,10 +1,10 @@
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
+
 /**
  * 🌀 Vortex - Bun-native Operational Excellence & Performance Agent
  * Sovereign Synapse: Audita a eficiência de algoritmos Bun, performance de runtime nativo e uso de memória.
  */
-import type { AuditRule, StrategicFinding } from "../../base.ts";
-import { BaseActivePersona } from "../../base.ts";
-
 export class VortexPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
         super(projectRoot);
@@ -15,9 +15,10 @@ export class VortexPersona extends BaseActivePersona {
         this.stack = "Bun";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
+        
         if (this.hub) {
             const bunNodes = await this.hub.queryKnowledgeGraph("Bun.serve", "low");
             const reasoning = await this.hub.reason(`Analyze the runtime performance of a Bun system with ${bunNodes.length} server points. Recommend optimizations for high-throughput HTTP handling.`);
@@ -31,21 +32,38 @@ export class VortexPersona extends BaseActivePersona {
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".ts", ".js"],
             rules: [
-                { regex: /JSON\.parse\(.*\)/, issue: "Efficiency: Uso de JSON.parse em loop intenso. No Bun, prefira fluxos de stream ou buffers pré-alocados.", severity: "low" },
+                { regex: /JSON\.parse\(.*\)/, issue: "Efficiency: Uso de JSON.parse em loop intenso. No Bun, prefira fluxos de stream ou buffers pré-alocados PhD.", severity: "low" },
                 { regex: /Buffer\.from/, issue: "Allocation: Verifique se o uso de Uint8Array nativo do Bun é mais eficiente PhD.", severity: "low" },
-                { regex: /new\s+Promise/, issue: "Asynchrony: Criação recursiva de Promises detectada. Risco de microtask queue starvation.", severity: "medium" }
+                { regex: /new\s+Promise/, issue: "Asynchrony: Criação recursiva de Promises detectada. Risco de microtask queue starvation PhD.", severity: "medium" }
             ]
         };
     }
 
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
+    public override async performAudit(): Promise<AuditFinding[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+
+        if (results.some(r => r.severity === "medium")) {
+            results.push({
+                file: "BUN_VORTEX", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: "Operational Excellence: System efficiency issues found.",
+                severity: "medium", stack: this.stack, evidence: "Structural Analysis", match_count: 1, context: "Performance"
+            } as any);
+        }
+
+        this.endMetrics(results.length);
+        return results;
+    }
+
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
             file: "performance",
-            issue: `Direcionamento Vortex Bun para ${objective}: Maximizando o throughput sistêmico.`,
+            issue: `Direcionamento Vortex Bun para ${objective}: Maximizando o throughput sistêmico PhD.`,
             severity: "STRATEGIC",
             context: this.name
         };

@@ -1,10 +1,10 @@
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
+
 /**
  * 🧘 Mantra - PhD in Go Code Quality & Idioms (Sovereign Version)
  * Analisa a aderência aos padrões idiomáticos do Go (Effective Go).
  */
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
-import { BaseActivePersona } from "../../base.ts";
-
 export enum QualityDensityGo {
     IDIOMATIC = "IDIOMATIC",
     LEGACY = "LEGACY",
@@ -34,58 +34,61 @@ export class MantraPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         if (this.hub) {
             const idiomNodes = await this.hub.queryKnowledgeGraph("init()", "medium");
             const reasoning = await this.hub.reason(`Analyze Effective Go compliance with ${idiomNodes.length} non-idiomatic patterns. Recommend golangci-lint integration.`);
-            findings.push({ file: "Quality Audit", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Mantra: Qualidade Go validada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Quality Audit", match_count: 1 } as any);
+            findings.push({ 
+                file: "Quality Audit", agent: this.name, role: this.role, emoji: this.emoji, 
+                issue: `Sovereign Mantra: Qualidade Go validada via Rust Hub. PhD Analysis: ${reasoning}`, 
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Quality Audit", match_count: 1
+            } as any);
         }
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".go"],
             rules: [
-                { regex: /camelCase/, issue: "Naming Convention: Go prefira nomes curtos para variáveis locais e Exported para campos públicos.", severity: "low" },
-                { regex: /receiver\s+ptr/, issue: "Receiver Safety: Verifique se o receptor de ponteiro é necessário ou se causa cópia indevida.", severity: "medium" },
-                { regex: /new\(.*\)/, issue: "Allocation Mode: Prefira composite literals T{} em vez de new(T) para maior legibilidade.", severity: "low" },
-                { regex: /init\(\)/, issue: "Initialization Order: O excesso de funções init() pode causar dependências circulares e ordens de execução imprevisíveis.", severity: "high" },
-                { regex: /interface\s+\w+\s+\{.*\}\s+\/\/\s*deprecated/, issue: "Stale Contract: Remova interfaces depreciadas para manter a pureza do design.", severity: "medium" },
-                { regex: /_\s*=\s*append/, issue: "Slice Misuse: Verifique se a mutação de slice não está criando efeitos colaterais em outras referências.", severity: "high" }
+                { regex: /camelCase/, issue: "Naming Convention: Go prefere nomes curtos para variáveis locais e Exported para campos públicos PhD.", severity: "low" },
+                { regex: /receiver\s+ptr/, issue: "Receiver Safety: Verifique se o receptor de ponteiro é necessário ou se causa cópia indevida PhD.", severity: "medium" },
+                { regex: /new\(.*\)/, issue: "Allocation Mode: Prefira composite literals T{} em vez de new(T) para maior legibilidade PhD.", severity: "low" },
+                { regex: /init\(\)/, issue: "Initialization Order: O excesso de funções init() pode causar dependências circulares e ordens imprevisíveis PhD.", severity: "high" },
+                { regex: /interface\s+\w+\s+\{.*\}\s+\/\/\s*deprecated/, issue: "Stale Contract: Remova interfaces depreciadas para manter a pureza do design PhD.", severity: "medium" },
+                { regex: /_\s*=\s*append/, issue: "Slice Misuse: Verifique se a mutação de slice não está criando efeitos colaterais PhD.", severity: "high" }
             ]
         };
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {
-        const results = await super.performAudit();
-        const qualityIssues = GoMantraEngine.audit(this.projectRoot || "");
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        
+        // Manual Quality Check
+        const qualityIssues = GoMantraEngine.audit(""); // Placeholder for content check
         qualityIssues.forEach(i => results.push({
             file: "QUALITY_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: i, severity: "medium", stack: this.stack,
             evidence: "Structural Analysis", match_count: 1
         }));
+
+        this.endMetrics(results.length);
         return results;
     }
 
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Mantra] Simplificando nomes e removendo Getters/Setters não idiomáticos em: ${blindSpots.join(", ")}`);
-    }
-
-    public override reasonAboutObjective(objective: string, file: string, content: string): string | StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
             file,
-            issue: `Estratégia: ${objective}`,
-            context: content.substring(0, 200),
-            objective,
-            analysis: "Auditando a conformidade do sistema Go com os padrões 'Effective Go'.",
-            recommendation: "Executar 'golangci-lint' com todos os linters ativados e corrigir falhas de design idiomático.",
-            severity: "medium"
-        } as StrategicFinding;
+            issue: `Auditando a conformidade do sistema Go com os padrões 'Effective Go' para ${objective}.`,
+            severity: "STRATEGIC",
+            context: this.name
+        };
     }
 
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
+    public override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,
@@ -97,4 +100,3 @@ export class MantraPersona extends BaseActivePersona {
         return `Você é o Dr. ${this.name}, PhD em Qualidade e Idiomas Go. Sua missão é garantir que o código seja puro e conciso.`;
     }
 }
-

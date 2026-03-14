@@ -1,5 +1,5 @@
 import winston from "winston";
-import { Path } from "../../../../core/path_utils.ts";
+import { Path } from "../../../core/path_utils.ts";
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 
 const logger = winston.child({ module: "MemoryPersistence" });

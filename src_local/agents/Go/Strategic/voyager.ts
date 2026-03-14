@@ -1,11 +1,10 @@
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
+
 /**
  * 🧭 Voyager - PhD in Go API Strategy & Navigation (Sovereign Version)
  * Analisa a superfície de exposição, roteamento e contratos de API em Go.
  */
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
-import { BaseActivePersona } from "../../base.ts";
-import type { ProjectContext } from "../../../core/types.ts";
-
 export enum RouteDensityGo {
     COMPLEX = "COMPLEX",
     STANDARD = "STANDARD",
@@ -37,15 +36,12 @@ export class VoyagerPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
 
         if (this.hub) {
-            // API Intelligence via Knowledge Graph
             const legacyQuery = await this.hub.queryKnowledgeGraph("HandleFunc", "medium");
-            
-            // PhD Modernization Reasoning
             const reasoning = await this.hub.reason(`Generate a PhD API modernization roadmap for a Go system with ${legacyQuery.length} raw HandleFunc patterns.`);
 
             findings.push({
@@ -61,43 +57,42 @@ export class VoyagerPersona extends BaseActivePersona {
         return {
             extensions: [".go"],
             rules: [
-                { regex: /GET|POST|PUT|DELETE/, issue: "HTTP Verb: Verifique se os métodos HTTP seguem os padrões REST e possuem tratamento de erro adequado.", severity: "low" },
-                { regex: /func\s+.*\(.*http\.ResponseWriter/, issue: "Raw Handler: Considere usar um framework (Gin/Echo) para gestão de rotas mais segura e escalável.", severity: "medium" },
-                { regex: /JSON\(.*interface\{\}/, issue: "Lazy Serialization: Evite interface{} no retorno de APIs; use structs tipadas para garantir contratos estáveis.", severity: "high" },
-                { regex: /v[0-9]\//, issue: "API Versioning: Versão detectada na rota; garanta a retrocompatibilidade nas alterações de contrato.", severity: "low" },
-                { regex: /github\.com\/gin-gonic|github\.com\/labstack\/echo/, issue: "Web Framework: Framework detectado; verifique se a configuração de CORS e Rate Limiting está ativa.", severity: "medium" },
-                { regex: /mux\.Vars/, issue: "Route Params: Verifique a sanitização de parâmetros de rota contra injeção de comandos.", severity: "high" }
+                { regex: /GET|POST|PUT|DELETE/, issue: "HTTP Verb: Verifique se os métodos HTTP seguem os padrões REST e tratamento de erro PhD.", severity: "low" },
+                { regex: /func\s+.*\(.*http\.ResponseWriter/, issue: "Raw Handler: Considere usar um framework (Gin/Echo) para gestão de rotas PhD.", severity: "medium" },
+                { regex: /JSON\(.*interface\{\}/, issue: "Lazy Serialization: Evite interface{} no retorno de APIs; use structs tipadas PhD.", severity: "high" },
+                { regex: /v[0-9]\//, issue: "API Versioning: Versão detectada na rota; garanta retrocompatibilidade PhD.", severity: "low" },
+                { regex: /github\.com\/gin-gonic|github\.com\/labstack\/echo/, issue: "Web Framework: Framework detectado; verifique CORS e Rate Limiting PhD.", severity: "medium" },
+                { regex: /mux\.Vars/, issue: "Route Params: Verifique a sanitização de parâmetros contra injeção PhD.", severity: "high" }
             ]
         };
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {
-        const results = await super.performAudit();
-        const routingIssues = GoRoutingEngine.analyze(this.projectRoot || "");
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        
+        // Manual Routing Check
+        const routingIssues = GoRoutingEngine.analyze(""); 
         routingIssues.forEach(r => results.push({
             file: "API_SURFACE", agent: this.name, role: this.role, emoji: this.emoji, issue: r, severity: "medium", stack: this.stack,
             evidence: "Structural Analysis", match_count: 1
         }));
+
+        this.endMetrics(results.length);
         return results;
     }
 
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Voyager] Injetando middlewares de segurança e tipando retornos em: ${blindSpots.join(", ")}`);
-    }
-
-    public override reasonAboutObjective(objective: string, file: string, content: string): string | StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
             file,
-            issue: `Estratégia: ${objective}`,
-            context: content.substring(0, 200),
-            objective,
-            analysis: "Auditando a navegabilidade e a exposição de rede das APIs Go.",
-            recommendation: "Implementar documentação OpenAPI (Swagger) automática para todos os handlers detectados.",
-            severity: "low"
-        } as StrategicFinding;
+            issue: `PhD Voyager (Go): Auditando a navegabilidade e a exposição de rede das APIs para ${objective}.`,
+            severity: "STRATEGIC",
+            context: this.name
+        };
     }
 
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
+    public override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,
@@ -108,42 +103,4 @@ export class VoyagerPersona extends BaseActivePersona {
     public override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, PhD em Arquitetura de APIs Go. Sua missão é garantir a fluidez e segurança das comunicações.`;
     }
-
-    /** Parity: Active Healing & Modernization helpers */
-    public override performActiveHealing(blindSpots: string[]): any {
-        console.log(`🛠️ [Voyager] Injetando middlewares de segurança e tipando retornos em: ${blindSpots.join(", ")}`);
-        return blindSpots.length;
-    }
-
-    private async healFile(spot: string): Promise<boolean> {
-        console.log(`Healing ${spot}`);
-        return true;
-    }
-
-    private applyHealPatterns(content: string, spot: string): { result: string, changed: boolean } {
-        return { result: content, changed: false };
-    }
-
-    private getAbsolutePath(relPath: string): string {
-        return relPath;
-    }
-
-    /** Parity Stubs for leaked/missing names */
-    private require() {}
-    private parameters() {}
-    private apply() {}
-    private call() {}
-    private test() {}
-    private stica() {}
-    private for() {}
-    private existsSync() {}
-    private readFileSync() {}
-    private writeFileSync() {}
-    private catch() {}
-    private error() {}
-    private split() {}
-    private map() {}
-    private trim() {}
-    private isAbsolute() {}
 }
-

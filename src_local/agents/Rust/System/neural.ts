@@ -1,10 +1,10 @@
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
+
 /**
  * 🧠 Neural - Rust-native AI Safety & Logic Synchronization Agent
  * Sovereign Synapse: Audita a segurança de modelos ML integrados em Rust, sincronia de estado e tensores.
  */
-import type { AuditRule, StrategicFinding } from "../../base.ts";
-import { BaseActivePersona } from "../../base.ts";
-
 export class NeuralPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
         super(projectRoot);
@@ -15,12 +15,13 @@ export class NeuralPersona extends BaseActivePersona {
         this.stack = "Rust";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
+        
         if (this.hub) {
             const neuralNodes = await this.hub.queryKnowledgeGraph("tensor", "low");
-            const reasoning = await this.hub.reason(`Analyze the AI integration of a Rust system with ${neuralNodes.length} neural markers. Recommend safety boundaries for model execution and synchronization.`);
+            const reasoning = await this.hub.reason(`Analyze the AI integration of a Rust system with ${neuralNodes.length} neural markers. Recommend safety boundaries for model execution and synchronization via FFI constraints.`);
             findings.push({ 
                 file: "AI Audit", agent: this.name, role: this.role, emoji: this.emoji, 
                 issue: `Sovereign Neural: Integridade de IA nativa validada via Rust Hub. PhD Analysis: ${reasoning}`, 
@@ -31,21 +32,29 @@ export class NeuralPersona extends BaseActivePersona {
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".rs"],
             rules: [
-                { regex: /onnx|tf|torch/, issue: "Inference: Engine de IA detectada. Garanta que o runtime nativo esteja isolado e possua limites de memória.", severity: "medium" },
-                { regex: /api_key/, issue: "Security: Chave de API de IA/ML exposta ou hardcoded em Rust.", severity: "critical" },
-                { regex: /Mutex<Model>/, issue: "Performance: Modelo sob lock mutável. Verifique se a inferência concorrente está otimizada PhD.", severity: "medium" }
+                { regex: /onnx|tf|torch/, issue: "Inference: Engine de IA detectada. Garanta que o runtime C++ nativo esteja isolado em sandbox de memória via Rust safe abstractions PhD.", severity: "medium" },
+                { regex: /api_key/, issue: "Security: Chave de API de inferência exposta ou hardcoded no binário Rust PhD.", severity: "critical" },
+                { regex: /Mutex<Model>/, issue: "Performance: Modelo tensor sob lock mutável estrito. Verifique se inferência multithreaded (ex: rayon) alivia estrangulamento de CPU PhD.", severity: "medium" }
             ]
         };
     }
 
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
+    public override async performAudit(): Promise<AuditFinding[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        this.endMetrics(results.length);
+        return results;
+    }
+
+    public override reasonAboutObjective(objective: string, _file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
             file: "neural",
-            issue: `Direcionamento Neural Rust para ${objective}: Protegendo o raciocínio sistêmico nativo.`,
+            issue: `Direcionamento Neural Rust para ${objective}: Protegendo o raciocínio matemático e a alocação de GPU/CPU estrita PhD.`,
             severity: "STRATEGIC",
             context: this.name
         };
@@ -56,6 +65,6 @@ export class NeuralPersona extends BaseActivePersona {
     }
 
     public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Sistemas Neurais. Sua missão é garantir a estabilidade e segurança da inteligência nativa.`;
+        return `Você é o Dr. ${this.name}, PhD em Sistemas Neurais e ML Ops Rust. Sua missão é garantir a estabilidade FFI da inteligência nativa.`;
     }
 }

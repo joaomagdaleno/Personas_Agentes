@@ -55,9 +55,10 @@ export class TaskWorker {
             }
 
             this.taskQueue.updateTaskStatus(task.id, 'COMPLETED', 'Success');
-        } catch (e: any) {
-            logger.error(`🚨 Falha ao processar tarefa ${task.id}: ${e.message}`);
-            this.taskQueue.updateTaskStatus(task.id, 'FAILED', e.message);
+        } catch (e: unknown) {
+            const msg = e instanceof Error ? e.message : String(e);
+            logger.error(`🚨 Falha ao processar tarefa ${task.id}: ${msg}`);
+            this.taskQueue.updateTaskStatus(task.id, 'FAILED', msg);
         }
     }
 

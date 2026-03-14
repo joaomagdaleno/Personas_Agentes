@@ -1,9 +1,5 @@
-/**
- * 👑 Master - TypeScript-native Orchestration & Prime Directive Agent
- * Sovereign Synapse: Audita a integridade da orquestração principal e conformidade com as diretrizes PhD TS.
- */
-import type { AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding, ProjectContext, AuditFinding } from "../../base.ts";
 
 export class MasterPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
@@ -15,9 +11,9 @@ export class MasterPersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         if (this.hub) {
             const entryNodes = await this.hub.queryKnowledgeGraph("process", "low");
             const reasoning = await this.hub.reason(`Analyze the orchestration sovereignty of a TypeScript/Bun system with ${entryNodes.length} process-level entry points. Recommend isolation of control logic and prime directive enforcement.`);
@@ -31,7 +27,7 @@ export class MasterPersona extends BaseActivePersona {
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".ts", ".js"],
             rules: [
@@ -43,7 +39,7 @@ export class MasterPersona extends BaseActivePersona {
         };
     }
 
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, _file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
             file: "orchestration",
             issue: `Direcionamento Master para ${objective}: Garantindo a centralidade de controle e soberania estratégica.`,

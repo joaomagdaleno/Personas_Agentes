@@ -1,10 +1,10 @@
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
+
 /**
  * 🌊 Stream - Rust-native Data Stream & Buffer Agent
  * Sovereign Synapse: Audita a integridade de fluxos de dados contínuos, iteradores e buffers circulares.
  */
-import type { AuditRule, StrategicFinding } from "../../base.ts";
-import { BaseActivePersona } from "../../base.ts";
-
 export class StreamPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
         super(projectRoot);
@@ -15,15 +15,16 @@ export class StreamPersona extends BaseActivePersona {
         this.stack = "Rust";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
+        
         if (this.hub) {
             const streamNodes = await this.hub.queryKnowledgeGraph("Stream", "low");
-            const reasoning = await this.hub.reason(`Analyze the data streaming architecture of a Rust system with ${streamNodes.length} stream markers. Recommend backpressure handling and serialization efficiency.`);
+            const reasoning = await this.hub.reason(`Analyze the data streaming architecture of a Rust system with ${streamNodes.length} stream markers. Recommend backpressure handling, pinning boundaries, and serialization efficiency.`);
             findings.push({ 
                 file: "System Audit", agent: this.name, role: this.role, emoji: this.emoji, 
-                issue: `Sovereign Stream: Fluxo de dados validado via Rust Hub. PhD Analysis: ${reasoning}`, 
+                issue: `Sovereign Stream: Fluxo de dados nativo validado via Rust Hub. PhD Analysis: ${reasoning}`, 
                 severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Stream Audit", match_count: 1,
                 context: "Stream Integrity & Backpressure"
             } as any);
@@ -31,21 +32,29 @@ export class StreamPersona extends BaseActivePersona {
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".rs"],
             rules: [
-                { regex: /\.map\(.*\)\.collect\(\)/, issue: "Efficiency: Coleção imediata detectada. Verifique se o processamento lazy via iteradores é mais eficiente PhD.", severity: "low" },
-                { regex: /tokio_stream::StreamExt/, issue: "Governance: Uso de extensões de stream assíncronas. Garanta o cancelamento seguro PhD.", severity: "low" },
-                { regex: /unsafe\s*\{\s*mem::uninitialized\s*\}/, issue: "Critical: Uso de memória não inicializada para buffer. Risco extremo de comportamento indefinido.", severity: "critical" }
+                { regex: /\.map\(.*\)\.collect\(\)/, issue: "Efficiency: Coleção eagerly detectada em loop (O(N) redundante). Maximize pipeline fluente com chain Iterators nativos PhD.", severity: "low" },
+                { regex: /tokio_stream::StreamExt/, issue: "Governance: Stream Extension sob uso. Assegure Drop/Cleanups automáticos via cancelamentos assíncronos PhD.", severity: "low" },
+                { regex: /unsafe\s*\{\s*mem::uninitialized\s*\}/, issue: "Critical: Buffer via 'mem::uninitialized'. Ilegal em Rust novo. Empregue 'MaybeUninit' para evitar Undefined Behavior extremo PhD.", severity: "critical" }
             ]
         };
     }
 
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
+    public override async performAudit(): Promise<AuditFinding[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        this.endMetrics(results.length);
+        return results;
+    }
+
+    public override reasonAboutObjective(objective: string, _file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
             file: "data_flow",
-            issue: `Direcionamento Stream para ${objective}: Garantindo que o pipeline de dados seja eficiente e livre de bloqueios.`,
+            issue: `Direcionamento Stream (Rust) para ${objective}: Garantindo IO livre de bloqueadores com Iterator composability limpa PhD.`,
             severity: "STRATEGIC",
             context: this.name
         };
@@ -56,6 +65,6 @@ export class StreamPersona extends BaseActivePersona {
     }
 
     public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Engenharia de Pipelines de Dados. Sua missão é garantir throughput máximo.`;
+        return `Você é o Dr. ${this.name}, PhD em Engenharia de Pipelines de Alto Desempenho. O Throughput zero-alloc é sua lei máxima.`;
     }
 }

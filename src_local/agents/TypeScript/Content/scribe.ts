@@ -1,6 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding } from "../../base.ts";
-
+import type { AuditRule, StrategicFinding, ProjectContext, AuditFinding } from "../../base.ts";
 
 /**
  * 📝 Dr. Scribe — PhD in TypeScript Documentation & Knowledge
@@ -15,18 +14,22 @@ export class ScribePersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         if (this.hub) {
             const docNodes = await this.hub.queryKnowledgeGraph("export", "high");
             const reasoning = await this.hub.reason(`Analyze the documentation coverage of a TypeScript system with ${docNodes.length} exports. Recommend JSDoc patterns for explicability.`);
-            findings.push({ file: "Documentation Audit", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Scribe: Documentação TS validada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Documentation Audit", match_count: 1 } as any);
+            findings.push({ 
+                file: "Documentation Audit", agent: this.name, role: this.role, emoji: this.emoji, 
+                issue: `Sovereign Scribe: Documentação TS validada via Rust Hub. PhD Analysis: ${reasoning}`, 
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Documentation Audit", match_count: 1 
+            } as any);
         }
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: ['.ts', '.tsx'],
             rules: [
@@ -35,7 +38,7 @@ export class ScribePersona extends BaseActivePersona {
         };
     }
 
-    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
         const exports = (content.match(/export\s+(?:async\s+)?(?:function|class)\s+\w+/g) || []).length;
         const docs = (content.match(/\/\*\*[\s\S]*?\*\//g) || []).length;
@@ -54,7 +57,7 @@ export class ScribePersona extends BaseActivePersona {
         };
     }
 
-    getSystemPrompt(): string {
+    override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em documentação e transferência de conhecimento TypeScript.`;
     }
 }

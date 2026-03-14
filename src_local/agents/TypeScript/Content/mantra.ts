@@ -1,13 +1,12 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding } from "../../base.ts";
-
+import type { AuditRule, StrategicFinding, ProjectContext, AuditFinding } from "../../base.ts";
 
 /**
  * 🔮 Dr. Mantra — PhD in TypeScript Type Purity & Strictness
  * Especialista em segurança de tipos, uso de `any`, type assertions e @ts-ignore.
  */
 export class MantraPersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Mantra";
         this.emoji = "🔮";
@@ -16,18 +15,22 @@ export class MantraPersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    public override async execute(context: any): Promise<any> {
+    override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         if (this.hub) {
             const typeNodes = await this.hub.queryKnowledgeGraph("any", "high");
             const reasoning = await this.hub.reason(`Analyze the type safety of a TypeScript system with ${typeNodes.length} "any" usage patterns. Recommend strict typing migration strategy.`);
-            findings.push({ file: "Type Safety", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Mantra: Pureza de tipos validada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Type Audit", match_count: 1 } as any);
+            findings.push({ 
+                file: "Type Safety", agent: this.name, role: this.role, emoji: this.emoji, 
+                issue: `Sovereign Mantra: Pureza de tipos validada via Rust Hub. PhD Analysis: ${reasoning}`, 
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Type Audit", match_count: 1 
+            } as any);
         }
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: ['.ts', '.tsx'],
             rules: [
@@ -43,7 +46,7 @@ export class MantraPersona extends BaseActivePersona {
         };
     }
 
-    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
         const anyCount = (content.match(/:\s*any\b|as\s+any\b/g) || []).length;
         if (anyCount > 3) {
@@ -67,7 +70,7 @@ export class MantraPersona extends BaseActivePersona {
         };
     }
 
-    selfDiagnostic(): any {
+    override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,
@@ -75,7 +78,7 @@ export class MantraPersona extends BaseActivePersona {
         };
     }
 
-    getSystemPrompt(): string {
+    override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, guardião da pureza e integridade do type system TypeScript.`;
     }
 }

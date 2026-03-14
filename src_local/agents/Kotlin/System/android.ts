@@ -1,10 +1,10 @@
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
+
 /**
  * 🤖 Android - Kotlin-native Android Specialist Agent
  * Sovereign Synapse: Audita o ciclo de vida do Android (Activity/Fragment), vazamentos de contexto e permissões.
  */
-import type { AuditRule, StrategicFinding } from "../../base.ts";
-import { BaseActivePersona } from "../../base.ts";
-
 export class AndroidPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
         super(projectRoot);
@@ -15,9 +15,9 @@ export class AndroidPersona extends BaseActivePersona {
         this.stack = "Kotlin";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         if (this.hub) {
             const ctxNodes = await this.hub.queryKnowledgeGraph("Context", "medium");
             const reasoning = await this.hub.reason(`Analyze the Android context usage in a Kotlin system with ${ctxNodes.length} context-coupled points. Recommend safe lifecycle practices and leak prevention.`);
@@ -31,23 +31,31 @@ export class AndroidPersona extends BaseActivePersona {
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".kt", ".kts", ".xml"],
             rules: [
-                { regex: /static\s+var\s+\w+:\s+Context/, issue: "Leak: Armazenar Context em variâvel estática causará vazamento de memória. Use WeakReference ou evite o padrão.", severity: "high" },
-                { regex: /GlobalScope\.launch/, issue: "Lifecycle: Uso de GlobalScope em Android é perigoso. Prefira lifecycleScope ou viewModelScope para garantir o cancelamento.", severity: "high" },
-                { regex: /Activity\(\)/, issue: "Lifecycle: Instanciacão manual de Activity ou Fragment detectada. Deixe o Android System gerenciar a criação via Intents.", severity: "medium" },
-                { regex: /permission\s+android:name="android\.permission\..*"/, issue: "Permissions: Verifique se a permissão declarada no manifest é realmente necessária (Least Privilege principle).", severity: "low" },
-                { regex: /registerReceiver\(.*\)/, issue: "Lifecycle: BroadcastReceiver registrado. Garanta que o unregisterReceiver seja chamado no onStop/onDestroy.", severity: "medium" }
+                { regex: /static\s+var\s+\w+:\s+Context/, issue: "Leak: Armazenar Context em variável estática causará vazamento de memória. Use WeakReference ou evite o padrão PhD.", severity: "high" },
+                { regex: /GlobalScope\.launch/, issue: "Lifecycle: Uso de GlobalScope em Android é perigoso. Prefira lifecycleScope ou viewModelScope para garantir o cancelamento PhD.", severity: "high" },
+                { regex: /Activity\(\)/, issue: "Lifecycle: Instanciação manual de Activity ou Fragment detectada. Deixe o Android System gerenciar a criação via Intents PhD.", severity: "medium" },
+                { regex: /permission\s+android:name="android\.permission\..*"/, issue: "Permissions: Verifique se a permissão declarada no manifest é realmente necessária (Least Privilege principle) PhD.", severity: "low" },
+                { regex: /registerReceiver\(.*\)/, issue: "Lifecycle: BroadcastReceiver registrado. Garanta que o unregisterReceiver seja chamado no onStop/onDestroy PhD.", severity: "medium" }
             ]
         };
     }
 
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
+    public override async performAudit(): Promise<AuditFinding[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        this.endMetrics(results.length);
+        return results;
+    }
+
+    public override reasonAboutObjective(objective: string, _file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
             file: "android",
-            issue: `Direcionamento Android para ${objective}: Otimizando performance mobile e estabilidade de sistema.`,
+            issue: `Direcionamento Android para ${objective}: Otimizando performance mobile e estabilidade de sistema PhD.`,
             severity: "STRATEGIC",
             context: this.name
         };

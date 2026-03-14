@@ -18,7 +18,7 @@ import { UpdateTransaction } from "../utils/update_transaction.ts";
 import { SystemSentinel } from "../utils/system_sentinel.ts";
 import { BehaviorAnalyst } from "../utils/behavior_analyst.ts";
 import { TaskWorker } from "../utils/task_worker.ts";
-import type { IAgent, ProjectContext, DiagnosticFinding, SystemHealth360 } from "./types.ts";
+import type { IAgent, ProjectContext, DiagnosticFinding, SystemHealth360, SystemMetrics } from "./types.ts";
 import { MemoryPruningAgent } from "../agents/Support/Maintenance/memory_pruning_agent.ts";
 import { PredictorEngine } from "../utils/ai/predictor_engine.ts";
 import { HubWatcher } from "../utils/hub_watcher.ts";
@@ -31,7 +31,7 @@ const logger = winston.child({ module: "Orchestrator" });
 export class Orchestrator {
     projectRoot: Path;
     lastDetectedChanges: string[] = [];
-    metrics: Record<string, any> = { files_scanned: 0, health_score: 100, start_time: Date.now(), efficiency: {} };
+    metrics: SystemMetrics;
     personas: IAgent[] = [];
     private agentRegistry: Map<string, IAgent> = new Map();
 
@@ -43,8 +43,8 @@ export class Orchestrator {
     director!: DirectorPersona;
     stabilityLedger!: StabilityLedger;
     historyAgent!: HistoryAgent;
-    strategist: any;
-    coreValidator: any;
+    strategist!: DiagnosticStrategist;
+    coreValidator!: CoreValidator;
     synthesizer: any;
     taskQueue!: TaskQueue;
     memoryEngine!: MemoryEngine;
@@ -64,6 +64,12 @@ export class Orchestrator {
 
     constructor(projectRoot: string) {
         this.projectRoot = new Path(projectRoot);
+        this.metrics = {
+            files_scanned: 0,
+            health_score: 100,
+            start_time: Date.now(),
+            efficiency: {}
+        };
         this.hubManager = new HubManagerGRPC();
         this.registryManager = new RegistryManager(projectRoot);
         this.initializeEngines(projectRoot);
@@ -92,8 +98,7 @@ export class Orchestrator {
 
     private async _initNativeInfrastructure(projectRoot: string): Promise<void> {
         try {
-            const assemblerPath = "../agents/Support/Automation/infrastructure_assembler.ts";
-            const m = await import(assemblerPath);
+            const m = await import("../agents/Support/Automation/infrastructure_assembler");
             console.log("🛠️ [Orchestrator] Carregando Infraestrutura Nativa...");
             await m.InfrastructureAssembler.launchSovereignAPI(projectRoot);
 

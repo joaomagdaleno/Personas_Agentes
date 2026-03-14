@@ -38,7 +38,7 @@ export class CognitiveEngine {
     }
 
     async reason(prompt: string, options: { temperature?: number, max_tokens?: number, deep?: boolean } = {}): Promise<string | null> {
-        this.logger.info(`🧠 [Cognitive] Raciocinando via gRPC Brain Proxy...`);
+        this.logger.info(`🧠 [Cognitive] Raciocinando via gRPC Brain Proxy... (Model: ${this.activeModel})`);
 
         try {
             const response = await this.cogHelpers.callRustBrain(prompt);
@@ -47,8 +47,9 @@ export class CognitiveEngine {
                 return StaticReasoning.handle(prompt);
             }
             return response;
-        } catch (error: any) {
-            this.logger.error(`❌ [Cognitive] Erro Crítico: ${error.message}`);
+        } catch (error: unknown) {
+            const msg = error instanceof Error ? error.message : String(error);
+            this.logger.error(`❌ [Cognitive] Erro Crítico: ${msg}`);
             return StaticReasoning.handle(prompt);
         }
     }

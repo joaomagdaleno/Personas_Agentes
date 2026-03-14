@@ -1,9 +1,8 @@
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
-import type { ProjectContext } from "../../../core/types.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
 
 /**
- * 🔫 Warden - PhD in Enforcement & Compliance (Python Stack)
+ * ⚖️ Warden - PhD in Enforcement & Compliance (Python Stack)
  */
 export class WardenPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
@@ -15,9 +14,9 @@ export class WardenPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         return findings;
     }
 
@@ -25,35 +24,33 @@ export class WardenPersona extends BaseActivePersona {
         return {
             extensions: [".py"],
             rules: [
-                { regex: /os\.system/, issue: "Execução Fora de Controle.", severity: "high" }
+                { regex: /os\.system|subprocess\.Popen/, issue: "Execução Fora de Controle: Verifique limites e sanitização de shell PhD.", severity: "high" }
             ]
         };
     }
 
-    public audit(): any[] { return []; }
-    public Branding(): string { return `${this.emoji} ${this.name}`; }
-    public Analysis(): string { return "Enforcement Analysis Complete"; }
-    public test(): boolean {
-        this.Branding();
-        this.Analysis();
-        this.audit();
-        return true;
+    public override async performAudit(): Promise<AuditFinding[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        this.endMetrics(results.length);
+        return results;
     }
 
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
-            file: "compliance",
-            issue: `PhD Warden (Python): Analisando conformidade para ${objective}.`,
+            file: file || "compliance",
+            issue: `PhD Warden (Python): Analisando compliance ético e de software para ${objective}.`,
             severity: "STRATEGIC",
-            context: "analyzing enforcement"
+            context: this.name
         };
     }
 
     public override selfDiagnostic(): any {
-        return { status: "Soberano", score: 100, issues: [], branding: this.Branding() };
+        return { status: "Soberano", score: 100, issues: [] };
     }
 
     public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em conformidade Python. Status: ${this.Analysis()}`;
+        return `Você é o Dr. ${this.name}, PhD em conformidade e licenciamento Python.`;
     }
 }

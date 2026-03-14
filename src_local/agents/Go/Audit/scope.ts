@@ -1,12 +1,11 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding } from "../../base.ts";
-import type { ProjectContext } from "../../../core/types.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
 
 /**
  * 🎯 Dr. Scope — PhD in Go Project Management & Technical Debt
  */
 export class ScopePersona extends BaseActivePersona {
-    constructor(projectRoot: string | undefined = undefined) {
+    constructor(projectRoot?: string) {
         super(projectRoot);
         this.name = "Scope";
         this.emoji = "🎯";
@@ -15,9 +14,9 @@ export class ScopePersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         return findings;
     }
 
@@ -25,34 +24,33 @@ export class ScopePersona extends BaseActivePersona {
         return {
             extensions: [".go", "go.mod"],
             rules: [
-                { regex: /\/\/\s*TODO[:\s]/i, issue: 'Dívida Técnica: TODO pendente no código Go.', severity: 'medium' }
+                { regex: /\/\/\s*TODO[:\s]/i, issue: "Dívida Técnica: TODO pendente no código Go. Documente o plano de resolução PhD.", severity: "medium" }
             ]
         };
     }
 
-    public audit(): any[] { return []; }
-    public Branding(): string { return `${this.emoji} ${this.name}`; }
-    public Analysis(): string { return "Project Scope Analysis Complete"; }
-    public test(): boolean {
-        this.Branding();
-        this.Analysis();
-        this.audit();
-        return true;
+    public override async performAudit(): Promise<AuditFinding[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        this.endMetrics(results.length);
+        return results;
     }
 
-    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
-            file, severity: "INFO",
+            file,
             issue: `PhD Scope (Go): Analisando dívida técnica para ${objective}.`,
-            context: "analyzing project scope"
+            severity: "STRATEGIC",
+            context: this.name
         };
     }
 
-    override selfDiagnostic(): any {
-        return { status: "Soberano", score: 100, issues: [], branding: this.Branding() };
+    public override selfDiagnostic(): any {
+        return { status: "Soberano", score: 100, issues: [] };
     }
 
-    override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em dívida técnica Go. Status: ${this.Analysis()}`;
+    public override getSystemPrompt(): string {
+        return `Você é o Dr. ${this.name}, PhD em dívida técnica Go.`;
     }
 }

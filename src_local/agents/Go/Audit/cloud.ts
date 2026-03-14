@@ -1,10 +1,10 @@
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
+
 /**
  * ☁️ Cloud - Go-native Infrastructure & Scalability Agent
  * Sovereign Synapse: Audita manifestos k8s, dockerfiles e padrões de microserviços Go.
  */
-import type { AuditRule, StrategicFinding } from "../../base.ts";
-import { BaseActivePersona } from "../../base.ts";
-
 export class CloudPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
         super(projectRoot);
@@ -15,23 +15,22 @@ export class CloudPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         if (this.hub) {
             const cloudNodes = await this.hub.queryKnowledgeGraph("k8s", "low");
             const reasoning = await this.hub.reason(`Analyze the cloud-native readiness of a Go system with ${cloudNodes.length} infrastructure markers. Recommend scaling strategy and security hardening for container identity.`);
             findings.push({ 
                 file: "Cloud Audit", agent: this.name, role: this.role, emoji: this.emoji, 
                 issue: `Sovereign Cloud: Prontidão cloud-native validada via Rust Hub. PhD Analysis: ${reasoning}`, 
-                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Cloud Audit", match_count: 1,
-                context: "K8s & Container Security"
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Cloud Audit", match_count: 1
             } as any);
         }
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".go", ".yaml", ".yml", "Dockerfile"],
             rules: [
@@ -44,9 +43,17 @@ export class CloudPersona extends BaseActivePersona {
         };
     }
 
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
+    public override async performAudit(): Promise<AuditFinding[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        this.endMetrics(results.length);
+        return results;
+    }
+
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
-            file: "cloud",
+            file,
             issue: `Direcionamento Cloud para ${objective}: Otimizando para resiliência distribuída e governança IAM.`,
             severity: "STRATEGIC",
             context: this.name

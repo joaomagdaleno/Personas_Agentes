@@ -8,14 +8,14 @@ async function main() {
         
         const ctx = await orc.contextEngine.analyzeProject();
         
-        const { ScoringMetricsEngine } = await import("./src_local/agents/Support/Diagnostics/scoring_metrics_engine");
+        const { ScoringMetricsEngine } = await import("../../src_local/agents/Support/Diagnostics/scoring_metrics_engine");
         const metricsEngine = new ScoringMetricsEngine();
         
         console.log("\n📊 Passo 1: Dados do mapa");
         console.log(`- Total de arquivos: ${Object.keys(ctx.map).length}`);
         
         const coreTypes = ["AGENT", "CORE", "LOGIC", "UTIL"];
-        const relevant = Object.entries(ctx.map).filter(([f, i]) =>
+        const relevant = Object.entries(ctx.map).filter(([_, i]: [string, any]) =>
             coreTypes.includes(i.component_type) ||
             (i.complexity > 1 && !["DOC", "INTERFACE", "TEST"].includes(i.component_type))
         );
@@ -24,18 +24,18 @@ async function main() {
         console.log(`- Total relevantes: ${relevant.length}`);
         
         coreTypes.forEach(type => {
-            const count = relevant.filter(([f, i]) => i.component_type === type).length;
+            const count = relevant.filter(([_, i]: [string, any]) => i.component_type === type).length;
             console.log(`- ${type}: ${count}`);
         });
         
-        const packageMarkers = Object.entries(ctx.map).filter(([f, i]) =>
+        const packageMarkers = Object.entries(ctx.map).filter(([_, i]: [string, any]) =>
             ["PACKAGE_MARKER", "CONFIG"].includes(i.component_type) && i.complexity <= 1
         );
         
         console.log("\n📊 Passo 3: Package Markers");
         console.log(`- Total markers: ${packageMarkers.length}`);
         
-        const covered = relevant.filter(([f, i]) => i.has_test);
+        const covered = relevant.filter(([_, i]: [string, any]) => i.has_test);
         console.log(`\n📊 Passo 4: Componentes com testes`);
         console.log(`- Total covered: ${covered.length}`);
         
@@ -52,9 +52,13 @@ async function main() {
         console.log(`- Security: ${security}`);
         console.log(`- Excellence: ${excellence}`);
         
-    } catch (error) {
-        console.error("\n❌ Erro:", error);
-        console.error(error.stack);
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            console.error("\n❌ Erro:", error.message);
+            console.error(error.stack);
+        } else {
+            console.error("\n❌ Erro desconhecido:", error);
+        }
     }
 }
 

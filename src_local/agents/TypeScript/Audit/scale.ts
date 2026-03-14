@@ -1,6 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding } from "../../base.ts";
-import type { ProjectContext } from "../../../core/types.ts";
+import type { AuditRule, StrategicFinding, ProjectContext, AuditFinding } from "../../base.ts";
 
 /**
  * 🏗️ Dr. Scale — PhD in TypeScript Architecture & Scalability
@@ -16,15 +15,12 @@ export class ScalePersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    override async execute(context: ProjectContext): Promise<any> {
+    override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
 
         if (this.hub) {
-            // Architectural Intelligence: Coupling and God Files
             const graph = await this.hub.getKnowledgeGraph("src_local/core/orchestrator.ts", 2);
-            
-            // PhD Architectural Reasoning
             const reasoning = await this.hub.reason(`Analyze the architectural scalability of a TypeScript system with a core graph of ${graph.nodes.length} nodes and identify critical coupling.`);
 
             findings.push({

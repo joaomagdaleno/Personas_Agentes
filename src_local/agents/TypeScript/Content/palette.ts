@@ -1,13 +1,12 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding } from "../../base.ts";
-
+import type { AuditRule, StrategicFinding, ProjectContext, AuditFinding } from "../../base.ts";
 
 /**
  * 🎨 Dr. Palette — PhD in TypeScript UX Quality & Visual Consistency
  * Especialista em consistência visual, magic numbers e hardcoded styles.
  */
 export class PalettePersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Palette";
         this.emoji = "🎨";
@@ -16,18 +15,22 @@ export class PalettePersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    public override async execute(context: any): Promise<any> {
+    override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         if (this.hub) {
             const styleNodes = await this.hub.queryKnowledgeGraph("hardcoded color", "medium");
             const reasoning = await this.hub.reason(`Analyze the visual consistency of a TypeScript system with ${styleNodes.length} hardcoded style patterns. Recommend design token migration.`);
-            findings.push({ file: "Visual Audit", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Palette: Consistência visual validada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Design Audit", match_count: 1 } as any);
+            findings.push({ 
+                file: "Visual Audit", agent: this.name, role: this.role, emoji: this.emoji, 
+                issue: `Sovereign Palette: Consistência visual validada via Rust Hub. PhD Analysis: ${reasoning}`, 
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Design Audit", match_count: 1 
+            } as any);
         }
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: ['.ts', '.tsx', '.css'],
             rules: [
@@ -39,7 +42,7 @@ export class PalettePersona extends BaseActivePersona {
         };
     }
 
-    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
         if (/color:\s*['"]#/.test(content)) {
             return {
@@ -55,7 +58,7 @@ export class PalettePersona extends BaseActivePersona {
         };
     }
 
-    selfDiagnostic(): any {
+    override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,
@@ -63,7 +66,7 @@ export class PalettePersona extends BaseActivePersona {
         };
     }
 
-    getSystemPrompt(): string {
+    override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em sistemas de design e consistência visual TypeScript.`;
     }
 }

@@ -1,10 +1,10 @@
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
+
 /**
  * 👑 Master - Go-native Orchestration & Prime Directive Agent
  * Sovereign Synapse: Audita a integridade da orquestração principal e conformidade com as diretrizes PhD Go.
  */
-import type { AuditRule, StrategicFinding } from "../../base.ts";
-import { BaseActivePersona } from "../../base.ts";
-
 export class MasterPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
         super(projectRoot);
@@ -15,35 +15,42 @@ export class MasterPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         if (this.hub) {
             const entryNodes = await this.hub.queryKnowledgeGraph("main", "low");
             const reasoning = await this.hub.reason(`Analyze the orchestration sovereignty of a Go system with ${entryNodes.length} core entry points. Recommend architectural alignment and prime directive enforcement.`);
             findings.push({ 
                 file: "System Audit", agent: this.name, role: this.role, emoji: this.emoji, 
                 issue: `Sovereign Master: Orquestração Go validada via Rust Hub. PhD Analysis: ${reasoning}`, 
-                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Master Audit", match_count: 1,
-                context: "Prime Directive Enforcement"
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Master Audit", match_count: 1
             } as any);
         }
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".go"],
             rules: [
-                { regex: /os\.Exit\(/, issue: "Architecture: Encerramento abrupto de processo Go. Use shutdown hooks para limpeza de recursos.", severity: "medium" },
+                { regex: /os\.Exit\(/, issue: "Architecture: Encerramento abrupto de processo Go. Use shutdown hooks para limpeza de recursos PhD.", severity: "medium" },
                 { regex: /func\s+main\(\)/, issue: "Governance: Ponto de entrada detectado. Verifique se a inicialização é idempotente PhD.", severity: "low" },
                 { regex: /DIRECTIVE_PHD_VIOLATION/, issue: "Critical: Violação detectada das Prime Directives PhD. Ação imediata necessária.", severity: "critical" },
-                { regex: /panic\(/, issue: "Resilience: Uso de panic() em fluxo principal. Prefira error propagation (return err) para evitar crash.", severity: "high" }
+                { regex: /panic\(/, issue: "Resilience: Uso de panic() em fluxo principal. Prefira error propagation (return err) para evitar crash PhD.", severity: "high" }
             ]
         };
     }
 
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
+    public override async performAudit(): Promise<AuditFinding[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        this.endMetrics(results.length);
+        return results;
+    }
+
+    public override reasonAboutObjective(objective: string, _file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
             file: "orchestration",
             issue: `Direcionamento Master Go para ${objective}: Garantindo a centralidade de controle e soberania estratégica.`,

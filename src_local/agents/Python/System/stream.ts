@@ -1,61 +1,69 @@
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
+
 /**
  * 🌊 Stream - PhD in Stream Processing & Data Pipes (Python Stack)
  * Analisa a integridade de pipes de dados, geradores e processamento em lote Python.
  */
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
-import { BaseActivePersona } from "../../base.ts";
-
 export class StreamPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
         super(projectRoot);
         this.name = "Stream";
         this.emoji = "🌊";
         this.role = "PhD Data Engineer";
+        this.phd_identity = "Stream Processing & Data Pipes (Python)";
         this.stack = "Python";
+    }
+
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
+        this.setContext(context);
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".py"],
+            rules: [
+                { regex: /yield .*/, issue: "Gerador Python: Verifique mecanismos preventivos contra estouro de memória PhD.", severity: "low" },
+                { regex: /itertools\..*/, issue: "Iteração Avançada: Uso de itertools encorajado para performance PhD.", severity: "low" },
+                { regex: /stream\.read\(.*\)/, issue: "Leitura de Stream: Verifique chunk size fixo PhD.", severity: "medium" },
+                { regex: /pipe\.flush\(\)/, issue: "Sincronia de Pipe: Uso excessivo degrada I/O PhD.", severity: "low" }
+            ]
+        };
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /yield .*/, issue: "Gerador Python: Verifique se o gerador possui mecanismos de consumo eficiente para evitar estouro de memória em pipes longos.", severity: "low" },
-            { regex: /itertools\..*/, issue: "Iteração Avançada: O uso de itertools é encorajado pela soberania de performance PhD. Verifique a legibilidade.", severity: "low" },
-            { regex: /stream\.read\(.*\)/, issue: "Leitura de Stream: Verifique se o chunk size é fixo e adequado para evitar picos de memória.", severity: "medium" },
-            { regex: /pipe\.flush\(\)/, issue: "Sincronia de Pipe: O uso excessivo de flush pode degradar a performance de I/O na camada legacy.", severity: "low" }
-        ];
-        const results = await this.findPatterns([".py"], rules);
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
 
-        // Advanced Logic: Data Pipe Audit
         if (results.some(r => r.issue.includes("stream.read"))) {
-            this.reasonAboutObjective("Data Integrity", "Streaming", "Found unbuffered stream reads in Python layer.");
+            results.push({
+                file: "PYTHON_STREAM", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: "Data Integrity: Found unbuffered stream reads in Python layer.",
+                severity: "medium", stack: this.stack, evidence: "Structural Analysis", match_count: 1, context: "Stream Ops"
+            } as any);
         }
 
         this.endMetrics(results.length);
         return results;
     }
 
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Stream] Bufferizando pipes e otimizando geradores de dados em: ${blindSpots.join(", ")}`);
-    }
-
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
-            objective,
-            analysis: "Auditando taxa de transferência e estabilidade de pipes legacy.",
-            recommendation: "Usar 'generators' para processamento 'lazy' e garantir que chunks de I/O sejam potências de 2.",
-            severity: "low"
-        } as StrategicFinding;
-    }
-
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
-        return {
-            status: "Soberano",
-            score: 100,
-            issues: []
+            file,
+            issue: `PhD Stream (Python): Auditando largura de banda e estabilidade de pipes para ${objective}.`,
+            severity: "STRATEGIC",
+            context: this.name
         };
     }
 
+    public override selfDiagnostic(): any {
+        return { status: "Soberano", score: 100, issues: [] };
+    }
+
     public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Processamento de Dados Python. Sua missão é garantir que a informação flua sem atrito.`;
+        return `Você é o Dr. ${this.name}, PhD em Processamento de Dados Python.`;
     }
 }
-

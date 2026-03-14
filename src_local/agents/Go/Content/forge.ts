@@ -1,6 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding } from "../../base.ts";
-
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
 
 /**
  * 🔨 Dr. Forge — PhD in Go Code Generation & Safety
@@ -8,7 +7,7 @@ import type { AuditRule, StrategicFinding } from "../../base.ts";
  */
 export class ForgePersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
-        super(projectRoot as any);
+        super(projectRoot);
         this.name = "Forge";
         this.emoji = "🔨";
         this.role = "PhD Automation & Safety Engineer";
@@ -16,9 +15,9 @@ export class ForgePersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
 
         if (this.hub) {
             const evalNodes = await this.hub.queryKnowledgeGraph("go:generate", "medium");
@@ -35,47 +34,43 @@ export class ForgePersona extends BaseActivePersona {
 
     override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
-            extensions: ['.go'],
+            extensions: [".go"],
             rules: [
-                { regex: /go:generate/, issue: 'Direct Codegen: go:generate detectado; verifique ferramentas no PATH do CI.', severity: 'low' },
-                { regex: /text\/template/, issue: 'Inseguro: text/template para output web detectado; risco de XSS.', severity: 'high' },
-                { regex: /protobuf/, issue: 'Protobuf: Verifique se .pb.go estão atualizados com .proto.', severity: 'medium' },
-                { regex: /MockGen/, issue: 'Mock Generation: Verifique se mocks não introduzem acoplamento excessivo.', severity: 'medium' },
-                { regex: /unsafe\.Pointer/, issue: 'Risco: unsafe.Pointer permite manipulação direta de memória.', severity: 'critical' },
+                { regex: /go:generate/, issue: "Direct Codegen: go:generate detectado; verifique ferramentas no PATH do CI para soberania PhD.", severity: "low" },
+                { regex: /text\/template/, issue: "Inseguro: text/template para output web detectado; risco de XSS PhD.", severity: "high" },
+                { regex: /protobuf/, issue: "Protobuf: Verifique se .pb.go estão atualizados com .proto para integridade PhD.", severity: "medium" },
+                { regex: /MockGen/, issue: "Mock Generation: Verifique se mocks não introduzem acoplamento excessivo PhD.", severity: "medium" },
+                { regex: /unsafe\.Pointer/, issue: "Risco: unsafe.Pointer permite manipulação direta de memória; use com cautela PhD.", severity: "critical" }
             ]
         };
     }
 
-    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
-        if (typeof content !== 'string') return null;
-        const target = /go:generate|text\/template/;
-        if (target["test"](content)) {
-            return {
-                file, severity: "CRITICAL",
-                issue: `Risco de Autonomia: O objetivo '${objective}' exige segurança de execução. Em '${file}', a geração dinâmica de código compromete a 'Orquestração de Inteligência Artificial'.`,
-                context: "Dynamic execution detected"
-            };
-        }
+    public override async performAudit(): Promise<AuditFinding[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        this.endMetrics(results.length);
+        return results;
+    }
+
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
-            file, severity: "INFO",
+            file,
             issue: `PhD Forge: Analisando segurança de automação para ${objective}. Focando em sanitização de execução dinâmica.`,
-            context: "analyzing automation safety"
+            severity: "STRATEGIC",
+            context: this.name
         };
     }
 
-    override selfDiagnostic(): any {
+    public override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,
-            details: "Guardião de execução dinâmica Go operando com rigor PhD."
+            issues: []
         };
     }
 
-    override getSystemPrompt(): string {
+    public override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em automação e segurança de codegen Go.`;
     }
-    public audit(): any[] { return []; }
-    public Branding(): string { return this.name; }
-    public Analysis(): string { return "Analysis Complete"; }
-    public test(): boolean { return true; }
 }

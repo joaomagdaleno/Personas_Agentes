@@ -1,10 +1,10 @@
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
+
 /**
  * 🌀 Vortex - TypeScript-native Operational Excellence & Efficiency Agent
  * Sovereign Synapse: Audita a eficiência de algoritmos TS, uso de memória e caminhos críticos no NodeJS de nível PhD.
  */
-import type { AuditRule, StrategicFinding } from "../../base.ts";
-import { BaseActivePersona } from "../../base.ts";
-
 export class VortexPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
         super(projectRoot);
@@ -15,9 +15,11 @@ export class VortexPersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const results: (AuditFinding | StrategicFinding)[] = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = [...results];
+        
         if (this.hub) {
             const perfNodes = await this.hub.queryKnowledgeGraph("performance", "low");
             const reasoning = await this.hub.reason(`Analyze the heavy computation paths of a TypeScript system with ${perfNodes.length} performance markers. Recommend optimizations for core loops and memory allocation.`);
@@ -31,21 +33,38 @@ export class VortexPersona extends BaseActivePersona {
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
-            extensions: [".ts", ".js"],
+            extensions: [".ts", ".js", ".tsx"],
             rules: [
-                { regex: /for\s+.*\s+in/, issue: "Efficiency: Loop 'for-in' detectado em TS. Verifique se 'for-of' ou métodos funcionais são mais eficientes.", severity: "low" },
-                { regex: /Array\([1-9][0-9]{4,}\)/, issue: "Allocation: Alocação de array gigante detectada. Risco de GC pressure.", severity: "medium" },
-                { regex: /while\(true\)/, issue: "Complexity: Loop infinito detectado. Garanta que haja sinal de cancelamento PhD.", severity: "medium" }
+                { regex: /for\s+.*\s+in/, issue: "Efficiency: Loop 'for-in' detectado em TS. Verifique se 'for-of' ou métodos funcionais são mais eficientes PhD.", severity: "low" },
+                { regex: /Array\([1-9][0-9]{4,}\)/, issue: "Allocation: Alocação de array gigante detectada. Risco de GC pressure PhD.", severity: "medium" },
+                { regex: /while\s*\(\s*true\s*\)/, issue: "Complexity: Loop infinito detectado. Garanta que haja sinal de cancelamento PhD.", severity: "medium" }
             ]
         };
     }
 
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
+    public override async performAudit(): Promise<AuditFinding[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+
+        if (results.some(r => r.severity === "medium")) {
+            results.push({
+                file: "TS_VORTEX", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: "Operational Excellence: System efficiency issues found.",
+                severity: "medium", stack: this.stack, evidence: "Structural Analysis", match_count: 1, context: "Performance"
+            } as any);
+        }
+
+        this.endMetrics(results.length);
+        return results;
+    }
+
+    public override reasonAboutObjective(objective: string, _file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
             file: "optimization",
-            issue: `Direcionamento Vortex TS para ${objective}: Garantindo vórtex de performance máxima.`,
+            issue: `PhD Vortex (TypeScript): Direcionamento TS para ${objective}, garantindo vórtex de performance máxima.`,
             severity: "STRATEGIC",
             context: this.name
         };

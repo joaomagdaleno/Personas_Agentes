@@ -1,61 +1,69 @@
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
+
 /**
  * 🗄️ Cache - PhD in Data Persistence & Performance Optimization (Python Stack)
  * Analisa a integridade de caches em memória (dict/diskcache) e estratégias de expiração em Python legacy.
  */
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
-import { BaseActivePersona } from "../../base.ts";
-
 export class CachePersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
         super(projectRoot);
         this.name = "Cache";
         this.emoji = "🗄️";
         this.role = "PhD Performance Engineer";
+        this.phd_identity = "Data Persistence & Performance Optimization (Python)";
         this.stack = "Python";
+    }
+
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
+        this.setContext(context);
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".py"],
+            rules: [
+                { regex: /@functools\.lru_cache/, issue: "Cache de Função: Verifique vazamento de memória em processos longos PhD.", severity: "low" },
+                { regex: /global_cache = \{\}/, issue: "Cache Global: Uso de dicionários globais leva a consumo de memória descontrolado PhD.", severity: "medium" },
+                { regex: /diskcache\.Cache/, issue: "Cache em Disco: Verifique risco de corrupção em acessos concorrentes PhD.", severity: "medium" },
+                { regex: /shred .*/, issue: "Limpeza de Disco: Verifique se purga de dados sensíveis segue padrão PhD.", severity: "high" }
+            ]
+        };
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /@functools\.lru_cache/, issue: "Cache de Função: Verifique se o tamanho do cache é adequado e se não há vazamento de memória em processos longos.", severity: "low" },
-            { regex: /global_cache = \{\}/, issue: "Cache Global: O uso de dicionários globais como cache pode levar a consumo de memória descontrolado.", severity: "medium" },
-            { regex: /diskcache\.Cache/, issue: "Cache em Disco: Verifique a política de limpeza e se há risco de corrupção de arquivos em acessos concorrentes.", severity: "medium" },
-            { regex: /shred .*/, issue: "Limpeza de Disco: Verifique se a purga de dados sensíveis segue o padrão PhD de segurança.", severity: "high" }
-        ];
-        const results = await this.findPatterns([".py"], rules);
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
 
-        // Advanced Logic: Disk Thrashing Prevention
         if (results.some(r => r.issue.includes("global_cache"))) {
-            this.reasonAboutObjective("Disk Integrity", "Cache", "Found unmanaged global caches in Python, increasing OOM risk.");
+            results.push({
+                file: "PYTHON_CACHE", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: "Disk Integrity: Found unmanaged global caches increasing OOM risk.",
+                severity: "high", stack: this.stack, evidence: "Structural Analysis", match_count: 1, context: "Cache"
+            } as any);
         }
 
         this.endMetrics(results.length);
         return results;
     }
 
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Cache] Purgando caches redundantes e limitando dicionários globais em: ${blindSpots.join(", ")}`);
-    }
-
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
-            objective,
-            analysis: "Auditando eficiência da camada de persistência temporária legacy.",
-            recommendation: "Usar 'diskcache' com expiração explícita para evitar o crescimento indefinido de dicionários globais.",
-            severity: "medium"
-        } as StrategicFinding;
-    }
-
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
-        return {
-            status: "Soberano",
-            score: 100,
-            issues: []
+            file,
+            issue: `PhD Cache (Python): Auditando eficiência da camada de persistência legacy para ${objective}.`,
+            severity: "STRATEGIC",
+            context: this.name
         };
     }
 
+    public override selfDiagnostic(): any {
+        return { status: "Soberano", score: 100, issues: [] };
+    }
+
     public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Otimização de Performance Python. Sua missão é garantir que o cache acelere o sistema sem comprometer a memória.`;
+        return `Você é o Dr. ${this.name}, PhD em Otimização de Performance Python.`;
     }
 }
-

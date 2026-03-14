@@ -1,9 +1,5 @@
-/**
- * ☁️ Cloud - TypeScript-native Infrastructure & Serverless Agent
- * Sovereign Synapse: Audita a infraestrutura cloud TS, infra as code (CDK/Terraform) e segurança serverless.
- */
-import type { AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding, ProjectContext, AuditFinding } from "../../base.ts";
 
 export class CloudPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
@@ -15,9 +11,9 @@ export class CloudPersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         if (this.hub) {
             const iamNodes = await this.hub.queryKnowledgeGraph("IAM", "low");
             const reasoning = await this.hub.reason(`Analyze the cloud IAM and serverless architecture of a TypeScript system with ${iamNodes.length} infrastructure markers. Recommend security hardening and cost optimization.`);

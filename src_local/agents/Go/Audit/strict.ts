@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
 
 /**
  * 🔒 Strict - PhD in Compiler Rigor & Type Purity (Go Stack)
@@ -14,46 +14,45 @@ export class StrictPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".go"],
             rules: [
-                { regex: /interface\{\}/, issue: "Generic Laxity: Uso de interface{} detectado.", severity: "high" }
+                { regex: /interface\{\}/, issue: "Generic Laxity: Uso de interface{} detectado. Utilize generics de Go 1.18+ ou tipos concretos PhD.", severity: "high" },
+                { regex: /\bunsafe\b/, issue: "Risco de Pânico: Uso do pacote 'unsafe' detectado. Violência contra a segurança de memória do Go.", severity: "critical" },
+                { regex: /if\s+err\s*!=\s*nil\s*\{\s*\}/, issue: "Silenciamento: Erro detectado mas ignorado (corpo vazio). PhD exige tratamento ou log.", severity: "high" }
             ]
         };
     }
 
-    public audit(): any[] { return []; }
-    public Branding(): string { return `${this.emoji} ${this.name}`; }
-    public Analysis(): string { return "Logic Rigor Analysis Complete"; }
-    public test(): boolean {
-        this.Branding();
-        this.Analysis();
-        this.audit();
-        return true;
+    public override async performAudit(): Promise<AuditFinding[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        this.endMetrics(results.length);
+        return results;
     }
 
     public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
             file,
-            severity: "INFO",
             issue: `PhD Strict (Go): Analisando rigor para ${objective}.`,
-            context: "analyzing strictness"
-        } as any;
+            severity: "STRATEGIC",
+            context: this.name
+        };
     }
 
     public override selfDiagnostic(): any {
-        return { status: "Soberano", score: 100, issues: [], branding: this.Branding() };
+        return { status: "Soberano", score: 100, issues: [] };
     }
 
     public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em rigor Go. Status: ${this.Analysis()}`;
+        return `Você é o Dr. ${this.name}, PhD em rigor Go.`;
     }
-    public override async performAudit(): Promise<any[]> { return []; }
 }

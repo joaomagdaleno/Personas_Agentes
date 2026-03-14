@@ -1,13 +1,12 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
-import type { ProjectContext } from "../../../core/types.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
 
 /**
  * 🛡️ Dr. Warden — PhD in Rust Sovereignty & Compliance
  */
 export class WardenPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
-        super(projectRoot as any);
+        super(projectRoot);
         this.name = "Warden";
         this.emoji = "🛡️";
         this.role = "PhD Strategic Guardian";
@@ -15,9 +14,9 @@ export class WardenPersona extends BaseActivePersona {
         this.stack = "Rust";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         return findings;
     }
 
@@ -25,34 +24,33 @@ export class WardenPersona extends BaseActivePersona {
         return {
             extensions: ['.rs'],
             rules: [
-                { regex: /std::env/, issue: 'Segurança: Acesso a env vars.', severity: 'medium' }
+                { regex: /std::env/, issue: 'Segurança: Acesso a variáveis de ambiente nativas. Evite vazamentos de segredos PhD.', severity: 'medium' },
+                { regex: /Command::new/, issue: 'Soberania: Execução de processo subprocess nativo detectada. Risco de Command Injection PhD.', severity: 'high' }
             ]
         };
     }
 
-    public audit(): any[] { return []; }
-    public Branding(): string { return `${this.emoji} ${this.name}`; }
-    public Analysis(): string { return "Security Sovereignty Analysis Complete"; }
-    public test(): boolean {
-        this.Branding();
-        this.Analysis();
-        this.audit();
-        return true;
+    public override async performAudit(): Promise<AuditFinding[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        this.endMetrics(results.length);
+        return results;
     }
 
-    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
-            file, severity: "INFO",
-            issue: `PhD Warden (Rust): Analisando soberania para ${objective}.`,
-            context: "analyzing sovereignty"
+            file, severity: "STRATEGIC",
+            issue: `PhD Warden (Rust): Analisando soberania existencial para ${objective}. Garantindo governança FFI PhD.`,
+            context: this.name
         };
     }
 
-    override selfDiagnostic(): any {
-        return { status: "Soberano", score: 100, issues: [], branding: this.Branding() };
+    public override selfDiagnostic(): any {
+        return { status: "Soberano", score: 100, issues: [] };
     }
 
-    override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em soberania Rust. Status: ${this.Analysis()}`;
+    public override getSystemPrompt(): string {
+        return `Você é o Dr. ${this.name}, PhD em soberania e segurança estratégica Rust.`;
     }
 }

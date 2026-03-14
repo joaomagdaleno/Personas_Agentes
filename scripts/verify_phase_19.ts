@@ -10,9 +10,9 @@ async function verifyPhase19() {
     const orchestrator = new LanguagePersonaOrchestrator();
 
     // 1. Check agent counts
-    const flutterAgents = orchestrator.getAgentsForStack("flutter");
-    const kotlinAgents = orchestrator.getAgentsForStack("kotlin");
-    const pythonAgents = orchestrator.getAgentsForStack("python");
+    const flutterAgents = await orchestrator.getAgentsForStack("flutter");
+    const kotlinAgents = await orchestrator.getAgentsForStack("kotlin");
+    const pythonAgents = await orchestrator.getAgentsForStack("python");
 
     console.log(`  Flutter agents: ${flutterAgents.length}`);
     console.log(`  Kotlin agents:  ${kotlinAgents.length}`);

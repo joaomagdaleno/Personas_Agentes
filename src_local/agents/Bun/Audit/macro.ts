@@ -1,4 +1,5 @@
-import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";;
 import winston from "winston";
 
 const logger = winston.child({ module: "Bun_Macro" });
@@ -8,7 +9,7 @@ const logger = winston.child({ module: "Bun_Macro" });
  * Especialista em macros Bun, transform de build e compile-time constants.
  */
 export class MacroPersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
+    constructor(projectRoot?: string) {
         super(projectRoot);
         this.name = "Macro";
         this.emoji = "⚡";

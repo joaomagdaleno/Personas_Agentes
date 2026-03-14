@@ -1,7 +1,6 @@
 
 import winston from "winston";
 import * as path from "node:path";
-import * as fs from "node:fs";
 import { StructuralAnalyst } from "./../Analysis/structural_analyst";
 import { PatternFinder } from "./../../strategies/PatternFinder";
 import { IntegrityGuardian } from "./../Core/integrity_guardian";
@@ -21,9 +20,9 @@ import { SecuritySentinelAgent } from "./../Security/security_sentinel_agent";
 import { QualityAnalyst } from "./../Diagnostics/quality_analyst";
 import { MaturityEvaluator } from "./../Diagnostics/maturity_evaluator";
 import { TopologyGraphAgent } from "./topology_graph_agent";
-import { DirectorPersona } from "../../TypeScript/Strategic/director";
 
 import { HubManagerGRPC } from "../../../core/hub_manager_grpc.ts";
+import type { CoreSupportTools, OrchestratorTools } from "../../../core/types.ts";
 
 const logger = winston.child({ module: "InfrastructureAssembler" });
 
@@ -32,15 +31,15 @@ const logger = winston.child({ module: "InfrastructureAssembler" });
  * O Arquiteto de Dependências que garante a injeção correta de inteligência em cada Agente.
  */
 export class InfrastructureAssembler {
-    private static coreCache: any = null;
-    private static toolsCache: Record<string, any> = {};
+    private static coreCache: CoreSupportTools | null = null;
+    private static toolsCache: Record<string, OrchestratorTools> = {};
     private static hubManager: HubManagerGRPC = new HubManagerGRPC();
 
     /**
      * 🛡️ Instancia a junta de suporte padrão.
      * Utiliza cache soberano para otimização de performance.
      */
-    static assembleCoreSupport(projectRoot: string): any {
+    static assembleCoreSupport(projectRoot: string): CoreSupportTools {
         if (InfrastructureAssembler.coreCache) {
             return InfrastructureAssembler.coreCache;
         }
@@ -65,7 +64,7 @@ export class InfrastructureAssembler {
     /**
      * 🎼 Mobiliza as ferramentas do Maestro incluindo os novos Agentes de IA.
      */
-    static assembleOrchestratorTools(projectRoot: string): any {
+    static assembleOrchestratorTools(projectRoot: string): OrchestratorTools {
         if (InfrastructureAssembler.toolsCache[projectRoot]) {
             return InfrastructureAssembler.toolsCache[projectRoot];
         }
@@ -94,10 +93,10 @@ export class InfrastructureAssembler {
     /**
      * 🔌 Inicia a API Soberana via Bun.serve (o Hub Go já deve estar rodando).
      */
-    static async launchSovereignAPI(projectRoot: string): Promise<void> {
+    static async launchSovereignAPI(_projectRoot: string): Promise<void> {
         logger.info(`🔌 [Assembler] Iniciando API TypeScript Soberana em http://localhost:8000...`);
 
-        const orchestrator = { projectRoot }; // Simplified or use real one
+        // Soverign API Implementation
 
         Bun.serve({
             port: 8000,

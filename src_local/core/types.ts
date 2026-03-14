@@ -5,6 +5,35 @@
 
 export type Severity = "CRITICAL" | "HIGH" | "MEDIUM" | "LOW" | "INFO";
 
+export interface AuditRule {
+    regex: RegExp | string;
+    issue: string;
+    severity: "critical" | "high" | "medium" | "low";
+}
+
+export interface AuditFinding {
+    file: string;
+    agent: string;
+    role: string;
+    emoji: string;
+    issue: string;
+    severity: string;
+    stack: string;
+    evidence: string;
+    match_count: number;
+    line_number?: number;
+}
+
+export interface StrategicFinding {
+    file: string;
+    issue: string;
+    severity: string;
+    context: string;
+    objective?: string;
+    analysis?: string;
+    recommendation?: string;
+}
+
 export interface DiagnosticFinding {
     id: string;
     path: string;
@@ -16,12 +45,41 @@ export interface DiagnosticFinding {
     suggestion?: string;
 }
 
+export interface EntropyData {
+    coupling: number;
+    instability: number;
+    abstraction: number;
+    risk_level: string;
+}
+
+export interface ParityStats {
+    total: number;
+    identical: number;
+    divergent: number;
+    percentage: number;
+}
+
+export interface QAData {
+    matrix: Record<string, number>;
+    depth_audit?: {
+        metrics: Array<{ path: string; tsDepth: number }>;
+    };
+    [key: string]: unknown;
+}
+
+export interface CognitiveStatus {
+    status: string;
+    details?: string;
+    score?: number;
+    [key: string]: unknown;
+}
+
 export interface SystemHealth360 {
     health_score: number;
     health_breakdown: Record<string, number>;
     status: "HEALTHY" | "WARNING" | "CRITICAL";
-    entropy_map: Record<string, any>;
-    parity_stats: Record<string, any>;
+    entropy_map: Record<string, EntropyData>;
+    parity_stats: Record<string, ParityStats>;
     timestamp: string;
     alerts: DiagnosticFinding[];
 }
@@ -31,13 +89,15 @@ export interface SystemHealth360 {
  */
 export interface IAgent {
     readonly id: string;
+    readonly name?: string;
     readonly category: string;
     readonly stack: string;
 
     initialize?(): Promise<void>;
-    execute(context: any): Promise<any>;
+    execute(context: ProjectContext): Promise<AuditFinding[] | StrategicFinding[] | any>;
     teardown?(): Promise<void>;
     getMetadata?(): Record<string, any>;
+    selfDiagnostic?(): Record<string, any>;
 }
 
 /**
@@ -47,6 +107,15 @@ export interface IAgentRegistry {
     register(agent: IAgent): void;
     getAgent(id: string): IAgent | undefined;
     listAgents(): IAgent[];
+}
+
+export interface SystemMetrics {
+    files_scanned: number;
+    health_score: number;
+    start_time: number;
+    last_detected_changes?: string[];
+    efficiency: Record<string, number>;
+    [key: string]: unknown;
 }
 
 /**
@@ -65,21 +134,78 @@ export interface SovereignState {
     };
 }
 
+export interface CoreSupportTools {
+    analyst: any;
+    patternFinder: any;
+    guardian: any;
+    mapper: any;
+    parity: any;
+    auditEngine: any;
+    vetoEngine: any;
+}
+
+export interface OrchestratorTools {
+    synthesizer: any;
+    strategist: any;
+    executor: any;
+    validator: any;
+    refiner: any;
+    healer: any;
+    architect: any;
+    docGen: any;
+    security: any;
+    quality: any;
+    maturity: any;
+    topology: any;
+}
+
+/**
+ * 🛠️ Supportable Agent: Contract for auto-injected intelligence tools.
+ */
+export interface ISupportableAgent extends IAgent {
+    auditEngine?: any;
+    structuralAnalyst?: any;
+    integrityGuardian?: any;
+    patternFinder?: any;
+    maturityEvaluator?: any;
+}
+
+export interface AdvancedMetrics {
+    cyclomaticComplexity?: number;
+    cognitiveComplexity?: number;
+    maintainabilityIndex?: number;
+    qualityGate?: string;
+    nestingDepth?: number;
+    cbo?: number;
+    dit?: number;
+    defectDensity?: number;
+    [key: string]: unknown;
+}
+
 /**
  * 🗃️ Shared File Context Content
  */
 export interface FileContextData {
     content?: string;
     component_type?: string;
-    [key: string]: any; // Allow extensibility for dynamic properties returned by scanners
+    tsDepth?: number;
+    advanced_metrics?: AdvancedMetrics;
+    [key: string]: unknown; // Safer than any
 }
 
 /**
  * 🌐 Core Project Operations Context
  */
 export interface ProjectContext {
-    identity?: Record<string, any>;
+    identity?: {
+        stacks: Set<string>;
+        core_mission?: string;
+        dna?: Record<string, unknown>;
+    };
     map?: Record<string, FileContextData>;
-    hub?: any;
-    [key: string]: any;
+    hub?: any; // Native controller reference
+    depthAudit?: {
+        metrics: any[];
+    };
+    [key: string]: unknown;
 }

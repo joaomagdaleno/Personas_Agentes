@@ -1,10 +1,10 @@
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
+
 /**
  * 🎨 Palette - PhD in UI Aesthetics & Design System Integrity (Python Stack)
  * Analisa a integridade visual, temas e conformidade com o Design System em Python legacy.
  */
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
-import { BaseActivePersona } from "../../base.ts";
-
 export class PalettePersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
         super(projectRoot);
@@ -15,26 +15,38 @@ export class PalettePersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         if (this.hub) {
             const uiNodes = await this.hub.queryKnowledgeGraph("Tkinter", "high");
             const reasoning = await this.hub.reason(`Analyze the visual ecosystem of a Python system with ${uiNodes.length} legacy UI framework patterns. Recommend design token centralization.`);
-            findings.push({ file: "Visual Audit", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Palette: Estética Python validada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Design Audit", match_count: 1 } as any);
+            findings.push({ 
+                file: "Visual Audit", agent: this.name, role: this.role, emoji: this.emoji, 
+                issue: `Sovereign Palette: Estética Python validada via Rust Hub. PhD Analysis: ${reasoning}`, 
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Design Audit", match_count: 1,
+                context: "Visual Aesthetics Analysis"
+            } as any);
         }
         return findings;
     }
 
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".py"],
+            rules: [
+                { regex: /COLOR_.* = "#[0-9a-fA-F]{6}"/, issue: "Token de Cor: Verifique se a cor hexadecimal segue a paleta PhD oficial.", severity: "low" },
+                { regex: /style_config = \{/, issue: "Configuração de Estilo: Verifique se as configurações de UI (margens, fontes) são consistentes com o Sovereign stack.", severity: "low" },
+                { regex: /background_color = .*/, issue: "Soberania Visual: Verifique se as cores de fundo suportam contrastes dinâmicos para acessibilidade.", severity: "medium" },
+                { regex: /Tkinter|PyQt|Kivy/, issue: "Framework de UI: Uso de frameworks legados detectado. Verifique se a lógica de UI está desacoplada do core.", severity: "high" }
+            ]
+        };
+    }
+
     public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /COLOR_.* = "#[0-9a-fA-F]{6}"/, issue: "Token de Cor: Verifique se a cor hexadecimal segue a paleta PhD oficial.", severity: "low" },
-            { regex: /style_config = \{/, issue: "Configuração de Estilo: Verifique se as configurações de UI (margens, fontes) são consistentes com o Sovereign stack.", severity: "low" },
-            { regex: /background_color = .*/, issue: "Soberania Visual: Verifique se as cores de fundo suportam contrastes dinâmicos para acessibilidade.", severity: "medium" },
-            { regex: /Tkinter|PyQt|Kivy/, issue: "Framework de UI: Uso de frameworks legados detectado. Verifique se a lógica de UI está desacoplada do core.", severity: "high" }
-        ];
-        const results = await this.findPatterns([".py"], rules);
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
 
         // Advanced Logic: Visual Integrity Audit
         if (results.some(r => r.severity === "high")) {
@@ -45,20 +57,16 @@ export class PalettePersona extends BaseActivePersona {
         return results;
     }
 
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Palette] Normalizando tokens visuais e limpando estilos hardcoded em: ${blindSpots.join(", ")}`);
-    }
-
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
-            objective,
-            analysis: "Auditando conformidade estética e modularidade da UI legacy.",
-            recommendation: "Mover configurações de estilo para um arquivo .json ou .yaml separado para facilitar a gestão centralizada.",
-            severity: "medium"
-        } as StrategicFinding;
+            file,
+            issue: `Auditando conformidade estética e modularidade da UI legacy para ${objective}.`,
+            severity: "STRATEGIC",
+            context: this.name
+        };
     }
 
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
+    public override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,

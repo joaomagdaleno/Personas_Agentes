@@ -54,7 +54,7 @@ export class ScopePersona extends BaseActivePersona {
 
     reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
-        const debtCount = (content["match"](/\/\/\s*(TODO|FIXME|HACK)/gi) || []).length;
+        const debtCount = (content.match(/\/\/\s*(TODO|FIXME|HACK)/gi) || []).length;
         if (debtCount > 3) {
             return {
                 file, severity: "HIGH",

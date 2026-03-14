@@ -1,12 +1,12 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
 
 /**
  * 🛡️ Dr. Warden — PhD in TypeScript Sovereignty & Security
  */
 export class WardenPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
-        super(projectRoot as any);
+        super(projectRoot);
         this.name = "Warden";
         this.emoji = "🛡️";
         this.role = "PhD Strategic Guardian";
@@ -14,44 +14,42 @@ export class WardenPersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
-        return findings;
+        const results: (AuditFinding | StrategicFinding)[] = await this.performAudit();
+        return results;
     }
 
     override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
-            extensions: ['.ts', '.tsx'],
+            extensions: ['.ts', '.tsx', '.mjs', '.cjs'],
             rules: [
-                { regex: /process\.env/, issue: 'Segurança: Acesso a variáveis de ambiente; verifique segredos.', severity: 'medium' }
+                { regex: /process\.env/, issue: 'Segurança: Acesso a variáveis de ambiente; verifique segredos PhD.', severity: 'medium' }
             ]
         };
     }
 
-    public audit(): any[] { return []; }
-    public Branding(): string { return `${this.emoji} ${this.name}`; }
-    public Analysis(): string { return "Security Sovereignty Analysis Complete"; }
-    public test(): boolean {
-        this.Branding();
-        this.Analysis();
-        this.audit();
-        return true;
+    public override async performAudit(): Promise<AuditFinding[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        this.endMetrics(results.length);
+        return results;
     }
 
-    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
-            file, severity: "INFO",
+            file, severity: "STRATEGIC",
             issue: `PhD Warden (TypeScript): Analisando soberania para ${objective}.`,
-            context: "analyzing sovereignty"
+            context: this.name
         };
     }
 
-    override selfDiagnostic(): any {
-        return { status: "Soberano", score: 100, issues: [], branding: this.Branding() };
+    public override selfDiagnostic(): any {
+        return { status: "Soberano", score: 100, issues: [] };
     }
 
-    override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, mestre em soberania estratégica TypeScript. Status: ${this.Analysis()}`;
+    public override getSystemPrompt(): string {
+        return `Você é o Dr. ${this.name}, mestre em soberania estratégica TypeScript.`;
     }
 }

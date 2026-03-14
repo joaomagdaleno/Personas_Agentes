@@ -1,61 +1,69 @@
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
+
 /**
  * ✨ Spark - PhD in Trigger Management & Event Orchestration (Python Stack)
  * Analisa a integridade de gatilhos de eventos e reações do sistema em Python legacy.
  */
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
-import { BaseActivePersona } from "../../base.ts";
-
 export class SparkPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
         super(projectRoot);
         this.name = "Spark";
         this.emoji = "✨";
         this.role = "PhD Event Strategist";
+        this.phd_identity = "Trigger Management & Event Orchestration (Python)";
         this.stack = "Python";
+    }
+
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
+        this.setContext(context);
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".py"],
+            rules: [
+                { regex: /click_handler\(.*\):/, issue: "Interação UI: Verifique debounce e idempotência legacy PhD.", severity: "low" },
+                { regex: /trigger_event\(.*\)/, issue: "Gatilho de Evento: Verifique propagação PhD sem loops.", severity: "medium" },
+                { regex: /PyPubSub\.subscribe\(/, issue: "Mensageria Interna: Oculta fluxo de dados. Rastrei PhD.", severity: "medium" },
+                { regex: /@on_exception\(.*\)/, issue: "Reação a Falha: Verifique se gatilho dispara reflexos corretos PhD.", severity: "high" }
+            ]
+        };
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /click_handler\(.*\):/, issue: "Interação de UI: Verifique se o handler de clique legacy possui debounce e se a ação é idempotente.", severity: "low" },
-            { regex: /trigger_event\(.*\)/, issue: "Gatilho de Evento: Verifique se a propagação do evento segue o fluxo PhD e se não há loops de disparo.", severity: "medium" },
-            { regex: /PyPubSub\.subscribe\(/, issue: "Mensageria Interna: O uso de PubSub pode ocultar o fluxo de dados. Verifique a rastreabilidade PhD.", severity: "medium" },
-            { regex: /@on_exception\(.*\)/, issue: "Reação a Falha: Verifique se o gatilho de erro dispara os reflexos sistêmicos corretos.", severity: "high" }
-        ];
-        const results = await this.findPatterns([".py"], rules);
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
 
-        // Advanced Logic: Interaction Health Audit
         if (results.some(r => r.severity === "high")) {
-            this.reasonAboutObjective("UX Integrity", "Interactions", "Found critical exception reaction patterns in Python layer.");
+            results.push({
+                file: "PYTHON_SPARK", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: "UX Integrity: Found critical exception reaction patterns.",
+                severity: "high", stack: this.stack, evidence: "Structural Analysis", match_count: 1, context: "Event Trigger"
+            } as any);
         }
 
         this.endMetrics(results.length);
         return results;
     }
 
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Spark] Sincronizando gatilhos e validando reações de erro em: ${blindSpots.join(", ")}`);
-    }
-
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
-            objective,
-            analysis: "Auditando reatividade de eventos e latência de interação legacy.",
-            recommendation: "Concentrar gatilhos de lógica em controllers dedicados e usar filas para desacoplar a execução.",
-            severity: "low"
-        } as StrategicFinding;
-    }
-
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
-        return {
-            status: "Soberano",
-            score: 100,
-            issues: []
+            file,
+            issue: `PhD Spark (Python): Auditando reatividade de eventos e latência para ${objective}.`,
+            severity: "STRATEGIC",
+            context: this.name
         };
     }
 
+    public override selfDiagnostic(): any {
+        return { status: "Soberano", score: 100, issues: [] };
+    }
+
     public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Estratégia de Eventos Python. Sua missão é garantir que cada estímulo gere a resposta soberana.`;
+        return `Você é o Dr. ${this.name}, PhD em Estratégia de Eventos Python.`;
     }
 }
-

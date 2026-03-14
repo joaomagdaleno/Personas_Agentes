@@ -1,4 +1,4 @@
-import { ContextEngine } from "./src_local/utils/context_engine.ts";
+import { ContextEngine } from "../src_local/utils/context_engine.ts";
 
 async function main() {
     const engine = new ContextEngine(".");

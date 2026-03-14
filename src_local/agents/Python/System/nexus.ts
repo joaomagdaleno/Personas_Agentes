@@ -1,61 +1,69 @@
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
+
 /**
  * 🔗 Nexus - PhD in Dependency Orchestration & Service Integrity (Python Stack)
  * Analisa a integridade de injeção de dependência e acoplamento entre serviços legacy.
  */
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
-import { BaseActivePersona } from "../../base.ts";
-
 export class NexusPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
         super(projectRoot);
         this.name = "Nexus";
         this.emoji = "🔗";
         this.role = "PhD Orchestration Architect";
+        this.phd_identity = "Dependency Orchestration & Service Integrity (Python)";
         this.stack = "Python";
+    }
+
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
+        this.setContext(context);
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".py"],
+            rules: [
+                { regex: /import src_local\..*/, issue: "Acoplamento Interno: Verifique dependências modulares PhD.", severity: "low" },
+                { regex: /sys\.modules\[.*\] = .*/, issue: "Injeção Dinâmica: Manipular sys.modules é risco crítico PhD.", severity: "critical" },
+                { regex: /injector\.get\(.*\)/, issue: "Service Locator: Verifique injeção via 'dependency_injector' PhD.", severity: "medium" },
+                { regex: /circular import/, issue: "Dependência Circular: Permite desacoplamento para evitar falhas PhD.", severity: "high" }
+            ]
+        };
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /import src_local\..*/, issue: "Acoplamento Interno: Verifique se as dependências entre módulos seguem o padrão PhD de modularidade.", severity: "low" },
-            { regex: /sys\.modules\[.*\] = .*/, issue: "Injeção Dinâmica: Manipular sys.modules é um risco crítico de soberania e previsibilidade.", severity: "critical" },
-            { regex: /injector\.get\(.*\)/, issue: "Service Locator: Verifique se o uso de injeção via 'injector' (dependency_injector) está isolado.", severity: "medium" },
-            { regex: /circular import/, issue: "Dependência Circular: Verifique se o design permite desacoplamento para evitar travamentos de importação.", severity: "high" }
-        ];
-        const results = await this.findPatterns([".py"], rules);
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
 
-        // Advanced Logic: Nexus Integration Audit
         if (results.some(r => r.severity === "critical")) {
-            this.reasonAboutObjective("Architectural Integrity", "Dependency Injection", "Critical dynamic module injection found in Python layer.");
+            results.push({
+                file: "PYTHON_NEXUS", agent: this.name, role: this.role, emoji: this.emoji,
+                issue: "Architectural Integrity: Critical dynamic module injection found.",
+                severity: "critical", stack: this.stack, evidence: "Structural Analysis", match_count: 1, context: "DI Audit"
+            } as any);
         }
 
         this.endMetrics(results.length);
         return results;
     }
 
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Nexus] Re-vinculando serviços e resolvendo dependências circulares em: ${blindSpots.join(", ")}`);
-    }
-
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): string | StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
-            objective,
-            analysis: "Auditando centralidade de injeção e ciclo de vida de serviços legacy.",
-            recommendation: "Usar 'dependency_injector' de forma declarativa e evitar manipulações de sys.modules.",
-            severity: "medium"
-        } as StrategicFinding;
-    }
-
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
-        return {
-            status: "Soberano",
-            score: 100,
-            issues: []
+            file,
+            issue: `PhD Nexus (Python): Auditando centralidade de injeção e serviços legacy para ${objective}.`,
+            severity: "STRATEGIC",
+            context: this.name
         };
     }
 
+    public override selfDiagnostic(): any {
+        return { status: "Soberano", score: 100, issues: [] };
+    }
+
     public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Orquestração de Sistemas Python. Sua missão é garantir a modularidade e o desacoplamento total.`;
+        return `Você é o Dr. ${this.name}, PhD em Orquestração de Sistemas Python.`;
     }
 }
-

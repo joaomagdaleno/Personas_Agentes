@@ -1,12 +1,12 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
 
 /**
  * 🔨 Dr. Forge — PhD in TypeScript Code Generation & Safety
  */
 export class ForgePersona extends BaseActivePersona {
-    constructor(projectRoot?: string) {
-        super(projectRoot as any);
+    constructor(projectRoot: string | undefined = undefined) {
+        super(projectRoot);
         this.name = "Forge";
         this.emoji = "🔨";
         this.role = "PhD Automation & Safety Engineer";
@@ -14,7 +14,7 @@ export class ForgePersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    public override async execute(context: any): Promise<any> {
+    override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
         const findings = await this.performAudit();
         return findings;
@@ -29,17 +29,9 @@ export class ForgePersona extends BaseActivePersona {
         };
     }
 
-    public audit(): any[] { return []; }
     public Branding(): string { return `${this.emoji} ${this.name}`; }
-    public Analysis(): string { return "Code Generation Analysis Complete"; }
-    public test(): boolean {
-        this.Branding();
-        this.Analysis();
-        this.audit();
-        return true;
-    }
 
-    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+    override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | string | null {
         return {
             file, severity: "INFO",
             issue: `PhD Forge (TypeScript): Analisando segurança de codegen para ${objective}.`,
@@ -52,6 +44,6 @@ export class ForgePersona extends BaseActivePersona {
     }
 
     override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, mestre em segurança de codegen TypeScript. Status: ${this.Analysis()}`;
+        return `Você é o Dr. ${this.name}, mestre em segurança de codegen TypeScript. Status: Code Generation Analysis Ready`;
     }
 }

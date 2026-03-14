@@ -30,7 +30,7 @@ async function runBenchmark() {
     walk(path.join(projectRoot, "src_local"));
     console.log(`📂 Loaded ${Object.keys(context).length} files.`);
 
-    const dummyAgent = {
+    const dummyAgent: any = {
         name: "BenchmarkAgent",
         role: "Tester",
         emoji: "🧪",
@@ -62,7 +62,7 @@ async function runBenchmark() {
     // Simulate 10 runs to get better average
     for (let i = 0; i < 10; i++) {
         tsResults = [];
-        for (const [file, data] of Object.entries(context)) {
+        for (const [file, data] of Object.entries(context) as [string, any][]) {
             // @ts-ignore
             const matches = PatternFinder.scanFile(file, data.content, rules, dummyAgent);
             tsResults.push(...matches);
@@ -91,7 +91,7 @@ async function runBenchmark() {
     }];
 
     for (let i = 0; i < 10; i++) {
-        rustResults = PatternFinder.findBulk(bulkContext, personaRules, projectRoot);
+        rustResults = await PatternFinder.findBulk(bulkContext, personaRules, projectRoot);
     }
     const rustEnd = performance.now();
     const rustTime = (rustEnd - rustStart) / 10;

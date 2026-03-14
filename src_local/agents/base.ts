@@ -4,38 +4,84 @@ import { readFile } from "node:fs/promises";
 import { PatternFinder } from "./strategies/PatternFinder.ts";
 import { Diagnostician } from "./strategies/Diagnostician.ts";
 import { BaseHelpers } from "./BaseHelpers.ts";
-import type { IAgent, ProjectContext, FileContextData } from "../core/types.ts";
+import { StructuralAnalyst } from "./Support/Analysis/structural_analyst.ts";
+import { IntegrityGuardian } from "./Support/Core/integrity_guardian.ts";
+import { MaturityEvaluator } from "./Support/Diagnostics/maturity_evaluator.ts";
+import { AuditEngine } from "../core/audit_engine.ts";
+import { HubManagerGRPC } from "../core/hub_manager_grpc.ts";
+import type { 
+    IAgent, 
+    ISupportableAgent,
+    ProjectContext, 
+    FileContextData, 
+    AuditRule, 
+    AuditFinding, 
+    StrategicFinding 
+} from "../core/types.ts";
 
-export interface AuditRule { regex: RegExp | string; issue: string; severity: "critical" | "high" | "medium" | "low"; }
-export interface AuditFinding { file: string; agent: string; role: string; emoji: string; issue: string; severity: string; stack: string; evidence: string; match_count: number; line_number?: number; }
-export interface StrategicFinding { file: string; issue: string; severity: string; context: string; objective?: string; analysis?: string; recommendation?: string; }
+export type { 
+    IAgent, 
+    ProjectContext, 
+    FileContextData, 
+    AuditRule, 
+    AuditFinding, 
+    StrategicFinding 
+};
 
 const logger = winston.child({ module: "BaseActivePersona" });
 
-export abstract class BaseActivePersona implements IAgent {
-    id: string = "base_agent"; category: string = "General";
-    name: string = "Base"; emoji: string = "👤"; role: string = "Generalist"; stack: string = "Universal";
+/**
+ * 👤 BaseActivePersona — Foundational class for all analytical agents.
+ */
+export abstract class BaseActivePersona implements ISupportableAgent {
+    id: string = "base_agent"; 
+    category: string = "General";
+    name: string = "Base"; 
+    emoji: string = "👤"; 
+    role: string = "Generalist"; 
+    stack: string = "Universal";
     phd_identity: string = "General Intelligence";
-    projectRoot: string | undefined = undefined; contextData: Record<string, FileContextData> = {}; projectDna: Record<string, any> = {};
+    
+    projectRoot: string | undefined = undefined; 
+    contextData: Record<string, FileContextData> = {}; 
+    projectDna: Record<string, any> = {};
+    
     ignoredFiles: string[] = ["auto_healing_mission.md", "strategic_mission.txt"];
-    auditEngine: any; structuralAnalyst: any; integrityGuardian: any;
-    maturityEvaluator: any; cognitive: any; patternFinder!: PatternFinder;
-    protected hub: any = null;
+    
+    auditEngine?: AuditEngine; 
+    structuralAnalyst?: StructuralAnalyst; 
+    integrityGuardian?: IntegrityGuardian;
+    maturityEvaluator?: MaturityEvaluator; 
+    cognitive?: any; // To be typed if needed
+    patternFinder!: PatternFinder;
+    
+    protected hub: HubManagerGRPC | null = null;
     private auditStartTime: number = 0;
 
-    constructor(projectRoot?: string) { this.projectRoot = projectRoot; }
+    constructor(projectRoot?: string) { 
+        this.projectRoot = projectRoot; 
+    }
 
-    async execute(context: ProjectContext): Promise<any> {
+    /**
+     * Standard implementation of IAgent.execute.
+     */
+    async execute(context: ProjectContext): Promise<AuditFinding[] | StrategicFinding[] | any> {
         this.setContext(context);
         return await this.performAudit();
     }
 
+    /**
+     * Sets the operational project context for the persona.
+     */
     setContext(data: ProjectContext): void {
-        this.projectDna = data.identity || {};
+        this.projectDna = (data.identity?.dna as Record<string, any>) || {};
         this.contextData = data.map || {};
         this.hub = data.hub || null;
     }
 
+    /**
+     * Strategic reasoning engine loop.
+     */
     performStrategicAudit(obj?: string, fl?: string, ct?: string): (StrategicFinding | string | null)[] {
         if (fl && ct) {
             return [this.reasonAboutObjective(obj || "Verificação", fl, ct)].filter(Boolean);
@@ -92,16 +138,18 @@ export abstract class BaseActivePersona implements IAgent {
         logger.info(`🛠️ [${this.name}] Iniciando protocolo de cura ativa para ${blindSpots.length} pontos.`);
     }
 
-    public analyzeLogic(f: string) {
+    public async analyzeLogic(f: string) {
         if (this.structuralAnalyst && this.projectRoot) {
-            return this.structuralAnalyst.analyzeFileLogic(f, this.projectRoot, this.ignoredFiles, this.name);
+            const content = await this.readProjectFile(f);
+            if (!content) return null;
+            return await this.structuralAnalyst.analyze_file_logic(content, f);
         }
-        return (this as any).performAudit();
+        return await this.performAudit();
     }
 
-    public getMaturityMetrics() {
+    public async getMaturityMetrics() {
         if (this.maturityEvaluator && this.projectRoot) {
-            return this.maturityEvaluator.evaluatePersona(this.projectRoot, this.stack, this.name);
+            return await this.maturityEvaluator.evaluatePersona(this.projectRoot, this.stack, this.name);
         }
         return { score: 0, status: "OFFLINE" };
     }

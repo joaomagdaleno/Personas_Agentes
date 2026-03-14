@@ -48,7 +48,7 @@ export class MetricPersona extends BaseActivePersona {
 
     override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
-        if (content["match"](/console\.(log|error)\(/)) {
+        if (content.match(/console\.(log|error)\(/)) {
             return {
                 file, severity: "HIGH",
                 issue: `Cegueira Analítica: O objetivo '${objective}' exige observabilidade Bun-nativa. Em '${file}', console.* impede gestão centralizada da 'Orquestração de Inteligência Artificial'.`,

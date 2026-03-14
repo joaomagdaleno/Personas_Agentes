@@ -24,36 +24,42 @@ export class StrictPersona extends BaseActivePersona {
         return {
             extensions: [".rs"],
             rules: [
-                { regex: /unwrap\(\)/, issue: "Generic Laxity: Uso de unwrap() detectado.", severity: "high" }
+                { regex: /\.unwrap\(\)/, issue: "Risco de Pânico: unwrap() detectado. Use match ou if let para segurança PhD.", severity: "high" },
+                { regex: /\.expect\(/, issue: "Fragilidade: expect() detectado. Prefira tratamento de erro idiomático.", severity: "medium" },
+                { regex: /\bunsafe\s*\{/, issue: "Violência: Bloco unsafe detectado. Justifique cada byte violado PhD.", severity: "critical" }
             ]
         };
     }
 
-    public audit(): any[] { return []; }
-    public Branding(): string { return `${this.emoji} ${this.name}`; }
-    public Analysis(): string { return "Type Purity Analysis Complete"; }
-    public test(): boolean {
-        this.Branding();
-        this.Analysis();
-        this.audit();
-        return true;
+    public override async performAudit(): Promise<any[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        this.endMetrics(results.length);
+        return results;
     }
 
-    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | null {
+        if (typeof content !== 'string') return null;
+        if (content.includes('.unwrap()') || content.includes('.expect(')) {
+            return {
+                file, severity: "HIGH",
+                issue: `O objetivo '${objective}' exige robustez Rust. Em '${file}', o uso de panic-triggers (unwrap/expect) viola a 'Orquestração de Inteligência Artificial'.`,
+                context: "panic triggers detected"
+            };
+        }
         return {
-            file,
-            severity: "INFO",
-            issue: `PhD Strict (Rust): Analisando rigor para ${objective}.`,
+            file, severity: "INFO",
+            issue: `PhD Strict (Rust): Analisando rigor para ${objective}. Focando em segurança de memória e ausência de unsafe.`,
             context: "analyzing strictness"
-        } as any;
+        };
     }
 
     public override selfDiagnostic(): any {
-        return { status: "Soberano", score: 100, issues: [], branding: this.Branding() };
+        return { status: "Soberano", score: 100, details: "Célula Rust operando em conformidade PhD." };
     }
 
     public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em rigor Rust. Status: ${this.Analysis()}`;
+        return `Você é o Dr. Strict, PhD em sistemas de missão crítica em Rust. Sua missão é erradicar pânicos e blocos unsafe sem justificativa.`;
     }
-    public override async performAudit(): Promise<any[]> { return []; }
 }

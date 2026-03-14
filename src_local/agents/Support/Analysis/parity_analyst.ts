@@ -1,4 +1,4 @@
-import type { ParityReport, DepthMetric, AgentParityResult } from "./parity_types";
+import type { ParityReport, DepthMetric, AgentParityResult, AgentInstance } from "./parity_types";
 import { computeDeltas, computeScore } from "./parity_utils";
 import { InstanceGrouper } from "./InstanceGrouper.ts";
 import { ParityReporter } from "./ParityReporter.ts";
@@ -28,18 +28,21 @@ export class ParityAnalyst {
         };
     }
 
-    private aggregateBy(results: AgentParityResult[], key: "stack" | "category"): any {
-        const agg: any = {};
+    private aggregateBy(results: AgentParityResult[], key: "stack" | "category"): Record<string, { total: number; symmetric: number; parity: number }> {
+        const agg: Record<string, { total: number; symmetric: number; parity: number }> = {};
         results.forEach(r => {
             const st = agg[r[key]] ||= { total: 0, symmetric: 0, parity: 0 };
             st.total++;
             if (r.status === "IDENTICAL") st.symmetric++;
         });
-        Object.keys(agg).forEach(k => agg[k].parity = this.avgScore(results.filter(r => r[key] === k)));
+        Object.keys(agg).forEach(k => {
+            const st = agg[k];
+            if (st) st.parity = this.avgScore(results.filter(r => r[key] === k));
+        });
         return agg;
     }
 
-    private compareInstances(name: string, instances: any[]): AgentParityResult[] {
+    private compareInstances(name: string, instances: AgentInstance[]): AgentParityResult[] {
         const ref = instances.find(i => i.stack === "TypeScript") || instances.find(i => i.stack === "Bun") || instances[0]!;
         return instances.map(inst => {
             const deltas = computeDeltas(ref.fp, inst.fp, name);

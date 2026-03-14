@@ -20,6 +20,13 @@ export interface AtomicFingerprint {
     halsteadEffort: number;
 }
 
+export interface AgentInstance {
+    stack: string;
+    cat: string;
+    fp: AtomicFingerprint;
+    path: string;
+}
+
 export interface AgentDelta {
     dimension: string;
     legacy: string;

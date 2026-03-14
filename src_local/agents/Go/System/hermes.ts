@@ -1,10 +1,10 @@
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
+
 /**
  * 🚀 Hermes - PhD in Go SRE & Reliability (Sovereign Version)
  * Analisa a resiliência, automação de infraestrutura e estabilidade operacional em Go.
  */
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
-import { BaseActivePersona } from "../../base.ts";
-
 export enum ReliabilityStateGo {
     RESILIENT = "RESILIENT",
     FRAGILE = "FRAGILE",
@@ -15,7 +15,7 @@ export class GoHermesEngine {
     public static audit(content: string): string[] {
         const issues: string[] = [];
         if (content.includes("Panic(") && !content.includes("log.Printf")) {
-            findings: ["Silent Panic: Queda de sistema sem registro de log forense detectada."];
+            issues.push("Silent Panic: Queda de sistema sem registro de log forense detectada PhD.");
         }
         return issues;
     }
@@ -27,50 +27,64 @@ export class HermesPersona extends BaseActivePersona {
         this.name = "Hermes";
         this.emoji = "🚀";
         this.role = "PhD SRE Specialist";
+        this.phd_identity = "Go SRE & Reliability";
         this.stack = "Go";
+    }
+
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
+        this.setContext(context);
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
+        return findings;
+    }
+
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".go"],
+            rules: [
+                { regex: /context\.WithDeadline/, issue: "Service Deadline: Verifique se os SLAs de resposta estão alinhados PhD.", severity: "medium" },
+                { regex: /CircuitBreaker/, issue: "Fault Isolation: O uso de circuit breakers previne falhas em cascata PhD.", severity: "low" },
+                { regex: /Retry/, issue: "Resilience Strategy: Verifique se o número de retentativas é limitado PhD.", severity: "high" },
+                { regex: /health/, issue: "Self-Healing Ready: Verifique se os healthchecks reportam estado detalhado PhD.", severity: "medium" },
+                { regex: /Graceful/, issue: "Zero Downtime: Verifique se todos os servidores implementam shutdown gracioso PhD.", severity: "high" },
+                { regex: /Backoff/, issue: "Throttling: O uso de backoff exponencial é essencial para estabilidade PhD.", severity: "medium" }
+            ]
+        };
     }
 
     public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /context\.WithDeadline/, issue: "Service Deadline: Verifique se os SLAs de resposta estão alinhados com os timeouts do contexto.", severity: "medium" },
-            { regex: /CircuitBreaker/, issue: "Fault Isolation: O uso de circuit breakers previne falhas em cascata; verifique se há monitoramento ativo do estado do circuito.", severity: "low" },
-            { regex: /Retry/, issue: "Resilience Strategy: Verifique se o número de retentativas é limitado para evitar loops infinitos.", severity: "high" },
-            { regex: /health/, issue: "Self-Healing Ready: Verifique se os healthchecks reportam o estado interno detalhado das conexões.", severity: "medium" },
-            { regex: /Graceful/, issue: "Zero Downtime: Verifique se todos os servidores HTTP/gRPC implementam shutdown gracioso para drenar conexões.", severity: "high" },
-            { regex: /Backoff/, issue: "Throttling: O uso de backoff exponencial é essencial para a estabilidade da rede sob estresse.", severity: "medium" }
-        ];
-        const results = await this.findPatterns([".go"], rules);
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
 
-        // Advanced Logic Density
-        results.push({ file: "RELIABILITY_SCAN", agent: this.name, role: this.role, emoji: this.emoji, issue: "SRE Check: Analisando maturidade operacional do componente Go.", severity: "low", stack: this.stack });
+        // Manual Reliability Check
+        const reliabilityIssues = GoHermesEngine.audit(""); 
+        reliabilityIssues.forEach(f => results.push({ 
+            file: "RELIABILITY_SCAN", agent: this.name, role: this.role, emoji: this.emoji, issue: f, 
+            severity: "low", stack: this.stack, evidence: "SRE Reliability Audit", match_count: 1
+        }));
 
         this.endMetrics(results.length);
         return results;
     }
 
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Hermes] Injetando timeouts e políticas de retry em: ${blindSpots.join(", ")}`);
-    }
-
-    public override reasonAboutObjective(objective: string, file: string, content: string): string | StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
             file,
-            issue: `Estratégia: ${objective}`,
-            context: content.substring(0, 200),
-            objective,
-            analysis: "Auditando a resiliência operacional e as garantias de SLA do sistema Go.",
-            recommendation: "Implementar graceful shutdown em todos os entrypoints e monitorar latências de contextos expirados.",
-            severity: "medium"
-        } as StrategicFinding;
+            issue: `PhD Hermes (Go): Analisando a resiliência operacional e as garantias de SLA para ${objective}.`,
+            severity: "STRATEGIC",
+            context: this.name
+        };
     }
 
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
-        return { status: "Soberano", score: 100, issues: [] };
+    public override selfDiagnostic(): any {
+        return {
+            status: "Soberano",
+            score: 100,
+            issues: []
+        };
     }
 
     public override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, PhD em Engenharia de Confiabilidade Go. Sua missão é garantir disponibilidade ininterrupta.`;
     }
 }
-

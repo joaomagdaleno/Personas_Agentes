@@ -1,5 +1,6 @@
 import winston from "winston";
 import { HubManagerGRPC } from "../../../core/hub_manager_grpc.ts";
+import type { FileContextData, QAData, CognitiveStatus } from "../../../core/types.ts";
 
 const logger = winston.child({ module: "ScoreCalculator" });
 
@@ -15,10 +16,10 @@ export class ScoreCalculator {
      * Calculates final health score using the native gRPC engine.
      */
     async calculateFinalScore(
-        mapData: Record<string, any>,
+        mapData: Record<string, FileContextData>,
         allAlerts: any[],
-        qaData: any = null,
-        cognitive: any = null
+        qaData: QAData | null = null,
+        cognitive: CognitiveStatus | null = null
     ): Promise<{ score: number, breakdown: Record<string, number> }> {
 
         if (!mapData || Object.keys(mapData).length === 0) {
@@ -49,7 +50,7 @@ export class ScoreCalculator {
     /**
      * Normalizes mapData for the Rust bridge (snake_case/expected types).
      */
-    private prepareMapData(mapData: Record<string, any>): Record<string, any> {
+    private prepareMapData(mapData: Record<string, FileContextData>): Record<string, any> {
         const normalized: Record<string, any> = {};
         for (const [file, info] of Object.entries(mapData)) {
             normalized[file] = {

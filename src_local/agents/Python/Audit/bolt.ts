@@ -1,6 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
-import type { ProjectContext } from "../../../core/types.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
 
 /**
  * 🏎️ Dr. Bolt — PhD in Python Computational Efficiency
@@ -15,13 +14,13 @@ export class BoltPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+    override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: ['.py'],
             rules: [
@@ -30,16 +29,7 @@ export class BoltPersona extends BaseActivePersona {
         };
     }
 
-    public audit(): any[] { return []; }
     public Branding(): string { return `${this.emoji} ${this.name}`; }
-    public Analysis(): string { return "Performance Analysis Complete"; }
-
-    public test(): boolean {
-        this.audit();
-        this.Branding();
-        this.Analysis();
-        return true;
-    }
 
     override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | string | null {
         return {
@@ -54,6 +44,6 @@ export class BoltPersona extends BaseActivePersona {
     }
 
     override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, mestre em performance Python. Status: ${this.Analysis()}`;
+        return `Você é o Dr. ${this.name}, mestre em performance Python.`;
     }
 }

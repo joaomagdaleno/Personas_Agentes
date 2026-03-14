@@ -1,11 +1,10 @@
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
+
 /**
  * ⚖️ Warden - PhD in Go Resource Lifecycle & Governance (Sovereign Version)
  * Analisa a gestão de recursos (files, sockets), contextos e graceful shutdown em Go.
  */
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
-import { BaseActivePersona } from "../../base.ts";
-import type { ProjectContext } from "../../../core/types.ts";
-
 export enum ResourceHealthGo {
     LEAK_FREE = "LEAK_FREE",
     DRAINED = "DRAINED",
@@ -35,22 +34,12 @@ export class WardenPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         
-        // Go-specific lifecycle engine inspection
-        const lifecycleIssues = GoLifecycleEngine.inspect(this.projectRoot || "");
-        lifecycleIssues.forEach(l => findings.push({
-            file: "LIFECYCLE_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: l, severity: "medium", stack: this.stack,
-            evidence: "Structural Analysis", match_count: 1
-        }));
-
         if (this.hub) {
-            // Governance Intelligence via Knowledge Graph
             const leakQuery = await this.hub.queryKnowledgeGraph("Leak", "medium");
-            
-            // PhD Ethics Reasoning
             const reasoning = await this.hub.reason(`Analyze the resource governance of a Go system with ${leakQuery.length} potential resource leaks.`);
 
             findings.push({
@@ -66,34 +55,42 @@ export class WardenPersona extends BaseActivePersona {
         return {
             extensions: [".go"],
             rules: [
-                { regex: /defer\s+.*\.Close\(\)/, issue: "Safe Resource: Gerenciamento de recurso com defer detectado; verifique se o erro no fechamento é tratado quando crítico.", severity: "low" },
-                { regex: /context\.Background\(\)/, issue: "Static Context: Prefira passar context.Context em todas as funções que envolvam I/O ou concorrência.", severity: "medium" },
-                { regex: /sync\.WaitGroup/, issue: "Coordinaton: Garanta que todos os Add() possuem seus respectivos Done() para evitar deadlocks de encerramento.", severity: "high" },
-                { regex: /os\.Exit/, issue: "Hard Stop: Evite os.Exit(); prefira retornar erros e deixar o main() gerenciar o encerramento gracioso via deferred calls.", severity: "high" },
-                { regex: /context\.TODO\(\)/, issue: "Technical Debt: Contexto temporário (TODO) detectado; substitua por um contexto adequado.", severity: "low" },
-                { regex: /runtime\.SetFinalizer/, issue: "Unstable Finalizer: Evite SetFinalizer para lógica de negócio; não há garantia de execução imediata.", severity: "medium" }
+                { regex: /defer\s+.*\.Close\(\)/, issue: "Safe Resource: Gerenciamento de recurso com defer detectado; verifique se o erro é tratado PhD.", severity: "low" },
+                { regex: /context\.Background\(\)/, issue: "Static Context: Prefira passar context.Context em todas as funções de I/O PhD.", severity: "medium" },
+                { regex: /sync\.WaitGroup/, issue: "Coordinaton: Garanta que todos os Add() possuem seus respectivo Done() PhD.", severity: "high" },
+                { regex: /os\.Exit/, issue: "Hard Stop: Evite os.Exit(); prefira retornar erros e deixar o main() gerenciar o encerramento PhD.", severity: "high" },
+                { regex: /context\.TODO\(\)/, issue: "Technical Debt: Contexto temporário (TODO) detectado; substitua PhD.", severity: "low" },
+                { regex: /runtime\.SetFinalizer/, issue: "Unstable Finalizer: Evite SetFinalizer para lógica de negócio PhD.", severity: "medium" }
             ]
         };
     }
 
+    public override async performAudit(): Promise<AuditFinding[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
 
-    public override performActiveHealing(blindSpots: string[]): void {
-        console.log(`🛠️ [Warden] Injetando defer de fechamento e propagando contextos em: ${blindSpots.join(", ")}`);
+        // Go-specific lifecycle engine inspection
+        const lifecycleIssues = GoLifecycleEngine.inspect(""); 
+        lifecycleIssues.forEach(l => results.push({
+            file: "LIFECYCLE_AUDIT", agent: this.name, role: this.role, emoji: this.emoji, issue: l, severity: "medium", stack: this.stack,
+            evidence: "Structural Analysis", match_count: 1
+        }));
+
+        this.endMetrics(results.length);
+        return results;
     }
 
-    public override reasonAboutObjective(objective: string, file: string, content: string): string | StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
             file,
-            issue: `Estratégia: ${objective}`,
-            context: content.substring(0, 200),
-            objective,
-            analysis: "Auditando a higiene de recursos e o ciclo de vida das instâncias Go.",
-            recommendation: "Garantir que todos os pacotes aceitem context.Context como primeiro argumento para permitir cancelamento em cascata.",
-            severity: "medium"
-        } as StrategicFinding;
+            issue: `PhD Warden (Go): Auditando a higiene de recursos e o ciclo de vida das instâncias para ${objective}.`,
+            severity: "STRATEGIC",
+            context: this.name
+        };
     }
 
-    public override selfDiagnostic(): { status: string; score: number; issues: string[]; } {
+    public override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,
@@ -104,9 +101,4 @@ export class WardenPersona extends BaseActivePersona {
     public override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, PhD em Governança de Recursos Go. Sua missão é garantir a ordem e a limpeza sistêmica.`;
     }
-    public audit(): any[] { return []; }
-    public Branding(): string { return this.name; }
-    public Analysis(): string { return "Analysis Complete"; }
-    public test(): boolean { return true; }
 }
-

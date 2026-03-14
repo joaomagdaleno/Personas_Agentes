@@ -1,13 +1,12 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding } from "../../base.ts";
-
+import type { AuditRule, StrategicFinding, ProjectContext, AuditFinding } from "../../base.ts";
 
 /**
  * 🌍 Dr. Globe — PhD in TypeScript Internationalization & Localization
  * Especialista em portabilidade global, hardcoded strings e encoding.
  */
 export class GlobePersona extends BaseActivePersona {
-    constructor(projectRoot: string | null = null) {
+    constructor(projectRoot: string | undefined = undefined) {
         super(projectRoot);
         this.name = "Globe";
         this.emoji = "🌍";
@@ -16,18 +15,22 @@ export class GlobePersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    public override async execute(context: any): Promise<any> {
+    override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         if (this.hub) {
             const i18nNodes = await this.hub.queryKnowledgeGraph("hardcoded string", "medium");
             const reasoning = await this.hub.reason(`Analyze the i18n readiness of a TypeScript system with ${i18nNodes.length} hardcoded string patterns. Recommend localization strategy.`);
-            findings.push({ file: "i18n Audit", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Globe: Portabilidade global validada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "Knowledge Graph i18n Audit", match_count: 1 } as any);
+            findings.push({ 
+                file: "i18n Audit", agent: this.name, role: this.role, emoji: this.emoji, 
+                issue: `Sovereign Globe: Portabilidade global validada via Rust Hub. PhD Analysis: ${reasoning}`, 
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph i18n Audit", match_count: 1 
+            } as any);
         }
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: ['.ts', '.tsx'],
             rules: [
@@ -38,7 +41,7 @@ export class GlobePersona extends BaseActivePersona {
         };
     }
 
-    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
         if (/(?:message|label|title)\s*[:=]\s*['"][A-Z]/.test(content)) {
             return {
@@ -54,7 +57,7 @@ export class GlobePersona extends BaseActivePersona {
         };
     }
 
-    selfDiagnostic(): any {
+    override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,
@@ -62,7 +65,7 @@ export class GlobePersona extends BaseActivePersona {
         };
     }
 
-    getSystemPrompt(): string {
+    override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em internacionalização e portabilidade TypeScript.`;
     }
 }

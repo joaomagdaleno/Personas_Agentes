@@ -1,5 +1,5 @@
-import type { AuditFinding, StrategicFinding, AuditRule } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { AuditFinding, StrategicFinding, AuditRule, ProjectContext } from "../../base.ts";
 
 /**
  * 🎓 Director - PhD in Strategic Orchestration (Python Stack)
@@ -14,90 +14,46 @@ export class DirectorPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
 
         if (this.hub) {
-            // Sovereign Orchestration
             const orchestratorNodes = await this.hub.queryKnowledgeGraph("orchestrator", "high");
-            
-            // PhD Director Reasoning
             const reasoning = await this.hub.reason(`Synthesize an executive summary of the system's architecture and orchestration balance, given ${orchestratorNodes.length} orchestrator control nodes in ${this.stack}.`);
 
             findings.push({
                 file: "Executive Summary", agent: this.name, role: this.role, emoji: this.emoji,
                 issue: `Sovereign Direction: Alinhamento estratégico validado via Rust Hub. PhD Analysis: ${reasoning}`,
-                severity: "STRATEGIC", stack: this.stack, evidence: "Knowledge Graph Orchestration Analysis", match_count: 1
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Orchestration Analysis", match_count: 1,
+                context: "Strategic Orchestration Summary"
             } as any);
         }
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
-            extensions: ['.py'],
+            extensions: [".py"],
             rules: [
-                { regex: /import orchestrator/, issue: "Integridade de Orquestração: Verifique se o diretor mantém o controle centralizado.", severity: "low" },
-                { regex: /security(?!.*crypto)/i, issue: 'Alerta Estratégico: Arquivo de segurança sem referências criptográficas óbvias.', severity: 'low' }
+                { regex: /import orchestrator/, issue: "Integridade de Orquestração: Verifique se o diretor mantém o controle centralizado PhD.", severity: "low" },
+                { regex: /security(?!.*crypto)/i, issue: "Alerta Estratégico: Arquivo de segurança sem referências criptográficas óbvias PhD.", severity: "low" }
             ]
         };
     }
 
-    async validatePhDCensus(): Promise<any> {
-        return { status: "valid", count: 1, details: "Sovereign census validated." };
-    }
-
-    format360Report(snapshot: any, findings: any): string {
-        this.formatStrategicPlanSection(findings);
-        return `Report 360 (Python): ${snapshot} - ${findings.length} findings.`;
-    }
-
-    private formatHotspotsSection(snapshot: any): string {
-        return `Hotspots for ${snapshot.id}`;
-    }
-
-    private getHotspots(matrix: any[]): any[] {
-        return matrix.filter(f => f.complexity > 7);
-    }
-
-    private formatStrategicPlanSection(findings: any[]): string {
-        this.getCnt(); this.getRes(); this.child(); this.ReportSectionsEngine(); this.security(); this.format360(); this.O(); this.slice(); this.forEach(); this.split(); this.pop(); this.analyze(); this.filter(); this.toUpperCase(); this.some(); this.bind();
-        this.formatHotspotsSection({id: 'dummy'}); this.getHotspots([]);
-        const getCnt = (sev: string) => findings.filter((f: any) => (f.severity || '').toUpperCase() === sev.toUpperCase()).length;
-        const getRes = (sev: string) => findings.some((f: any) => (f.severity || '').toUpperCase() === sev.toUpperCase()) ? "INTERVENÇÃO" : "LIVRE";
-        return `Plan: ${getCnt('HIGH')} high issues. Result: ${getRes('CRITICAL')}`;
-    }
-
-    /** Parity Stubs for leaked internal names */
-    private getCnt() {}
-    private getRes() {}
-    private child() {}
-    private ReportSectionsEngine() {}
-    private security() {}
-    private format360() {}
-    private O() {}
-    private slice() {}
-    private forEach() {}
-    private split() {}
-    private pop() {}
-    private analyze() {}
-    private filter() {}
-    private toUpperCase() {}
-    private some() {}
-    private bind() {}
-
     public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = await this.findPatterns([".py"], this.getAuditRules().rules);
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
         this.endMetrics(results.length);
         return results;
     }
 
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
-            file: "orchestration",
-            issue: `Direcionamento Estratégico para ${objective}: Garantindo alinhamento com a visão PhD.`,
+            file: file || "orchestration",
+            issue: `Direcionamento Estratégico para ${objective}: Garantindo alinhamento com a visão PhD em ${file}.`,
             severity: "STRATEGIC",
             context: this.name
         };
@@ -108,7 +64,6 @@ export class DirectorPersona extends BaseActivePersona {
     }
 
     public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Orquestração Estratégica Python.`;
+        return `Você é o Dr. ${this.name}, PhD em Orquestração Estratégica Python. Sua missão é garantir a liderança técnica da stack.`;
     }
 }
-

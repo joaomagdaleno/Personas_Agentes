@@ -1,6 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
-import type { ProjectContext } from "../../../core/types.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
 
 /**
  * ☁️ Nebula - PhD in Cloud Architecture (Python)
@@ -15,9 +14,9 @@ export class NebulaPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+    override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         return findings;
     }
 
@@ -30,22 +29,14 @@ export class NebulaPersona extends BaseActivePersona {
         };
     }
 
-    public audit(): any[] { return []; }
     public Branding(): string { return `${this.emoji} ${this.name}`; }
-    public Analysis(): string { return "Cloud Integrity Analysis Complete"; }
-    public test(): boolean {
-        this.Branding();
-        this.Analysis();
-        this.audit();
-        return true;
-    }
 
-    public override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
             file, severity: "INFO",
             issue: `PhD Nebula (Python): Analisando soberania cloud para ${objective}.`,
             context: "analyzing cloud resources"
-        } as StrategicFinding;
+        };
     }
 
     override selfDiagnostic(): any {
@@ -53,6 +44,6 @@ export class NebulaPersona extends BaseActivePersona {
     }
 
     public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Cloud Python. Status: ${this.Analysis()}`;
+        return `Você é o Dr. ${this.name}, PhD em Cloud Python.`;
     }
 }

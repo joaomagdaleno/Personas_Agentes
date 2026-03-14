@@ -150,6 +150,6 @@ class TestifyHelpers {
         ];
         return forbidden.some(check => check());
     }
-    public override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): any { return null; }
-    public override getSystemPrompt(): string { return ""; }
+    public reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): any { return null; }
+    public getSystemPrompt(): string { return ""; }
 }

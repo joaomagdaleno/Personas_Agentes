@@ -1,12 +1,11 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding } from "../../base.ts";
-import type { ProjectContext } from "../../../core/types.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
 
 /**
  * 🔬 Dr. Probe — PhD in Go Error Resilience & Exception Handling
  */
 export class ProbePersona extends BaseActivePersona {
-    constructor(projectRoot: string | undefined = undefined) {
+    constructor(projectRoot?: string) {
         super(projectRoot);
         this.name = "Probe";
         this.emoji = "🔬";
@@ -15,9 +14,9 @@ export class ProbePersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    override async execute(context: ProjectContext): Promise<AuditFinding[]> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         return findings;
     }
 
@@ -25,34 +24,33 @@ export class ProbePersona extends BaseActivePersona {
         return {
             extensions: [".go"],
             rules: [
-                { regex: /_\s*=\s*.*\(.*\)/, issue: "Omissão Silenciosa: Ignorar retorno via '_'.", severity: "critical" }
+                { regex: /_\s*=\s*.*\(.*\)/, issue: "Omissão Silenciosa: Ignorar retorno de erro via '_'. Prática perigosa em Go PhD.", severity: "critical" }
             ]
         };
     }
 
-    public audit(): any[] { return []; }
-    public Branding(): string { return `${this.emoji} ${this.name}`; }
-    public Analysis(): string { return "Resilience Analysis Complete"; }
-    public test(): boolean {
-        this.Branding();
-        this.Analysis();
-        this.audit();
-        return true;
+    public override async performAudit(): Promise<AuditFinding[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        this.endMetrics(results.length);
+        return results;
     }
 
-    override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | string | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
-            file, severity: "INFO",
+            file,
             issue: `PhD Probe (Go): Analisando integridade de erros para ${objective}.`,
-            context: "analyzing resilience"
+            severity: "STRATEGIC",
+            context: this.name
         };
     }
 
-    override selfDiagnostic(): any {
-        return { status: "Soberano", score: 100, issues: [], branding: this.Branding() };
+    public override selfDiagnostic(): any {
+        return { status: "Soberano", score: 100, issues: [] };
     }
 
-    override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em resiliência Go. Status: ${this.Analysis()}`;
+    public override getSystemPrompt(): string {
+        return `Você é o Dr. ${this.name}, PhD em resiliência Go.`;
     }
 }

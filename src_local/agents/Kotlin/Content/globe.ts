@@ -26,15 +26,22 @@ export class GlobePersona extends BaseActivePersona {
         return findings;
     }
 
+    public override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".kt", ".kts", ".xml"],
+            rules: [
+                { regex: /res\/values.*\/strings\.xml/, issue: "Recurso de String: Verifique se todas as chaves estão traduzidas nos locales suportados.", severity: "low" },
+                { regex: /getString\(R\.string\..*\)/, issue: "Acesso de Tradução: Verifique se o contexto é válido para evitar IllegalStateException.", severity: "low" },
+                { regex: /android:supportsRtl="true"/, issue: "Suporte RTL: Verifique a configuração no manifest para garantir espelhamento correto de UI.", severity: "medium" },
+                { regex: /"[\w\s]{50,}"/, issue: "Hardcoded String: Mova strings longas para strings.xml para permitir localização e reuso.", severity: "medium" }
+            ]
+        };
+    }
+
     public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const rules: AuditRule[] = [
-            { regex: /res\/values.*\/strings\.xml/, issue: "Recurso de String: Verifique se todas as chaves estão traduzidas nos locales suportados.", severity: "low" },
-            { regex: /getString\(R\.string\..*\)/, issue: "Acesso de Tradução: Verifique se o contexto é válido para evitar IllegalStateException.", severity: "low" },
-            { regex: /android:supportsRtl="true"/, issue: "Suporte RTL: Verifique a configuração no manifest para garantir espelhamento correto de UI.", severity: "medium" },
-            { regex: /"[\w\s]{50,}"/, issue: "Hardcoded String: Mova strings longas para strings.xml para permitir localização e reuso.", severity: "medium" }
-        ];
-        const results = await this.findPatterns([".kt", ".kts", ".xml"], rules);
+        const { extensions, rules } = this.getAuditRules();
+        const results = await this.findPatterns(extensions, rules);
 
         // Advanced Logic: Global Readiness
         if (results.some(r => r.issue.includes("Hardcoded"))) {

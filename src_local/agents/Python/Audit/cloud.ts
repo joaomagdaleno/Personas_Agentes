@@ -1,10 +1,10 @@
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+
 /**
  * ☁️ Cloud - Python-native Serverless & IAM Agent
  * Sovereign Synapse: Audita permissões IAM, configurações de Lambda/Functions e segurança cloud Python.
  */
-import type { AuditRule, StrategicFinding } from "../../base.ts";
-import { BaseActivePersona } from "../../base.ts";
-
 export class CloudPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
         super(projectRoot);
@@ -15,9 +15,9 @@ export class CloudPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         if (this.hub) {
             const iamNodes = await this.hub.queryKnowledgeGraph("iam", "low");
             const reasoning = await this.hub.reason(`Analyze the serverless security posture of a Python system with ${iamNodes.length} IAM/Security markers. Recommend least-privilege policies and secret rotation.`);
@@ -31,7 +31,7 @@ export class CloudPersona extends BaseActivePersona {
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".py", ".yaml", ".yml", ".json"],
             rules: [
@@ -43,9 +43,9 @@ export class CloudPersona extends BaseActivePersona {
         };
     }
 
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
-            file: "cloud",
+            file,
             issue: `Direcionamento Cloud Python para ${objective}: Minimizando superfície de ataque serverless.`,
             severity: "STRATEGIC",
             context: this.name

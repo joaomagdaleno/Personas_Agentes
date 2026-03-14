@@ -1,6 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding } from "../../base.ts";
-
+import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
 
 /**
  * 🔨 Dr. Forge — PhD in Python Code Generation & Safety
@@ -8,7 +7,7 @@ import type { AuditRule, StrategicFinding } from "../../base.ts";
  */
 export class ForgePersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
-        super(projectRoot as any);
+        super(projectRoot);
         this.name = "Forge";
         this.emoji = "🔨";
         this.role = "PhD Automation & Safety Engineer";
@@ -16,9 +15,9 @@ export class ForgePersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
 
         if (this.hub) {
             const evalNodes = await this.hub.queryKnowledgeGraph("eval", "critical");
@@ -27,7 +26,8 @@ export class ForgePersona extends BaseActivePersona {
             findings.push({
                 file: "Code Safety", agent: this.name, role: this.role, emoji: this.emoji,
                 issue: `Sovereign Forge: Segurança de codegen Python validada via Rust Hub. PhD Analysis: ${reasoning}`,
-                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Eval Audit", match_count: 1
+                severity: "INFO", stack: this.stack, evidence: "Knowledge Graph Eval Audit", match_count: 1,
+                context: "Dynamic Execution Risk"
             } as any);
         }
         return findings;
@@ -48,8 +48,7 @@ export class ForgePersona extends BaseActivePersona {
 
     override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
-        const target = /\beval\s*\(|\bexec\s*\(/;
-        if (target["test"](content)) {
+        if (/\beval\s*\(|\bexec\s*\(/.test(content)) {
             return {
                 file, severity: "CRITICAL",
                 issue: `Risco de Autonomia: O objetivo '${objective}' exige segurança de execução. Em '${file}', a execução dinâmica de código compromete a 'Orquestração de Inteligência Artificial'.`,
@@ -74,8 +73,4 @@ export class ForgePersona extends BaseActivePersona {
     override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em automação e segurança de codegen Python.`;
     }
-    public audit(): any[] { return []; }
-    public Branding(): string { return this.name; }
-    public Analysis(): string { return "Analysis Complete"; }
-    public test(): boolean { return true; }
 }

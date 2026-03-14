@@ -1,6 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding } from "../../base.ts";
-import type { ProjectContext } from "../../../core/types.ts";
+import type { AuditRule, StrategicFinding, ProjectContext, AuditFinding } from "../../base.ts";
 
 /**
  * 🔬 Dr. Probe — PhD in TypeScript Error Resilience & Exception Handling
@@ -16,18 +15,13 @@ export class ProbePersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    override async execute(context: ProjectContext): Promise<any> {
+    override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
 
         if (this.hub) {
-            // Strategic Resilience: Impact analysis
             const graph = await this.hub.getKnowledgeGraph("src_local/core/types.ts", 2);
-            
-            // Search for Swallowed Errors [Empty Catches]
             const Errors = await this.hub.queryKnowledgeGraph("catch", "critical");
-
-            // PhD Resilience Reasoning
             const reasoning = await this.hub.reason(`Analyze the impact of silent failures in files related to ${Errors.length} empty catch blocks within a graph of ${graph.nodes.length} nodes.`);
 
             findings.push({
@@ -53,9 +47,9 @@ export class ProbePersona extends BaseActivePersona {
         };
     }
 
-    reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
         if (typeof content !== 'string') return null;
-        if (content["match"](/catch\s*\([^)]*\)\s*\{\s*\}/)) {
+        if (content.match(/catch\s*\([^)]*\)\s*\{\s*\}/)) {
             return {
                 file, severity: "CRITICAL",
                 issue: `Instabilidade Sistêmica: O objetivo '${objective}' exige resiliência. Em '${file}', falhas silenciosas impedem a auto-correção da 'Orquestração de Inteligência Artificial'.`,

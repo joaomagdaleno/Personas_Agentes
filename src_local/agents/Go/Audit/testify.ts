@@ -1,12 +1,11 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditFinding, AuditRule, StrategicFinding } from "../../base.ts";
-import type { ProjectContext } from "../../../core/types.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
 
 /**
  * 🧪 Testify Persona (Go Stack) - PhD in Quality Assurance
  */
 export class TestifyPersona extends BaseActivePersona {
-    constructor(projectRoot: string | undefined = undefined) {
+    constructor(projectRoot?: string) {
         super(projectRoot);
         this.name = "Testify";
         this.emoji = "🧪";
@@ -15,9 +14,9 @@ export class TestifyPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    override async execute(context: ProjectContext): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         return findings;
     }
 
@@ -25,41 +24,35 @@ export class TestifyPersona extends BaseActivePersona {
         return {
             extensions: [".go"],
             rules: [
-                { regex: /func\s+Test.*\{\s*}/, issue: "Empty Test detectado.", severity: "critical" }
+                { regex: /func\s+Test.*\{\s*}/, issue: "Empty Test detectado. Testes vazios não garantem a soberania da lógica PhD.", severity: "critical" },
+                { regex: /,\s*err\s*:=\s*.*(?![\s\S]*if\s+err\s*!=\s*nil)/, issue: "Risco de Pânico: Erro obtido no teste mas não verificado. PhD exige assertiva rigorosa.", severity: "high" },
+                { regex: /func\s+Test.*\{[\s\S]{500,}\}(?![\s\S]*t\.Run)/, issue: "Legibilidade: Teste longo sem subtests (t.Run). Dificulta isolamento de falhas PhD.", severity: "medium" }
             ]
         };
     }
 
-    public audit(): any[] { return []; }
-    public Branding(): string { return `${this.emoji} ${this.name}`; }
-    public Analysis(): string { return "Quality Assurance Analysis Complete"; }
-    public test(): boolean {
-        this.Branding();
-        this.Analysis();
-        this.audit();
-        return true;
+    public override async performAudit(): Promise<AuditFinding[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        this.endMetrics(results.length);
+        return results;
     }
 
-    public override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
             file,
-            severity: "INFO",
             issue: `PhD Testify (Go): Analisando qualidade para ${objective}.`,
-            context: "analyzing coverage"
-        } as any;
+            severity: "STRATEGIC",
+            context: this.name
+        };
     }
 
-    override selfDiagnostic(): any {
-        return { status: "Soberano", score: 100, issues: [], branding: this.Branding() };
+    public override selfDiagnostic(): any {
+        return { status: "Soberano", score: 100, issues: [] };
     }
 
-    override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em testes Go. Status: ${this.Analysis()}`;
+    public override getSystemPrompt(): string {
+        return `Você é o Dr. ${this.name}, PhD em testes Go.`;
     }
-    public async performAudit(): Promise<any[]> { return []; }
-    public isTestFile(f: string): boolean { return false; }
-    public findModulesWithoutTests(dir: string): string[] { return []; }
-    public createMissingTestFinding(f: string): any { return {}; }
-    public getTestedModules(): string[] { return []; }
-    public isUntestedModule(m: string, f: string[]): boolean { return true; }
 }

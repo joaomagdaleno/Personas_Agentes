@@ -1,12 +1,12 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
 
 /**
  * 🛡️ Dr. Sentinel — PhD in Go Cloud Integrity & gRPC Security
  * Especialista em segurança de rede Go, gRPC e integridade na nuvem.
  */
 export class SentinelPersona extends BaseActivePersona {
-    constructor(projectRoot: string | undefined = undefined) {
+    constructor(projectRoot?: string) {
         super(projectRoot);
         this.name = "Sentinel";
         this.emoji = "🛡️";
@@ -15,76 +15,53 @@ export class SentinelPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
-        return {
-            extensions: ['.go', 'go.mod'],
-            rules: [
-                { regex: /HubServiceClient/, issue: 'Connectivity: Dependência da ponte gRPC detectada.', severity: 'low' }
-            ]
-        };
-    }
-
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         if (this.hub) {
             const protoNodes = await this.hub.queryKnowledgeGraph(".proto", "high");
             const reasoning = await this.hub.reason(`Analyze the gRPC security with ${protoNodes.length} service definitions. Recommend authentication and transport layer security.`);
-            findings.push({ file: "gRPC Integrity", agent: this.name, role: this.role, emoji: this.emoji, issue: `Sovereign Sentinel: Integridade Go validada via Rust Hub. PhD Analysis: ${reasoning}`, severity: "INFO", stack: this.stack, evidence: "gRPC Knowledge Graph Audit", match_count: 1 } as any);
+            findings.push({ 
+                file: "gRPC Integrity", agent: this.name, role: this.role, emoji: this.emoji, 
+                issue: `Sovereign Sentinel: Integridade Go validada via Rust Hub. PhD Analysis: ${reasoning}`, 
+                severity: "INFO", stack: this.stack, evidence: "gRPC Knowledge Graph Audit", match_count: 1
+            } as any);
         }
         return findings;
     }
 
-    public audit(): any[] { return []; }
-    public includes(target: string, pattern: string): boolean { return target.includes(pattern); }
-    public eval(expr: string): any { return expr; }
-    public exec(cmd: string): any { return cmd; }
-    public discoverIdentity(): string { return this.phd_identity; }
-    public Analysis(): string { return "Strategic Security Analysis Complete"; }
-    public stringify(data: any): string { return JSON.stringify(data); }
-
-    public override performStrategicAudit(): any[] {
-        return [];
-    }
-
-    public test(): boolean {
-        this.audit();
-        this.includes("test", "t");
-        this.eval("1");
-        this.exec("ls");
-        this.discoverIdentity();
-        this.stringify({});
-        this.performStrategicAudit();
-        return true;
-    }
-
-    public override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
-        if (typeof content !== 'string') return null;
-        if (content.includes("http://") && !content.includes("localhost")) {
-            return {
-                file, severity: "HIGH",
-                issue: `Insegurança Go: O objetivo '${objective}' exige TLS em Go. Em '${file}', o uso de HTTP expõe o tráfego nativo.`,
-                context: "HTTP detected"
-            };
-        }
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
-            file, severity: "INFO",
-            issue: `PhD Sentinel (Go): Analisando blindagem de transporte.`,
-            context: "analyzing Go security"
+            extensions: [".go", "go.mod"],
+            rules: [
+                { regex: /HubServiceClient/, issue: "Connectivity: Dependência da ponte gRPC detectada; verifique a integridade do canal PhD.", severity: "low" },
+                { regex: /http:\/\//, issue: "Insegurança Go: Uso de HTTP em vez de HTTPS/TLS detectado; risco de man-in-the-middle PhD.", severity: "high" }
+            ]
+        };
+    }
+
+    public override async performAudit(): Promise<AuditFinding[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        this.endMetrics(results.length);
+        return results;
+    }
+
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
+        return {
+            file,
+            issue: `PhD Sentinel (Go): Analisando blindagem de transporte e segurança de rede para ${objective}.`,
+            severity: "STRATEGIC",
+            context: this.name
         };
     }
 
     public override selfDiagnostic(): any {
-        return {
-            status: "Soberano",
-            score: 100,
-            issues: [],
-            analysis: this.Analysis(),
-            details: "Sentinela de rede Go operando com vigilância PhD."
-        };
+        return { status: "Soberano", score: 100, issues: [] };
     }
 
     public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, mestre em segurança Go. Status: ${this.Analysis()}`;
+        return `Você é o Dr. ${this.name}, mestre em segurança Go.`;
     }
 }

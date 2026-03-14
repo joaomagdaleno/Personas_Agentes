@@ -38,8 +38,8 @@ export class TaskQueue {
      */
     async getPendingTasks(limit: number = 5): Promise<any[]> {
         try {
-            const { response } = await this.hubManager.getPendingTasks(limit);
-            return response.tasks;
+            const result: any = await this.hubManager.getPendingTasks(limit);
+            return result.tasks || result.response?.tasks || [];
         } catch (e) {
             logger.error(`❌ Erro ao buscar tarefas via gRPC: ${e}`);
             return [];

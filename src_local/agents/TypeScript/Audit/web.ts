@@ -1,9 +1,5 @@
-/**
- * 🌐 Web - TypeScript/Bun-native Frontend & DOM Agent
- * Sovereign Synapse: Audita a performance frontend, Web Vitals, hidratação e acessibilidade.
- */
-import type { AuditRule, StrategicFinding } from "../../base.ts";
 import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding, ProjectContext, AuditFinding } from "../../base.ts";
 
 export class WebPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
@@ -15,9 +11,9 @@ export class WebPersona extends BaseActivePersona {
         this.stack = "TypeScript";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         if (this.hub) {
             const domNodes = await this.hub.queryKnowledgeGraph("window", "low");
             const reasoning = await this.hub.reason(`Analyze the frontend architecture of a system with ${domNodes.length} DOM-coupled points. Recommend optimization for Cumulative Layout Shift (CLS) and hydration strategy.`);
@@ -31,7 +27,7 @@ export class WebPersona extends BaseActivePersona {
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".ts", ".tsx", ".js", ".jsx", ".html"],
             rules: [
@@ -44,7 +40,7 @@ export class WebPersona extends BaseActivePersona {
         };
     }
 
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, _file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
             file: "web",
             issue: `Direcionamento Web para ${objective}: Garantindo que a experiência do usuário seja fluida e acessível.`,

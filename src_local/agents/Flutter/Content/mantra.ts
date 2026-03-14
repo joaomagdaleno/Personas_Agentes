@@ -26,17 +26,25 @@ export class MantraPersona extends BaseActivePersona {
         return findings;
     }
 
+    public override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".dart"],
+            rules: [
+                { regex: /setState\(/, issue: "Acoplamento: Uso excessivo de setState. Considere um State Manager (Bloc/Provider).", severity: "medium" },
+                { regex: /catch\s*\(.*?\)\s*\{\s*\}/, issue: "Anti-padrão: Captura de exceção vazia detectada.", severity: "critical" }
+            ]
+        };
+    }
+
     public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = await this.findPatterns([".dart"], [
-            { regex: /setState\(/, issue: "Acoplamento: Uso excessivo de setState. Considere um State Manager (Bloc/Provider).", severity: "medium" },
-            { regex: /catch\s*\(.*?\)\s*\{\s*\}/, issue: "Anti-padrão: Captura de exceção vazia detectada.", severity: "critical" }
-        ]);
+        const { extensions, rules } = this.getAuditRules();
+        const results = await this.findPatterns(extensions, rules);
         this.endMetrics(results.length);
         return results;
     }
 
-    public override reasonAboutObjective(_objective: string, file: string, content: string): StrategicFinding | null {
+    public override reasonAboutObjective(_objective: string, file: string, content: string): StrategicFinding | string | null {
         if (content.includes("setState")) {
             return {
                 file,

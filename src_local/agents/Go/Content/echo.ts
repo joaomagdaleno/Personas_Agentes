@@ -1,6 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding } from "../../base.ts";
-
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
 
 /**
  * 📡 Dr. Echo — PhD in Go Diagnostic Tracing & Telemetry
@@ -8,7 +7,7 @@ import type { AuditRule, StrategicFinding } from "../../base.ts";
  */
 export class EchoPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
-        super(projectRoot as any);
+        super(projectRoot);
         this.name = "Echo";
         this.emoji = "📡";
         this.role = "PhD Diagnostic Tracer";
@@ -16,9 +15,9 @@ export class EchoPersona extends BaseActivePersona {
         this.stack = "Go";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
 
         if (this.hub) {
             const logNodes = await this.hub.queryKnowledgeGraph("fmt.Print", "high");
@@ -35,47 +34,43 @@ export class EchoPersona extends BaseActivePersona {
 
     override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
-            extensions: ['.go'],
+            extensions: [".go"],
             rules: [
-                { regex: /log\.Printf/, issue: 'Unstructured Logging: Prefira loggers estruturados (zap/zerolog) com formato JSON.', severity: 'medium' },
-                { regex: /fmt\.Print/, issue: 'Cegueira Operacional: fmt.Print sem logger estruturado Go.', severity: 'high' },
-                { regex: /Prometheus/, issue: 'Metric Export: Verifique se os nomes das métricas seguem o padrão Prometheus.', severity: 'low' },
-                { regex: /logger\.Info\(.*%v/, issue: 'Lazy Formatting: Evite %v em logs de info; prefira campos estruturados.', severity: 'medium' },
-                { regex: /SpanContext/, issue: 'Tracing Context: Verifique propagação de contexto de rastreio.', severity: 'medium' },
+                { regex: /log\.Printf/, issue: "Unstructured Logging: Prefira loggers estruturados (zap/zerolog) com formato JSON para soberania PhD.", severity: "medium" },
+                { regex: /fmt\.Print/, issue: "Cegueira Operacional: fmt.Print sem logger estruturado Go. Impede rastreabilidade PhD.", severity: "high" },
+                { regex: /Prometheus/, issue: "Metric Export: Verifique se os nomes das métricas seguem o padrão Prometheus para observabilidade PhD.", severity: "low" },
+                { regex: /logger\.Info\(.*%v/, issue: "Lazy Formatting: Evite %v em logs de info; prefira campos estruturados para análise PhD.", severity: "medium" },
+                { regex: /SpanContext/, issue: "Tracing Context: Verifique propagação de contexto de rastreio para integridade de rastro PhD.", severity: "medium" }
             ]
         };
     }
 
-    override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {
-        if (typeof content !== 'string') return null;
-        const target = /fmt\.Print/;
-        if (target["test"](content)) {
-            return {
-                file, severity: "HIGH",
-                issue: `Cegueira Operacional: O objetivo '${objective}' exige diagnóstico. Em '${file}', o uso de fmt.Print impede a rastreabilidade da 'Orquestração de Inteligência Artificial'.`,
-                context: "fmt.Print usages detected"
-            };
-        }
+    public override async performAudit(): Promise<AuditFinding[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        this.endMetrics(results.length);
+        return results;
+    }
+
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
-            file, severity: "INFO",
+            file,
             issue: `PhD Echo: Analisando rastreabilidade para ${objective}. Focando em logging estruturado e eliminação de ruído.`,
-            context: "analyzing traceability"
+            severity: "STRATEGIC",
+            context: this.name
         };
     }
 
-    override selfDiagnostic(): any {
+    public override selfDiagnostic(): any {
         return {
             status: "Soberano",
             score: 100,
-            details: "Monitor de rastreabilidade Go operando com consciência PhD."
+            issues: []
         };
     }
 
-    override getSystemPrompt(): string {
+    public override getSystemPrompt(): string {
         return `Você é o Dr. ${this.name}, mestre em telemetria e rastro digital Go.`;
     }
-    public audit(): any[] { return []; }
-    public Branding(): string { return this.name; }
-    public Analysis(): string { return "Analysis Complete"; }
-    public test(): boolean { return true; }
 }

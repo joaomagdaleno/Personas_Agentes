@@ -1,10 +1,10 @@
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
+
 /**
  * 🌉 Bridge - Python-native Inter-process Communication Agent
  * Sovereign Synapse: Audita a integridade de pontes gRPC, sockets e comunicação multiprocesso em Python.
  */
-import type { AuditRule, StrategicFinding } from "../../base.ts";
-import { BaseActivePersona } from "../../base.ts";
-
 export class BridgePersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
         super(projectRoot);
@@ -15,9 +15,9 @@ export class BridgePersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         if (this.hub) {
             const bridgeNodes = await this.hub.queryKnowledgeGraph("multiprocessing", "low");
             const reasoning = await this.hub.reason(`Analyze the IPC and multiprocessing layer of a Python system with ${bridgeNodes.length} process points. Recommend safety patterns for shared memory and signal handling.`);
@@ -31,21 +31,29 @@ export class BridgePersona extends BaseActivePersona {
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".py"],
             rules: [
-                { regex: /multiprocessing\.Process/, issue: "Process: Criação de subprocesso detectada. Garanta o gerenciamento de recursos e encerramento limpo.", severity: "medium" },
-                { regex: /socket\.socket/, issue: "Network: Abertura de socket raw. Verifique a segurança da conexão e criptografia PhD.", severity: "high" },
-                { regex: /os\.kill\(.*\)/, issue: "Signal: Envio de sinal de sistema. Use padrões de sinalização controlada PhD.", severity: "medium" }
+                { regex: /multiprocessing\.Process/, issue: "Process: Criação de subprocesso detectada. Garanta o encerramento limpo PhD.", severity: "medium" },
+                { regex: /socket\.socket/, issue: "Network: Abertura de socket raw. Verifique a segurança da conexão PhD.", severity: "high" },
+                { regex: /os\.kill\(.*\)/, issue: "Signal: Envio de sinal de sistema. Use padrões controlados PhD.", severity: "medium" }
             ]
         };
     }
 
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
+    public override async performAudit(): Promise<AuditFinding[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        this.endMetrics(results.length);
+        return results;
+    }
+
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
-            file: "communication",
-            issue: `Direcionamento Bridge para ${objective}: Garantindo fluidez no ecossistema Python.`,
+            file: file || "communication",
+            issue: `PhD Bridge (Python): Direcionamento para ${objective}, garantindo fluidez no ecossistema.`,
             severity: "STRATEGIC",
             context: this.name
         };
@@ -56,6 +64,6 @@ export class BridgePersona extends BaseActivePersona {
     }
 
     public override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Sistemas Distribuídos Python. Sua missão é garantir a comunicação impecável.`;
+        return `Você é o Dr. ${this.name}, PhD em Sistemas Distribuídos Python.`;
     }
 }

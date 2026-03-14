@@ -293,12 +293,12 @@ export class HubManagerGRPC {
         }
     }
 
-    /**
-     * Queries the Sovereign Knowledge Graph.
-     */
-    async queryKnowledgeGraph(query: string) {
+    async queryKnowledgeGraph(query: string, priority: string = "medium") {
         try {
-            const { response } = await this.client.queryKnowledgeGraph({ queryJson: query });
+            const requestPayload = priority !== "medium" 
+                ? JSON.stringify({ query, priority })
+                : query;
+            const { response } = await this.client.queryKnowledgeGraph({ queryJson: requestPayload });
             return JSON.parse(response.jsonData);
         } catch (e) {
             logger.error(`❌ gRPC queryKnowledgeGraph failed: ${e}`);

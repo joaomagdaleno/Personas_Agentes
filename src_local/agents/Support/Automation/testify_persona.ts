@@ -1,7 +1,8 @@
-import { BaseActivePersona, AuditRule, StrategicFinding } from "../../base.ts";
-import { TestRunner } from "./test_runner";
-import { QualityAnalyst } from "./../Diagnostics/quality_analyst";
-import { PyramidAnalyst } from "./../Analysis/pyramid_analyst";
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditRule, StrategicFinding } from "../../base.ts";;
+import { TestRunner } from "./test_runner";;
+import { QualityAnalyst } from "./../Diagnostics/quality_analyst";;
+import { PyramidAnalyst } from "./../Analysis/pyramid_analyst";;
 import winston from "winston";
 
 /**
@@ -12,7 +13,7 @@ export class TestifyPersona extends BaseActivePersona {
     private analyst: QualityAnalyst;
     private pyramidAnalyst: PyramidAnalyst;
 
-    constructor(projectRoot: string | null = null) {
+    constructor(projectRoot?: string) {
         super(projectRoot);
         this.name = "Testify";
         this.emoji = "🧪";

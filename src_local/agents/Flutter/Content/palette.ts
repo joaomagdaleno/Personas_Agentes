@@ -26,17 +26,25 @@ export class PalettePersona extends BaseActivePersona {
         return findings;
     }
 
+    public override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+        return {
+            extensions: [".dart"],
+            rules: [
+                { regex: /color\s*:\s*Colors\.\w+/, issue: "Aviso: Cor hardcoded detectada. Prefira usar o sistema de temas (Theme.of) para garantir consistência de marca.", severity: "low" },
+                { regex: /semanticsLabel\s*:\s*null/, issue: "Acessibilidade: Elemento visual sem rótulo de semântica (Ponto Cego para leitores de tela).", severity: "medium" }
+            ]
+        };
+    }
+
     public override async performAudit(): Promise<AuditFinding[]> {
         this.startMetrics();
-        const results = await this.findPatterns([".dart"], [
-            { regex: /color\s*:\s*Colors\.\w+/, issue: "Aviso: Cor hardcoded detectada. Prefira usar o sistema de temas (Theme.of) para garantir consistência de marca.", severity: "low" },
-            { regex: /semanticsLabel\s*:\s*null/, issue: "Acessibilidade: Elemento visual sem rótulo de semântica (Ponto Cego para leitores de tela).", severity: "medium" }
-        ]);
+        const { extensions, rules } = this.getAuditRules();
+        const results = await this.findPatterns(extensions, rules);
         this.endMetrics(results.length);
         return results;
     }
 
-    public override reasonAboutObjective(objective: string, file: string, content: string): StrategicFinding | null {
+    public override reasonAboutObjective(objective: string, file: string, content: string): StrategicFinding | string | null {
         if (content.includes("Colors.")) {
             return {
                 file,

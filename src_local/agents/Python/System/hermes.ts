@@ -1,10 +1,10 @@
+import { BaseActivePersona } from "../../base.ts";
+import type { AuditFinding, AuditRule, StrategicFinding, ProjectContext } from "../../base.ts";
+
 /**
  * 📨 Hermes - Python-native Event & Message Bus Agent
  * Sovereign Synapse: Audita o barramento de eventos, PUB/SUB e integridade das mensagens em Python (Redis/RabbitMQ/Internal).
  */
-import type { AuditRule, StrategicFinding } from "../../base.ts";
-import { BaseActivePersona } from "../../base.ts";
-
 export class HermesPersona extends BaseActivePersona {
     constructor(projectRoot?: string) {
         super(projectRoot);
@@ -15,9 +15,9 @@ export class HermesPersona extends BaseActivePersona {
         this.stack = "Python";
     }
 
-    public override async execute(context: any): Promise<any> {
+    public override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
-        const findings = await this.performAudit();
+        const findings: (AuditFinding | StrategicFinding)[] = await this.performAudit();
         if (this.hub) {
             const msgNodes = await this.hub.queryKnowledgeGraph("message", "low");
             const reasoning = await this.hub.reason(`Analyze the messaging architecture of a Python system with ${msgNodes.length} message points. Recommend schema validation and delivery guarantees for distributed events.`);
@@ -31,21 +31,29 @@ export class HermesPersona extends BaseActivePersona {
         return findings;
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
+    override getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
         return {
             extensions: [".py"],
             rules: [
-                { regex: /celery|kombu|pika/, issue: "Messaging: Uso de broker de mensagens detectado. Verifique o retry policy e DLQ PhD.", severity: "medium" },
-                { regex: /queue\.Queue/, issue: "Internal: Fila interna detectada. Garanta que o thread pooling seja eficiente.", severity: "low" },
-                { regex: /pickle\.loads/, issue: "Security: Desserialização com pickle detectada. Risco extremo de execução de código remoto.", severity: "critical" }
+                { regex: /celery|kombu|pika/, issue: "Messaging: Uso de broker detectado. Verifique retry policy e DLQ PhD.", severity: "medium" },
+                { regex: /queue\.Queue/, issue: "Internal: Fila interna detectada. Garanta thread pooling eficiente PhD.", severity: "low" },
+                { regex: /pickle\.loads/, issue: "Security: Desserialização com pickle detectada. Risco extremo (RCE) PhD.", severity: "critical" }
             ]
         };
     }
 
-    public override reasonAboutObjective(objective: string, _file: string, _content: string): StrategicFinding | null {
+    public override async performAudit(): Promise<AuditFinding[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        this.endMetrics(results.length);
+        return results;
+    }
+
+    public override reasonAboutObjective(objective: string, file: string, _content: string | Promise<string | null>): StrategicFinding | null {
         return {
-            file: "messaging",
-            issue: `Direcionamento Hermes para ${objective}: Garantindo ordem e confiabilidade no fluxo de eventos Python.`,
+            file: file || "messaging",
+            issue: `PhD Hermes (Python): Direcionamento para ${objective}, garantindo confiabilidade de eventos.`,
             severity: "STRATEGIC",
             context: this.name
         };

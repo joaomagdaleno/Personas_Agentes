@@ -1,6 +1,7 @@
 import winston from "winston";
 import { ScoreCalculator } from "./score_calculator";
 import { HubManagerGRPC } from "../../../core/hub_manager_grpc.ts";
+import type { ProjectContext, SystemMetrics, IAgent, QAData, SystemHealth360 } from "../../../core/types.ts";
 
 const logger = winston.child({ module: "HealthSynthesizer" });
 
@@ -18,14 +19,14 @@ export class HealthSynthesizer {
     /**
      * Síntese 360 do sistema.
      */
-    async synthesize360(context: any, _metrics: any, _personas: any, _ledger: any, qaData: any): Promise<any> {
+    async synthesize360(context: ProjectContext, _metrics: SystemMetrics, _personas: IAgent[], _ledger: any, qaData: QAData): Promise<SystemHealth360 | any> {
         logger.info("🩺 [Synthesizer] Sintetizando visão 360 do sistema via Hub Proxy...");
 
-        const allAlerts = context.alerts || [];
+        const allAlerts = (context as any).alerts || [];
         const mapData = context.map || {};
 
         // Calculate score asynchronously via gRPC
-        const { score, breakdown } = await this.calculator.calculateFinalScore(mapData, allAlerts, qaData, context.cognitive);
+        const { score, breakdown } = await this.calculator.calculateFinalScore(mapData, allAlerts, qaData, (context as any).cognitive);
 
         const { ScoringMetricsEngine } = await import("./scoring_metrics_engine");
         const metricsEngine = new ScoringMetricsEngine();

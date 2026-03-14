@@ -25,41 +25,42 @@ export class TestifyPersona extends BaseActivePersona {
         return {
             extensions: [".rs"],
             rules: [
-                { regex: /#\[test\]\s*fn\s+.*\{\s*\}/, issue: "Teste Vazio detectado.", severity: "critical" }
+                { regex: /#\[test\]\s*fn\s+.*\{\s*\}/, issue: "Teste Vazio: Teste declarado sem corpo. Falsa garantia PhD.", severity: "critical" },
+                { regex: /\.unwrap\(\)|\.expect\(/, issue: "Fragilidade: Uso de unwrap/expect em teste. Prefira tratamentos idiomáticos para evitar falsas falhas.", severity: "medium" },
+                { regex: /unsafe\s*\{/, issue: "Risco: Bloco unsafe em teste sem justificativa. Violência contra a segurança PhD.", severity: "high" }
             ]
         };
     }
 
-    public audit(): any[] { return []; }
-    public Branding(): string { return `${this.emoji} ${this.name}`; }
-    public Analysis(): string { return "Quality Assurance Analysis Complete"; }
-    public test(): boolean {
-        this.Branding();
-        this.Analysis();
-        this.audit();
-        return true;
+    public override async performAudit(): Promise<any[]> {
+        this.startMetrics();
+        const rules = this.getAuditRules();
+        const results = await this.findPatterns(rules.extensions, rules.rules);
+        this.endMetrics(results.length);
+        return results;
     }
 
     public override reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | null {
+        if (typeof content !== 'string') return null;
+        if (content.includes('unwrap()') || content.includes('expect(')) {
+            return {
+                file, severity: "HIGH",
+                issue: `Fragilidade de Teste: O objetivo '${objective}' exige robustez Rust. Em '${file}', o uso de panic-triggers em testes viola a 'Orquestração de Inteligência Artificial'.`,
+                context: "panic triggers in test"
+            };
+        }
         return {
-            file,
-            severity: "INFO",
-            issue: `PhD Testify (Rust): Analisando testes para ${objective}.`,
+            file, severity: "INFO",
+            issue: `PhD Quality (Rust): Analisando suíte para ${objective}. Focando em ausência de unsafe e estabilidade.`,
             context: "analyzing quality"
-        } as any;
+        };
     }
 
     override selfDiagnostic(): any {
-        return { status: "Soberano", score: 100, issues: [], branding: this.Branding() };
+        return { status: "Soberano", score: 100, details: "Módulo de Qualidade Rust operando com precisão PhD." };
     }
 
     override getSystemPrompt(): string {
-        return `Você é o Dr. ${this.name}, PhD em Qualidade Rust. Status: ${this.Analysis()}`;
+        return `Você é o Dr. Testify, PhD em verificação formal e testes de sistemas de missão crítica em Rust.`;
     }
-    public async performAudit(): Promise<any[]> { return []; }
-    public isTestFile(f: string): boolean { return false; }
-    public findModulesWithoutTests(dir: string): string[] { return []; }
-    public createMissingTestFinding(f: string): any { return {}; }
-    public getTestedModules(): string[] { return []; }
-    public isUntestedModule(m: string, f: string[]): boolean { return true; }
 }

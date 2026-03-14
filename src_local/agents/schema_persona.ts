@@ -1,4 +1,5 @@
-import { BaseActivePersona, AuditRule, StrategicFinding } from "./base.ts";
+import { BaseActivePersona } from "./base.ts";
+import type { AuditRule, StrategicFinding } from "./base.ts";;
 import winston from "winston";
 
 const logger = winston.loggers.get('default_logger') || winston;
