@@ -22,7 +22,7 @@ func NewDirectorPersona() *DirectorPersona {
 			Emoji: "🏛️",
 			Role:          "Master Orchestrator",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following architectural drift or governance violation. Enforce layered boundaries and ensure proper separation of concerns. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

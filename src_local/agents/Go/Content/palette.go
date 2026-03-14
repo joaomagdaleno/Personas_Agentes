@@ -22,7 +22,7 @@ func NewPalettePersona() *PalettePersona {
 			Emoji: "🎨",
 			Role:          "PhD UX & Design Systems Engineer",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following UI/UX or design system issue. Resolve accessibility violations and ensure design token consistency. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

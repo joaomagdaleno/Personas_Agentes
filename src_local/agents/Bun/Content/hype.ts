@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, HealingResult, ProjectContext } from "../../base.ts";
 
 /**
  * 🚀 Dr. Hype — PhD in Product Visibility & Branding (TypeScript)
@@ -14,11 +14,15 @@ export class HypePersona extends BaseActivePersona {
         this.role = "PhD Product Evangelist";
         this.phd_identity = "Product Visibility & Branding (TypeScript)";
         this.stack = "Bun";
-        this.healingPrompt = "";
+        this.healingPrompt = "Fix the following developer experience issue. Simplify confusing APIs, improve error messages, and streamline interfaces. Return ONLY the corrected code or a specific diff.";
     }
 
     override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
+        if (this.healingPrompt) {
+            const { findings } = await this.auditAndHeal();
+            return findings;
+        }
         const findings = await this.performAudit();
         return findings;
     }

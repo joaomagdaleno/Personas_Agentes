@@ -14,7 +14,7 @@ class NexusPersona(BaseActivePersona):
         self.role = "PhD Network Resilience Engineer"
         self.phd_identity = "Robust Networking & HTTP Resiliency (TypeScript)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following dependency management or coupling issue. Break circular dependencies and reduce coupling metrics. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

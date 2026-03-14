@@ -18,7 +18,7 @@ impl SparkPersona {
                 "PhD Developer Experience Engineer".to_string(),
                 "Developer Experience & UX Tooling (TypeScript)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following build system or compilation issue. Correct build configurations, tree-shaking settings, and bundler errors. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

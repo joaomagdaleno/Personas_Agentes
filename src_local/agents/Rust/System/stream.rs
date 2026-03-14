@@ -18,7 +18,7 @@ impl StreamPersona {
                 "PhD Reactive Systems Engineer".to_string(),
                 "Reactive Architecture & Event Streaming (TypeScript)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following real-time data or WebSocket issue. Correct connection handling, reconnection logic, and heartbeat mechanisms. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

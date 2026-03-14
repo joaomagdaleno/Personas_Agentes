@@ -11,7 +11,7 @@ class PalettePersona extends BaseActivePersona {
     this.role = "PhD UX & Design Systems Engineer";
     this.    phdIdentity = "UX Quality & Visual Consistency (TypeScript)",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following UI/UX or design system issue. Resolve accessibility violations and ensure design token consistency. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

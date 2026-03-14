@@ -14,7 +14,7 @@ class EnumPersona(BaseActivePersona):
         self.role = "PhD TypeScript Union & Enum Engineer"
         self.phd_identity = "Enum Safety & Discriminated Unions (TypeScript)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following state machine or enum exhaustiveness issue. Add missing switch/match cases and ensure all enum variants are handled. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

@@ -17,7 +17,7 @@ class MantraPersona(projectRoot: String? = null) : BaseActivePersona(projectRoot
         this.role = "PhD Type System Guardian"
         this.phd_identity = "Type Purity & Strictness (TypeScript)"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following code style or consistency violation. Enforce naming conventions, formatting rules, and coding standards. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

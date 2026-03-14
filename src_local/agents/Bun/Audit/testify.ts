@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, HealingResult, ProjectContext } from "../../base.ts";
 
 /**
  * 🧪 Dr. Testify — PhD in TypeScript Test Integrity & Coverage
@@ -14,11 +14,15 @@ export class TestifyPersona extends BaseActivePersona {
         this.role = "PhD Quality & Testing Engineer";
         this.phd_identity = "TypeScript Test Integrity & Coverage";
         this.stack = "Bun";
-        this.healingPrompt = "";
+        this.healingPrompt = "Fix the following testing or quality assurance issue. Eliminate flaky tests, improve assertion specificity, and increase coverage. Return ONLY the corrected code or a specific diff.";
     }
 
     override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
+        if (this.healingPrompt) {
+            const { findings } = await this.auditAndHeal();
+            return findings;
+        }
         const findings = await this.performAudit();
         return findings;
     }

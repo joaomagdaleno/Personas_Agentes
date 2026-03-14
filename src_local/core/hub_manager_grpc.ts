@@ -4,6 +4,24 @@ import { ChannelCredentials } from "@grpc/grpc-js";
 import winston from "winston";
 import * as fs from "fs";
 import * as path from "path";
+import type { 
+    HealthUpdate, 
+    Event, 
+    AnalyzeResponse,
+    HealingPlan,
+    AuditRequest,
+    BatchRequest,
+    ConnectivityRequest,
+    PatternRequest,
+    PenaltyRequest,
+    ScoreRequest, 
+    CoverageRequest,
+    MemoryEntry,
+    MemoryQuery,
+    EmbedRequest,
+    EmbedResponse
+} from "../proto/hub";
+import type { AuditFinding } from "./types";
 
 const logger = winston.child({ module: "HubManagerGRPC" });
 
@@ -62,7 +80,7 @@ export class HubManagerGRPC {
     /**
      * Watches the health stream for real-time updates.
      */
-    watchHealth(onUpdate: (update: any) => void) {
+    watchHealth(onUpdate: (update: HealthUpdate) => void) {
         const call = this.client.watchHealth({});
         call.responses.onMessage((message) => {
             onUpdate(message);
@@ -76,7 +94,7 @@ export class HubManagerGRPC {
     /**
      * Watches the event stream (file changes, alerts).
      */
-    watchEvents(onEvent: (event: any) => void) {
+    watchEvents(onEvent: (event: Event) => void) {
         const call = this.client.watchEvents({});
         call.responses.onMessage((message) => {
             onEvent(message);
@@ -117,15 +135,16 @@ export class HubManagerGRPC {
      * Bi-directional streaming analysis for batch file processing.
      * Sends files concurrently and collects results as they arrive.
      */
-    async analyzeStream(files: { file: string; content?: string }[]): Promise<any[]> {
+    async analyzeStream(files: { file: string; content?: string }[]): Promise<AuditFinding[]> {
         return new Promise((resolve) => {
             try {
                 const call = this.client.analyzeStream();
-                const results: any[] = [];
+                const results: AuditFinding[] = [];
 
-                call.responses.onMessage((response: any) => {
+                call.responses.onMessage((response: AnalyzeResponse) => {
                     try {
-                        results.push(JSON.parse(response.jsonData));
+                        const batchResults: AuditFinding[] = JSON.parse(response.jsonData);
+                        results.push(...batchResults);
                     } catch { /* skip malformed */ }
                 });
 
@@ -257,7 +276,7 @@ export class HubManagerGRPC {
     /**
      * Performs a security audit or obfuscation scan.
      */
-    async audit(auditRequest: any) {
+    async audit(auditRequest: Record<string, unknown>): Promise<AuditFinding[]> {
         try {
             const { response } = await this.client.audit({ auditJson: JSON.stringify(auditRequest) });
             return JSON.parse(response.jsonData);
@@ -270,7 +289,7 @@ export class HubManagerGRPC {
     /**
      * Performs a batch analysis of multiple files.
      */
-    async batch(batchRequest: any) {
+    async batch(batchRequest: Record<string, unknown>): Promise<AuditFinding[]> {
         try {
             const { response } = await this.client.batch({ batchJson: JSON.stringify(batchRequest) });
             return JSON.parse(response.jsonData);
@@ -324,14 +343,9 @@ export class HubManagerGRPC {
     /**
      * Executes native AI auto-healing generation.
      */
-    async executeHealing(plan: any) {
+    async executeHealing(plan: HealingPlan): Promise<string | null> {
         try {
-            const { response } = await this.client.executeHealing({
-                issueDescription: plan.issueDescription,
-                filePath: plan.filePath,
-                fileContent: plan.fileContent,
-                context: plan.context
-            });
+            const { response } = await this.client.executeHealing(plan);
             return response.jsonData;
         } catch (e) {
             logger.error(`❌ gRPC executeHealing failed: ${e}`);
@@ -342,7 +356,7 @@ export class HubManagerGRPC {
     /**
      * Performs a project-wide pattern matching task.
      */
-    async patterns(patternRequest: any) {
+    async patterns(patternRequest: Record<string, unknown>): Promise<AuditFinding[]> {
         try {
             const { response } = await this.client.patterns({ patternJson: JSON.stringify(patternRequest) });
             return JSON.parse(response.jsonData);
@@ -355,7 +369,7 @@ export class HubManagerGRPC {
     /**
      * Performs a native systemic health penalty calculation.
      */
-    async penalty(penaltyRequest: any) {
+    async penalty(penaltyRequest: Record<string, unknown>): Promise<any> {
         try {
             const { response } = await this.client.penalty({ penaltyJson: JSON.stringify(penaltyRequest) });
             return JSON.parse(response.jsonData);
@@ -368,7 +382,7 @@ export class HubManagerGRPC {
     /**
      * Performs a native high-fidelity health score calculation.
      */
-    async calculateScore(scoreRequest: any) {
+    async calculateScore(scoreRequest: Record<string, unknown>): Promise<any> {
         try {
             const { response } = await this.client.calculateScore({ scoreJson: JSON.stringify(scoreRequest) });
             return JSON.parse(response.jsonData);
@@ -381,7 +395,7 @@ export class HubManagerGRPC {
     /**
      * Performs a native PhD-grade test coverage audit.
      */
-    async auditCoverage(coverageRequest: any) {
+    async auditCoverage(coverageRequest: Record<string, unknown>): Promise<{ has_test: boolean }> {
         try {
             const { response } = await this.client.auditCoverage({ coverageJson: JSON.stringify(coverageRequest) });
             return JSON.parse(response.jsonData);
@@ -447,10 +461,89 @@ export class HubManagerGRPC {
     async analyzeCode(content: string, personaId: string, stack: string) {
         try {
             const { response } = await this.ruleProvider.analyzeCode({ content, personaId, stack });
-            return JSON.parse(response.jsonData);
+            const data = JSON.parse(response.jsonData);
+            return Array.isArray(data) ? data : [];
         } catch (e) {
             logger.error(`❌ gRPC analyzeCode failed for ${personaId}/${stack}: ${e}`);
             return [];
+        }
+    }
+
+    /**
+     * Broadcasts a signal to the fleet via the Hub.
+     */
+    async broadcastSignal(senderId: string, signalType: string, payload: Record<string, unknown> = {}) {
+        try {
+            await this.client.broadcastSignal({
+                senderId,
+                signalType,
+                payloadJson: JSON.stringify(payload)
+            });
+            return true;
+        } catch (e) {
+            logger.error(`❌ gRPC broadcastSignal failed: ${e}`);
+            return false;
+        }
+    }
+
+    /**
+     * Records a decision in the agent's semantic memory.
+     */
+    async remember(entry: MemoryEntry) {
+        try {
+            await this.client.remember(entry);
+            return true;
+        } catch (e) {
+            logger.error(`❌ gRPC remember failed: ${e}`);
+            return false;
+        }
+    }
+
+    /**
+     * Retrieves previous decisions from the agent's semantic memory.
+     */
+    async retrieve(agentId: string, query: string, limit: number = 5): Promise<MemoryEntry[]> {
+        const results: MemoryEntry[] = [];
+        try {
+            const call = this.client.retrieve({ agentId, query, limit });
+            for await (const entry of call.responses) {
+                results.push(entry);
+            }
+        } catch (e) {
+            logger.error(`❌ gRPC retrieve failed: ${e}`);
+        }
+        return results;
+    }
+
+    /**
+     * Generates a vector representation (embedding) for a text.
+     */
+    async embed(text: string): Promise<number[]> {
+        try {
+            const { response } = await this.client.embed({ text });
+            return response.embedding;
+        } catch (e) {
+            logger.error(`❌ gRPC embed failed: ${e}`);
+            return [];
+        }
+    }
+
+    /**
+     * Requests a peer review from another persona.
+     */
+    async requestPeerReview(requesterId: string, targetPersonaId: string, filePath: string, context: string, priority: string = "MEDIUM") {
+        try {
+            const { response } = await this.client.requestPeerReview({
+                requesterId,
+                targetPersonaId,
+                filePath,
+                context,
+                priority
+            });
+            return response;
+        } catch (e) {
+            logger.error(`❌ gRPC requestPeerReview failed: ${e}`);
+            return null;
         }
     }
 }

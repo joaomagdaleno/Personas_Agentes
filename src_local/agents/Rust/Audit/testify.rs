@@ -18,7 +18,7 @@ impl TestifyPersona {
                 "PhD Quality & Testing Engineer".to_string(),
                 "TypeScript Test Integrity & Coverage".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following testing or quality assurance issue. Eliminate flaky tests, improve assertion specificity, and increase coverage. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

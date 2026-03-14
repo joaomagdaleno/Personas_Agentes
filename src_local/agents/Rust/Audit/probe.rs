@@ -18,7 +18,7 @@ impl ProbePersona {
                 "PhD Resilience Engineer".to_string(),
                 "TypeScript Error Resilience & Exception Handling".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following runtime diagnostics or health check issue. Ensure proper health endpoints, timeout handling, and liveness probes. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

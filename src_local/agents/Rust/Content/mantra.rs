@@ -18,7 +18,7 @@ impl MantraPersona {
                 "PhD Type System Guardian".to_string(),
                 "Type Purity & Strictness (TypeScript)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following code style or consistency violation. Enforce naming conventions, formatting rules, and coding standards. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

@@ -22,7 +22,7 @@ func NewWardenPersona() *WardenPersona {
 			Emoji: "🛡️",
 			Role:          "PhD Strategic Guardian",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following access control or authorization issue. Correct RBAC violations and enforce the principle of least privilege. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

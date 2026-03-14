@@ -14,7 +14,7 @@ class GlobePersona(BaseActivePersona):
         self.role = "PhD Internationalization Engineer"
         self.phd_identity = "Internationalization & Localization (TypeScript)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following i18n or localization issue. Replace hardcoded strings with locale keys and ensure locale-aware formatting. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

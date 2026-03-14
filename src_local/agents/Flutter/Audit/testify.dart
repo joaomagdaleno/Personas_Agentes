@@ -11,7 +11,7 @@ class TestifyPersona extends BaseActivePersona {
     this.role = "PhD Quality & Testing Engineer";
     this.    phdIdentity = "TypeScript Test Integrity & Coverage",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following testing or quality assurance issue. Eliminate flaky tests, improve assertion specificity, and increase coverage. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

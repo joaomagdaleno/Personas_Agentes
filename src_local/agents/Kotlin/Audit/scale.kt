@@ -17,7 +17,7 @@ class ScalePersona(projectRoot: String? = null) : BaseActivePersona(projectRoot)
         this.role = "PhD Software Architect"
         this.phd_identity = "TypeScript Architecture & Scalability"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following horizontal scaling or load distribution issue. Correct sharding logic and connection pool sizing. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

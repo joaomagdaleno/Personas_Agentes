@@ -1,6 +1,6 @@
 import { Database } from "bun:sqlite";
 import winston from "winston";
-import type { IAgent } from "../../../core/types.ts";
+import type { IAgent, ProjectContext, AuditFinding, StrategicFinding } from "../../../core/types.ts";
 import { Path } from "../../../core/path_utils.ts";
 
 const logger = winston.child({ module: "MemoryPruningAgent" });
@@ -23,8 +23,10 @@ export class MemoryPruningAgent implements IAgent {
         logger.info(`🤖 Agent ${this.id} inicializado.`);
     }
 
-    async execute(context: { days?: number }): Promise<void> {
-        this.pruneOldLogs(context.days || 90);
+    async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
+        const days = (context?.days as number) || 90;
+        this.pruneOldLogs(days);
+        return [];
     }
 
     /**

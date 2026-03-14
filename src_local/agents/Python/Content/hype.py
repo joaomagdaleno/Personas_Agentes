@@ -14,7 +14,7 @@ class HypePersona(BaseActivePersona):
         self.role = "PhD Product Evangelist"
         self.phd_identity = "Product Visibility & Branding (TypeScript)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following developer experience issue. Simplify confusing APIs, improve error messages, and streamline interfaces. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

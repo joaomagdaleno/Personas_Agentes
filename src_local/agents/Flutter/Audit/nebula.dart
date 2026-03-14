@@ -11,7 +11,7 @@ class NebulaPersona extends BaseActivePersona {
     this.role = "PhD Cloud Security Architect";
     this.    phdIdentity = "TypeScript Secrets Management & Cloud Sovereignty",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following data pipeline or ETL issue. Correct data transformation errors and ensure proper schema evolution. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

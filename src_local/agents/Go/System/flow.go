@@ -22,7 +22,7 @@ func NewFlowPersona() *FlowPersona {
 			Emoji: "🔄",
 			Role:          "PhD Control Flow Architect",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following async/reactive or stream processing issue. Resolve backpressure problems, unhandled promise rejections, and race conditions. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

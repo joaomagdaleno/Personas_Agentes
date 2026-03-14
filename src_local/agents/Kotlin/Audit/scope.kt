@@ -17,7 +17,7 @@ class ScopePersona(projectRoot: String? = null) : BaseActivePersona(projectRoot)
         this.role = "PhD Project Strategist"
         this.phd_identity = "TypeScript Project Management & Technical Debt"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following scope analysis or variable lifecycle issue. Resolve variable shadowing, unused declarations, and scope leaks. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

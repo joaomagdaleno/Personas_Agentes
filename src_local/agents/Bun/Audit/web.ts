@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, HealingResult, ProjectContext } from "../../base.ts";
 
 /**
  * 🌐 Dr. Web — PhD in Web Performance & DOM Integrity (TS/Bun)
@@ -14,11 +14,15 @@ export class WebPersona extends BaseActivePersona {
         this.role = "PhD Frontend Architect";
         this.phd_identity = "Web Performance & DOM Integrity (TS/Bun)";
         this.stack = "Bun";
-        this.healingPrompt = "";
+        this.healingPrompt = "Fix the following web performance or DOM integrity issue. Eliminate layout shifts, optimize the critical rendering path, and fix reflow triggers. Return ONLY the corrected code or a specific diff.";
     }
 
     override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
+        if (this.healingPrompt) {
+            const { findings } = await this.auditAndHeal();
+            return findings;
+        }
         const findings = await this.performAudit();
         return findings;
     }

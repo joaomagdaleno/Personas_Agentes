@@ -14,7 +14,7 @@ class ScopePersona(BaseActivePersona):
         self.role = "PhD Project Strategist"
         self.phd_identity = "TypeScript Project Management & Technical Debt"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following scope analysis or variable lifecycle issue. Resolve variable shadowing, unused declarations, and scope leaks. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

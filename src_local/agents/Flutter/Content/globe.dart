@@ -11,7 +11,7 @@ class GlobePersona extends BaseActivePersona {
     this.role = "PhD Internationalization Engineer";
     this.    phdIdentity = "Internationalization & Localization (TypeScript)",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following i18n or localization issue. Replace hardcoded strings with locale keys and ensure locale-aware formatting. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

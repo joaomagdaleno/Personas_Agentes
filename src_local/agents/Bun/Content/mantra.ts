@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, HealingResult, ProjectContext } from "../../base.ts";
 
 /**
  * 🔮 Dr. Mantra — PhD in Type Purity & Strictness (TypeScript)
@@ -14,11 +14,15 @@ export class MantraPersona extends BaseActivePersona {
         this.role = "PhD Type System Guardian";
         this.phd_identity = "Type Purity & Strictness (TypeScript)";
         this.stack = "Bun";
-        this.healingPrompt = "";
+        this.healingPrompt = "Fix the following code style or consistency violation. Enforce naming conventions, formatting rules, and coding standards. Return ONLY the corrected code or a specific diff.";
     }
 
     override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
+        if (this.healingPrompt) {
+            const { findings } = await this.auditAndHeal();
+            return findings;
+        }
         const findings = await this.performAudit();
         return findings;
     }

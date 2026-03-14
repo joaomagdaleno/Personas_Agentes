@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, HealingResult, ProjectContext } from "../../base.ts";
 
 /**
  * 📊 Dr. Metric — PhD in TypeScript Data Telemetry & Logging
@@ -14,11 +14,15 @@ export class MetricPersona extends BaseActivePersona {
         this.role = "PhD Observability Engineer";
         this.phd_identity = "TypeScript Data Telemetry & Logging";
         this.stack = "Bun";
-        this.healingPrompt = "";
+        this.healingPrompt = "Fix the following metrics or KPI engineering issue. Correct metric calculations and ensure dimensional accuracy. Return ONLY the corrected code or a specific diff.";
     }
 
     override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
+        if (this.healingPrompt) {
+            const { findings } = await this.auditAndHeal();
+            return findings;
+        }
         const findings = await this.performAudit();
         return findings;
     }

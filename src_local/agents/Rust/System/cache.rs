@@ -18,7 +18,7 @@ impl CachePersona {
                 "PhD Data Layer Engineer".to_string(),
                 "Data Layer & I/O Optimization (TypeScript)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following caching or memory hierarchy issue. Ensure correct TTL handling, cache invalidation logic, and eliminate memory leaks. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

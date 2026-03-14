@@ -14,7 +14,7 @@ class TestifyPersona(BaseActivePersona):
         self.role = "PhD Quality & Testing Engineer"
         self.phd_identity = "TypeScript Test Integrity & Coverage"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following testing or quality assurance issue. Eliminate flaky tests, improve assertion specificity, and increase coverage. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

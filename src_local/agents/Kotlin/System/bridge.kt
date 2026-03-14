@@ -17,7 +17,7 @@ class BridgePersona(projectRoot: String? = null) : BaseActivePersona(projectRoot
         this.role = "PhD Integration Architect"
         this.phd_identity = "Integration Contracts & FFI (TypeScript)"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following API contract or protocol translation issue. Ensure correct HTTP/gRPC mapping, proper request/response schemas, and consistent error propagation. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

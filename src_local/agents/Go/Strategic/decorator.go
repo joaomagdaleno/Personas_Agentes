@@ -22,7 +22,7 @@ func NewDecoratorPersona() *DecoratorPersona {
 			Emoji: "🎀",
 			Role:          "PhD TypeScript Metaprogramming Engineer",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following design pattern or SOLID principle violation. Extract reusable abstractions and apply correct structural/behavioral patterns. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

@@ -17,7 +17,7 @@ class NexusPersona(projectRoot: String? = null) : BaseActivePersona(projectRoot)
         this.role = "PhD Network Resilience Engineer"
         this.phd_identity = "Robust Networking & HTTP Resiliency (TypeScript)"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following dependency management or coupling issue. Break circular dependencies and reduce coupling metrics. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

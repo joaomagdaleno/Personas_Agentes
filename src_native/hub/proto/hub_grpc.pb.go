@@ -43,6 +43,11 @@ const (
 	HubService_GetKnowledgeGraph_FullMethodName   = "/hub.HubService/GetKnowledgeGraph"
 	HubService_QueryKnowledgeGraph_FullMethodName = "/hub.HubService/QueryKnowledgeGraph"
 	HubService_ExecuteHealing_FullMethodName      = "/hub.HubService/ExecuteHealing"
+	HubService_RequestPeerReview_FullMethodName   = "/hub.HubService/RequestPeerReview"
+	HubService_BroadcastSignal_FullMethodName     = "/hub.HubService/BroadcastSignal"
+	HubService_Remember_FullMethodName            = "/hub.HubService/Remember"
+	HubService_Retrieve_FullMethodName            = "/hub.HubService/Retrieve"
+	HubService_Embed_FullMethodName               = "/hub.HubService/Embed"
 	HubService_EnqueueTask_FullMethodName         = "/hub.HubService/EnqueueTask"
 	HubService_GetPendingTasks_FullMethodName     = "/hub.HubService/GetPendingTasks"
 	HubService_UpdateTask_FullMethodName          = "/hub.HubService/UpdateTask"
@@ -79,6 +84,13 @@ type HubServiceClient interface {
 	QueryKnowledgeGraph(ctx context.Context, in *QueryRequest, opts ...grpc.CallOption) (*AnalyzeResponse, error)
 	// Auto-Healing
 	ExecuteHealing(ctx context.Context, in *HealingPlan, opts ...grpc.CallOption) (*AnalyzeResponse, error)
+	// Swarm Intelligence (Agent Collaboration)
+	RequestPeerReview(ctx context.Context, in *PeerReviewRequest, opts ...grpc.CallOption) (*PeerReviewResponse, error)
+	BroadcastSignal(ctx context.Context, in *SignalRequest, opts ...grpc.CallOption) (*Empty, error)
+	// Semantic Memory
+	Remember(ctx context.Context, in *MemoryEntry, opts ...grpc.CallOption) (*Empty, error)
+	Retrieve(ctx context.Context, in *MemoryQuery, opts ...grpc.CallOption) (grpc.ServerStreamingClient[MemoryEntry], error)
+	Embed(ctx context.Context, in *EmbedRequest, opts ...grpc.CallOption) (*EmbedResponse, error)
 	// Task Scheduler
 	EnqueueTask(ctx context.Context, in *TaskRequest, opts ...grpc.CallOption) (*TaskResponse, error)
 	GetPendingTasks(ctx context.Context, in *PendingRequest, opts ...grpc.CallOption) (*PendingResponse, error)
@@ -354,6 +366,65 @@ func (c *hubServiceClient) ExecuteHealing(ctx context.Context, in *HealingPlan, 
 	return out, nil
 }
 
+func (c *hubServiceClient) RequestPeerReview(ctx context.Context, in *PeerReviewRequest, opts ...grpc.CallOption) (*PeerReviewResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PeerReviewResponse)
+	err := c.cc.Invoke(ctx, HubService_RequestPeerReview_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hubServiceClient) BroadcastSignal(ctx context.Context, in *SignalRequest, opts ...grpc.CallOption) (*Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, HubService_BroadcastSignal_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hubServiceClient) Remember(ctx context.Context, in *MemoryEntry, opts ...grpc.CallOption) (*Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, HubService_Remember_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hubServiceClient) Retrieve(ctx context.Context, in *MemoryQuery, opts ...grpc.CallOption) (grpc.ServerStreamingClient[MemoryEntry], error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	stream, err := c.cc.NewStream(ctx, &HubService_ServiceDesc.Streams[3], HubService_Retrieve_FullMethodName, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &grpc.GenericClientStream[MemoryQuery, MemoryEntry]{ClientStream: stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type HubService_RetrieveClient = grpc.ServerStreamingClient[MemoryEntry]
+
+func (c *hubServiceClient) Embed(ctx context.Context, in *EmbedRequest, opts ...grpc.CallOption) (*EmbedResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(EmbedResponse)
+	err := c.cc.Invoke(ctx, HubService_Embed_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *hubServiceClient) EnqueueTask(ctx context.Context, in *TaskRequest, opts ...grpc.CallOption) (*TaskResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(TaskResponse)
@@ -415,6 +486,13 @@ type HubServiceServer interface {
 	QueryKnowledgeGraph(context.Context, *QueryRequest) (*AnalyzeResponse, error)
 	// Auto-Healing
 	ExecuteHealing(context.Context, *HealingPlan) (*AnalyzeResponse, error)
+	// Swarm Intelligence (Agent Collaboration)
+	RequestPeerReview(context.Context, *PeerReviewRequest) (*PeerReviewResponse, error)
+	BroadcastSignal(context.Context, *SignalRequest) (*Empty, error)
+	// Semantic Memory
+	Remember(context.Context, *MemoryEntry) (*Empty, error)
+	Retrieve(*MemoryQuery, grpc.ServerStreamingServer[MemoryEntry]) error
+	Embed(context.Context, *EmbedRequest) (*EmbedResponse, error)
 	// Task Scheduler
 	EnqueueTask(context.Context, *TaskRequest) (*TaskResponse, error)
 	GetPendingTasks(context.Context, *PendingRequest) (*PendingResponse, error)
@@ -500,6 +578,21 @@ func (UnimplementedHubServiceServer) QueryKnowledgeGraph(context.Context, *Query
 }
 func (UnimplementedHubServiceServer) ExecuteHealing(context.Context, *HealingPlan) (*AnalyzeResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ExecuteHealing not implemented")
+}
+func (UnimplementedHubServiceServer) RequestPeerReview(context.Context, *PeerReviewRequest) (*PeerReviewResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RequestPeerReview not implemented")
+}
+func (UnimplementedHubServiceServer) BroadcastSignal(context.Context, *SignalRequest) (*Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method BroadcastSignal not implemented")
+}
+func (UnimplementedHubServiceServer) Remember(context.Context, *MemoryEntry) (*Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method Remember not implemented")
+}
+func (UnimplementedHubServiceServer) Retrieve(*MemoryQuery, grpc.ServerStreamingServer[MemoryEntry]) error {
+	return status.Error(codes.Unimplemented, "method Retrieve not implemented")
+}
+func (UnimplementedHubServiceServer) Embed(context.Context, *EmbedRequest) (*EmbedResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Embed not implemented")
 }
 func (UnimplementedHubServiceServer) EnqueueTask(context.Context, *TaskRequest) (*TaskResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method EnqueueTask not implemented")
@@ -938,6 +1031,89 @@ func _HubService_ExecuteHealing_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _HubService_RequestPeerReview_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PeerReviewRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HubServiceServer).RequestPeerReview(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: HubService_RequestPeerReview_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HubServiceServer).RequestPeerReview(ctx, req.(*PeerReviewRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _HubService_BroadcastSignal_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SignalRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HubServiceServer).BroadcastSignal(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: HubService_BroadcastSignal_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HubServiceServer).BroadcastSignal(ctx, req.(*SignalRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _HubService_Remember_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MemoryEntry)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HubServiceServer).Remember(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: HubService_Remember_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HubServiceServer).Remember(ctx, req.(*MemoryEntry))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _HubService_Retrieve_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(MemoryQuery)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(HubServiceServer).Retrieve(m, &grpc.GenericServerStream[MemoryQuery, MemoryEntry]{ServerStream: stream})
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type HubService_RetrieveServer = grpc.ServerStreamingServer[MemoryEntry]
+
+func _HubService_Embed_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EmbedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HubServiceServer).Embed(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: HubService_Embed_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HubServiceServer).Embed(ctx, req.(*EmbedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _HubService_EnqueueTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(TaskRequest)
 	if err := dec(in); err != nil {
@@ -1084,6 +1260,22 @@ var HubService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _HubService_ExecuteHealing_Handler,
 		},
 		{
+			MethodName: "RequestPeerReview",
+			Handler:    _HubService_RequestPeerReview_Handler,
+		},
+		{
+			MethodName: "BroadcastSignal",
+			Handler:    _HubService_BroadcastSignal_Handler,
+		},
+		{
+			MethodName: "Remember",
+			Handler:    _HubService_Remember_Handler,
+		},
+		{
+			MethodName: "Embed",
+			Handler:    _HubService_Embed_Handler,
+		},
+		{
 			MethodName: "EnqueueTask",
 			Handler:    _HubService_EnqueueTask_Handler,
 		},
@@ -1112,6 +1304,11 @@ var HubService_ServiceDesc = grpc.ServiceDesc{
 			Handler:       _HubService_AnalyzeStream_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
+		},
+		{
+			StreamName:    "Retrieve",
+			Handler:       _HubService_Retrieve_Handler,
+			ServerStreams: true,
 		},
 	},
 	Metadata: "hub.proto",

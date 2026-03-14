@@ -22,7 +22,7 @@ func NewVortexPersona() *VortexPersona {
 			Emoji: "🌀",
 			Role:          "PhD Efficiency Scientist",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following code complexity issue. Reduce cyclomatic complexity, extract methods, and simplify convoluted logic. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

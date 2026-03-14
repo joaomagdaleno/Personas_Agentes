@@ -22,7 +22,7 @@ func NewHermesPersona() *HermesPersona {
 			Emoji: "⚙️",
 			Role:          "PhD DevOps & SRE Engineer",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following messaging or event-driven architecture issue. Ensure correct message schemas, dead-letter handling, and idempotency. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

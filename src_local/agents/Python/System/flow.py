@@ -14,7 +14,7 @@ class FlowPersona(BaseActivePersona):
         self.role = "PhD Control Flow Architect"
         self.phd_identity = "Control Flow & Async Promises (TypeScript)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following async/reactive or stream processing issue. Resolve backpressure problems, unhandled promise rejections, and race conditions. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

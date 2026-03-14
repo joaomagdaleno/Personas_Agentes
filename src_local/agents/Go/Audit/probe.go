@@ -22,7 +22,7 @@ func NewProbePersona() *ProbePersona {
 			Emoji: "🔬",
 			Role:          "PhD Resilience Engineer",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following runtime diagnostics or health check issue. Ensure proper health endpoints, timeout handling, and liveness probes. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

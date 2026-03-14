@@ -18,7 +18,7 @@ impl DecoratorPersona {
                 "PhD TypeScript Metaprogramming Engineer".to_string(),
                 "TypeScript Metaprogramming & Reflection (TypeScript)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following design pattern or SOLID principle violation. Extract reusable abstractions and apply correct structural/behavioral patterns. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

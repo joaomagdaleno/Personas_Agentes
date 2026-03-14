@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, HealingResult, ProjectContext } from "../../base.ts";
 
 /**
  * 🌍 Dr. Globe — PhD in Internationalization & Localization (TypeScript)
@@ -14,11 +14,15 @@ export class GlobePersona extends BaseActivePersona {
         this.role = "PhD Internationalization Engineer";
         this.phd_identity = "Internationalization & Localization (TypeScript)";
         this.stack = "Bun";
-        this.healingPrompt = "";
+        this.healingPrompt = "Fix the following i18n or localization issue. Replace hardcoded strings with locale keys and ensure locale-aware formatting. Return ONLY the corrected code or a specific diff.";
     }
 
     override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
+        if (this.healingPrompt) {
+            const { findings } = await this.auditAndHeal();
+            return findings;
+        }
         const findings = await this.performAudit();
         return findings;
     }

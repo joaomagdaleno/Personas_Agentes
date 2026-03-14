@@ -14,7 +14,7 @@ class VoyagerPersona(BaseActivePersona):
         self.role = "PhD Modernization Architect"
         self.phd_identity = "Legacy Modernization & Future-Proofing (TypeScript)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following migration or version upgrade issue. Replace deprecated API usage and ensure backward compatibility. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

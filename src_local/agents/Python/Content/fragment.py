@@ -14,7 +14,7 @@ class FragmentPersona(BaseActivePersona):
         self.role = "PhD Refactoring Expert"
         self.phd_identity = "Mdoularity & Structural Cohesion (TS/Bun)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following component isolation or micro-frontend issue. Remove cross-boundary imports and enforce strict module isolation. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

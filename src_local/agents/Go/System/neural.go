@@ -22,7 +22,7 @@ func NewNeuralPersona() *NeuralPersona {
 			Emoji: "🧠",
 			Role:          "PhD AI Safety & Token Engineer",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following ML/AI integration issue. Correct model loading, preprocessing pipelines, and inference errors. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

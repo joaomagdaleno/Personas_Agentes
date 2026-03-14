@@ -17,7 +17,7 @@ class HermesPersona(projectRoot: String? = null) : BaseActivePersona(projectRoot
         this.role = "PhD DevOps & SRE Engineer"
         this.phd_identity = "Environment Safety & Secret Delivery (TypeScript)"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following messaging or event-driven architecture issue. Ensure correct message schemas, dead-letter handling, and idempotency. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

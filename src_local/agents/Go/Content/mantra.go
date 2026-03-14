@@ -22,7 +22,7 @@ func NewMantraPersona() *MantraPersona {
 			Emoji: "🔮",
 			Role:          "PhD Type System Guardian",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following code style or consistency violation. Enforce naming conventions, formatting rules, and coding standards. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

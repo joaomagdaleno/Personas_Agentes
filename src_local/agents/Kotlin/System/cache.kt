@@ -17,7 +17,7 @@ class CachePersona(projectRoot: String? = null) : BaseActivePersona(projectRoot)
         this.role = "PhD Data Layer Engineer"
         this.phd_identity = "Data Layer & I/O Optimization (TypeScript)"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following caching or memory hierarchy issue. Ensure correct TTL handling, cache invalidation logic, and eliminate memory leaks. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

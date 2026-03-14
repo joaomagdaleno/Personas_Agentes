@@ -14,7 +14,7 @@ class VaultPersona(BaseActivePersona):
         self.role = "PhD Financial Integrity Engineer"
         self.phd_identity = "Sovereign Asset Protection & Strategic Encryption"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following secrets management or encryption issue. Remove plaintext secrets, enforce key rotation, and improve hashing algorithms. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

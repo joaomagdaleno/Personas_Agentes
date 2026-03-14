@@ -17,7 +17,7 @@ class VortexPersona(projectRoot: String? = null) : BaseActivePersona(projectRoot
         this.role = "PhD Efficiency Scientist"
         this.phd_identity = "Operational Excellence & Algorithm Integrity (TypeScript)"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following code complexity issue. Reduce cyclomatic complexity, extract methods, and simplify convoluted logic. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

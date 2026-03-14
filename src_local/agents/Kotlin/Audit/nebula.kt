@@ -17,7 +17,7 @@ class NebulaPersona(projectRoot: String? = null) : BaseActivePersona(projectRoot
         this.role = "PhD Cloud Security Architect"
         this.phd_identity = "TypeScript Secrets Management & Cloud Sovereignty"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following data pipeline or ETL issue. Correct data transformation errors and ensure proper schema evolution. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

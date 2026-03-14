@@ -18,7 +18,7 @@ impl WebPersona {
                 "PhD Frontend Architect".to_string(),
                 "Web Performance & DOM Integrity (TS/Bun)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following web performance or DOM integrity issue. Eliminate layout shifts, optimize the critical rendering path, and fix reflow triggers. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

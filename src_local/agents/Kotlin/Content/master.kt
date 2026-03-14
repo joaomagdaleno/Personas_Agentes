@@ -17,7 +17,7 @@ class MasterPersona(projectRoot: String? = null) : BaseActivePersona(projectRoot
         this.role = "PhD Principal Architect"
         this.phd_identity = "System Orchestration & Prime Directive (TS/Bun)"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following system design or orchestration gap. Ensure saga/workflow integrity and proper coordination between services. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

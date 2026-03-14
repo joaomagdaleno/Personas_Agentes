@@ -17,7 +17,7 @@ class SparkPersona(projectRoot: String? = null) : BaseActivePersona(projectRoot)
         this.role = "PhD Developer Experience Engineer"
         this.phd_identity = "Developer Experience & UX Tooling (TypeScript)"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following build system or compilation issue. Correct build configurations, tree-shaking settings, and bundler errors. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

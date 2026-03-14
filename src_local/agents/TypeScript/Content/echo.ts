@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, HealingResult, ProjectContext } from "../../base.ts";
 
 /**
  * 📢 Dr. Echo — PhD in System Feedback & Content Integrity
@@ -14,11 +14,15 @@ export class EchoPersona extends BaseActivePersona {
         this.role = "PhD Communication Specialist";
         this.phd_identity = "System Feedback & Content Integrity";
         this.stack = "TypeScript";
-        this.healingPrompt = "";
+        this.healingPrompt = "Fix the following logging or observability issue. Ensure structured logging, proper trace context propagation, and consistent log levels. Return ONLY the corrected code or a specific diff.";
     }
 
     override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
+        if (this.healingPrompt) {
+            const { findings } = await this.auditAndHeal();
+            return findings;
+        }
         const findings = await this.performAudit();
         return findings;
     }

@@ -22,7 +22,7 @@ func NewEchoPersona() *EchoPersona {
 			Emoji: "📢",
 			Role:          "PhD Communication Specialist",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following logging or observability issue. Ensure structured logging, proper trace context propagation, and consistent log levels. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

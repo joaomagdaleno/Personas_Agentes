@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, HealingResult, ProjectContext } from "../../base.ts";
 
 /**
  * 🔒 Dr. Vault — PhD in Sovereign Asset Protection & Strategic Encryption
@@ -14,11 +14,15 @@ export class VaultPersona extends BaseActivePersona {
         this.role = "PhD Financial Integrity Engineer";
         this.phd_identity = "Sovereign Asset Protection & Strategic Encryption";
         this.stack = "TypeScript";
-        this.healingPrompt = "";
+        this.healingPrompt = "Fix the following secrets management or encryption issue. Remove plaintext secrets, enforce key rotation, and improve hashing algorithms. Return ONLY the corrected code or a specific diff.";
     }
 
     override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
+        if (this.healingPrompt) {
+            const { findings } = await this.auditAndHeal();
+            return findings;
+        }
         const findings = await this.performAudit();
         return findings;
     }

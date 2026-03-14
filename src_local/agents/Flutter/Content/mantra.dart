@@ -11,7 +11,7 @@ class MantraPersona extends BaseActivePersona {
     this.role = "PhD Type System Guardian";
     this.    phdIdentity = "Type Purity & Strictness (TypeScript)",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following code style or consistency violation. Enforce naming conventions, formatting rules, and coding standards. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

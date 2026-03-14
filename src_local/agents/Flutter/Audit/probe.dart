@@ -11,7 +11,7 @@ class ProbePersona extends BaseActivePersona {
     this.role = "PhD Resilience Engineer";
     this.    phdIdentity = "TypeScript Error Resilience & Exception Handling",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following runtime diagnostics or health check issue. Ensure proper health endpoints, timeout handling, and liveness probes. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

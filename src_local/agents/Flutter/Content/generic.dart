@@ -11,7 +11,7 @@ class GenericPersona extends BaseActivePersona {
     this.role = "PhD TypeScript Type Algebraist";
     this.    phdIdentity = "Generics & Type Algebra (TypeScript)",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following generic programming or type abstraction issue. Improve generic constraints and resolve type erasure problems. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

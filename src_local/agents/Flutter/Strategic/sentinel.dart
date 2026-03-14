@@ -11,7 +11,7 @@ class SentinelPersona extends BaseActivePersona {
     this.role = "PhD Strategic Security Architect";
     this.    phdIdentity = "System Protection & Infrastructure Sovereignty (TypeScript)",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following security vulnerability or threat. Remediate injection risks, enforce CSP/CORS policies, and sanitize all inputs. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

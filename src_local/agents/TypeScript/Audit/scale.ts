@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, HealingResult, ProjectContext } from "../../base.ts";
 
 /**
  * 🏗️ Dr. Scale — PhD in TypeScript Architecture & Scalability
@@ -14,11 +14,15 @@ export class ScalePersona extends BaseActivePersona {
         this.role = "PhD Software Architect";
         this.phd_identity = "TypeScript Architecture & Scalability";
         this.stack = "TypeScript";
-        this.healingPrompt = "";
+        this.healingPrompt = "Fix the following horizontal scaling or load distribution issue. Correct sharding logic and connection pool sizing. Return ONLY the corrected code or a specific diff.";
     }
 
     override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
+        if (this.healingPrompt) {
+            const { findings } = await this.auditAndHeal();
+            return findings;
+        }
         const findings = await this.performAudit();
         return findings;
     }

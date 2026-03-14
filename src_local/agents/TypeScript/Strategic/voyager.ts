@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, HealingResult, ProjectContext } from "../../base.ts";
 
 /**
  * 🛸 Dr. Voyager — PhD in Legacy Modernization & Future-Proofing (TypeScript)
@@ -14,11 +14,15 @@ export class VoyagerPersona extends BaseActivePersona {
         this.role = "PhD Modernization Architect";
         this.phd_identity = "Legacy Modernization & Future-Proofing (TypeScript)";
         this.stack = "TypeScript";
-        this.healingPrompt = "";
+        this.healingPrompt = "Fix the following migration or version upgrade issue. Replace deprecated API usage and ensure backward compatibility. Return ONLY the corrected code or a specific diff.";
     }
 
     override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
+        if (this.healingPrompt) {
+            const { findings } = await this.auditAndHeal();
+            return findings;
+        }
         const findings = await this.performAudit();
         return findings;
     }

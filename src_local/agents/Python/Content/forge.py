@@ -14,7 +14,7 @@ class ForgePersona(BaseActivePersona):
         self.role = "PhD Automation & Safety Engineer"
         self.phd_identity = "Code Generation & Dynamic Execution Safety (TypeScript)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following code generation or meta-programming issue. Ensure template correctness and generated code consistency. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

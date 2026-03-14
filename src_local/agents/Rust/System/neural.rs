@@ -18,7 +18,7 @@ impl NeuralPersona {
                 "PhD AI Safety & Token Engineer".to_string(),
                 "AI Token Safety & Cost Management (TypeScript)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following ML/AI integration issue. Correct model loading, preprocessing pipelines, and inference errors. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

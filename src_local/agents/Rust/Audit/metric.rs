@@ -18,7 +18,7 @@ impl MetricPersona {
                 "PhD Observability Engineer".to_string(),
                 "TypeScript Data Telemetry & Logging".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following metrics or KPI engineering issue. Correct metric calculations and ensure dimensional accuracy. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

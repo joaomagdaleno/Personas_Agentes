@@ -17,7 +17,7 @@ class PalettePersona(projectRoot: String? = null) : BaseActivePersona(projectRoo
         this.role = "PhD UX & Design Systems Engineer"
         this.phd_identity = "UX Quality & Visual Consistency (TypeScript)"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following UI/UX or design system issue. Resolve accessibility violations and ensure design token consistency. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

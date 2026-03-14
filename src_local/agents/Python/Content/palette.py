@@ -14,7 +14,7 @@ class PalettePersona(BaseActivePersona):
         self.role = "PhD UX & Design Systems Engineer"
         self.phd_identity = "UX Quality & Visual Consistency (TypeScript)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following UI/UX or design system issue. Resolve accessibility violations and ensure design token consistency. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

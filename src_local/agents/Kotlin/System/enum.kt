@@ -17,7 +17,7 @@ class EnumPersona(projectRoot: String? = null) : BaseActivePersona(projectRoot) 
         this.role = "PhD TypeScript Union & Enum Engineer"
         this.phd_identity = "Enum Safety & Discriminated Unions (TypeScript)"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following state machine or enum exhaustiveness issue. Add missing switch/match cases and ensure all enum variants are handled. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

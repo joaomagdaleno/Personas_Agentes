@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, HealingResult, ProjectContext } from "../../base.ts";
 
 /**
  * 💾 Dr. Cache — PhD in Data Layer & I/O Optimization (TypeScript)
@@ -14,11 +14,15 @@ export class CachePersona extends BaseActivePersona {
         this.role = "PhD Data Layer Engineer";
         this.phd_identity = "Data Layer & I/O Optimization (TypeScript)";
         this.stack = "Bun";
-        this.healingPrompt = "";
+        this.healingPrompt = "Fix the following caching or memory hierarchy issue. Ensure correct TTL handling, cache invalidation logic, and eliminate memory leaks. Return ONLY the corrected code or a specific diff.";
     }
 
     override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
+        if (this.healingPrompt) {
+            const { findings } = await this.auditAndHeal();
+            return findings;
+        }
         const findings = await this.performAudit();
         return findings;
     }

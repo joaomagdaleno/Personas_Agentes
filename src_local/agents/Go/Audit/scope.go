@@ -22,7 +22,7 @@ func NewScopePersona() *ScopePersona {
 			Emoji: "🎯",
 			Role:          "PhD Project Strategist",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following scope analysis or variable lifecycle issue. Resolve variable shadowing, unused declarations, and scope leaks. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

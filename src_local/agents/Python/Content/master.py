@@ -14,7 +14,7 @@ class MasterPersona(BaseActivePersona):
         self.role = "PhD Principal Architect"
         self.phd_identity = "System Orchestration & Prime Directive (TS/Bun)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following system design or orchestration gap. Ensure saga/workflow integrity and proper coordination between services. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

@@ -11,7 +11,7 @@ class HypePersona extends BaseActivePersona {
     this.role = "PhD Product Evangelist";
     this.    phdIdentity = "Product Visibility & Branding (TypeScript)",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following developer experience issue. Simplify confusing APIs, improve error messages, and streamline interfaces. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

@@ -17,7 +17,7 @@ class WebPersona(projectRoot: String? = null) : BaseActivePersona(projectRoot) {
         this.role = "PhD Frontend Architect"
         this.phd_identity = "Web Performance & DOM Integrity (TS/Bun)"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following web performance or DOM integrity issue. Eliminate layout shifts, optimize the critical rendering path, and fix reflow triggers. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

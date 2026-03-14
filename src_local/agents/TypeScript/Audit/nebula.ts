@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, HealingResult, ProjectContext } from "../../base.ts";
 
 /**
  * ☁️ Dr. Nebula — PhD in TypeScript Secrets Management & Cloud Sovereignty
@@ -14,11 +14,15 @@ export class NebulaPersona extends BaseActivePersona {
         this.role = "PhD Cloud Security Architect";
         this.phd_identity = "TypeScript Secrets Management & Cloud Sovereignty";
         this.stack = "TypeScript";
-        this.healingPrompt = "";
+        this.healingPrompt = "Fix the following data pipeline or ETL issue. Correct data transformation errors and ensure proper schema evolution. Return ONLY the corrected code or a specific diff.";
     }
 
     override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
+        if (this.healingPrompt) {
+            const { findings } = await this.auditAndHeal();
+            return findings;
+        }
         const findings = await this.performAudit();
         return findings;
     }

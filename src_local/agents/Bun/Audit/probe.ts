@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, HealingResult, ProjectContext } from "../../base.ts";
 
 /**
  * 🔬 Dr. Probe — PhD in TypeScript Error Resilience & Exception Handling
@@ -14,11 +14,15 @@ export class ProbePersona extends BaseActivePersona {
         this.role = "PhD Resilience Engineer";
         this.phd_identity = "TypeScript Error Resilience & Exception Handling";
         this.stack = "Bun";
-        this.healingPrompt = "";
+        this.healingPrompt = "Fix the following runtime diagnostics or health check issue. Ensure proper health endpoints, timeout handling, and liveness probes. Return ONLY the corrected code or a specific diff.";
     }
 
     override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
+        if (this.healingPrompt) {
+            const { findings } = await this.auditAndHeal();
+            return findings;
+        }
         const findings = await this.performAudit();
         return findings;
     }

@@ -18,7 +18,7 @@ impl VaultPersona {
                 "PhD Financial Integrity Engineer".to_string(),
                 "Sovereign Asset Protection & Strategic Encryption".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following secrets management or encryption issue. Remove plaintext secrets, enforce key rotation, and improve hashing algorithms. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

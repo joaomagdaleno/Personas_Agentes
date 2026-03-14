@@ -17,7 +17,7 @@ class HypePersona(projectRoot: String? = null) : BaseActivePersona(projectRoot) 
         this.role = "PhD Product Evangelist"
         this.phd_identity = "Product Visibility & Branding (TypeScript)"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following developer experience issue. Simplify confusing APIs, improve error messages, and streamline interfaces. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

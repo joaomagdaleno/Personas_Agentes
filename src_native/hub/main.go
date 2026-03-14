@@ -8,6 +8,7 @@ import (
 	"io"
 	"log"
 	"net"
+	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -18,6 +19,8 @@ import (
 	"time"
 
 	"database/sql"
+	"bytes"
+	"encoding/binary"
 
 	pb "personas-agentes/hub/proto"
 
@@ -290,7 +293,20 @@ func (h *Hub) initDB(projectRoot string) {
 		created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 	)`)
 	if err != nil {
-		log.Fatalf("Failed to init DB table: %v", err)
+		log.Fatalf("Failed to init DB table (ai_tasks): %v", err)
+	}
+
+	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS agent_memory (
+		id TEXT PRIMARY KEY,
+		agent_id TEXT,
+		objective TEXT,
+		action TEXT,
+		result TEXT,
+		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+		embedding BLOB
+	)`)
+	if err != nil {
+		log.Fatalf("Failed to init DB table (agent_memory): %v", err)
 	}
 }
 
@@ -488,6 +504,9 @@ func (h *Hub) WatchHealth(in *pb.Empty, stream pb.HubService_WatchHealthServer) 
 func (h *Hub) WatchEvents(in *pb.Empty, stream pb.HubService_WatchEventsServer) error {
 	clientChan := make(chan string)
 	h.clientsLock.Lock()
+	if h.clients == nil {
+		h.clients = make(map[chan string]bool)
+	}
 	h.clients[clientChan] = true
 	h.clientsLock.Unlock()
 
@@ -501,10 +520,21 @@ func (h *Hub) WatchEvents(in *pb.Empty, stream pb.HubService_WatchEventsServer) 
 		select {
 		case msg := <-clientChan:
 			if !strings.Contains(msg, "HEALTH_UPDATE") {
-				stream.Send(&pb.Event{
-					Type: "FILE_EVENT",
-					Path: msg,
-				})
+				var data map[string]interface{}
+				if err := json.Unmarshal([]byte(msg), &data); err == nil {
+					eventType, _ := data["type"].(string)
+					filePath, _ := data["file_path"].(string)
+					stream.Send(&pb.Event{
+						Type: eventType,
+						Path: filePath,
+						Data: msg,
+					})
+				} else {
+					stream.Send(&pb.Event{
+						Type: "FILE_EVENT",
+						Path: msg,
+					})
+				}
 			}
 		case <-stream.Context().Done():
 			return nil
@@ -825,6 +855,64 @@ func (h *Hub) ExecuteHealing(ctx context.Context, in *pb.HealingPlan) (*pb.Analy
 	return &pb.AnalyzeResponse{JsonData: data}, nil
 }
 
+
+func (h *Hub) Remember(ctx context.Context, in *pb.MemoryEntry) (*pb.Empty, error) {
+	log.Printf("🧠 [Memory] Recording decision for agent %s: %s", in.AgentId, in.Objective)
+
+	// Convert float32 embedding to BLOB
+	embBuf := new(bytes.Buffer)
+	for _, f := range in.Embedding {
+		binary.Write(embBuf, binary.LittleEndian, f)
+	}
+
+	_, err := h.db.Exec(`INSERT INTO agent_memory (id, agent_id, objective, action, result, embedding) 
+		VALUES (?, ?, ?, ?, ?, ?)`,
+		in.Id, in.AgentId, in.Objective, in.Action, in.Result, embBuf.Bytes())
+	if err != nil {
+		return nil, err
+	}
+	return &pb.Empty{}, nil
+}
+
+func (h *Hub) Retrieve(in *pb.MemoryQuery, stream pb.HubService_RetrieveServer) error {
+	log.Printf("🧠 [Memory] Retrieving records for agent %s query: %s", in.AgentId, in.Query)
+
+	// For now, simple keyword match or just return latest for the agent
+	// In the next step, we'll implement vector similarity
+	rows, err := h.db.Query(`SELECT id, agent_id, objective, action, result, timestamp, embedding FROM agent_memory 
+		WHERE agent_id = ? ORDER BY timestamp DESC LIMIT ?`, in.AgentId, in.Limit)
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var m pb.MemoryEntry
+		var emb []byte
+		err := rows.Scan(&m.Id, &m.AgentId, &m.Objective, &m.Action, &m.Result, &m.Timestamp, &emb)
+		if err != nil {
+			return err
+		}
+
+		// Convert BLOB back to float32 slice
+		fSlice := make([]float32, len(emb)/4)
+		binary.Read(bytes.NewReader(emb), binary.LittleEndian, &fSlice)
+		m.Embedding = fSlice
+
+		if err := stream.Send(&m); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (h *Hub) Embed(ctx context.Context, in *pb.EmbedRequest) (*pb.EmbedResponse, error) {
+	if h.rustClient != nil {
+		return h.rustClient.Embed(ctx, in)
+	}
+	return nil, fmt.Errorf("rust sidecar not available for embedding")
+}
+
 func (h *Hub) EnqueueTask(ctx context.Context, in *pb.TaskRequest) (*pb.TaskResponse, error) {
 	_, err := h.db.Exec("INSERT INTO ai_tasks (task_type, target_file) VALUES (?, ?)", in.TaskType, in.TargetFile)
 	if err != nil {
@@ -909,7 +997,7 @@ func (h *Hub) AnalyzeCode(ctx context.Context, in *pb.AnalyzeCodeRequest) (*pb.A
 		MatchCount int    `json:"match_count"`
 	}
 
-	var findings []Finding
+	findings := []Finding{}
 
 	for _, rule := range s.Rules {
 		re, err := regexp.Compile(rule.Regex)
@@ -982,6 +1070,43 @@ func (h *Hub) AnalyzeCode(ctx context.Context, in *pb.AnalyzeCodeRequest) (*pb.A
 	return &pb.AnalyzeResponse{JsonData: string(jsonRes)}, nil
 }
 
+func (h *Hub) RequestPeerReview(ctx context.Context, in *pb.PeerReviewRequest) (*pb.PeerReviewResponse, error) {
+	requestID := fmt.Sprintf("rev_%d", time.Now().UnixNano())
+	log.Printf("🤝 [Swarm] Peer review requested by %s for %s (Target: %s)", in.RequesterId, in.FilePath, in.TargetPersonaId)
+
+	msg, _ := json.Marshal(map[string]interface{}{
+		"type":              "PEER_REVIEW_REQUEST",
+		"request_id":        requestID,
+		"requester_id":      in.RequesterId,
+		"target_persona_id": in.TargetPersonaId,
+		"file_path":         in.FilePath,
+		"context":           in.Context,
+		"priority":          in.Priority,
+		"timestamp":         time.Now().Format(time.RFC3339),
+	})
+	h.broadcast <- string(msg)
+
+	return &pb.PeerReviewResponse{
+		RequestId: requestID,
+		Status:    "ENQUEUED",
+	}, nil
+}
+
+func (h *Hub) BroadcastSignal(ctx context.Context, in *pb.SignalRequest) (*pb.Empty, error) {
+	log.Printf("📢 [Swarm] Signal broadcast by %s: %s", in.SenderId, in.SignalType)
+
+	msg, _ := json.Marshal(map[string]interface{}{
+		"type":         "SIGNAL",
+		"sender_id":    in.SenderId,
+		"signal_type":  in.SignalType,
+		"payload_json": in.PayloadJson,
+		"timestamp":    time.Now().Format(time.RFC3339),
+	})
+	h.broadcast <- string(msg)
+
+	return &pb.Empty{}, nil
+}
+
 func (h *Hub) UpdateTask(ctx context.Context, in *pb.UpdateTaskRequest) (*pb.Empty, error) {
 	_, err := h.db.Exec("UPDATE ai_tasks SET status = ?, result = ? WHERE id = ?", in.Status, in.Result, in.TaskId)
 	if err != nil {
@@ -991,12 +1116,79 @@ func (h *Hub) UpdateTask(ctx context.Context, in *pb.UpdateTaskRequest) (*pb.Emp
 	return &pb.Empty{}, nil
 }
 
+func (h *Hub) ServeGovernance(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	data, err := os.ReadFile("../../walkthrough.md")
+	if err != nil {
+		// Try alternative path
+		data, err = os.ReadFile("walkthrough.md")
+		if err != nil {
+			http.Error(w, "Failed to read governance document", http.StatusInternalServerError)
+			return
+		}
+	}
+
+	json.NewEncoder(w).Encode(map[string]string{
+		"content": string(data),
+	})
+}
+
+func (h *Hub) ServeSSE(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/event-stream")
+	w.Header().Set("Cache-Control", "no-cache")
+	w.Header().Set("Connection", "keep-alive")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	ch := make(chan string, 10)
+	h.clientsLock.Lock()
+	h.clients[ch] = true
+	h.clientsLock.Unlock()
+
+	defer func() {
+		h.clientsLock.Lock()
+		delete(h.clients, ch)
+		h.clientsLock.Unlock()
+	}()
+
+	flusher, ok := w.(http.Flusher)
+	if !ok {
+		http.Error(w, "Streaming unsupported", http.StatusInternalServerError)
+		return
+	}
+
+	// Send initial connection event
+	fmt.Fprintf(w, "data: %s\n\n", `{"type":"SYSTEM","message":"CONNECTED_TO_HUB"}`)
+	flusher.Flush()
+
+	for {
+		select {
+		case msg := <-ch:
+			fmt.Fprintf(w, "data: %s\n\n", msg)
+			flusher.Flush()
+		case <-r.Context().Done():
+			return
+		}
+	}
+}
+
 func (p *program) run() {
 	p.hub.initDB("../..")
 	p.hub.loadMetadata("../..")
 	go p.hub.startSentinel()
 	go p.hub.startBroadcaster()
 	go p.hub.startWatcher("../..")
+
+	// Start Sovereign Dashboard SSE Server
+	go func() {
+		http.HandleFunc("/events", p.hub.ServeSSE)
+		http.HandleFunc("/governance", p.hub.ServeGovernance)
+		log.Printf("📊 Sovereign Dashboard SSE Server listening on :8080")
+		if err := http.ListenAndServe(":8080", nil); err != nil {
+			log.Printf("⚠️ Dashboard server failed: %v", err)
+		}
+	}()
 
 	// Connect to Rust gRPC Sidecar
 	go func() {

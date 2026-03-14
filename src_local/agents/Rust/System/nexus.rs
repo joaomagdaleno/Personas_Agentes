@@ -18,7 +18,7 @@ impl NexusPersona {
                 "PhD Network Resilience Engineer".to_string(),
                 "Robust Networking & HTTP Resiliency (TypeScript)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following dependency management or coupling issue. Break circular dependencies and reduce coupling metrics. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

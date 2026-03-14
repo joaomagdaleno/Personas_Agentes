@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, HealingResult, ProjectContext } from "../../base.ts";
 
 /**
  * 🏛️ Dr. Director — PhD in Systemic Orchestration & AI Governance
@@ -14,11 +14,15 @@ export class DirectorPersona extends BaseActivePersona {
         this.role = "Master Orchestrator";
         this.phd_identity = "Systemic Orchestration & AI Governance";
         this.stack = "Bun";
-        this.healingPrompt = "";
+        this.healingPrompt = "Fix the following architectural drift or governance violation. Enforce layered boundaries and ensure proper separation of concerns. Return ONLY the corrected code or a specific diff.";
     }
 
     override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
+        if (this.healingPrompt) {
+            const { findings } = await this.auditAndHeal();
+            return findings;
+        }
         const findings = await this.performAudit();
         return findings;
     }

@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, HealingResult, ProjectContext } from "../../base.ts";
 
 /**
  * 🎯 Dr. Scope — PhD in TypeScript Project Management & Technical Debt
@@ -14,11 +14,15 @@ export class ScopePersona extends BaseActivePersona {
         this.role = "PhD Project Strategist";
         this.phd_identity = "TypeScript Project Management & Technical Debt";
         this.stack = "TypeScript";
-        this.healingPrompt = "";
+        this.healingPrompt = "Fix the following scope analysis or variable lifecycle issue. Resolve variable shadowing, unused declarations, and scope leaks. Return ONLY the corrected code or a specific diff.";
     }
 
     override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
+        if (this.healingPrompt) {
+            const { findings } = await this.auditAndHeal();
+            return findings;
+        }
         const findings = await this.performAudit();
         return findings;
     }

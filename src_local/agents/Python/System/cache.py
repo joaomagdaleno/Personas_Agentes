@@ -14,7 +14,7 @@ class CachePersona(BaseActivePersona):
         self.role = "PhD Data Layer Engineer"
         self.phd_identity = "Data Layer & I/O Optimization (TypeScript)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following caching or memory hierarchy issue. Ensure correct TTL handling, cache invalidation logic, and eliminate memory leaks. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

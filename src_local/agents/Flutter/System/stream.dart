@@ -11,7 +11,7 @@ class StreamPersona extends BaseActivePersona {
     this.role = "PhD Reactive Systems Engineer";
     this.    phdIdentity = "Reactive Architecture & Event Streaming (TypeScript)",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following real-time data or WebSocket issue. Correct connection handling, reconnection logic, and heartbeat mechanisms. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

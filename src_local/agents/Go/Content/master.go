@@ -22,7 +22,7 @@ func NewMasterPersona() *MasterPersona {
 			Emoji: "👑",
 			Role:          "PhD Principal Architect",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following system design or orchestration gap. Ensure saga/workflow integrity and proper coordination between services. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

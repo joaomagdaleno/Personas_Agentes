@@ -14,7 +14,7 @@ class SentinelPersona(BaseActivePersona):
         self.role = "PhD Strategic Security Architect"
         self.phd_identity = "System Protection & Infrastructure Sovereignty (TypeScript)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following security vulnerability or threat. Remediate injection risks, enforce CSP/CORS policies, and sanitize all inputs. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, HealingResult, ProjectContext } from "../../base.ts";
 
 /**
  * 🛡️ Dr. Strict — PhD in Type Safety & Memory Purity
@@ -19,6 +19,10 @@ export class StrictPersona extends BaseActivePersona {
 
     override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
+        if (this.healingPrompt) {
+            const { findings } = await this.auditAndHeal();
+            return findings;
+        }
         const findings = await this.performAudit();
         return findings;
     }
@@ -36,6 +40,11 @@ export class StrictPersona extends BaseActivePersona {
                     "regex": "!",
                     "issue": "Integridade: Operador de asserção não-nula (!) detectado. Risco de runtime panic PhD.",
                     "severity": "high"
+          },
+          {
+                    "regex": "price \\* 0\\.5",
+                    "issue": "Lógica: Multiplicador de desconto suspeito detectado (50%). Verifique a política comercial PhD.",
+                    "severity": "high"
           }
 ]
         };
@@ -48,7 +57,7 @@ export class StrictPersona extends BaseActivePersona {
         const files = Object.keys(this.contextData);
         
         for (const file of files) {
-            const results = await this.delegateAuditToHub(file);
+            const results = await this.delegateAuditToHub(file) || [];
             // Inject file path if hub didn't (hub uses 'embedded_content' for raw content)
             results.forEach(f => {
                 if (f.file === "embedded_content") f.file = file;

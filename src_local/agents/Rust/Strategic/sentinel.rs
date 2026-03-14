@@ -18,7 +18,7 @@ impl SentinelPersona {
                 "PhD Strategic Security Architect".to_string(),
                 "System Protection & Infrastructure Sovereignty (TypeScript)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following security vulnerability or threat. Remediate injection risks, enforce CSP/CORS policies, and sanitize all inputs. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

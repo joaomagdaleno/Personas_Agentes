@@ -18,7 +18,7 @@ impl CloudPersona {
                 "PhD Cloud Architect".to_string(),
                 "Cloud Native & IAM Integrity (TypeScript)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following cloud-native or serverless issue. Ensure correct IAM policies, fix cold start bottlenecks, and resolve cloud resource misconfiguration. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

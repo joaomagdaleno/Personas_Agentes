@@ -22,7 +22,7 @@ func NewScalePersona() *ScalePersona {
 			Emoji: "🏗️",
 			Role:          "PhD Software Architect",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following horizontal scaling or load distribution issue. Correct sharding logic and connection pool sizing. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

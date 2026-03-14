@@ -1,14 +1,15 @@
 import winston from 'winston';
 import * as fs from 'fs';
-import { Path } from "../../../core/path_utils.ts";;
+import { Path } from "../../../core/path_utils.ts";
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding } from "../../base.ts";;
-import { CognitiveEngine } from "../../../utils/cognitive_engine.ts";;
-import { Orchestrator } from "../../../core/orchestrator.ts";;
-import { ObfuscationCleanerEngine } from "../Security/obfuscation_cleaner_engine.ts";;
+import type { AuditRule, StrategicFinding } from "../../base.ts";
+import { CognitiveEngine } from "../../../utils/cognitive_engine.ts";
+import { Orchestrator } from "../../../core/orchestrator.ts";
+import { ObfuscationCleanerEngine } from "../Security/obfuscation_cleaner_engine.ts";
 import * as ts from 'typescript';
-import { HealerPromptBuilder } from "./healer_prompt_builder.ts";;
-import { PatchManager } from "./patch_manager.ts";;
+import { HealerPromptBuilder } from "./healer_prompt_builder.ts";
+import { PatchManager } from "./patch_manager.ts";
+import type { AuditFinding } from "../../../core/types.ts";
 
 /**
  * 🩹 Agente Healer (PhD in Software Reparation).
@@ -40,11 +41,11 @@ export class HealerPersona extends BaseActivePersona {
         return "Você é o Dr. Healer, focado em correções de código seguras e minimalistas.";
     }
 
-    reasonAboutObjective(objective: string, filePath: string, content: string | Promise<string | null>): StrategicFinding | string | null {
+    override async reasonAboutObjective(objective: string, file: string, context: string): Promise<StrategicFinding | null> {
         return null;
     }
 
-    async healFinding(finding: any, orchestrator: Orchestrator): Promise<boolean> {
+    async healFinding(finding: AuditFinding, orchestrator: Orchestrator): Promise<boolean> {
         if (!this.isValidForHealing(finding)) return false;
 
         const filePath = finding.file;
@@ -70,15 +71,15 @@ export class HealerPersona extends BaseActivePersona {
         };
 
         const suggestion = await orchestrator.hubManager.executeHealing(plan);
-        return this.processSuggestion(suggestion, filePath, finding.issue, orchestrator);
+        return this.processSuggestion(suggestion as string | null, filePath, finding.issue, orchestrator);
     }
 
-    private isValidForHealing(finding: any): boolean {
+    private isValidForHealing(finding: AuditFinding): boolean {
         if (!finding.file || !finding.issue || !this.projectRoot) return false;
         return this.checkFileExistence(finding);
     }
 
-    private checkFileExistence(finding: any): boolean {
+    private checkFileExistence(finding: AuditFinding): boolean {
         const fullPath = new Path(this.projectRoot!).join(finding.file).toString();
         if (fs.existsSync(fullPath) || finding.type === "DISPARITY") return true;
 
@@ -91,9 +92,9 @@ export class HealerPersona extends BaseActivePersona {
         return fs.existsSync(fullPath) ? fs.readFileSync(fullPath, 'utf-8') : "// Novo arquivo migrado\n";
     }
 
-    private getContextPrompt(finding: any): string {
+    private getContextPrompt(finding: AuditFinding): string {
         if (finding.type !== "DISPARITY" || !finding.meta?.legacyPath) return "";
-        return this.getLegacyContext(finding.meta.legacyPath, finding.meta.unit);
+        return this.getLegacyContext(finding.meta.legacyPath as string, finding.meta.unit);
     }
 
     private getLegacyContext(legacyPath: string, unit: any): string {

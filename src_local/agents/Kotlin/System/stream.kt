@@ -17,7 +17,7 @@ class StreamPersona(projectRoot: String? = null) : BaseActivePersona(projectRoot
         this.role = "PhD Reactive Systems Engineer"
         this.phd_identity = "Reactive Architecture & Event Streaming (TypeScript)"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following real-time data or WebSocket issue. Correct connection handling, reconnection logic, and heartbeat mechanisms. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

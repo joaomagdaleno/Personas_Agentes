@@ -11,7 +11,7 @@ class EnumPersona extends BaseActivePersona {
     this.role = "PhD TypeScript Union & Enum Engineer";
     this.    phdIdentity = "Enum Safety & Discriminated Unions (TypeScript)",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following state machine or enum exhaustiveness issue. Add missing switch/match cases and ensure all enum variants are handled. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

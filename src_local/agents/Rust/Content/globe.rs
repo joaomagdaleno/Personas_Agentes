@@ -18,7 +18,7 @@ impl GlobePersona {
                 "PhD Internationalization Engineer".to_string(),
                 "Internationalization & Localization (TypeScript)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following i18n or localization issue. Replace hardcoded strings with locale keys and ensure locale-aware formatting. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

@@ -22,7 +22,7 @@ func NewFragmentPersona() *FragmentPersona {
 			Emoji: "🧩",
 			Role:          "PhD Refactoring Expert",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following component isolation or micro-frontend issue. Remove cross-boundary imports and enforce strict module isolation. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

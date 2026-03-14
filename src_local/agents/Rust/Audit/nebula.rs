@@ -18,7 +18,7 @@ impl NebulaPersona {
                 "PhD Cloud Security Architect".to_string(),
                 "TypeScript Secrets Management & Cloud Sovereignty".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following data pipeline or ETL issue. Correct data transformation errors and ensure proper schema evolution. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

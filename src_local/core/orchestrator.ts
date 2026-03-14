@@ -45,7 +45,7 @@ export class Orchestrator {
     historyAgent!: HistoryAgent;
     strategist!: DiagnosticStrategist;
     coreValidator!: CoreValidator;
-    synthesizer: any;
+    synthesizer!: any; // Will be typed correctly when HealthSynthesizer interface is extracted
     taskQueue!: TaskQueue;
     memoryEngine!: MemoryEngine;
     reflexEngine!: ReflexEngine;
@@ -181,8 +181,8 @@ export class Orchestrator {
     _initTools() {
         this.coreValidator = new CoreValidator(this);
         this.synthesizer = {
-            getTopologyIssues: (_ctx: any) => [],
-            synthesize360: async (ctx: any, m_orc: any, personas: any, ledger: any, qa: any) => {
+            getTopologyIssues: (_ctx: ProjectContext) => [],
+            synthesize360: async (ctx: ProjectContext, m_orc: SystemMetrics, personas: IAgent[], ledger: StabilityLedger, qa: any) => {
                 const { HealthSynthesizer } = await import("../agents/Support/Diagnostics/health_synthesizer.ts");
                 const syn = new HealthSynthesizer();
                 return syn.synthesize360(ctx, m_orc, personas, ledger, qa);

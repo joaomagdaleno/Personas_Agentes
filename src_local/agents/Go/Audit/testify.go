@@ -22,7 +22,7 @@ func NewTestifyPersona() *TestifyPersona {
 			Emoji: "🧪",
 			Role:          "PhD Quality & Testing Engineer",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following testing or quality assurance issue. Eliminate flaky tests, improve assertion specificity, and increase coverage. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

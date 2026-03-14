@@ -8,11 +8,10 @@ pub mod hub_proto {
 
 use hub_proto::hub_service_server::HubService;
 use hub_proto::{
-    AnalyzeRequest, AnalyzeResponse, Empty, StatusResponse, ScanRequest, ScanResponse, 
-    DeduplicateRequest, ConnectivityRequest, AuditRequest, BatchRequest, ReasonRequest, 
     PatternRequest, PenaltyRequest, ScoreRequest, CoverageRequest, GraphRequest, 
     QueryRequest, HealingPlan, HealthUpdate, Event, TaskRequest, TaskResponse, 
-    PendingRequest, PendingResponse, UpdateTaskRequest
+    PendingRequest, PendingResponse, UpdateTaskRequest, MemoryEntry, MemoryQuery,
+    EmbedRequest, EmbedResponse
 };
 
 use crate::{analysis, fingerprint, dna, batch, connectivity, audit, penalty, brain};
@@ -28,6 +27,7 @@ impl HubService for HubServerImpl {
     type WatchHealthStream = ResponseStream<HealthUpdate>;
     type WatchEventsStream = ResponseStream<Event>;
     type AnalyzeStreamStream = ResponseStream<AnalyzeResponse>;
+    type RetrieveStream = ResponseStream<MemoryEntry>;
 
     async fn get_status(&self, _request: Request<Empty>) -> Result<Response<StatusResponse>, Status> {
         Ok(Response::new(StatusResponse {
@@ -249,6 +249,21 @@ impl HubService for HubServerImpl {
         let result = brain.reason(&prompt, None, 1024);
         let json_data = result.unwrap_or_else(|| "Error: Healing failed".to_string());
         Ok(Response::new(AnalyzeResponse { json_data }))
+    }
+
+    async fn remember(&self, _request: Request<MemoryEntry>) -> Result<Response<Empty>, Status> {
+        Err(Status::unimplemented("Handled by Go Hub"))
+    }
+
+    async fn retrieve(&self, _request: Request<MemoryQuery>) -> Result<Response<Self::RetrieveStream>, Status> {
+        Err(Status::unimplemented("Handled by Go Hub"))
+    }
+
+    async fn embed(&self, request: Request<EmbedRequest>) -> Result<Response<EmbedResponse>, Status> {
+        let req = request.into_inner();
+        let brain = brain::Brain::new().ok_or_else(|| Status::internal("Failed to initialize Brain"))?;
+        let embedding = brain.embed(&req.text).ok_or_else(|| Status::internal("Failed to generate embedding"))?;
+        Ok(Response::new(EmbedResponse { embedding }))
     }
 
     async fn enqueue_task(&self, _request: Request<TaskRequest>) -> Result<Response<TaskResponse>, Status> {

@@ -17,7 +17,7 @@ class CloudPersona(projectRoot: String? = null) : BaseActivePersona(projectRoot)
         this.role = "PhD Cloud Architect"
         this.phd_identity = "Cloud Native & IAM Integrity (TypeScript)"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following cloud-native or serverless issue. Ensure correct IAM policies, fix cold start bottlenecks, and resolve cloud resource misconfiguration. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

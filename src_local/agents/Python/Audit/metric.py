@@ -14,7 +14,7 @@ class MetricPersona(BaseActivePersona):
         self.role = "PhD Observability Engineer"
         self.phd_identity = "TypeScript Data Telemetry & Logging"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following metrics or KPI engineering issue. Correct metric calculations and ensure dimensional accuracy. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

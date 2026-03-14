@@ -17,7 +17,7 @@ class MetricPersona(projectRoot: String? = null) : BaseActivePersona(projectRoot
         this.role = "PhD Observability Engineer"
         this.phd_identity = "TypeScript Data Telemetry & Logging"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following metrics or KPI engineering issue. Correct metric calculations and ensure dimensional accuracy. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

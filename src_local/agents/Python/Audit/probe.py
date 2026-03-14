@@ -14,7 +14,7 @@ class ProbePersona(BaseActivePersona):
         self.role = "PhD Resilience Engineer"
         self.phd_identity = "TypeScript Error Resilience & Exception Handling"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following runtime diagnostics or health check issue. Ensure proper health endpoints, timeout handling, and liveness probes. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

@@ -18,7 +18,7 @@ impl FragmentPersona {
                 "PhD Refactoring Expert".to_string(),
                 "Mdoularity & Structural Cohesion (TS/Bun)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following component isolation or micro-frontend issue. Remove cross-boundary imports and enforce strict module isolation. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

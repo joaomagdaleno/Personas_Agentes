@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, HealingResult, ProjectContext } from "../../base.ts";
 
 /**
  * 🎀 Dr. Decorator — PhD in TypeScript Metaprogramming & Reflection (TypeScript)
@@ -14,11 +14,15 @@ export class DecoratorPersona extends BaseActivePersona {
         this.role = "PhD TypeScript Metaprogramming Engineer";
         this.phd_identity = "TypeScript Metaprogramming & Reflection (TypeScript)";
         this.stack = "TypeScript";
-        this.healingPrompt = "";
+        this.healingPrompt = "Fix the following design pattern or SOLID principle violation. Extract reusable abstractions and apply correct structural/behavioral patterns. Return ONLY the corrected code or a specific diff.";
     }
 
     override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
+        if (this.healingPrompt) {
+            const { findings } = await this.auditAndHeal();
+            return findings;
+        }
         const findings = await this.performAudit();
         return findings;
     }

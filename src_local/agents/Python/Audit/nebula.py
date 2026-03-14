@@ -14,7 +14,7 @@ class NebulaPersona(BaseActivePersona):
         self.role = "PhD Cloud Security Architect"
         self.phd_identity = "TypeScript Secrets Management & Cloud Sovereignty"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following data pipeline or ETL issue. Correct data transformation errors and ensure proper schema evolution. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

@@ -14,7 +14,7 @@ class EchoPersona(BaseActivePersona):
         self.role = "PhD Communication Specialist"
         self.phd_identity = "System Feedback & Content Integrity"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following logging or observability issue. Ensure structured logging, proper trace context propagation, and consistent log levels. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

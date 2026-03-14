@@ -14,7 +14,7 @@ class VortexPersona(BaseActivePersona):
         self.role = "PhD Efficiency Scientist"
         self.phd_identity = "Operational Excellence & Algorithm Integrity (TypeScript)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following code complexity issue. Reduce cyclomatic complexity, extract methods, and simplify convoluted logic. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

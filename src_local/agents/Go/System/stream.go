@@ -22,7 +22,7 @@ func NewStreamPersona() *StreamPersona {
 			Emoji: "🌊",
 			Role:          "PhD Reactive Systems Engineer",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following real-time data or WebSocket issue. Correct connection handling, reconnection logic, and heartbeat mechanisms. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

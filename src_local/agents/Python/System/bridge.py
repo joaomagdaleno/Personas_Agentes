@@ -14,7 +14,7 @@ class BridgePersona(BaseActivePersona):
         self.role = "PhD Integration Architect"
         self.phd_identity = "Integration Contracts & FFI (TypeScript)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following API contract or protocol translation issue. Ensure correct HTTP/gRPC mapping, proper request/response schemas, and consistent error propagation. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

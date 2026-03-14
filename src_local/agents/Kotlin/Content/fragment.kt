@@ -17,7 +17,7 @@ class FragmentPersona(projectRoot: String? = null) : BaseActivePersona(projectRo
         this.role = "PhD Refactoring Expert"
         this.phd_identity = "Mdoularity & Structural Cohesion (TS/Bun)"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following component isolation or micro-frontend issue. Remove cross-boundary imports and enforce strict module isolation. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

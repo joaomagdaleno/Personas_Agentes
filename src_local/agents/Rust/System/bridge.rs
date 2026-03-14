@@ -18,7 +18,7 @@ impl BridgePersona {
                 "PhD Integration Architect".to_string(),
                 "Integration Contracts & FFI (TypeScript)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following API contract or protocol translation issue. Ensure correct HTTP/gRPC mapping, proper request/response schemas, and consistent error propagation. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

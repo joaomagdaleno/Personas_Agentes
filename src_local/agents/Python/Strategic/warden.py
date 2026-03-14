@@ -14,7 +14,7 @@ class WardenPersona(BaseActivePersona):
         self.role = "PhD Strategic Guardian"
         self.phd_identity = "Sovereignty & Strategic Security (TypeScript)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following access control or authorization issue. Correct RBAC violations and enforce the principle of least privilege. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

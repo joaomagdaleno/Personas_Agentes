@@ -20,6 +20,7 @@ export class BaseHelpers {
             p.integrityGuardian = support.guardian;
             p.patternFinder = support.patternFinder;
             p.maturityEvaluator = tools.maturity;
+            p.testRunner = support.testRunner;
             
             winston.child({ module: name }).info(`✅ Ponte Neural Ativa.`);
         } catch (e: unknown) { 

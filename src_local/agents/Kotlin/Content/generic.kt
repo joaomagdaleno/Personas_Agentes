@@ -17,7 +17,7 @@ class GenericPersona(projectRoot: String? = null) : BaseActivePersona(projectRoo
         this.role = "PhD TypeScript Type Algebraist"
         this.phd_identity = "Generics & Type Algebra (TypeScript)"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following generic programming or type abstraction issue. Improve generic constraints and resolve type erasure problems. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

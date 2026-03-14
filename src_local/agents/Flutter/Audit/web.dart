@@ -11,7 +11,7 @@ class WebPersona extends BaseActivePersona {
     this.role = "PhD Frontend Architect";
     this.    phdIdentity = "Web Performance & DOM Integrity (TS/Bun)",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following web performance or DOM integrity issue. Eliminate layout shifts, optimize the critical rendering path, and fix reflow triggers. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

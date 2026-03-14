@@ -22,7 +22,7 @@ func NewGlobePersona() *GlobePersona {
 			Emoji: "🌍",
 			Role:          "PhD Internationalization Engineer",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following i18n or localization issue. Replace hardcoded strings with locale keys and ensure locale-aware formatting. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

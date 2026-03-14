@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, HealingResult, ProjectContext } from "../../base.ts";
 
 /**
  * 🧠 Dr. Neural — PhD in AI Token Safety & Cost Management (TypeScript)
@@ -14,11 +14,15 @@ export class NeuralPersona extends BaseActivePersona {
         this.role = "PhD AI Safety & Token Engineer";
         this.phd_identity = "AI Token Safety & Cost Management (TypeScript)";
         this.stack = "TypeScript";
-        this.healingPrompt = "";
+        this.healingPrompt = "Fix the following ML/AI integration issue. Correct model loading, preprocessing pipelines, and inference errors. Return ONLY the corrected code or a specific diff.";
     }
 
     override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
+        if (this.healingPrompt) {
+            const { findings } = await this.auditAndHeal();
+            return findings;
+        }
         const findings = await this.performAudit();
         return findings;
     }

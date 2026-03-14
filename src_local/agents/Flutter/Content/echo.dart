@@ -11,7 +11,7 @@ class EchoPersona extends BaseActivePersona {
     this.role = "PhD Communication Specialist";
     this.    phdIdentity = "System Feedback & Content Integrity",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following logging or observability issue. Ensure structured logging, proper trace context propagation, and consistent log levels. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

@@ -11,7 +11,7 @@ class MasterPersona extends BaseActivePersona {
     this.role = "PhD Principal Architect";
     this.    phdIdentity = "System Orchestration & Prime Directive (TS/Bun)",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following system design or orchestration gap. Ensure saga/workflow integrity and proper coordination between services. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

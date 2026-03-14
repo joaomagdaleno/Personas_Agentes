@@ -11,7 +11,7 @@ class NexusPersona extends BaseActivePersona {
     this.role = "PhD Network Resilience Engineer";
     this.    phdIdentity = "Robust Networking & HTTP Resiliency (TypeScript)",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following dependency management or coupling issue. Break circular dependencies and reduce coupling metrics. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

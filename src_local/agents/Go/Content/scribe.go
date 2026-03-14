@@ -22,7 +22,7 @@ func NewScribePersona() *ScribePersona {
 			Emoji: "📝",
 			Role:          "PhD Documentation Engineer",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following documentation or API specification issue. Complete JSDoc annotations and ensure OpenAPI spec accuracy. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

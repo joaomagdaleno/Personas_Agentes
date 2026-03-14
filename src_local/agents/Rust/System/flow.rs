@@ -18,7 +18,7 @@ impl FlowPersona {
                 "PhD Control Flow Architect".to_string(),
                 "Control Flow & Async Promises (TypeScript)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following async/reactive or stream processing issue. Resolve backpressure problems, unhandled promise rejections, and race conditions. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

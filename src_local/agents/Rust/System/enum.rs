@@ -18,7 +18,7 @@ impl EnumPersona {
                 "PhD TypeScript Union & Enum Engineer".to_string(),
                 "Enum Safety & Discriminated Unions (TypeScript)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following state machine or enum exhaustiveness issue. Add missing switch/match cases and ensure all enum variants are handled. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

@@ -11,7 +11,7 @@ class NeuralPersona extends BaseActivePersona {
     this.role = "PhD AI Safety & Token Engineer";
     this.    phdIdentity = "AI Token Safety & Cost Management (TypeScript)",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following ML/AI integration issue. Correct model loading, preprocessing pipelines, and inference errors. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

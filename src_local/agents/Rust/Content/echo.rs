@@ -18,7 +18,7 @@ impl EchoPersona {
                 "PhD Communication Specialist".to_string(),
                 "System Feedback & Content Integrity".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following logging or observability issue. Ensure structured logging, proper trace context propagation, and consistent log levels. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

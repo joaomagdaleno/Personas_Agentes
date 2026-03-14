@@ -11,7 +11,7 @@ class VortexPersona extends BaseActivePersona {
     this.role = "PhD Efficiency Scientist";
     this.    phdIdentity = "Operational Excellence & Algorithm Integrity (TypeScript)",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following code complexity issue. Reduce cyclomatic complexity, extract methods, and simplify convoluted logic. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

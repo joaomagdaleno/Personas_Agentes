@@ -22,7 +22,7 @@ func NewWebPersona() *WebPersona {
 			Emoji: "🌐",
 			Role:          "PhD Frontend Architect",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following web performance or DOM integrity issue. Eliminate layout shifts, optimize the critical rendering path, and fix reflow triggers. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

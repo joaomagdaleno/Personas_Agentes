@@ -14,7 +14,7 @@ class NeuralPersona(BaseActivePersona):
         self.role = "PhD AI Safety & Token Engineer"
         self.phd_identity = "AI Token Safety & Cost Management (TypeScript)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following ML/AI integration issue. Correct model loading, preprocessing pipelines, and inference errors. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

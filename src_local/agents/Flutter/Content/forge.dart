@@ -11,7 +11,7 @@ class ForgePersona extends BaseActivePersona {
     this.role = "PhD Automation & Safety Engineer";
     this.    phdIdentity = "Code Generation & Dynamic Execution Safety (TypeScript)",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following code generation or meta-programming issue. Ensure template correctness and generated code consistency. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

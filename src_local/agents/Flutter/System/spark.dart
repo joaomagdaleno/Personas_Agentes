@@ -11,7 +11,7 @@ class SparkPersona extends BaseActivePersona {
     this.role = "PhD Developer Experience Engineer";
     this.    phdIdentity = "Developer Experience & UX Tooling (TypeScript)",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following build system or compilation issue. Correct build configurations, tree-shaking settings, and bundler errors. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

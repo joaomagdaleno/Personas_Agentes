@@ -14,7 +14,7 @@ class StreamPersona(BaseActivePersona):
         self.role = "PhD Reactive Systems Engineer"
         self.phd_identity = "Reactive Architecture & Event Streaming (TypeScript)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following real-time data or WebSocket issue. Correct connection handling, reconnection logic, and heartbeat mechanisms. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

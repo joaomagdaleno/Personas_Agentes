@@ -18,7 +18,7 @@ impl ScopePersona {
                 "PhD Project Strategist".to_string(),
                 "TypeScript Project Management & Technical Debt".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following scope analysis or variable lifecycle issue. Resolve variable shadowing, unused declarations, and scope leaks. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

@@ -14,7 +14,7 @@ class MantraPersona(BaseActivePersona):
         self.role = "PhD Type System Guardian"
         self.phd_identity = "Type Purity & Strictness (TypeScript)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following code style or consistency violation. Enforce naming conventions, formatting rules, and coding standards. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

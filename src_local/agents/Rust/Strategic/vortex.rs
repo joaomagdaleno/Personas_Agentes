@@ -18,7 +18,7 @@ impl VortexPersona {
                 "PhD Efficiency Scientist".to_string(),
                 "Operational Excellence & Algorithm Integrity (TypeScript)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following code complexity issue. Reduce cyclomatic complexity, extract methods, and simplify convoluted logic. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

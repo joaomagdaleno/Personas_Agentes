@@ -11,7 +11,7 @@ class DirectorPersona extends BaseActivePersona {
     this.role = "Master Orchestrator";
     this.    phdIdentity = "Systemic Orchestration & AI Governance",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following architectural drift or governance violation. Enforce layered boundaries and ensure proper separation of concerns. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

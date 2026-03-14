@@ -14,7 +14,7 @@ class GenericPersona(BaseActivePersona):
         self.role = "PhD TypeScript Type Algebraist"
         self.phd_identity = "Generics & Type Algebra (TypeScript)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following generic programming or type abstraction issue. Improve generic constraints and resolve type erasure problems. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

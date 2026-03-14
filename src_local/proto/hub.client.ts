@@ -13,6 +13,13 @@ import type { PendingResponse } from "./hub";
 import type { PendingRequest } from "./hub";
 import type { TaskResponse } from "./hub";
 import type { TaskRequest } from "./hub";
+import type { EmbedResponse } from "./hub";
+import type { EmbedRequest } from "./hub";
+import type { MemoryQuery } from "./hub";
+import type { MemoryEntry } from "./hub";
+import type { SignalRequest } from "./hub";
+import type { PeerReviewResponse } from "./hub";
+import type { PeerReviewRequest } from "./hub";
 import type { HealingPlan } from "./hub";
 import type { QueryRequest } from "./hub";
 import type { GraphRequest } from "./hub";
@@ -144,6 +151,30 @@ export interface IHubServiceClient {
      * @generated from protobuf rpc: ExecuteHealing
      */
     executeHealing(input: HealingPlan, options?: RpcOptions): UnaryCall<HealingPlan, AnalyzeResponse>;
+    /**
+     * Swarm Intelligence (Agent Collaboration)
+     *
+     * @generated from protobuf rpc: RequestPeerReview
+     */
+    requestPeerReview(input: PeerReviewRequest, options?: RpcOptions): UnaryCall<PeerReviewRequest, PeerReviewResponse>;
+    /**
+     * @generated from protobuf rpc: BroadcastSignal
+     */
+    broadcastSignal(input: SignalRequest, options?: RpcOptions): UnaryCall<SignalRequest, Empty>;
+    /**
+     * Semantic Memory
+     *
+     * @generated from protobuf rpc: Remember
+     */
+    remember(input: MemoryEntry, options?: RpcOptions): UnaryCall<MemoryEntry, Empty>;
+    /**
+     * @generated from protobuf rpc: Retrieve
+     */
+    retrieve(input: MemoryQuery, options?: RpcOptions): ServerStreamingCall<MemoryQuery, MemoryEntry>;
+    /**
+     * @generated from protobuf rpc: Embed
+     */
+    embed(input: EmbedRequest, options?: RpcOptions): UnaryCall<EmbedRequest, EmbedResponse>;
     /**
      * Task Scheduler
      *
@@ -343,26 +374,65 @@ export class HubServiceClient implements IHubServiceClient, ServiceInfo {
         return stackIntercept<HealingPlan, AnalyzeResponse>("unary", this._transport, method, opt, input);
     }
     /**
+     * Swarm Intelligence (Agent Collaboration)
+     *
+     * @generated from protobuf rpc: RequestPeerReview
+     */
+    requestPeerReview(input: PeerReviewRequest, options?: RpcOptions): UnaryCall<PeerReviewRequest, PeerReviewResponse> {
+        const method = this.methods[24], opt = this._transport.mergeOptions(options);
+        return stackIntercept<PeerReviewRequest, PeerReviewResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: BroadcastSignal
+     */
+    broadcastSignal(input: SignalRequest, options?: RpcOptions): UnaryCall<SignalRequest, Empty> {
+        const method = this.methods[25], opt = this._transport.mergeOptions(options);
+        return stackIntercept<SignalRequest, Empty>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * Semantic Memory
+     *
+     * @generated from protobuf rpc: Remember
+     */
+    remember(input: MemoryEntry, options?: RpcOptions): UnaryCall<MemoryEntry, Empty> {
+        const method = this.methods[26], opt = this._transport.mergeOptions(options);
+        return stackIntercept<MemoryEntry, Empty>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: Retrieve
+     */
+    retrieve(input: MemoryQuery, options?: RpcOptions): ServerStreamingCall<MemoryQuery, MemoryEntry> {
+        const method = this.methods[27], opt = this._transport.mergeOptions(options);
+        return stackIntercept<MemoryQuery, MemoryEntry>("serverStreaming", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: Embed
+     */
+    embed(input: EmbedRequest, options?: RpcOptions): UnaryCall<EmbedRequest, EmbedResponse> {
+        const method = this.methods[28], opt = this._transport.mergeOptions(options);
+        return stackIntercept<EmbedRequest, EmbedResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
      * Task Scheduler
      *
      * @generated from protobuf rpc: EnqueueTask
      */
     enqueueTask(input: TaskRequest, options?: RpcOptions): UnaryCall<TaskRequest, TaskResponse> {
-        const method = this.methods[24], opt = this._transport.mergeOptions(options);
+        const method = this.methods[29], opt = this._transport.mergeOptions(options);
         return stackIntercept<TaskRequest, TaskResponse>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: GetPendingTasks
      */
     getPendingTasks(input: PendingRequest, options?: RpcOptions): UnaryCall<PendingRequest, PendingResponse> {
-        const method = this.methods[25], opt = this._transport.mergeOptions(options);
+        const method = this.methods[30], opt = this._transport.mergeOptions(options);
         return stackIntercept<PendingRequest, PendingResponse>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: UpdateTask
      */
     updateTask(input: UpdateTaskRequest, options?: RpcOptions): UnaryCall<UpdateTaskRequest, Empty> {
-        const method = this.methods[26], opt = this._transport.mergeOptions(options);
+        const method = this.methods[31], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdateTaskRequest, Empty>("unary", this._transport, method, opt, input);
     }
 }

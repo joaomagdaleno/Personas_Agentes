@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, HealingResult, ProjectContext } from "../../base.ts";
 
 /**
  * ☁️ Dr. Cloud — PhD in Cloud Native & IAM Integrity (TypeScript)
@@ -14,11 +14,15 @@ export class CloudPersona extends BaseActivePersona {
         this.role = "PhD Cloud Architect";
         this.phd_identity = "Cloud Native & IAM Integrity (TypeScript)";
         this.stack = "TypeScript";
-        this.healingPrompt = "";
+        this.healingPrompt = "Fix the following cloud-native or serverless issue. Ensure correct IAM policies, fix cold start bottlenecks, and resolve cloud resource misconfiguration. Return ONLY the corrected code or a specific diff.";
     }
 
     override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
+        if (this.healingPrompt) {
+            const { findings } = await this.auditAndHeal();
+            return findings;
+        }
         const findings = await this.performAudit();
         return findings;
     }

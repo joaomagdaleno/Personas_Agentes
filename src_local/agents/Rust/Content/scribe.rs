@@ -18,7 +18,7 @@ impl ScribePersona {
                 "PhD Documentation Engineer".to_string(),
                 "Documentation & Knowledge Transfer (TypeScript)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following documentation or API specification issue. Complete JSDoc annotations and ensure OpenAPI spec accuracy. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

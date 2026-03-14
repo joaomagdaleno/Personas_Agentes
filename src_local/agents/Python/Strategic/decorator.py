@@ -14,7 +14,7 @@ class DecoratorPersona(BaseActivePersona):
         self.role = "PhD TypeScript Metaprogramming Engineer"
         self.phd_identity = "TypeScript Metaprogramming & Reflection (TypeScript)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following design pattern or SOLID principle violation. Extract reusable abstractions and apply correct structural/behavioral patterns. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

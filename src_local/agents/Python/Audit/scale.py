@@ -14,7 +14,7 @@ class ScalePersona(BaseActivePersona):
         self.role = "PhD Software Architect"
         self.phd_identity = "TypeScript Architecture & Scalability"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following horizontal scaling or load distribution issue. Correct sharding logic and connection pool sizing. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

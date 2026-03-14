@@ -22,7 +22,7 @@ func NewGenericPersona() *GenericPersona {
 			Emoji: "🧬",
 			Role:          "PhD TypeScript Type Algebraist",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following generic programming or type abstraction issue. Improve generic constraints and resolve type erasure problems. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

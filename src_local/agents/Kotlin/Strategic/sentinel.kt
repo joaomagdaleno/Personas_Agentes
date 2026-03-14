@@ -17,7 +17,7 @@ class SentinelPersona(projectRoot: String? = null) : BaseActivePersona(projectRo
         this.role = "PhD Strategic Security Architect"
         this.phd_identity = "System Protection & Infrastructure Sovereignty (TypeScript)"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following security vulnerability or threat. Remediate injection risks, enforce CSP/CORS policies, and sanitize all inputs. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

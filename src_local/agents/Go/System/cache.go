@@ -22,7 +22,7 @@ func NewCachePersona() *CachePersona {
 			Emoji: "💾",
 			Role:          "PhD Data Layer Engineer",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following caching or memory hierarchy issue. Ensure correct TTL handling, cache invalidation logic, and eliminate memory leaks. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

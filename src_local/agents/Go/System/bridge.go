@@ -22,7 +22,7 @@ func NewBridgePersona() *BridgePersona {
 			Emoji: "🌉",
 			Role:          "PhD Integration Architect",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following API contract or protocol translation issue. Ensure correct HTTP/gRPC mapping, proper request/response schemas, and consistent error propagation. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

@@ -22,7 +22,7 @@ func NewCloudPersona() *CloudPersona {
 			Emoji: "☁️",
 			Role:          "PhD Cloud Architect",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following cloud-native or serverless issue. Ensure correct IAM policies, fix cold start bottlenecks, and resolve cloud resource misconfiguration. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

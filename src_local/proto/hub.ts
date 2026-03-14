@@ -447,6 +447,133 @@ export interface HealingPlan {
      * @generated from protobuf field: string context = 4
      */
     context: string;
+    /**
+     * @generated from protobuf field: string failure_context = 5
+     */
+    failureContext: string;
+}
+/**
+ * @generated from protobuf message hub.PeerReviewRequest
+ */
+export interface PeerReviewRequest {
+    /**
+     * @generated from protobuf field: string requester_id = 1
+     */
+    requesterId: string;
+    /**
+     * @generated from protobuf field: string target_persona_id = 2
+     */
+    targetPersonaId: string;
+    /**
+     * @generated from protobuf field: string file_path = 3
+     */
+    filePath: string;
+    /**
+     * @generated from protobuf field: string context = 4
+     */
+    context: string;
+    /**
+     * @generated from protobuf field: string priority = 5
+     */
+    priority: string;
+}
+/**
+ * @generated from protobuf message hub.PeerReviewResponse
+ */
+export interface PeerReviewResponse {
+    /**
+     * @generated from protobuf field: string request_id = 1
+     */
+    requestId: string;
+    /**
+     * @generated from protobuf field: string status = 2
+     */
+    status: string;
+}
+/**
+ * @generated from protobuf message hub.SignalRequest
+ */
+export interface SignalRequest {
+    /**
+     * @generated from protobuf field: string sender_id = 1
+     */
+    senderId: string;
+    /**
+     * @generated from protobuf field: string signal_type = 2
+     */
+    signalType: string;
+    /**
+     * @generated from protobuf field: string payload_json = 3
+     */
+    payloadJson: string;
+}
+/**
+ * @generated from protobuf message hub.MemoryEntry
+ */
+export interface MemoryEntry {
+    /**
+     * @generated from protobuf field: string id = 1
+     */
+    id: string;
+    /**
+     * @generated from protobuf field: string agent_id = 2
+     */
+    agentId: string;
+    /**
+     * @generated from protobuf field: string objective = 3
+     */
+    objective: string;
+    /**
+     * @generated from protobuf field: string action = 4
+     */
+    action: string;
+    /**
+     * @generated from protobuf field: string result = 5
+     */
+    result: string;
+    /**
+     * @generated from protobuf field: string timestamp = 6
+     */
+    timestamp: string;
+    /**
+     * @generated from protobuf field: repeated float embedding = 7
+     */
+    embedding: number[];
+}
+/**
+ * @generated from protobuf message hub.MemoryQuery
+ */
+export interface MemoryQuery {
+    /**
+     * @generated from protobuf field: string agent_id = 1
+     */
+    agentId: string;
+    /**
+     * @generated from protobuf field: string query = 2
+     */
+    query: string;
+    /**
+     * @generated from protobuf field: int32 limit = 3
+     */
+    limit: number;
+}
+/**
+ * @generated from protobuf message hub.EmbedRequest
+ */
+export interface EmbedRequest {
+    /**
+     * @generated from protobuf field: string text = 1
+     */
+    text: string;
+}
+/**
+ * @generated from protobuf message hub.EmbedResponse
+ */
+export interface EmbedResponse {
+    /**
+     * @generated from protobuf field: repeated float embedding = 1
+     */
+    embedding: number[];
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class RuleRequest$Type extends MessageType<RuleRequest> {
@@ -2190,7 +2317,8 @@ class HealingPlan$Type extends MessageType<HealingPlan> {
             { no: 1, name: "issue_description", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "file_path", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "file_content", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "context", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 4, name: "context", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 5, name: "failure_context", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<HealingPlan>): HealingPlan {
@@ -2199,6 +2327,7 @@ class HealingPlan$Type extends MessageType<HealingPlan> {
         message.filePath = "";
         message.fileContent = "";
         message.context = "";
+        message.failureContext = "";
         if (value !== undefined)
             reflectionMergePartial<HealingPlan>(this, message, value);
         return message;
@@ -2219,6 +2348,9 @@ class HealingPlan$Type extends MessageType<HealingPlan> {
                     break;
                 case /* string context */ 4:
                     message.context = reader.string();
+                    break;
+                case /* string failure_context */ 5:
+                    message.failureContext = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -2244,6 +2376,9 @@ class HealingPlan$Type extends MessageType<HealingPlan> {
         /* string context = 4; */
         if (message.context !== "")
             writer.tag(4, WireType.LengthDelimited).string(message.context);
+        /* string failure_context = 5; */
+        if (message.failureContext !== "")
+            writer.tag(5, WireType.LengthDelimited).string(message.failureContext);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -2254,6 +2389,471 @@ class HealingPlan$Type extends MessageType<HealingPlan> {
  * @generated MessageType for protobuf message hub.HealingPlan
  */
 export const HealingPlan = new HealingPlan$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class PeerReviewRequest$Type extends MessageType<PeerReviewRequest> {
+    constructor() {
+        super("hub.PeerReviewRequest", [
+            { no: 1, name: "requester_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "target_persona_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "file_path", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "context", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 5, name: "priority", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<PeerReviewRequest>): PeerReviewRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.requesterId = "";
+        message.targetPersonaId = "";
+        message.filePath = "";
+        message.context = "";
+        message.priority = "";
+        if (value !== undefined)
+            reflectionMergePartial<PeerReviewRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: PeerReviewRequest): PeerReviewRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string requester_id */ 1:
+                    message.requesterId = reader.string();
+                    break;
+                case /* string target_persona_id */ 2:
+                    message.targetPersonaId = reader.string();
+                    break;
+                case /* string file_path */ 3:
+                    message.filePath = reader.string();
+                    break;
+                case /* string context */ 4:
+                    message.context = reader.string();
+                    break;
+                case /* string priority */ 5:
+                    message.priority = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: PeerReviewRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string requester_id = 1; */
+        if (message.requesterId !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.requesterId);
+        /* string target_persona_id = 2; */
+        if (message.targetPersonaId !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.targetPersonaId);
+        /* string file_path = 3; */
+        if (message.filePath !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.filePath);
+        /* string context = 4; */
+        if (message.context !== "")
+            writer.tag(4, WireType.LengthDelimited).string(message.context);
+        /* string priority = 5; */
+        if (message.priority !== "")
+            writer.tag(5, WireType.LengthDelimited).string(message.priority);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message hub.PeerReviewRequest
+ */
+export const PeerReviewRequest = new PeerReviewRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class PeerReviewResponse$Type extends MessageType<PeerReviewResponse> {
+    constructor() {
+        super("hub.PeerReviewResponse", [
+            { no: 1, name: "request_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<PeerReviewResponse>): PeerReviewResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.requestId = "";
+        message.status = "";
+        if (value !== undefined)
+            reflectionMergePartial<PeerReviewResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: PeerReviewResponse): PeerReviewResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string request_id */ 1:
+                    message.requestId = reader.string();
+                    break;
+                case /* string status */ 2:
+                    message.status = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: PeerReviewResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string request_id = 1; */
+        if (message.requestId !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.requestId);
+        /* string status = 2; */
+        if (message.status !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.status);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message hub.PeerReviewResponse
+ */
+export const PeerReviewResponse = new PeerReviewResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class SignalRequest$Type extends MessageType<SignalRequest> {
+    constructor() {
+        super("hub.SignalRequest", [
+            { no: 1, name: "sender_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "signal_type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "payload_json", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<SignalRequest>): SignalRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.senderId = "";
+        message.signalType = "";
+        message.payloadJson = "";
+        if (value !== undefined)
+            reflectionMergePartial<SignalRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: SignalRequest): SignalRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string sender_id */ 1:
+                    message.senderId = reader.string();
+                    break;
+                case /* string signal_type */ 2:
+                    message.signalType = reader.string();
+                    break;
+                case /* string payload_json */ 3:
+                    message.payloadJson = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: SignalRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string sender_id = 1; */
+        if (message.senderId !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.senderId);
+        /* string signal_type = 2; */
+        if (message.signalType !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.signalType);
+        /* string payload_json = 3; */
+        if (message.payloadJson !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.payloadJson);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message hub.SignalRequest
+ */
+export const SignalRequest = new SignalRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class MemoryEntry$Type extends MessageType<MemoryEntry> {
+    constructor() {
+        super("hub.MemoryEntry", [
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "agent_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "objective", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "action", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 5, name: "result", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 6, name: "timestamp", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 7, name: "embedding", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 2 /*ScalarType.FLOAT*/ }
+        ]);
+    }
+    create(value?: PartialMessage<MemoryEntry>): MemoryEntry {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.id = "";
+        message.agentId = "";
+        message.objective = "";
+        message.action = "";
+        message.result = "";
+        message.timestamp = "";
+        message.embedding = [];
+        if (value !== undefined)
+            reflectionMergePartial<MemoryEntry>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: MemoryEntry): MemoryEntry {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string id */ 1:
+                    message.id = reader.string();
+                    break;
+                case /* string agent_id */ 2:
+                    message.agentId = reader.string();
+                    break;
+                case /* string objective */ 3:
+                    message.objective = reader.string();
+                    break;
+                case /* string action */ 4:
+                    message.action = reader.string();
+                    break;
+                case /* string result */ 5:
+                    message.result = reader.string();
+                    break;
+                case /* string timestamp */ 6:
+                    message.timestamp = reader.string();
+                    break;
+                case /* repeated float embedding */ 7:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.embedding.push(reader.float());
+                    else
+                        message.embedding.push(reader.float());
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: MemoryEntry, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string id = 1; */
+        if (message.id !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.id);
+        /* string agent_id = 2; */
+        if (message.agentId !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.agentId);
+        /* string objective = 3; */
+        if (message.objective !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.objective);
+        /* string action = 4; */
+        if (message.action !== "")
+            writer.tag(4, WireType.LengthDelimited).string(message.action);
+        /* string result = 5; */
+        if (message.result !== "")
+            writer.tag(5, WireType.LengthDelimited).string(message.result);
+        /* string timestamp = 6; */
+        if (message.timestamp !== "")
+            writer.tag(6, WireType.LengthDelimited).string(message.timestamp);
+        /* repeated float embedding = 7; */
+        if (message.embedding.length) {
+            writer.tag(7, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.embedding.length; i++)
+                writer.float(message.embedding[i]);
+            writer.join();
+        }
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message hub.MemoryEntry
+ */
+export const MemoryEntry = new MemoryEntry$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class MemoryQuery$Type extends MessageType<MemoryQuery> {
+    constructor() {
+        super("hub.MemoryQuery", [
+            { no: 1, name: "agent_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "query", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "limit", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
+        ]);
+    }
+    create(value?: PartialMessage<MemoryQuery>): MemoryQuery {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.agentId = "";
+        message.query = "";
+        message.limit = 0;
+        if (value !== undefined)
+            reflectionMergePartial<MemoryQuery>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: MemoryQuery): MemoryQuery {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string agent_id */ 1:
+                    message.agentId = reader.string();
+                    break;
+                case /* string query */ 2:
+                    message.query = reader.string();
+                    break;
+                case /* int32 limit */ 3:
+                    message.limit = reader.int32();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: MemoryQuery, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string agent_id = 1; */
+        if (message.agentId !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.agentId);
+        /* string query = 2; */
+        if (message.query !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.query);
+        /* int32 limit = 3; */
+        if (message.limit !== 0)
+            writer.tag(3, WireType.Varint).int32(message.limit);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message hub.MemoryQuery
+ */
+export const MemoryQuery = new MemoryQuery$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class EmbedRequest$Type extends MessageType<EmbedRequest> {
+    constructor() {
+        super("hub.EmbedRequest", [
+            { no: 1, name: "text", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<EmbedRequest>): EmbedRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.text = "";
+        if (value !== undefined)
+            reflectionMergePartial<EmbedRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: EmbedRequest): EmbedRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string text */ 1:
+                    message.text = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: EmbedRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string text = 1; */
+        if (message.text !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.text);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message hub.EmbedRequest
+ */
+export const EmbedRequest = new EmbedRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class EmbedResponse$Type extends MessageType<EmbedResponse> {
+    constructor() {
+        super("hub.EmbedResponse", [
+            { no: 1, name: "embedding", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 2 /*ScalarType.FLOAT*/ }
+        ]);
+    }
+    create(value?: PartialMessage<EmbedResponse>): EmbedResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.embedding = [];
+        if (value !== undefined)
+            reflectionMergePartial<EmbedResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: EmbedResponse): EmbedResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated float embedding */ 1:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.embedding.push(reader.float());
+                    else
+                        message.embedding.push(reader.float());
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: EmbedResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated float embedding = 1; */
+        if (message.embedding.length) {
+            writer.tag(1, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.embedding.length; i++)
+                writer.float(message.embedding[i]);
+            writer.join();
+        }
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message hub.EmbedResponse
+ */
+export const EmbedResponse = new EmbedResponse$Type();
 /**
  * @generated ServiceType for protobuf service hub.HubService
  */
@@ -2282,6 +2882,11 @@ export const HubService = new ServiceType("hub.HubService", [
     { name: "GetKnowledgeGraph", options: {}, I: GraphRequest, O: AnalyzeResponse },
     { name: "QueryKnowledgeGraph", options: {}, I: QueryRequest, O: AnalyzeResponse },
     { name: "ExecuteHealing", options: {}, I: HealingPlan, O: AnalyzeResponse },
+    { name: "RequestPeerReview", options: {}, I: PeerReviewRequest, O: PeerReviewResponse },
+    { name: "BroadcastSignal", options: {}, I: SignalRequest, O: Empty },
+    { name: "Remember", options: {}, I: MemoryEntry, O: Empty },
+    { name: "Retrieve", serverStreaming: true, options: {}, I: MemoryQuery, O: MemoryEntry },
+    { name: "Embed", options: {}, I: EmbedRequest, O: EmbedResponse },
     { name: "EnqueueTask", options: {}, I: TaskRequest, O: TaskResponse },
     { name: "GetPendingTasks", options: {}, I: PendingRequest, O: PendingResponse },
     { name: "UpdateTask", options: {}, I: UpdateTaskRequest, O: Empty }

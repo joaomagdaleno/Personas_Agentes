@@ -1,8 +1,8 @@
 import winston from "winston";
 import * as path from "node:path";
 import { readFile } from "node:fs/promises";
-import { PatternFinder } from "./strategies/PatternFinder.ts";
-import { Diagnostician } from "./strategies/Diagnostician.ts";
+import { PatternFinder } from "./strategies/PatternFinder";
+import { Diagnostician } from "./strategies/Diagnostician";
 import { BaseHelpers } from "./BaseHelpers.ts";
 import { StructuralAnalyst } from "./Support/Analysis/structural_analyst.ts";
 import { IntegrityGuardian } from "./Support/Core/integrity_guardian.ts";
@@ -18,6 +18,16 @@ import type {
     AuditFinding, 
     StrategicFinding 
 } from "../core/types.ts";
+
+export interface HealingResult {
+    file: string;
+    issue: string;
+    healed: boolean;
+    diff: string | null;
+    validation_status?: "PASSED" | "FAILED" | "SKIPPED";
+    test_output?: string;
+    attempts?: number;
+}
 
 export type { 
     IAgent, 
@@ -42,9 +52,10 @@ export abstract class BaseActivePersona implements ISupportableAgent {
     stack: string = "Universal";
     public phd_identity: string = "";
     public healingPrompt: string = "";
+    public testRunner: any;
     protected projectRoot: string | undefined = undefined; 
     contextData: Record<string, FileContextData> = {}; 
-    projectDna: Record<string, any> = {};
+    projectDna: Record<string, unknown> = {};
     
     ignoredFiles: string[] = ["auto_healing_mission.md", "strategic_mission.txt"];
     
@@ -65,7 +76,7 @@ export abstract class BaseActivePersona implements ISupportableAgent {
     /**
      * Standard implementation of IAgent.execute.
      */
-    async execute(context: ProjectContext): Promise<AuditFinding[] | StrategicFinding[] | any> {
+    async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
         return await this.performAudit();
     }
@@ -74,7 +85,7 @@ export abstract class BaseActivePersona implements ISupportableAgent {
      * Sets the operational project context for the persona.
      */
     setContext(data: ProjectContext): void {
-        this.projectDna = (data.identity?.dna as Record<string, any>) || {};
+        this.projectDna = (data.identity?.dna as Record<string, unknown>) || {};
         this.contextData = data.map || {};
         this.hub = data.hub || null;
     }
@@ -126,8 +137,12 @@ export abstract class BaseActivePersona implements ISupportableAgent {
         if (!this.hub) return [];
         
         let content: string | null = null;
-        if (this.contextData[fileRelPath]) {
+        logger.info(`🔍 [Base] Delegating audit for ${fileRelPath}. contextData keys: ${Object.keys(this.contextData || {}).join(", ")}`);
+        if (this.contextData && this.contextData[fileRelPath]) {
             content = this.contextData[fileRelPath].content || null;
+            logger.info(`🔍 [Base] Found content in contextData for ${fileRelPath}.`);
+        } else {
+            logger.info(`🔍 [Base] Content NOT found in contextData for ${fileRelPath}. Attempting disk read.`);
         }
 
         if (!content) {
@@ -178,14 +193,65 @@ export abstract class BaseActivePersona implements ISupportableAgent {
         BaseHelpers.initializeTools(this, this.projectRoot);
     }
 
+    /**
+     * Requests a peer review from another persona via the Hub.
+     */
+    protected async requestPeerReview(target: string, file: string, context: string, priority: string = "MEDIUM") {
+        if (this.hub) {
+            return await this.hub.requestPeerReview(this.id, target, file, context, priority);
+        }
+        return null;
+    }
+
+    /**
+     * Broadcasts a signal to the fleet via the Hub.
+     */
+    protected async broadcastSignal(type: string, payload: Record<string, unknown> = {}) {
+        if (this.hub) {
+            return await this.hub.broadcastSignal(this.id, type, payload);
+        }
+        return false;
+    }
+
     public performActiveHealing(blindSpots: string[]): void {
         logger.info(`🛠️ [${this.name}] Iniciando protocolo de cura ativa para ${blindSpots.length} pontos.`);
     }
 
     /**
+     * Records a successful decision in the semantic memory.
+     */
+    protected async rememberDecision(objective: string, action: string, result: string) {
+        if (!this.hub) return;
+        
+        try {
+            const embedding = await this.hub.embed(`${objective} ${action}`);
+            await this.hub.remember({
+                id: `mem_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                agentId: this.id,
+                objective,
+                action,
+                result,
+                timestamp: new Date().toISOString(),
+                embedding
+            });
+            logger.info(`🧠 [${this.name}] Decision recorded in semantic memory.`);
+        } catch (e: any) {
+            logger.warn(`⚠️ [${this.name}] Failed to record decision: ${e.message}`);
+        }
+    }
+
+    /**
+     * Recalls previous decisions from semantic memory.
+     */
+    protected async recallDecisions(query: string, limit: number = 3) {
+        if (!this.hub) return [];
+        return await this.hub.retrieve(this.id, query, limit);
+    }
+
+    /**
      * Delegates a code correction task to the Hub's PhD reasoning engine.
      */
-    public async delegateHealingToHub(file: string, issue: string): Promise<string | null> {
+    public async delegateHealingToHub(file: string, issue: string, failureContext?: string): Promise<string | null> {
         if (this.hub && this.projectRoot) {
             const content = await this.readProjectFile(file);
             if (!content) return null;
@@ -194,10 +260,106 @@ export abstract class BaseActivePersona implements ISupportableAgent {
                 filePath: file,
                 issueDescription: issue,
                 fileContent: content,
-                context: `PhD Persona: ${this.id}\nGuidelines: ${this.healingPrompt}`
+                context: `PhD Persona: ${this.id}\nGuidelines: ${this.healingPrompt}\n${failureContext ? `PREVIOUS_FAILURE_CONTEXT: ${failureContext}` : ""}`,
+                failureContext: failureContext || ""
             });
         }
         return null;
+    }
+
+    /**
+     * Validates a patch by running relevant tests.
+     */
+    protected async validateHealing(file: string): Promise<{ success: boolean; output: string }> {
+        if (!this.testRunner || !this.projectRoot) {
+            return { success: true, output: "No test runner available - skipping validation." };
+        }
+
+        // Logic to find related test file (best effort)
+        const testFile = file.replace(/\.ts$/, ".test.ts").replace(/\.js$/, ".test.js");
+        
+        try {
+            const results = await this.testRunner.runSelectiveTests(this.projectRoot, [testFile]);
+            return {
+                success: results.success,
+                output: results.raw_output || results.message || "Test execution finished."
+            };
+        } catch (e: any) {
+            return { success: false, output: `Validation error: ${e.message}` };
+        }
+    }
+
+    /**
+     * Autonomous remediation pipeline: audit → filter critical → heal → validate → retry.
+     */
+    public async auditAndHeal(): Promise<{ findings: AuditFinding[], healingResults: HealingResult[] }> {
+        const findings = await this.performAudit();
+        const healingResults: HealingResult[] = [];
+
+        if (!this.healingPrompt || !this.hub) {
+            return { findings, healingResults };
+        }
+
+        const healable = findings.filter(f => f.severity === "critical" || f.severity === "high");
+
+        for (const finding of healable) {
+            let attempts = 0;
+            const maxRetries = 2;
+            let currentFailureContext = "";
+
+            while (attempts <= maxRetries) {
+                attempts++;
+                try {
+                    const result = await this.delegateHealingToHub(finding.file, finding.issue, currentFailureContext);
+                    
+                    if (result) {
+                        logger.info(`🛠️ [${this.name}] Patch applied (Attempt ${attempts}): ${finding.file}. Validating...`);
+                        
+                        const validation = await this.validateHealing(finding.file);
+                        
+                        if (validation.success) {
+                            logger.info(`✅ [${this.name}] Validation PASSED for ${finding.file}.`);
+                            
+                            // Record the successful decision in semantic memory
+                            await this.rememberDecision(finding.issue, result, "SUCCESS");
+
+                            healingResults.push({ 
+                                file: finding.file, 
+                                issue: finding.issue, 
+                                healed: true, 
+                                diff: result,
+                                validation_status: "PASSED",
+                                attempts
+                            });
+                            break; // Success!
+                        } else {
+                            logger.warn(`❌ [${this.name}] Validation FAILED (Attempt ${attempts}): ${finding.file}. Output: ${validation.output.substring(0, 100)}...`);
+                            currentFailureContext = validation.output;
+                            
+                            if (attempts > maxRetries) {
+                                healingResults.push({ 
+                                    file: finding.file, 
+                                    issue: finding.issue, 
+                                    healed: false, 
+                                    diff: result,
+                                    validation_status: "FAILED",
+                                    test_output: validation.output,
+                                    attempts
+                                });
+                            }
+                        }
+                    } else {
+                        logger.warn(`⚠️ [${this.name}] Hub failed to generate patch for ${finding.file}.`);
+                        break; 
+                    }
+                } catch (e: any) {
+                    logger.error(`🚨 [${this.name}] Critical error during healing/validation loop: ${e.message}`);
+                    break;
+                }
+            }
+        }
+
+        return { findings, healingResults };
     }
 
     public async analyzeLogic(f: string) {

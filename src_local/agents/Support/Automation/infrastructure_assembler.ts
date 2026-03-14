@@ -13,6 +13,7 @@ import { DiagnosticStrategist } from "./../Diagnostics/diagnostic_strategist";
 import { TaskExecutor } from "../../../utils/task_executor";
 import { CoreValidator } from "../../../core/validator";
 import { TestRefiner } from "./test_refiner";
+import { TestRunner } from "./test_runner";
 import { HealerPersona } from "./../Core/healer_persona";
 import { TestArchitectAgent } from "./test_architect_agent";
 import { DocGenAgent } from "./doc_gen_agent";
@@ -55,7 +56,8 @@ export class InfrastructureAssembler {
             mapper: new ConnectivityMapper(InfrastructureAssembler.hubManager),
             parity: new ParityAnalyst(),
             auditEngine: new AuditEngine(mockOrchestrator),
-            vetoEngine: new VetoEngine()
+            vetoEngine: new VetoEngine(),
+            testRunner: new TestRunner()
         };
 
         return InfrastructureAssembler.coreCache;

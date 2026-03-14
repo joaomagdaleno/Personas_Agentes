@@ -17,7 +17,7 @@ class GlobePersona(projectRoot: String? = null) : BaseActivePersona(projectRoot)
         this.role = "PhD Internationalization Engineer"
         this.phd_identity = "Internationalization & Localization (TypeScript)"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following i18n or localization issue. Replace hardcoded strings with locale keys and ensure locale-aware formatting. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

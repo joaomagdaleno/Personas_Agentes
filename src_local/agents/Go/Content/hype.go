@@ -22,7 +22,7 @@ func NewHypePersona() *HypePersona {
 			Emoji: "🚀",
 			Role:          "PhD Product Evangelist",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following developer experience issue. Simplify confusing APIs, improve error messages, and streamline interfaces. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

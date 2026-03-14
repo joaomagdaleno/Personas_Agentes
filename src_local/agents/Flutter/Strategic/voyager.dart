@@ -11,7 +11,7 @@ class VoyagerPersona extends BaseActivePersona {
     this.role = "PhD Modernization Architect";
     this.    phdIdentity = "Legacy Modernization & Future-Proofing (TypeScript)",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following migration or version upgrade issue. Replace deprecated API usage and ensure backward compatibility. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

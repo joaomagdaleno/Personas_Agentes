@@ -22,6 +22,8 @@ export interface AuditFinding {
     evidence: string;
     match_count: number;
     line_number?: number;
+    type?: string;
+    meta?: Record<string, unknown>;
 }
 
 export interface StrategicFinding {
@@ -78,10 +80,14 @@ export interface SystemHealth360 {
     health_score: number;
     health_breakdown: Record<string, number>;
     status: "HEALTHY" | "WARNING" | "CRITICAL";
-    entropy_map: Record<string, EntropyData>;
-    parity_stats: Record<string, ParityStats>;
+    dark_matter: string[];
+    brittle_points: string[];
+    entropy_map: Record<string, any>;
+    confidence_matrix: Record<string, any>;
+    objective: string;
     timestamp: string;
-    alerts: DiagnosticFinding[];
+    parity_stats?: any;
+    predictor_metrics?: any;
 }
 
 /**
@@ -94,10 +100,10 @@ export interface IAgent {
     readonly stack: string;
 
     initialize?(): Promise<void>;
-    execute(context: ProjectContext): Promise<AuditFinding[] | StrategicFinding[] | any>;
+    execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]>;
     teardown?(): Promise<void>;
-    getMetadata?(): Record<string, any>;
-    selfDiagnostic?(): Record<string, any>;
+    getMetadata?(): Record<string, unknown>;
+    selfDiagnostic?(): Record<string, unknown>;
 }
 
 /**
@@ -135,13 +141,15 @@ export interface SovereignState {
 }
 
 export interface CoreSupportTools {
-    analyst: any;
-    patternFinder: any;
-    guardian: any;
+    analyst: any; 
+    patternFinder: any; 
+    guardian: any; 
     mapper: any;
     parity: any;
     auditEngine: any;
     vetoEngine: any;
+    testRunner: any; 
+    hub: any; // HubManagerGRPC
 }
 
 export interface OrchestratorTools {
@@ -168,6 +176,7 @@ export interface ISupportableAgent extends IAgent {
     integrityGuardian?: any;
     patternFinder?: any;
     maturityEvaluator?: any;
+    testRunner?: any;
 }
 
 export interface AdvancedMetrics {
@@ -190,7 +199,7 @@ export interface FileContextData {
     component_type?: string;
     tsDepth?: number;
     advanced_metrics?: AdvancedMetrics;
-    [key: string]: unknown; // Safer than any
+    [key: string]: unknown; 
 }
 
 /**
@@ -203,9 +212,9 @@ export interface ProjectContext {
         dna?: Record<string, unknown>;
     };
     map?: Record<string, FileContextData>;
-    hub?: any; // Native controller reference
+    hub?: any; 
     depthAudit?: {
-        metrics: any[];
+        metrics: Array<{ path: string; tsDepth: number }>;
     };
     [key: string]: unknown;
 }

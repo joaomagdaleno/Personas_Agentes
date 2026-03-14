@@ -22,7 +22,7 @@ func NewSparkPersona() *SparkPersona {
 			Emoji: "✨",
 			Role:          "PhD Developer Experience Engineer",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following build system or compilation issue. Correct build configurations, tree-shaking settings, and bundler errors. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

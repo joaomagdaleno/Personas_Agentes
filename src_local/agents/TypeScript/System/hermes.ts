@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, HealingResult, ProjectContext } from "../../base.ts";
 
 /**
  * ⚙️ Dr. Hermes — PhD in Environment Safety & Secret Delivery (TypeScript)
@@ -14,11 +14,15 @@ export class HermesPersona extends BaseActivePersona {
         this.role = "PhD DevOps & SRE Engineer";
         this.phd_identity = "Environment Safety & Secret Delivery (TypeScript)";
         this.stack = "TypeScript";
-        this.healingPrompt = "";
+        this.healingPrompt = "Fix the following messaging or event-driven architecture issue. Ensure correct message schemas, dead-letter handling, and idempotency. Return ONLY the corrected code or a specific diff.";
     }
 
     override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
+        if (this.healingPrompt) {
+            const { findings } = await this.auditAndHeal();
+            return findings;
+        }
         const findings = await this.performAudit();
         return findings;
     }

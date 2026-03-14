@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, HealingResult, ProjectContext } from "../../base.ts";
 
 /**
  * {{emoji}} Dr. {{name}} — PhD in {{phd_identity}}
@@ -19,6 +19,10 @@ export class {{name}}Persona extends BaseActivePersona {
 
     override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
+        if (this.healingPrompt) {
+            const { findings } = await this.auditAndHeal();
+            return findings;
+        }
         const findings = await this.performAudit();
         return findings;
     }
@@ -53,7 +57,7 @@ export class {{name}}Persona extends BaseActivePersona {
         return await super.reasonAboutObjective(objective, file, context);
     }
 
-    override selfDiagnostic(): any {
+    override selfDiagnostic(): Record<string, unknown> {
         return { status: "Soberano", score: 100, details: "Módulo {{name}} operando com paridade total via Forge." };
     }
 

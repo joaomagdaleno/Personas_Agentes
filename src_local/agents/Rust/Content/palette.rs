@@ -18,7 +18,7 @@ impl PalettePersona {
                 "PhD UX & Design Systems Engineer".to_string(),
                 "UX Quality & Visual Consistency (TypeScript)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following UI/UX or design system issue. Resolve accessibility violations and ensure design token consistency. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

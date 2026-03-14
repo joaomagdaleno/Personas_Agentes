@@ -11,7 +11,7 @@ class ScribePersona extends BaseActivePersona {
     this.role = "PhD Documentation Engineer";
     this.    phdIdentity = "Documentation & Knowledge Transfer (TypeScript)",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following documentation or API specification issue. Complete JSDoc annotations and ensure OpenAPI spec accuracy. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

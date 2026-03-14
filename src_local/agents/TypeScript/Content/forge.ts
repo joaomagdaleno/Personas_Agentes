@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, HealingResult, ProjectContext } from "../../base.ts";
 
 /**
  * 🔨 Dr. Forge — PhD in Code Generation & Dynamic Execution Safety (TypeScript)
@@ -14,11 +14,15 @@ export class ForgePersona extends BaseActivePersona {
         this.role = "PhD Automation & Safety Engineer";
         this.phd_identity = "Code Generation & Dynamic Execution Safety (TypeScript)";
         this.stack = "TypeScript";
-        this.healingPrompt = "";
+        this.healingPrompt = "Fix the following code generation or meta-programming issue. Ensure template correctness and generated code consistency. Return ONLY the corrected code or a specific diff.";
     }
 
     override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
+        if (this.healingPrompt) {
+            const { findings } = await this.auditAndHeal();
+            return findings;
+        }
         const findings = await this.performAudit();
         return findings;
     }

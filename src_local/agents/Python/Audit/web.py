@@ -14,7 +14,7 @@ class WebPersona(BaseActivePersona):
         self.role = "PhD Frontend Architect"
         self.phd_identity = "Web Performance & DOM Integrity (TS/Bun)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following web performance or DOM integrity issue. Eliminate layout shifts, optimize the critical rendering path, and fix reflow triggers. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

@@ -35,6 +35,15 @@ service HubService {
   // Auto-Healing
   rpc ExecuteHealing(HealingPlan) returns (AnalyzeResponse);
 
+  // Swarm Intelligence (Agent Collaboration)
+  rpc RequestPeerReview(PeerReviewRequest) returns (PeerReviewResponse);
+  rpc BroadcastSignal(SignalRequest) returns (Empty);
+
+  // Semantic Memory
+  rpc Remember(MemoryEntry) returns (Empty);
+  rpc Retrieve(MemoryQuery) returns (stream MemoryEntry);
+  rpc Embed(EmbedRequest) returns (EmbedResponse);
+
   // Task Scheduler
   rpc EnqueueTask(TaskRequest) returns (TaskResponse);
   rpc GetPendingTasks(PendingRequest) returns (PendingResponse);
@@ -209,4 +218,48 @@ message HealingPlan {
   string file_path = 2;
   string file_content = 3;
   string context = 4;
+  string failure_context = 5;
+}
+
+message PeerReviewRequest {
+  string requester_id = 1;
+  string target_persona_id = 2;
+  string file_path = 3;
+  string context = 4;
+  string priority = 5;
+}
+
+message PeerReviewResponse {
+  string request_id = 1;
+  string status = 2;
+}
+
+message SignalRequest {
+  string sender_id = 1;
+  string signal_type = 2;
+  string payload_json = 3;
+}
+
+message MemoryEntry {
+  string id = 1;
+  string agent_id = 2;
+  string objective = 3;
+  string action = 4;
+  string result = 5;
+  string timestamp = 6;
+  repeated float embedding = 7;
+}
+
+message MemoryQuery {
+  string agent_id = 1;
+  string query = 2;
+  int32 limit = 3;
+}
+
+message EmbedRequest {
+  string text = 1;
+}
+
+message EmbedResponse {
+  repeated float embedding = 1;
 }

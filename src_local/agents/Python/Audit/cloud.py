@@ -14,7 +14,7 @@ class CloudPersona(BaseActivePersona):
         self.role = "PhD Cloud Architect"
         self.phd_identity = "Cloud Native & IAM Integrity (TypeScript)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following cloud-native or serverless issue. Ensure correct IAM policies, fix cold start bottlenecks, and resolve cloud resource misconfiguration. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

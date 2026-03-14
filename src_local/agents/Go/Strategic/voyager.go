@@ -22,7 +22,7 @@ func NewVoyagerPersona() *VoyagerPersona {
 			Emoji: "🛸",
 			Role:          "PhD Modernization Architect",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following migration or version upgrade issue. Replace deprecated API usage and ensure backward compatibility. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

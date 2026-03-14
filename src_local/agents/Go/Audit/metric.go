@@ -22,7 +22,7 @@ func NewMetricPersona() *MetricPersona {
 			Emoji: "📊",
 			Role:          "PhD Observability Engineer",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following metrics or KPI engineering issue. Correct metric calculations and ensure dimensional accuracy. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

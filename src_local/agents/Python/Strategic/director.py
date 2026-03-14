@@ -14,7 +14,7 @@ class DirectorPersona(BaseActivePersona):
         self.role = "Master Orchestrator"
         self.phd_identity = "Systemic Orchestration & AI Governance"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following architectural drift or governance violation. Enforce layered boundaries and ensure proper separation of concerns. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

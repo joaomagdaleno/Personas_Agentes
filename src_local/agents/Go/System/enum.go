@@ -22,7 +22,7 @@ func NewEnumPersona() *EnumPersona {
 			Emoji: "🏷️",
 			Role:          "PhD TypeScript Union & Enum Engineer",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following state machine or enum exhaustiveness issue. Add missing switch/match cases and ensure all enum variants are handled. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

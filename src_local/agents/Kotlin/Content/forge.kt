@@ -17,7 +17,7 @@ class ForgePersona(projectRoot: String? = null) : BaseActivePersona(projectRoot)
         this.role = "PhD Automation & Safety Engineer"
         this.phd_identity = "Code Generation & Dynamic Execution Safety (TypeScript)"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following code generation or meta-programming issue. Ensure template correctness and generated code consistency. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

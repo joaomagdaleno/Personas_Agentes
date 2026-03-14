@@ -11,7 +11,7 @@ class HermesPersona extends BaseActivePersona {
     this.role = "PhD DevOps & SRE Engineer";
     this.    phdIdentity = "Environment Safety & Secret Delivery (TypeScript)",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following messaging or event-driven architecture issue. Ensure correct message schemas, dead-letter handling, and idempotency. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

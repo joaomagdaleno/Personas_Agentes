@@ -11,7 +11,7 @@ class WardenPersona extends BaseActivePersona {
     this.role = "PhD Strategic Guardian";
     this.    phdIdentity = "Sovereignty & Strategic Security (TypeScript)",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following access control or authorization issue. Correct RBAC violations and enforce the principle of least privilege. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

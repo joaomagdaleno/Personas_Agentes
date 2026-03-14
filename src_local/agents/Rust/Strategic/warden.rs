@@ -18,7 +18,7 @@ impl WardenPersona {
                 "PhD Strategic Guardian".to_string(),
                 "Sovereignty & Strategic Security (TypeScript)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following access control or authorization issue. Correct RBAC violations and enforce the principle of least privilege. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

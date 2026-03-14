@@ -11,7 +11,7 @@ class MetricPersona extends BaseActivePersona {
     this.role = "PhD Observability Engineer";
     this.    phdIdentity = "TypeScript Data Telemetry & Logging",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following metrics or KPI engineering issue. Correct metric calculations and ensure dimensional accuracy. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

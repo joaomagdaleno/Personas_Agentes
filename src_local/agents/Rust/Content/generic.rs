@@ -18,7 +18,7 @@ impl GenericPersona {
                 "PhD TypeScript Type Algebraist".to_string(),
                 "Generics & Type Algebra (TypeScript)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following generic programming or type abstraction issue. Improve generic constraints and resolve type erasure problems. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

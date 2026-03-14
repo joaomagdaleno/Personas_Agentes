@@ -18,7 +18,7 @@ impl ForgePersona {
                 "PhD Automation & Safety Engineer".to_string(),
                 "Code Generation & Dynamic Execution Safety (TypeScript)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following code generation or meta-programming issue. Ensure template correctness and generated code consistency. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

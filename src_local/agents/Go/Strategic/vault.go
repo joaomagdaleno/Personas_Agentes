@@ -22,7 +22,7 @@ func NewVaultPersona() *VaultPersona {
 			Emoji: "🔒",
 			Role:          "PhD Financial Integrity Engineer",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following secrets management or encryption issue. Remove plaintext secrets, enforce key rotation, and improve hashing algorithms. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

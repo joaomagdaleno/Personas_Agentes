@@ -18,7 +18,7 @@ impl HypePersona {
                 "PhD Product Evangelist".to_string(),
                 "Product Visibility & Branding (TypeScript)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following developer experience issue. Simplify confusing APIs, improve error messages, and streamline interfaces. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

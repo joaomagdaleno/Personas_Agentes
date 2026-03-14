@@ -18,7 +18,7 @@ impl ScalePersona {
                 "PhD Software Architect".to_string(),
                 "TypeScript Architecture & Scalability".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following horizontal scaling or load distribution issue. Correct sharding logic and connection pool sizing. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

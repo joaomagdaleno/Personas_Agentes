@@ -18,7 +18,7 @@ impl DirectorPersona {
                 "Master Orchestrator".to_string(),
                 "Systemic Orchestration & AI Governance".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following architectural drift or governance violation. Enforce layered boundaries and ensure proper separation of concerns. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

@@ -18,7 +18,7 @@ impl HermesPersona {
                 "PhD DevOps & SRE Engineer".to_string(),
                 "Environment Safety & Secret Delivery (TypeScript)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following messaging or event-driven architecture issue. Ensure correct message schemas, dead-letter handling, and idempotency. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

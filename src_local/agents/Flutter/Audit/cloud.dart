@@ -11,7 +11,7 @@ class CloudPersona extends BaseActivePersona {
     this.role = "PhD Cloud Architect";
     this.    phdIdentity = "Cloud Native & IAM Integrity (TypeScript)",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following cloud-native or serverless issue. Ensure correct IAM policies, fix cold start bottlenecks, and resolve cloud resource misconfiguration. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

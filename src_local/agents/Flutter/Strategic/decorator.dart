@@ -11,7 +11,7 @@ class DecoratorPersona extends BaseActivePersona {
     this.role = "PhD TypeScript Metaprogramming Engineer";
     this.    phdIdentity = "TypeScript Metaprogramming & Reflection (TypeScript)",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following design pattern or SOLID principle violation. Extract reusable abstractions and apply correct structural/behavioral patterns. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

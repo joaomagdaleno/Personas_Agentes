@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, HealingResult, ProjectContext } from "../../base.ts";
 
 /**
  * 🔄 Dr. Flow — PhD in Control Flow & Async Promises (TypeScript)
@@ -14,11 +14,15 @@ export class FlowPersona extends BaseActivePersona {
         this.role = "PhD Control Flow Architect";
         this.phd_identity = "Control Flow & Async Promises (TypeScript)";
         this.stack = "TypeScript";
-        this.healingPrompt = "";
+        this.healingPrompt = "Fix the following async/reactive or stream processing issue. Resolve backpressure problems, unhandled promise rejections, and race conditions. Return ONLY the corrected code or a specific diff.";
     }
 
     override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
+        if (this.healingPrompt) {
+            const { findings } = await this.auditAndHeal();
+            return findings;
+        }
         const findings = await this.performAudit();
         return findings;
     }

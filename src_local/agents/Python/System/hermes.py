@@ -14,7 +14,7 @@ class HermesPersona(BaseActivePersona):
         self.role = "PhD DevOps & SRE Engineer"
         self.phd_identity = "Environment Safety & Secret Delivery (TypeScript)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following messaging or event-driven architecture issue. Ensure correct message schemas, dead-letter handling, and idempotency. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

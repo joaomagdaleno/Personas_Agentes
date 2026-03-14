@@ -11,7 +11,7 @@ class BridgePersona extends BaseActivePersona {
     this.role = "PhD Integration Architect";
     this.    phdIdentity = "Integration Contracts & FFI (TypeScript)",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following API contract or protocol translation issue. Ensure correct HTTP/gRPC mapping, proper request/response schemas, and consistent error propagation. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

@@ -14,7 +14,7 @@ class SparkPersona(BaseActivePersona):
         self.role = "PhD Developer Experience Engineer"
         self.phd_identity = "Developer Experience & UX Tooling (TypeScript)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following build system or compilation issue. Correct build configurations, tree-shaking settings, and bundler errors. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

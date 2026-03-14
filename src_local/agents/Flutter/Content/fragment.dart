@@ -11,7 +11,7 @@ class FragmentPersona extends BaseActivePersona {
     this.role = "PhD Refactoring Expert";
     this.    phdIdentity = "Mdoularity & Structural Cohesion (TS/Bun)",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following component isolation or micro-frontend issue. Remove cross-boundary imports and enforce strict module isolation. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

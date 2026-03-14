@@ -22,7 +22,7 @@ func NewSentinelPersona() *SentinelPersona {
 			Emoji: "🛡️",
 			Role:          "PhD Strategic Security Architect",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following security vulnerability or threat. Remediate injection risks, enforce CSP/CORS policies, and sanitize all inputs. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

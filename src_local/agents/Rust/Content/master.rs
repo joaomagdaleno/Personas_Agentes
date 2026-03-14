@@ -18,7 +18,7 @@ impl MasterPersona {
                 "PhD Principal Architect".to_string(),
                 "System Orchestration & Prime Directive (TS/Bun)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following system design or orchestration gap. Ensure saga/workflow integrity and proper coordination between services. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

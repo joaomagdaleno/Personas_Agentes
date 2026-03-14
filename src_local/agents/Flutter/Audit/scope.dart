@@ -11,7 +11,7 @@ class ScopePersona extends BaseActivePersona {
     this.role = "PhD Project Strategist";
     this.    phdIdentity = "TypeScript Project Management & Technical Debt",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following scope analysis or variable lifecycle issue. Resolve variable shadowing, unused declarations, and scope leaks. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

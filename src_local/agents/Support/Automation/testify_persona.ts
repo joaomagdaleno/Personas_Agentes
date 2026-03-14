@@ -1,8 +1,8 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding } from "../../base.ts";;
-import { TestRunner } from "./test_runner";;
-import { QualityAnalyst } from "./../Diagnostics/quality_analyst";;
-import { PyramidAnalyst } from "./../Analysis/pyramid_analyst";;
+import type { AuditRule, StrategicFinding } from "../../base.ts";
+import { TestRunner } from "./test_runner";
+import { QualityAnalyst } from "./../Diagnostics/quality_analyst";
+import { PyramidAnalyst } from "./../Analysis/pyramid_analyst";
 import winston from "winston";
 
 /**
@@ -18,7 +18,7 @@ export class TestifyPersona extends BaseActivePersona {
         this.name = "Testify";
         this.emoji = "🧪";
         this.role = "PhD QA Strategist";
-        this.stack = "Correction"; // Or specific stack if needed
+        this.stack = "Correction"; 
         this.runner = new TestRunner();
         this.analyst = new QualityAnalyst();
         this.pyramidAnalyst = new PyramidAnalyst();
@@ -44,6 +44,14 @@ export class TestifyPersona extends BaseActivePersona {
 
     async analyzeTestPyramid(mapData: any): Promise<any> {
         return await this.pyramidAnalyst.analyze(mapData, this.readProjectFile.bind(this));
+    }
+
+    /**
+     * Executes tests for a specific file or set of files.
+     */
+    async runTests(files: string[]): Promise<any> {
+        if (!this.projectRoot) return { success: false, message: "Project root not set." };
+        return await this.runner.runSelectiveTests(this.projectRoot, files);
     }
 
     reasonAboutObjective(objective: string, file: string, content: string | Promise<string | null>): StrategicFinding | string | null {

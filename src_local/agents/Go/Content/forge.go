@@ -22,7 +22,7 @@ func NewForgePersona() *ForgePersona {
 			Emoji: "🔨",
 			Role:          "PhD Automation & Safety Engineer",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following code generation or meta-programming issue. Ensure template correctness and generated code consistency. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

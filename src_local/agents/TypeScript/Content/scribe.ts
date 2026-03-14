@@ -1,5 +1,5 @@
 import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding, AuditFinding, ProjectContext } from "../../base.ts";
+import type { AuditRule, StrategicFinding, AuditFinding, HealingResult, ProjectContext } from "../../base.ts";
 
 /**
  * 📝 Dr. Scribe — PhD in Documentation & Knowledge Transfer (TypeScript)
@@ -14,11 +14,15 @@ export class ScribePersona extends BaseActivePersona {
         this.role = "PhD Documentation Engineer";
         this.phd_identity = "Documentation & Knowledge Transfer (TypeScript)";
         this.stack = "TypeScript";
-        this.healingPrompt = "";
+        this.healingPrompt = "Fix the following documentation or API specification issue. Complete JSDoc annotations and ensure OpenAPI spec accuracy. Return ONLY the corrected code or a specific diff.";
     }
 
     override async execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]> {
         this.setContext(context);
+        if (this.healingPrompt) {
+            const { findings } = await this.auditAndHeal();
+            return findings;
+        }
         const findings = await this.performAudit();
         return findings;
     }

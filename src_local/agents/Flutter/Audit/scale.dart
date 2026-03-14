@@ -11,7 +11,7 @@ class ScalePersona extends BaseActivePersona {
     this.role = "PhD Software Architect";
     this.    phdIdentity = "TypeScript Architecture & Scalability",
     stack = "Flutter",
-    healingPrompt = "";
+    healingPrompt = "Fix the following horizontal scaling or load distribution issue. Correct sharding logic and connection pool sizing. Return ONLY the corrected code or a specific diff.";
   }
 
   @override

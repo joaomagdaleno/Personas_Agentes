@@ -17,7 +17,7 @@ class NeuralPersona(projectRoot: String? = null) : BaseActivePersona(projectRoot
         this.role = "PhD AI Safety & Token Engineer"
         this.phd_identity = "AI Token Safety & Cost Management (TypeScript)"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following ML/AI integration issue. Correct model loading, preprocessing pipelines, and inference errors. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

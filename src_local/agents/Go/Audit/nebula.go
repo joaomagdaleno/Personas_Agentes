@@ -22,7 +22,7 @@ func NewNebulaPersona() *NebulaPersona {
 			Emoji: "☁️",
 			Role:          "PhD Cloud Security Architect",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following data pipeline or ETL issue. Correct data transformation errors and ensure proper schema evolution. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }

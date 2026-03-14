@@ -17,7 +17,7 @@ class DecoratorPersona(projectRoot: String? = null) : BaseActivePersona(projectR
         this.role = "PhD TypeScript Metaprogramming Engineer"
         this.phd_identity = "TypeScript Metaprogramming & Reflection (TypeScript)"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following design pattern or SOLID principle violation. Extract reusable abstractions and apply correct structural/behavioral patterns. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

@@ -14,7 +14,7 @@ class ScribePersona(BaseActivePersona):
         self.role = "PhD Documentation Engineer"
         self.phd_identity = "Documentation & Knowledge Transfer (TypeScript)"
         self.stack = "Python"
-        self.healing_prompt = ""
+        self.healing_prompt = "Fix the following documentation or API specification issue. Complete JSDoc annotations and ensure OpenAPI spec accuracy. Return ONLY the corrected code or a specific diff."
 
     async def execute(self, context: ProjectContext) -> list:
         self.set_context(context)

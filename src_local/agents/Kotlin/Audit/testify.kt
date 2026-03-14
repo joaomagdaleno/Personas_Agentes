@@ -17,7 +17,7 @@ class TestifyPersona(projectRoot: String? = null) : BaseActivePersona(projectRoo
         this.role = "PhD Quality & Testing Engineer"
         this.phd_identity = "TypeScript Test Integrity & Coverage"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following testing or quality assurance issue. Eliminate flaky tests, improve assertion specificity, and increase coverage. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

@@ -17,7 +17,7 @@ class DirectorPersona(projectRoot: String? = null) : BaseActivePersona(projectRo
         this.role = "Master Orchestrator"
         this.phd_identity = "Systemic Orchestration & AI Governance"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following architectural drift or governance violation. Enforce layered boundaries and ensure proper separation of concerns. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

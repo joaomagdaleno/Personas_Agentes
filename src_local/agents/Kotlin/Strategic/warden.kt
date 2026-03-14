@@ -17,7 +17,7 @@ class WardenPersona(projectRoot: String? = null) : BaseActivePersona(projectRoot
         this.role = "PhD Strategic Guardian"
         this.phd_identity = "Sovereignty & Strategic Security (TypeScript)"
         this.stack = "Kotlin"
-        this.healingPrompt = ""
+        this.healingPrompt = "Fix the following access control or authorization issue. Correct RBAC violations and enforce the principle of least privilege. Return ONLY the corrected code or a specific diff."
     }
 
     override suspend fun execute(context: ProjectContext): List<Any> {

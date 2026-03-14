@@ -18,7 +18,7 @@ impl VoyagerPersona {
                 "PhD Modernization Architect".to_string(),
                 "Legacy Modernization & Future-Proofing (TypeScript)".to_string(),
                 "Rust".to_string(),
-                "".to_string(),
+                "Fix the following migration or version upgrade issue. Replace deprecated API usage and ensure backward compatibility. Return ONLY the corrected code or a specific diff.".to_string(),
                 project_root,
             ),
         }

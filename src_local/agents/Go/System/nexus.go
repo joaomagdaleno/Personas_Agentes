@@ -22,7 +22,7 @@ func NewNexusPersona() *NexusPersona {
 			Emoji: "🌐",
 			Role:          "PhD Network Resilience Engineer",
 			Stack:         "Go",
-			HealingPrompt: "",
+			HealingPrompt: "Fix the following dependency management or coupling issue. Break circular dependencies and reduce coupling metrics. Return ONLY the corrected code or a specific diff.",
 		},
 	}
 }
