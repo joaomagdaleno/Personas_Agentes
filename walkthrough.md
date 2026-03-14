@@ -99,15 +99,20 @@ info: 🔔 Evento Recebido: [MEMORY_STORED]
 info: 🏁 Teste finalizado.
 ```
 
-### Phase 36: Sovereign Dashboard (Real-time Operations)
+### Phase 37: Sovereign Governance Center (Unified Dashboard)
 
-Desenvolvimento de uma interface operacional para monitoramento da frota de 252 personas.
+Consolidação total das ferramentas operacionais e de auditoria em uma única interface Soberana.
 
-1. **Backend SSE**: Implementação de um servidor HTTP no Go Hub (:8080) com endpoint `/events` via Server-Sent Events.
-2. **Dashboard Bun-Native**: Criação de um dashboard premium usando **Bun como bundler e servidor nativo** (eliminando o Vite). Utiliza `Bun.serve` e `Bun.build` para performance máxima.
-3. **Visualização da Frota**: O dashboard renderiza a frota completa a partir do `identity_census.json` e exibe um feed de "pensamentos" em tempo real conectado ao barramento de eventos do Hub.
+1. **Unificação de Dashboards**: O dashboard de frota em tempo real e o dashboard de governança (Markdown) foram fundidos em uma única aplicação.
+2. **Arquitetura Bun-Only**: Removido o legado `src_local/dashboard`. Toda a interface agora roda sob o runtime nativo do Bun (`dev.ts` / `build.ts`), garantindo performance de ponta.
+3. **Novas Abas de Navegação**:
+   - **Fleet Operations**: Monitoramento vivo dos 252 agentes e seus sinais.
+   - **Governance Center**: Auditoria estruturada do `walkthrough.md`, renderizada dinamicamente a partir de JSON servido pelo Hub.
+   - **Intelligence**: Painel central de métricas de saúde e análise de risco sistêmico.
+4. **Backend Hub Support**: O Go Hub foi atualizado para servir tanto o fluxo SSE quanto o conteúdo documental via API JSON no endpoint `/governance`.
 
 ## Verificação Final
 
-- **Semantic Memory**: Confirmado registro e recuperação de decisões via SQLite e Rust Sidecar.
-- **Sovereign Dashboard**: Backend SSE operacional e Frontend scaffoldado com design system de alta fidelidade.
+- **Performance**: Interface unificada com tempo de resposta instantâneo (<1s boot).
+- **Conectividade**: SSE Hub -> Dashboard validado com broadcasting de sinais e métricas.
+- **Governança**: Walkthrough e Roadmap estratégico perfeitamente integrados ao fluxo operacional.
