@@ -11,6 +11,8 @@ const logger = winston.child({ module: "MemoryPruningAgent" });
  */
 export class MemoryPruningAgent implements IAgent {
     readonly id = "maintenance.pruner";
+    readonly name = "MemoryPruningAgent";
+    readonly role = "Maintenance Specialist";
     readonly category = "Support";
     readonly stack = "TypeScript";
     private dbPath: string;

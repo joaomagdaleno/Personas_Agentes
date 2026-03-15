@@ -11,40 +11,39 @@ export interface AuditRule {
     severity: "critical" | "high" | "medium" | "low";
 }
 
-export interface AuditFinding {
-    file: string;
+/**
+ * 🚩 Generic Finding Interface for all agents
+ */
+export interface GenericFinding {
+    file?: string;
+    path?: string;
+    issue: string;
+    severity: string | Severity;
     agent: string;
-    role: string;
-    emoji: string;
-    issue: string;
-    severity: string;
-    stack: string;
-    evidence: string;
-    match_count: number;
+    role?: string;
+    emoji?: string;
+    evidence?: string;
+    timestamp?: string;
     line_number?: number;
-    type?: string;
-    meta?: Record<string, unknown>;
-}
-
-export interface StrategicFinding {
-    file: string;
-    issue: string;
-    severity: string;
-    context: string;
-    objective?: string;
-    analysis?: string;
-    recommendation?: string;
-}
-
-export interface DiagnosticFinding {
-    id: string;
-    path: string;
-    severity: Severity;
-    message: string;
-    persona: string;
-    timestamp: string;
     context?: string;
     suggestion?: string;
+    stack?: string;
+    match_count?: number;
+    [key: string]: unknown;
+}
+
+// AuditFinding preserved as alias for backward compatibility if needed, or removed
+export type AuditFinding = GenericFinding;
+
+export interface DiagnosticFinding extends GenericFinding {
+    id: string;
+    path: string;
+    message: string;
+    persona: string;
+}
+
+export interface StrategicFinding extends GenericFinding {
+    objective?: string;
 }
 
 export interface EntropyData {
@@ -95,15 +94,21 @@ export interface SystemHealth360 {
  */
 export interface IAgent {
     readonly id: string;
-    readonly name?: string;
-    readonly category: string;
+    readonly role: string;
     readonly stack: string;
+    readonly name?: string;
+    readonly category?: string;
+    readonly logicDir?: string;
 
     initialize?(): Promise<void>;
-    execute(context: ProjectContext): Promise<(AuditFinding | StrategicFinding)[]>;
+    execute(context: ProjectContext): Promise<any>;
     teardown?(): Promise<void>;
     getMetadata?(): Record<string, unknown>;
     selfDiagnostic?(): Record<string, unknown>;
+}
+
+export interface IHealthSynthesizer {
+    synthesize360(context: ProjectContext, metrics: SystemMetrics, personas: IAgent[], ledger: any, qa: QAData): Promise<SystemHealth360>;
 }
 
 /**
@@ -125,35 +130,33 @@ export interface SystemMetrics {
 }
 
 /**
- * 🧠 Core Domain State
+ * 🌐 Core Project Operations Context
  */
-export interface SovereignState {
-    root: string;
-    metrics: {
-        files_scanned: number;
-        start_time: number;
-        last_diagnostic?: string;
-    };
-    identity: {
-        core_mission: string;
-        stacks: string[];
-    };
+export interface ProjectContext {
+    identity?: any;
+    map?: Record<string, any>;
+    depthAudit?: { metrics: any[] };
+    alerts?: GenericFinding[];
+    cognitive?: CognitiveStatus;
+    predictor_metrics?: any;
+    projectRoot?: string;
+    census?: any;
+    [key: string]: unknown;
 }
 
 export interface CoreSupportTools {
-    analyst: any; 
-    patternFinder: any; 
-    guardian: any; 
+    analyst: any;
+    patternFinder: any;
+    guardian: any;
     mapper: any;
     parity: any;
     auditEngine: any;
     vetoEngine: any;
-    testRunner: any; 
-    hub: any; // HubManagerGRPC
+    testRunner: any;
 }
 
 export interface OrchestratorTools {
-    synthesizer: any;
+    synthesizer: IHealthSynthesizer;
     strategist: any;
     executor: any;
     validator: any;
@@ -167,16 +170,26 @@ export interface OrchestratorTools {
     topology: any;
 }
 
-/**
- * 🛠️ Supportable Agent: Contract for auto-injected intelligence tools.
- */
-export interface ISupportableAgent extends IAgent {
-    auditEngine?: any;
-    structuralAnalyst?: any;
-    integrityGuardian?: any;
-    patternFinder?: any;
-    maturityEvaluator?: any;
-    testRunner?: any;
+export interface SovereignState {
+    root: string;
+    metrics: {
+        files_scanned: number;
+        start_time: number;
+        last_diagnostic?: string;
+    };
+    identity: {
+        core_mission: string;
+        stacks: string[];
+    };
+}
+
+export interface OrchestratorTools {
+    synthesizer: IHealthSynthesizer;
+    strategist: any;
+    executor: any;
+    validator: any;
+    refiner: any;
+    healer: any;
 }
 
 export interface AdvancedMetrics {
@@ -191,30 +204,10 @@ export interface AdvancedMetrics {
     [key: string]: unknown;
 }
 
-/**
- * 🗃️ Shared File Context Content
- */
 export interface FileContextData {
     content?: string;
     component_type?: string;
     tsDepth?: number;
     advanced_metrics?: AdvancedMetrics;
     [key: string]: unknown; 
-}
-
-/**
- * 🌐 Core Project Operations Context
- */
-export interface ProjectContext {
-    identity?: {
-        stacks: Set<string>;
-        core_mission?: string;
-        dna?: Record<string, unknown>;
-    };
-    map?: Record<string, FileContextData>;
-    hub?: any; 
-    depthAudit?: {
-        metrics: Array<{ path: string; tsDepth: number }>;
-    };
-    [key: string]: unknown;
 }

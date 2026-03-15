@@ -5,14 +5,16 @@ import { DiscoveryAgent } from "../agents/Support/Analysis/discovery_agent.ts";
 import { ValidationAgent } from "../agents/Support/Automation/validation_agent.ts";
 import { DiagnosticFinalizer } from "./diagnostic_finalizer.ts";
 
+import { Orchestrator } from "./orchestrator.ts";
+
 const logger = winston.child({ module: "DiagnosticPipeline" });
 
 export class DiagnosticPipeline {
     private static _isRunning = false;
-    orc: any;
+    orc: Orchestrator;
     deduplicator: FindingDeduplicator;
 
-    constructor(orchestrator: any) {
+    constructor(orchestrator: Orchestrator) {
         this.orc = orchestrator;
         this.deduplicator = new FindingDeduplicator(this.orc.hubManager);
     }
@@ -112,12 +114,8 @@ export class DiagnosticPipeline {
     }
 
     private async reset() {
-        this.orc.jobQueue = [];
-        this.orc.metrics.all_findings = [];
-        // Mobilize personas logic if needed
-        if (this.orc.personas.length === 0) {
-            const { PersonaRegistry } = await import("../utils/persona_registry.ts");
-            await PersonaRegistry.mobilizeAll(this.orc.projectRoot.toString(), this.orc);
-        }
+        // TaskQueue is now a class instance, reset via its own logic if needed
+        // this.orc.taskQueue.clear(); 
+        this.orc.metrics.files_scanned = 0;
     }
 }

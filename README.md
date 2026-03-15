@@ -13,18 +13,18 @@ Bem-vindo ao sistema de **Personas & Agents**! Este projeto utiliza uma arquitet
 | **Sentinel** | Segurança, Criptografia, Tokens | Vulnerabilidades Ativas | 🛡️ | TypeScript |
 | **Architect** | Design System, Escalabilidade | Padrões de Microserviços | 📐 | TypeScript |
 | **Director** | Orquestração Mestre | Visão Sistêmica | 🏛️ | TypeScript |
-| **Voyager** | Modernização, Migrações | Refatoração de Legados | 🧭 | Python |
+| **Voyager** | Modernização, Migrações | Refatoração de Legados | 🧭 | TypeScript |
 | **Scale** | Escalabilidade Elástica | Microserviços e Filas | ⚖️ | Go |
 
 - **High Performance**: sub-100ms reasoning for local tasks.
 - **Go Hub Proxy**: Central persistent service for gRPC orchestration and file persistence.
-- **TypeScript Intelligence**: Lean agents focused on high-level strategy and collaboration.
+- **TypeScript Intelligence**: Lean agents focused on high-level strategy and collaboration. 100% Bun/Go persistent hybrid.
 
 ## 🛠️ Prerequisites
 
 - **Go 1.22+**: For the Hub Proxy.
 - **Rust (Stable)**: For the Analyzer and Sovereign Brain.
-- **Node.js (Bun/NPM)**: For the Agent Orchestration.
+- **Node.js (Bun)**: For the Agent Orchestration.
 - **Protoc & Buf**: For gRPC development.
 
 ## 🚀 Como Configurar (Setup Inicial)

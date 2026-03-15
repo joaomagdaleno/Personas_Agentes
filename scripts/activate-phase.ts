@@ -100,5 +100,3 @@ function printSuccess(phase: string, platform: string) {
 }
 
 main();
-
-main();

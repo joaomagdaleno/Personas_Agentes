@@ -6,7 +6,7 @@ import * as fs from "node:fs";
 import winston from "winston";
 import { Orchestrator } from "../src_local/core/orchestrator.ts";
 import { configureLogging } from "../src_local/utils/logging_config.ts";
-import { DirectorPersona } from "../src_local/agents/TypeScript/Strategic/director.ts";
+import { DirectorPersona } from "../src_local/agents/Support/Strategic/director.ts";
 import { DiagnosticHelpers } from "../src_local/utils/diagnostic_helpers.ts";
 
 async function main() {

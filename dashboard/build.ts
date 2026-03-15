@@ -1,4 +1,4 @@
-console.log("🚀 Building Sovereign Dashboard for production...");
+console.log("🚀 Building Sovereign Dashboard for production (Bun-native)...");
 
 const result = await Bun.build({
   entrypoints: ["./src/main.tsx"],
@@ -17,12 +17,8 @@ if (!result.success) {
   process.exit(1);
 }
 
-// Copy index.html to dist and update script tag
-let html = await Bun.file("index.html").text();
-html = html.replace(
-  '<script type="module" src="/src/main.tsx"></script>',
-  '<script type="module" src="/bundle.js"></script>'
-);
-await Bun.write("./dist/index.html", html);
+// Copy index.html and CSS to dist
+await Bun.write("./dist/index.html", Bun.file("index.html"));
+await Bun.write("./dist/index.css", Bun.file("./src/index.css"));
 
 console.log("✅ Build complete! Output in ./dist");

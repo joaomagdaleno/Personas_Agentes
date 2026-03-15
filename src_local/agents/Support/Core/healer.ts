@@ -1,54 +1,53 @@
 import winston from 'winston';
 import * as fs from 'fs';
 import { Path } from "../../../core/path_utils.ts";
-import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding } from "../../base.ts";
+import type { AuditFinding, IAgent, ProjectContext } from "../../../core/types.ts";
 import { CognitiveEngine } from "../../../utils/cognitive_engine.ts";
 import { Orchestrator } from "../../../core/orchestrator.ts";
 import { ObfuscationCleanerEngine } from "../Security/obfuscation_cleaner_engine.ts";
 import * as ts from 'typescript';
 import { HealerPromptBuilder } from "./healer_prompt_builder.ts";
 import { PatchManager } from "./patch_manager.ts";
-import type { AuditFinding } from "../../../core/types.ts";
 
 /**
  * 🩹 Agente Healer (PhD in Software Reparation).
  */
-export class HealerPersona extends BaseActivePersona {
+export class HealerPersona implements IAgent {
+    public readonly id: string = "healer";
+    public readonly role: string = "PhD Software Healer";
+    public readonly stack: string = "TypeScript";
+    public readonly name: string = "Healer";
+    public readonly emoji: string = "🩹";
+    public readonly category: string = "Security";
+    private projectRoot: string;
     private brain: CognitiveEngine;
     private cleaner: ObfuscationCleanerEngine;
     private patcher: PatchManager;
 
     constructor(projectRoot?: string) {
-        super(projectRoot);
-        this.name = "Healer";
-        this.role = "PhD Software Healer";
-        this.emoji = "🩹";
-        this.stack = "Correction";
+        this.projectRoot = projectRoot || process.cwd();
         this.brain = new CognitiveEngine();
         this.cleaner = new ObfuscationCleanerEngine();
-        this.patcher = new PatchManager(projectRoot || process.cwd());
+        this.patcher = new PatchManager(this.projectRoot);
     }
 
-    getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
-        return {
-            extensions: [],
-            rules: []
-        };
+    async execute(context: ProjectContext): Promise<any> {
+        // Implementação padrão se chamado como agente autônomo
+        return [];
     }
 
     getSystemPrompt(): string {
         return "Você é o Dr. Healer, focado em correções de código seguras e minimalistas.";
     }
 
-    override async reasonAboutObjective(objective: string, file: string, context: string): Promise<StrategicFinding | null> {
-        return null;
-    }
-
     async healFinding(finding: AuditFinding, orchestrator: Orchestrator): Promise<boolean> {
         if (!this.isValidForHealing(finding)) return false;
 
-        const filePath = finding.file;
+        const filePath = finding.file || finding.path;
+        if (!filePath) {
+            winston.warn("🩹 [Healer] Finding sem arquivo ou caminho associado. Ignorando.");
+            return false;
+        }
         winston.info(`🩹 [Healer] Iniciando protocolo de cura em: ${filePath}`);
 
         // Phase 7: Sovereign Brain TF-IDF Context injection
@@ -66,8 +65,9 @@ export class HealerPersona extends BaseActivePersona {
         const plan = {
             issueDescription: finding.issue,
             filePath: filePath,
-            fileContent: this.getCurrentContent(filePath),
-            context: this.getContextPrompt(finding) + "\n" + architecturalContext
+            fileContent: this.getCurrentContent(filePath!),
+            context: this.getContextPrompt(finding) + "\n" + architecturalContext,
+            failureContext: finding.evidence || ""
         };
 
         const suggestion = await orchestrator.hubManager.executeHealing(plan);
@@ -80,7 +80,7 @@ export class HealerPersona extends BaseActivePersona {
     }
 
     private checkFileExistence(finding: AuditFinding): boolean {
-        const fullPath = new Path(this.projectRoot!).join(finding.file).toString();
+        const fullPath = new Path(this.projectRoot!).join(finding.file!).toString();
         if (fs.existsSync(fullPath) || finding.type === "DISPARITY") return true;
 
         winston.error(`🩹 [Healer] Arquivo não encontrado para cura: ${finding.file}`);
@@ -93,8 +93,9 @@ export class HealerPersona extends BaseActivePersona {
     }
 
     private getContextPrompt(finding: AuditFinding): string {
-        if (finding.type !== "DISPARITY" || !finding.meta?.legacyPath) return "";
-        return this.getLegacyContext(finding.meta.legacyPath as string, finding.meta.unit);
+        const meta = finding.meta as Record<string, any> || {};
+        if (finding.type !== "DISPARITY" || !meta.legacyPath) return "";
+        return this.getLegacyContext(meta.legacyPath as string, meta.unit);
     }
 
     private getLegacyContext(legacyPath: string, unit: any): string {

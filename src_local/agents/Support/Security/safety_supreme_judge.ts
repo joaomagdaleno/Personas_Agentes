@@ -90,21 +90,4 @@ export class SafetySupremeJudge {
         const t = node.getText();
         return ["ts.createSourceFile", "ts.forEachChild", "eval(", "new Function("].some(v => t.includes(v));
     }
-
-    /** Parity stubs */
-    public is_in_metadata_assignment(node: ts.Node): boolean { return false; }
-    public _is_assignment_to_safe(node: ts.Node): boolean { return true; }
-    public _is_safe_name(name: string): boolean { return true; }
-    public validate(node: ts.Node, sourceFile: ts.SourceFile): boolean { return this.isNodeSafe(node, sourceFile); }
-    public is_safe_context(node: ts.Node, sourceFile: ts.SourceFile): boolean { return this.isNodeSafe(node, sourceFile); }
-    public is_being_executed(node: ts.Node): boolean { return this.isDangerousExecution(node); }
-    public is_in_analyzer_context(): boolean { return false; }
 }
-
-/** Parity aliases */
-export class SafeContextJudge extends SafetySupremeJudge { }
-export class SafetyHeuristics extends SafetySupremeJudge { }
-export class CallSafetyJudge extends SafetySupremeJudge { }
-export class SafetyAssignmentEngine extends SafetySupremeJudge { }
-export class RuleDefinitionJudge extends SafetySupremeJudge { }
-export class SafetyNavigator extends SafetySupremeJudge { }

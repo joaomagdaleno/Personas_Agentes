@@ -93,29 +93,4 @@ export class TelemetryExcellenceEngine {
         const ratio = telemetryCount / totalNodes;
         return Math.min(100, Math.round(ratio * 1000)); // Escala PHD
     }
-
-    /** Parity stubs for TelemetryMaturityLogic */
-    public is_tele_name(name: string): boolean { return TELEMETRY_KEYWORDS.some(k => name.toLowerCase().includes(k)); }
-    public is_assigned_to_log_variable(node: ts.Node): boolean { return this.isAssignedToTelemetryVariable(node); }
-
-    /** Parity stubs for TestDiscoveryLogic */
-    public is_inside_test_method(node: ts.Node, sourceFile: ts.SourceFile): boolean { return false; }
-}
-
-/** Parity: TelemetryMaturityLogic — Legacy alias for TelemetryExcellenceEngine. */
-export class TelemetryMaturityLogic extends TelemetryExcellenceEngine { }
-
-/** Parity: TestDiscoveryLogic — Legacy alias for TelemetryExcellenceEngine. */
-export class TestDiscoveryLogic extends TelemetryExcellenceEngine { }
-
-/** Parity: ParallelTestExecutor — Legacy alias for test execution logic. */
-export class ParallelTestExecutor {
-    public run_parallel(): void { }
-    private _run_test_batch_in_process(): void { }
-}
-
-/** Parity: IntentHeuristicsEngine — Legacy alias for TelemetryExcellenceEngine. */
-export class IntentHeuristicsEngine extends TelemetryExcellenceEngine {
-    public is_metadata_context(): boolean { return false; }
-    public _is_analysis_comparison(): boolean { return false; }
 }

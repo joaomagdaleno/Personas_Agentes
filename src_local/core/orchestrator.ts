@@ -5,7 +5,7 @@ import { ContextEngine } from "../utils/context_engine.ts";
 import { CacheManager } from "../utils/cache_manager.ts";
 import { TaskExecutor } from "../utils/task_executor.ts";
 import { AuditEngine } from "./audit_engine.ts";
-import { DirectorPersona } from "../agents/TypeScript/Strategic/director.ts";
+import { DirectorPersona } from "../agents/Support/Strategic/director.ts";
 import { StabilityLedger } from "../utils/stability_ledger.ts";
 import { HistoryAgent } from "../utils/history_agent.ts";
 import { TaskQueue } from "../utils/task_queue.ts";
@@ -18,13 +18,13 @@ import { UpdateTransaction } from "../utils/update_transaction.ts";
 import { SystemSentinel } from "../utils/system_sentinel.ts";
 import { BehaviorAnalyst } from "../utils/behavior_analyst.ts";
 import { TaskWorker } from "../utils/task_worker.ts";
-import type { IAgent, ProjectContext, DiagnosticFinding, SystemHealth360, SystemMetrics } from "./types.ts";
 import { MemoryPruningAgent } from "../agents/Support/Maintenance/memory_pruning_agent.ts";
 import { PredictorEngine } from "../utils/ai/predictor_engine.ts";
 import { HubWatcher } from "../utils/hub_watcher.ts";
 import { HubManagerGRPC } from "./hub_manager_grpc.ts";
 import { RegistryManager } from "./registry_manager.ts";
 import { ParityDaemon } from "./parity_daemon.ts";
+import type { IAgent, ProjectContext, GenericFinding, SystemHealth360, SystemMetrics, IHealthSynthesizer } from "./types.ts";
 
 const logger = winston.child({ module: "Orchestrator" });
 
@@ -45,7 +45,7 @@ export class Orchestrator {
     historyAgent!: HistoryAgent;
     strategist!: DiagnosticStrategist;
     coreValidator!: CoreValidator;
-    synthesizer!: any; // Will be typed correctly when HealthSynthesizer interface is extracted
+    synthesizer!: IHealthSynthesizer;
     taskQueue!: TaskQueue;
     memoryEngine!: MemoryEngine;
     reflexEngine!: ReflexEngine;
@@ -155,7 +155,8 @@ export class Orchestrator {
     }
 
     private _registerAgents() {
-        this.agentRegistry.set(this.pruningAgent.id, this.pruningAgent);
+        // Cast to IAgent if needed, ensuring it has required props
+        this.agentRegistry.set(this.pruningAgent.id, this.pruningAgent as any as IAgent);
     }
 
     async dispatch(agentId: string, context: ProjectContext = {}): Promise<any> {
@@ -181,27 +182,27 @@ export class Orchestrator {
     _initTools() {
         this.coreValidator = new CoreValidator(this);
         this.synthesizer = {
-            getTopologyIssues: (_ctx: ProjectContext) => [],
             synthesize360: async (ctx: ProjectContext, m_orc: SystemMetrics, personas: IAgent[], ledger: StabilityLedger, qa: any) => {
                 const { HealthSynthesizer } = await import("../agents/Support/Diagnostics/health_synthesizer.ts");
-                const syn = new HealthSynthesizer();
+                const syn = new HealthSynthesizer(this.hubManager);
                 return syn.synthesize360(ctx, m_orc, personas, ledger, qa);
             }
         };
     }
 
-    addPersona(persona: any) {
+    addPersona(persona: IAgent) {
         this.personas.push(persona);
+        this.agentRegistry.set(persona.id, persona);
     }
 
-    async runStrategicAudit(context: ProjectContext, objective: string | null = null, _includeHistory: boolean = true): Promise<DiagnosticFinding[]> {
+    async runStrategicAudit(context: ProjectContext, objective: string | null = null, _includeHistory: boolean = true): Promise<GenericFinding[]> {
         logger.info("Auditoria Estratégica: Acionando AuditEngine...");
         const [findings, startT] = await this.auditEngine.runStrategicAudit(context, objective);
         this._logPerformance(startT, "Auditoria Estratégica");
         return findings;
     }
 
-    async runStagedAudit(options: { dryRun?: boolean }): Promise<DiagnosticFinding[]> {
+    async runStagedAudit(options: { dryRun?: boolean }): Promise<GenericFinding[]> {
         logger.info("Auditoria Staged: Acionando AuditEngine...");
         const context: ProjectContext = { identity: { stacks: new Set(["TypeScript", "Python"]) } };
         const [findings, startT] = await this.auditEngine.runStagedAudit(context, options.dryRun);
@@ -209,7 +210,7 @@ export class Orchestrator {
         return findings;
     }
 
-    async runObfuscationScan() {
+    async runObfuscationScan(): Promise<GenericFinding[]> {
         logger.info("Scan de Ofuscação: Acionando AuditEngine...");
         return await this.auditEngine.runObfuscationScan(null);
     }
@@ -229,12 +230,12 @@ export class Orchestrator {
         await this.cacheManager.updateAll();
     }
 
-    _buildAuditReportQueue(findings: DiagnosticFinding[]): DiagnosticFinding[] {
+    _buildAuditReportQueue(findings: GenericFinding[]): GenericFinding[] {
         logger.info(`📋 [Orchestrator] Construindo fila de relatório com ${findings.length} achados.`);
         return findings.sort((_a, b) => (b.severity === "CRITICAL" ? 1 : -1));
     }
 
-    async runAutoHealing(findings: DiagnosticFinding[]): Promise<number> {
+    async runAutoHealing(findings: GenericFinding[]): Promise<number> {
         const { HealerPersona } = await import("../agents/Support/Core/healer.ts");
         const healer = new HealerPersona(this.projectRoot.toString());
 
@@ -242,23 +243,19 @@ export class Orchestrator {
         return results.filter(Boolean).length;
     }
 
-    private async healSingleFinding(healer: any, finding: DiagnosticFinding): Promise<boolean> {
+    private async healSingleFinding(healer: any, finding: GenericFinding): Promise<boolean> {
         if (this.isHighPriority(finding)) {
             return await healer.healFinding(finding, this);
         }
         return false;
     }
 
-    private isHighPriority(finding: DiagnosticFinding): boolean {
+    private isHighPriority(finding: GenericFinding): boolean {
         return finding.severity === "CRITICAL" || finding.severity === "HIGH";
     }
 
-    async runTargetedVerification(_plan: any): Promise<any[]> {
-        logger.info("Executando verificações direcionadas...");
-        return [];
-    }
 
-    async getSystemHealth360(ctx: ProjectContext, _health: any, findings: DiagnosticFinding[]): Promise<SystemHealth360> {
+    async getSystemHealth360(ctx: ProjectContext, _health: any, findings: GenericFinding[]): Promise<SystemHealth360> {
         this._enrichPathMetrics(ctx);
         const qaData = await this.collectQAData(ctx);
 
@@ -268,7 +265,7 @@ export class Orchestrator {
             this.personas,
             this.stabilityLedger,
             qaData
-        ) as SystemHealth360;
+        );
     }
 
     private async collectQAData(ctx: ProjectContext): Promise<any> {
@@ -315,7 +312,7 @@ export class Orchestrator {
         await this.pruningAgent.execute({ days: 30 });
     }
 
-    async generateFullDiagnostic(options: { autoHeal: boolean, dryRun?: boolean }): Promise<Path> {
+    async generateFullDiagnostic(options: { autoHeal: boolean, dryRun?: boolean }): Promise<Path | any> {
         logger.info("🚀 Acionando DiagnosticPipeline (Bun Version)...");
         const pipeline = new DiagnosticPipeline(this);
         return await pipeline.execute({ autoHeal: options.autoHeal, dryRun: options.dryRun });

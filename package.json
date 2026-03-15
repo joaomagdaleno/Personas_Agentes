@@ -26,7 +26,6 @@
     "diagnostic": "bun run scripts/run-diagnostic.ts",
     "benchmark": "bun run scripts/run_benchmark.ts",
     "generate-tests": "bun run scripts/run_generate_tests.ts",
-    "git-doctor": "bun run scripts/run_git_doctor.ts",
     "clean-obfuscation": "bun run scripts/run_clean_obfuscation.ts",
     "finalize-migration": "bun run scripts/run_finalize_migration.ts",
     "forge": "bun run scripts/forge.ts"

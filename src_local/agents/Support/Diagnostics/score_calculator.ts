@@ -36,9 +36,10 @@ export class ScoreCalculator {
 
             const response = await this.hubManager.calculateScore(scoreRequest);
             if (response) {
+                const scoreData = response as unknown as { score: number, breakdown: Record<string, number> };
                 return {
-                    score: response.score,
-                    breakdown: response.breakdown
+                    score: scoreData.score || 0,
+                    breakdown: scoreData.breakdown || {}
                 };
             }
         }

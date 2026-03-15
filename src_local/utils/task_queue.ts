@@ -3,6 +3,14 @@ import { HubManagerGRPC } from "../core/hub_manager_grpc.ts";
 
 const logger = winston.child({ module: "TaskQueue" });
 
+export interface Task {
+    id: number;
+    task_type: string;
+    target_file: string;
+    status: string;
+    result?: string;
+}
+
 /**
  * Motor de Fila de Tarefas PhD (Proxy para Hub Nativo via gRPC).
  * Gerencia a execução assíncrona delegando para o Hub em Go.
@@ -36,10 +44,10 @@ export class TaskQueue {
     /**
      * Recupera as próximas tarefas pendentes.
      */
-    async getPendingTasks(limit: number = 5): Promise<any[]> {
+    async getPendingTasks(limit: number = 5): Promise<Task[]> {
         try {
-            const result: any = await this.hubManager.getPendingTasks(limit);
-            return result.tasks || result.response?.tasks || [];
+            const result = await this.hubManager.getPendingTasks(limit) as any;
+            return (result.tasks || result.response?.tasks || []) as Task[];
         } catch (e) {
             logger.error(`❌ Erro ao buscar tarefas via gRPC: ${e}`);
             return [];

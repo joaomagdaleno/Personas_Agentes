@@ -3,6 +3,11 @@ import { join } from "node:path";
 import { renderMarkdown, PORTAL_METADATA } from "./portal_engine";
 
 export const GEN_MODE = "PROFESSIONAL";
+export const GENERATOR_CONFIG = {
+    mode: "PROFESSIONAL",
+    target: "SOVEREIGN",
+    version: "8.0"
+};
 export const PORTAL_METADATA_REF = PORTAL_METADATA;
 
 export function generatePortal() {

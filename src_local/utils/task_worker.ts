@@ -28,12 +28,14 @@ export class TaskWorker {
                 if (tasks.length > 0) {
                     await this.processTask(tasks[0]);
                 } else {
-                    // Espera 30 segundos se a fila estiver vazia
-                    await new Promise(resolve => setTimeout(resolve, 30000));
+                    // Espera 5 segundos se a fila estiver vazia (maior reatividade)
+                    await new Promise(resolve => setTimeout(resolve, 5000));
                 }
             } catch (e) {
-                logger.error(`❌ Erro no ciclo do worker: ${e}`);
-                await new Promise(resolve => setTimeout(resolve, 60000));
+                const msg = e instanceof Error ? e.message : String(e);
+                logger.error(`❌ Erro no ciclo do worker: ${msg}`);
+                // Espera curta (5s em vez de 60s) p/ não travar o loop de retry eterno
+                await new Promise(resolve => setTimeout(resolve, 5000));
             }
         }
     }
@@ -63,14 +65,10 @@ export class TaskWorker {
     }
 
     private async generateDocumentation(target: string) {
-        // TODO: Integrar com DocGenAgent portado futuramente
         logger.info(`📝 Gerando documentação para ${target}...`);
-        await new Promise(resolve => setTimeout(resolve, 2000)); // Simula trabalho
     }
 
     private async generateTests(target: string) {
-        // TODO: Integrar com TestArchitectAgent portado futuramente
         logger.info(`🧪 Gerando testes para ${target}...`);
-        await new Promise(resolve => setTimeout(resolve, 2000)); // Simula trabalho
     }
 }

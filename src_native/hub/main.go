@@ -42,6 +42,14 @@ import (
 	_ "modernc.org/sqlite"
 )
 
+const (
+	DefaultGRPCPort      = ":50051"
+	DefaultHTTPPort      = ":8080"
+	RustSidecarAddr      = "127.0.0.1:50052"
+	DefaultDBPath        = "../../system_vault.db"
+	DefaultMetadataPath  = "../../src_local/metadata/identity_census.json"
+)
+
 type FileAnalysis struct {
 	Path     string `json:"path"`
 	Exists   bool   `json:"exists"`
@@ -340,6 +348,11 @@ func (h *Hub) initDB(projectRoot string) {
 	if err != nil {
 		log.Fatalf("Failed to init DB table (agent_memory): %v", err)
 	}
+
+	_, err = db.Exec(`CREATE INDEX IF NOT EXISTS idx_agent_memory ON agent_memory (agent_id, timestamp)`)
+	if err != nil {
+		log.Fatalf("Failed to init DB index (idx_agent_memory): %v", err)
+	}
 }
 
 func (h *Hub) startWatcher(root string) {
@@ -383,7 +396,17 @@ func (h *Hub) startWatcher(root string) {
 		if err != nil {
 			return err
 		}
+		
+		// Otimização Crítica: Pular diretórios massivos para poupar Handles e CPU
 		if info.IsDir() {
+			name := info.Name()
+			if strings.HasPrefix(name, ".") && name != "." && name != ".." {
+				return filepath.SkipDir // skip .git, .next, .vscode, etc
+			}
+			switch name {
+			case "node_modules", "target", "dist", "build", "logs", "tmp", "vendor", "out":
+				return filepath.SkipDir
+			}
 			return h.watcher.Add(path)
 		}
 		return nil
@@ -954,6 +977,10 @@ func (h *Hub) Retrieve(in *pb.MemoryQuery, stream pb.HubService_RetrieveServer) 
 	querySQL := `SELECT id, agent_id, objective, action, result, timestamp, embedding FROM agent_memory WHERE agent_id = ? ORDER BY timestamp DESC`
 	if len(queryEmb) == 0 {
 		querySQL += fmt.Sprintf(" LIMIT %d", in.Limit)
+	} else {
+		// Otimização Crítica: Se temos embedding para busca, ainda devemos limitar o pull inicial do DB
+		// Em vez de trazer N records, limitamos para impedir consumo O(N) total de RAM e CPU no Hub.
+		querySQL += " LIMIT 1000"
 	}
 
 	rows, err := h.db.Query(querySQL, in.AgentId)
@@ -1292,6 +1319,9 @@ func (h *Hub) ServeIntelligenceMemory(w http.ResponseWriter, r *http.Request) {
 	querySQL := `SELECT id, agent_id, objective, action, result, timestamp, embedding FROM agent_memory WHERE agent_id = ? ORDER BY timestamp DESC`
 	if len(queryEmb) == 0 {
 		querySQL += ` LIMIT 50`
+	} else {
+		// Otimização Crítica: Trava de segurança para impedir Full Table Scan para RAM em buscas contextuais.
+		querySQL += ` LIMIT 1000`
 	}
 
 	rows, err := h.db.Query(querySQL, agentId)
@@ -1378,6 +1408,17 @@ func (h *Hub) ServeIntelligenceTasks(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(tasks)
 }
 
+func (h *Hub) ServeCensus(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	var personas []PersonaMetadata
+	for _, p := range h.census {
+		personas = append(personas, p)
+	}
+	json.NewEncoder(w).Encode(map[string]interface{}{"personas": personas})
+}
+
 func (h *Hub) ServeSSE(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/event-stream")
 	w.Header().Set("Cache-Control", "no-cache")
@@ -1385,7 +1426,11 @@ func (h *Hub) ServeSSE(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	ch := make(chan string, 10)
+	// Ensure clients map is initialized
 	h.clientsLock.Lock()
+	if h.clients == nil {
+		h.clients = make(map[chan string]bool)
+	}
 	h.clients[ch] = true
 	h.clientsLock.Unlock()
 
@@ -1407,8 +1452,14 @@ func (h *Hub) ServeSSE(w http.ResponseWriter, r *http.Request) {
 
 	for {
 		select {
-		case msg := <-ch:
-			fmt.Fprintf(w, "data: %s\n\n", msg)
+		case msg, ok := <-ch:
+			if !ok {
+				return
+			}
+			_, err := fmt.Fprintf(w, "data: %s\n\n", msg)
+			if err != nil {
+				return
+			}
 			flusher.Flush()
 		case <-r.Context().Done():
 			return
@@ -1417,6 +1468,17 @@ func (h *Hub) ServeSSE(w http.ResponseWriter, r *http.Request) {
 }
 
 func (p *program) run() {
+	// Precise map initialization before async goroutines start
+	p.hub.clientsLock.Lock()
+	if p.hub.clients == nil {
+		p.hub.clients = make(map[chan string]bool)
+	}
+	p.hub.clientsLock.Unlock()
+
+	if p.hub.census == nil {
+		p.hub.census = make(map[string]PersonaMetadata)
+	}
+
 	p.hub.initDB("../..")
 	p.hub.loadMetadata("../..")
 	go p.hub.startSentinel()
@@ -1430,15 +1492,16 @@ func (p *program) run() {
 		http.HandleFunc("/governance/list", p.hub.ServeGovernanceList)
 		http.HandleFunc("/intelligence/memory", p.hub.ServeIntelligenceMemory)
 		http.HandleFunc("/intelligence/tasks", p.hub.ServeIntelligenceTasks)
-		log.Printf("📊 Sovereign Dashboard SSE Server listening on :8080")
-		if err := http.ListenAndServe(":8080", nil); err != nil {
+		http.HandleFunc("/census", p.hub.ServeCensus)
+		log.Printf("📊 Sovereign Dashboard SSE Server listening on %s", DefaultHTTPPort)
+		if err := http.ListenAndServe(DefaultHTTPPort, nil); err != nil {
 			log.Printf("⚠️ Dashboard server failed: %v", err)
 		}
 	}()
 
 	// Connect to Rust gRPC Sidecar
 	go func() {
-		addr := "127.0.0.1:50052"
+		addr := RustSidecarAddr
 		conn, err := grpc.Dial(addr, grpc.WithInsecure())
 		if err != nil {
 			log.Printf("⚠️ Could not connect to Rust sidecar at %s: %v", addr, err)
@@ -1450,7 +1513,7 @@ func (p *program) run() {
 	}()
 
 	// gRPC Server with optional mTLS
-	lis, err := net.Listen("tcp", ":50051")
+	lis, err := net.Listen("tcp", DefaultGRPCPort)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}

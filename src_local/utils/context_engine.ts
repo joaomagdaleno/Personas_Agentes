@@ -10,19 +10,24 @@ import { ConnectivityMapper } from "../agents/Support/Analysis/connectivity_mapp
 import { ParityAnalyst } from "../agents/Support/Analysis/parity_analyst.ts";
 import { MetricsEngine } from "../agents/Support/Diagnostics/metrics_engine.ts";
 import { ContextHelpers } from "./context_helpers.ts";
-
-
+import type { CognitiveStatus, IAgent } from "../core/types.ts";
 
 /**
  * 🧠 Cérebro Semântico PhD (Bun Version).
  */
 export class ContextEngine {
-    projectRoot: Path; map: Record<string, any> = {}; callGraph: Record<string, any> = {};
-    dnaProfiler: DNAProfiler; mappingLogic: ContextMappingLogic;
-    analyst: StructuralAnalyst; coverageAuditor = new CoverageAuditor();
-    connectivityMapper: ConnectivityMapper; parityAnalyst = new ParityAnalyst();
-    metricsEngine = new MetricsEngine(); allFilesIndex: string[] = [];
-    projectIdentity: any = {};
+    projectRoot: Path; 
+    map: Record<string, any> = {}; 
+    callGraph: Record<string, string[]> = {};
+    dnaProfiler: DNAProfiler; 
+    mappingLogic: ContextMappingLogic;
+    analyst: StructuralAnalyst; 
+    coverageAuditor = new CoverageAuditor();
+    connectivityMapper: ConnectivityMapper; 
+    parityAnalyst = new ParityAnalyst();
+    metricsEngine = new MetricsEngine(); 
+    allFilesIndex: string[] = [];
+    projectIdentity: Record<string, unknown> = {};
     private contentCache: Record<string, string> = {};
 
     constructor(projectRoot: string, private hubManager?: HubManagerGRPC) {
@@ -33,7 +38,7 @@ export class ContextEngine {
         this.mappingLogic = new ContextMappingLogic(hubManager);
     }
 
-    async analyzeProject(): Promise<any> {
+    async analyzeProject(): Promise<{ identity: Record<string, unknown>; map: Record<string, any> }> {
         this.projectIdentity = await this.dnaProfiler.discoverIdentity(this.projectRoot);
         const scanner = new FileSystemScanner(this.projectRoot.toString(), this.analyst);
         this.allFilesIndex = await scanner.scanAllFilenames();
@@ -177,8 +182,16 @@ export class ContextEngine {
         });
     }
 
-    analyzeStackParity(personas: any[]) { const p = this.parityAnalyst.analyzeStackGaps(personas) as any; p.detected = this.projectIdentity.stacks || new Set(); return p; }
-    async cognitiveReason(p: string) { return (await new (await import("./cognitive_engine.ts")).CognitiveEngine()).reason(p); }
+    analyzeStackParity(personas: IAgent[]) { 
+        const p = this.parityAnalyst.analyzeStackGaps(personas) as any; 
+        p.detected = (this.projectIdentity.stacks as Set<string>) || new Set<string>(); 
+        return p; 
+    }
+    async cognitiveReason(p: string): Promise<CognitiveStatus> { 
+        const res = await (await new (await import("./cognitive_engine.ts")).CognitiveEngine()).reason(p); 
+        if (typeof res === 'string') return { status: res, score: 0 };
+        return res || { status: "Unknown", score: 0 };
+    }
     _getScanner() { return new FileSystemScanner(this.projectRoot.toString(), this.analyst); }
     get_criticality_score(f: string) { return ContextHelpers.getCriticalityScore(f, this.map); }
 }

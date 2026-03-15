@@ -62,14 +62,5 @@ export class UpdateTransaction {
         this.active = false;
     }
 
-    /** Parity stub: execute */
-    public async execute(): Promise<void> { }
-    /** Parity stub: _sync_fetch */
-    private async _sync_fetch(): Promise<void> { }
-    /** Parity stub: _perform_update */
-    private async _perform_update(): Promise<void> { }
-    /** Parity stub: _handle_conflict */
-    private _handle_conflict(): void { }
-    /** Parity stub: _verify_system_integrity */
-    private _verify_system_integrity(): void { }
+
 }

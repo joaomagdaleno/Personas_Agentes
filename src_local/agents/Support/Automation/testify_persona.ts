@@ -1,27 +1,49 @@
-import { BaseActivePersona } from "../../base.ts";
-import type { AuditRule, StrategicFinding } from "../../base.ts";
 import { TestRunner } from "./test_runner";
 import { QualityAnalyst } from "./../Diagnostics/quality_analyst";
 import { PyramidAnalyst } from "./../Analysis/pyramid_analyst";
 import winston from "winston";
+import * as fs from "fs";
+import * as path from "path";
+import type { IAgent, ProjectContext, AuditRule, StrategicFinding } from "../../../core/types.ts";
+
+const logger = winston.child({ module: "Testify" });
 
 /**
  * Core: PhD in Software Verification & Reliability Strategy 🧪
  */
-export class TestifyPersona extends BaseActivePersona {
+export class TestifyPersona implements IAgent {
+    public readonly id: string = "testify";
+    public readonly role: string = "PhD QA Strategist";
+    public readonly stack: string = "TypeScript";
+    public readonly name: string = "Testify";
+    public readonly emoji: string = "🧪";
+    public readonly category: string = "Automation";
+
     private runner: TestRunner;
     private analyst: QualityAnalyst;
     private pyramidAnalyst: PyramidAnalyst;
+    private projectRoot: string;
 
     constructor(projectRoot?: string) {
-        super(projectRoot);
-        this.name = "Testify";
-        this.emoji = "🧪";
-        this.role = "PhD QA Strategist";
-        this.stack = "Correction"; 
+        this.projectRoot = projectRoot || process.cwd();
         this.runner = new TestRunner();
         this.analyst = new QualityAnalyst();
         this.pyramidAnalyst = new PyramidAnalyst();
+    }
+
+    async execute(context: ProjectContext): Promise<any> {
+        return []; // Implement default if needed
+    }
+
+    private async readProjectFile(rel: string): Promise<string | null> {
+        try {
+            const fullPath = path.join(this.projectRoot, rel);
+            if (!fs.existsSync(fullPath)) return null;
+            return fs.readFileSync(fullPath, "utf-8");
+        } catch (e: any) {
+            logger.warn(`⚠️ Error reading: ${rel}: ${e.message}`);
+            return null;
+        }
     }
 
     getAuditRules(): { extensions: string[]; rules: AuditRule[] } {
@@ -62,7 +84,10 @@ export class TestifyPersona extends BaseActivePersona {
                     file: file,
                     issue: `Exposição de Risco: O objetivo '${objective}' exige confiança. O módulo '${file}' é Matéria Escura.`,
                     severity: "HIGH",
-                    context: "Untested module"
+                    context: "Untested module",
+                    agent: this.id,
+                    role: this.role,
+                    emoji: this.emoji
                 };
             }
         }

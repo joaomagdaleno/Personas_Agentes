@@ -4,7 +4,6 @@ const PORT = 5173;
 const ENTRY_POINT = "./src/main.tsx";
 
 async function build() {
-  console.log("📦 Bundling with Bun...");
   const result = await Bun.build({
     entrypoints: [ENTRY_POINT],
     outdir: "./dist",
@@ -24,7 +23,7 @@ async function build() {
   return result.outputs[0];
 }
 
-console.log(`🚀 Sovereign Dashboard running at http://localhost:${PORT}`);
+console.log(`🚀 Sovereign Dashboard (Bun-native) → http://localhost:${PORT}`);
 
 Bun.serve({
   port: PORT,
@@ -33,13 +32,9 @@ Bun.serve({
     const path = url.pathname;
 
     if (path === "/" || path === "/index.html") {
-      let html = await Bun.file("index.html").text();
-      // Inject the bundle reference and remove the Vite-style module import
-      html = html.replace(
-        '<script type="module" src="/src/main.tsx"></script>',
-        '<script type="module" src="/bundle.js"></script>'
-      );
-      return new Response(html, { headers: { "Content-Type": "text/html" } });
+      return new Response(Bun.file("index.html"), {
+        headers: { "Content-Type": "text/html" },
+      });
     }
 
     if (path === "/bundle.js") {
@@ -48,20 +43,23 @@ Bun.serve({
       return new Response(output);
     }
 
-    // Serve static files (CSS, Assets)
-    const file = Bun.file(`.${path}`);
-    if (await file.exists()) {
-      return new Response(file);
+    // Serve static files from src/ (CSS) and public/
+    const candidates = [`.${path}`, `./src${path}`, `./public${path}`];
+    for (const candidate of candidates) {
+      const file = Bun.file(candidate);
+      if (await file.exists()) {
+        return new Response(file);
+      }
     }
 
-    // Fallback to index.html for SPA routing if needed
-    return new Response("Not Found", { status: 404 });
+    // SPA fallback
+    return new Response(Bun.file("index.html"), {
+      headers: { "Content-Type": "text/html" },
+    });
   },
 });
 
-// Watch for changes to trigger rebuild on next request (managed by build() call in fetch)
-watch("./src", { recursive: true }, (event, filename) => {
-  if (filename) {
-    console.log(`\u21ba Change detected in ${filename}`);
-  }
+// Watch for changes and log them (rebuild happens on next request)
+watch("./src", { recursive: true }, (_event, filename) => {
+  if (filename) console.log(`↺ Change: ${filename}`);
 });

@@ -4,6 +4,15 @@ import { HubManagerGRPC } from "../core/hub_manager_grpc.ts";
 
 const logger = winston.child({ module: "ContextMappingLogic" });
 
+interface IScanner {
+    getAnalyzableFiles(): AsyncIterable<Path>;
+}
+
+interface IEngine {
+    projectRoot: Path;
+    registerFile(path: Path, isChanged: boolean, goMapEntry?: any): Promise<void>;
+}
+
 /**
  * Lógica de Mapeamento de Contexto (gRPC Proxy).
  */
@@ -12,7 +21,7 @@ export class ContextMappingLogic {
 
     constructor(private hubManager?: HubManagerGRPC) { }
 
-    async processBatch(scanner: any, engine: any, goMap: Record<string, any> = {}): Promise<Record<string, string>> {
+    async processBatch(scanner: IScanner, engine: IEngine, goMap: Record<string, any> = {}): Promise<Record<string, string>> {
         const startTime = Date.now();
         const contentCache: Record<string, string> = {};
 
@@ -46,7 +55,7 @@ export class ContextMappingLogic {
         return contentCache;
     }
 
-    private async processBatchRust(filePaths: any[], projectRoot: any): Promise<any[]> {
+    private async processBatchRust(filePaths: Path[], projectRoot: Path): Promise<any[]> {
         const request = {
             file_paths: filePaths.map(p => p.relativeTo(projectRoot)),
             project_root: projectRoot.toString()
@@ -56,15 +65,15 @@ export class ContextMappingLogic {
         return await this.hubManager.batch(request);
     }
 
-    private async getAllFiles(scanner: any): Promise<any[]> {
-        const filePaths: any[] = [];
+    private async getAllFiles(scanner: IScanner): Promise<Path[]> {
+        const filePaths: Path[] = [];
         for await (const path of scanner.getAnalyzableFiles()) {
             filePaths.push(path);
         }
         return filePaths;
     }
 
-    private async readFilesIntoCache(filePaths: any[], engine: any, contentCache: Record<string, string>) {
+    private async readFilesIntoCache(filePaths: Path[], engine: IEngine, contentCache: Record<string, string>) {
         const concurrencyLimit = 20;
         for (let i = 0; i < filePaths.length; i += concurrencyLimit) {
             const batch = filePaths.slice(i, i + concurrencyLimit);
@@ -74,7 +83,7 @@ export class ContextMappingLogic {
         }
     }
 
-    private async readFile(path: any, engine: any, contentCache: Record<string, string>) {
+    private async readFile(path: Path, engine: IEngine, contentCache: Record<string, string>) {
         try {
             const rel = path.relativeTo(engine.projectRoot);
             contentCache[rel] = await Bun.file(path.toString()).text();
@@ -83,14 +92,14 @@ export class ContextMappingLogic {
         }
     }
 
-    private async registerAllFiles(contentCache: Record<string, string>, engine: any, goMap: Record<string, any>) {
+    private async registerAllFiles(contentCache: Record<string, string>, engine: IEngine, goMap: Record<string, any>) {
         for (const relPath in contentCache) {
             const normRel = relPath.replace(/\\/g, "/");
             await engine.registerFile(engine.projectRoot.join(relPath), false, goMap[normRel]);
         }
     }
 
-    getInitialInfo(path: Path, relPath: string, analyst: any): any {
+    getInitialInfo(path: Path, relPath: string, analyst: { mapComponentType(path: string): string }): any {
         const compType = analyst.mapComponentType(relPath);
         return {
             purpose: "Logic",
@@ -104,18 +113,5 @@ export class ContextMappingLogic {
             path: path.toString(),
             rel_path: relPath
         };
-    }
-
-    /** Parity: _pre_read_files — Pre-reads a list of files into a content cache. */
-    async _pre_read_files(filePaths: string[]): Promise<Record<string, string>> {
-        const cache: Record<string, string> = {};
-        await Promise.all(filePaths.map(async (fp) => {
-            try {
-                cache[fp] = await Bun.file(fp).text();
-            } catch {
-                logger.warn(`⚠️ [ContextMappingLogic] Falha ao pré-ler: ${fp}`);
-            }
-        }));
-        return cache;
     }
 }

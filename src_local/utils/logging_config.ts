@@ -92,14 +92,3 @@ export class SovereigntyLogger {
 }
 
 export const logger = SovereigntyLogger.getInstance();
-
-/** Parity stub: setup_logging */
-export function setup_logging(): void { configureLogging(); }
-
-/** Parity stub: log_performance */
-export function log_performance(msg: string): void { logger.log({ level: "INFO", persona: "System", message: msg }); }
-
-/** Parity: SimpleFormatter — Legacy alias for Winston formatting. */
-export class SimpleFormatter {
-    public format(record: any): string { return record.message; }
-}

@@ -22,6 +22,7 @@ import type {
     EmbedResponse
 } from "../proto/hub";
 import type { AuditFinding } from "./types";
+import { ENV_GATE } from "./env_gate";
 
 const logger = winston.child({ module: "HubManagerGRPC" });
 
@@ -32,9 +33,10 @@ const logger = winston.child({ module: "HubManagerGRPC" });
  */
 export class HubManagerGRPC {
     private client: HubServiceClient;
+    private transport: any;
     private ruleProvider: RuleProviderClient;
 
-    constructor(host: string = "localhost:50051") {
+    constructor(host: string = ENV_GATE.HUB_GRPC_HOST) {
         let channelCredentials: ChannelCredentials;
 
         // Auto-detect mTLS certificates
@@ -185,10 +187,10 @@ export class HubManagerGRPC {
     /**
      * Deduplicates a list of findings using the Rust analyzer.
      */
-    async deduplicate(findings: any[]) {
+    async deduplicate(findings: AuditFinding[]) {
         try {
             const { response } = await this.client.deduplicate({ findingsJson: JSON.stringify(findings) });
-            return JSON.parse(response.jsonData);
+            return JSON.parse(response.jsonData) as AuditFinding[];
         } catch (e) {
             logger.error(`❌ gRPC deduplicate failed: ${e}`);
             return [];
@@ -263,7 +265,7 @@ export class HubManagerGRPC {
     /**
      * Gets systemic metrics (coupling, instability) for a set of files.
      */
-    async getConnectivity(dependencyMap: Record<string, any>) {
+    async getConnectivity(dependencyMap: Record<string, string[]>) {
         try {
             const { response } = await this.client.getConnectivity({ dependencyMapJson: JSON.stringify(dependencyMap) });
             return JSON.parse(response.jsonData);
@@ -369,7 +371,7 @@ export class HubManagerGRPC {
     /**
      * Performs a native systemic health penalty calculation.
      */
-    async penalty(penaltyRequest: Record<string, unknown>): Promise<any> {
+    async penalty(penaltyRequest: Record<string, unknown>): Promise<Record<string, number> | null> {
         try {
             const { response } = await this.client.penalty({ penaltyJson: JSON.stringify(penaltyRequest) });
             return JSON.parse(response.jsonData);
@@ -382,7 +384,7 @@ export class HubManagerGRPC {
     /**
      * Performs a native high-fidelity health score calculation.
      */
-    async calculateScore(scoreRequest: Record<string, unknown>): Promise<any> {
+    async calculateScore(scoreRequest: Record<string, unknown>): Promise<Record<string, number> | null> {
         try {
             const { response } = await this.client.calculateScore({ scoreJson: JSON.stringify(scoreRequest) });
             return JSON.parse(response.jsonData);
@@ -545,5 +547,16 @@ export class HubManagerGRPC {
             logger.error(`❌ gRPC requestPeerReview failed: ${e}`);
             return null;
         }
+    }
+
+    /**
+     * Terminates the underlying gRPC transport.
+     */
+    close() {
+        // @ts-ignore - plugin-specific transport cleanup if available
+        if (this.transport && typeof this.transport.dispose === "function") {
+            (this.transport as any).dispose();
+        }
+        logger.info("🔌 HubManagerGRPC transport closed.");
     }
 }

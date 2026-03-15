@@ -1,7 +1,7 @@
 import winston from "winston";
 import { ScoreCalculator } from "./score_calculator";
 import { HubManagerGRPC } from "../../../core/hub_manager_grpc.ts";
-import type { ProjectContext, SystemMetrics, IAgent, QAData, SystemHealth360, AuditFinding } from "../../../core/types.ts";
+import type { ProjectContext, SystemMetrics, IAgent, QAData, SystemHealth360, GenericFinding } from "../../../core/types.ts";
 import { StabilityLedger } from "../../../utils/stability_ledger.ts";
 
 const logger = winston.child({ module: "HealthSynthesizer" });
@@ -20,14 +20,14 @@ export class HealthSynthesizer {
     /**
      * Síntese 360 do sistema.
      */
-    async synthesize360(context: ProjectContext, _metrics: SystemMetrics, _personas: IAgent[], _ledger: StabilityLedger, qaData: QAData): Promise<SystemHealth360> {
+    async synthesize360(context: ProjectContext, _metrics: SystemMetrics, _personas: IAgent[], _ledger: any, qaData: QAData): Promise<SystemHealth360> {
         logger.info("🩺 [Synthesizer] Sintetizando visão 360 do sistema via Hub Proxy...");
 
-        const allAlerts = (context as any).alerts || [];
+        const allAlerts = context.alerts || [];
         const mapData = context.map || {};
 
         // Calculate score asynchronously via gRPC
-        const { score, breakdown } = await this.calculator.calculateFinalScore(mapData, allAlerts, qaData, (context as any).cognitive);
+        const { score, breakdown } = await this.calculator.calculateFinalScore(mapData, allAlerts, qaData, context.cognitive);
 
         const { ScoringMetricsEngine } = await import("./scoring_metrics_engine");
         const metricsEngine = new ScoringMetricsEngine();
@@ -82,22 +82,13 @@ export class HealthSynthesizer {
             health_breakdown: breakdown,
             dark_matter: vitals.dark_matter,
             brittle_points: vitals.brittle_points,
-            entropy_map: enrichedMap as any, // Cast to any temporarily to avoid EntropyData mismatch
+            entropy_map: enrichedMap,
             confidence_matrix: qaData?.matrix || {},
-            objective: context.identity?.core_mission || "Manutenção de Integridade",
-            parity_stats: parityStats as any, // Cast to any temporarily to avoid ParityStats mismatch
-            predictor_metrics: (context as any).predictor_metrics || { score: 0, status: "Unknown", label: "⚪ Estado Neural Indefinido" },
+            objective: (context.identity as any)?.core_mission || "Manutenção de Integridade",
+            parity_stats: parityStats,
+            predictor_metrics: context.predictor_metrics || { score: 0, status: "Unknown", label: "⚪ Estado Neural Indefinido" },
             timestamp: new Date().toISOString(),
             status: score > 80 ? "HEALTHY" : (score > 50 ? "WARNING" : "CRITICAL")
         };
     }
-
-    /** Parity stubs for health_synthesizer.py */
-    public _calculate_rigorous_3_0(): number { return 0; }
-    public _get_maturity(): number { return 0; }
-    public _get_dark_matter(): number { return 0; }
-    public _get_brittle_points(): number { return 0; }
-    public trigger_reflexes(): void { }
-    public _check_dependency_reflex(): void { }
-    public get_topology_issues(): any[] { return []; }
 }

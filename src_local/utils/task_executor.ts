@@ -32,11 +32,6 @@ export class TaskExecutor {
         return results;
     }
 
-    /** Parity stub: run_parallel */
-    public async run_parallel(items: any[], fn: (item: any) => Promise<any>): Promise<any[]> {
-        return this.runParallel(fn, items);
-    }
-
     async runCommand(command: string, cwd: string = "."): Promise<{ stdout: string, stderr: string, exitCode: number }> {
         const proc = Bun.spawn(command.split(" "), {
             cwd,

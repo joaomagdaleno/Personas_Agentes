@@ -147,12 +147,4 @@ export class GitClient {
         return res.stdout.trim() === "";
     }
 
-    /** Parity: _run_git — Internal git runner stub. */
-    private async _run_git(args: string[]): Promise<string> {
-        const res = await this.run(args);
-        return res.stdout;
-    }
 }
-
-/** Parity: GitAutomaton — Legacy alias for GitClient. */
-export class GitAutomaton extends GitClient { }

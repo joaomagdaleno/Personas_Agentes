@@ -1,5 +1,6 @@
 import winston from "winston";
 import { HubManagerGRPC } from "../core/hub_manager_grpc.ts";
+import { ENV_GATE } from "../core/env_gate.ts";
 
 const logger = winston.child({ module: "HubWatcher" });
 
@@ -11,7 +12,7 @@ export class HubWatcher {
     private manager: HubManagerGRPC;
     private onChangeCallbacks: ((path: string) => void)[] = [];
 
-    constructor(host: string = "localhost:50051", manager?: HubManagerGRPC) {
+    constructor(host: string = ENV_GATE.HUB_GRPC_HOST, manager?: HubManagerGRPC) {
         this.manager = manager || new HubManagerGRPC(host);
     }
 
@@ -37,6 +38,11 @@ export class HubWatcher {
         } catch (err) {
             logger.warn(`⚠️ [HubWatcher] Falha ao iniciar streams gRPC: ${err}`);
         }
+    }
+
+    stop() {
+        this.manager.close();
+        logger.info(`📡 [HubWatcher] Conexão encerrada.`);
     }
 
 

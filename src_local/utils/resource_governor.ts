@@ -134,14 +134,4 @@ export class ResourceGovernor {
         ].join(" | ");
     }
 
-    /** Parity: _set_low_priority — Sets the current process to low priority via OS. */
-    private _set_low_priority(): void {
-        try {
-            const os = require("node:os");
-            os.setPriority(process.pid, os.constants.priority.PRIORITY_LOW);
-            logger.info("⚖️ [Governor] Prioridade ajustada para LOW.");
-        } catch (e) {
-            logger.warn(`⚠️ [Governor] Falha ao ajustar prioridade: ${e}`);
-        }
-    }
 }

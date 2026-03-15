@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import censusData from './assets/census.json';
 import { extractSection, parseTable } from './utils/md_parser';
 
 interface Persona {
@@ -55,8 +54,10 @@ interface Event {
 
 type Screen = 'fleet' | 'governance' | 'intelligence';
 
+const HUB_URL = "http://localhost:8080";
+
 function App() {
-  const [agents] = useState<Persona[]>(censusData.personas);
+  const [agents, setAgents] = useState<Persona[]>([]);
   const [thoughts, setThoughts] = useState<Event[]>([]);
   const [metrics, setMetrics] = useState<Metrics>({ cpu_usage: 0, memory_usage: 0, goroutines: 0, heavy_processes: [], timestamp: '' });
   const [connected, setConnected] = useState(false);
@@ -74,7 +75,7 @@ function App() {
   const thoughtStreamRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const eventSource = new EventSource('http://localhost:8080/events');
+    const eventSource = new EventSource(`${HUB_URL}/events`);
 
     eventSource.onopen = () => {
       setConnected(true);
@@ -104,16 +105,24 @@ function App() {
     return () => eventSource.close();
   }, []);
 
+  // Fetch census data from Hub
+  useEffect(() => {
+    fetch(`${HUB_URL}/census`)
+      .then(res => res.json())
+      .then(data => setAgents(data.personas || []))
+      .catch(err => console.error('Failed to fetch census:', err));
+  }, []);
+
   useEffect(() => {
     if (screen === 'governance') {
       // Fetch document list first
-      fetch('http://localhost:8080/governance/list')
+      fetch(`${HUB_URL}/governance/list`)
         .then(res => res.json())
         .then(data => setDocList(data.documents || []))
         .catch(err => console.error("Failed to fetch doc list:", err));
 
       // Fetch initial or selected doc
-      fetch(`http://localhost:8080/governance?file=${selectedDoc}`)
+      fetch(`${HUB_URL}/governance?file=${selectedDoc}`)
         .then(res => res.json())
         .then(data => setGovContent(data.content))
         .catch(err => console.error("Failed to fetch governance:", err));
@@ -137,7 +146,7 @@ function App() {
   }, [screen]);
 
   const fetchTasks = () => {
-    fetch('http://localhost:8080/intelligence/tasks')
+    fetch(`${HUB_URL}/intelligence/tasks`)
       .then(res => res.json())
       .then(data => setTasks(data || []))
       .catch(err => console.error("Failed to fetch tasks:", err));
@@ -145,8 +154,8 @@ function App() {
 
   const fetchMemories = () => {
     const url = memorySearch 
-      ? `http://localhost:8080/intelligence/memory?q=${encodeURIComponent(memorySearch)}`
-      : 'http://localhost:8080/intelligence/memory';
+      ? `${HUB_URL}/intelligence/memory?q=${encodeURIComponent(memorySearch)}`
+      : `${HUB_URL}/intelligence/memory`;
       
     fetch(url)
       .then(res => res.json())
@@ -272,7 +281,7 @@ function App() {
               <tbody>
                 {syncTable.map((row, i) => (
                   <tr key={i}>
-                    {Object.values(row).map((v: any, j) => <td key={j}>{v}</td>)}
+                    {Object.values(row).map((v, j) => <td key={j}>{String(v)}</td>)}
                   </tr>
                 ))}
               </tbody>
@@ -294,7 +303,7 @@ function App() {
               <tbody>
                 {roadmapTable.map((row, i) => (
                   <tr key={i}>
-                    {Object.values(row).map((v: any, j) => <td key={j}>{v}</td>)}
+                    {Object.values(row).map((v, j) => <td key={j}>{String(v)}</td>)}
                   </tr>
                 ))}
               </tbody>

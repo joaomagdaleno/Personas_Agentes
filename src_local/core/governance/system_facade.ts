@@ -100,27 +100,4 @@ export class PhdGovernanceSystem {
     public getPolicy(level: ComplianceLevel): CompliancePolicy {
         return POLICIES[level];
     }
-
-    // --- Parity Stubs (Delegated or No-op) ---
-
-    public async run_git_out(args: string[]): Promise<string> { return ""; }
-    public async run_git(args: string[]): Promise<void> { }
-    public is_valid_repo(): boolean { return true; }
-    public async discover_remote(): Promise<string> { return "origin"; }
-    public get_topology(): any { return {}; }
-    public get_metrics(): any { return {}; }
-    public transactional_rollback(): void { }
-    public _get_init(): void { }
-    public _test_quality(): void { }
-    public process_secure_payload(): void { }
-    public resolve_file(): void { }
-    public _resolve_cache(): void { }
-    public _resolve_json(): void { }
-    public _resolve_ours(): void { }
-    public _resolve_theirs(): void { }
-    public discover_files(): string[] { return []; }
-    public get_search_dirs(): string[] { return []; }
-    public should_process(): boolean { return true; }
-    public apply_test_veto(): boolean { return false; }
-    public is_rule_def(): boolean { return false; }
 }
