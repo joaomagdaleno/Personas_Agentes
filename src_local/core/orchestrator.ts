@@ -158,7 +158,7 @@ export class Orchestrator {
         this.director = new DirectorPersona(root);
         this.stabilityLedger = new StabilityLedger(root);
         this.historyAgent = new HistoryAgent(root);
-        this.taskQueue = new TaskQueue(root);
+        this.taskQueue = new TaskQueue(5, this.hubManager);
         this.memoryEngine = new MemoryEngine(root, this.hubManager);
         this.reflexEngine = new ReflexEngine();
         this.updateTransaction = new UpdateTransaction();
@@ -167,7 +167,7 @@ export class Orchestrator {
         this.worker = new TaskWorker(this.taskQueue, this);
         this.pruningAgent = new MemoryPruningAgent(root);
         this.predictorEngine = new PredictorEngine(root);
-        this.qaEngineer = new QAEngineerPersona(root.toString());
+        this.qaEngineer = new QAEngineerPersona(root);
     }
 
     private _registerAgents() {
