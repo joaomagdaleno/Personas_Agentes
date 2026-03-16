@@ -102,9 +102,12 @@ export interface IAgent {
 
     initialize?(): Promise<void>;
     execute(context: ProjectContext): Promise<any>;
+    performAudit?(objective?: string): Promise<GenericFinding[]>;
+    performStrategicAudit?(objective: any): Promise<GenericFinding[]>;
     teardown?(): Promise<void>;
     getMetadata?(): Record<string, unknown>;
     selfDiagnostic?(): Record<string, unknown>;
+    setContext?(context: any): void;
 }
 
 export interface IHealthSynthesizer {
@@ -183,14 +186,6 @@ export interface SovereignState {
     };
 }
 
-export interface OrchestratorTools {
-    synthesizer: IHealthSynthesizer;
-    strategist: any;
-    executor: any;
-    validator: any;
-    refiner: any;
-    healer: any;
-}
 
 export interface AdvancedMetrics {
     cyclomaticComplexity?: number;
@@ -210,4 +205,31 @@ export interface FileContextData {
     tsDepth?: number;
     advanced_metrics?: AdvancedMetrics;
     [key: string]: unknown; 
+}
+
+export interface ParameterContract {
+    name: string;
+    param_type: string;
+}
+
+export interface FunctionContract {
+    name: string;
+    cyclomatic_complexity: number;
+    cognitive_complexity: number;
+    nesting: number;
+    line: number;
+    params: ParameterContract[];
+    return_type: string;
+    is_async: boolean;
+}
+
+export interface AnalysisResult {
+    path: string;
+    cyclomatic_complexity: number;
+    cognitive_complexity: number;
+    functions: FunctionContract[];
+    dependencies: any;
+    loc: number;
+    sloc: number;
+    comments: number;
 }

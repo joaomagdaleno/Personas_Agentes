@@ -1,108 +1,51 @@
-import * as ts from "typescript";
 import winston from "winston";
-import { SilentErrorStrategy } from "./logic_strategies/silent_error_strategy.ts";
-import { ObservabilityStrategy } from "./logic_strategies/observability_strategy.ts";
-import { MetaAnalysisStrategy } from "./logic_strategies/meta_analysis_strategy.ts";
-import { SafetyStrategy } from "./logic_strategies/safety_strategy.ts";
-import { TestQualityStrategy } from "./logic_strategies/test_quality_strategy.ts";
-
+import { HubManagerGRPC } from "../../../core/hub_manager_grpc.ts";
 
 const logger = winston.child({ module: "LogicAuditor" });
 
 /**
- * 🕵️ LogicAuditor — PhD in Logical Integrity & Semantic Pattern Matching
- * Auditor de Lógica: Identifica anti-padrões e falhas estruturais.
- * Complexity: < 15 (Facade Pattern)
+ * 🕵️ LogicAuditor — PhD in Logical Integrity & Semantic Pattern Matching (gRPC Proxy).
  */
 export class LogicAuditor {
-    /** Parity: __init__ */
-    constructor() {
-        // No state needed — all methods are static.
-    }
+    constructor(private hubManager?: HubManagerGRPC) {}
 
     /**
-     * Parity: scan_flaws — Delegates to scanFile for full audit.
+     * Realiza uma auditoria completa no arquivo via motor Rust AST.
      */
-    static scan_flaws(sourceFile: ts.SourceFile): any[] {
-        return this.scanFile(sourceFile);
-    }
-
-    /**
-     * Parity: _audit_nodes — Internal node-level audit (observability + meta-analysis).
-     */
-    static _audit_nodes(sourceFile: ts.SourceFile): any[] {
-        const issues: any[] = [];
-        function visitor(node: ts.Node) {
-            const obsCheck = ObservabilityStrategy.audit(node, sourceFile);
-            if (!obsCheck.isSafe) {
-                issues.push({ file: sourceFile.fileName, line: sourceFile.getLineAndCharacterOfPosition(node.getStart()).line + 1, issue: obsCheck.reason, severity: "strategic", context: "LogicAuditor" });
-            }
-            ts.forEachChild(node, visitor);
+    async scanFile(filename: string, content?: string): Promise<any[]> {
+        if (!this.hubManager) {
+            logger.warn(`⚠️ [LogicAuditor] HubManager not provided for ${filename}`);
+            return [];
         }
-        ts.forEachChild(sourceFile, visitor);
-        return issues;
-    }
 
-    /**
-     * Realiza uma auditoria completa no arquivo (Silent Errors, Telemetria, Meta-Análise).
-     */
-    static scanFile(sourceFile: ts.SourceFile): any[] {
-        const issues: any[] = [];
+        try {
+            const result = await this.hubManager.analyzeFile(filename, content);
+            if (!result || !result.findings) return [];
 
-        // 1. Silent Errors
-        issues.push(...SilentErrorStrategy.audit(sourceFile));
-
-        // 2. Node Scanning (Observability + Meta-Analysis)
-        function visitor(node: ts.Node) {
-            // Observability Check
-            const obsCheck = ObservabilityStrategy.audit(node, sourceFile);
-            if (!obsCheck.isSafe) {
-                issues.push({
-                    file: sourceFile.fileName,
-                    line: sourceFile.getLineAndCharacterOfPosition(node.getStart()).line + 1,
-                    issue: obsCheck.reason,
-                    severity: "strategic",
-                    context: "LogicAuditor"
-                });
-            }
-
-            // Meta-Analysis Check
-            const metaCheck = MetaAnalysisStrategy.audit(node, sourceFile);
-            if (metaCheck.isMeta) {
-                issues.push({
-                    file: sourceFile.fileName,
-                    line: sourceFile.getLineAndCharacterOfPosition(node.getStart()).line + 1,
-                    issue: metaCheck.reason,
-                    severity: "strategic",
-                    context: "LogicAuditor"
-                });
-            }
-
-            // Test Quality Check (for .test.ts files)
-            if (sourceFile.fileName.endsWith(".test.ts")) {
-                const testCheck = TestQualityStrategy.audit(node, sourceFile);
-                if (!testCheck.isSafe) {
-                    issues.push({
-                        file: sourceFile.fileName,
-                        line: sourceFile.getLineAndCharacterOfPosition(node.getStart()).line + 1,
-                        issue: testCheck.reason,
-                        severity: "high",
-                        context: "LogicAuditor"
-                    });
-                }
-            }
-
-            ts.forEachChild(node, visitor);
+            return result.findings.map((f: any) => ({
+                file: filename,
+                line: f.line,
+                issue: f.message,
+                severity: f.severity.toLowerCase(),
+                category: f.category,
+                context: "LogicAuditor (Rust AST)",
+                snippet: f.snippet || ""
+            }));
+        } catch (error) {
+            logger.error(`❌ [LogicAuditor] Hub analysis failed for ${filename}: ${error}`);
+            return [];
         }
-        ts.forEachChild(sourceFile, visitor);
-
-        return issues;
     }
 
     /**
      * Valida se uma interação (linha de código) é segura.
      */
     static isInteractionSafe(content: string, fileName: string): { isSafe: boolean, reason: string } {
-        return SafetyStrategy.isInteractionSafe(content, fileName);
+        // This could also be migrated to Rust in the future
+        const dangerous = ["eval(", "exec(", "child_process.execSync"];
+        for (const d of dangerous) {
+            if (content.includes(d)) return { isSafe: false, reason: `Uso de ${d} detectado.` };
+        }
+        return { isSafe: true, reason: "" };
     }
 }

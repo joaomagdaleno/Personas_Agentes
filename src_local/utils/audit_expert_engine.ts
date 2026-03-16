@@ -1,4 +1,5 @@
 import winston from "winston";
+import { HubManagerGRPC } from "../core/hub_manager_grpc.ts";
 
 const logger = winston.child({ module: "AuditExpertEngine" });
 
@@ -7,7 +8,8 @@ export interface AuditEntry {
 }
 
 /**
- * 🔎 Audit Expert Engine — PhD in High-Fidelity Auditing.
+ * 🔎 Audit Expert Engine PhD (Hub-Injected).
+ * Engine responsável por consolidar achados do motor profundo nativo.
  */
 export class AuditExpertEngine {
     private readonly RISK_MAP: Record<string, string> = {
@@ -15,76 +17,39 @@ export class AuditExpertEngine {
         "global": "MEDIUM", "except": "MEDIUM", "catch": "MEDIUM", "debug": "LOW", "print": "LOW", "log": "LOW"
     };
 
-    public scanPattern(pattern: any, lines: string[], file: string, agentName: string, auditor: any, veto: any): AuditEntry[] {
-        const regex = new RegExp(pattern.regex, "i");
-        return lines
-            .map((_, i) => this.processLine(i, lines, pattern, regex, file, agentName, auditor, veto))
-            .filter((entry): entry is AuditEntry => entry !== null);
+    constructor(private hubManager?: HubManagerGRPC) {}
+
+    /**
+     * Agora utiliza o Hub gRPC em vez de loops de string locais.
+     */
+    public async scanDeep(file: string, content: string, agentName: string): Promise<AuditEntry[]> {
+        if (!this.hubManager) return [];
+
+        try {
+            const analysis = await this.hubManager.analyzeFile(file, content);
+            if (!analysis || !analysis.findings) return [];
+
+            const lines = content.split('\n');
+
+            return analysis.findings.map((f: any) => ({
+                file,
+                line: f.line,
+                issue: f.message,
+                severity: f.severity.toUpperCase(),
+                context: agentName,
+                snippet: this.getLinesWindow(lines, f.line - 1, f.message)
+            }));
+        } catch (e) {
+            logger.error(`❌ [AuditEngine] Erro na auditoria profunda de ${file}: ${e}`);
+            return [];
+        }
     }
 
-    private processLine(i: number, lines: string[], pattern: any, regex: RegExp, file: string, agentName: string, auditor: any, veto: any): AuditEntry | null {
-        const line = lines[i];
-        if (!this.isValidLine(line, regex)) return null;
-        if (this.shouldSkipByVetoOrReport(line, i, lines, pattern, file, agentName, veto)) return null;
-
-        const severity = this.determineSeverity(lines, i, pattern, auditor);
-        return severity ? this.createEntry(file, i, pattern, lines, agentName, severity) : null;
-    }
-
-    private isValidLine(line: string, regex: RegExp): boolean {
-        return line !== undefined && line !== null && regex.test(line);
-    }
-
-    private determineSeverity(lines: string[], i: number, pattern: any, auditor: any): string | null {
-        const defaultSeverity = (pattern.severity || "MEDIUM").toUpperCase();
-        if (!auditor?.isInteractionSafe) return defaultSeverity;
-
-        return this.consultAuditor(lines, i, pattern, auditor, defaultSeverity);
-    }
-
-    private consultAuditor(lines: string[], i: number, pattern: any, auditor: any, defaultSeverity: string): string | null {
-        const risk = this.mapRiskLevel(pattern.regex);
-        const safety = auditor.isInteractionSafe(lines.join("\n"), i + 1, risk);
-
-        if (safety?.isSafe) return null;
-        return this.extractSeverity(safety, defaultSeverity);
-    }
-
-    private shouldSkipByVetoOrReport(line: string, i: number, lines: string[], pattern: any, file: string, agentName: string, veto: any): boolean {
-        if (veto?.shouldSkip?.(line, pattern, { file, agentName })) return true;
-        return this.isErrorReport(lines, i);
-    }
-
-    private extractSeverity(safety: any, defaultSeverity: string): string {
-        const reason = safety?.reason || "";
-        const severityMarker = "Severity:";
-        if (!reason.includes(severityMarker)) return defaultSeverity;
-        return this.parseSeverityFromReason(reason, severityMarker, defaultSeverity);
-    }
-
-    private parseSeverityFromReason(reason: string, marker: string, def: string): string {
-        const parts = reason.split(marker);
-        const severityPart = parts[1]?.split("]")[0];
-        return severityPart ? severityPart.trim().toUpperCase() : def;
-    }
-
-    public createEntry(file: string, lineIdx: number, pattern: any, lines: string[], agentName: string, severityOverride?: string): AuditEntry {
-        const window = this.getSnippetWindow(lines[lineIdx]);
+    private getLinesWindow(lines: string[], lineIdx: number, issue: string): string {
+        const window = issue.toLowerCase().match(/if|try/) ? 5 : 2;
         const start = Math.max(0, lineIdx - window);
         const end = Math.min(lines.length, lineIdx + window + 1);
-
-        return {
-            file,
-            line: lineIdx + 1,
-            issue: pattern.issue,
-            severity: (severityOverride || pattern.severity || "MEDIUM").toUpperCase(),
-            context: agentName,
-            snippet: lines.slice(start, end).join("\n")
-        };
-    }
-
-    private getSnippetWindow(line: string): number {
-        return line?.match(/if|try/) ? 5 : 2;
+        return lines.slice(start, end).join("\n");
     }
 
     public mapRiskLevel(patternRegex: string | RegExp): string {
@@ -93,21 +58,10 @@ export class AuditExpertEngine {
         return found ? found[1] : "MEDIUM";
     }
 
-    public isErrorReport(lines: string[], idx: number): boolean {
-        const currentLine = lines[idx] || "";
-        const nextLine = lines[idx + 1] || "";
-        const combined = (currentLine + nextLine).toLowerCase();
-        return /logger\.error|logger\.exception|console\.error/.test(combined);
-    }
-
     public _validate_risk_level(level: string): string {
         const valid = ["CRITICAL", "HIGH", "MEDIUM", "LOW", "STRATEGIC"];
         const upper = (level || "MEDIUM").toUpperCase();
         return valid.includes(upper) ? upper : "MEDIUM";
-    }
-
-    public _parse_severity(pattern: any): string {
-        return this._validate_risk_level(pattern.severity || "MEDIUM");
     }
 }
 

@@ -4,11 +4,36 @@ use serde::{Serialize, Deserialize};
 use crate::{cache, dependencies, fingerprint};
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct ParameterInfo {
+    pub name: String,
+    pub param_type: String,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct FunctionMetric {
     pub name: String,
     pub cyclomatic_complexity: i32,
     pub cognitive_complexity: i32,
     pub nesting: i32,
+    pub line: usize,
+    pub params: Vec<ParameterInfo>,
+    pub return_type: String,
+    pub is_async: bool,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct LogicalFinding {
+    pub category: String, // "SILENT_ERROR", "DANGEROUS_CALL", "COMPLEXITY", "SECURITY"
+    pub message: String,
+    pub severity: String,
+    pub line: usize,
+    pub snippet: String,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct SymbolInfo {
+    pub name: String,
+    pub kind: String, // "class", "function", "interface"
     pub line: usize,
 }
 
@@ -18,6 +43,8 @@ pub struct AnalysisResult {
     pub cyclomatic_complexity: i32,
     pub cognitive_complexity: i32,
     pub functions: Vec<FunctionMetric>,
+    pub symbols: Vec<SymbolInfo>,
+    pub findings: Vec<LogicalFinding>,
     pub dependencies: dependencies::DependencyInfo,
     pub loc: usize,
     pub sloc: usize,
@@ -60,18 +87,80 @@ pub fn run_analyze_core(path: &str, source_code: String) -> AnalysisResult {
     let sloc = non_empty.saturating_sub(comments);
 
     let mut functions = Vec::new();
+    let mut symbols = Vec::new();
+    let mut findings = Vec::new();
     
-    // Find all functions
-    let _cursor = root_node.walk();
+    // Process AST for Symbols and Findings
     let mut stack = vec![root_node];
     while let Some(node) = stack.pop() {
         let kind = node.kind();
+        
+        // --- 1. Symbol Extraction ---
+        if ["class_declaration", "interface_declaration", "enum_declaration", "function_declaration", "method_definition"].contains(&kind) {
+            if let Some(name_node) = node.child_by_field_name("name") {
+                if let Ok(name) = name_node.utf8_text(source_bytes) {
+                    symbols.push(SymbolInfo {
+                        name: name.to_string(),
+                        kind: kind.replace("_declaration", "").replace("_definition", ""),
+                        line: node.start_position().row + 1,
+                    });
+                }
+            }
+        }
+
+        // --- 2. Logical Findings (Deep Analysis) ---
+        match kind {
+            "catch_clause" => {
+               if let Some(body) = node.child_by_field_name("body") {
+                   if body.child_count() <= 2 { 
+                       findings.push(LogicalFinding {
+                           category: "SILENT_ERROR".to_string(),
+                           message: "Try-catch vazio detectado. Erro pode estar sendo silenciado.".to_string(),
+                           severity: "WARNING".to_string(),
+                           line: node.start_position().row + 1,
+                           snippet: node.utf8_text(source_bytes).unwrap_or("").chars().take(100).collect(),
+                       });
+                   }
+               }
+            }
+            "call_expression" => {
+                if let Some(func_node) = node.child_by_field_name("function") {
+                    if let Ok(func_text) = func_node.utf8_text(source_bytes) {
+                        let dangerous = ["eval", "exec", "execSync", "spawnSync", "String.fromCharCode"];
+                        if dangerous.contains(&func_text) {
+                            findings.push(LogicalFinding {
+                                category: "SECURITY".to_string(),
+                                message: format!("Uso de função perigosa ou potencialmente ofuscada: {}", func_text),
+                                severity: "CRITICAL".to_string(),
+                                line: node.start_position().row + 1,
+                                snippet: node.utf8_text(source_bytes).unwrap_or("").chars().take(100).collect(),
+                            });
+                        }
+                    }
+                }
+            }
+            "string" | "string_fragment" => {
+                if let Ok(text) = node.utf8_text(source_bytes) {
+                    if text.contains("\\x") || (text.len() > 50 && is_likely_base64(text)) {
+                         findings.push(LogicalFinding {
+                            category: "OBFUSCATION".to_string(),
+                            message: "String potencialmente ofuscada (Hex ou Base64) detectada.".to_string(),
+                            severity: "WARNING".to_string(),
+                            line: node.start_position().row + 1,
+                            snippet: text.chars().take(50).collect(),
+                        });
+                    }
+                }
+            }
+            _ => {}
+        }
+
+        // --- 3. Function Metrics (Existing flow) ---
         if ["function_declaration", "method_definition", "arrow_function", "function"].contains(&kind) {
             let mut name = "anonymous".to_string();
             if let Some(n) = node.child_by_field_name("name") {
                 name = n.utf8_text(source_bytes).unwrap_or("anonymous").to_string();
             } else if kind == "arrow_function" {
-                // Look for variable name in parent
                 if let Some(parent) = node.parent() {
                     if parent.kind() == "variable_declarator" {
                         if let Some(n) = parent.child_by_field_name("name") {
@@ -86,16 +175,54 @@ pub fn run_analyze_core(path: &str, source_code: String) -> AnalysisResult {
             let mut nesting = 0;
             collect_metrics(node, 0, &mut cyclomatic, &mut cognitive, &mut nesting);
 
+            let mut params = Vec::new();
+            let mut return_type = "any".to_string();
+            let mut is_async = false;
+
+            if node.child_by_field_name("async").is_some() || node.utf8_text(source_bytes).unwrap_or("").starts_with("async") {
+                is_async = true;
+            }
+
+            if let Some(params_node) = node.child_by_field_name("parameters") {
+                let mut p_cursor = params_node.walk();
+                if p_cursor.goto_first_child() {
+                    loop {
+                        let p_node = p_cursor.node();
+                        if ["required_parameter", "optional_parameter", "parameter"].contains(&p_node.kind()) {
+                            let mut p_name = p_node.utf8_text(source_bytes).unwrap_or("param").to_string();
+                            let mut p_type = "any".to_string();
+                            
+                            if let Some(name_node) = p_node.child_by_field_name("pattern") {
+                                p_name = name_node.utf8_text(source_bytes).unwrap_or("param").to_string();
+                            }
+                            
+                            if let Some(type_node) = p_node.child_by_field_name("type") {
+                                p_type = type_node.utf8_text(source_bytes).unwrap_or("any").to_string();
+                            }
+
+                            params.push(ParameterInfo { name: p_name, param_type: p_type });
+                        }
+                        if !p_cursor.goto_next_sibling() { break; }
+                    }
+                }
+            }
+
+            if let Some(ret_node) = node.child_by_field_name("return_type") {
+                return_type = ret_node.utf8_text(source_bytes).unwrap_or("any").to_string();
+            }
+
             functions.push(FunctionMetric {
                 name,
                 cyclomatic_complexity: cyclomatic,
                 cognitive_complexity: cognitive,
                 nesting,
                 line: node.start_position().row + 1,
+                params,
+                return_type,
+                is_async,
             });
         }
         
-        // Push children to stack
         let mut child_cursor = node.walk();
         if child_cursor.goto_first_child() {
             loop {
@@ -115,6 +242,8 @@ pub fn run_analyze_core(path: &str, source_code: String) -> AnalysisResult {
         cyclomatic_complexity,
         cognitive_complexity,
         functions,
+        symbols,
+        findings,
         dependencies: deps,
         loc,
         sloc,
@@ -219,6 +348,22 @@ fn count_comments_ast(cursor: &mut tree_sitter::TreeCursor, count: &mut usize) {
         cursor.goto_parent();
     }
 }
+fn is_likely_base64(s: &str) -> bool {
+    if s.is_empty() || s.contains(' ') || s.contains('\n') || s.contains('\r') {
+        return false;
+    }
+    
+    // Check characters
+    for c in s.chars() {
+        if !c.is_ascii_alphanumeric() && c != '+' && c != '/' && c != '=' {
+            return false;
+        }
+    }
+    
+    // Heuristic: high entropy or suspicious length
+    s.len() > 16 && (s.len() % 4 == 0 || s.ends_with('='))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

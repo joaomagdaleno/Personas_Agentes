@@ -121,4 +121,18 @@ export class StabilityLedger {
     getFileData(filePath: string): any {
         return this.persistence.getFileMetadata(this.ledger, filePath);
     }
+
+    registerDisparity(disparity: { source: string, target: string, discrepancies: string[], severity: string }) {
+        const file = disparity.source.replace(/\\/g, "/");
+        const entry = this.ledger[file] || { occurrences: 0, history: [], status: "UNSTABLE" };
+        
+        entry.status = "DISPARITY";
+        entry.occurrences += 1;
+        entry.history.push(`[PARITY ERROR] Disparidade com ${disparity.target}: ${disparity.discrepancies.join("; ")}`);
+        entry.meta = { ...entry.meta, lastSiblingDisparity: disparity.target, severity: disparity.severity };
+
+        this.ledger[file] = entry;
+        this.persistence.saveLedger(this.ledger);
+        logger.warn(`⚖️ [Ledger] Disparidade registrada para ${file}`);
+    }
 }

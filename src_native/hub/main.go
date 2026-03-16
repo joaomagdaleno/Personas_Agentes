@@ -40,6 +40,7 @@ import (
 	"github.com/shirou/gopsutil/v3/mem"
 	"github.com/shirou/gopsutil/v3/process"
 	_ "modernc.org/sqlite"
+	"google.golang.org/grpc/metadata"
 )
 
 const (
@@ -61,7 +62,33 @@ type FileAnalysis struct {
 
 // analyzeFileMetadata removed: using Rust scanner instead
 
-func (h *Hub) runRust(command string, args ...string) (string, error) {
+func getTraceID(ctx context.Context) string {
+	if md, ok := metadata.FromIncomingContext(ctx); ok {
+		if ids := md.Get("x-trace-id"); len(ids) > 0 {
+			return ids[0]
+		}
+	}
+	return "no-trace"
+}
+
+func (h *Hub) withRetry(operation func() error) error {
+	maxRetries := 3
+	for i := 0; i < maxRetries; i++ {
+		err := operation()
+		if err == nil {
+			return nil
+		}
+		if i == maxRetries-1 {
+			return err
+		}
+		wait := time.Duration(math.Pow(2, float64(i))) * 500 * time.Millisecond
+		log.Printf("⚠️ gRPC call failed, retrying in %v (Attempt %d/%d): %v", wait, i+1, maxRetries, err)
+		time.Sleep(wait)
+	}
+	return nil
+}
+
+func (h *Hub) runRust(parentCtx context.Context, command string, args ...string) (string, error) {
 	if h.rustClient == nil {
 		// Fallback to exec if client not initialized
 		fullArgs := append([]string{command}, args...)
@@ -76,50 +103,55 @@ func (h *Hub) runRust(command string, args ...string) (string, error) {
 		return string(output), nil
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	traceID := getTraceID(parentCtx)
+	ctx, cancel := context.WithTimeout(parentCtx, 30*time.Second)
 	defer cancel()
+	
+	// Inject trace ID into outgoing metadata
+	ctx = metadata.AppendToOutgoingContext(ctx, "x-trace-id", traceID)
 
 	var res *pb.AnalyzeResponse
 	var err error
 
-	// Hub.proto defines many RPCs that take AnalyzeRequest and return AnalyzeResponse.
-	// We can map many "command-style" calls to these RPCs.
-	switch command {
-	case "analyze":
-		res, err = h.rustClient.AnalyzeFile(ctx, &pb.AnalyzeRequest{File: args[0]})
-	case "fingerprint":
-		res, err = h.rustClient.Fingerprint(ctx, &pb.AnalyzeRequest{File: args[0]})
-	case "deps":
-		res, err = h.rustClient.GetDependencies(ctx, &pb.AnalyzeRequest{File: args[0]})
-	case "dna":
-		res, err = h.rustClient.DiscoverIdentity(ctx, &pb.AnalyzeRequest{File: args[0]})
-	case "index":
-		res, err = h.rustClient.IndexProject(ctx, &pb.AnalyzeRequest{File: args[0]})
-	case "topology":
-		res, err = h.rustClient.ScanTopology(ctx, &pb.AnalyzeRequest{File: args[0]})
-	case "context":
-		res, err = h.rustClient.GetContext(ctx, &pb.AnalyzeRequest{File: args[0]})
-	case "score":
-		res, err = h.rustClient.CalculateScore(ctx, &pb.ScoreRequest{ScoreJson: args[0]})
-	case "coverage":
-		res, err = h.rustClient.AuditCoverage(ctx, &pb.CoverageRequest{CoverageJson: args[0]})
-	case "audit":
-		res, err = h.rustClient.Audit(ctx, &pb.AuditRequest{AuditJson: args[0]})
-	case "graph-get":
-		res, err = h.rustClient.GetKnowledgeGraph(ctx, &pb.GraphRequest{GraphJson: args[0]})
-	case "graph-query":
-		res, err = h.rustClient.QueryKnowledgeGraph(ctx, &pb.QueryRequest{QueryJson: args[0]})
-	default:
-		return "", fmt.Errorf("unsupported command via gRPC sidecar: %s", command)
-	}
+	err = h.withRetry(func() error {
+		switch command {
+		case "analyze":
+			res, err = h.rustClient.AnalyzeFile(ctx, &pb.AnalyzeRequest{File: args[0]})
+		case "fingerprint":
+			res, err = h.rustClient.Fingerprint(ctx, &pb.AnalyzeRequest{File: args[0]})
+		case "deps":
+			res, err = h.rustClient.GetDependencies(ctx, &pb.AnalyzeRequest{File: args[0]})
+		case "dna":
+			res, err = h.rustClient.DiscoverIdentity(ctx, &pb.AnalyzeRequest{File: args[0]})
+		case "index":
+			res, err = h.rustClient.IndexProject(ctx, &pb.AnalyzeRequest{File: args[0]})
+		case "topology":
+			res, err = h.rustClient.ScanTopology(ctx, &pb.AnalyzeRequest{File: args[0]})
+		case "context":
+			res, err = h.rustClient.GetContext(ctx, &pb.AnalyzeRequest{File: args[0]})
+		case "score":
+			res, err = h.rustClient.CalculateScore(ctx, &pb.ScoreRequest{ScoreJson: args[0]})
+		case "coverage":
+			res, err = h.rustClient.AuditCoverage(ctx, &pb.CoverageRequest{CoverageJson: args[0]})
+		case "audit":
+			res, err = h.rustClient.Audit(ctx, &pb.AuditRequest{AuditJson: args[0]})
+		case "graph-get":
+			res, err = h.rustClient.GetKnowledgeGraph(ctx, &pb.GraphRequest{GraphJson: args[0]})
+		case "graph-query":
+			res, err = h.rustClient.QueryKnowledgeGraph(ctx, &pb.QueryRequest{QueryJson: args[0]})
+		default:
+			return fmt.Errorf("unsupported command: %s", command)
+		}
+		return err
+	})
 
 	if err != nil {
-		return "", fmt.Errorf("grpc sidecar error: %w", err)
+		return "", fmt.Errorf("grpc sidecar error after retries: %w", err)
 	}
 	return res.JsonData, nil
 }
 
-func (h *Hub) runRustWithStdin(content string, command string, args ...string) (string, error) {
+func (h *Hub) runRustWithStdin(parentCtx context.Context, content string, command string, args ...string) (string, error) {
 	if h.rustClient == nil {
 		// Fallback to exec if client not initialized
 		fullArgs := append([]string{command}, args...)
@@ -135,37 +167,43 @@ func (h *Hub) runRustWithStdin(content string, command string, args ...string) (
 		return string(output), nil
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+	traceID := getTraceID(parentCtx)
+	ctx, cancel := context.WithTimeout(parentCtx, 60*time.Second)
 	defer cancel()
+	
+	ctx = metadata.AppendToOutgoingContext(ctx, "x-trace-id", traceID)
 
 	var res *pb.AnalyzeResponse
 	var err error
 
-	switch command {
-	case "analyze":
-		file := ""
-		if len(args) > 0 {
-			file = args[0]
+	err = h.withRetry(func() error {
+		switch command {
+		case "analyze":
+			file := ""
+			if len(args) > 0 {
+				file = args[0]
+			}
+			res, err = h.rustClient.AnalyzeFile(ctx, &pb.AnalyzeRequest{File: file, Content: content})
+		case "fingerprint":
+			file := ""
+			if len(args) > 0 {
+				file = args[0]
+			}
+			res, err = h.rustClient.Fingerprint(ctx, &pb.AnalyzeRequest{File: file, Content: content})
+		case "heal":
+			res, err = h.rustClient.ExecuteHealing(ctx, &pb.HealingPlan{IssueDescription: content})
+		case "connectivity":
+			res, err = h.rustClient.GetConnectivity(ctx, &pb.ConnectivityRequest{DependencyMapJson: content})
+		case "batch":
+			res, err = h.rustClient.Batch(ctx, &pb.BatchRequest{BatchJson: content})
+		default:
+			return fmt.Errorf("unsupported stdin command: %s", command)
 		}
-		res, err = h.rustClient.AnalyzeFile(ctx, &pb.AnalyzeRequest{File: file, Content: content})
-	case "fingerprint":
-		file := ""
-		if len(args) > 0 {
-			file = args[0]
-		}
-		res, err = h.rustClient.Fingerprint(ctx, &pb.AnalyzeRequest{File: file, Content: content})
-	case "heal":
-		res, err = h.rustClient.ExecuteHealing(ctx, &pb.HealingPlan{IssueDescription: content})
-	case "connectivity":
-		res, err = h.rustClient.GetConnectivity(ctx, &pb.ConnectivityRequest{DependencyMapJson: content})
-	case "batch":
-		res, err = h.rustClient.Batch(ctx, &pb.BatchRequest{BatchJson: content})
-	default:
-		return "", fmt.Errorf("unsupported stdin command via gRPC sidecar: %s", command)
-	}
+		return err
+	})
 
 	if err != nil {
-		return "", fmt.Errorf("grpc sidecar error: %w", err)
+		return "", fmt.Errorf("grpc sidecar error after retries: %w", err)
 	}
 	return res.JsonData, nil
 }
@@ -184,8 +222,8 @@ func (h *Hub) runScanner(args ...string) (string, error) {
 	return string(output), nil
 }
 
-func (h *Hub) runAnalysis(path string) interface{} {
-	output, err := h.runRust("analyze", path)
+func (h *Hub) runAnalysis(ctx context.Context, path string) interface{} {
+	output, err := h.runRust(ctx, "analyze", path)
 	if err != nil {
 		log.Printf("Analyzer error for %s: %v", path, err)
 		return nil
@@ -429,21 +467,31 @@ func (h *Hub) startSentinel() {
 			cpuVal = cpuPerc[0]
 		}
 
-		procs, _ := process.Processes()
-		var heavy []ProcessInfo
-		for _, p := range procs {
-			m, _ := p.MemoryInfo()
-			if m != nil {
-				memMB := float64(m.RSS) / (1024 * 1024)
-				if memMB > 200 {
-					name, _ := p.Name()
-					cpuP, _ := p.CPUPercent()
-					heavy = append(heavy, ProcessInfo{
-						Name:   name,
-						PID:    p.Pid,
-						MemMB:  memMB,
-						CPUPct: cpuP,
-					})
+		h.metricsLock.Lock()
+		h.metricsLock.Unlock()
+
+		procs := []ProcessInfo{}
+		// Otimização: Só varre processos pesados se o CPU estiver alto (>50%) ou a cada 30s
+		if cpuVal > 50.0 || time.Now().Unix()%30 == 0 {
+			allProcs, _ := process.Processes()
+			for _, p := range allProcs {
+				m, _ := p.MemoryInfo()
+				if m != nil {
+					memMB := float64(m.RSS) / (1024 * 1024)
+					if memMB > 250 { // Subiu threshold para 250MB
+						name, _ := p.Name()
+						cpuP, _ := p.CPUPercent()
+						procs = append(procs, ProcessInfo{
+							Name:   name,
+							PID:    p.Pid,
+							MemMB:  memMB,
+							CPUPct: cpuP,
+						})
+					}
+				}
+				// Break para não travar o loop se houver processos demais (limite de 10 pesados)
+				if len(procs) >= 10 {
+					break
 				}
 			}
 		}
@@ -453,7 +501,7 @@ func (h *Hub) startSentinel() {
 			CPUUsage:    cpuVal,
 			MemoryUsage: memStat.UsedPercent,
 			GoRoutines:  runtime.NumGoroutine(),
-			HeavyProcs:  heavy,
+			HeavyProcs:  procs,
 			Timestamp:   time.Now(),
 		}
 		h.metricsLock.Unlock()
@@ -603,28 +651,9 @@ func (h *Hub) ScanProject(ctx context.Context, in *pb.ScanRequest) (*pb.ScanResp
 		return h.rustClient.ScanProject(ctx, in)
 	}
 
-	output, err := h.runScanner(in.Directory, "--root", in.Root)
-	if err != nil {
-		return nil, err
-	}
-
-	var analysisResults []FileAnalysis
-	if err := json.Unmarshal([]byte(output), &analysisResults); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal scanner output: %w", err)
-	}
-
-	var results []*pb.FileMetadata
-	for _, a := range analysisResults {
-		results = append(results, &pb.FileMetadata{
-			Path:     a.Path,
-			Loc:      int32(a.Loc),
-			Sloc:     int32(a.Sloc),
-			Comments: int32(a.Comments),
-			Intent:   a.Intent,
-		})
-	}
-
-	return &pb.ScanResponse{Files: results}, nil
+	errMsg := "🚨 Critical: Rust Sidecar not available for ScanProject. Scanning via shell is deprecated."
+	log.Printf(errMsg)
+	return nil, fmt.Errorf(errMsg)
 }
 
 func (h *Hub) AnalyzeFile(ctx context.Context, in *pb.AnalyzeRequest) (*pb.AnalyzeResponse, error) {
@@ -642,9 +671,9 @@ func (h *Hub) AnalyzeFile(ctx context.Context, in *pb.AnalyzeRequest) (*pb.Analy
 		data, err = h.runScanner("-file", in.File)
 	} else {
 		if in.Content != "" {
-			data, err = h.runRustWithStdin(in.Content, "analyze", "-", in.File)
+			data, err = h.runRustWithStdin(ctx, in.Content, "analyze", "-", in.File)
 		} else {
-			data, err = h.runRust("analyze", in.File)
+			data, err = h.runRust(ctx, "analyze", in.File)
 		}
 	}
 
@@ -672,11 +701,11 @@ func (h *Hub) AnalyzeStream(stream pb.HubService_AnalyzeStreamServer) error {
 		if ext == ".go" || ext == ".kt" || ext == ".dart" {
 			data, processErr = h.runScanner("-file", in.File)
 		} else {
-			if in.Content != "" {
-				data, processErr = h.runRustWithStdin(in.Content, "analyze", "-", in.File)
-			} else {
-				data, processErr = h.runRust("analyze", in.File)
-			}
+		if in.Content != "" {
+			data, processErr = h.runRustWithStdin(stream.Context(), in.Content, "analyze", "-", in.File)
+		} else {
+			data, processErr = h.runRust(stream.Context(), "analyze", in.File)
+		}
 		}
 
 		if processErr != nil {
@@ -691,7 +720,7 @@ func (h *Hub) AnalyzeStream(stream pb.HubService_AnalyzeStreamServer) error {
 }
 
 func (h *Hub) GetDependencies(ctx context.Context, in *pb.AnalyzeRequest) (*pb.AnalyzeResponse, error) {
-	data, err := h.runRust("deps", in.File)
+	data, err := h.runRust(ctx, "deps", in.File)
 	if err != nil {
 		return nil, err
 	}
@@ -704,7 +733,7 @@ func (h *Hub) Deduplicate(ctx context.Context, in *pb.DeduplicateRequest) (*pb.A
 	os.WriteFile(tmpFile, []byte(in.FindingsJson), 0644)
 	defer os.Remove(tmpFile)
 
-	data, err := h.runRust("deduplicate", tmpFile)
+	data, err := h.runRust(ctx, "deduplicate", tmpFile)
 	if err != nil {
 		return nil, err
 	}
@@ -715,9 +744,9 @@ func (h *Hub) Fingerprint(ctx context.Context, in *pb.AnalyzeRequest) (*pb.Analy
 	var data string
 	var err error
 	if in.Content != "" {
-		data, err = h.runRustWithStdin(in.Content, "fingerprint", "-", in.File)
+		data, err = h.runRustWithStdin(ctx, in.Content, "fingerprint", "-", in.File)
 	} else {
-		data, err = h.runRust("fingerprint", in.File)
+		data, err = h.runRust(ctx, "fingerprint", in.File)
 	}
 	if err != nil {
 		return nil, err
@@ -726,7 +755,7 @@ func (h *Hub) Fingerprint(ctx context.Context, in *pb.AnalyzeRequest) (*pb.Analy
 }
 
 func (h *Hub) DiscoverIdentity(ctx context.Context, in *pb.AnalyzeRequest) (*pb.AnalyzeResponse, error) {
-	data, err := h.runRust("dna", in.File)
+	data, err := h.runRust(ctx, "dna", in.File)
 	if err != nil {
 		return nil, err
 	}
@@ -734,7 +763,7 @@ func (h *Hub) DiscoverIdentity(ctx context.Context, in *pb.AnalyzeRequest) (*pb.
 }
 
 func (h *Hub) IndexProject(ctx context.Context, in *pb.AnalyzeRequest) (*pb.AnalyzeResponse, error) {
-	data, err := h.runRust("index", in.File)
+	data, err := h.runRust(ctx, "index", in.File)
 	if err != nil {
 		return nil, err
 	}
@@ -742,7 +771,7 @@ func (h *Hub) IndexProject(ctx context.Context, in *pb.AnalyzeRequest) (*pb.Anal
 }
 
 func (h *Hub) ScanTopology(ctx context.Context, in *pb.AnalyzeRequest) (*pb.AnalyzeResponse, error) {
-	data, err := h.runRust("topology", in.File)
+	data, err := h.runRust(ctx, "topology", in.File)
 	if err != nil {
 		return nil, err
 	}
@@ -750,7 +779,7 @@ func (h *Hub) ScanTopology(ctx context.Context, in *pb.AnalyzeRequest) (*pb.Anal
 }
 
 func (h *Hub) GetContext(ctx context.Context, in *pb.AnalyzeRequest) (*pb.AnalyzeResponse, error) {
-	data, err := h.runRust("context", in.File)
+	data, err := h.runRust(ctx, "context", in.File)
 	if err != nil {
 		return nil, err
 	}
@@ -765,7 +794,7 @@ func (h *Hub) GetConnectivity(ctx context.Context, in *pb.ConnectivityRequest) (
 	}
 	defer os.Remove(tmpFile)
 
-	data, err := h.runRust("connectivity", tmpFile)
+	data, err := h.runRust(ctx, "connectivity", tmpFile)
 	if err != nil {
 		return nil, err
 	}
@@ -780,7 +809,7 @@ func (h *Hub) Audit(ctx context.Context, in *pb.AuditRequest) (*pb.AnalyzeRespon
 	}
 	defer os.Remove(tmpFile)
 
-	data, err := h.runRust("audit", tmpFile)
+	data, err := h.runRust(ctx, "audit", tmpFile)
 	if err != nil {
 		return nil, err
 	}
@@ -795,7 +824,7 @@ func (h *Hub) Batch(ctx context.Context, in *pb.BatchRequest) (*pb.AnalyzeRespon
 	}
 	defer os.Remove(tmpFile)
 
-	data, err := h.runRust("batch", tmpFile)
+	data, err := h.runRust(ctx, "batch", tmpFile)
 	if err != nil {
 		return nil, err
 	}
@@ -817,7 +846,7 @@ func (h *Hub) Reason(ctx context.Context, in *pb.ReasonRequest) (*pb.AnalyzeResp
 	}
 	defer os.Remove(tmpFile)
 
-	data, err := h.runRust("reason", tmpFile)
+	data, err := h.runRust(ctx, "reason", tmpFile)
 	if err != nil {
 		return nil, err
 	}
@@ -832,7 +861,7 @@ func (h *Hub) Patterns(ctx context.Context, in *pb.PatternRequest) (*pb.AnalyzeR
 	}
 	defer os.Remove(tmpFile)
 
-	data, err := h.runRust("patterns", tmpFile)
+	data, err := h.runRust(ctx, "patterns", tmpFile)
 	if err != nil {
 		return nil, err
 	}
@@ -847,7 +876,7 @@ func (h *Hub) Penalty(ctx context.Context, in *pb.PenaltyRequest) (*pb.AnalyzeRe
 	}
 	defer os.Remove(tmpFile)
 
-	data, err := h.runRust("penalty", tmpFile)
+	data, err := h.runRust(ctx, "penalty", tmpFile)
 	if err != nil {
 		return nil, err
 	}
@@ -862,7 +891,7 @@ func (h *Hub) CalculateScore(ctx context.Context, in *pb.ScoreRequest) (*pb.Anal
 	}
 	defer os.Remove(tmpFile)
 
-	data, err := h.runRust("score", tmpFile)
+	data, err := h.runRust(ctx, "score", tmpFile)
 	if err != nil {
 		return nil, err
 	}
@@ -877,7 +906,7 @@ func (h *Hub) AuditCoverage(ctx context.Context, in *pb.CoverageRequest) (*pb.An
 	}
 	defer os.Remove(tmpFile)
 
-	data, err := h.runRust("coverage", tmpFile)
+	data, err := h.runRust(ctx, "coverage", tmpFile)
 	if err != nil {
 		return nil, err
 	}
@@ -885,7 +914,7 @@ func (h *Hub) AuditCoverage(ctx context.Context, in *pb.CoverageRequest) (*pb.An
 }
 
 func (h *Hub) GetKnowledgeGraph(ctx context.Context, in *pb.GraphRequest) (*pb.AnalyzeResponse, error) {
-	data, err := h.runRust("graph-get", in.GraphJson)
+	data, err := h.runRust(ctx, "graph-get", in.GraphJson)
 	if err != nil {
 		return nil, err
 	}
@@ -893,7 +922,7 @@ func (h *Hub) GetKnowledgeGraph(ctx context.Context, in *pb.GraphRequest) (*pb.A
 }
 
 func (h *Hub) QueryKnowledgeGraph(ctx context.Context, in *pb.QueryRequest) (*pb.AnalyzeResponse, error) {
-	data, err := h.runRust("graph-query", in.QueryJson)
+	data, err := h.runRust(ctx, "graph-query", in.QueryJson)
 	if err != nil {
 		return nil, err
 	}
@@ -913,7 +942,7 @@ func (h *Hub) ExecuteHealing(ctx context.Context, in *pb.HealingPlan) (*pb.Analy
 		return nil, err
 	}
 
-	data, err := h.runRustWithStdin(string(planJSON), "heal", "-")
+	data, err := h.runRustWithStdin(ctx, string(planJSON), "heal", "-")
 	if err != nil {
 		return nil, err
 	}
@@ -1467,6 +1496,57 @@ func (h *Hub) ServeSSE(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (h *Hub) ServeAudit(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	log.Printf("🚀 [Hub] Disparando Auditoria Global via Tray Request...")
+	// Background call to ensure it is async and fast for tray
+	go func() {
+		cmd := exec.Command("bun", "run", "scripts/run-diagnostic.ts", "--staged")
+		cmd.Dir = "../.." // Project root
+		err := cmd.Run()
+		if err != nil {
+			log.Printf("⚠️ Erro na auditoria global: %v", err)
+		}
+	}()
+
+	json.NewEncoder(w).Encode(map[string]bool{"success": true, "async": true})
+}
+
+func (h *Hub) ServeHeal(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	log.Printf("💉 [Hub] Disparando Auto-Heal Global via Tray Request...")
+	// We can execute the diagnostic pipeline with auto-heal parameter
+	go func() {
+		cmd := exec.Command("bun", "run", "scripts/run-diagnostic.ts", "--auto-heal")
+		cmd.Dir = "../.." // Project root
+		err := cmd.Run()
+		if err != nil {
+			log.Printf("⚠️ Erro no auto-healing: %v", err)
+		}
+	}()
+
+	json.NewEncoder(w).Encode(map[string]bool{"success": true, "async": true})
+}
+
+func (h *Hub) ServeHealth(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	h.metricsLock.RLock()
+	defer h.metricsLock.RUnlock()
+
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"cpu":        h.metrics.CPUUsage,
+		"memory":     h.metrics.MemoryUsage,
+		"goroutines": h.metrics.GoRoutines,
+		"status":     "HEALTHY",
+	})
+}
+
 func (p *program) run() {
 	// Precise map initialization before async goroutines start
 	p.hub.clientsLock.Lock()
@@ -1493,6 +1573,9 @@ func (p *program) run() {
 		http.HandleFunc("/intelligence/memory", p.hub.ServeIntelligenceMemory)
 		http.HandleFunc("/intelligence/tasks", p.hub.ServeIntelligenceTasks)
 		http.HandleFunc("/census", p.hub.ServeCensus)
+		http.HandleFunc("/audit", p.hub.ServeAudit)
+		http.HandleFunc("/heal", p.hub.ServeHeal)
+		http.HandleFunc("/health", p.hub.ServeHealth)
 		log.Printf("📊 Sovereign Dashboard SSE Server listening on %s", DefaultHTTPPort)
 		if err := http.ListenAndServe(DefaultHTTPPort, nil); err != nil {
 			log.Printf("⚠️ Dashboard server failed: %v", err)

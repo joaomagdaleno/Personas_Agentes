@@ -41,64 +41,10 @@ async function main() {
         }
     }
 
-    let hubProcess: ChildProcess | null = null;
-    let sidecarProcess: ChildProcess | null = null;
-
-    const cleanup = () => {
-        if (hubProcess) {
-            logger.info("🛑 Finalizando Go Hub...");
-            try { hubProcess.kill(); } catch {}
-        }
-        if (sidecarProcess) {
-            logger.info("🛑 Finalizando Rust Sidecar...");
-            try { sidecarProcess.kill(); } catch {}
-        }
-    };
-
-    process.on('SIGINT', cleanup);
-    process.on('SIGTERM', cleanup);
-    process.on('exit', cleanup);
+    // Lifecycle is now managed centrally by SystemManager during Orchestrator instantiation.
+    // We don't need to manually spawn or keep track of hubProcess/sidecarProcess here anymore.
 
     try {
-        const tempHub = new Orchestrator(root).hubManager;
-        let status;
-        try {
-            status = await tempHub.getStatus();
-        } catch {
-            status = null;
-        }
-        
-        if (status && status.status === "HEALTHY") {
-            logger.info("✅ Hub já está em execução.");
-        } else {
-            const hubExe = path.resolve(absRoot, "src_native/hub/hub.exe");
-            const analyzerExe = path.resolve(absRoot, "src_native/analyzer/target/release/analyzer.exe");
-            
-            logger.info("🚀 Iniciando infraestrutura nativa (Hub + Sidecar)...");
-            sidecarProcess = spawn(analyzerExe, ["serve"], { cwd: absRoot, stdio: 'pipe' });
-            hubProcess = spawn(hubExe, [], { cwd: path.dirname(hubExe), stdio: 'pipe' });
-
-            const logStream = fs.createWriteStream(path.join(absRoot, "diagnostic.log"), { flags: 'a' });
-            hubProcess.stdout?.pipe(logStream);
-            hubProcess.stderr?.pipe(logStream);
-            sidecarProcess.stdout?.pipe(logStream);
-            sidecarProcess.stderr?.pipe(logStream);
-
-            let healthy = false;
-            for (let i = 0; i < 15; i++) {
-                await new Promise(r => setTimeout(r, 1000));
-                try {
-                    const status = await tempHub.getStatus();
-                    if (status && status.status === "HEALTHY") {
-                        healthy = true;
-                        break;
-                    }
-                } catch {}
-            }
-            if (!healthy) throw new Error("Falha ao iniciar infraestrutura nativa após 15s.");
-            logger.info("✅ Infraestrutura nativa operacional.");
-        }
-
         const orchestrator = new Orchestrator(root);
         await orchestrator.ready;
         orchestrator.addPersona(new DirectorPersona(root));
@@ -127,8 +73,6 @@ async function main() {
     } catch (err: any) {
         logger.error(`🚨 Falha crítica: ${err.message || err}`);
         process.exit(1);
-    } finally {
-        cleanup();
     }
 }
 main();

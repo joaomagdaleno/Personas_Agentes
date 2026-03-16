@@ -17,11 +17,11 @@ export interface Task {
  */
 export class TaskQueue {
     private hubManager: HubManagerGRPC;
-    private projectRoot: string;
+    private maxConcurrent: number;
 
-    constructor(projectRoot: string, hubManager?: HubManagerGRPC) {
-        this.projectRoot = projectRoot;
-        this.hubManager = hubManager || new HubManagerGRPC();
+    constructor(maxConcurrent = 5, hubManager?: HubManagerGRPC) {
+        this.maxConcurrent = maxConcurrent;
+        this.hubManager = hubManager || HubManagerGRPC.getInstance();
     }
 
     /**

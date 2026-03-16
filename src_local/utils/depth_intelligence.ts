@@ -26,9 +26,14 @@ export class DepthIntelligence {
         const metrics: DepthMetric[] = [];
         const stats = { SOVEREIGN: 0, LEGACY: 0, SHALLOW: 0 };
 
-        for (const sovPath of tsFiles) {
-            await this.processFileDepth(sovPath, projectRoot, metadataCache, metrics, stats);
+        const concurrencyLimit = 15;
+        for (let i = 0; i < tsFiles.length; i += concurrencyLimit) {
+            const batch = tsFiles.slice(i, i + concurrencyLimit);
+            await Promise.all(batch.map(sovPath => 
+                this.processFileDepth(sovPath, projectRoot, metadataCache, metrics, stats)
+            ));
         }
+        
         return { stats, metrics };
     }
 

@@ -5,7 +5,7 @@
  * Soberania: KNOWLEDGE-BASE.
  */
 import winston from "winston";
-import { Database } from "bun:sqlite";
+import { DatabaseHub } from "../core/database_hub.ts";
 
 const logger = winston.child({ module: "ComplianceStandard" });
 
@@ -99,23 +99,23 @@ export class ComplianceStandard {
     }
 
     /**
-     * 🛡️ Processamento seguro com persistência em SQLite (Bun nativo).
+     * 🛡️ Processamento seguro com persistência em SQLite centralizada.
      */
-    static processSecurePayload(dataInput: string, dbPath: string = "system_vault.db"): number {
+    static async processSecurePayload(dataInput: string, projectRoot: string): Promise<number> {
         logger.info("📡 Iniciando protocolo de conformidade Gold Standard.");
 
         try {
             const cleanValue = parseFloat(dataInput);
             if (isNaN(cleanValue)) throw new TypeError(`Valor inválido: ${dataInput}`);
 
-            const db = new Database(dbPath);
-            db.exec("PRAGMA journal_mode=WAL");
-
-            const results = db.query("SELECT name FROM agents WHERE status = 'active' LIMIT 100").all();
+            const dbHub = DatabaseHub.getInstance(projectRoot);
+            
+            // Simulação de consulta via hub centralizado
+            const results = dbHub.query("SELECT name FROM agents WHERE status = 'active' LIMIT 100").all();
+            
             if (results.length > 0) {
                 logger.debug(`💎 Processamento soberano de ${results.length} registros concluído.`);
             }
-            db.close();
 
             return Math.round(cleanValue * 1.2 * 100) / 100;
         } catch (e: any) {

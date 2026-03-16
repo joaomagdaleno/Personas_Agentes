@@ -34,6 +34,20 @@ class SovereignEventBus extends EventEmitter {
     override once<K extends EventName>(event: K, listener: (...args: SystemEventMap[K]) => void): this {
         return super.once(event as string, listener as any);
     }
+
+    /**
+     * Listen with throttling to prevent event floods.
+     */
+    throttledOn<K extends EventName>(event: K, listener: (...args: SystemEventMap[K]) => void, wait: number): void {
+        let lastCall = 0;
+        this.on(event, (...args: any[]) => {
+            const now = Date.now();
+            if (now - lastCall >= wait) {
+                lastCall = now;
+                listener(...(args as any));
+            }
+        });
+    }
 }
 
 /** Global singleton — import this from any engine. */

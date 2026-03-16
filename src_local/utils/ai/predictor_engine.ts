@@ -34,7 +34,12 @@ export class PredictorEngine {
         // Anomalous/Error states we might see naturally
         "PIPELINE_ABORTED",
         "FATAL_ERROR",
-        "TIMEOUT"
+        "TIMEOUT",
+        // Hardware & System Integrity Events (New in Phase 5)
+        "CPU_STRESS",
+        "MEMORY_HIGH",
+        "HEAL_THROTTLED",
+        "CONCURRENCY_CAP_REACHED"
     ];
 
     constructor(projectRoot: string) {

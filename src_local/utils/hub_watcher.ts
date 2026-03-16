@@ -11,9 +11,11 @@ const logger = winston.child({ module: "HubWatcher" });
 export class HubWatcher {
     private manager: HubManagerGRPC;
     private onChangeCallbacks: ((path: string) => void)[] = [];
+    private host: string;
 
-    constructor(host: string = ENV_GATE.HUB_GRPC_HOST, manager?: HubManagerGRPC) {
-        this.manager = manager || new HubManagerGRPC(host);
+    constructor(host?: string, manager?: HubManagerGRPC) {
+        this.host = host || "localhost:50051";
+        this.manager = manager || HubManagerGRPC.getInstance(host);
     }
 
     start() {

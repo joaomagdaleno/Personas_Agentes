@@ -19,7 +19,7 @@ export class InstanceGrouper {
 
         // Try batch extraction first (Rust-powered via gRPC)
         try {
-            const hub = new HubManagerGRPC();
+            const hub = HubManagerGRPC.getInstance();
             const status = await hub.getStatus();
             const extractor = status ? new FingerprintExtractor(hub) : new FingerprintExtractor();
             if (status) logger.info("✅ [InstanceGrouper] Hub gRPC conectado — usando fingerprint AST nativo.");

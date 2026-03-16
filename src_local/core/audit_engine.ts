@@ -132,14 +132,15 @@ export class AuditEngine {
     }
 
     async scan_content(content: string, f: string): Promise<any[]> {
-        if (f.match(/\.ts$|\.tsx$/)) return AuditHelpers.scanTs(content, f);
+        if (f.match(/\.ts$|\.tsx$/)) return AuditHelpers.scanTs(content, f, this.orc.hubManager);
         if (f.endsWith(".md")) return AuditHelpers.scanMd(content, f);
         return [];
     }
 
     private async _scanTs(content: string, f: string): Promise<any[]> {
         const { LogicAuditor } = await import("../agents/Support/Analysis/logic_auditor.ts");
-        return LogicAuditor.scanFile(ts.createSourceFile(f, content, ts.ScriptTarget.Latest, true));
+        const auditor = new LogicAuditor(this.orc.hubManager);
+        return await auditor.scanFile(f, content);
     }
 
     private async _scanMd(content: string, f: string): Promise<any[]> {
@@ -161,5 +162,7 @@ export class AuditEngine {
         return this.scan_content(content, f);
     }
 
-    public async _scan_single_file(f: string, ctx: any): Promise<any[]> { return this.scan_content(await Bun.file(this.root.join(f).toString()).text(), f); }
+    public async _scan_single_file(f: string, _ctx: any): Promise<any[]> { 
+        return this.scan_content(await Bun.file(this.root.join(f).toString()).text(), f); 
+    }
 }

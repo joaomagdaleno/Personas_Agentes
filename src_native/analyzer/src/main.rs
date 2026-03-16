@@ -87,7 +87,13 @@ async fn main() {
         "serve" => {
             let port = args.get(2).and_then(|s| s.parse::<u16>().ok()).unwrap_or(50052);
             let addr = format!("127.0.0.1:{}", port).parse().unwrap();
-            let svc = server::hub_proto::hub_service_server::HubServiceServer::new(server::HubServerImpl);
+            
+            eprintln!("[Analyzer] Initializing Sovereign Brain...");
+            let brain = brain::Brain::new().expect("Failed to initialize Brain for serving");
+            let server_impl = server::HubServerImpl::new(brain);
+            
+            let svc = server::hub_proto::hub_service_server::HubServiceServer::new(server_impl);
+            eprintln!("[Analyzer] gRPC Server listening on {}", addr);
             tonic::transport::Server::builder().add_service(svc).serve(addr).await.expect("Failed to start gRPC server");
         }
         "analyze" => {

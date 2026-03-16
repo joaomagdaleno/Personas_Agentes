@@ -1,4 +1,4 @@
-
+import * as path from "node:path";
 import { HubManagerGRPC } from "../core/hub_manager_grpc.ts";
 import { Path } from "../core/path_utils.ts";
 import { DNAProfiler } from "../agents/Support/Analysis/dna_profiler.ts";
@@ -40,11 +40,12 @@ export class ContextEngine {
 
     async analyzeProject(): Promise<{ identity: Record<string, unknown>; map: Record<string, any> }> {
         this.projectIdentity = await this.dnaProfiler.discoverIdentity(this.projectRoot);
-        const scanner = new FileSystemScanner(this.projectRoot.toString(), this.analyst);
-        this.allFilesIndex = await scanner.scanAllFilenames();
-
         const goMap = await this.getGoDiscoveryMap();
-        this.contentCache = await this.mappingLogic.processBatch(scanner, this, goMap);
+        
+        // Otimização: Pegar lista de arquivos diretamente do scanner nativo
+        this.allFilesIndex = Object.keys(goMap).map(p => path.join(this.projectRoot.toString(), p));
+
+        this.contentCache = await this.mappingLogic.processBatch(this._getScanner(), this, goMap);
 
         await this.buildDependencyMap();
         return { identity: this.projectIdentity, map: this.map };

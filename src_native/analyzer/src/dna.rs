@@ -43,13 +43,41 @@ pub fn discover_identity(project_root: &str) -> ProjectIdentity {
         }
     }
 
+    let project_type = if stacks.contains("TypeScript/Bun") && root_path.join("src_local").exists() {
+        "Sovereign Agentic System".to_string()
+    } else if stacks.contains("Go") && stacks.contains("Go") {
+        "Native Microservice".to_string()
+    } else {
+        "Universal Project".to_string()
+    };
+
+    let core_mission = infer_mission(project_root, &stacks);
+
     ProjectIdentity {
         stacks: stacks.into_iter().collect(),
-        project_type: "Orquestrador Multi-Agente".to_string(),
-        core_mission: "Orquestração de Inteligência Artificial".to_string(),
+        project_type,
+        core_mission,
         is_external: !project_root.contains("Personas_Agentes"),
         frameworks: frameworks.into_iter().collect(),
     }
+}
+
+fn infer_mission(root: &str, stacks: &HashSet<String>) -> String {
+    let pkg_json = Path::new(root).join("package.json");
+    if pkg_json.exists() {
+        if let Ok(content) = fs::read_to_string(pkg_json) {
+            if content.contains("\"description\"") {
+                // Heurística simples p/ extrair descrição
+                if let Some(desc) = content.split("\"description\": \"").nth(1) {
+                    if let Some(val) = desc.split("\"").next() {
+                        return val.to_string();
+                    }
+                }
+            }
+        }
+    }
+    
+    format!("Desenvolvimento em {}", stacks.iter().cloned().collect::<Vec<_>>().join(", "))
 }
 
 fn detect_frameworks_from_ast(deps: &crate::dependencies::DependencyInfo, ext: &str, frameworks: &mut HashSet<String>, stacks: &mut HashSet<String>) {

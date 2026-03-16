@@ -44,10 +44,15 @@ export class ReflexEngine {
      * Verifica se há falhas em submodulos/dependências que exigem resync.
      */
     private checkDependencyReflex(findings: GenericFinding[]) {
-        const hasDepIssue = findings.some(f => f.context === 'DependencyAuditor' || (f.issue && f.issue.includes('submodule')));
+        const hasDepIssue = findings.some(f => 
+            f.context === 'DependencyAuditor' || 
+            (f.issue && (f.issue.toLowerCase().includes('submodule') || f.issue.toLowerCase().includes('dependency')))
+        );
 
         if (hasDepIssue) {
             logger.info("📦 [Reflex] Detectada falha de dependência. Agendando resync de submodulos...");
+            // Emite evento para que o Orchestrator ou Hub nativo processe o resync
+            eventBus.emit("cache:updated"); // Placeholder para forçar atualização de contexto
         }
     }
 }

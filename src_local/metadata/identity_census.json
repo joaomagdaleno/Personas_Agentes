@@ -4828,6 +4828,24 @@
                             "regex": "HubServiceClient",
                             "issue": "Connectivity: Depend\u00eancia da ponte gRPC detectada PhD.",
                             "severity": "low"
+                        },
+                        {
+                            "regex": "",
+                            "issue": "Seguran\u00e7a AST: Uso de 'innerHTML' detectado (Risco de XSS).",
+                            "severity": "high",
+                            "scm_query": "(assignment_expression left: (member_expression property: (property_identifier) @prop (#eq? @prop \"innerHTML\")))"
+                        },
+                        {
+                            "regex": "",
+                            "issue": "Seguran\u00e7a AST: Chamada a 'eval()' detectada.",
+                            "severity": "critical",
+                            "scm_query": "(call_expression function: (identifier) @fn (#eq? @fn \"eval\"))"
+                        },
+                        {
+                            "regex": "",
+                            "issue": "Seguran\u00e7a AST: Poss\u00edvel Inje\u00e7\u00e3o SQL em string template.",
+                            "severity": "critical",
+                            "scm_query": "(call_expression function: (member_expression property: (property_identifier) @fn (#match? @fn \"query|execute\")) arguments: (arguments (template_string)))"
                         }
                     ]
                 },

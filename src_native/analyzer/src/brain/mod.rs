@@ -272,10 +272,12 @@ impl Brain {
     fn build_graph_data(&self, files: &HashMap<String, String>) -> (HashMap<String, NodeData>, Vec<(String, String, EdgeData)>) {
         let mut nodes = HashMap::new();
         let mut edges = Vec::new();
-
-        // Pass 1: Build file nodes and a stem-to-path index for quick lookup
         let mut stem_to_path = HashMap::new();
-        for path in files.keys() {
+        let mut symbol_to_path: HashMap<String, Vec<String>> = HashMap::new();
+        let mut file_deps = HashMap::new();
+
+        // Pass 1: Create File Nodes and collect metadata
+        for (path, content) in files {
             let stem = Path::new(path).file_stem().map_or("".to_string(), |s| s.to_string_lossy().into_owned());
             stem_to_path.insert(stem, path.clone());
             
@@ -284,56 +286,81 @@ impl Brain {
                 node_type: NodeType::File,
                 metadata: HashMap::new(),
             });
-        }
 
-        // Pass 2: Extract AST Metadata for all files
-        let mut file_deps = HashMap::new();
-        let mut symbol_to_path: HashMap<String, Vec<String>> = HashMap::new();
-
-        for (path, content) in files {
             let ext = Path::new(path).extension().and_then(|s| s.to_str()).unwrap_or("");
             let deps = crate::dependencies::extract_dependencies(content, ext);
             
+            // Pass 1.1: Create Symbol Nodes and link to File (Contains)
             for symbol in &deps.defined_symbols {
+                let symbol_id = format!("{}::{}", path, symbol);
+                nodes.insert(symbol_id.clone(), NodeData {
+                    id: symbol_id.clone(),
+                    node_type: NodeType::Symbol,
+                    metadata: [("name".to_string(), symbol.clone())].into_iter().collect(),
+                });
+                
+                // File Contains Symbol
+                edges.push((path.clone(), symbol_id.clone(), EdgeData { edge_type: EdgeType::Contains, weight: 1.0 }));
+                
                 symbol_to_path.entry(symbol.clone()).or_insert_with(Vec::new).push(path.clone());
             }
-            
+
             file_deps.insert(path.clone(), deps);
         }
 
-        // Pass 3: Resolve edges based on AST (Imports and precise Calls)
+        // Pass 2: Resolve edges based on AST (Imports and precise Calls)
         for (path, deps) in &file_deps {
             let mut seen_targets = HashSet::new();
-            let mut edges_count = 0;
-            const MAX_EDGES_PER_FILE: usize = 100;
 
             // 1. Resolve Imports (DependsOn)
             for imp in &deps.imports {
                 let imp_stem = Path::new(imp).file_stem().map_or_else(|| imp.clone(), |s| s.to_string_lossy().to_string());
-                if let Some(target) = stem_to_path.get(&imp_stem) {
-                    if target != path && seen_targets.insert(target.clone()) {
-                        edges.push((path.clone(), target.clone(), EdgeData { edge_type: EdgeType::DependsOn, weight: 1.0 }));
-                        edges_count += 1;
+                if let Some(target_file) = stem_to_path.get(&imp_stem) {
+                    if target_file != path && seen_targets.insert(target_file.clone()) {
+                        edges.push((path.clone(), target_file.clone(), EdgeData { edge_type: EdgeType::DependsOn, weight: 1.0 }));
                     }
                 }
             }
 
             // 2. Resolve Precise Calls (Calls)
+            // If a file calls a symbol defined elsewhere, link those files (or symbols if we want deeper)
             for call in &deps.calls {
-                if edges_count >= MAX_EDGES_PER_FILE { break; }
-                
-                if let Some(targets) = symbol_to_path.get(call) {
-                    for target_path in targets {
-                        if target_path != path && !seen_targets.contains(target_path) {
-                            edges.push((path.clone(), target_path.clone(), EdgeData { edge_type: EdgeType::Calls, weight: 0.5 }));
-                            seen_targets.insert(target_path.clone());
-                            edges_count += 1;
+                if let Some(target_files) = symbol_to_path.get(call) {
+                    for target_file in target_files {
+                        if target_file != path && !seen_targets.contains(target_file) {
+                             // Deep linking: current_file -> target_file::symbol
+                             let target_symbol_id = format!("{}::{}", target_file, call);
+                             edges.push((path.clone(), target_symbol_id, EdgeData { edge_type: EdgeType::Calls, weight: 0.8 }));
+                             seen_targets.insert(target_file.clone());
                         }
                     }
                 }
             }
         }
         (nodes, edges)
+    }
+
+    fn prune_vocabulary(&mut self) {
+        let max_vocab = 5000;
+        
+        // Quick estimate check
+        if self.tfidf.vocabulary.len() <= max_vocab && self.tfidf.term_doc_freq.len() < 20000 {
+            return;
+        }
+
+        eprintln!("[Brain] Pruning vocabulary (Current: {} terms)...", self.tfidf.term_doc_freq.len());
+        
+        let mut pairs: Vec<_> = self.tfidf.term_doc_freq.iter().collect();
+        // Keep terms with higher document frequency (more systematic)
+        pairs.sort_by(|a, b| b.1.cmp(a.1));
+        
+        if pairs.len() > max_vocab {
+            let threshold = pairs[max_vocab].1;
+            self.tfidf.term_doc_freq.retain(|_, &mut count| count >= threshold);
+            self.tfidf.vocabulary.truncate(max_vocab);
+        }
+        
+        eprintln!("[Brain] Vocabulary pruned to {} terms.", self.tfidf.term_doc_freq.len());
     }
 
     fn save(&self) {

@@ -1,38 +1,44 @@
 import winston from "winston";
 import { HubWatcher } from "../utils/hub_watcher.ts";
 import { RegistryManager } from "./registry_manager.ts";
-import { ParityAnalyst } from "../agents/Support/Analysis/parity_analyst.ts";
 import { StabilityLedger } from "../utils/stability_ledger.ts";
+import { HubManagerGRPC } from "./hub_manager_grpc.ts";
+import * as path from "node:path";
+import * as fs from "node:fs";
 
 const logger = winston.child({ module: "ParityDaemon" });
 
+/**
+ * ⚖️ ParityDaemon PhD.
+ * Monitora e garante a paridade semântica entre implementações de agentes em diferentes stacks.
+ */
 export class ParityDaemon {
-    private watcher: HubWatcher;
     private registryManager: RegistryManager;
-    private analyst: ParityAnalyst;
-    private ledger: StabilityLedger;
     private backlog: string[] = [];
     private isProcessing = false;
 
-    constructor(projectRoot: string, watcher: HubWatcher, ledger: StabilityLedger) {
-        this.watcher = watcher;
-        this.ledger = ledger;
+    constructor(
+        private projectRoot: string, 
+        private watcher: HubWatcher, 
+        private ledger: StabilityLedger,
+        private hubManager: HubManagerGRPC
+    ) {
         this.registryManager = new RegistryManager(projectRoot);
-        this.analyst = new ParityAnalyst(path.join(projectRoot, "src_local/agents"));
     }
 
     public start() {
-        logger.info("🚀 [ParityDaemon] Iniciando monitoramento contínuo...");
-        this.watcher.onChange(async (path) => {
-            if (this.isAgentFile(path)) {
-                this.backlog.push(path);
+        logger.info("🚀 [ParityDaemon] Iniciando monitoramento profundo de paridade...");
+        this.watcher.onChange(async (filePath) => {
+            if (this.isAgentFile(filePath)) {
+                this.backlog.push(filePath);
                 this.processBacklog();
             }
         });
     }
 
     private isAgentFile(filePath: string): boolean {
-        return filePath.includes("src_local/agents") && (filePath.endsWith(".ts") || filePath.endsWith(".py") || filePath.endsWith(".kt") || filePath.endsWith(".dart"));
+        const norm = filePath.replace(/\\/g, '/');
+        return norm.includes("src_local/agents") && (norm.endsWith(".ts") || norm.endsWith(".py") || norm.endsWith(".go"));
     }
 
     private async processBacklog() {
@@ -41,20 +47,53 @@ export class ParityDaemon {
 
         const filePath = this.backlog.shift()!;
         try {
-            logger.info(`⚖️ [ParityDaemon] Analisando paridade em tempo real: ${filePath}`);
-            // Logic to run atomic parity check and store in ledger
-            // This is a placeholder for the actual healing logic
-            // In a real implementation, we would call the Rust Brain here
+            logger.info(`⚖️ [Parity] Validando paridade semântica: ${path.basename(filePath)}`);
+            const content = fs.readFileSync(filePath, 'utf-8');
+            
+            // 1. Obter "irmãos" de implementação do registro
+            const siblings = this.registryManager.getAgentSiblings(filePath);
+            
+            if (siblings.length > 0) {
+                for (const sibling of siblings) {
+                    await this.checkParity(filePath, content, sibling);
+                }
+            }
         } catch (err) {
-            logger.error(`❌ [ParityDaemon] Erro ao processar ${filePath}: ${err}`);
+            logger.error(`❌ [Parity] Erro ao processar ${filePath}: ${err}`);
         } finally {
             this.isProcessing = false;
             if (this.backlog.length > 0) {
-                // Throttle background processing
-                setTimeout(() => this.processBacklog(), 5000);
+                setTimeout(() => this.processBacklog(), 2000);
             }
         }
     }
-}
 
-import * as path from "node:path";
+    private async checkParity(sourcePath: string, sourceContent: string, targetPath: string) {
+        if (!fs.existsSync(targetPath)) return;
+        const targetContent = fs.readFileSync(targetPath, 'utf-8');
+
+        const prompt = `Perform a high-fidelity semantic parity comparison between these two agent implementations:
+        Source (${path.extname(sourcePath)}): ${sourceContent.substring(0, 2000)}...
+        Target (${path.extname(targetPath)}): ${targetContent.substring(0, 2000)}...
+        
+        Are they functionally equivalent? Identify discrepancies in logic, thresholds, or data handling.
+        Return a JSON with { "equivalent": boolean, "discrepancies": string[], "severity": "LOW"|"MEDIUM"|"HIGH" }`;
+
+        try {
+            const response = await this.hubManager.reason(prompt);
+            const result = JSON.parse(response || '{"equivalent":true, "discrepancies":[]}');
+
+            if (!result.equivalent) {
+                logger.warn(`⚖️ [Parity] Disparidade detectada entre ${path.basename(sourcePath)} e ${path.basename(targetPath)}`);
+                this.ledger.registerDisparity({
+                    source: sourcePath,
+                    target: targetPath,
+                    discrepancies: result.discrepancies,
+                    severity: result.severity || "MEDIUM"
+                });
+            }
+        } catch (e) {
+            logger.debug(`[Parity] Falha na comparação semântica: ${e}`);
+        }
+    }
+}

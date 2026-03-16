@@ -9,7 +9,8 @@ export class AuditHelpers {
         const content = await Bun.file(root.join(f).toString()).text();
         if (f.match(/\.ts$|\.tsx$/)) {
             const { LogicAuditor } = await import("../agents/Support/Analysis/logic_auditor.ts");
-            findings.push(...LogicAuditor.scanFile(ts.createSourceFile(f, content, ts.ScriptTarget.Latest, true)));
+            const auditor = new LogicAuditor(orc.hubManager);
+            findings.push(...await auditor.scanFile(f, content));
         } else if (f.endsWith(".md")) {
             const { MarkdownAuditor } = await import("../agents/Support/Reporting/markdown_auditor.ts");
             findings.push(...MarkdownAuditor.auditMarkdown(f, content));
@@ -26,9 +27,10 @@ export class AuditHelpers {
         return [];
     }
 
-    static async scanTs(content: string, f: string): Promise<any[]> {
+    static async scanTs(content: string, f: string, hubManager?: any): Promise<any[]> {
         const { LogicAuditor } = await import("../agents/Support/Analysis/logic_auditor.ts");
-        return LogicAuditor.scanFile(ts.createSourceFile(f, content, ts.ScriptTarget.Latest, true));
+        const auditor = new LogicAuditor(hubManager);
+        return await auditor.scanFile(f, content);
     }
 
     static async scanMd(content: string, f: string): Promise<any[]> {

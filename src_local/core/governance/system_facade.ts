@@ -17,6 +17,7 @@ const logger = winston.child({ module: "PhdGovernanceSystem" });
  * Complexity: < 15 (Facade Pattern)
  */
 export class PhdGovernanceSystem {
+    private static instance: PhdGovernanceSystem | null = null;
     private scoring = new ScoringEngine();
     private veto = new VetoEngine();
     private reflex = new ReflexEngine();
@@ -24,6 +25,15 @@ export class PhdGovernanceSystem {
     private topology = new TopologyEngine();
     private analysis = new AnalysisEngine();
     private resource = new ResourceEngine();
+
+    private constructor() {}
+
+    public static getInstance(): PhdGovernanceSystem {
+        if (!PhdGovernanceSystem.instance) {
+            PhdGovernanceSystem.instance = new PhdGovernanceSystem();
+        }
+        return PhdGovernanceSystem.instance;
+    }
 
     /**
      * Calcula o score de saúde sistêmica.
@@ -87,10 +97,31 @@ export class PhdGovernanceSystem {
     }
 
     /**
-     * Perfil de Recursos.
+     * Perfil estático de Recursos baseado em limites fixos.
      */
     public getResourceProfile(cores: number, ramGb: number): { profile: string, parallelism: number, throttle: boolean } {
         return this.resource.getResourceProfile(cores, ramGb);
+    }
+
+    /**
+     * Coleta telemetria em tempo real do sistema hospedeiro (RAM/CPU).
+     */
+    public getCurrentLoad(): { freeMemoryGb: number; totalMemoryGb: number; loadAvg: number[]; cpuCores: number } {
+        return this.resource.getCurrentLoad();
+    }
+
+    /**
+     * Determina se a máquina anfitriã está esgotando CPU ou RAM crítica (<1.5GB livre).
+     */
+    public isSystemOverloaded(): { overloaded: boolean; reason?: string } {
+        return this.resource.isSystemOverloaded();
+    }
+
+    /**
+     * Escala adaptativa de threads. Recua a aceleração se o PC estiver sufocando.
+     */
+    public getDynamicConcurrency(baseConcurrency: number): number {
+        return this.resource.getDynamicConcurrency(baseConcurrency);
     }
 
     public getDirectives(level: ComplianceLevel): string[] {

@@ -24,7 +24,10 @@ import { HubWatcher } from "../utils/hub_watcher.ts";
 import { HubManagerGRPC } from "./hub_manager_grpc.ts";
 import { RegistryManager } from "./registry_manager.ts";
 import { ParityDaemon } from "./parity_daemon.ts";
-import type { IAgent, ProjectContext, GenericFinding, SystemHealth360, SystemMetrics, IHealthSynthesizer } from "./types.ts";
+import { QAEngineerPersona } from "../agents/Support/Diagnostics/qa_engineer.ts";
+import { PhdGovernanceSystem } from "../core/governance/system_facade.ts";
+import { DocGenAgent } from "../agents/Support/Automation/doc_gen_agent.ts";
+import type { IAgent, ProjectContext, GenericFinding, SystemHealth360, SystemMetrics, IHealthSynthesizer, AnalysisResult } from "./types.ts";
 
 const logger = winston.child({ module: "Orchestrator" });
 
@@ -58,7 +61,10 @@ export class Orchestrator {
     hubWatcher!: HubWatcher;
     hubManager!: HubManagerGRPC;
     registryManager!: RegistryManager;
+    qaEngineer!: QAEngineerPersona;
     parityDaemon!: ParityDaemon;
+    docGen!: DocGenAgent;
+    private governance: PhdGovernanceSystem;
 
     public ready: Promise<void>;
 
@@ -70,13 +76,19 @@ export class Orchestrator {
             start_time: Date.now(),
             efficiency: {}
         };
-        this.hubManager = new HubManagerGRPC();
+        this.hubManager = HubManagerGRPC.getInstance();
         this.registryManager = new RegistryManager(projectRoot);
+        this.governance = PhdGovernanceSystem.getInstance(); // Initialize governance here
+        this.docGen = new DocGenAgent();
         this.initializeEngines(projectRoot);
         this._registerAgents();
         this._initEngines();
         this._initTools();
         this._registerEventListeners();
+        
+        const gov = PhdGovernanceSystem.getInstance();
+        const load = gov.getCurrentLoad();
+        logger.info(`🌐 [Sovereign Governance] Consciência de Setup iniciada: ${load.cpuCores} Cores | ${load.totalMemoryGb.toFixed(2)}GB RAM Total | Livres: ${load.freeMemoryGb.toFixed(2)}GB.`);
 
         this.ready = this._initNativeInfrastructure(projectRoot);
     }
@@ -98,9 +110,15 @@ export class Orchestrator {
 
     private async _initNativeInfrastructure(projectRoot: string): Promise<void> {
         try {
-            const m = await import("../agents/Support/Automation/infrastructure_assembler");
-            console.log("🛠️ [Orchestrator] Carregando Infraestrutura Nativa...");
-            await m.InfrastructureAssembler.launchSovereignAPI(projectRoot);
+            const { SystemManager } = await import("./system_manager.ts");
+            const sm = SystemManager.getInstance();
+            
+            logger.info("🛠️ [Orchestrator] Inicializando Ciclo de Vida do Sistema...");
+            const ready = await sm.ensureInfrastructure(projectRoot);
+            
+            if (!ready) {
+                logger.warn("⚠️ [Orchestrator] Infraestrutura nativa não está 100% pronta. Operando em modo degradado.");
+            }
 
             await this._waitForHub();
 
@@ -114,7 +132,7 @@ export class Orchestrator {
             });
             this.hubWatcher.start();
 
-            this.parityDaemon = new ParityDaemon(projectRoot, this.hubWatcher, this.stabilityLedger);
+            this.parityDaemon = new ParityDaemon(projectRoot, this.hubWatcher, this.stabilityLedger, this.hubManager);
             this.parityDaemon.start();
         } catch (err: any) {
             console.error(`❌ [Orchestrator] Erro ao carregar infrastructure_assembler: ${err.message}`);
@@ -123,13 +141,10 @@ export class Orchestrator {
 
     private async _waitForHub(retries = 5) {
         for (let i = 0; i < retries; i++) {
-            try {
-                const status = await this.hubManager.getStatus();
-                if (status && status.status === "HEALTHY") {
-                    console.log("✅ [Orchestrator] Native Sovereign Hub (gRPC) conectado.");
-                    return;
-                }
-            } catch (e) { }
+            if (await this.hubManager.isHealthy()) {
+                console.log("✅ [Orchestrator] Native Sovereign Hub (gRPC) conectado.");
+                return;
+            }
             console.log(`⏳ [Orchestrator] Aguardando Hub gRPC (${i + 1}/${retries})...`);
             await new Promise(r => setTimeout(r, 1000));
         }
@@ -144,19 +159,20 @@ export class Orchestrator {
         this.stabilityLedger = new StabilityLedger(root);
         this.historyAgent = new HistoryAgent(root);
         this.taskQueue = new TaskQueue(root);
-        this.memoryEngine = new MemoryEngine(root);
+        this.memoryEngine = new MemoryEngine(root, this.hubManager);
         this.reflexEngine = new ReflexEngine();
         this.updateTransaction = new UpdateTransaction();
         this.sentinel = new SystemSentinel();
         this.behaviorAnalyst = new BehaviorAnalyst(root);
-        this.worker = new TaskWorker(this.taskQueue);
+        this.worker = new TaskWorker(this.taskQueue, this);
         this.pruningAgent = new MemoryPruningAgent(root);
         this.predictorEngine = new PredictorEngine(root);
+        this.qaEngineer = new QAEngineerPersona(root.toString());
     }
 
     private _registerAgents() {
-        // Cast to IAgent if needed, ensuring it has required props
-        this.agentRegistry.set(this.pruningAgent.id, this.pruningAgent as any as IAgent);
+        this.agentRegistry.set(this.pruningAgent.id, this.pruningAgent as unknown as IAgent);
+        this.agentRegistry.set(this.qaEngineer.id, this.qaEngineer as unknown as IAgent);
     }
 
     async dispatch(agentId: string, context: ProjectContext = {}): Promise<any> {
@@ -250,6 +266,146 @@ export class Orchestrator {
         return false;
     }
 
+    /**
+     * Gera testes de alta fidelidade para um arquivo e valida a execução.
+     */
+    async generateTests(filePath: string): Promise<boolean> {
+        logger.info(`🧪 [Orchestrator] Solicitando geração de testes PhD para: ${filePath}`);
+        const success = await this.qaEngineer.generateUnitTest(filePath, this);
+        
+        if (success) {
+            const testFilePath = filePath.replace(/\.ts$/, '.test.ts');
+            logger.info(`🧪 [Orchestrator] Validando execução do teste: ${testFilePath}`);
+            
+            const verifyResult = await this.verifyTest(testFilePath);
+            if (!verifyResult.success) {
+                logger.warn(`🧪 [Orchestrator] Teste gerado falhou na validação. Iniciando Auto-Healing...`);
+                return await this.autoHealTest(filePath, testFilePath, verifyResult.output);
+            }
+            logger.info(`✅ [Orchestrator] Teste validado com sucesso: ${testFilePath}`);
+            return true;
+        }
+        
+        return false;
+    }
+
+    /**
+     * Gera testes de integração entre dois módulos.
+     */
+    async generateIntegrationTest(fileA: string, fileB: string): Promise<boolean> {
+        logger.info(`🔗 [Orchestrator] Solicitando teste de INTEGRAÇÃO: ${fileA} <-> ${fileB}`);
+        const success = await this.qaEngineer.generateIntegrationTest(fileA, fileB, this);
+        
+        if (success) {
+            const testFilePath = fileA.replace(/\.ts$/, '.integration.test.ts');
+            const verifyResult = await this.verifyTest(testFilePath);
+            if (!verifyResult.success) {
+                logger.warn(`🔗 [Orchestrator] Teste de integração falhou. Trazendo Healer...`);
+                return await this.autoHealTest(fileA, testFilePath, verifyResult.output);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Gera testes E2E (End-to-End) para um fluxo crítico.
+     */
+    async generateE2ETest(filePath: string): Promise<boolean> {
+        logger.info(`🌐 [Orchestrator] Solicitando teste E2E para: ${filePath}`);
+        const success = await this.qaEngineer.generateE2ETest(filePath, this);
+        
+        if (success) {
+            const testFilePath = filePath.replace(/\.ts$/, '.e2e.test.ts');
+            const verifyResult = await this.verifyTest(testFilePath);
+            return verifyResult.success;
+        }
+        return false;
+    }
+
+    /**
+     * Gera documentação JSDoc/Docstring soberana para um arquivo.
+     */
+    async generateDocumentation(filePath: string): Promise<boolean> {
+        logger.info(`📝 [Orchestrator] Gerando documentação para: ${filePath}`);
+        try {
+            const fullPath = this.projectRoot.join(filePath).toString();
+            const content = await Bun.file(fullPath).text();
+            const docstring = await this.docGen.generateDocstring(filePath, content);
+            
+            if (docstring) {
+                // Insere no topo do arquivo
+                const newContent = docstring + "\n" + content;
+                await Bun.write(fullPath, newContent);
+                logger.info(`✨ [Orchestrator] Documentação aplicada: ${filePath}`);
+                return true;
+            }
+        } catch (e) {
+            logger.error(`❌ [Orchestrator] Erro ao gerar documentação: ${e}`);
+        }
+        return false;
+    }
+
+    /**
+     * Verifica a execução de um arquivo de teste usando Bun, capturando cobertura.
+     */
+    async verifyTest(testPath: string): Promise<{ success: boolean; output: string; coverage?: number }> {
+        const fullPath = this.projectRoot.join(testPath).toString();
+        try {
+            // Executa com --coverage
+            const proc = Bun.spawn(["bun", "test", "--coverage", fullPath], { stdout: "pipe", stderr: "pipe" });
+            const stdout = await new Response(proc.stdout).text();
+            const stderr = await new Response(proc.stderr).text();
+            const exitCode = await proc.exited;
+            
+            // Tenta extrair a porcentagem de cobertura (heuristicamente do output do Bun)
+            const coverageMatch = stdout.match(/All files\s+\|\s+([\d.]+)/) || stderr.match(/All files\s+\|\s+([\d.]+)/);
+            const coverage = coverageMatch ? parseFloat(coverageMatch[1]) : undefined;
+
+            return {
+                success: exitCode === 0,
+                output: exitCode === 0 ? stdout : stderr,
+                coverage
+            };
+        } catch (e: any) {
+            return { success: false, output: e.message };
+        }
+    }
+
+    /**
+     * Tenta corrigir um teste que falhou na validação ou tem baixa cobertura.
+     */
+    private async autoHealTest(sourceFile: string, testFile: string, errorOutput: string, currentCoverage?: number): Promise<boolean> {
+        const coverageMsg = currentCoverage !== undefined ? `\nCobertura Atual: ${currentCoverage}% (Meta: 90%)` : "";
+        const prompt = `
+O teste unitário para '${sourceFile}' precisa de melhorias.${coverageMsg}
+ERRO/OUTPUT:
+\`\`\`
+${errorOutput}
+\`\`\`
+
+REGRAS PhD:
+1. Se houve erro de execução, CORRIJA-O.
+2. Se a cobertura estiver baixa, ADICIONE novos casos de teste para linhas não cobertas.
+3. Se o teste for superficial (poucas asserções comparado à complexidade), APROFUNDE as validações.
+Retorne apenas o código TypeScript completo.
+`;
+        const correctedCode = await this.hubManager.reason(prompt);
+        if (correctedCode && !correctedCode.includes("Error:")) {
+            const fullPath = this.projectRoot.join(testFile).toString();
+            await Bun.write(fullPath, correctedCode);
+            
+            const finalVerify = await this.verifyTest(testFile);
+            if (finalVerify.success && (finalVerify.coverage === undefined || finalVerify.coverage >= 90)) {
+                logger.info(`✨ [Orchestrator] Teste Validado PhD (Cobertura: ${finalVerify.coverage || 'OK'}%): ${testFile}`);
+                return true;
+            }
+        }
+        
+        logger.error(`❌ [Orchestrator] Falha ao auto-corrigir teste: ${testFile}`);
+        return false;
+    }
+
     private isHighPriority(finding: GenericFinding): boolean {
         return finding.severity === "CRITICAL" || finding.severity === "HIGH";
     }
@@ -303,7 +459,7 @@ export class Orchestrator {
 
     async generateMorningBriefing() {
         const { BriefingAgent } = await import("../agents/Support/Reporting/briefing_agent.ts");
-        const briefing = new BriefingAgent(this.projectRoot.toString());
+        const briefing = new BriefingAgent(this.projectRoot.toString(), this.hubManager);
         return await briefing.generateMorningReport();
     }
 

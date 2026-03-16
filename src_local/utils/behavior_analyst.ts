@@ -1,9 +1,10 @@
-import { Database } from "bun:sqlite";
 import winston from "winston";
-import { execSync } from "node:child_process";
-import { Path } from "../core/path_utils.ts";
+import { exec } from "node:child_process";
+import { promisify } from "node:util";
+import { DatabaseHub } from "../core/database_hub.ts";
 import { ActivityClassifier } from "./activity_classifier.ts";
 
+const execAsync = promisify(exec);
 const logger = winston.child({ module: "BehaviorAnalyst" });
 
 /**
@@ -11,31 +12,26 @@ const logger = winston.child({ module: "BehaviorAnalyst" });
  * Monitora o contexto de uso para adaptar a intensidade do sistema.
  */
 export class BehaviorAnalyst {
-    private db: Database;
+    private dbHub: DatabaseHub;
     private lastApp: string | null = null;
     private startTime: number = Date.now();
     private windowCache: { data: { app: string, title: string }, timestamp: number } | null = null;
     private readonly CACHE_TTL = 30000;
 
-    constructor(projectRoot: string, db?: Database) {
-        if (db) {
-            this.db = db;
-        } else {
-            const dbPath = new Path(projectRoot).join("system_vault.db").toString();
-            this.db = new Database(dbPath);
-        }
+    constructor(projectRoot: string) {
+        this.dbHub = DatabaseHub.getInstance(projectRoot);
     }
 
     /**
      * Obtém a janela em foco usando PowerShell com cache.
      */
-    getActiveWindow(): { app: string, title: string } {
+    async getActiveWindow(): Promise<{ app: string, title: string }> {
         if (this.isCacheValid()) return this.windowCache!.data;
 
         try {
             if (process.platform !== "win32") return { app: "System (Headless)", title: "N/A" };
 
-            const data = this.runWin32PowerShell();
+            const data = await this.runWin32PowerShellAsync();
             this.windowCache = { data, timestamp: Date.now() };
             return data;
         } catch (e: any) {
@@ -48,7 +44,7 @@ export class BehaviorAnalyst {
         return !!(this.windowCache && Date.now() - this.windowCache.timestamp < this.CACHE_TTL);
     }
 
-    private runWin32PowerShell(): { app: string, title: string } {
+    private async runWin32PowerShellAsync(): Promise<{ app: string, title: string }> {
         const cmd = `
             Add-Type @"
             using System;
@@ -72,7 +68,8 @@ export class BehaviorAnalyst {
             "$($proc.ProcessName)|$($sb.ToString())"
         `;
 
-        const output = execSync(`powershell -Command "${cmd.replace(/\n/g, '')}"`, { encoding: 'utf8' }).trim();
+        const { stdout } = await execAsync(`powershell -Command "${cmd.replace(/\n/g, '')}"`, { encoding: 'utf8' });
+        const output = (stdout || "").trim();
         const [app, title] = output.split('|');
         return { app: app || "Unknown", title: title || "" };
     }
@@ -84,8 +81,8 @@ export class BehaviorAnalyst {
     /**
      * Registra a atividade atual e retorna a categoria.
      */
-    logActivity(): string {
-        const { app, title } = this.getActiveWindow();
+    async logActivity(): Promise<string> {
+        const { app, title } = await this.getActiveWindow();
         const category = this.classifyActivity(app, title);
 
         if (this.lastApp !== app) {
@@ -107,7 +104,7 @@ export class BehaviorAnalyst {
     private saveActivity(app: string, category: string, duration: number) {
         if (duration < 5) return;
         try {
-            this.db.run(
+            this.dbHub.run(
                 "INSERT INTO user_activity (app_name, category, duration_seconds) VALUES (?, ?, ?)",
                 [app, category, duration]
             );

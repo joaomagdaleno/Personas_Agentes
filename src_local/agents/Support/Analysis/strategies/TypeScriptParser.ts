@@ -17,31 +17,31 @@ export class TypeScriptParser {
     constructor(private hubManager?: HubManagerGRPC) { }
 
     async analyze(content: string, filename: string): Promise<TypeScriptAnalysis> {
-        const parts = ParserHelpers.getParts(content);
+        if (!this.hubManager) {
+             return { functions: [], classes: [], dependencies: [], complexity: 1, telemetry: false, tree: false };
+        }
+
+        const result = await this.hubManager.analyzeFile(filename, content);
+        if (!result) return { functions: [], classes: [], dependencies: [], complexity: 1, telemetry: false, tree: false };
+
         return {
-            functions: [...new Set([...parts.functions, ...parts.arrows, ...parts.methods, ...parts.con])],
-            classes: [...new Set(parts.classes)],
-            dependencies: this.extractImports(content),
-            complexity: await this.calculateComplexity(filename),
-            telemetry: ParserHelpers.checkTelemetry(content),
+            functions: result.functions.map((f: any) => f.name),
+            classes: result.symbols.filter((s: any) => s.kind === "class").map((s: any) => s.name),
+            dependencies: result.dependencies?.imports || [],
+            complexity: result.cognitive_complexity || 1,
+            telemetry: ["telemetry", "winston", "logger"].some(kw => content.includes(kw)),
             tree: true
         };
     }
 
     async calculateComplexity(filename: string): Promise<number> {
         if (!this.hubManager) return 1;
-
-        try {
-            const result = await this.hubManager.analyzeFile(filename);
-            return result?.total_complexity || 1;
-        } catch (err) {
-            console.error(`[TypeScriptParser] gRPC complexity calculation failed:`, err);
-            return 1;
-        }
+        const result = await this.hubManager.analyzeFile(filename);
+        return result?.cognitive_complexity || 1;
     }
 
     extractImports(content: string): string[] {
-        const matches = content.matchAll(/import\s+(?:\{[^}]*\}|\*\s+as\s+\w+|\w+)\s+from\s+['"]([^'"]+)['"]/g);
-        return [...matches].map(m => m[1] || '').filter(Boolean);
+        // Fallback or deprecated, ideally use analyze() result
+        return [];
     }
 }

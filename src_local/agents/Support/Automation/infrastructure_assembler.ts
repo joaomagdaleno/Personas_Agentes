@@ -34,7 +34,7 @@ const logger = winston.child({ module: "InfrastructureAssembler" });
 export class InfrastructureAssembler {
     private static coreCache: CoreSupportTools | null = null;
     private static toolsCache: Record<string, OrchestratorTools> = {};
-    private static hubManager: HubManagerGRPC = new HubManagerGRPC();
+    private static hubManager: HubManagerGRPC = HubManagerGRPC.getInstance();
 
     /**
      * 🛡️ Instancia a junta de suporte padrão.

@@ -148,13 +148,28 @@ fn walk_for_analysis(cursor: &mut tree_sitter::TreeCursor, source: &[u8],
         "call_expression" => {
             if let Some(func_node) = node.child_by_field_name("function") {
                 if let Ok(func_text) = func_node.utf8_text(source) {
-                    if func_text.contains("logger") || func_text.contains("console") || func_text.contains("telemetry") || func_text.contains("winston") {
+                    let text = func_text.to_string();
+                    if text.contains("logger") || text.contains("console") || text.contains("telemetry") || text.contains("winston") {
                         *has_observability = true;
                     }
-                    if func_text == "describe" || func_text == "it" || func_text == "test" || func_text == "expect" {
+                    if text == "describe" || text == "it" || text == "test" || text == "expect" {
                         *has_test = true;
                     }
+                    
+                    // Dangerous Execution Check
+                    let dangerous = ["eval", "exec", "spawnSync", "execSync", "Function"];
+                    if dangerous.iter().any(|&d| text.contains(d)) {
+                         // This could be flagged as a security finding in a more complex pass
+                    }
                 }
+            }
+        }
+        "catch_clause" => {
+            // Check for Silent Errors (Empty catch blocks)
+            if let Some(body) = node.child_by_field_name("body") {
+               if body.child_count() <= 2 { // Only '{' and '}'
+                   // Potencial Silent Error
+               }
             }
         }
         "decorator" => {

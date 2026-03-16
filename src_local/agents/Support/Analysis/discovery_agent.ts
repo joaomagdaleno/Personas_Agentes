@@ -19,11 +19,18 @@ export class DiscoveryAgent {
         logger.info("🔭 Discovery Phase...");
         const root = this.orc.projectRoot.toString();
         const { results: raw, findings: goFindings } = await GoDiscoveryAdapter.scan(root, root, this.orc.hubManager);
+        
+        // Filtrar apenas arquivos do core/agentes para o censo de soberania
         const filtered = raw.filter(f => f.path.replace(/\\/g, "/").startsWith(`src_local/agents/`));
         const { agents, findings: enrichFindings } = await this.enrich(filtered, root);
+        
         const findings: any[] = [...goFindings, ...enrichFindings];
         this.mapDisparities(this.groupByPersona(agents), findings);
-        const depth = await DepthIntelligence.calculateDepthAudit(root, this._getFiles(root), {});
+
+        // Otimização Crítica: Usar os arquivos já encontrados pelo scanner nativo
+        const allFiles = raw.map(f => path.join(root, f.path));
+        const depth = await DepthIntelligence.calculateDepthAudit(root, allFiles, {});
+        
         const ctx = await this.orc.contextEngine.analyzeProject();
         ctx.atomicUnits = agents; ctx.depthAudit = depth;
         findings.push(...await this.orc.runStrategicAudit(ctx, null, false), ...await this.orc.runObfuscationScan());

@@ -5,9 +5,9 @@ import type { AuditFinding, IAgent, ProjectContext } from "../../../core/types.t
 import { CognitiveEngine } from "../../../utils/cognitive_engine.ts";
 import { Orchestrator } from "../../../core/orchestrator.ts";
 import { ObfuscationCleanerEngine } from "../Security/obfuscation_cleaner_engine.ts";
-import * as ts from 'typescript';
 import { HealerPromptBuilder } from "./healer_prompt_builder.ts";
 import { PatchManager } from "./patch_manager.ts";
+import { HubManagerGRPC } from "../../../core/hub_manager_grpc.ts";
 
 /**
  * 🩹 Agente Healer (PhD in Software Reparation).
@@ -24,10 +24,10 @@ export class HealerPersona implements IAgent {
     private cleaner: ObfuscationCleanerEngine;
     private patcher: PatchManager;
 
-    constructor(projectRoot?: string) {
+    constructor(projectRoot?: string, private hubManager?: HubManagerGRPC) {
         this.projectRoot = projectRoot || process.cwd();
         this.brain = new CognitiveEngine();
-        this.cleaner = new ObfuscationCleanerEngine();
+        this.cleaner = new ObfuscationCleanerEngine(this.hubManager);
         this.patcher = new PatchManager(this.projectRoot);
     }
 
@@ -118,11 +118,10 @@ export class HealerPersona implements IAgent {
         if (!fs.existsSync(fullPath)) return false;
 
         const content = fs.readFileSync(fullPath, 'utf-8');
-        const sourceFile = ts.createSourceFile(filePath, content, ts.ScriptTarget.Latest, true);
-        const replacements = this.cleaner.collectReplacements(sourceFile);
+        const replacements = await this.cleaner.collectReplacementsDeep(filePath, content);
 
         if (replacements.length > 0) {
-            winston.info(`🩹 [Healer] Limpando ${replacements.length} ofuscações em ${filePath}`);
+            winston.info(`🩹 [Healer] Limpando ${replacements.length} ofuscações profundas em ${filePath}`);
             fs.writeFileSync(fullPath, this.cleaner.applyClean(content, replacements), 'utf-8');
             return true;
         }

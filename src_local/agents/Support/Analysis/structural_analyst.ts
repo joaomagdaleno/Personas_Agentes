@@ -99,22 +99,22 @@ export class StructuralAnalyst {
     }
 
     /**
-     * 🧠 Analisa falhas lógicas profundas (Wrapper LogicAuditor).
+     * 🧠 Analisa falhas lógicas profundas (Wrapper LogicAuditor via Rust AST).
      */
-    analyze_logic_flaws(content: string, filename: string): any[] {
-        if (!this.logicAuditor) return [];
+    async analyze_logic_flaws(content: string, filename: string): Promise<any[]> {
+        if (!this.hubManager) return [];
 
         try {
-            const ts = require("typescript");
-            const sourceFile = ts.createSourceFile(filename, content, ts.ScriptTarget.Latest, true);
-            return this.logicAuditor.constructor.scanFile(sourceFile);
+            const { LogicAuditor } = await import("./logic_auditor.ts");
+            const auditor = new LogicAuditor(this.hubManager);
+            return await auditor.scanFile(filename, content);
         } catch (error) {
             logger.error(`❌ [StructuralAnalyst] Failed to analyze logic flaws in ${filename}: ${error}`);
             return [{
                 file: filename,
                 line: 1,
-                issue: `Falha na análise lógica (AST): ${error}`,
-                severity: "HIGH",
+                issue: `Falha na análise lógica (AST gRPC): ${error}`,
+                severity: "high",
                 category: "Analysis",
                 context: "StructuralAnalyst"
             }];

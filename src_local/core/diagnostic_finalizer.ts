@@ -42,6 +42,14 @@ export class DiagnosticFinalizer {
             orc.memoryEngine.rememberFinding(finding);
         }
 
+        // 📐 Ciclo de QA PhD (Pirâmide de Testes Industrial)
+        try {
+            logger.info("🧪 [Finalizer] Iniciando auditoria da Pirâmide de Testes...");
+            await orc.dispatch("qa_engineer", { ...ctx, orchestrator: orc });
+        } catch (e) {
+            logger.error(`❌ [Finalizer] Erro ao disparar ciclo de QA: ${e}`);
+        }
+
         // Finalize report
         return await this.persistReport(orc, snapshot, findings);
     }
