@@ -1,22 +1,23 @@
 [package]
 name = "tray_rust"
-version = "0.1.0"
-edition = "2024"
+version = "1.0.0"
+edition = "2021"
 
 [dependencies]
 crossbeam-channel = "0.5"
-notify = "6.1.1" # File Watcher
-reqwest = { version = "0.11", features = ["blocking", "json"] } # HTTP Sync calls
-rfd = "0.12" # Native Dialogs Popup
-rusqlite = { version = "0.29.0", features = ["bundled"] } # SQLite
+notify = "6.1.1"
+reqwest = { version = "0.11", features = ["blocking", "json"] }
+rfd = "0.12"
+rusqlite = { version = "0.29.0", features = ["bundled"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-tao = "0.24" # Window / Event Loop cross-platform
-tray-icon = "0.11" # Native System Tray
+tao = "0.24"
+tray-icon = "0.11"
 windows = { version = "0.52", features = [
     "Win32_UI_Input_KeyboardAndMouse",
     "Win32_UI_WindowsAndMessaging",
     "Win32_Foundation",
     "Win32_System_ProcessStatus",
     "Win32_System_Threading",
+    "Win32_System_SystemInformation",
 ] }

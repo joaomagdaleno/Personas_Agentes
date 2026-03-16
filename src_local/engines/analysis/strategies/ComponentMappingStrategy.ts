@@ -4,8 +4,7 @@
 export class ComponentMappingStrategy {
     static mapType(relPath: string): string {
         const p = relPath.toLowerCase().replace(/\\/g, "/");
-        if (p.includes("/agents/typescript/strategic/")) return "AGENT";
-        if (p.includes("/agents/typescript/specialized/")) return "AGENT";
+        if (p.includes("/engines/")) return "ENGINE";
         if (p.includes("/core/")) return "CORE";
         if (p.includes("/utils/")) return "UTIL";
         if (p.includes("/diagnostics/") || p.includes("/analysis/")) return "LOGIC";

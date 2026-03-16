@@ -2,7 +2,7 @@
 import winston from "winston";
 import * as path from "node:path";
 import { StructuralAnalyst } from "./../analysis/structural_analyst";
-import { PatternFinder } from "./../../strategies/PatternFinder";
+import { PatternFinder } from "./PatternFinder";
 import { IntegrityGuardian } from "./../healing/integrity_guardian";
 import { ConnectivityMapper } from "./../analysis/connectivity_mapper";
 import { ParityAnalyst } from "./../analysis/parity_analyst";
