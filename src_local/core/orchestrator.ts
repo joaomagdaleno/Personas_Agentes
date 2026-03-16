@@ -5,7 +5,6 @@ import { ContextEngine } from "../utils/context_engine.ts";
 import { CacheManager } from "../utils/cache_manager.ts";
 import { TaskExecutor } from "../utils/task_executor.ts";
 import { AuditEngine } from "./audit_engine.ts";
-import { DirectorPersona } from "../agents/Support/Strategic/director.ts";
 import { StabilityLedger } from "../utils/stability_ledger.ts";
 import { HistoryAgent } from "../utils/history_agent.ts";
 import { TaskQueue } from "../utils/task_queue.ts";
@@ -13,20 +12,18 @@ import { MemoryEngine } from "../utils/memory_engine.ts";
 import { ReflexEngine } from "./reflex_engine.ts";
 import { eventBus } from "./event_bus.ts";
 import { CoreValidator } from "./validator.ts";
-import { DiagnosticStrategist } from "../agents/Support/Diagnostics/diagnostic_strategist.ts";
 import { UpdateTransaction } from "../utils/update_transaction.ts";
 import { SystemSentinel } from "../utils/system_sentinel.ts";
 import { BehaviorAnalyst } from "../utils/behavior_analyst.ts";
 import { TaskWorker } from "../utils/task_worker.ts";
-import { MemoryPruningAgent } from "../agents/Support/Maintenance/memory_pruning_agent.ts";
 import { PredictorEngine } from "../utils/ai/predictor_engine.ts";
 import { HubWatcher } from "../utils/hub_watcher.ts";
 import { HubManagerGRPC } from "./hub_manager_grpc.ts";
 import { RegistryManager } from "./registry_manager.ts";
 import { ParityDaemon } from "./parity_daemon.ts";
-import { QAEngineerPersona } from "../agents/Support/Diagnostics/qa_engineer.ts";
 import { PhdGovernanceSystem } from "../core/governance/system_facade.ts";
-import { DocGenAgent } from "../agents/Support/Automation/doc_gen_agent.ts";
+import { TestEngine } from "./test_engine.ts";
+import { DocEngine } from "./doc_engine.ts";
 import type { IAgent, ProjectContext, GenericFinding, SystemHealth360, SystemMetrics, IHealthSynthesizer, AnalysisResult } from "./types.ts";
 
 const logger = winston.child({ module: "Orchestrator" });
@@ -43,10 +40,8 @@ export class Orchestrator {
     cacheManager!: CacheManager;
     executor!: TaskExecutor;
     auditEngine!: AuditEngine;
-    director!: DirectorPersona;
     stabilityLedger!: StabilityLedger;
     historyAgent!: HistoryAgent;
-    strategist!: DiagnosticStrategist;
     coreValidator!: CoreValidator;
     synthesizer!: IHealthSynthesizer;
     taskQueue!: TaskQueue;
@@ -56,14 +51,13 @@ export class Orchestrator {
     sentinel!: SystemSentinel;
     behaviorAnalyst!: BehaviorAnalyst;
     worker!: TaskWorker;
-    pruningAgent!: MemoryPruningAgent;
     predictorEngine!: PredictorEngine;
     hubWatcher!: HubWatcher;
     hubManager!: HubManagerGRPC;
     registryManager!: RegistryManager;
-    qaEngineer!: QAEngineerPersona;
     parityDaemon!: ParityDaemon;
-    docGen!: DocGenAgent;
+    testEngine!: TestEngine;
+    docEngine!: DocEngine;
     private governance: PhdGovernanceSystem;
 
     public ready: Promise<void>;
@@ -78,8 +72,8 @@ export class Orchestrator {
         };
         this.hubManager = HubManagerGRPC.getInstance();
         this.registryManager = new RegistryManager(projectRoot);
-        this.governance = PhdGovernanceSystem.getInstance(); // Initialize governance here
-        this.docGen = new DocGenAgent();
+        this.governance = PhdGovernanceSystem.getInstance();
+        this.docEngine = new DocEngine(this.hubManager);
         this.initializeEngines(projectRoot);
         this._registerAgents();
         this._initEngines();
@@ -155,7 +149,6 @@ export class Orchestrator {
         this.executor = new TaskExecutor();
         this.contextEngine = new ContextEngine(root, this.hubManager);
         this.auditEngine = new AuditEngine(this);
-        this.director = new DirectorPersona(root);
         this.stabilityLedger = new StabilityLedger(root);
         this.historyAgent = new HistoryAgent(root);
         this.taskQueue = new TaskQueue(5, this.hubManager);
@@ -165,14 +158,12 @@ export class Orchestrator {
         this.sentinel = new SystemSentinel();
         this.behaviorAnalyst = new BehaviorAnalyst(root);
         this.worker = new TaskWorker(this.taskQueue, this);
-        this.pruningAgent = new MemoryPruningAgent(root);
         this.predictorEngine = new PredictorEngine(root);
-        this.qaEngineer = new QAEngineerPersona(root);
+        this.testEngine = new TestEngine(root);
     }
 
     private _registerAgents() {
-        this.agentRegistry.set(this.pruningAgent.id, this.pruningAgent as unknown as IAgent);
-        this.agentRegistry.set(this.qaEngineer.id, this.qaEngineer as unknown as IAgent);
+        // Agents are now resolved via identity_census.json and dispatched through engines.
     }
 
     async dispatch(agentId: string, context: ProjectContext = {}): Promise<any> {
@@ -191,7 +182,7 @@ export class Orchestrator {
     }
 
     _initEngines() {
-        this.strategist = new DiagnosticStrategist();
+        // DiagnosticStrategist logic is now inlined where needed (it was a simple planner).
         logger.info("Engines do Orquestrador (Bun) inicializados.");
     }
 
@@ -271,7 +262,7 @@ export class Orchestrator {
      */
     async generateTests(filePath: string): Promise<boolean> {
         logger.info(`🧪 [Orchestrator] Solicitando geração de testes PhD para: ${filePath}`);
-        const success = await this.qaEngineer.generateUnitTest(filePath, this);
+        const success = await this.testEngine.generateUnitTest(filePath, this);
         
         if (success) {
             const testFilePath = filePath.replace(/\.ts$/, '.test.ts');
@@ -294,7 +285,7 @@ export class Orchestrator {
      */
     async generateIntegrationTest(fileA: string, fileB: string): Promise<boolean> {
         logger.info(`🔗 [Orchestrator] Solicitando teste de INTEGRAÇÃO: ${fileA} <-> ${fileB}`);
-        const success = await this.qaEngineer.generateIntegrationTest(fileA, fileB, this);
+        const success = await this.testEngine.generateIntegrationTest(fileA, fileB, this);
         
         if (success) {
             const testFilePath = fileA.replace(/\.ts$/, '.integration.test.ts');
@@ -313,7 +304,7 @@ export class Orchestrator {
      */
     async generateE2ETest(filePath: string): Promise<boolean> {
         logger.info(`🌐 [Orchestrator] Solicitando teste E2E para: ${filePath}`);
-        const success = await this.qaEngineer.generateE2ETest(filePath, this);
+        const success = await this.testEngine.generateE2ETest(filePath, this);
         
         if (success) {
             const testFilePath = filePath.replace(/\.ts$/, '.e2e.test.ts');
@@ -331,7 +322,7 @@ export class Orchestrator {
         try {
             const fullPath = this.projectRoot.join(filePath).toString();
             const content = await Bun.file(fullPath).text();
-            const docstring = await this.docGen.generateDocstring(filePath, content);
+            const docstring = await this.docEngine.generateDocstring(filePath, content);
             
             if (docstring) {
                 // Insere no topo do arquivo
@@ -465,7 +456,17 @@ Retorne apenas o código TypeScript completo.
 
     async runMaintenance() {
         logger.info("🔧 [Orchestrator] Iniciando manutenção do sistema...");
-        await this.pruningAgent.execute({ days: 30 });
+        // Pruning is now handled inline via DatabaseHub
+        try {
+            const { Database } = await import("bun:sqlite");
+            const dbPath = this.projectRoot.join("system_vault.db").toString();
+            const db = new Database(dbPath);
+            db.query(`DELETE FROM health_history WHERE timestamp < datetime('now', '-30 days')`).run();
+            db.close();
+            logger.info("✨ [Orchestrator] Manutenção de banco concluída.");
+        } catch (e) {
+            logger.error(`❌ [Orchestrator] Erro na manutenção: ${e}`);
+        }
     }
 
     async generateFullDiagnostic(options: { autoHeal: boolean, dryRun?: boolean }): Promise<Path | any> {

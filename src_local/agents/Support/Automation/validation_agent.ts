@@ -14,7 +14,17 @@ export class ValidationAgent {
 
         logger.info("🧪 Iniciando fase de validação...");
 
-        const plan = await this.orc.strategist.planTargetedVerification(findings);
+        // Inline strategist logic (previously DiagnosticStrategist.planTargetedVerification)
+        const plan: Record<string, Set<string>> = {};
+        for (const f of findings) {
+            if (!f || typeof f !== 'object') continue;
+            const file = f.file;
+            const context = f.context || f.agent;
+            if (file && context) {
+                if (!plan[file]) plan[file] = new Set();
+                plan[file].add(context);
+            }
+        }
         if (findings.length > 0) {
             const verificationFindings = await this.orc.runTargetedVerification(plan);
             findings.push(...verificationFindings);

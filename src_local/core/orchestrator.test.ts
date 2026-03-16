@@ -37,7 +37,7 @@ describe('Orchestrator core logic', () => {
         expect(orchestrator.executor).toBeDefined();
         expect(orchestrator.contextEngine).toBeDefined();
         expect(orchestrator.auditEngine).toBeDefined();
-        expect(orchestrator.director).toBeDefined();
+        expect(orchestrator.testEngine).toBeDefined();
         expect(orchestrator.taskQueue).toBeDefined();
     });
 
