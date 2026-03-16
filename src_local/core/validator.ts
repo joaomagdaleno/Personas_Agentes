@@ -1,7 +1,7 @@
 import winston from "winston";
 import { join } from "path";
 import { existsSync } from "fs";
-import { TestRunner } from "../agents/Support/Automation/test_runner";
+import { TestRunner } from "../engines/automation/test_runner";
 
 const logger = winston.child({ module: "CoreValidator" });
 

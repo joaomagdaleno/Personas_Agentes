@@ -1,6 +1,6 @@
 import winston from "winston";
 import * as ts from "typescript";
-import { TELEMETRY_KEYWORDS, CRITICAL_LOG_METHODS } from "../agents/Support/Security/safety_definitions.ts";
+import { TELEMETRY_KEYWORDS, CRITICAL_LOG_METHODS } from "../engines/security/safety_definitions.ts";
 import { ASTIntelligence } from "./ast_intelligence.ts";
 
 const logger = winston.child({ module: "TelemetryExcellenceEngine" });

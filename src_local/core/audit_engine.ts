@@ -55,7 +55,7 @@ export class AuditEngine {
     }
 
     private async _addSecurityFindings(findings: any[], context: any): Promise<void> {
-        const security = await (new (await import("../agents/Support/Security/security_sentinel_agent.ts")).SecuritySentinelAgent(this.orc.hubManager)).scanProject(context.map);
+        const security = await (new (await import("../engines/security/security_sentinel_agent.ts")).SecuritySentinelAgent(this.orc.hubManager)).scanProject(context.map);
         findings.push(...security);
     }
 
@@ -84,7 +84,7 @@ export class AuditEngine {
 
     async runObfuscationScan(contextMap: any = null): Promise<any[]> {
         const startT = Date.now();
-        const hunter = new (await import("../agents/Support/Security/obfuscation_hunter.ts")).ObfuscationHunter(this.orc.hubManager);
+        const hunter = new (await import("../engines/security/obfuscation_hunter.ts")).ObfuscationHunter(this.orc.hubManager);
         const tMap = contextMap || this.orc.contextEngine.map;
 
         const findings = await this._performObfuscationAudit(tMap, hunter);
@@ -138,13 +138,13 @@ export class AuditEngine {
     }
 
     private async _scanTs(content: string, f: string): Promise<any[]> {
-        const { LogicAuditor } = await import("../agents/Support/Analysis/logic_auditor.ts");
+        const { LogicAuditor } = await import("../engines/analysis/logic_auditor.ts");
         const auditor = new LogicAuditor(this.orc.hubManager);
         return await auditor.scanFile(f, content);
     }
 
     private async _scanMd(content: string, f: string): Promise<any[]> {
-        const { MarkdownAuditor } = await import("../agents/Support/Reporting/markdown_auditor.ts");
+        const { MarkdownAuditor } = await import("../engines/reporting/markdown_auditor.ts");
         return MarkdownAuditor.auditMarkdown(f, content);
     }
 

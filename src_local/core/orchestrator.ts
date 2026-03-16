@@ -190,7 +190,7 @@ export class Orchestrator {
         this.coreValidator = new CoreValidator(this);
         this.synthesizer = {
             synthesize360: async (ctx: ProjectContext, m_orc: SystemMetrics, personas: IAgent[], ledger: StabilityLedger, qa: any) => {
-                const { HealthSynthesizer } = await import("../agents/Support/Diagnostics/health_synthesizer.ts");
+                const { HealthSynthesizer } = await import("../engines/diagnostics/health_synthesizer.ts");
                 const syn = new HealthSynthesizer(this.hubManager);
                 return syn.synthesize360(ctx, m_orc, personas, ledger, qa);
             }
@@ -243,7 +243,7 @@ export class Orchestrator {
     }
 
     async runAutoHealing(findings: GenericFinding[]): Promise<number> {
-        const { HealerPersona } = await import("../agents/Support/Core/healer.ts");
+        const { HealerPersona } = await import("../engines/healing/healer.ts");
         const healer = new HealerPersona(this.projectRoot.toString());
 
         const results = await Promise.all(findings.map(f => this.healSingleFinding(healer, f)));
@@ -416,9 +416,9 @@ Retorne apenas o código TypeScript completo.
     }
 
     private async collectQAData(ctx: ProjectContext): Promise<any> {
-        const { PyramidAnalyst } = await import("../agents/Support/Analysis/pyramid_analyst.ts");
-        const { QualityAnalyst } = await import("../agents/Support/Diagnostics/quality_analyst.ts");
-        const { TopologyGraphAgent } = await import("../agents/Support/Automation/topology_graph_agent.ts");
+        const { PyramidAnalyst } = await import("../engines/analysis/pyramid_analyst.ts");
+        const { QualityAnalyst } = await import("../engines/diagnostics/quality_analyst.ts");
+        const { TopologyGraphAgent } = await import("../engines/automation/topology_graph_agent.ts");
 
         return {
             pyramid: await new PyramidAnalyst().analyze(ctx.map || {}, async (p: string) => Bun.file(this.projectRoot.join(p).toString()).text()),
@@ -449,7 +449,7 @@ Retorne apenas o código TypeScript completo.
     }
 
     async generateMorningBriefing() {
-        const { BriefingAgent } = await import("../agents/Support/Reporting/briefing_agent.ts");
+        const { BriefingAgent } = await import("../engines/reporting/briefing_agent.ts");
         const briefing = new BriefingAgent(this.projectRoot.toString(), this.hubManager);
         return await briefing.generateMorningReport();
     }

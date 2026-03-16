@@ -8,14 +8,14 @@ export class AuditHelpers {
     static async enrichSingleFile(f: string, findings: any[], root: Path, orc: any): Promise<void> {
         const content = await Bun.file(root.join(f).toString()).text();
         if (f.match(/\.ts$|\.tsx$/)) {
-            const { LogicAuditor } = await import("../agents/Support/Analysis/logic_auditor.ts");
+            const { LogicAuditor } = await import("../engines/analysis/logic_auditor.ts");
             const auditor = new LogicAuditor(orc.hubManager);
             findings.push(...await auditor.scanFile(f, content));
         } else if (f.endsWith(".md")) {
-            const { MarkdownAuditor } = await import("../agents/Support/Reporting/markdown_auditor.ts");
+            const { MarkdownAuditor } = await import("../engines/reporting/markdown_auditor.ts");
             findings.push(...MarkdownAuditor.auditMarkdown(f, content));
         }
-        const cog = await (await import("../agents/Support/Diagnostics/cognitive_analyst.ts")).CognitiveAnalyst.analyzeIntent(f, content, orc);
+        const cog = await (await import("../engines/diagnostics/cognitive_analyst.ts")).CognitiveAnalyst.analyzeIntent(f, content, orc);
         if (cog) findings.push(cog);
     }
 
@@ -28,13 +28,13 @@ export class AuditHelpers {
     }
 
     static async scanTs(content: string, f: string, hubManager?: any): Promise<any[]> {
-        const { LogicAuditor } = await import("../agents/Support/Analysis/logic_auditor.ts");
+        const { LogicAuditor } = await import("../engines/analysis/logic_auditor.ts");
         const auditor = new LogicAuditor(hubManager);
         return await auditor.scanFile(f, content);
     }
 
     static async scanMd(content: string, f: string): Promise<any[]> {
-        const { MarkdownAuditor } = await import("../agents/Support/Reporting/markdown_auditor.ts");
+        const { MarkdownAuditor } = await import("../engines/reporting/markdown_auditor.ts");
         return MarkdownAuditor.auditMarkdown(f, content);
     }
 }

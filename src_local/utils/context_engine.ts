@@ -1,14 +1,14 @@
 import * as path from "node:path";
 import { HubManagerGRPC } from "../core/hub_manager_grpc.ts";
 import { Path } from "../core/path_utils.ts";
-import { DNAProfiler } from "../agents/Support/Analysis/dna_profiler.ts";
+import { DNAProfiler } from "../engines/analysis/dna_profiler.ts";
 import { ContextMappingLogic } from "./context_mapping_logic.ts";
 import { FileSystemScanner } from "./file_system_scanner.ts";
-import { StructuralAnalyst } from "../agents/Support/Analysis/structural_analyst.ts";
-import { CoverageAuditor } from "../agents/Support/Analysis/coverage_auditor.ts";
-import { ConnectivityMapper } from "../agents/Support/Analysis/connectivity_mapper.ts";
-import { ParityAnalyst } from "../agents/Support/Analysis/parity_analyst.ts";
-import { MetricsEngine } from "../agents/Support/Diagnostics/metrics_engine.ts";
+import { StructuralAnalyst } from "../engines/analysis/structural_analyst.ts";
+import { CoverageAuditor } from "../engines/analysis/coverage_auditor.ts";
+import { ConnectivityMapper } from "../engines/analysis/connectivity_mapper.ts";
+import { ParityAnalyst } from "../engines/analysis/parity_analyst.ts";
+import { MetricsEngine } from "../engines/diagnostics/metrics_engine.ts";
 import { ContextHelpers } from "./context_helpers.ts";
 import type { CognitiveStatus, IAgent } from "../core/types.ts";
 

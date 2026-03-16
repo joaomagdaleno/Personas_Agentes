@@ -1,6 +1,6 @@
 import winston from "winston";
 import { Path } from "../core/path_utils.ts";
-import { MemoryPersistence } from "../agents/Support/Core/memory_persistence.ts";
+import { MemoryPersistence } from "../engines/healing/memory_persistence.ts";
 
 const logger = winston.child({ module: "StabilityLedger" });
 

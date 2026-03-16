@@ -1,7 +1,7 @@
 import winston from "winston";
 import { Path } from "./path_utils";
-import { MarkdownSanitizer } from "../agents/Support/Reporting/markdown_sanitizer.ts";
-import { MarkdownAuditor } from "../agents/Support/Reporting/markdown_auditor.ts";
+import { MarkdownSanitizer } from "../engines/reporting/markdown_sanitizer.ts";
+import { MarkdownAuditor } from "../engines/reporting/markdown_auditor.ts";
 // import { HistoryAgent } from "../utils/history_agent"; // To be ported
 
 const logger = winston.child({ module: "DiagnosticFinalizer" });

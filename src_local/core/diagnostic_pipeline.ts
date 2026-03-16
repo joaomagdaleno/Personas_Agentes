@@ -1,8 +1,8 @@
 import winston from "winston";
 import { FindingDeduplicator } from "../utils/finding_deduplicator.ts";
 import { Path } from "./path_utils.ts";
-import { DiscoveryAgent } from "../agents/Support/Analysis/discovery_agent.ts";
-import { ValidationAgent } from "../agents/Support/Automation/validation_agent.ts";
+import { DiscoveryAgent } from "../engines/analysis/discovery_agent.ts";
+import { ValidationAgent } from "../engines/automation/validation_agent.ts";
 import { DiagnosticFinalizer } from "./diagnostic_finalizer.ts";
 
 import { Orchestrator } from "./orchestrator.ts";
@@ -59,7 +59,7 @@ export class DiagnosticPipeline {
             timestamp: new Date().toISOString()
         };
 
-        const { QualityAnalyst } = await import("../agents/Support/Diagnostics/quality_analyst.ts");
+        const { QualityAnalyst } = await import("../engines/diagnostics/quality_analyst.ts");
         const qa = new QualityAnalyst();
         this.orc.recordSystemEvent("COGNITIVE_AUDIT");
         const cognitive = await qa.runCognitiveAudit();
