@@ -70,6 +70,8 @@ async function main() {
 
         await orchestrator.runMaintenance();
         logger.info("🏁 Operação concluída.");
+        await orchestrator.shutdown();
+        process.exit(0);
     } catch (err: any) {
         logger.error(`🚨 Falha crítica: ${err.message || err}`);
         process.exit(1);

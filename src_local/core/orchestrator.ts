@@ -478,4 +478,13 @@ Retorne apenas o código TypeScript completo.
         const duration = (Date.now() - startTime) / 1000;
         logger.info(`${message} concluído em ${duration.toFixed(4)}s.`);
     }
+
+    public async shutdown() {
+        if (this.hubWatcher) {
+            this.hubWatcher.stop();
+        }
+        const { SystemManager } = await import("./system_manager.ts");
+        const sm = SystemManager.getInstance();
+        await sm.shutdown();
+    }
 }

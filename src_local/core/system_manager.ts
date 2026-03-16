@@ -80,26 +80,29 @@ export class SystemManager {
     }
 
     private setupShutdownHandlers() {
-        const shutdown = async () => {
-            if (this.shutdownInProgress) return;
-            this.shutdownInProgress = true;
-            logger.info("🛑 Recebido sinal de encerramento. Limpando processos nativos...");
-            
-            // Aqui poderíamos enviar sinais de parada para o Hub Go via gRPC ou matar PIDs rastreados
-            for (const proc of this.nativeProcesses) {
-                try {
-                    proc.kill();
-                } catch (e) {
-                    // Ignore
-                }
-            }
-            
-            logger.info("✨ Cleanup concluído.");
-            process.exit(0);
+        const handleSignal = async () => {
+            await this.shutdown();
         };
 
-        process.on("SIGINT", shutdown);
-        process.on("SIGTERM", shutdown);
+        process.on("SIGINT", handleSignal);
+        process.on("SIGTERM", handleSignal);
+    }
+
+    public async shutdown() {
+        if (this.shutdownInProgress) return;
+        this.shutdownInProgress = true;
+        logger.info("🛑 Encerrando infrastructure_assembler. Limpando processos nativos...");
+        
+        for (const proc of this.nativeProcesses) {
+            try {
+                proc.kill();
+            } catch (e) {
+                // Ignore
+            }
+        }
+        
+        logger.info("✨ Cleanup concluído.");
+        console.log("✨ Native processes terminated.");
     }
 
     public registerNativeProcess(proc: ChildProcess) {
