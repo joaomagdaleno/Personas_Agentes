@@ -41,8 +41,12 @@ export class SystemManager {
         logger.info("🚀 Iniciando infraestrutura nativa (Hub + Sidecar) pelo SystemManager...");
         
         const absRoot = path.resolve(projectRoot);
-        const hubExe = path.join(absRoot, "src_native/hub/hub.exe");
-        const analyzerExe = path.join(absRoot, "src_native/analyzer/target/release/analyzer.exe");
+        // Determina o root do Personas_Agentes (onde os binários vivem)
+        const myDir = path.dirname(new URL(import.meta.url).pathname).replace(/^\/([a-zA-Z]:)/, '$1');
+        const personasRoot = path.resolve(myDir, "../../"); 
+        
+        const hubExe = path.join(personasRoot, "src_native/hub/hub.exe");
+        const analyzerExe = path.join(personasRoot, "src_native/analyzer/target/release/analyzer.exe");
 
         if (!fs.existsSync(hubExe)) {
             logger.error(`❌ Não encontrado: ${hubExe}`);
