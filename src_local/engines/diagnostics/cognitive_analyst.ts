@@ -19,9 +19,9 @@ export class CognitiveAnalyst {
 
         try {
             const res = await orchestrator.contextEngine.cognitiveReason(prompt);
-            if (!res) return null;
+            if (!res || !res.status) return null;
 
-            const match = res.match(/\{.*\}/s);
+            const match = res.status.match(/\{.*\}/s);
             if (!match || !match[0]) {
                 logger.warn(`⚠️ Resposta da IA para ${filename} não contém JSON válido.`);
                 return null;
@@ -34,6 +34,11 @@ export class CognitiveAnalyst {
                     line: 1,
                     severity: data.severity || "MEDIUM",
                     issue: `Desvio de Intenção: ${data.issue}`,
+                    agent: "cognitive_analyst",
+                    role: "ARCHITECT",
+                    emoji: "🧠",
+                    stack: "Cognitive",
+                    evidence: data.issue,
                     context: "CognitiveIntent"
                 };
             }

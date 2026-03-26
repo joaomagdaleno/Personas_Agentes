@@ -46,34 +46,50 @@ export class HealthSynthesizer {
 
         // 🧬 Parity Counter Logic (Native Sovereignty v8.0)
         const { ParityAnalyst } = await import("../analysis/parity_analyst");
+        const fs = await import("node:fs");
         const parityRoot = context.projectRoot ? `${context.projectRoot}/src_local/agents` : "src_local/agents";
-        const analyst = new ParityAnalyst(parityRoot);
-        const nativeReport = await analyst.analyzeAtomicParity();
-
-        const parityStats = {
-            total_atoms: nativeReport.totalAgents,
+        
+        let parityStats = {
+            total_atoms: 0,
             shallow: 0,
-            gaps: nativeReport.divergentCount,
+            gaps: 0,
             evolution: 0,
-            deep: nativeReport.symmetricCount,
-            native_sync: nativeReport.overallParity,
-            raw_report: analyst.formatMarkdownReport(nativeReport)
+            deep: 0,
+            native_sync: 100,
+            raw_report: "Parity Audit skipped (agents not found in target project)"
         };
 
-        // 🚩 Exposicão de gaps como achados reais (Não silenciar)
-        if (nativeReport.divergentCount > 0) {
-            for (const res of nativeReport.results.filter(r => r.status === "DIVERGENT")) {
-                allAlerts.push({
-                    file: res.agent,
-                    severity: "CRITICAL",
-                    issue: `Gap de Paridade Atômica: O agente em '${res.stack}' divergiu da referência TypeScript.`,
-                    agent: "ParityAnalyst",
-                    role: "PhD in Atomic Symmetry",
-                    emoji: "⚖️",
-                    stack: res.stack,
-                    impact: "Quebra de fidelidade sistêmica entre stacks.",
-                    evidence: `${res.deltas.length} discrepâncias detectadas: ${res.deltas.map(d => d.dimension).join(", ")}`
-                });
+        if (fs.existsSync(parityRoot)) {
+            const analyst = new ParityAnalyst(parityRoot);
+            const nativeReport = await analyst.analyzeAtomicParity();
+
+            parityStats = {
+                total_atoms: nativeReport.totalAgents,
+                shallow: 0,
+                gaps: nativeReport.divergentCount,
+                evolution: 0,
+                deep: nativeReport.symmetricCount,
+                native_sync: nativeReport.overallParity,
+                raw_report: analyst.formatMarkdownReport(nativeReport)
+            };
+
+            // 🚩 Exposicão de gaps como achados reais (Não silenciar)
+            if (nativeReport.divergentCount > 0) {
+                for (const res of nativeReport.results.filter(r => r.status === "DIVERGENT")) {
+                    allAlerts.push({
+                        file: res.agent,
+                        severity: "CRITICAL",
+                        issue: `Gap de Paridade Atômica: O agente em '${res.stack}' divergiu da referência TypeScript.`,
+                        agent: "ParityAnalyst",
+                        role: "PhD in Atomic Symmetry",
+                        emoji: "⚖️",
+                        stack: res.stack,
+                        impact: "Quebra de fidelidade sistêmica entre stacks.",
+                        evidence: `${res.deltas.length} discrepâncias detectadas: ${res.deltas.map(d => d.dimension).join(", ")}`,
+                        category: "Quality",
+                        context: "ParityAudit"
+                    });
+                }
             }
         }
 

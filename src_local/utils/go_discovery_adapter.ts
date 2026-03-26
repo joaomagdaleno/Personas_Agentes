@@ -69,6 +69,10 @@ export class GoDiscoveryAdapter {
                     severity: "CRITICAL",
                     file: "hub.exe",
                     issue: msg,
+                    agent: "GoDiscoveryAdapter",
+                    role: "INFRASTRUCTURE_AUDITOR",
+                    emoji: "🚨",
+                    stack: "GoHub",
                     category: "Infrastructure",
                     context: "GoDiscoveryAdapter"
                 }]

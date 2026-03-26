@@ -35,7 +35,7 @@ export class DiscoveryAgent {
         const depth = await DepthIntelligence.calculateDepthAudit(root, allFiles, {});
         
         const ctx = await this.orc.contextEngine.analyzeProject();
-        ctx.atomicUnits = agents; ctx.depthAudit = depth;
+        ctx.projectRoot = root; ctx.atomicUnits = agents; ctx.depthAudit = depth;
         findings.push(...await this.orc.runStrategicAudit(ctx, null, false), ...await this.orc.runObfuscationScan());
         return [ctx, findings];
     }
@@ -49,10 +49,15 @@ export class DiscoveryAgent {
                 return a ? { ...f, units: [...(a.classes || []).map((n: any) => ({ name: n, type: "class", line: 1 })), ...(a.functions || []).map((n: any) => ({ name: n, type: "function", line: 1 }))] } : f;
             } catch (e: any) {
                 findings.push({
-                    type: "ERROR",
-                    severity: "HIGH",
                     file: f.path,
+                    line: 1,
                     issue: `Falha ao processar arquivo durante descoberta: ${e.message}`,
+                    severity: "HIGH",
+                    agent: "discovery_agent",
+                    role: "SYSTEM_ARCHITECT",
+                    emoji: "🔭",
+                    stack: "Infrastructure",
+                    evidence: e.message,
                     category: "Discovery",
                     context: "DiscoveryAgent"
                 });
@@ -89,7 +94,18 @@ export class DiscoveryAgent {
             const cur = (f.units || []).map((u: any) => norm(u.name));
             const miss = Array.from(all).filter(u => !cur.includes(u));
             if (miss.length) {
-                findings.push({ type: "DISPARITY", severity: "MEDIUM", file: f.path, issue: `Persona '${id}' missing ${miss.length} units.`, category: "AtomicParity" });
+                findings.push({ 
+                    file: f.path, 
+                    line: 1,
+                    issue: `Persona '${id}' missing ${miss.length} units.`,
+                    severity: "MEDIUM", 
+                    agent: "discovery_agent",
+                    role: "CORE_ARCHITECT",
+                    emoji: "⚖️",
+                    stack: "Parity",
+                    evidence: `Missing: ${miss.join(", ")}`,
+                    category: "AtomicParity" 
+                });
             }
         });
     }

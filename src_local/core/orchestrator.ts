@@ -397,6 +397,60 @@ Retorne apenas o código TypeScript completo.
         return false;
     }
 
+    /**
+     * Runs specialized verification for specific files based on analysis findings.
+     */
+    async runTargetedVerification(plan: Record<string, Set<string>>): Promise<GenericFinding[]> {
+        logger.info(`🧪 [Orchestrator] Iniciando verificação direcionada para ${Object.keys(plan).length} arquivos.`);
+        const findings: GenericFinding[] = [];
+
+        for (const [file, contexts] of Object.entries(plan)) {
+            try {
+                // If it's a test file, run it
+                if (file.endsWith(".test.ts") || file.endsWith(".test.js") || file.includes("/test/")) {
+                    const result = await this.verifyTest(file);
+                    if (!result.success) {
+                        findings.push({
+                            file,
+                            line: 0,
+                            issue: `Falha na execução do teste: ${result.output.substring(0, 100)}...`,
+                            severity: "CRITICAL",
+                            agent: "validator",
+                            role: "QA_ENGINEER",
+                            emoji: "❌",
+                            stack: "Validation",
+                            evidence: result.output,
+                            category: "Quality",
+                            context: "AutomatedTesting"
+                        });
+                    }
+                } else {
+                    // For logic files, ensure they have basic analysis
+                    const ctx = this.contextEngine.map[file];
+                    if (!ctx || ctx.complexity > 20) {
+                        findings.push({
+                            file,
+                            line: 1,
+                            issue: `Arquivo de alta complexidade detectado durante validação (${ctx?.complexity || 'N/A'})`,
+                            severity: "MEDIUM",
+                            agent: "validator",
+                            role: "ARCHITECT",
+                            emoji: "📐",
+                            stack: "Structural",
+                            evidence: `Complexity: ${ctx?.complexity}`,
+                            category: "Quality",
+                            context: "StructuralAudit"
+                        });
+                    }
+                }
+            } catch (e) {
+                logger.error(`❌ [Orchestrator] Erro ao verificar ${file}: ${e}`);
+            }
+        }
+
+        return findings;
+    }
+
     private isHighPriority(finding: GenericFinding): boolean {
         return finding.severity === "CRITICAL" || finding.severity === "HIGH";
     }

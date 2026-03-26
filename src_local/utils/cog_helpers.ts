@@ -18,7 +18,11 @@ export class CogHelpers {
 
     async callRustBrain(prompt: string): Promise<string | null> {
         if (!this.hubManager) {
-            logger.error("HubManager not initialized.");
+            this.hubManager = HubManagerGRPC.getInstance();
+        }
+
+        if (!this.hubManager) {
+            logger.error("HubManager not initialized and singleton not available.");
             return null;
         }
 

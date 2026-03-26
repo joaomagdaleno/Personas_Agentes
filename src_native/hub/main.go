@@ -467,9 +467,6 @@ func (h *Hub) startSentinel() {
 			cpuVal = cpuPerc[0]
 		}
 
-		h.metricsLock.Lock()
-		h.metricsLock.Unlock()
-
 		procs := []ProcessInfo{}
 		// Otimização: Só varre processos pesados se o CPU estiver alto (>50%) ou a cada 30s
 		if cpuVal > 50.0 || time.Now().Unix()%30 == 0 {
@@ -652,8 +649,8 @@ func (h *Hub) ScanProject(ctx context.Context, in *pb.ScanRequest) (*pb.ScanResp
 	}
 
 	errMsg := "🚨 Critical: Rust Sidecar not available for ScanProject. Scanning via shell is deprecated."
-	log.Printf(errMsg)
-	return nil, fmt.Errorf(errMsg)
+	log.Printf("%s", errMsg)
+	return nil, fmt.Errorf("%s", errMsg)
 }
 
 func (h *Hub) AnalyzeFile(ctx context.Context, in *pb.AnalyzeRequest) (*pb.AnalyzeResponse, error) {

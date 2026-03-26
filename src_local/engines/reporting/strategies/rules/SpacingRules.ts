@@ -8,7 +8,16 @@ export class SpacingRules implements LintRule {
 
         if (i > 0 && isBlank && prevIsBlank && prevPrevIsNotBlank) {
             context.errs.push({
-                file, line: i + 1, issue: "MD012: Multiple consecutive blank lines", severity: "low", context: "MarkdownAuditor"
+                file, 
+                line: i + 1, 
+                issue: "MD012: Multiple consecutive blank lines", 
+                severity: "low", 
+                agent: "markdown_auditor",
+                role: "DOCUMENTATION_ENGINEER",
+                emoji: "✍️",
+                stack: "Documentation",
+                evidence: "Multiple blank lines",
+                context: "MarkdownAuditor"
             });
         }
 
@@ -16,7 +25,16 @@ export class SpacingRules implements LintRule {
         const prevLine = lines[i - 1]?.trim() || "";
         if (i > 0 && i < lines.length - 1 && isBlank && prevLine.startsWith(">") && nextLine.startsWith(">")) {
             context.errs.push({
-                file, line: i + 1, issue: "MD028: Blank line inside blockquote", severity: "medium", context: "MarkdownAuditor"
+                file, 
+                line: i + 1, 
+                issue: "MD028: Blank line inside blockquote", 
+                severity: "medium", 
+                agent: "markdown_auditor",
+                role: "DOCUMENTATION_ENGINEER",
+                emoji: "✍️",
+                stack: "Documentation",
+                evidence: "Blank line in blockquote",
+                context: "MarkdownAuditor"
             });
         }
     }
