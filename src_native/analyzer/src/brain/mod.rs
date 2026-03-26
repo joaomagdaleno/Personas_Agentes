@@ -354,9 +354,15 @@ impl Brain {
         // Keep terms with higher document frequency (more systematic)
         pairs.sort_by(|a, b| b.1.cmp(a.1));
         
-        if pairs.len() > max_vocab {
-            let threshold = pairs[max_vocab].1;
-            self.tfidf.term_doc_freq.retain(|_, &mut count| count >= threshold);
+        let threshold = if pairs.len() > max_vocab {
+            Some(*pairs[max_vocab].1)
+        } else {
+            None
+        };
+        drop(pairs);
+
+        if let Some(t) = threshold {
+            self.tfidf.term_doc_freq.retain(|_, &mut count| count >= t);
             self.tfidf.vocabulary.truncate(max_vocab);
         }
         

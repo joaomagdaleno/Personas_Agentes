@@ -202,7 +202,7 @@ pub fn scan_directory(dir: &Path, root: &Path) -> Vec<FileAnalysis> {
     for entry in walker.filter_map(|e| e.ok()) {
         if entry.file_type().is_file() {
             let ext = entry.path().extension().and_then(|s| s.to_str()).unwrap_or("");
-            if matches!(ext, "ts" | "tsx" | "js" | "py" | "go" | "rs") {
+            if matches!(ext, "ts" | "tsx" | "js" | "py" | "go" | "rs" | "kt" | "dart") {
                 paths.push(entry.path().to_path_buf());
             }
         }

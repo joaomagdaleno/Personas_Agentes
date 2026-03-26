@@ -20,8 +20,11 @@ export class DiscoveryAgent {
         const root = this.orc.projectRoot.toString();
         const { results: raw, findings: goFindings } = await GoDiscoveryAdapter.scan(root, root, this.orc.hubManager);
         
-        // Filtrar apenas arquivos do core/agentes para o censo de soberania
-        const filtered = raw.filter(f => f.path.replace(/\\/g, "/").startsWith(`src_local/agents/`));
+        // Filtrar arquivos relevantes para o censo de soberania
+        const filtered = raw.filter(f => {
+            const p = f.path.replace(/\\/g, "/");
+            return p.startsWith(`src_local/agents/`) || p.includes("app/src/main/java/") || p.includes("app/src/main/kotlin/");
+        });
         const { agents, findings: enrichFindings } = await this.enrich(filtered, root);
         
         const findings: any[] = [...goFindings, ...enrichFindings];
