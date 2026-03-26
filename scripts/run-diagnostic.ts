@@ -34,7 +34,8 @@ async function main() {
     if (!args.values["skip-setup"]) {
         logger.info("🛠️ Verificando infraestrutura nativa...");
         try {
-            execSync("bun run scripts/ensure_binaries.ts", { stdio: "inherit", cwd: absRoot });
+            const setupPath = path.resolve(__dirname, "ensure_binaries.ts");
+            execSync(`bun run "${setupPath}"`, { stdio: "inherit" });
         } catch (err) {
             logger.error("❌ Falha crítica ao preparar binários nativos.");
             process.exit(1);

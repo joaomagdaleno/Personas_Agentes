@@ -21,6 +21,6 @@ export class AnalysisPolicy {
 
     static isAnalyable(path: Path): boolean {
         const name = path.name();
-        return (name.endsWith('.py') || name.endsWith('.ts') || name.endsWith('.tsx') || name.endsWith('.js') || name.endsWith('.yaml'));
+        return (name.endsWith('.py') || name.endsWith('.ts') || name.endsWith('.tsx') || name.endsWith('.js') || name.endsWith('.yaml') || name.endsWith('.kt') || name.endsWith('.dart'));
     }
 }

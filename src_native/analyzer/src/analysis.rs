@@ -69,15 +69,25 @@ pub fn run_analyze_core(path: &str, source_code: String) -> AnalysisResult {
     let mut parser = Parser::new();
     let extension = Path::new(path).extension().and_then(|s| s.to_str()).unwrap_or("");
     
-    let language = match extension {
-        "py" => tree_sitter_python::language(),
-        "go" => tree_sitter_go::language(),
-        "rs" => tree_sitter_rust::language(),
-        _ => tree_sitter_typescript::language_typescript(),
+    let tree_res = match extension {
+        "py" => Some(tree_sitter_python::language()),
+        "go" => Some(tree_sitter_go::language()),
+        "rs" => Some(tree_sitter_rust::language()),
+        "kt" => Some(tree_sitter_kotlin::language()),
+        "ts" | "tsx" | "js" | "jsx" => Some(tree_sitter_typescript::language_typescript()),
+        _ => None,
     };
-    parser.set_language(language).expect("Error loading grammar");
 
-    let tree = parser.parse(&source_code, None).expect("Error parsing file");
+    if let Some(language) = tree_res {
+        parser.set_language(language).ok();
+    } else {
+        // Fallback or simple Loc-only analysis
+    }
+
+    let tree = parser.parse(&source_code, None).unwrap_or_else(|| {
+        // Create an empty tree or handle error
+        parser.parse("", None).unwrap()
+    });
     let root_node = tree.root_node();
 
     // AST-based comment counting

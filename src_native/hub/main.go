@@ -720,6 +720,9 @@ func (h *Hub) AnalyzeStream(stream pb.HubService_AnalyzeStreamServer) error {
 }
 
 func (h *Hub) GetDependencies(ctx context.Context, in *pb.AnalyzeRequest) (*pb.AnalyzeResponse, error) {
+	if h.rustClient != nil {
+		return h.rustClient.GetDependencies(ctx, in)
+	}
 	data, err := h.runRust(ctx, "deps", in.File)
 	if err != nil {
 		return nil, err
@@ -728,7 +731,11 @@ func (h *Hub) GetDependencies(ctx context.Context, in *pb.AnalyzeRequest) (*pb.A
 }
 
 func (h *Hub) Deduplicate(ctx context.Context, in *pb.DeduplicateRequest) (*pb.AnalyzeResponse, error) {
-	// Deduplicate needs a JSON file or stdin. Most reliable is writing to a temp file.
+	if h.rustClient != nil {
+		return h.rustClient.Deduplicate(ctx, in)
+	}
+
+	// Fallback to CLI
 	tmpFile := filepath.Join(os.TempDir(), fmt.Sprintf("dedup_%d.json", time.Now().UnixNano()))
 	os.WriteFile(tmpFile, []byte(in.FindingsJson), 0644)
 	defer os.Remove(tmpFile)
@@ -741,6 +748,10 @@ func (h *Hub) Deduplicate(ctx context.Context, in *pb.DeduplicateRequest) (*pb.A
 }
 
 func (h *Hub) Fingerprint(ctx context.Context, in *pb.AnalyzeRequest) (*pb.AnalyzeResponse, error) {
+	if h.rustClient != nil {
+		return h.rustClient.Fingerprint(ctx, in)
+	}
+
 	var data string
 	var err error
 	if in.Content != "" {
@@ -787,6 +798,10 @@ func (h *Hub) GetContext(ctx context.Context, in *pb.AnalyzeRequest) (*pb.Analyz
 }
 
 func (h *Hub) GetConnectivity(ctx context.Context, in *pb.ConnectivityRequest) (*pb.AnalyzeResponse, error) {
+	if h.rustClient != nil {
+		return h.rustClient.GetConnectivity(ctx, in)
+	}
+
 	tmpFile := filepath.Join(os.TempDir(), fmt.Sprintf("conn_%d.json", time.Now().UnixNano()))
 	err := os.WriteFile(tmpFile, []byte(in.DependencyMapJson), 0644)
 	if err != nil {
@@ -802,6 +817,10 @@ func (h *Hub) GetConnectivity(ctx context.Context, in *pb.ConnectivityRequest) (
 }
 
 func (h *Hub) Audit(ctx context.Context, in *pb.AuditRequest) (*pb.AnalyzeResponse, error) {
+	if h.rustClient != nil {
+		return h.rustClient.Audit(ctx, in)
+	}
+
 	tmpFile := filepath.Join(os.TempDir(), fmt.Sprintf("audit_%d.json", time.Now().UnixNano()))
 	err := os.WriteFile(tmpFile, []byte(in.AuditJson), 0644)
 	if err != nil {
@@ -817,6 +836,10 @@ func (h *Hub) Audit(ctx context.Context, in *pb.AuditRequest) (*pb.AnalyzeRespon
 }
 
 func (h *Hub) Batch(ctx context.Context, in *pb.BatchRequest) (*pb.AnalyzeResponse, error) {
+	if h.rustClient != nil {
+		return h.rustClient.Batch(ctx, in)
+	}
+
 	tmpFile := filepath.Join(os.TempDir(), fmt.Sprintf("batch_%d.json", time.Now().UnixNano()))
 	err := os.WriteFile(tmpFile, []byte(in.BatchJson), 0644)
 	if err != nil {
@@ -854,6 +877,10 @@ func (h *Hub) Reason(ctx context.Context, in *pb.ReasonRequest) (*pb.AnalyzeResp
 }
 
 func (h *Hub) Patterns(ctx context.Context, in *pb.PatternRequest) (*pb.AnalyzeResponse, error) {
+	if h.rustClient != nil {
+		return h.rustClient.Patterns(ctx, in)
+	}
+
 	tmpFile := filepath.Join(os.TempDir(), fmt.Sprintf("patterns_%d.json", time.Now().UnixNano()))
 	err := os.WriteFile(tmpFile, []byte(in.PatternJson), 0644)
 	if err != nil {
@@ -869,6 +896,10 @@ func (h *Hub) Patterns(ctx context.Context, in *pb.PatternRequest) (*pb.AnalyzeR
 }
 
 func (h *Hub) Penalty(ctx context.Context, in *pb.PenaltyRequest) (*pb.AnalyzeResponse, error) {
+	if h.rustClient != nil {
+		return h.rustClient.Penalty(ctx, in)
+	}
+
 	tmpFile := filepath.Join(os.TempDir(), fmt.Sprintf("penalty_%d.json", time.Now().UnixNano()))
 	err := os.WriteFile(tmpFile, []byte(in.PenaltyJson), 0644)
 	if err != nil {
@@ -884,6 +915,10 @@ func (h *Hub) Penalty(ctx context.Context, in *pb.PenaltyRequest) (*pb.AnalyzeRe
 }
 
 func (h *Hub) CalculateScore(ctx context.Context, in *pb.ScoreRequest) (*pb.AnalyzeResponse, error) {
+	if h.rustClient != nil {
+		return h.rustClient.CalculateScore(ctx, in)
+	}
+
 	tmpFile := filepath.Join(os.TempDir(), fmt.Sprintf("score_%d.json", time.Now().UnixNano()))
 	err := os.WriteFile(tmpFile, []byte(in.ScoreJson), 0644)
 	if err != nil {
@@ -899,6 +934,10 @@ func (h *Hub) CalculateScore(ctx context.Context, in *pb.ScoreRequest) (*pb.Anal
 }
 
 func (h *Hub) AuditCoverage(ctx context.Context, in *pb.CoverageRequest) (*pb.AnalyzeResponse, error) {
+	if h.rustClient != nil {
+		return h.rustClient.AuditCoverage(ctx, in)
+	}
+
 	tmpFile := filepath.Join(os.TempDir(), fmt.Sprintf("coverage_%d.json", time.Now().UnixNano()))
 	err := os.WriteFile(tmpFile, []byte(in.CoverageJson), 0644)
 	if err != nil {

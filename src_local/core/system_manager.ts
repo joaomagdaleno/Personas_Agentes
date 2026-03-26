@@ -42,7 +42,7 @@ export class SystemManager {
         
         const absRoot = path.resolve(projectRoot);
         // Determina o root do Personas_Agentes (onde os binários vivem)
-        const myDir = path.dirname(new URL(import.meta.url).pathname).replace(/^\/([a-zA-Z]:)/, '$1');
+        const myDir = path.dirname(decodeURIComponent(new URL(import.meta.url).pathname)).replace(/^\/([a-zA-Z]:)/, '$1');
         const personasRoot = path.resolve(myDir, "../../"); 
         
         const hubExe = path.join(personasRoot, "src_native/hub/hub.exe");

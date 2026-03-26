@@ -29,8 +29,13 @@ export class ScoreCalculator {
         if (this.hubManager) {
             const scoreRequest = {
                 map_data: this.prepareMapData(mapData),
-                alerts: allAlerts.map(a => ({ severity: a.severity })),
-                qa_data: qaData,
+                alerts: allAlerts.map(a => ({ severity: (a.severity || "medium").toLowerCase() })),
+                qa_data: qaData ? {
+                    matrix: (Array.isArray(qaData.matrix) ? qaData.matrix : []).map((item: any) => ({
+                        file: item.file,
+                        advanced_metrics: this.normalizeAdvancedMetrics(item.advanced_metrics)
+                    }))
+                } : null,
                 cognitive: cognitive ? { status: cognitive.status } : null
             };
 
@@ -57,21 +62,37 @@ export class ScoreCalculator {
             normalized[file] = {
                 component_type: info.component_type || "UNKNOWN",
                 complexity: info.complexity || 1,
-                has_test: info.has_test || false,
-                has_telemetry: info.has_telemetry || false,
+                has_test: !!(info.has_test),
+                has_telemetry: !!(info.has_telemetry),
                 purpose: info.purpose || "UNKNOWN",
-                advanced_metrics: info.advanced_metrics ? {
-                    cyclomatic_complexity: info.advanced_metrics.cyclomaticComplexity || 1,
-                    cognitive_complexity: info.advanced_metrics.cognitiveComplexity || 0,
-                    maintainability_index: info.advanced_metrics.maintainabilityIndex || 100,
-                    quality_gate: info.advanced_metrics.qualityGate || "GREEN",
-                    nesting_depth: info.advanced_metrics.nestingDepth || 0,
-                    cbo: info.advanced_metrics.cbo || 0,
-                    dit: info.advanced_metrics.dit || 0,
-                    defect_density: info.advanced_metrics.defectDensity || 0
-                } : null
+                advanced_metrics: this.normalizeAdvancedMetrics(info.advanced_metrics)
             };
         }
         return normalized;
+    }
+
+    private normalizeAdvancedMetrics(metrics: any): any {
+        if (!metrics) {
+            return {
+                cyclomatic_complexity: 1,
+                cognitive_complexity: 0,
+                maintainability_index: 100,
+                quality_gate: "GREEN",
+                nesting_depth: 0,
+                cbo: 0,
+                dit: 0,
+                defect_density: 0
+            };
+        }
+        return {
+            cyclomatic_complexity: metrics.cyclomatic_complexity || metrics.cyclomaticComplexity || 1,
+            cognitive_complexity: metrics.cognitive_complexity || metrics.cognitiveComplexity || 0,
+            maintainability_index: metrics.maintainability_index || metrics.maintainabilityIndex || 100,
+            quality_gate: metrics.quality_gate || metrics.qualityGate || "GREEN",
+            nesting_depth: metrics.nesting_depth || metrics.nestingDepth || 0,
+            cbo: metrics.cbo || metrics.cbo || 0,
+            dit: metrics.dit || metrics.dit || 0,
+            defect_density: metrics.defect_density || metrics.defectDensity || 0
+        };
     }
 }

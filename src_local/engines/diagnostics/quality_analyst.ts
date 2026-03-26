@@ -72,6 +72,11 @@ export class QualityAnalyst {
                     line: 1,
                     issue: `Complexidade Cognitiva Elevada (${adv.cognitiveComplexity} > 15)`,
                     severity: adv.cognitiveComplexity > 25 ? "HIGH" : "MEDIUM",
+                    agent: "quality_analyst",
+                    role: "QUALITY_ENGINEER",
+                    emoji: "🧠",
+                    stack: "PhDSecurity",
+                    evidence: `Cognitive Complexity is ${adv.cognitiveComplexity}`,
                     category: "Quality",
                     context: "CognitiveAudit"
                 });
@@ -83,6 +88,11 @@ export class QualityAnalyst {
                     line: 1,
                     issue: `Aninhamento Excessivo (${adv.nestingDepth} > 3)`,
                     severity: "MEDIUM",
+                    agent: "quality_analyst",
+                    role: "QUALITY_ENGINEER",
+                    emoji: "🕸️",
+                    stack: "StructuralPhD",
+                    evidence: `Nesting Depth is ${adv.nestingDepth}`,
                     category: "Quality",
                     context: "StructuralAudit"
                 });
@@ -94,6 +104,11 @@ export class QualityAnalyst {
                     line: 1,
                     issue: `Complexidade Ciclomática Elevada (${adv.cyclomaticComplexity} > 20)`,
                     severity: adv.cyclomaticComplexity > 30 ? "HIGH" : "MEDIUM",
+                    agent: "quality_analyst",
+                    role: "QUALITY_ENGINEER",
+                    emoji: "⚙️",
+                    stack: "MetricsEngine",
+                    evidence: `Cyclomatic Complexity is ${adv.cyclomaticComplexity}`,
                     category: "Quality",
                     context: "MetricsEngine"
                 });

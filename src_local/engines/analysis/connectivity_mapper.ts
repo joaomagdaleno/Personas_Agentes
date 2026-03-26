@@ -20,7 +20,32 @@ export class ConnectivityMapper {
         }
 
         try {
-            const results = await this.hubManager.getConnectivity(allMap);
+            const sanitizedMap: Record<string, any> = {};
+            for (const [file, data] of Object.entries(allMap)) {
+                sanitizedMap[file] = {
+                    dependencies: data.dependencies || [],
+                    advanced_metrics: data.advanced_metrics ? {
+                        cyclomatic_complexity: data.advanced_metrics.cyclomaticComplexity || 1,
+                        cognitive_complexity: data.advanced_metrics.cognitiveComplexity || 0,
+                        maintainability_index: data.advanced_metrics.maintainabilityIndex || 100,
+                        quality_gate: data.advanced_metrics.qualityGate || "GREEN",
+                        nesting_depth: data.advanced_metrics.nestingDepth || 0,
+                        cbo: data.advanced_metrics.cbo || 0,
+                        dit: data.advanced_metrics.dit || 0,
+                        defect_density: data.advanced_metrics.defectDensity || 0
+                    } : {
+                        cyclomatic_complexity: 1,
+                        cognitive_complexity: 0,
+                        maintainability_index: 100,
+                        quality_gate: "GREEN",
+                        nesting_depth: 0,
+                        cbo: 0,
+                        dit: 0,
+                        defect_density: 0
+                    }
+                };
+            }
+            const results = await this.hubManager.getConnectivity(sanitizedMap);
             const mapping: Record<string, any> = {};
 
             if (results && Array.isArray(results)) {

@@ -108,10 +108,11 @@ export class ContextEngine {
     }
 
     private async _applyStructuralAnalysis(path: Path, content: string, info: any) {
+        const absPath = path.toString();
         const name = path.name();
         const structural = path.toString().endsWith('.py')
-            ? await this.analyst.analyzePython(content, name)
-            : await this.analyst.analyze_file_logic(content, name);
+            ? await this.analyst.analyzePython(content, absPath)
+            : await this.analyst.analyze_file_logic(content, absPath);
 
         // Add intent classification using Rust metadata if available
         info.intent = this.analyst.analyze_intent(content, name, info.rust_metadata);
