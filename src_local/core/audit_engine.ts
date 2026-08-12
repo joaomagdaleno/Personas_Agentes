@@ -60,7 +60,7 @@ export class AuditEngine {
     }
 
     private async _addDependencyFindings(findings: any[]): Promise<void> {
-        const dep = await (new (await import("../utils/dependency_auditor.ts")).DependencyAuditor(this.root.toString())).checkSubmoduleStatus();
+        const dep = await (new (await import("../engines/diagnostics/audit_code_guardian_service.ts")).DependencyAuditor(this.root.toString())).checkSubmoduleStatus();
         findings.push(...dep);
     }
 

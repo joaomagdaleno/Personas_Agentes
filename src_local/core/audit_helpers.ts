@@ -15,7 +15,7 @@ export class AuditHelpers {
             const { MarkdownAuditor } = await import("../engines/reporting/markdown_auditor.ts");
             findings.push(...MarkdownAuditor.auditMarkdown(f, content));
         }
-        const cog = await (await import("../engines/diagnostics/cognitive_analyst.ts")).CognitiveAnalyst.analyzeIntent(f, content, orc);
+        const cog = await (await import("../engines/diagnostics/audit_code_guardian_service.ts")).CognitiveAnalyst.analyzeIntent(f, content, orc);
         if (cog) findings.push(cog);
     }
 
@@ -37,4 +37,12 @@ export class AuditHelpers {
         const { MarkdownAuditor } = await import("../engines/reporting/markdown_auditor.ts");
         return MarkdownAuditor.auditMarkdown(f, content);
     }
+
+    static formatFindingSummary(finding: any): string {
+        return `[${finding.severity || "INFO"}] ${finding.file || "system"}: ${finding.issue || "Finding"}`;
+    }
+}
+
+export function formatFindingSummary(finding: any): string {
+    return AuditHelpers.formatFindingSummary(finding);
 }

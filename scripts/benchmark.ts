@@ -1,96 +1,65 @@
-
-import * as fs from "node:fs";
-import * as path from "node:path";
-import { HubManagerGRPC } from "../src_local/core/hub_manager_grpc.ts";
-import type { ProjectContext } from "../src_local/core/types.ts";
+import { DatabaseHub } from "../src_local/core/database_hub.ts";
+import { UIUXArchitectService } from "../src_local/engines/reporting/ui_ux_architect_service.ts";
+import { SecurityCloudGuardianService } from "../src_local/engines/security/security_cloud_guardian_service.ts";
+import { ArchitectureTypesService } from "../src_local/engines/analysis/architecture_types_service.ts";
+import { SysPerfArchitectService } from "../src_local/engines/maintenance/sys_perf_architect_service.ts";
+import { StrategicCognitiveArchitectService } from "../src_local/engines/strategic/strategic_cognitive_architect_service.ts";
+import { AuditCodeGuardianService } from "../src_local/engines/diagnostics/audit_code_guardian_service.ts";
+import { SyncDevopsArchitectService } from "../src_local/engines/automation/sync_devops_architect_service.ts";
+import { ResilienceHealingArchitectService } from "../src_local/engines/healing/resilience_healing_architect_service.ts";
 
 async function benchmark() {
-    console.log("🚀 Starting Persona Fleet Benchmark...");
-    
-    const hub = new HubManagerGRPC();
-    const projectRoot = path.resolve(".");
-    const agentsDir = path.join(projectRoot, "src_local/agents/TypeScript");
-    
-    const context: ProjectContext = {
-        identity: { 
-            stacks: new Set(["TypeScript"]),
-            dna: { version: "1.0.0-benchmark" } 
-        },
-        map: {
-            "test.ts": { 
-                content: `
-                    console.log('test'); 
-                    const x: any = 10; 
-                    eval('alert(1)');
-                    for (let i in [1,2,3]) {}
-                    readFile("test.txt");
-                `, 
-                component_type: "CODE" 
-            }
-        },
-        hub
-    };
+    console.log("==================================================================");
+    console.log("       ⏱️  BENCHMARK NATIVO — SUPER PERSONAS & VAULT (SQLITE)      ");
+    console.log("==================================================================\n");
 
-    const personas: any[] = [];
+    const projectRoot = process.cwd();
+
+    // 1. Benchmark SQLite Vault (I/O & WAL)
+    console.log("⚡ 1. TESTE DE PERFORMANCE SQLITE VAULT:");
+    const dbHub = DatabaseHub.getInstance(projectRoot);
+    const sqlStart = performance.now();
+    const iterations = 500;
     
-    // Scan directories for personas
-    const categories = ["System", "Audit", "Content", "Strategic"];
-    for (const cat of categories) {
-        const dir = path.join(agentsDir, cat);
-        if (!fs.existsSync(dir)) continue;
-        
-        const files = fs.readdirSync(dir).filter(f => f.endsWith(".ts") && !f.includes(".test.ts") && !f.includes("Helpers"));
-        for (const file of files) {
-            try {
-                const module = await import(path.join(dir, file));
-                const ClassName = Object.keys(module).find(k => k.endsWith("Persona"));
-                if (ClassName) {
-                    console.log(`   📦 Loaded: ${ClassName}`);
-                    personas.push(new module[ClassName](projectRoot));
-                }
-            } catch (e: any) {
-                console.error(`   ❌ Failed to load ${file}: ${e.message}`);
-            }
-        }
+    for (let i = 0; i < iterations; i++) {
+        await dbHub.set(`bench_key_${i}`, `bench_val_${i}`);
     }
+    const sqlWriteDuration = performance.now() - sqlStart;
+    console.log(`   • Escritas simultâneas (${iterations} ops):  ${sqlWriteDuration.toFixed(2)} ms (${(sqlWriteDuration / iterations).toFixed(3)} ms/op)`);
 
-    console.log(`📊 Total personas ready: ${personas.length}`);
-    console.log(`🚀 Executing ${personas.length} personas concurrently...`);
-    const start = Date.now();
-    
-    // Add sequential execution option if needed for debugging
-    // const results = [];
-    // for (const p of personas) {
-    //     console.log(`      ⚡ Executing ${p.name}...`);
-    //     results.push(await p.execute(context));
-    // }
+    const readStart = performance.now();
+    for (let i = 0; i < iterations; i++) {
+        await dbHub.get(`bench_key_${i}`);
+    }
+    const sqlReadDuration = performance.now() - readStart;
+    console.log(`   • Leituras simultâneas (${iterations} ops):  ${sqlReadDuration.toFixed(2)} ms (${(sqlReadDuration / iterations).toFixed(3)} ms/op)\n`);
 
-    const results = await Promise.all(personas.map(async p => {
-        try {
-            return await p.execute(context);
-        } catch (e: any) {
-            console.error(`      💥 Execution failed for ${p.name}: ${e.message}`);
-            return [];
-        }
-    }));
-    
-    const end = Date.now();
-    console.log(`✅ Benchmark Finished in ${end - start}ms`);
-    
-    let totalIssues = 0;
-    results.forEach((finding, i) => {
-        totalIssues += finding.length;
-        if (finding.length > 0) {
-            console.log(`   [${personas[i].name}] Found: ${finding.length} issues`);
-        }
-    });
-    
-    console.log(`\n📈 Total Issues Found Across Fleet: ${totalIssues}`);
+    // 2. Benchmark Instanciação & Operações das 8 Super Personas
+    console.log("⚡ 2. LATÊNCIA DAS 8 SUPER PERSONAS:");
+    const engineStart = performance.now();
 
-    process.exit(0);
+    const uiux = new UIUXArchitectService();
+    const security = new SecurityCloudGuardianService();
+    const arch = new ArchitectureTypesService();
+    const perf = new SysPerfArchitectService();
+    const strategic = new StrategicCognitiveArchitectService();
+    const audit = new AuditCodeGuardianService();
+    const sync = new SyncDevopsArchitectService();
+    const healing = new ResilienceHealingArchitectService();
+
+    const engineInitDuration = performance.now() - engineStart;
+    console.log(`   • Inicialização da Frota 8-Super Personas: ${engineInitDuration.toFixed(2)} ms`);
+
+    const healthCheckStart = performance.now();
+    await perf.checkHealth();
+    console.log(`   • Telemetria & Governança de Hardware:      ${(performance.now() - healthCheckStart).toFixed(2)} ms`);
+
+    console.log("\n==================================================================");
+    console.log("✨ BENCHMARK CONCLUÍDO COM SUCESSO!");
+    console.log("==================================================================\n");
 }
 
 benchmark().catch(err => {
-    console.error("🚨 Benchmark failed:", err);
+    console.error("🚨 Benchmark falhou:", err);
     process.exit(1);
 });

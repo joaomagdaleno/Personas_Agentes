@@ -1,4 +1,4 @@
-import { CognitiveEngine } from "../../utils/cognitive_engine";
+import { CognitiveEngine } from "./strategic_cognitive_architect_service.ts";
 import { Path } from "../../core/path_utils";
 import winston from "winston";
 

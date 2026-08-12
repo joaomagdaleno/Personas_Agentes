@@ -1,5 +1,5 @@
 
-import { CognitiveEngine } from "../../utils/cognitive_engine";
+import { CognitiveEngine } from "../strategic/strategic_cognitive_architect_service";
 import winston from "winston";
 
 const logger = winston.child({ module: "TestRefiner" });

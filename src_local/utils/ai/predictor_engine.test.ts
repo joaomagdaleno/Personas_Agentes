@@ -1,6 +1,6 @@
 
 import { describe, it, expect, beforeEach, mock } from 'bun:test';
-import { PredictorEngine } from './predictor_engine.ts';
+import { PredictorEngine } from '../../engines/strategic/strategic_cognitive_architect_service.ts';
 import * as fs from 'fs';
 
 describe('PredictorEngine', () => {

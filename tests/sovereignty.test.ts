@@ -1,9 +1,9 @@
 import { expect, test, describe } from "bun:test";
 import { HealerPersona } from "../src_local/engines/healing/healer_persona.ts";
-import { CognitiveAnalyst } from "../src_local/engines/diagnostics/cognitive_analyst.ts";
+import { CognitiveAnalyst } from "../src_local/engines/diagnostics/audit_code_guardian_service.ts";
 import { LintRules } from "../src_local/engines/reporting/strategies/LintRules.ts";
 import { FingerprintExtractor } from "../src_local/engines/analysis/strategies/FingerprintExtractor.ts";
-import { StructuralAnalyst } from "../src_local/engines/analysis/structural_analyst.ts";
+import { StructuralAnalyst } from "../src_local/engines/analysis/architecture_types_service.ts";
 import { QualityEvaluator } from "../src_local/engines/diagnostics/strategies/QualityEvaluator.ts";
 
 describe("🏛️ Sovereignty Bridge: Baseline Validation", () => {

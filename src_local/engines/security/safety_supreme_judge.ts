@@ -1,6 +1,6 @@
 import * as ts from "typescript";
 import winston from "winston";
-import { ASTIntelligence } from "../../utils/ast_intelligence.ts";
+import { ASTIntelligence } from "../analysis/architecture_types_service.ts";
 import {
     SAFE_METADATA_VARS,
     SAFE_LOG_METHODS,

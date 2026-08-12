@@ -4,8 +4,7 @@ import * as path from 'path';
 import { Path } from "./path_utils.ts";
 import { Orchestrator } from "./orchestrator.ts";
 import type { ProjectContext } from "./types.ts";
-import { DependencyGraph, type DependencyGraphResult } from "../utils/dependency_graph.ts";
-import { TestAuditor, type TestAuditReport, type TestAuditResult } from "../utils/test_auditor.ts";
+import { DependencyGraph, type DependencyGraphResult, TestAuditor, type TestAuditReport, type TestAuditResult } from "../engines/diagnostics/audit_code_guardian_service.ts";
 
 // ==========================================
 // PIRÂMIDE DE TESTES INDUSTRIAL (Google 80/15/5)

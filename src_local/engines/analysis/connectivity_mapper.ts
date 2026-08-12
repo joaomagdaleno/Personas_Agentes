@@ -69,8 +69,9 @@ export class ConnectivityMapper {
 
         for (const [otherFile, otherData] of Object.entries(allMap)) {
             if (otherFile === filePath) continue;
-            const deps = otherData.dependencies || [];
-            if (deps.some((imp: string) => imp.includes(fileStem))) {
+            const rawDeps = otherData.dependencies || [];
+            const deps = Array.isArray(rawDeps) ? rawDeps : Array.from(rawDeps as any);
+            if (deps.some((imp: any) => String(imp).includes(fileStem))) {
                 afferent += 1;
             }
         }

@@ -5,9 +5,9 @@ import * as path from "node:path";
 import * as fs from "node:fs";
 import winston from "winston";
 import { Orchestrator } from "../src_local/core/orchestrator.ts";
-import { configureLogging } from "../src_local/utils/logging_config.ts";
-import { DirectorPersona } from "../src_local/engines/strategic/director.ts";
-import { DiagnosticHelpers } from "../src_local/utils/diagnostic_helpers.ts";
+import { configureLogging } from "../src_local/engines/maintenance/sys_perf_architect_service.ts";
+import { MasterOrchestratorService as DirectorPersona } from "../src_local/engines/strategic/master_orchestrator_service.ts";
+import { DiagnosticHelpers } from "../src_local/engines/analysis/architecture_types_service.ts";
 
 async function main() {
     const args = parseArgs({ 

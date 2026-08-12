@@ -1,5 +1,5 @@
 import * as ts from "typescript";
-import { ASTIntelligence } from "../../../utils/ast_intelligence.ts";
+import { ASTIntelligence } from "../architecture_types_service.ts";
 
 export class VetoStrategy {
     /**

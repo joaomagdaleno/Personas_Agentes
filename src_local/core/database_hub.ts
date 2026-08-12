@@ -32,6 +32,10 @@ export class DatabaseHub {
                 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         `);
+        this.db.run(`CREATE INDEX IF NOT EXISTS idx_kv_updated ON kv_store(updated_at);`);
+        try {
+            this.db.run(`CREATE INDEX IF NOT EXISTS idx_health_history_timestamp ON health_history(timestamp);`);
+        } catch {}
     }
 
     public static getInstance(projectRoot: string): DatabaseHub {

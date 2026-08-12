@@ -1,6 +1,6 @@
 
 import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
-import { StabilityLedger } from './stability_ledger.ts';
+import { StabilityLedger } from '../engines/healing/resilience_healing_architect_service.ts';
 import { join } from 'path';
 import { existsSync, rmSync, mkdirSync } from 'fs';
 

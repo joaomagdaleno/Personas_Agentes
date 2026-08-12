@@ -15,3 +15,5 @@ export const ENV_GATE = {
     // Dashboard Dev Server (Bun)
     DASHBOARD_DEV_PORT: Number(process.env.DASHBOARD_DEV_PORT) || 5173
 };
+
+export const EnvGate = ENV_GATE;

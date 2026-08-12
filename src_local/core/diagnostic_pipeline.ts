@@ -1,8 +1,8 @@
 import winston from "winston";
-import { FindingDeduplicator } from "../utils/finding_deduplicator.ts";
+import { FindingDeduplicator } from "../engines/diagnostics/audit_code_guardian_service.ts";
 import { Path } from "./path_utils.ts";
 import { DiscoveryAgent } from "../engines/analysis/discovery_agent.ts";
-import { ValidationAgent } from "../engines/automation/validation_agent.ts";
+import { ValidationAgent } from "../engines/automation/sync_devops_architect_service.ts";
 import { DiagnosticFinalizer } from "./diagnostic_finalizer.ts";
 
 import { Orchestrator } from "./orchestrator.ts";

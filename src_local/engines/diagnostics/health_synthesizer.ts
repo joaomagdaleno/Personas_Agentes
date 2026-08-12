@@ -1,8 +1,8 @@
 import winston from "winston";
-import { ScoreCalculator } from "./score_calculator";
+import { ScoreCalculator } from "./audit_code_guardian_service.ts";
 import { HubManagerGRPC } from "../../core/hub_manager_grpc.ts";
 import type { ProjectContext, SystemMetrics, IAgent, QAData, SystemHealth360, GenericFinding } from "../../core/types.ts";
-import { StabilityLedger } from "../../utils/stability_ledger.ts";
+import { StabilityLedger } from "../healing/resilience_healing_architect_service.ts";
 
 const logger = winston.child({ module: "HealthSynthesizer" });
 

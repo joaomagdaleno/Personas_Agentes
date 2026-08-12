@@ -1,7 +1,7 @@
 import type { ParityReport, DepthMetric, AgentParityResult, AgentInstance } from "./parity_types";
 import { computeDeltas, computeScore } from "./parity_utils";
 import { InstanceGrouper } from "./InstanceGrouper.ts";
-import { ParityReporter } from "./ParityReporter.ts";
+import { ParityReporter } from "./architecture_types_service.ts";
 
 /**
  * ⚖️ ParityAnalyst — PhD in Atomic Symmetry & Forensic Audit

@@ -1,5 +1,5 @@
 import winston from "winston";
-import { VulnerabilityHeuristic } from "../../utils/vulnerability_heuristic.ts";
+import { VulnerabilityHeuristic } from "./security_cloud_guardian_service.ts";
 import { HubManagerGRPC } from "../../core/hub_manager_grpc.ts";
 import type { ProjectContext, AuditFinding } from "../../core/types.ts";
 

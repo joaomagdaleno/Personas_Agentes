@@ -1,6 +1,5 @@
 import winston from "winston";
-import { GoDiscoveryAdapter } from "../../utils/go_discovery_adapter.ts";
-import { DepthIntelligence } from "../../utils/depth_intelligence.ts";
+import { GoDiscoveryAdapter, DepthIntelligence } from "./architecture_types_service.ts";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { IGNORE_LIST } from "./parity_config";

@@ -50,5 +50,7 @@ class SovereignEventBus extends EventEmitter {
     }
 }
 
+export class EventBus extends SovereignEventBus {}
+
 /** Global singleton — import this from any engine. */
 export const eventBus = new SovereignEventBus();

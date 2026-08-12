@@ -1,7 +1,6 @@
 import winston from 'winston';
 import * as path from 'path';
-import { CognitiveValidator } from "../../utils/cognitive_validator";
-import type { CognitiveHealthReport } from "../../utils/cognitive_validator";
+import { CognitiveValidator, type CognitiveHealthReport } from "../strategic/strategic_cognitive_architect_service.ts";
 import { MetricsEngine } from "./metrics_engine";
 import { StructureClassifier } from "./strategies/StructureClassifier.ts";
 import { TestDiscoveryStrategy } from "./strategies/TestDiscoveryStrategy.ts";

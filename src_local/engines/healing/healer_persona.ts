@@ -2,7 +2,7 @@
 import { join } from "path";
 import { existsSync, readFileSync } from "fs";
 import winston from "winston";
-import { CognitiveEngine } from "../../utils/cognitive_engine";
+import { CognitiveEngine } from "../strategic/strategic_cognitive_architect_service.ts";
 import { CoreValidator } from "../../core/validator";
 
 const logger = winston.child({ module: "HealerPersona" });

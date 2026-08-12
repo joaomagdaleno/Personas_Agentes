@@ -1,7 +1,7 @@
 import winston from "winston";
-import { HubWatcher } from "../utils/hub_watcher.ts";
+import { HubWatcher } from "../engines/automation/sync_devops_architect_service.ts";
 import { RegistryManager } from "./registry_manager.ts";
-import { StabilityLedger } from "../utils/stability_ledger.ts";
+import { StabilityLedger } from "../engines/healing/resilience_healing_architect_service.ts";
 import { HubManagerGRPC } from "./hub_manager_grpc.ts";
 import * as path from "node:path";
 import * as fs from "node:fs";

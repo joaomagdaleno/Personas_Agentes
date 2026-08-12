@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { StructuralAnalyst } from "../src_local/engines/analysis/structural_analyst.ts";
+import { StructuralAnalyst } from "../src_local/engines/analysis/architecture_types_service.ts";
 
 describe("StructuralAnalyst", () => {
     const analyst = new StructuralAnalyst();

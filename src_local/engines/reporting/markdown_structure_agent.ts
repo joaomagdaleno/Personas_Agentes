@@ -1,4 +1,4 @@
-import { MarkdownUtil } from "../../utils/markdown_util.ts";
+import { MarkdownUtil } from "./ui_ux_architect_service.ts";
 
 /**
  * Agente especialista em decomposição e normalização de estruturas Markdown.

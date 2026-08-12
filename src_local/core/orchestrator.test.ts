@@ -15,11 +15,16 @@ describe('Orchestrator core logic', () => {
     });
 
     afterAll(() => {
+        try {
+            const { DatabaseHub } = require('./database_hub.ts');
+            DatabaseHub.getInstance('./tmp_test').close();
+        } catch {}
+
         if (fs.existsSync('./tmp_test')) {
             try {
                 fs.rmSync('./tmp_test', { recursive: true, force: true });
             } catch (e) {
-                console.warn("Could not remove ./tmp_test due to file locks (likely SQLite).");
+                // Silently handled on Windows file locks
             }
         }
     });

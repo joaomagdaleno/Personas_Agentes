@@ -1,7 +1,7 @@
 import winston from "winston";
 import * as ts from "typescript";
-import { CognitiveEngine } from "../../utils/cognitive_engine.ts";
-import { TopologyEngine } from "../../utils/topology_engine.ts";
+import { CognitiveEngine } from "../strategic/strategic_cognitive_architect_service.ts";
+import { TopologyEngine } from "../healing/resilience_healing_architect_service.ts";
 import { HubManagerGRPC } from "../../core/hub_manager_grpc.ts";
 import { TestRunner } from "./test_runner.ts";
 import { QualityAnalyst } from "../diagnostics/quality_analyst.ts";
