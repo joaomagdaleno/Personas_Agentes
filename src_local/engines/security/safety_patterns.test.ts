@@ -3,8 +3,8 @@ import { DANGEROUS_KEYWORDS, TRIVIAL_COMPARE_KEYWORDS, PATTERN_MODE } from "./sa
 
 describe("Safety Patterns Deep Audit", () => {
     test("should contain critical dangerous keywords", () => {
-        expect(DANGEROUS_KEYWORDS).toContain('exec(');
-        expect(DANGEROUS_KEYWORDS).toContain('eval(');
+        expect(DANGEROUS_KEYWORDS.has('exec')).toBe(true);
+        expect(DANGEROUS_KEYWORDS.has('eval')).toBe(true);
     });
 
     test("should contain trivial comparison keywords", () => {

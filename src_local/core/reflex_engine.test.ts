@@ -7,6 +7,7 @@ describe('ReflexEngine', () => {
     let reflexEngine: ReflexEngine;
 
     beforeEach(() => {
+        eventBus.removeAllListeners();
         reflexEngine = new ReflexEngine();
     });
 

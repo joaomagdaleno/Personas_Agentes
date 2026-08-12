@@ -560,4 +560,11 @@ export class HubManagerGRPC {
         }
         logger.info("🔌 HubManagerGRPC transport closed.");
     }
+
+    /**
+     * 🧹 Suporte ao operador 'await using' do TypeScript / Bun (Explicit Resource Management).
+     */
+    public async [Symbol.asyncDispose](): Promise<void> {
+        this.close();
+    }
 }

@@ -44,7 +44,7 @@ describe("TestRefiner", () => {
     let TestRefiner: any;
     
     beforeEach(async () => {
-        const module = await import("../src_local/agents/Support/Automation/test_refiner");
+        const module = await import("../src_local/engines/automation/test_refiner.ts");
         TestRefiner = module.TestRefiner;
     });
 
@@ -91,7 +91,7 @@ describe("TestArchitectAgent", () => {
     let TestArchitectAgent: any;
     
     beforeEach(async () => {
-        const module = await import("../src_local/agents/Support/Automation/test_architect_agent");
+        const module = await import("../src_local/engines/automation/test_architect_agent.ts");
         TestArchitectAgent = module.TestArchitectAgent;
     });
 

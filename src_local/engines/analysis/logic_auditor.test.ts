@@ -4,7 +4,7 @@ import { LogicAuditor } from './logic_auditor.ts';
 import * as ts from 'typescript';
 
 describe('LogicAuditor', () => {
-    it('should detect anti-patterns in TypeScript source', () => {
+    it('should detect anti-patterns in TypeScript source', async () => {
         const sourceCode = `
             function bad() {
                 try {
@@ -14,8 +14,17 @@ describe('LogicAuditor', () => {
                 }
             }
         `;
-        const sourceFile = ts.createSourceFile('bad_logic.ts', sourceCode, ts.ScriptTarget.Latest, true);
-        const issues = LogicAuditor.scanFile(sourceFile);
+        
+        const mockHub = {
+            analyzeFile: async () => ({
+                findings: [
+                    { line: 5, message: "captura silenciosa", severity: "high", category: "Logic" }
+                ]
+            })
+        } as any;
+        
+        const auditor = new LogicAuditor(mockHub);
+        const issues = await auditor.scanFile('bad_logic.ts', sourceCode);
 
         if (issues.length === 0) {
             console.log('No issues found in LogicAuditor.scanFile!');

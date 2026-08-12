@@ -1,6 +1,8 @@
 import winston from 'winston';
 import { spawn } from 'node:child_process';
 
+const logger = winston.child({ module: "TestRunner" });
+
 /**
  * Test results interface
  */
@@ -64,7 +66,7 @@ export class TestRunner {
      */
     async runParallelDiscovery(projectRoot: string): Promise<TestResults> {
         const startT = Date.now();
-        winston.info(`⏱️ [TestRunner] Iniciando suíte de testes completa em ${projectRoot}...`);
+        logger.info(`⏱️ [TestRunner] Iniciando suíte de testes completa em ${projectRoot}...`);
 
         if (!projectRoot) {
             return {
@@ -85,7 +87,7 @@ export class TestRunner {
      * Executa apenas testes específicos (Cirúrgico).
      */
     async runSelectiveTests(projectRoot: string, files: string[]): Promise<TestResults> {
-        winston.info(`🧪 [TestRunner] Execução Seletiva: ${files.length} arquivos.`);
+        logger.info(`🧪 [TestRunner] Execução Seletiva: ${files.length} arquivos.`);
 
         // Filter only test files (spec/test)
         const testFiles = files.filter(f => f.includes(".test.") || f.includes(".spec."));
@@ -123,7 +125,7 @@ export class TestRunner {
                 });
 
                 child.on('error', (error) => {
-                    winston.error(`❌ [TestRunner] Erro ao executar bun test: ${error.message}`);
+                    logger.error(`❌ [TestRunner] Erro ao executar bun test: ${error.message}`);
                     reject({
                         success: false,
                         error: error.message,
@@ -134,7 +136,7 @@ export class TestRunner {
                     });
                 });
             } catch (error: any) {
-                winston.error(`❌ [TestRunner] Erro ao iniciar processo: ${error.message}`);
+                logger.error(`❌ [TestRunner] Erro ao iniciar processo: ${error.message}`);
                 reject({
                     success: false,
                     error: error.message,

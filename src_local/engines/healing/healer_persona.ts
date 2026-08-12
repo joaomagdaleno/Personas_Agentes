@@ -12,6 +12,7 @@ const logger = winston.child({ module: "HealerPersona" });
  * Usa o CognitiveEngine para gerar patches de correção e validar a cura.
  */
 export class HealerPersona {
+    public readonly name: string = "Healer";
     private brain: CognitiveEngine;
     private projectRoot: string;
     private validator: CoreValidator;

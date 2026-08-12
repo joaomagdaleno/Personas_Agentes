@@ -1,5 +1,34 @@
 {
   "gold.ts": {
     "status": "REFERENCE"
+  },
+  "scripts/ensure_binaries.ts": {
+    "occurrences": 2,
+    "history": [
+      "2026-08-12T04:39:56.209Z",
+      "2026-08-12T04:39:56.209Z"
+    ],
+    "status": "UNSTABLE"
+  },
+  "scripts/run-diagnostic.ts": {
+    "occurrences": 1,
+    "history": [
+      "2026-08-12T04:39:56.209Z"
+    ],
+    "status": "UNSTABLE"
+  },
+  "src_local/utils/memory_engine.test.ts": {
+    "occurrences": 1,
+    "history": [
+      "2026-08-12T04:39:56.209Z"
+    ],
+    "status": "UNSTABLE"
+  },
+  "src_local/utils/strategies/MetricScanner.ts": {
+    "occurrences": 1,
+    "history": [
+      "2026-08-12T04:39:56.209Z"
+    ],
+    "status": "UNSTABLE"
   }
 }

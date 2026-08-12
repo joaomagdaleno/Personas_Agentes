@@ -42,6 +42,7 @@ export class DNAProfiler {
         if (await projectRoot.join('pubspec.yaml').exists()) dna.stacks.add("Flutter");
         if (await projectRoot.join('build.gradle').exists() || await projectRoot.join('build.gradle.kts').exists()) dna.stacks.add("Kotlin");
         if (await projectRoot.join('requirements.txt').exists()) dna.stacks.add("Python");
+        if (await projectRoot.join('build.zig').exists()) dna.stacks.add("Zig");
 
         return dna;
     }

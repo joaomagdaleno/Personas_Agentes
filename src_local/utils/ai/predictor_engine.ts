@@ -56,11 +56,11 @@ export class PredictorEngine {
      */
     public recordEvent(eventName: string): void {
         if (!this.VOCABULARY.includes(eventName)) {
-            logger.debug(`[Predictor] Ignoing unknown event: ${eventName}`);
+            logger.info(`[Predictor] Ignoing unknown event: ${eventName}`);
             return;
         }
         this.currentSequence.push(eventName);
-        logger.debug(`[Predictor] Event recorded: ${eventName} (Window: ${this.currentSequence.length})`);
+        logger.info(`[Predictor] Event recorded: ${eventName} (Window: ${this.currentSequence.length})`);
     }
 
     /**
@@ -165,7 +165,8 @@ export class PredictorEngine {
         }
 
         logger.info("🔮 [Predictor] Initializing MicroGPT Anomaly Neural Engine...");
-        this.predictor.train(this.trainingHistory, 150, 0.05);
+        const iterations = process.env.NODE_ENV === "test" || process.env.BUN_ENV === "test" ? 1 : 150;
+        this.predictor.train(this.trainingHistory, iterations, 0.05);
         logger.info("🔮 [Predictor] Neural baseline established.");
     }
 

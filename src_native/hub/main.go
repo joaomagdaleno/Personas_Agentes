@@ -23,6 +23,7 @@ import (
 	"database/sql"
 	"bytes"
 	"encoding/binary"
+	"unique"
 
 	pb "personas-agentes/hub/proto"
 
@@ -50,6 +51,14 @@ const (
 	DefaultDBPath        = "../../system_vault.db"
 	DefaultMetadataPath  = "../../src_local/metadata/identity_census.json"
 )
+
+// internString usa o pacote nativo 'unique' do Go para deduplicar instâncias de string na RAM.
+func internString(s string) string {
+	if s == "" {
+		return ""
+	}
+	return unique.Make(s).Value()
+}
 
 type FileAnalysis struct {
 	Path     string `json:"path"`
@@ -418,8 +427,10 @@ func (h *Hub) startWatcher(root string) {
 						h.loadMetadata(root)
 					}
 
+					// Go 1.23+ unique.Make: deduplicar paths repetidos na RAM
+					internedName := internString(event.Name)
 					log.Printf("File event: %v", event)
-					h.broadcast <- event.Name
+					h.broadcast <- internedName
 				}
 			case err, ok := <-h.watcher.Errors:
 				if !ok {
@@ -479,7 +490,7 @@ func (h *Hub) startSentinel() {
 						name, _ := p.Name()
 						cpuP, _ := p.CPUPercent()
 						procs = append(procs, ProcessInfo{
-							Name:   name,
+							Name:   internString(name),
 							PID:    p.Pid,
 							MemMB:  memMB,
 							CPUPct: cpuP,
@@ -660,7 +671,8 @@ func (h *Hub) AnalyzeFile(ctx context.Context, in *pb.AnalyzeRequest) (*pb.Analy
 		return h.rustClient.AnalyzeFile(ctx, in)
 	}
 
-	ext := strings.ToLower(filepath.Ext(in.File))
+	// Go 1.23+ unique.Make: deduplicar extensões repetidas
+	ext := internString(strings.ToLower(filepath.Ext(in.File)))
 	var data string
 	var err error
 
@@ -691,7 +703,8 @@ func (h *Hub) AnalyzeStream(stream pb.HubService_AnalyzeStreamServer) error {
 		}
 
 		// Process concurrently or synchronously. For streaming, we process each and send it back immediately.
-		ext := strings.ToLower(filepath.Ext(in.File))
+		// Go 1.23+ unique.Make: deduplicar extensões no stream
+		ext := internString(strings.ToLower(filepath.Ext(in.File)))
 		var data string
 		var processErr error
 

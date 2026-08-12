@@ -99,4 +99,6 @@ function printSuccess(phase: string, platform: string) {
     console.log(`✅ [PHASE: ${phase}] for ${platform} copied!`);
 }
 
-main();
+if (import.meta.main) {
+    main();
+}

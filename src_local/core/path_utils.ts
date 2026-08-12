@@ -8,7 +8,7 @@ export class Path {
     private _path: string;
 
     constructor(path: string) {
-        this._path = path;
+        this._path = path ? resolve(path).replace(/^[a-z]:/, (m) => m.toUpperCase()) : path;
     }
 
     toString(): string {
@@ -53,7 +53,17 @@ export class Path {
     }
 
     relativeTo(other: Path): string {
-        return relative(other.toString(), this._path);
+        const from = resolve(other.toString());
+        const to = resolve(this._path);
+        if (process.platform === "win32") {
+            const fromLower = from.toLowerCase();
+            const toLower = to.toLowerCase();
+            if (fromLower === toLower) return "";
+            if (toLower.startsWith(fromLower)) {
+                return to.slice(from.length).replace(/^[\\/]/, "");
+            }
+        }
+        return relative(from, to);
     }
 
     join(...parts: string[]): Path {

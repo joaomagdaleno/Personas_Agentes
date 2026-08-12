@@ -9,7 +9,7 @@ export interface TopologyFile {
     extension: string;
     category: "Agent" | "Core" | "Util" | "Script" | "Native" | "Unknown";
     size: number;
-    stack?: "TypeScript" | "Python" | "Go" | "Kotlin" | "Flutter" | "Dart";
+    stack?: "TypeScript" | "Python" | "Go" | "Kotlin" | "Flutter" | "Dart" | "Zig";
 }
 
 export interface TopologyMap {

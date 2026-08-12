@@ -27,6 +27,8 @@ describe('ContextEngine', () => {
             calculateBulk: async () => ({}),
             calculateMetrics: () => ({ coupling_score: 0 })
         } as any;
+        contextEngine['contentCache'] = {};
+        contextEngine.map = {};
     });
 
     it('should initialize with correct paths', () => {
@@ -35,9 +37,8 @@ describe('ContextEngine', () => {
 
     it('should register files and perform deep analysis', async () => {
         const filePath = new Path(mockRoot).join('test.ts');
-
-        // Mock content reading
-        (contextEngine as any).readFileContent = mock(async () => 'interface Test {}');
+        contextEngine['contentCache'] = {};
+        contextEngine['_customReader'] = async () => 'interface Test {}';
 
         await contextEngine.registerFile(filePath);
 
@@ -48,10 +49,11 @@ describe('ContextEngine', () => {
 
     it('should categorize test quality level', async () => {
         const testPath = new Path(mockRoot).join('test.test.ts');
-        (contextEngine as any).readFileContent = mock(async () => 'expect(1).toBe(1); expect(2).toBe(2); expect(3).toBe(3); expect(4).toBe(4); expect(5).toBe(5); expect(6).toBe(6);');
+        contextEngine['contentCache'] = {};
+        contextEngine['_customReader'] = async () => 'expect(1); expect(2); expect(3); expect(4); expect(5); expect(6); expect(7); expect(8); expect(9); expect(10);';
 
         // Mock mapping logic to return TEST type
-        (contextEngine.mappingLogic.getInitialInfo as any) = () => ({ component_type: 'TEST' });
+        (contextEngine.mappingLogic.getInitialInfo as any) = () => ({ component_type: 'TEST', dependencies: [] });
 
         await contextEngine.registerFile(testPath);
 

@@ -14,7 +14,7 @@ const logger = winston.child({ module: "InstanceGrouper" });
 export class InstanceGrouper {
     static async group(tsRoot: string): Promise<Map<string, AgentInstance[]>> {
         const groups = new Map<string, AgentInstance[]>();
-        const stacks = ["Bun", "Flutter", "Go", "Kotlin", "Python", "Rust", "TypeScript"];
+        const stacks = ["Bun", "Flutter", "Go", "Kotlin", "Python", "Rust", "TypeScript", "Zig"];
         const cats = ["Audit", "Content", "Strategic", "System"];
 
         // Try batch extraction first (Rust-powered via gRPC)

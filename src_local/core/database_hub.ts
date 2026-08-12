@@ -14,12 +14,14 @@ export class DatabaseHub {
     private maxRetries = 5;
     private retryDelayMs = 100;
 
+    private dbPath: string;
+
     private constructor(projectRoot: string) {
-        const dbPath = new Path(projectRoot).join("system_vault.db").toString();
-        this.db = new Database(dbPath);
+        this.dbPath = new Path(projectRoot).join("system_vault.db").toString();
+        this.db = new Database(this.dbPath);
         this.db.run("PRAGMA journal_mode = WAL;"); // Melhora performance de concorrência
         this._ensureKVStore();
-        logger.info(`🏛️ [DatabaseHub] Conexão estabelecida em: ${dbPath}`);
+        logger.info(`🏛️ [DatabaseHub] Conexão estabelecida em: ${this.dbPath}`);
     }
 
     private _ensureKVStore() {
@@ -33,7 +35,11 @@ export class DatabaseHub {
     }
 
     public static getInstance(projectRoot: string): DatabaseHub {
-        if (!DatabaseHub.instance) {
+        const targetPath = new Path(projectRoot).join("system_vault.db").toString();
+        if (!DatabaseHub.instance || DatabaseHub.instance.dbPath !== targetPath) {
+            if (DatabaseHub.instance) {
+                DatabaseHub.instance.close();
+            }
             DatabaseHub.instance = new DatabaseHub(projectRoot);
         }
         return DatabaseHub.instance;
@@ -93,5 +99,32 @@ export class DatabaseHub {
      */
     public run(sql: string, params: any[] = []) {
         return this.execute((db) => db.run(sql, params));
+    }
+
+    /**
+     * Fecha a conexão com o banco de dados.
+     */
+    public close(): void {
+        try {
+            this.db.close();
+            DatabaseHub.instance = null;
+            logger.info("🏛️ [DatabaseHub] Conexão com o banco de dados encerrada.");
+        } catch (e: any) {
+            logger.warn(`⚠️ [DatabaseHub] Erro ao fechar banco: ${e.message}`);
+        }
+    }
+
+    /**
+     * 🧹 Suporte ao operador 'using' do TypeScript / Bun (Explicit Resource Management).
+     */
+    public [Symbol.dispose](): void {
+        this.close();
+    }
+
+    /**
+     * 🧹 Suporte ao operador 'await using' do TypeScript / Bun.
+     */
+    public async [Symbol.asyncDispose](): Promise<void> {
+        this.close();
     }
 }

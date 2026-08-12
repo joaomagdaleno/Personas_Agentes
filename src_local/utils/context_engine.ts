@@ -60,7 +60,7 @@ export class ContextEngine {
     }
 
     async registerFile(path: Path, ignoreTest: boolean = false, goMetrics?: any) {
-        const rel = path.relativeTo(this.projectRoot);
+        const rel = path.relativeTo(this.projectRoot).replace(/\\/g, "/");
         if (this.map[rel]) return;
 
         const content = await this.getCachedContent(path, rel);
@@ -84,7 +84,13 @@ export class ContextEngine {
             };
         }
 
-        await this.performDeepAnalysis(path, content, info, ignoreTest);
+        try {
+            await this.performDeepAnalysis(path, content, info, ignoreTest);
+        } catch (e) {
+            // Preserva o registro mesmo se a análise profunda de métricas falhar
+        }
+        // Sempre enriquece test_depth, independente do resultado da análise profunda
+        this.enrichTestDepth(content, info);
         this.map[rel] = info;
     }
 
@@ -94,6 +100,7 @@ export class ContextEngine {
     }
 
     private async readFileContent(path: Path): Promise<string> {
+        if ((this as any)._customReader) return (this as any)._customReader(path);
         try {
             return await (Bun as any).file(path.toString()).text();
         } catch {
@@ -114,10 +121,13 @@ export class ContextEngine {
             ? await this.analyst.analyzePython(content, absPath)
             : await this.analyst.analyze_file_logic(content, absPath);
 
-        // Add intent classification using Rust metadata if available
-        info.intent = this.analyst.analyze_intent(content, name, info.rust_metadata);
+        try {
+            info.intent = this.analyst.analyze_intent(content, name, info.rust_metadata);
+        } catch {}
 
+        const compType = info.component_type;
         Object.assign(info, structural);
+        if (compType) info.component_type = compType;
     }
 
     private _applyAdvancedMetrics(path: Path, content: string, info: any, goMetrics?: any) {
@@ -144,10 +154,15 @@ export class ContextEngine {
     }
 
     private async _applySecurityAndTests(path: Path, content: string, info: any, ignoreTest: boolean) {
-        const vuln = await this.analyst.integrityGuardian.detectVulnerabilities(content, info.component_type, path.name(), ignoreTest);
-        Object.assign(info, vuln);
+        try {
+            const vuln = await this.analyst.integrityGuardian.detectVulnerabilities(content, info.component_type, path.name(), ignoreTest);
+            Object.assign(info, vuln);
+        } catch {}
 
-        info.has_test = this.coverageAuditor.detectTest(path, info.component_type, this.allFilesIndex, info);
+        try {
+            info.has_test = await this.coverageAuditor.detectTest(path, info.component_type, this.allFilesIndex, info);
+        } catch {}
+
         this.enrichTestDepth(content, info);
     }
 

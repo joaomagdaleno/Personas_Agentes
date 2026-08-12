@@ -19,13 +19,15 @@ describe('MemoryEngine', () => {
         // It might be created elsewhere or by the Hub.
         // Let's create it manually for the test if it fails.
         try {
-            memoryEngine['db'].run("CREATE TABLE IF NOT EXISTS ai_insights (id INTEGER PRIMARY KEY, mode TEXT, insight TEXT, impact_level TEXT, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)");
+            memoryEngine['dbHub'].run("CREATE TABLE IF NOT EXISTS ai_insights (id INTEGER PRIMARY KEY, mode TEXT, insight TEXT, impact_level TEXT, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)");
         } catch (e) { }
     });
 
     afterEach(() => {
         // Close DB before deleting
-        memoryEngine['db'].close();
+        if (memoryEngine['dbHub']) {
+            memoryEngine['dbHub'].close();
+        }
         if (existsSync(testRoot)) {
             rmSync(testRoot, { recursive: true, force: true });
         }
@@ -45,13 +47,23 @@ describe('MemoryEngine', () => {
         expect(results[0].insight).toContain('test.ts');
     });
 
-    it('should sync file memory and extract anchors', () => {
+    it('should sync file memory and extract anchors', async () => {
+        const mockHub = {
+            analyzeFile: async () => ({
+                symbols: [
+                    { kind: 'class', name: 'MyTest' },
+                    { kind: 'function', name: 'doWork' }
+                ]
+            })
+        } as any;
+        const memoryWithHub = new MemoryEngine(testRoot, mockHub);
+
         const contextMap = {
             'class.ts': { content: 'class MyTest { function doWork() {} }', component_type: 'CORE' }
         };
-        memoryEngine.syncProjectMemory(contextMap);
+        await memoryWithHub.syncProjectMemory(contextMap);
 
-        const results = memoryEngine.searchSimilar('Anchors for class.ts');
+        const results = memoryWithHub.searchSimilar('Anchors for class.ts');
         expect(results.length).toBeGreaterThan(0);
         expect(results[0].insight).toContain('MyTest');
         expect(results[0].insight).toContain('doWork');
@@ -59,7 +71,7 @@ describe('MemoryEngine', () => {
 
     it('should prune old entries', () => {
         // Insert an old entry
-        memoryEngine['db'].run("INSERT INTO ai_insights (mode, insight, impact_level, timestamp) VALUES (?, ?, ?, datetime('now', '-31 days'))", ["MEMORY", "old", "LOW"]);
+        memoryEngine['dbHub'].run("INSERT INTO ai_insights (mode, insight, impact_level, timestamp) VALUES (?, ?, ?, datetime('now', '-31 days'))", ["MEMORY", "old", "LOW"]);
 
         memoryEngine.prune();
 

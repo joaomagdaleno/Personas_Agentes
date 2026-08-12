@@ -11,7 +11,10 @@ describe('TaskWorker', () => {
             getPendingTasks: mock(async () => []),
             updateTaskStatus: mock(async () => { }),
         };
-        worker = new TaskWorker(mockQueue);
+        const mockOrc = {
+            generateDocumentation: mock(async () => {})
+        };
+        worker = new TaskWorker(mockQueue, mockOrc);
     });
 
     it('should process documentation tasks', async () => {

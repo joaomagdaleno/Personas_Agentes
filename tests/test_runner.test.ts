@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { TestRunner } from "../src_local/agents/Support/Automation/test_runner";
+import { TestRunner } from "../src_local/engines/automation/test_runner.ts";
 
 describe("TestRunner", () => {
     const testRunner = new TestRunner();

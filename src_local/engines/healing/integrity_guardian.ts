@@ -49,7 +49,7 @@ export class IntegrityGuardian {
 
     isRelevantFile(file: string, stack: string): boolean {
         if (stack === "Universal") return true;
-        const extMap: Record<string, string> = { Flutter: ".dart", Kotlin: ".kt", Python: ".py" };
+        const extMap: Record<string, string> = { Flutter: ".dart", Kotlin: ".kt", Python: ".py", Zig: ".zig" };
         const ext = extMap[stack];
         return (ext && file.endsWith(ext)) || [".yaml", ".xml", ".json", ".gradle", ".kts"].some(x => file.endsWith(x));
     }

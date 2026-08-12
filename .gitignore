@@ -15,6 +15,11 @@ __pycache__/
 *.pyc
 .env
 system_vault.db
+system_vault.db-shm
+system_vault.db-wal
+docs/*.html
+src_native/analyzer/.sovereign_cache.json
+src_native/analyzer/*_test.json
 project_map.json
 .gemini/microgpt_weights.json
 missing_python_files.txt

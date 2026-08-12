@@ -14,6 +14,6 @@ describe("SafetyDefinitions Integrity", () => {
 
     it("should have SAFE_METADATA_VARS", () => {
         expect(Array.isArray(safety.SAFE_METADATA_VARS)).toBe(true);
-        expect(safety.SAFE_METADATA_VARS).toContain("rule");
+        expect(safety.SAFE_METADATA_VARS).toContain("rules");
     });
 });

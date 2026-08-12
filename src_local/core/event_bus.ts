@@ -23,7 +23,7 @@ export type EventName = keyof SystemEventMap;
 
 class SovereignEventBus extends EventEmitter {
     override emit<K extends EventName>(event: K, ...args: SystemEventMap[K]): boolean {
-        logger.debug(`📡 [EventBus] Emitting: ${String(event)}`);
+        logger.info(`📡 [EventBus] Emitting: ${String(event)}`);
         return super.emit(event as string, ...args);
     }
 
