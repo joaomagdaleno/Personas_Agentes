@@ -21,7 +21,7 @@ export class SecuritySentinelAgent {
      * Realiza um scan preventivo de segurança em arquivos específicos.
      */
     async runSecurityScan(files: string[], context: ProjectContext): Promise<AuditFinding[]> {
-        if (!context.map) return [];
+        if (!context?.map) return [];
         logger.info(`🛡️ [Security] Iniciando scan profundo em ${files.length} arquivos...`);
         let findings: AuditFinding[] = [];
 
@@ -52,7 +52,7 @@ export class SecuritySentinelAgent {
      * Scans the entire project for security vulnerabilities using the deep engine.
      */
     async scanProject(context: ProjectContext): Promise<AuditFinding[]> {
-        const files = Object.keys(context.map || {});
-        return this.runSecurityScan(files, context);
+        const files = Object.keys(context?.map || {});
+        return this.runSecurityScan(files, context || {});
     }
 }

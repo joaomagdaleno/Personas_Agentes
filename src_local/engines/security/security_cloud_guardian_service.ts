@@ -384,3 +384,4 @@ export class ObfuscationLogicEngine {
     }
 }
 
+export { HeuristicEvaluator as VulnerabilityHeuristic };

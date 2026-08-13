@@ -29,7 +29,7 @@ export class HealthSynthesizer {
         // Calculate score asynchronously via gRPC
         const { score, breakdown } = await this.calculator.calculateFinalScore(mapData, allAlerts, qaData, context.cognitive);
 
-        const { ScoringMetricsEngine } = await import("./scoring_metrics_engine");
+        const { ScoringMetricsEngine } = await import("./audit_code_guardian_service.ts");
         const metricsEngine = new ScoringMetricsEngine();
         const vitals = metricsEngine.getVitals(mapData);
 

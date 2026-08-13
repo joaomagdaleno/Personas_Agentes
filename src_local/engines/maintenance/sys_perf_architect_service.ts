@@ -338,6 +338,8 @@ export class TaskWorker {
     private maxConcurrentTasks: number = 5;
     private currentTasks: number = 0;
     private governance: PhdGovernanceSystem;
+    private haltListener?: () => void;
+    private healthListener?: (data: { score: number }) => void;
 
     constructor(private taskQueue: TaskQueue, private orc?: any) {
         this.governance = PhdGovernanceSystem.getInstance();
@@ -345,19 +347,22 @@ export class TaskWorker {
     }
 
     private registerEvents() {
-        eventBus.on("system:halt-experimentation", () => {
+        this.haltListener = () => {
             if (!this.paused) {
                 this.paused = true;
                 logger.warn("🛑 [Worker] Pausando execução de tarefas devido a alerta sistêmico.");
             }
-        });
+        };
 
-        eventBus.on("system:health-check", ({ score }) => {
+        this.healthListener = ({ score }) => {
             if (this.paused && score > 60) {
                 this.paused = false;
                 logger.info("🟢 [Worker] Resumindo execução (Saúde restaurada).");
             }
-        });
+        };
+
+        eventBus.on("system:halt-experimentation", this.haltListener);
+        eventBus.on("system:health-check", this.healthListener);
     }
 
     async start() {
@@ -413,6 +418,12 @@ export class TaskWorker {
 
     stop() {
         this.running = false;
+        if (this.haltListener) {
+            eventBus.off("system:halt-experimentation", this.haltListener);
+        }
+        if (this.healthListener) {
+            eventBus.off("system:health-check", this.healthListener);
+        }
         logger.info("👷 [Worker] Parando operário...");
     }
 
@@ -556,12 +567,25 @@ export const sovereigntyLogger = SovereigntyLogger.getInstance();
 export class MetricScanner {
     static scanProcesses(): any[] {
         try {
-            const lines = execSync('tasklist /V /FO CSV', { encoding: 'utf8' }).split('\n').slice(1);
-            return lines.map(l => {
-                const p = l.split('","').map(x => x.replace(/"/g, '')); if (p.length < 5) return null;
-                const mKb = parseInt((p[4] || "").replace(/[^\d]/g, '') || "0");
-                return mKb > 200000 ? { name: p[0] || "U", pid: parseInt(p[1] || "0") || 0, mem_mb: (mKb / 1024).toFixed(2) } : null;
-            }).filter((x): x is any => x !== null).sort((a, b) => parseFloat(b.mem_mb) - parseFloat(a.mem_mb));
+            if (process.platform === 'win32') {
+                const lines = execSync('tasklist /V /FO CSV', { encoding: 'utf8' }).split('\n').slice(1);
+                return lines.map(l => {
+                    const p = l.split('","').map(x => x.replace(/"/g, '')); if (p.length < 5) return null;
+                    const mKb = parseInt((p[4] || "").replace(/[^\d]/g, '') || "0");
+                    return mKb > 200000 ? { name: p[0] || "U", pid: parseInt(p[1] || "0") || 0, mem_mb: (mKb / 1024).toFixed(2) } : null;
+                }).filter((x): x is any => x !== null).sort((a, b) => parseFloat(b.mem_mb) - parseFloat(a.mem_mb));
+            } else {
+                const lines = execSync('ps -eo comm,pid,rss', { encoding: 'utf8' }).split('\n').slice(1);
+                return lines.map(l => {
+                    const parts = l.trim().split(/\s+/);
+                    if (parts.length < 3) return null;
+                    const rssKb = parseInt(parts[parts.length - 1] || "0");
+                    if (isNaN(rssKb) || rssKb <= 200000) return null;
+                    const pid = parseInt(parts[parts.length - 2] || "0");
+                    const name = parts.slice(0, parts.length - 2).join(" ");
+                    return { name, pid, mem_mb: (rssKb / 1024).toFixed(2) };
+                }).filter((x): x is any => x !== null).sort((a, b) => parseFloat(b.mem_mb) - parseFloat(a.mem_mb));
+            }
         } catch { return []; }
     }
 

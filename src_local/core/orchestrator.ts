@@ -463,7 +463,7 @@ Retorne apenas o código TypeScript completo.
     private async collectQAData(ctx: ProjectContext): Promise<any> {
         const { PyramidAnalyst } = await import("../engines/analysis/pyramid_analyst.ts");
         const { QualityAnalyst } = await import("../engines/diagnostics/quality_analyst.ts");
-        const { TopologyGraphAgent } = await import("../engines/automation/topology_graph_agent.ts");
+        const { TopologyGraphAgent } = await import("../engines/strategic/master_orchestrator_service.ts");
 
         return {
             pyramid: await new PyramidAnalyst().analyze(ctx.map || {}, async (p: string) => Bun.file(this.projectRoot.join(p).toString()).text()),

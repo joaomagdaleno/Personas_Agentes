@@ -187,6 +187,7 @@ export class PredictorEngine {
         }
     }
     public clearCurrentSequence(): void { this.currentSequence = []; }
+    public saveModel(): void { this.saveWeights(); }
     private saveWeights(): void {
         try {
             const { writeFileSync, mkdirSync, existsSync } = require("fs");
