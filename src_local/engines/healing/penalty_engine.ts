@@ -74,13 +74,13 @@ export class PenaltyEngine {
             return response.final_score;
         } catch (error) {
             logger.error(`❌ [PenaltyEngine] gRPC call failed:`, error);
-            throw error;
+            return raw;
         }
     }
 
     getPilarAdjustments(allAlerts: any[], mapData: Record<string, any>, qaData: any = null, cognitive: any = null): Record<string, number> {
         const caps = { cc: 5, cognitive: 4, nesting: 3, cbo: 3, dit: 2, miLow: 4, miCritical: 3, defect: 3, gateRed: 3, shadow: 3 };
-        const stats = qaData?.matrix ? AdjustmentCalculator.calculate(qaData.matrix, mapData, caps) : { cc: 0, cog: 0, nest: 0, cbo: 0, dit: 0, miL: 0, miC: 0, def: 0, red: 0, shad: 0, total: 0, shallow: 0 };
+        const stats = qaData?.matrix ? AdjustmentCalculator.calculate(qaData.matrix, mapData, caps) : { total: 0, shallow: 0 };
         const prop = (count: number, cap: number) => Math.round(Math.min(cap, (count / Math.max(1, stats.total)) * cap) * 10) / 10;
 
         const cogPenalty = cognitive?.status === "FAIL" ? 5 : (cognitive?.status === "DEGRADED" ? 2 : 0);
