@@ -9,6 +9,8 @@ import { GitClient, ConflictPolicy, GitSyncManager } from "../automation/sync_de
 import { TopologyInfoProvider } from "../healing/resilience_healing_architect_service.ts";
 import { TELEMETRY_KEYWORDS, CRITICAL_LOG_METHODS } from "../security/security_cloud_guardian_service.ts";
 import { ASTIntelligence } from "../analysis/architecture_types_service.ts";
+import { MetricsEngine } from "./metrics_engine.ts";
+import { StabilityScorer } from "./strategies/StabilityScorer.ts";
 
 const logger = winston.child({ module: "AuditCodeGuardianService" });
 
@@ -685,6 +687,9 @@ export class ScoringMetricsEngine {
     constructor() { this.metricsEngine = new MetricsEngine(); }
     calculateAdvancedMetrics(content: string, filePath: string, dependencies: string[] = [], bugCount: number = 0) {
         return this.metricsEngine.analyzeFile(content, filePath, dependencies, bugCount);
+    }
+    getVitals(mapData: Record<string, any>) {
+        return StabilityScorer.getVitals(mapData);
     }
 }
 

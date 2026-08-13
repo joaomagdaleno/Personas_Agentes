@@ -1,7 +1,6 @@
 import * as ts from "typescript";
 import winston from "winston";
 import * as path from "node:path";
-import { ContextValidator } from "../security/security_cloud_guardian_service.ts";
 
 const logger = winston.child({ module: "ArchitectureTypesService" });
 
@@ -30,7 +29,14 @@ export class ASTIntelligence {
     }
 
     static isNodeSafe(node: ts.Node, sourceFile: ts.SourceFile): boolean {
-        return ContextValidator.isNodeSafe(node, sourceFile, this.isObservabilityContext.bind(this), this.isMetadataContext.bind(this), this.isMathContext.bind(this));
+        const f = sourceFile.fileName.replace(/\\/g, "/");
+        const checks = [
+            () => ["/tests/", "tests/", "/scripts/", "scripts/", "src_local/agents/", "src_local/core/", "src_local/utils/"].some(p => f.includes(p)),
+            () => [".test.", ".spec.", ".md", ".txt"].some(e => f.includes(e)),
+            () => ["run-diagnostic.ts", "run-diagnostic.py", "extract_personas.ts", "reorganize_support.ts", "update_imports.ts"].some(rf => f.endsWith(rf)),
+            () => this.isObservabilityContext(node) || this.isMetadataContext(node) || this.isMathContext(node)
+        ];
+        return checks.some(c => c());
     }
 
     private static readonly METADATA_KEYWORDS = /rules|patterns|regex|manifest|metadata|diretriz|heuristics/i;

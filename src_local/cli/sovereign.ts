@@ -45,10 +45,21 @@ async function printStatus() {
     console.log(`   • Uso de Memória RAM:       ${health.memory_usage}% (Livre: ${health.memory_free_gb} GB)`);
     
     console.log("\n⚙️ BINÁRIOS NATIVOS:");
-    const goHubExists = await Bun.file("bin/hub.exe").exists() || await Bun.file("hub.exe").exists();
-    const rustSidecarExists = await Bun.file("bin/analyzer_lib.dll").exists() || await Bun.file("analyzer_lib.dll").exists();
-    console.log(`   • Go Hub Proxy (hub.exe):          ${goHubExists ? "✅ Presente" : "❌ Ausente"}`);
-    console.log(`   • Rust Sidecar (analyzer_lib.dll): ${rustSidecarExists ? "✅ Presente" : "❌ Ausente"}`);
+    const isWin = os.platform() === "win32";
+    const goHubName = isWin ? "hub.exe" : "hub";
+    const rustSidecarName = isWin ? "analyzer_lib.dll" : os.platform() === "darwin" ? "libanalyzer_lib.dylib" : "libanalyzer_lib.so";
+
+    const goHubExists = await Bun.file(`bin/${goHubName}`).exists() ||
+                        await Bun.file(goHubName).exists() ||
+                        await Bun.file(`src_native/hub/${goHubName}`).exists();
+
+    const rustSidecarExists = await Bun.file(`bin/${rustSidecarName}`).exists() ||
+                              await Bun.file(rustSidecarName).exists() ||
+                              await Bun.file(`src_native/analyzer/target/release/${isWin ? 'analyzer.exe' : 'analyzer'}`).exists() ||
+                              await Bun.file(`src_native/analyzer/target/release/${rustSidecarName}`).exists();
+
+    console.log(`   • Go Hub Proxy (${goHubName}):          ${goHubExists ? "✅ Presente" : "❌ Ausente"}`);
+    console.log(`   • Rust Sidecar (${rustSidecarName}): ${rustSidecarExists ? "✅ Presente" : "❌ Ausente"}`);
     
     console.log("\n🏛️ BANCO DE DADOS VAULT (SQLite):");
     const dbPath = "system_vault.db";

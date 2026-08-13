@@ -41,6 +41,7 @@ target_alt/
 target_v3/
 *.exe
 *.bin
+src_native/hub/hub
 
 # Internal Gemini/Agent files
 .agent/

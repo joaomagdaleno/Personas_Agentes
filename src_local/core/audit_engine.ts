@@ -84,7 +84,7 @@ export class AuditEngine {
 
     async runObfuscationScan(contextMap: any = null): Promise<any[]> {
         const startT = Date.now();
-        const hunter = new (await import("../engines/security/obfuscation_hunter.ts")).ObfuscationHunter(this.orc.hubManager);
+        const hunter = new (await import("../engines/security/security_cloud_guardian_service.ts")).ObfuscationHunter(this.orc.hubManager);
         const tMap = contextMap || this.orc.contextEngine.map;
 
         const findings = await this._performObfuscationAudit(tMap, hunter);

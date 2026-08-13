@@ -1,7 +1,7 @@
 import winston from "winston";
 import { Path } from "./path_utils.ts";
 import { HubManagerGRPC } from "./hub_manager_grpc.ts";
-import { spawn, type ChildProcess } from "node:child_process";
+import { spawn, execSync, type ChildProcess } from "node:child_process";
 import * as path from "node:path";
 import * as fs from "node:fs";
 
@@ -30,6 +30,50 @@ export class SystemManager {
     }
 
     /**
+     * Limpa processos órfãos que possam estar travando as portas gRPC/HTTP do Hub e Sidecar.
+     */
+    private cleanupPorts(ports: number[]) {
+        const isWin = process.platform === "win32";
+        for (const port of ports) {
+            try {
+                if (isWin) {
+                    const output = execSync(`netstat -ano | findstr :${port}`, { encoding: "utf8" });
+                    const lines = output.split("\n");
+                    for (const line of lines) {
+                        const trimmed = line.trim();
+                        if (trimmed) {
+                            const parts = trimmed.split(/\s+/);
+                            const pid = parts[parts.length - 1];
+                            if (pid && !isNaN(Number(pid)) && Number(pid) > 0) {
+                                logger.info(`🛡️ [PortGuard] Finalizando processo Windows órfão na porta ${port} (PID: ${pid})...`);
+                                execSync(`taskkill /F /PID ${pid}`, { stdio: "ignore" });
+                            }
+                        }
+                    }
+                } else {
+                    // Unix-like (Linux/macOS)
+                    try {
+                        const pidOutput = execSync(`lsof -t -i :${port}`, { encoding: "utf8" }).trim();
+                        if (pidOutput) {
+                            const pids = pidOutput.split("\n");
+                            for (const pid of pids) {
+                                if (pid && !isNaN(Number(pid)) && Number(pid) > 0) {
+                                    logger.info(`🛡️ [PortGuard] Finalizando processo Unix órfão na porta ${port} (PID: ${pid})...`);
+                                    execSync(`kill -9 ${pid}`, { stdio: "ignore" });
+                                }
+                            }
+                        }
+                    } catch {
+                        // lsof fails if no process is listening, which is fine
+                    }
+                }
+            } catch (e) {
+                // Ignore errors if no process is using the port
+            }
+        }
+    }
+
+    /**
      * Tenta garantir que a infraestrutura nativa está pronta, iniciando-a se necessário.
      */
     public async ensureInfrastructure(projectRoot: string): Promise<boolean> {
@@ -40,13 +84,19 @@ export class SystemManager {
 
         logger.info("🚀 Iniciando infraestrutura nativa (Hub + Sidecar) pelo SystemManager...");
         
+        // Executa limpeza de processos órfãos que possam estar ocupando as portas de gRPC/HTTP
+        this.cleanupPorts([50051, 8080]);
+
         const absRoot = path.resolve(projectRoot);
+        const isWin = process.platform === "win32";
+        const hubBinaryName = isWin ? "hub.exe" : "hub";
+        const analyzerBinaryName = isWin ? "analyzer.exe" : "analyzer";
+
         // Determina o root do Personas_Agentes (onde os binários vivem)
-        const myDir = path.dirname(decodeURIComponent(new URL(import.meta.url).pathname)).replace(/^\/([a-zA-Z]:)/, '$1');
-        const personasRoot = path.resolve(myDir, "../../"); 
+        const personasRoot = path.resolve(import.meta.dirname, "../../");
         
-        const hubExe = path.join(personasRoot, "src_native/hub/hub.exe");
-        const analyzerExe = path.join(personasRoot, "src_native/analyzer/target/release/analyzer.exe");
+        const hubExe = path.join(personasRoot, "src_native/hub", hubBinaryName);
+        const analyzerExe = path.join(personasRoot, "src_native/analyzer/target/release", analyzerBinaryName);
 
         if (!fs.existsSync(hubExe)) {
             logger.error(`❌ Não encontrado: ${hubExe}`);
@@ -62,10 +112,10 @@ export class SystemManager {
         const sidecarProcess = spawn(analyzerExe, ["serve"], { cwd: absRoot, stdio: 'pipe' });
         const hubProcess = spawn(hubExe, [], { cwd: path.dirname(hubExe), stdio: 'pipe' });
 
-        sidecarProcess.stdout?.pipe(logStream);
-        sidecarProcess.stderr?.pipe(logStream);
-        hubProcess.stdout?.pipe(logStream);
-        hubProcess.stderr?.pipe(logStream);
+        sidecarProcess.stdout?.pipe(logStream, { end: false });
+        sidecarProcess.stderr?.pipe(logStream, { end: false });
+        hubProcess.stdout?.pipe(logStream, { end: false });
+        hubProcess.stderr?.pipe(logStream, { end: false });
 
         this.nativeProcesses.push(sidecarProcess, hubProcess);
 

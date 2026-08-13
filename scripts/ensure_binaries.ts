@@ -50,18 +50,22 @@ function verifyEnvironment() {
 
 const envReady = verifyEnvironment();
 
+const isWin = process.platform === "win32";
+const hubBinaryName = isWin ? "hub.exe" : "hub";
+const analyzerBinaryName = isWin ? "analyzer.exe" : "analyzer";
+
 const binaries = [
     {
         name: "Rust Analyzer",
-        path: "src_native/analyzer/target/release/analyzer.exe",
+        path: `src_native/analyzer/target/release/${analyzerBinaryName}`,
         buildDir: "src_native/analyzer",
         buildCmd: "cargo build --release"
     },
     {
         name: "Go Hub",
-        path: "src_native/hub/hub.exe",
+        path: `src_native/hub/${hubBinaryName}`,
         buildDir: "src_native/hub",
-        buildCmd: "go build -o hub.exe main.go"
+        buildCmd: `go build -o ${hubBinaryName} main.go`
     }
 ];
 
