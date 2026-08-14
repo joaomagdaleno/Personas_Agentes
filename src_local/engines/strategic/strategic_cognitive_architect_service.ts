@@ -15,7 +15,9 @@ import { CogHelpers } from "../analysis/architecture_types_service.ts";
 import { FileSystemScanner } from "../healing/resilience_healing_architect_service.ts";
 import type { CognitiveStatus, IAgent } from "../../core/types.ts";
 import { DualAPIEngine } from "../../utils/ai/dual_api_engine.ts";
+import { WarmPurgeOfflineEngine } from "../../utils/ai/warm_purge_offline_engine.ts";
 export { DualAPIEngine } from "../../utils/ai/dual_api_engine.ts";
+export { WarmPurgeOfflineEngine } from "../../utils/ai/warm_purge_offline_engine.ts";
 
 const execAsync = promisify(exec);
 const logger = winston.child({ module: "StrategicCognitiveArchitectService" });
@@ -63,8 +65,8 @@ export class CognitiveEngine {
         this.logger.info(`🧠 [Cognitive] Modo ${mode} ativado.`);
     }
 
-    async reason(prompt: string, options: { temperature?: number, max_tokens?: number, deep?: boolean } = {}): Promise<string | null> {
-        // Try Dual-API first if cloud API is available (Gemini / HuggingFace)
+    async reason(prompt: string, options: { temperature?: number, max_tokens?: number, deep?: boolean, context?: string } = {}): Promise<string | null> {
+        // 1. Try Dual-API Cloud Engine (Gemini / HuggingFace -> 0MB RAM)
         try {
             const dualEngine = DualAPIEngine.getInstance();
             const dualRes = await dualEngine.generate(prompt, {
@@ -73,13 +75,31 @@ export class CognitiveEngine {
             });
 
             if (dualRes.text && dualRes.text.trim().length > 0 && dualRes.provider !== "fallback") {
-                this.logger.info(`✨ [Cognitive] Resposta obtida via ${dualRes.provider.toUpperCase()} (${dualRes.model}) em ${dualRes.latencyMs}ms.`);
+                this.logger.info(`✨ [Cognitive] Resposta obtida via nuvem ${dualRes.provider.toUpperCase()} (${dualRes.model}) em ${dualRes.latencyMs}ms.`);
                 return dualRes.text;
             }
         } catch (dualErr) {
             this.logger.debug(`[Cognitive] DualAPI não processou prompt: ${dualErr}`);
         }
 
+        // 2. Offline Llama.cpp Warm-Purge Engine (~300MB RAM temporário com purge)
+        try {
+            const offlineEngine = WarmPurgeOfflineEngine.getInstance();
+            const offlineRes = await offlineEngine.generate(prompt, {
+                context: options.context,
+                maxTokens: options.max_tokens ?? this.defaultMaxTokens,
+                temperature: options.temperature
+            });
+
+            if (offlineRes && offlineRes.trim().length > 0) {
+                this.logger.info(`❄️ [Cognitive] Resposta obtida via Warm-Purge Offline Llama.cpp Engine.`);
+                return offlineRes;
+            }
+        } catch (offlineErr) {
+            this.logger.debug(`[Cognitive] WarmPurgeOfflineEngine falhou: ${offlineErr}`);
+        }
+
+        // 3. gRPC Brain Proxy / Rust AST Knowledge Graph
         this.logger.info(`🧠 [Cognitive] Raciocinando via gRPC Brain Proxy... (Model: ${this.activeModel})`);
 
         try {
