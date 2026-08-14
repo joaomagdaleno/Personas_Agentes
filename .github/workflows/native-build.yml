@@ -3,8 +3,18 @@ name: Build Native Engines
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - "src_native/**"
+      - ".github/workflows/native-build.yml"
   pull_request:
     branches: [ "main" ]
+    paths:
+      - "src_native/**"
+      - ".github/workflows/native-build.yml"
+
+concurrency:
+  group: native-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   GO_VERSION: "1.23.0"
