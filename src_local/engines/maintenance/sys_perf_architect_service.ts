@@ -6,6 +6,8 @@ import { formatDate } from "../reporting/ui_ux_architect_service.ts";
 import { HubManagerGRPC } from "../../core/hub_manager_grpc.ts";
 import { PhdGovernanceSystem } from "../../core/governance/system_facade.ts";
 import { eventBus } from "../../core/event_bus.ts";
+export { SovereignResourceBudget } from "./sovereign_resource_budget.ts";
+export type { AdaptiveMode, TelemetrySnapshot, AdaptiveConfig } from "./sovereign_resource_budget.ts";
 
 const logger = winston.child({ module: "SysPerfArchitectService" });
 const HUB_STATUS_URL = "http://localhost:8080/status";
