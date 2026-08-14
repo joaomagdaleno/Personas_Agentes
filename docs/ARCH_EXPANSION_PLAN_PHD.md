@@ -1,6 +1,9 @@
 # 🏛️ Plano de Expansão Arquitetural SOBERANA 2.0 (Nível PhD)
 ## Módulo de Integração Zig, Nim, WASM & Inteligência de Recurso Adaptativa
 
+> **Status (EN):** Architecture expansion blueprint / design document. Implementation will be delivered in follow-up PRs.
+> **Resumo (PT-BR):** Este documento descreve o plano técnico de expansão para Zig, Nim e WASM visando <50MB de RAM em segundo plano.
+
 Este documento estabelece o projeto técnico, os diferenciais arquiteturais e o guia prático de integração para a introdução de novas linguagens e capacidades no **Personas & Agents System — Arquitetura Soberana 2.0**. O principal objetivo deste plano é garantir que o sistema atinja **consumo de memória RAM rígido em segundo plano < 50MB** em computadores com recursos limitados (ex: Intel Core i5 de 7ª Geração com 8GB de RAM, sem GPU dedicada), enquanto escala de forma adaptativa e inteligente em servidores ou desktops robustos.
 
 ---
