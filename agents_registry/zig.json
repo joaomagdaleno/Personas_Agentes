@@ -1,5 +1,33 @@
 [
     {
+        "name": "bolt",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Audit",
+        "capabilities": [
+            "performAudit",
+            "regexAnalysis",
+            "codeSmellDetection"
+        ],
+        "dependencies": [],
+        "updatedAt": "2026-03-09T12:00:00.000Z"
+    },
+    {
+        "name": "metric",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Audit",
+        "capabilities": [
+            "performAudit",
+            "regexAnalysis",
+            "codeSmellDetection"
+        ],
+        "dependencies": [
+            "bolt"
+        ],
+        "updatedAt": "2026-03-09T12:00:00.000Z"
+    },
+    {
         "name": "comptime_validator",
         "version": "1.0.0",
         "status": "STABLE",
@@ -11,6 +39,48 @@
         ],
         "dependencies": [],
         "updatedAt": "2026-08-14T02:00:00.000Z"
+    },
+    {
+        "name": "sentinel",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Strategic",
+        "capabilities": [
+            "strategicReasoning",
+            "objectiveAlignment",
+            "riskAssessment"
+        ],
+        "dependencies": [
+            "bolt",
+            "metric"
+        ],
+        "updatedAt": "2026-03-09T12:00:00.000Z"
+    },
+    {
+        "name": "scribe",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Content",
+        "capabilities": [
+            "contentGeneration",
+            "templateReasoning",
+            "documentationAnalysis"
+        ],
+        "dependencies": [],
+        "updatedAt": "2026-03-09T12:00:00.000Z"
+    },
+    {
+        "name": "bridge",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "System",
+        "capabilities": [
+            "systemMonitoring",
+            "infrastructureAnalysis",
+            "performanceInsight"
+        ],
+        "dependencies": [],
+        "updatedAt": "2026-03-09T12:00:00.000Z"
     },
     {
         "name": "alloc_guardian",

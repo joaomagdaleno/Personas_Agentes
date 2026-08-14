@@ -252,6 +252,8 @@ export class NativeFFIBridge {
     private static instance: NativeFFIBridge | null = null;
     private lib: any = null;
     private isAvailable: boolean = false;
+    private zigLib: any = null;
+    private isZigAvailable: boolean = false;
 
     private constructor(projectRoot: string = process.cwd()) {
         this.initLibrary(projectRoot);
@@ -275,32 +277,64 @@ export class NativeFFIBridge {
 
             const libPath = searchPaths.find(p => fs.existsSync(p));
 
-            if (!libPath) {
+            if (libPath) {
+                this.lib = dlopen(libPath, {
+                    calculate_complexity: {
+                        args: [FFIType.cstring],
+                        returns: FFIType.i32
+                    },
+                    fast_hash: {
+                        args: [FFIType.cstring],
+                        returns: FFIType.u64
+                    }
+                });
+                this.isAvailable = true;
+                logger.info(`⚡ [Bun:FFI] Biblioteca nativa carregada com sucesso: ${libPath}`);
+            } else {
                 logger.info("ℹ️ [Bun:FFI] Biblioteca nativa não encontrada em disco. Usando fallback estático TS.");
-                return;
             }
-
-            this.lib = dlopen(libPath, {
-                calculate_complexity: {
-                    args: [FFIType.cstring],
-                    returns: FFIType.i32
-                },
-                fast_hash: {
-                    args: [FFIType.cstring],
-                    returns: FFIType.u64
-                }
-            });
-
-            this.isAvailable = true;
-            logger.info(`⚡ [Bun:FFI] Biblioteca nativa carregada com sucesso: ${libPath}`);
         } catch (err: any) {
             logger.warn(`⚠️ [Bun:FFI] Não foi possível inicializar FFI nativo: ${err.message}. Ativando modo fallback.`);
             this.isAvailable = false;
+        }
+
+        try {
+            const zigLibName = `libzig_analyzer.so`;
+            const zigSearchPaths = [
+                path.join(projectRoot, "src_native", "zig_analyzer", zigLibName),
+                path.join(projectRoot, "bin", zigLibName)
+            ];
+
+            const zigLibPath = zigSearchPaths.find(p => fs.existsSync(p));
+
+            if (zigLibPath) {
+                this.zigLib = dlopen(zigLibPath, {
+                    calculate_entropy: {
+                        args: [FFIType.cstring, FFIType.u64],
+                        returns: FFIType.f64
+                    },
+                    check_unsafe_patterns: {
+                        args: [FFIType.cstring, FFIType.u64],
+                        returns: FFIType.bool
+                    }
+                });
+                this.isZigAvailable = true;
+                logger.info(`⚡ [Bun:FFI] Biblioteca nativa ZIG carregada com sucesso: ${zigLibPath}`);
+            } else {
+                logger.info("ℹ️ [Bun:FFI] Biblioteca nativa ZIG não encontrada em disco. Usando fallback estático TS.");
+            }
+        } catch (err: any) {
+            logger.warn(`⚠️ [Bun:FFI] Não foi possível inicializar FFI nativo ZIG: ${err.message}. Ativando modo fallback.`);
+            this.isZigAvailable = false;
         }
     }
 
     public isNativeAvailable(): boolean {
         return this.isAvailable;
+    }
+
+    public isZigNativeAvailable(): boolean {
+        return this.isZigAvailable;
     }
 
     public calculateComplexityNative(codeContent: string): number {
@@ -342,12 +376,57 @@ export class NativeFFIBridge {
         }
     }
 
+    public calculateEntropy(codeContent: string): number {
+        if (!this.isZigAvailable || !this.zigLib) {
+            if (codeContent.length === 0) return 0.0;
+            const counts: Record<string, number> = {};
+            for (let i = 0; i < codeContent.length; i++) {
+                const char = codeContent[i];
+                counts[char] = (counts[char] || 0) + 1;
+            }
+            let entropy = 0;
+            const len = codeContent.length;
+            for (const char in counts) {
+                const p = counts[char] / len;
+                entropy -= p * Math.log2(p);
+            }
+            return entropy;
+        }
+        try {
+            const buffer = Buffer.from(codeContent, "utf-8");
+            return this.zigLib.symbols.calculate_entropy(buffer, BigInt(buffer.length));
+        } catch (e: any) {
+            logger.error(`❌ [Bun:FFI] Erro na execução FFI Zig (entropy): ${e.message}`);
+            return 0.0;
+        }
+    }
+
+    public checkUnsafePatterns(codeContent: string): boolean {
+        if (!this.isZigAvailable || !this.zigLib) {
+            const patterns = ["eval(", "exec(", "system(", "shell=True", "catch unreachable", "except: pass"];
+            return patterns.some(p => codeContent.includes(p));
+        }
+        try {
+            const buffer = Buffer.from(codeContent, "utf-8");
+            return this.zigLib.symbols.check_unsafe_patterns(buffer, BigInt(buffer.length));
+        } catch (e: any) {
+            logger.error(`❌ [Bun:FFI] Erro na execução FFI Zig (patterns): ${e.message}`);
+            return false;
+        }
+    }
+
     public close() {
         if (this.lib && typeof this.lib.close === "function") {
             this.lib.close();
             this.lib = null;
             this.isAvailable = false;
             logger.info("🔌 [Bun:FFI] Biblioteca nativa descarregada da memória.");
+        }
+        if (this.zigLib && typeof this.zigLib.close === "function") {
+            this.zigLib.close();
+            this.zigLib = null;
+            this.isZigAvailable = false;
+            logger.info("🔌 [Bun:FFI] Biblioteca nativa ZIG descarregada da memória.");
         }
     }
 
