@@ -14,6 +14,8 @@ import { ContextHelpers } from "../analysis/architecture_types_service.ts";
 import { CogHelpers } from "../analysis/architecture_types_service.ts";
 import { FileSystemScanner } from "../healing/resilience_healing_architect_service.ts";
 import type { CognitiveStatus, IAgent } from "../../core/types.ts";
+import { DualAPIEngine } from "../../utils/ai/dual_api_engine.ts";
+export { DualAPIEngine } from "../../utils/ai/dual_api_engine.ts";
 
 const execAsync = promisify(exec);
 const logger = winston.child({ module: "StrategicCognitiveArchitectService" });
@@ -62,6 +64,22 @@ export class CognitiveEngine {
     }
 
     async reason(prompt: string, options: { temperature?: number, max_tokens?: number, deep?: boolean } = {}): Promise<string | null> {
+        // Try Dual-API first if cloud API is available (Gemini / HuggingFace)
+        try {
+            const dualEngine = DualAPIEngine.getInstance();
+            const dualRes = await dualEngine.generate(prompt, {
+                temperature: options.temperature,
+                maxTokens: options.max_tokens ?? this.defaultMaxTokens
+            });
+
+            if (dualRes.text && dualRes.text.trim().length > 0 && dualRes.provider !== "fallback") {
+                this.logger.info(`✨ [Cognitive] Resposta obtida via ${dualRes.provider.toUpperCase()} (${dualRes.model}) em ${dualRes.latencyMs}ms.`);
+                return dualRes.text;
+            }
+        } catch (dualErr) {
+            this.logger.debug(`[Cognitive] DualAPI não processou prompt: ${dualErr}`);
+        }
+
         this.logger.info(`🧠 [Cognitive] Raciocinando via gRPC Brain Proxy... (Model: ${this.activeModel})`);
 
         try {
