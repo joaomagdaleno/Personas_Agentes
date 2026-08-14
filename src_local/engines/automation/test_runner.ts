@@ -57,8 +57,64 @@ export class TestRunner {
         return this.parseBunOutput(output, isSuccess);
     }
 
+    private getZigCommand(): string {
+        const fs = require('node:fs');
+        if (fs.existsSync('/home/jules/zig-0.13.0/zig')) {
+            return '/home/jules/zig-0.13.0/zig';
+        }
+        return 'zig';
+    }
+
     async runUnittestDiscover(projectRoot: string): Promise<TestResults> {
-        return this.runParallelDiscovery(projectRoot);
+        const fs = require('node:fs');
+        const path = require('node:path');
+        const hasBuildZig = fs.existsSync(path.join(projectRoot, "build.zig"));
+
+        const bunResults = await this.runParallelDiscovery(projectRoot);
+
+        if (hasBuildZig) {
+            logger.info("⚡ [TestRunner] build.zig detectado! Executando suíte de testes nativos Zig...");
+            const zigResults = await new Promise<TestResults>((resolve) => {
+                const zigCmd = this.getZigCommand();
+                const child = spawn(zigCmd, ['build', 'test'], {
+                    cwd: projectRoot,
+                    shell: true
+                });
+
+                let stdout = '';
+                let stderr = '';
+
+                child.stdout.on('data', (data) => stdout += data);
+                child.stderr.on('data', (data) => stderr += data);
+
+                child.on('close', (code) => {
+                    const output = (stdout || "") + (stderr || "");
+                    const success = code === 0;
+                    resolve({
+                        success,
+                        total_run: success ? 1 : 0,
+                        failed: success ? 0 : 1,
+                        pass_rate: success ? 100 : 0,
+                        raw_output: output
+                    });
+                });
+
+                child.on('error', (err) => {
+                    resolve({
+                        success: false,
+                        error: err.message,
+                        total_run: 0,
+                        failed: 1,
+                        pass_rate: 0,
+                        raw_output: err.message
+                    });
+                });
+            });
+
+            return this._consolidate_results([bunResults, zigResults]);
+        }
+
+        return bunResults;
     }
 
     /**
@@ -89,9 +145,23 @@ export class TestRunner {
     async runSelectiveTests(projectRoot: string, files: string[]): Promise<TestResults> {
         logger.info(`🧪 [TestRunner] Execução Seletiva: ${files.length} arquivos.`);
 
-        // Filter only test files (spec/test)
         const testFiles = files.filter(f => f.includes(".test.") || f.includes(".spec."));
-        if (testFiles.length === 0) {
+        const zigFiles = files.filter(f => f.endsWith(".zig"));
+
+        const results: TestResults[] = [];
+
+        if (testFiles.length > 0) {
+            const bunRes = await this.executeBunTest(projectRoot, testFiles);
+            results.push(bunRes);
+        }
+
+        if (zigFiles.length > 0) {
+            logger.info(`⚡ [TestRunner] Executando testes Zig cirúrgicos para: ${zigFiles.join(', ')}`);
+            const zigRes = await this.executeZigTest(projectRoot, zigFiles);
+            results.push(zigRes);
+        }
+
+        if (results.length === 0) {
             return {
                 success: true,
                 total_run: 0,
@@ -102,7 +172,68 @@ export class TestRunner {
             };
         }
 
-        return this.executeBunTest(projectRoot, testFiles);
+        return this._consolidate_results(results);
+    }
+
+    private async executeZigTest(cwd: string, testFiles: string[]): Promise<TestResults> {
+        const zigCmd = this.getZigCommand();
+        const results: TestResults[] = [];
+
+        for (const file of testFiles) {
+            const res = await new Promise<TestResults>((resolve) => {
+                try {
+                    const child = spawn(zigCmd, ['test', file], {
+                        cwd: cwd
+                    });
+
+                    let stdout = '';
+                    let stderr = '';
+
+                    child.stdout.on('data', (data) => stdout += data);
+                    child.stderr.on('data', (data) => stderr += data);
+
+                    child.on('close', (code) => {
+                        const output = (stdout || "") + (stderr || "");
+                        const failed = output.includes("failed") || code !== 0;
+                        const totalMatch = output.match(/All (\d+) tests passed/);
+                        const passed = totalMatch ? parseInt(totalMatch[1]) : (failed ? 0 : 1);
+                        const failedCount = failed ? 1 : 0;
+                        const total = passed + failedCount;
+
+                        resolve({
+                            success: code === 0 && !failed,
+                            total_run: total,
+                            failed: failedCount,
+                            pass_rate: total > 0 ? Number(((passed / total) * 100).toFixed(2)) : 0,
+                            raw_output: output
+                        });
+                    });
+
+                    child.on('error', (error) => {
+                        resolve({
+                            success: false,
+                            error: error.message,
+                            total_run: 0,
+                            failed: 1,
+                            pass_rate: 0,
+                            raw_output: error.message
+                        });
+                    });
+                } catch (error: any) {
+                    resolve({
+                        success: false,
+                        error: error.message,
+                        total_run: 0,
+                        failed: 1,
+                        pass_rate: 0,
+                        raw_output: error.message
+                    });
+                }
+            });
+            results.push(res);
+        }
+
+        return this._consolidate_results(results);
     }
 
     private async executeBunTest(cwd: string, args: string[]): Promise<TestResults> {
