@@ -30,5 +30,852 @@
       "2026-08-12T04:39:56.209Z"
     ],
     "status": "HEALED"
+  },
+  "walkthrough.md": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z",
+      "2026-08-14T03:32:37.928Z",
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/proto/hub.client.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/proto/hub.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/utils/react_portal_builder.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/core/orchestrator.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/core/test_engine.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/core/doc_engine.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/core/governance/analysis_engine.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/core/governance/veto_engine.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/core/governance/scoring_engine.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/core/governance/reflex_engine.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/core/governance/topology_engine.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/core/governance/conflict_engine.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/core/governance/resource_engine.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/core/governance/system_facade.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/core/hub_manager_grpc.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/core/event_bus.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/core/types.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/core/env_gate.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/core/validator.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/core/database_hub.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/core/reflex_engine.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/core/task_orchestrator.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/core/path_utils.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/core/system_manager.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/core/parity_daemon.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/core/audit_engine.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/automation/test_runner.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/automation/infrastructure_assembler.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/automation/sync_devops_architect_service.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/automation/test_refiner.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/automation/PatternFinder.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/automation/qa_diagnostics_service.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/maintenance/memory_pruning_agent.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/maintenance/sys_perf_architect_service.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/reporting/report_sections_engine.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/reporting/markdown_auditor.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/reporting/strategies/StyleRules.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/reporting/strategies/DiagnosisRenderer.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/reporting/Sections/EntropySection.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/reporting/Sections/ParitySection.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/reporting/Sections/roadmap_section.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/reporting/Sections/quality_section.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/reporting/Sections/vitals_section.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/reporting/Sections/VisibilitySection.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/reporting/ui_ux_architect_service.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/reporting/briefing_agent.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/reporting/ProjectSaudeFormatter.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/reporting/markdown_structure_agent.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/reporting/battle_plan_formatter.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/reporting/battle_plan_sections_engine.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/reporting/markdown_sanitizer.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/reporting/InsightSabedoriaFormatter.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/security/security_sentinel_agent.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/security/security_cloud_guardian_service.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.928Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/security/safety_supreme_judge.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/diagnostics/qa_engineer.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/diagnostics/strategies/AdjustmentCalculator.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/diagnostics/strategies/ThresholdHelpers.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/diagnostics/strategies/StatsAggregator.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/diagnostics/strategies/TestDiscoveryStrategy.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/diagnostics/strategies/CalcHelpers.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/diagnostics/strategies/OtherScorers.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/diagnostics/strategies/PurityScorer.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/diagnostics/strategies/RelationshipAnalyst.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/diagnostics/strategies/SizeAnalyst.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/diagnostics/strategies/StabilityScorer.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/diagnostics/strategies/ComplianceHelpers.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/diagnostics/strategies/HalsteadAnalyst.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/diagnostics/strategies/QualityEvaluator.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/diagnostics/strategies/StructureClassifier.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/diagnostics/strategies/QualityGateScorer.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/diagnostics/strategies/RiskPolicy.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/diagnostics/health_synthesizer.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/diagnostics/quality_analyst.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/diagnostics/audit_code_guardian_service.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/healing/specialized_personas_hub.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/healing/penalty_engine.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/healing/healer.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/healing/telemetry_intent_judge.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/healing/healer_persona.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/healing/memory_persistence.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/healing/JudgeHelpers.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/healing/integrity_guardian.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/healing/resilience_healing_architect_service.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/strategic/strategic_cognitive_architect_service.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/strategic/director.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/strategic/master_orchestrator_service.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/strategic/warden.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/parity_utils.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/structural_auditor_supreme.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/strategies/AnalysisPolicy.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/strategies/DeltaEngine.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/strategies/ExtractorHelpers.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/strategies/PythonParser.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/strategies/PolyglotParser.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/strategies/ComponentMappingStrategy.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/strategies/FingerprintExtractor.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/strategies/IntentClassifier.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/strategies/ParserHelpers.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/strategies/TypeScriptParser.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/discovery_agent.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/architecture_types_service.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/pyramid_analyst.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/logic_strategies/safety_strategy.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/logic_strategies/meta_analysis_strategy.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/logic_strategies/test_quality_strategy.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/logic_strategies/silent_error_strategy.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/logic_strategies/veto_strategy.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/logic_strategies/observability_strategy.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/semantic_context_analyst.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/parity_analyst.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/meta_analysis_detector.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/connectivity_mapper.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/InstanceGrouper.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "src_local/engines/analysis/logic_auditor.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "docs/ARCH_EXPANSION_PLAN_PHD.md": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z",
+      "2026-08-14T03:32:37.929Z",
+      "2026-08-14T03:32:37.929Z",
+      "2026-08-14T03:32:37.929Z",
+      "2026-08-14T03:32:37.929Z",
+      "2026-08-14T03:32:37.929Z",
+      "2026-08-14T03:32:37.929Z",
+      "2026-08-14T03:32:37.929Z",
+      "2026-08-14T03:32:37.929Z",
+      "2026-08-14T03:32:37.929Z",
+      "2026-08-14T03:32:37.929Z",
+      "2026-08-14T03:32:37.929Z",
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "scripts/activate-phase.ts": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
+  },
+  "tsconfig.json": {
+    "occurrences": 0,
+    "history": [
+      "2026-08-14T03:32:37.929Z"
+    ],
+    "status": "HEALED"
   }
 }
