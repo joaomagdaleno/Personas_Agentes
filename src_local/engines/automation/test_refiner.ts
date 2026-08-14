@@ -19,6 +19,9 @@ export class TestRefiner {
      * Analisa um erro de teste e sugere correção via IA.
      */
     async analyzeFailure(testFile: string, errorLog: string): Promise<string> {
+        if (!testFile && !errorLog) {
+            return "Nenhum arquivo ou log fornecido para análise.";
+        }
         logger.info(`🧠 [TestRefiner] Analisando falha em ${testFile}...`);
 
         const prompt = `Analise o seguinte erro de teste (Bun Test/Jest):
@@ -43,6 +46,9 @@ ${errorLog}
      * Gera um caso de teste para o código fornecido.
      */
     async suggestTestCase(codeSnippet: string): Promise<string> {
+        if (!codeSnippet || !codeSnippet.trim()) {
+            return "// Nenhum snippet de código fornecido.";
+        }
         logger.info(`🧠 [TestRefiner] Sugerindo caso de teste...`);
 
         const prompt = `Escreva um caso de teste robusto (bun:test) para este código:

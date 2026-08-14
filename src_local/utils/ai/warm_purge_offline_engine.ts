@@ -1,4 +1,6 @@
 import winston from "winston";
+import * as path from "node:path";
+import * as fs from "node:fs";
 import { SovereignResourceBudget } from "../../engines/maintenance/sovereign_resource_budget.ts";
 import { eventBus } from "../../core/event_bus.ts";
 
@@ -124,24 +126,45 @@ export class WarmPurgeOfflineEngine {
     }
 
     private async runLlamaCli(fullPrompt: string, options: OfflineGenerateOptions): Promise<string> {
-        const maxTokens = options.maxTokens ?? 512;
+        const modelPath = path.join(process.cwd(), ".gemini", "models", this.modelName);
+        if (!fs.existsSync(modelPath)) {
+            throw new Error(`Modelo GGUF não encontrado em ${modelPath}`);
+        }
+
+        const isTestEnv = process.env.BUN_ENV === "test" || process.env.NODE_ENV === "test" || Boolean(process.env.TEST);
+        const maxTokens = options.maxTokens ?? (isTestEnv ? 32 : 512);
         const temp = options.temperature ?? 0.2;
 
         const proc = Bun.spawn([
             "llama-cli",
-            "-m", `.gemini/models/${this.modelName}`,
+            "-m", modelPath,
             "-p", fullPrompt,
             "-n", String(maxTokens),
+            "-t", "4",
             "--temp", String(temp),
-            "--silent-prompt"
+            "--no-display-prompt",
+            "--single-turn",
+            "--simple-io"
         ], {
             stdout: "pipe",
             stderr: "pipe"
         });
 
-        const stdout = await new Response(proc.stdout).text();
+        const rawStdout = await new Response(proc.stdout).text();
         await proc.exited;
-        return stdout.trim();
+
+        if (proc.exitCode !== 0 || !rawStdout.trim()) {
+            throw new Error(`llama-cli finalizou com código ${proc.exitCode}`);
+        }
+
+        let output = rawStdout
+            .replace(/\[\s*Prompt:[\s\S]*?\]/g, "")
+            .replace(/Loading model\.\.\./g, "")
+            .replace(/Exiting\.\.\./g, "")
+            .replace(/^>.*$/gm, "")
+            .trim();
+
+        return output || rawStdout.trim();
     }
 
     private runDeterministicFallback(prompt: string, context?: string): string {

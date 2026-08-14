@@ -39,11 +39,15 @@ export class ZigFileWatcherBridge {
 
     private initLibrary(projectRoot: string): void {
         try {
-            const zigLibName = `libzig_analyzer.so`;
-            const zigSearchPaths = [
-                path.join(projectRoot, "src_native", "zig_analyzer", zigLibName),
-                path.join(projectRoot, "bin", zigLibName)
-            ];
+            const isWindows = process.platform === "win32";
+            const zigLibNames = isWindows
+                ? ["analyzer.dll", "libzig_analyzer.dll"]
+                : ["libzig_analyzer.so"];
+            const zigSearchPaths: string[] = [];
+            for (const libName of zigLibNames) {
+                zigSearchPaths.push(path.join(projectRoot, "src_native", "zig_analyzer", libName));
+                zigSearchPaths.push(path.join(projectRoot, "bin", libName));
+            }
 
             const zigLibPath = zigSearchPaths.find(p => fs.existsSync(p));
 

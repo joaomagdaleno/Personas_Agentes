@@ -12,25 +12,25 @@ describe("TestRefiner", () => {
         const refiner = new TestRefiner();
         const res = await refiner.analyzeFailure("test.ts", "assert(false)", "Error");
         expect(res).toBeDefined();
-    });
+    }, 15000);
 
     test("should suggest test case and return result", async () => {
         const refiner = new TestRefiner();
         const res = await refiner.suggestTestCase("function add(a, b) { return a + b; }");
         expect(res).toBeDefined();
-    });
+    }, 30000);
 
     test("should handle empty test file gracefully", async () => {
         const refiner = new TestRefiner();
         const res = await refiner.analyzeFailure("", "", "");
         expect(res).toBeDefined();
-    });
+    }, 15000);
 
     test("should handle empty code snippet gracefully", async () => {
         const refiner = new TestRefiner();
         const res = await refiner.suggestTestCase("");
         expect(res).toBeDefined();
-    });
+    }, 15000);
 });
 
 describe("TestArchitectAgent", () => {

@@ -61,12 +61,22 @@ var event_head: usize = 0;
 var event_tail: usize = 0;
 var event_count: usize = 0;
 
-// Global mutex to synchronize event queue access between threads
-var queue_mutex = std.Thread.Mutex{};
+// Global atomic lock to synchronize event queue access between threads
+var queue_lock = std.atomic.Value(bool).init(false);
+
+fn lock_queue() void {
+    while (queue_lock.cmpxchgWeak(false, true, .acquire, .monotonic) != null) {
+        std.atomic.spinLoopHint();
+    }
+}
+
+fn unlock_queue() void {
+    queue_lock.store(false, .release);
+}
 
 fn push_event(path: []const u8) void {
-    queue_mutex.lock();
-    defer queue_mutex.unlock();
+    lock_queue();
+    defer unlock_queue();
 
     if (path.len == 0 or path.len >= MAX_PATH_LEN) return;
 
@@ -98,10 +108,24 @@ fn daemon_watch_loop() void {
     }
 }
 
+const win32 = struct {
+    extern "kernel32" fn Sleep(dwMilliseconds: u32) callconv(.winapi) void;
+};
+
+fn sleep_ms(ms: u32) void {
+    const builtin = @import("builtin");
+    if (builtin.os.tag == .windows) {
+        win32.Sleep(ms);
+    } else {
+        var req = std.posix.timespec{ .sec = 0, .nsec = @as(isize, ms) * 1000 * 1000 };
+        _ = std.posix.nanosleep(&req, null);
+    }
+}
+
 fn run_platform_watcher_loop() void {
     // Platform-agnostic low-footprint polling loop that verifies changes in the directory
     while (is_watching) {
-        std.Thread.sleep(watch_interval_ms * 1000 * 1000);
+        sleep_ms(watch_interval_ms);
     }
 }
 
@@ -116,8 +140,8 @@ export fn start_daemon_watcher(path_ptr: [*]const u8, len: usize, interval_ms: u
 
     // Reset queue
     {
-        queue_mutex.lock();
-        defer queue_mutex.unlock();
+        lock_queue();
+        defer unlock_queue();
         event_head = 0;
         event_tail = 0;
         event_count = 0;
@@ -134,8 +158,8 @@ export fn start_daemon_watcher(path_ptr: [*]const u8, len: usize, interval_ms: u
 }
 
 export fn poll_file_events(buffer: [*]u8, max_len: usize) usize {
-    queue_mutex.lock();
-    defer queue_mutex.unlock();
+    lock_queue();
+    defer unlock_queue();
 
     if (!is_watching or event_count == 0) return 0;
 
