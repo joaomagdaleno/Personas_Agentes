@@ -1,0 +1,28 @@
+[
+    {
+        "name": "sandbox_probe",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "Audit",
+        "capabilities": [
+            "performAudit",
+            "isolateExecution",
+            "capabilityFiltering"
+        ],
+        "dependencies": [],
+        "updatedAt": "2026-08-14T02:00:00.000Z"
+    },
+    {
+        "name": "ephemeral_worker",
+        "version": "1.0.0",
+        "status": "STABLE",
+        "category": "System",
+        "capabilities": [
+            "systemMonitoring",
+            "microsecondExecution",
+            "instantPurge"
+        ],
+        "dependencies": [],
+        "updatedAt": "2026-08-14T02:00:00.000Z"
+    }
+]
