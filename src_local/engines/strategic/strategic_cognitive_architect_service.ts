@@ -16,8 +16,10 @@ import { FileSystemScanner } from "../healing/resilience_healing_architect_servi
 import type { CognitiveStatus, IAgent } from "../../core/types.ts";
 import { DualAPIEngine } from "../../utils/ai/dual_api_engine.ts";
 import { WarmPurgeOfflineEngine } from "../../utils/ai/warm_purge_offline_engine.ts";
+import { ZvecGrepEngine } from "../../utils/zvec/zvec_grep_engine.ts";
 export { DualAPIEngine } from "../../utils/ai/dual_api_engine.ts";
 export { WarmPurgeOfflineEngine } from "../../utils/ai/warm_purge_offline_engine.ts";
+export { ZvecGrepEngine } from "../../utils/zvec/zvec_grep_engine.ts";
 
 const execAsync = promisify(exec);
 const logger = winston.child({ module: "StrategicCognitiveArchitectService" });
@@ -66,6 +68,21 @@ export class CognitiveEngine {
     }
 
     async reason(prompt: string, options: { temperature?: number, max_tokens?: number, deep?: boolean, context?: string } = {}): Promise<string | null> {
+        // 0. Enriquecer contexto com ZvecGrep (busca semântica + BM25 nativa de alta velocidade)
+        let enrichedContext = options.context || "";
+        try {
+            const zg = ZvecGrepEngine.getInstance();
+            if (zg.isReady()) {
+                const searchHits = await zg.search(prompt, 3);
+                if (searchHits.length > 0) {
+                    const zgSnippets = searchHits.map(h => `[ZvecGrep Hit - ${h.filePath}]: ${h.content}`).join("\n");
+                    enrichedContext = enrichedContext ? `${enrichedContext}\n\n${zgSnippets}` : zgSnippets;
+                }
+            }
+        } catch (zgErr) {
+            this.logger.debug(`[Cognitive] ZvecGrep enrichment fallback: ${zgErr}`);
+        }
+
         // 1. Try Dual-API Cloud Engine (Gemini / HuggingFace -> 0MB RAM)
         try {
             const dualEngine = DualAPIEngine.getInstance();
@@ -86,7 +103,7 @@ export class CognitiveEngine {
         try {
             const offlineEngine = WarmPurgeOfflineEngine.getInstance();
             const offlineRes = await offlineEngine.generate(prompt, {
-                context: options.context,
+                context: enrichedContext,
                 maxTokens: options.max_tokens ?? this.defaultMaxTokens,
                 temperature: options.temperature
             });
