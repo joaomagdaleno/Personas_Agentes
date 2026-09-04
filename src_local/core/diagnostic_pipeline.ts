@@ -4,6 +4,7 @@ import { Path } from "./path_utils.ts";
 import { DiscoveryAgent } from "../engines/analysis/discovery_agent.ts";
 import { ValidationAgent } from "../engines/automation/qa_diagnostics_service.ts";
 import { DiagnosticFinalizer } from "./diagnostic_finalizer.ts";
+import { IntelligenceControlEngine } from "../engines/diagnostics/intelligence_control_engine.ts";
 
 import { Orchestrator } from "./orchestrator.ts";
 
@@ -49,6 +50,12 @@ export class DiagnosticPipeline {
         let [ctx, findings] = await discoveryAgent.runDiscoveryPhase();
         this.orc.recordSystemEvent("DISCOVERY_FINDINGS");
 
+        // 🧠 Intelligence Control & Blindspot Coverage Audit
+        logger.info("🧠 [Pipeline] Executando Controle de Inteligência e Mapeamento de Pontos Cegos...");
+        this.orc.recordSystemEvent("INTELLIGENCE_CONTROL_AUDIT");
+        const intelEngine = new IntelligenceControlEngine(this.orc.projectRoot.toString());
+        const intelReport = intelEngine.generateReport();
+
         // 🏛️ PhD Census & Cognitive Audit (100% Deep)
         logger.info("🏛️ [Pipeline] Validando Censo PhD e Saúde Cognitiva...");
         this.orc.recordSystemEvent("CENSUS_VALIDATION");
@@ -67,6 +74,7 @@ export class DiagnosticPipeline {
         // Inject into context for reporting
         ctx.census = census;
         ctx.cognitive = cognitive;
+        ctx.intelligenceCoverage = intelReport;
 
         if (autoHeal) {
             logger.info("🩹 [Pipeline] Iniciando Ciclo de Auto-Cura Ativa...");
