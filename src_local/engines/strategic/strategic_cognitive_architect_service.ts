@@ -72,12 +72,10 @@ export class CognitiveEngine {
         let enrichedContext = options.context || "";
         try {
             const zg = ZvecGrepEngine.getInstance();
-            if (zg.isReady()) {
-                const searchHits = await zg.search(prompt, 3);
-                if (searchHits.length > 0) {
-                    const zgSnippets = searchHits.map(h => `[ZvecGrep Hit - ${h.filePath}]: ${h.content}`).join("\n");
-                    enrichedContext = enrichedContext ? `${enrichedContext}\n\n${zgSnippets}` : zgSnippets;
-                }
+            const searchHits = await zg.search(prompt, 3);
+            if (searchHits.length > 0) {
+                const zgSnippets = searchHits.map(h => `[ZvecGrep Hit - ${h.filePath}]: ${h.content}`).join("\n");
+                enrichedContext = enrichedContext ? `${enrichedContext}\n\n${zgSnippets}` : zgSnippets;
             }
         } catch (zgErr) {
             this.logger.debug(`[Cognitive] ZvecGrep enrichment fallback: ${zgErr}`);

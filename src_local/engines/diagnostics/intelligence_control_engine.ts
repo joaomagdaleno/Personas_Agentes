@@ -151,13 +151,13 @@ export class IntelligenceControlEngine {
         key: "resilience_healing_architect",
         name: "Resilience Healing Architect",
         file: "src_local/engines/healing/resilience_healing_architect_service.ts",
-        handledTechs: ["sqlite_persistence", "ts_bun"]
+        handledTechs: ["sqlite_persistence", "ts_bun", "zig_native_ffi"]
       },
       {
         key: "sys_perf_architect",
         name: "Sys Perf Architect",
         file: "src_local/engines/maintenance/sys_perf_architect_service.ts",
-        handledTechs: ["ts_bun"]
+        handledTechs: ["ts_bun", "wasm_micro_agents"]
       },
       {
         key: "sync_devops_architect",

@@ -604,6 +604,36 @@ export class ResilienceHealingArchitectService {
     syncLedger() {
         return this.ledger.sync();
     }
+
+    /**
+     * ⚡ Zig Native FFI & Binary Integrity Audit
+     * Verifica a existência, integridade e compilação dos binários nativos Zig (.so/.dll) durante o auto-healing.
+     */
+    async auditAndHealZigNativeBinaries(): Promise<{ isHealthy: boolean; healed: boolean; details: string }> {
+        const bridge = NativeFFIBridge.getInstance();
+        if (bridge.isZigNativeAvailable()) {
+            return { isHealthy: true, healed: false, details: "Binários nativos Zig validados e ativos via FFI." };
+        }
+
+        logger.warn("⚠️ [Resilience] Binário nativo Zig não encontrado ou inválido. Iniciando verificação de auto-cura...");
+        const isWindows = process.platform === "win32";
+        const zigSource = path.join(process.cwd(), "src_native", "zig_analyzer", "analyzer.zig");
+        if (fs.existsSync(zigSource)) {
+            try {
+                const outLib = isWindows ? "analyzer.dll" : "libzig_analyzer.so";
+                const outPath = path.join(process.cwd(), "src_native", "zig_analyzer", outLib);
+                logger.info(`🔨 [Resilience] Tentando recompilar módulo nativo Zig: ${zigSource} -> ${outPath}`);
+                const proc = Bun.spawnSync(["zig", "build-lib", "-O", "ReleaseFast", "-dynamic", zigSource, `-femit-bin=${outPath}`]);
+                if (proc.exitCode === 0 && fs.existsSync(outPath)) {
+                    logger.info("✨ [Resilience] Recompilação do binário nativo Zig concluída com sucesso!");
+                    return { isHealthy: true, healed: true, details: "Binário nativo Zig recompilado e restaurado com sucesso." };
+                }
+            } catch (err: any) {
+                logger.error(`❌ [Resilience] Falha na recompilação do binário Zig: ${err.message}`);
+            }
+        }
+        return { isHealthy: false, healed: false, details: "Utilizando fallback estático em TypeScript para inspeção de entropia e segurança." };
+    }
 }
 
 export class HistoryAgent {
