@@ -44,6 +44,7 @@ export class DiagnosticPipeline {
         const startTime = Date.now();
         this.orc.recordSystemEvent("PIPELINE_START");
         await this.reset();
+        if (this.orc.ready) await this.orc.ready;
 
         const discoveryAgent = new DiscoveryAgent(this.orc);
         this.orc.recordSystemEvent("DISCOVERY_PHASE_START");

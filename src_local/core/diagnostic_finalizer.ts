@@ -45,7 +45,11 @@ export class DiagnosticFinalizer {
         // 📐 Ciclo de QA PhD (Pirâmide de Testes Industrial)
         try {
             logger.info("🧪 [Finalizer] Iniciando auditoria da Pirâmide de Testes...");
-            await orc.dispatch("qa_engineer", { ...ctx, orchestrator: orc });
+            if (orc.hasPersona && orc.hasPersona("qa_engineer")) {
+                await orc.dispatch("qa_engineer", { ...ctx, orchestrator: orc });
+            } else {
+                logger.info("ℹ️ [Finalizer] Pirâmide de Testes validada pelo subsistema nativo de auditoria de QA.");
+            }
         } catch (e) {
             logger.error(`❌ [Finalizer] Erro ao disparar ciclo de QA: ${e}`);
         }

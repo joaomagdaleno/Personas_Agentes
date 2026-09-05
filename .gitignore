@@ -5,11 +5,14 @@ node_modules/
 *.lock
 *.md
 !README.md
+!PLUGINS.md
 !walkthrough.md
 !implementation_plan.md
 !task.md
 !docs/*.md
+!models/README.md
 dist/
+dist-installer/
 build/
 __pycache__/
 *.pyc
@@ -18,16 +21,19 @@ system_vault.db
 system_vault.db-shm
 system_vault.db-wal
 docs/*.html
+.sovereign_cache.json
 src_native/analyzer/.sovereign_cache.json
 src_native/analyzer/*_test.json
 project_map.json
 .gemini/microgpt_weights.json
+.gemini/stability_ledger.json
 missing_python_files.txt
 missing_py.txt
 files_at_6dec891.txt
 current_files.txt
 *_legacy.py
 *.log
+
 # Runtime generated manifests
 src_local/utils/persona_manifest.json
 
@@ -41,15 +47,27 @@ target_alt/
 target_v3/
 *.exe
 *.bin
+*.pdb
+*.lib
 src_native/hub/hub
 
 # Internal Gemini/Agent files
 .agent/
 src_native/analyzer/.gemini/
 .gemini/models/
+models/*.gguf
+*.gguf
 
 # Generated Protobuf
 *.pb.go
+
+# External harness & dependencies
+deepseek-harness/
+
+# TLS private keys & runtime generated certs (gen_certs.go generates on demand)
+*.key
+src_native/hub/tls_certs/*.key
+src_native/hub/tls_certs/*.crt
 
 # Cleanup Patterns
 filtered_parity*.json
@@ -66,3 +84,14 @@ get_batch*.py
 *_scan.json
 *_scan_results.json
 *_scan_release.json
+
+# PSA Scratch Test Directories & Native UI Builds
+.psa_test_scratch_*
+.psa_plugin_test_*
+.dsh_sessions/
+.psa_sessions/
+.psa_skills/
+tmp_*
+src_native/winui/bin/
+src_native/winui/obj/
+diagnostic.log

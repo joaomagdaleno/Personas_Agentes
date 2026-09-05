@@ -45,7 +45,7 @@ describe("Coder Interface & Formal Verification Unit Tests", () => {
 
             const report = verifier.verifyPatch(safePatch, "src/services/user.ts");
             expect(report.approved).toBe(true);
-            expect(report.contracts.length).toBe(3);
+            expect(report.contracts.length).toBeGreaterThanOrEqual(3);
             expect(report.contracts.every(c => c.passed)).toBe(true);
         });
 

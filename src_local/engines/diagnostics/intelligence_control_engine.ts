@@ -106,11 +106,11 @@ export class IntelligenceControlEngine {
         description: "Modelos locais offline compactos Qwen 0.5B em formato GGUF."
       },
       {
-        id: "cloud_ai_dual",
-        name: "Dual-API Cloud Engine (Gemini/HF)",
+        id: "local_slm_engine",
+        name: "Local SLM Engine (Llama.cpp / GGUF)",
         category: "AI/SLM",
-        pattern: /DualAPIEngine|generativelanguage\.googleapis\.com|huggingface/i,
-        description: "Roteamento inteligente com failover entre Gemini 1.5 e Hugging Face."
+        pattern: /LocalSLMEngine|DualAPIEngine|WarmPurgeOfflineEngine|huggingface/i,
+        description: "Motor de inferência local autônomo baseado em SLM com Llama.cpp e modelos GGUF."
       },
       {
         id: "zvec_grep",
@@ -225,7 +225,7 @@ export class IntelligenceControlEngine {
         key: "strategic_cognitive_architect",
         name: "Strategic Cognitive Architect",
         file: "src_local/engines/strategic/strategic_cognitive_architect_service.ts",
-        handledTechs: ["slm_gguf", "cloud_ai_dual", "zvec_grep", "micro_gpt_neural", "ts_bun"]
+        handledTechs: ["slm_gguf", "local_slm_engine", "zvec_grep", "micro_gpt_neural", "ts_bun"]
       },
       {
         key: "audit_code_guardian",
@@ -237,7 +237,7 @@ export class IntelligenceControlEngine {
         key: "security_cloud_guardian",
         name: "Security Cloud Guardian",
         file: "src_local/engines/security/security_cloud_guardian_service.ts",
-        handledTechs: ["ts_bun", "cloud_ai_dual"]
+        handledTechs: ["ts_bun", "local_slm_engine"]
       },
       {
         key: "architecture_types",
@@ -465,7 +465,7 @@ export class IntelligenceControlEngine {
     if (!fs.existsSync(dir)) return results;
 
     // Ignorar pastas pesadas/de terceiros/caches para varreduras de I/O ultrarrápidas
-    const IGNORED_DIRS = new Set(["node_modules", ".git", "target", "build", ".gemini", "dist", "tmp_predictor_test", ".opencode"]);
+    const IGNORED_DIRS = new Set(["node_modules", ".git", "target", "build", "bin", "obj", ".gemini", "dist", "tmp_predictor_test", ".opencode", "deepseek-harness", ".dsh_sessions"]);
 
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
       if (IGNORED_DIRS.has(entry.name)) continue;

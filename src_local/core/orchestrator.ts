@@ -108,12 +108,23 @@ export class Orchestrator {
             await this._waitForHub();
 
             this.hubWatcher = new HubWatcher();
+            let isAuditing = false;
             this.hubWatcher.onChange(async (p) => {
-                console.log(`📡 [Orchestrator] Auditando mudança detectada em: ${p}`);
-                this.lastDetectedChanges.push(p);
-                // Trigger auto-refresh
-                await this._updateCache();
-                await this.runStagedAudit({ dryRun: false });
+                const norm = p.replace(/\\/g, "/").toLowerCase();
+                if (norm.endsWith(".log") || norm.endsWith(".json") || norm.endsWith(".db") || norm.endsWith(".md")) return;
+                if (isAuditing) return;
+                isAuditing = true;
+                try {
+                    console.log(`📡 [Orchestrator] Auditando mudança detectada em: ${p}`);
+                    this.lastDetectedChanges.push(p);
+                    // Trigger auto-refresh
+                    await this._updateCache();
+                    await this.runStagedAudit({ dryRun: false });
+                } catch (e: any) {
+                    logger.warn(`⚠️ [Orchestrator] Erro ao auditar mudança em ${p}: ${e.message}`);
+                } finally {
+                    isAuditing = false;
+                }
             });
             this.hubWatcher.start();
 
@@ -136,21 +147,38 @@ export class Orchestrator {
     }
 
     private initializeEngines(root: string) {
-        this.cacheManager = new CacheManager(root);
-        this.executor = new TaskExecutor();
-        this.contextEngine = new ContextEngine(root, this.hubManager);
-        this.auditEngine = new AuditEngine(this);
-        this.stabilityLedger = new StabilityLedger(root);
-        this.historyAgent = new HistoryAgent(root);
-        this.taskQueue = new TaskQueue(5, this.hubManager);
-        this.memoryEngine = new MemoryEngine(root, this.hubManager);
-        this.reflexEngine = new ReflexEngine();
-        this.updateTransaction = new UpdateTransaction();
-        this.sentinel = new SystemSentinel();
-        this.behaviorAnalyst = new BehaviorAnalyst(root);
-        this.worker = new TaskWorker(this.taskQueue, this);
-        this.predictorEngine = new PredictorEngine(root);
-        this.testEngine = new TestEngine(root);
+        let psaCtx: any;
+        try {
+            const { PsaContext } = require("../psa/kernel/psa_context.ts");
+            psaCtx = PsaContext.getInstance(root);
+        } catch {}
+
+        this.cacheManager = psaCtx?.getService("cache") || new CacheManager(root);
+        this.executor = psaCtx?.getService("executor") || new TaskExecutor();
+        this.contextEngine = psaCtx?.getService("contextEngine") || new ContextEngine(root, this.hubManager);
+        this.auditEngine = psaCtx?.getService("auditEngine") || new AuditEngine(this);
+        this.stabilityLedger = psaCtx?.getService("stabilityLedger") || new StabilityLedger(root);
+        this.historyAgent = psaCtx?.getService("historyAgent") || new HistoryAgent(root);
+        this.taskQueue = psaCtx?.getService("taskQueue") || new TaskQueue(5, this.hubManager);
+        this.memoryEngine = psaCtx?.getService("memoryEngine") || new MemoryEngine(root, this.hubManager);
+        this.reflexEngine = psaCtx?.getService("reflexEngine") || new ReflexEngine();
+        this.updateTransaction = psaCtx?.getService("updateTransaction") || new UpdateTransaction();
+        this.sentinel = psaCtx?.getService("sentinel") || new SystemSentinel();
+        this.behaviorAnalyst = psaCtx?.getService("behaviorAnalyst") || new BehaviorAnalyst(root);
+        this.worker = psaCtx?.getService("worker") || new TaskWorker(this.taskQueue, this);
+        this.predictorEngine = psaCtx?.getService("predictorEngine") || new PredictorEngine(root);
+        this.testEngine = psaCtx?.getService("testEngine") || new TestEngine(root);
+
+        if (psaCtx) {
+            psaCtx.registerService("orchestrator", this);
+            psaCtx.registerService("cache", this.cacheManager);
+            psaCtx.registerService("executor", this.executor);
+            psaCtx.registerService("contextEngine", this.contextEngine);
+            psaCtx.registerService("auditEngine", this.auditEngine);
+            psaCtx.registerService("stabilityLedger", this.stabilityLedger);
+            psaCtx.registerService("memoryEngine", this.memoryEngine);
+            psaCtx.registerService("testEngine", this.testEngine);
+        }
     }
 
     private _registerAgents() {
@@ -191,6 +219,10 @@ export class Orchestrator {
     addPersona(persona: IAgent) {
         this.personas.push(persona);
         this.agentRegistry.set(persona.id, persona);
+    }
+
+    hasPersona(id: string): boolean {
+        return this.agentRegistry.has(id) || this.personas.some(p => p.id === id);
     }
 
     async runStrategicAudit(context: ProjectContext, objective: string | null = null, _includeHistory: boolean = true): Promise<GenericFinding[]> {

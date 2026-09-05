@@ -31,13 +31,14 @@ export interface OfflineGenerateOptions {
 export class WarmPurgeOfflineEngine {
     private static instance: WarmPurgeOfflineEngine;
 
-    private modelName: string = "qwen2.5-coder-0.5b-instruct-q4_k_m.gguf";
-    private estimatedRamBytes: number = 300 * 1024 * 1024; // ~300MB RAM
+    private modelName: string = process.env.LOCAL_SLM_MODEL || "qwen2.5-coder-1.5b-instruct-q4_k_m.gguf";
+    private estimatedRamBytes: number = 1500 * 1024 * 1024; // ~1.5GB RAM for 1.5B (or ~5GB for 7B)
     private isWarm: boolean = false;
     private lingerWindowMs: number = 60000; // 60s default
     private purgeTimer: ReturnType<typeof setTimeout> | null = null;
     private lastActivityTime: number = 0;
     private llamaCliAvailable: boolean = false;
+    private llamaCliPath: string = "llama-cli";
 
     constructor() {
         this.checkLlamaCli();
@@ -53,12 +54,38 @@ export class WarmPurgeOfflineEngine {
 
     private async checkLlamaCli(): Promise<void> {
         try {
-            const path = await Bun.which("llama-cli");
-            this.llamaCliAvailable = path !== null;
-            if (this.llamaCliAvailable) {
-                logger.info(`⚡ [WarmPurge] llama-cli nativo detectado: ${path}`);
+            const customPath = process.env.LLAMA_CLI_PATH;
+            if (customPath && fs.existsSync(customPath)) {
+                this.llamaCliPath = customPath;
+                this.llamaCliAvailable = true;
+                logger.info(`⚡ [WarmPurge] llama-cli personalizado detectado: ${customPath}`);
+                return;
+            }
+
+            const localCandidates = [
+                path.join(process.cwd(), "bin", "llama-cli.exe"),
+                path.join(process.cwd(), "bin", "llama-cli"),
+                path.join(process.cwd(), "llama-cli.exe"),
+                path.join(process.cwd(), "llama-cli")
+            ];
+
+            for (const candidate of localCandidates) {
+                if (fs.existsSync(candidate)) {
+                    this.llamaCliPath = candidate;
+                    this.llamaCliAvailable = true;
+                    logger.info(`⚡ [WarmPurge] llama-cli local detectado: ${candidate}`);
+                    return;
+                }
+            }
+
+            const systemPath = await Bun.which("llama-cli");
+            if (systemPath !== null) {
+                this.llamaCliPath = systemPath;
+                this.llamaCliAvailable = true;
+                logger.info(`⚡ [WarmPurge] llama-cli nativo detectado no PATH: ${systemPath}`);
             } else {
-                logger.info("ℹ️ [WarmPurge] llama-cli não encontrado no PATH. Utilizando simulação determinística para execução offline.");
+                this.llamaCliAvailable = false;
+                logger.info("ℹ️ [WarmPurge] llama-cli não encontrado. Utilizando simulação determinística para execução offline.");
             }
         } catch {
             this.llamaCliAvailable = false;
@@ -125,22 +152,37 @@ export class WarmPurgeOfflineEngine {
         return responseText;
     }
 
+    private findModelPath(): string | null {
+        const candidateDirs = [
+            path.join(process.cwd(), "models"),
+            path.join(process.cwd(), ".models"),
+            path.join(process.cwd(), ".gemini", "models")
+        ];
+
+        for (const dir of candidateDirs) {
+            const p = path.join(dir, this.modelName);
+            if (fs.existsSync(p)) return p;
+        }
+        return null;
+    }
+
     private async runLlamaCli(fullPrompt: string, options: OfflineGenerateOptions): Promise<string> {
-        const modelPath = path.join(process.cwd(), ".gemini", "models", this.modelName);
-        if (!fs.existsSync(modelPath)) {
-            throw new Error(`Modelo GGUF não encontrado em ${modelPath}`);
+        const modelPath = this.findModelPath();
+        if (!modelPath) {
+            throw new Error(`Modelo GGUF '${this.modelName}' não encontrado em ./models, ./.models ou ./.gemini/models`);
         }
 
         const isTestEnv = process.env.BUN_ENV === "test" || process.env.NODE_ENV === "test" || Boolean(process.env.TEST);
         const maxTokens = options.maxTokens ?? (isTestEnv ? 32 : 512);
         const temp = options.temperature ?? 0.2;
+        const threads = process.env.LOCAL_SLM_THREADS || "8";
 
         const proc = Bun.spawn([
-            "llama-cli",
+            this.llamaCliPath,
             "-m", modelPath,
             "-p", fullPrompt,
             "-n", String(maxTokens),
-            "-t", "4",
+            "-t", threads,
             "--temp", String(temp),
             "--no-display-prompt",
             "--single-turn",

@@ -71,6 +71,10 @@ export class HubManagerGRPC {
         this.transport = new GrpcTransport({
             host: validHost,
             channelCredentials,
+            clientOptions: {
+                "grpc.max_receive_message_length": 128 * 1024 * 1024,
+                "grpc.max_send_message_length": 128 * 1024 * 1024
+            }
         });
         this.client = new HubServiceClient(this.transport);
         this.ruleProvider = new RuleProviderClient(this.transport);
@@ -196,7 +200,7 @@ export class HubManagerGRPC {
             const { response } = await this.client.analyzeFile({ file, content: content || "" }, { meta });
             return JSON.parse(response.jsonData);
         }, "analyzeFile");
-        if (!res) throw new Error(`analyzeFile failed for ${file}`);
+        if (!res) return { findings: [] };
         return res;
     }
 

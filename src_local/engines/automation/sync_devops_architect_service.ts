@@ -247,7 +247,14 @@ export class HubWatcher {
     }
 
     private notify(path: string) {
-        if (path.includes(".git") || path.includes("node_modules")) return;
+        const norm = path.replace(/\\/g, "/").toLowerCase();
+        const ignorePatterns = [
+            ".git", "node_modules", ".sovereign_cache.json",
+            "diagnostic.log", "system_vault.db", ".psa_sessions",
+            ".system_generated", "dist/", "bin/", "obj/", "target/",
+            "intelligence_coverage_report.md", ".log"
+        ];
+        if (ignorePatterns.some(p => norm.includes(p))) return;
         logger.info(`✨ [HubWatcher] Mudança detectada: ${path}`);
         this.onChangeCallbacks.forEach(cb => cb(path));
     }

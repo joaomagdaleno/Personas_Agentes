@@ -19,8 +19,32 @@ export class DiscoveryAgent {
         const root = this.orc.projectRoot.toString();
         const { results: raw, findings: goFindings } = await GoDiscoveryAdapter.scan(root, root, this.orc.hubManager);
         
+        let effectiveRaw = raw;
+        if (!effectiveRaw || effectiveRaw.length === 0) {
+            logger.info("ℹ️ [DiscoveryAgent] GoHub retornou 0 arquivos ou offline. Executando censo local resiliente...");
+            const localRaw: any[] = [];
+            const walkDir = (dir: string) => {
+                try {
+                    const entries = fs.readdirSync(dir, { withFileTypes: true });
+                    for (const entry of entries) {
+                        const full = path.join(dir, entry.name);
+                        const rel = path.relative(root, full).replace(/\\/g, "/");
+                        if (entry.isDirectory()) {
+                            if (!["node_modules", ".git", "dist", "bin", "obj", "target", ".system_generated", "deepseek-harness", ".opencode", ".gemini", "tmp", ".sovereign_cache", ".psa_sessions"].includes(entry.name)) {
+                                walkDir(full);
+                            }
+                        } else if (/\.(ts|js|py|rs|zig|go|cs|kt|java|json|md)$/i.test(entry.name)) {
+                            localRaw.push({ path: rel, exists: true, units: [], total_complexity: 1, loc: 10 });
+                        }
+                    }
+                } catch {}
+            };
+            walkDir(root);
+            effectiveRaw = localRaw;
+        }
+
         // Filtrar arquivos relevantes para o censo de soberania
-        const filtered = raw.filter(f => {
+        const filtered = effectiveRaw.filter(f => {
             const p = f.path.replace(/\\/g, "/");
             return p.startsWith(`src_local/agents/`) || p.includes("app/src/main/java/") || p.includes("app/src/main/kotlin/");
         });
@@ -29,9 +53,11 @@ export class DiscoveryAgent {
         const findings: any[] = [...goFindings, ...enrichFindings];
         this.mapDisparities(this.groupByPersona(agents), findings);
 
-        // Otimização Crítica: Usar os arquivos já encontrados pelo scanner nativo
-        const allFiles = raw.map(f => path.join(root, f.path));
-        const depth = await DepthIntelligence.calculateDepthAudit(root, allFiles, {});
+        // Otimização Crítica: Usar apenas os arquivos TypeScript do ecossistema soberano
+        const tsFiles = effectiveRaw
+            .filter(f => f.path.startsWith("src_local/") && /\.(ts|tsx)$/i.test(f.path))
+            .map(f => path.join(root, f.path));
+        const depth = await DepthIntelligence.calculateDepthAudit(root, tsFiles, {});
         
         const ctx = await this.orc.contextEngine.analyzeProject();
         ctx.projectRoot = root; ctx.atomicUnits = agents; ctx.depthAudit = depth;

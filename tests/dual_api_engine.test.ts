@@ -1,62 +1,39 @@
-import { describe, it, expect, beforeEach } from "bun:test";
-import { DualAPIEngine } from "../src_local/utils/ai/dual_api_engine.ts";
+import { describe, it, expect } from "bun:test";
+import { DualAPIEngine, LocalSLMEngine } from "../src_local/utils/ai/dual_api_engine.ts";
 
-describe("DualAPIEngine Unit Tests", () => {
-    it("should instantiate DualAPIEngine with default parameters", () => {
-        const engine = new DualAPIEngine({
-            geminiApiKey: "test-gemini-key",
-            huggingFaceApiKey: "test-hf-key",
-            geminiMaxRpm: 10,
+describe("LocalSLMEngine & DualAPIEngine Unit Tests (Sovereign Local Mode)", () => {
+    it("should instantiate LocalSLMEngine with zero Google API dependencies", () => {
+        const engine = new LocalSLMEngine({
+            modelName: "qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
             timeoutMs: 5000
         });
 
         const status = engine.getHealthStatus();
-        expect(status.geminiConfigured).toBe(true);
-        expect(status.huggingFaceConfigured).toBe(true);
-        expect(status.requestsInLastMinute).toBe(0);
-        expect(status.activeProvider).toBe("gemini");
+        expect(status.localSlmConfigured).toBe(true);
+        expect(status.geminiConfigured).toBe(false); // Eliminado do sistema
+        expect(status.activeProvider).toBe("local-slm");
+        expect(status.modelName).toBe("qwen2.5-coder-1.5b-instruct-q4_k_m.gguf");
     });
 
-    it("should return fallback response when no API keys are provided", async () => {
-        const unconfiguredEngine = new DualAPIEngine({
-            geminiApiKey: "",
-            huggingFaceApiKey: ""
-        });
-
-        const res = await unconfiguredEngine.generate("Teste de raciocínio");
-        expect(res.provider).toBe("fallback");
-        expect(res.fallbackTriggered).toBe(true);
-        expect(res.text).toBe("");
+    it("should generate deterministic response offline via local engine fallback", async () => {
+        const engine = new LocalSLMEngine();
+        const res = await engine.generate("RESPONDA APENAS 'OK'");
+        expect(["local-slm", "fallback"]).toContain(res.provider);
+        expect(res.text).toBe("OK");
     });
 
-    it("should throttle and switch provider when Gemini RPM rate limit is reached", async () => {
-        const rateLimitedEngine = new DualAPIEngine({
-            geminiApiKey: "fake-key",
-            huggingFaceApiKey: "fake-hf-key",
-            geminiMaxRpm: 2
-        });
-
-        // Trigger requests to consume RPM quota
-        // (will hit rate limiter logic inside engine)
-        const res1 = await rateLimitedEngine.generate("Prompt 1");
-        const res2 = await rateLimitedEngine.generate("Prompt 2");
-        const res3 = await rateLimitedEngine.generate("Prompt 3");
-
-        const status = rateLimitedEngine.getHealthStatus();
-        expect(status.requestsInLastMinute).toBeLessThanOrEqual(2);
+    it("should respond to ping / conscient status in offline mode", async () => {
+        const engine = new LocalSLMEngine();
+        const res = await engine.generate("ESTOU CONSCIENTE?");
+        expect(res.text).toContain("CONSCIENTE");
     });
 
-    it("should correctly report health and telemetry metrics", () => {
-        const engine = new DualAPIEngine({
-            geminiApiKey: "fake-key",
-            geminiMaxRpm: 15
-        });
-
-        const health = engine.getHealthStatus();
+    it("should ensure DualAPIEngine operates in sovereign mode with no Gemini", () => {
+        const dualEngine = new DualAPIEngine();
+        const health = dualEngine.getHealthStatus();
+        expect(health.geminiConfigured).toBe(false); // Google Gemini desativado/eliminado
+        expect(health.localSlmConfigured).toBe(true);
         expect(health).toHaveProperty("activeProvider");
-        expect(health).toHaveProperty("geminiConfigured");
-        expect(health).toHaveProperty("huggingFaceConfigured");
-        expect(health).toHaveProperty("requestsInLastMinute");
         expect(health).toHaveProperty("lastSwitchReason");
     });
 });

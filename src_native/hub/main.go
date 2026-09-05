@@ -1634,14 +1634,20 @@ func (p *program) run() {
 	// Connect to Rust gRPC Sidecar
 	go func() {
 		addr := RustSidecarAddr
-		conn, err := grpc.Dial(addr, grpc.WithInsecure())
+		conn, err := grpc.Dial(addr,
+			grpc.WithInsecure(),
+			grpc.WithDefaultCallOptions(
+				grpc.MaxCallRecvMsgSize(128*1024*1024),
+				grpc.MaxCallSendMsgSize(128*1024*1024),
+			),
+		)
 		if err != nil {
 			log.Printf("⚠️ Could not connect to Rust sidecar at %s: %v", addr, err)
 			return
 		}
 		p.hub.rustConn = conn
 		p.hub.rustClient = pb.NewHubServiceClient(conn)
-		log.Printf("🔌 Connected to Rust gRPC sidecar at %s", addr)
+		log.Printf("🔌 Connected to Rust gRPC sidecar at %s (128MB buffer)", addr)
 	}()
 
 	// gRPC Server with optional mTLS
@@ -1677,11 +1683,20 @@ func (p *program) run() {
 			ClientCAs:    caPool,
 		}
 
-		grpcServer = grpc.NewServer(grpc.Creds(credentials.NewTLS(tlsConfig)))
-		log.Println("🔒 mTLS enabled for gRPC server")
+		serverOpts := []grpc.ServerOption{
+			grpc.MaxRecvMsgSize(128 * 1024 * 1024),
+			grpc.MaxSendMsgSize(128 * 1024 * 1024),
+			grpc.Creds(credentials.NewTLS(tlsConfig)),
+		}
+		grpcServer = grpc.NewServer(serverOpts...)
+		log.Println("🔒 mTLS enabled for gRPC server (128MB buffer)")
 	} else {
-		grpcServer = grpc.NewServer()
-		log.Println("⚠️ mTLS certs not found, running insecure (dev mode)")
+		serverOpts := []grpc.ServerOption{
+			grpc.MaxRecvMsgSize(128 * 1024 * 1024),
+			grpc.MaxSendMsgSize(128 * 1024 * 1024),
+		}
+		grpcServer = grpc.NewServer(serverOpts...)
+		log.Println("⚠️ mTLS certs not found, running insecure (dev mode, 128MB buffer)")
 	}
 
 	pb.RegisterHubServiceServer(grpcServer, p.hub)

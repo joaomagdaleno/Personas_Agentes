@@ -6,17 +6,44 @@ const logger = winston.child({ module: "AuditHelpers" });
 
 export class AuditHelpers {
     static async enrichSingleFile(f: string, findings: any[], root: Path, orc: any): Promise<void> {
-        const content = await Bun.file(root.join(f).toString()).text();
+        const norm = f.replace(/\\/g, "/");
+        const IGNORED_PREFIXES = [
+            "node_modules/",
+            "deepseek-harness/",
+            ".opencode/",
+            ".git/",
+            "dist/",
+            "bin/",
+            "obj/",
+            "target/",
+            "tmp/",
+            ".gemini/",
+            ".sovereign_cache",
+            ".psa_sessions",
+            ".system_generated"
+        ];
+        if (IGNORED_PREFIXES.some(prefix => norm.startsWith(prefix) || norm.includes("/" + prefix))) {
+            return;
+        }
+
+        const filePath = root.join(f);
+        if (!(await filePath.exists())) return;
+
+        const content = await Bun.file(filePath.toString()).text();
         if (f.match(/\.ts$|\.tsx$/)) {
             const { LogicAuditor } = await import("../engines/analysis/logic_auditor.ts");
-            const auditor = new LogicAuditor(orc.hubManager);
+            const auditor = new LogicAuditor(orc?.hubManager);
             findings.push(...await auditor.scanFile(f, content));
         } else if (f.endsWith(".md")) {
             const { MarkdownAuditor } = await import("../engines/reporting/markdown_auditor.ts");
             findings.push(...MarkdownAuditor.auditMarkdown(f, content));
         }
-        const cog = await (await import("../engines/diagnostics/audit_code_guardian_service.ts")).CognitiveAnalyst.analyzeIntent(f, content, orc);
-        if (cog) findings.push(cog);
+
+        const isSovereignScope = norm.startsWith("src_local/agents/") || norm.startsWith("src_local/engines/");
+        if (isSovereignScope && orc?.contextEngine?.cognitiveReason) {
+            const cog = await (await import("../engines/diagnostics/audit_code_guardian_service.ts")).CognitiveAnalyst.analyzeIntent(f, content, orc);
+            if (cog) findings.push(cog);
+        }
     }
 
     static async scanFileObfuscation(f: string, hunter: any, root: Path): Promise<any[]> {

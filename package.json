@@ -27,8 +27,12 @@
     "benchmark": "bun run scripts/benchmark.ts",
     "forge": "bun run scripts/forge.ts",
     "ui": "bun run scripts/launch_ui.ts",
+    "psa": "bun run src_local/cli/psa_cli.ts",
+    "dsh": "bun run src_local/cli/psa_cli.ts",
     "sovereign": "bun run src_local/cli/sovereign.ts",
     "build-standalone": "bun build --compile --minify ./src_local/cli/sovereign.ts --outfile ./personas-engine.exe",
-    "build-binary": "bun build --compile --minify ./src_local/cli/sovereign.ts --outfile ./bin/personas-orchestrator.exe"
+    "build-binary": "bun build --compile --minify ./src_local/cli/sovereign.ts --outfile ./bin/personas-orchestrator.exe",
+    "bundle": "bun run scripts/bundle_distribution.ts",
+    "download-model": "bun run scripts/download_model.ts"
   }
 }

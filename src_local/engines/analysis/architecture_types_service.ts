@@ -137,7 +137,12 @@ export class ContextHelpers {
     }
 
     static hasForbiddenSegment(segments: string[]): boolean {
-        const forbidden = new Set([".git", ".gemini", "restore", "forensics", "__pycache__", "node_modules", ".venv", "dist", "build"]);
+        const forbidden = new Set([
+            ".git", ".gemini", "restore", "forensics", "__pycache__",
+            "node_modules", ".venv", "dist", "build", "deepseek-harness",
+            ".opencode", "bin", "obj", "target", "tmp", ".sovereign_cache",
+            ".psa_sessions", ".system_generated"
+        ]);
         return segments.some(p => forbidden.has(p));
     }
 }

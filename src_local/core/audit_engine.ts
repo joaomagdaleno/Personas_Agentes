@@ -49,7 +49,22 @@ export class AuditEngine {
     }
 
     private async _enrichChangedFiles(files: string[], findings: any[]): Promise<void> {
-        for (const f of files) {
+        const relevant = files.filter(f => {
+            const norm = f.replace(/\\/g, "/");
+            return !norm.includes("node_modules/") &&
+                   !norm.includes("deepseek-harness/") &&
+                   !norm.includes(".opencode/") &&
+                   !norm.includes(".git/") &&
+                   !norm.includes("dist/") &&
+                   !norm.includes("bin/") &&
+                   !norm.includes("obj/") &&
+                   !norm.includes("target/") &&
+                   !norm.includes(".gemini/") &&
+                   !norm.includes(".sovereign_cache") &&
+                   !norm.includes(".psa_sessions") &&
+                   !norm.includes(".system_generated");
+        });
+        for (const f of relevant) {
             await this._enrichSingleFile(f, findings);
         }
     }

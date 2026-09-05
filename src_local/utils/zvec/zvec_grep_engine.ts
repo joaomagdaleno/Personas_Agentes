@@ -88,7 +88,9 @@ export class ZvecGrepEngine {
         rg: true // Habilita ripgrep fallback se o índice não estiver construído
       };
 
-      const result = await this.zgInstance!.context(contextOptions);
+      const contextPromise = this.zgInstance!.context(contextOptions);
+      const timeoutPromise = new Promise<any>((resolve) => setTimeout(() => resolve({ items: [] }), 1200));
+      const result = await Promise.race([contextPromise, timeoutPromise]);
       const results: ZvecGrepSearchResult[] = [];
 
       if (result && Array.isArray(result.items)) {

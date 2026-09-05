@@ -46,32 +46,37 @@ async function main() {
     // We don't need to manually spawn or keep track of hubProcess/sidecarProcess here anymore.
 
     try {
-        const orchestrator = new Orchestrator(root);
-        await orchestrator.ready;
-        orchestrator.addPersona(new DirectorPersona(root));
-        
+        const { PsaContext } = await import("../src_local/psa/kernel/psa_context.ts");
+        const { PsaSystemControlPlugin } = await import("../src_local/psa/plugins/core/system_control_plugin.ts");
+        const { ZigAnalyzerPlugin } = await import("../src_local/psa/plugins/native/zig_analyzer_plugin.ts");
+        const { GoHubPlugin } = await import("../src_local/psa/plugins/native/go_hub_plugin.ts");
+
+        logger.info("🏛️ Inicializando Micro-Kernel PSA para Diagnóstico Soberano...");
+        const ctx = PsaContext.getInstance(absRoot);
+        ctx.use(new PsaSystemControlPlugin());
+        ctx.use(new ZigAnalyzerPlugin());
+        ctx.use(new GoHubPlugin());
+
         DiagnosticHelpers.logSession(args, logger, root);
         await DiagnosticHelpers.loadProjectMap("project_map.json", logger);
 
         if (args.values.staged) {
-            logger.info("🔍 Rodando auditoria de arquivos staged...");
-            const res = await orchestrator.runStagedAudit({ dryRun: !!args.values["dry-run"] });
-            logger.info(`📊 Problemas detectados: ${(res as any[]).length}`);
-            if ((res as any[]).length > 0) process.exit(1);
+            logger.info("🔍 Rodando auditoria de arquivos staged via PSA Plugin...");
+            const res = await ctx.tools.executeTool("audit.staged", { dryRun: !!args.values["dry-run"] });
+            const findings = (res.result as any)?.findings || [];
+            logger.info(`📊 Problemas detectados: ${findings.length}`);
+            if (findings.length > 0) process.exit(1);
         } else {
-            logger.info("🔍 Iniciando Diagnóstico de Alta Fidelidade (Pipeline)...");
-            const { DiagnosticPipeline } = await import("../src_local/core/diagnostic_pipeline.ts");
-            const pipeline = new DiagnosticPipeline(orchestrator);
-            await pipeline.execute({ 
+            logger.info("🔍 Iniciando Diagnóstico de Alta Fidelidade via PSA System Control Tool...");
+            const res = await ctx.tools.executeTool("system.run_diagnostic", {
                 skipTests: !!args.values["skip-tests"],
-                autoHeal: !!args.values["auto-heal"],
                 dryRun: !!args.values["dry-run"]
             });
+            logger.info(`✨ Resultado: ${(res.result as any)?.summary || "Concluído"}`);
+            logger.info(`🩺 Health Score do Sistema: ${(res.result as any)?.healthScore || 100}%`);
         }
 
-        await orchestrator.runMaintenance();
         logger.info("🏁 Operação concluída.");
-        await orchestrator.shutdown();
         process.exit(0);
     } catch (err: any) {
         logger.error(`🚨 Falha crítica: ${err.message || err}`);

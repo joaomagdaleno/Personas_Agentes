@@ -14,9 +14,11 @@ import { ContextHelpers } from "../analysis/architecture_types_service.ts";
 import { CogHelpers } from "../analysis/architecture_types_service.ts";
 import { FileSystemScanner } from "../healing/resilience_healing_architect_service.ts";
 import type { CognitiveStatus, IAgent } from "../../core/types.ts";
+import { LocalSLMEngine } from "../../utils/ai/local_slm_engine.ts";
 import { DualAPIEngine } from "../../utils/ai/dual_api_engine.ts";
 import { WarmPurgeOfflineEngine } from "../../utils/ai/warm_purge_offline_engine.ts";
 import { ZvecGrepEngine } from "../../utils/zvec/zvec_grep_engine.ts";
+export { LocalSLMEngine } from "../../utils/ai/local_slm_engine.ts";
 export { DualAPIEngine } from "../../utils/ai/dual_api_engine.ts";
 export { WarmPurgeOfflineEngine } from "../../utils/ai/warm_purge_offline_engine.ts";
 export { ZvecGrepEngine } from "../../utils/zvec/zvec_grep_engine.ts";
@@ -81,37 +83,21 @@ export class CognitiveEngine {
             this.logger.debug(`[Cognitive] ZvecGrep enrichment fallback: ${zgErr}`);
         }
 
-        // 1. Try Dual-API Cloud Engine (Gemini / HuggingFace -> 0MB RAM)
+        // 1. Sovereign Local SLM Engine (Llama.cpp / Warm-Purge / Offline Local)
         try {
-            const dualEngine = DualAPIEngine.getInstance();
-            const dualRes = await dualEngine.generate(prompt, {
+            const localEngine = LocalSLMEngine.getInstance();
+            const localRes = await localEngine.generate(prompt, {
+                context: enrichedContext,
                 temperature: options.temperature,
                 maxTokens: options.max_tokens ?? this.defaultMaxTokens
             });
 
-            if (dualRes.text && dualRes.text.trim().length > 0 && dualRes.provider !== "fallback") {
-                this.logger.info(`✨ [Cognitive] Resposta obtida via nuvem ${dualRes.provider.toUpperCase()} (${dualRes.model}) em ${dualRes.latencyMs}ms.`);
-                return dualRes.text;
+            if (localRes.text && localRes.text.trim().length > 0 && localRes.provider !== "fallback") {
+                this.logger.info(`⚡ [Cognitive] Resposta obtida via SLM Local Soberana (${localRes.model}) em ${localRes.latencyMs}ms.`);
+                return localRes.text;
             }
-        } catch (dualErr) {
-            this.logger.debug(`[Cognitive] DualAPI não processou prompt: ${dualErr}`);
-        }
-
-        // 2. Offline Llama.cpp Warm-Purge Engine (~300MB RAM temporário com purge)
-        try {
-            const offlineEngine = WarmPurgeOfflineEngine.getInstance();
-            const offlineRes = await offlineEngine.generate(prompt, {
-                context: enrichedContext,
-                maxTokens: options.max_tokens ?? this.defaultMaxTokens,
-                temperature: options.temperature
-            });
-
-            if (offlineRes && offlineRes.trim().length > 0) {
-                this.logger.info(`❄️ [Cognitive] Resposta obtida via Warm-Purge Offline Llama.cpp Engine.`);
-                return offlineRes;
-            }
-        } catch (offlineErr) {
-            this.logger.debug(`[Cognitive] WarmPurgeOfflineEngine falhou: ${offlineErr}`);
+        } catch (localErr) {
+            this.logger.debug(`[Cognitive] LocalSLMEngine falhou: ${localErr}`);
         }
 
         // 3. gRPC Brain Proxy / Rust AST Knowledge Graph
