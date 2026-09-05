@@ -36,9 +36,33 @@ namespace PersonasAgentes.WinUI
         {
             try
             {
-                var logPath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "winui_crash.log");
-                string detail = $"[{source}] {DateTime.Now}: {ex?.Message}\n{ex}\n{ex?.StackTrace}\nInner: {ex?.InnerException}\n\n";
-                System.IO.File.AppendAllText(logPath, detail);
+                string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                string logDir = System.IO.Path.Combine(localAppData, "PersonasAgentes", "logs");
+                if (!System.IO.Directory.Exists(logDir))
+                {
+                    System.IO.Directory.CreateDirectory(logDir);
+                }
+
+                string logPath = System.IO.Path.Combine(logDir, "winui_crash.log");
+                string detail = $"==================================================================\n" +
+                                $"[{source}] {DateTime.Now:yyyy-MM-dd HH:mm:ss}\n" +
+                                $"Mensagem: {ex?.Message}\n" +
+                                $"Stack Trace:\n{ex}\n" +
+                                $"Inner Exception: {ex?.InnerException}\n" +
+                                $"==================================================================\n\n";
+
+                System.IO.File.AppendAllText(logPath, detail, System.Text.Encoding.UTF8);
+
+                // Cópias redundantes em locais fáceis de encontrar (%TEMP% e BaseDirectory)
+                try
+                {
+                    string tempLog = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "PersonasAgentes_winui_crash.log");
+                    System.IO.File.AppendAllText(tempLog, detail, System.Text.Encoding.UTF8);
+
+                    string baseLog = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "winui_crash.log");
+                    System.IO.File.AppendAllText(baseLog, detail, System.Text.Encoding.UTF8);
+                }
+                catch { }
             }
             catch { }
         }
