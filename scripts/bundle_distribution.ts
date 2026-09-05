@@ -91,12 +91,23 @@ if (fs.existsSync(tlsSourceDir)) {
 
 // 5. Copiar binários da UI Desktop WinUI 3
 console.log("🖥️ [4/5] Copiando interface nativa WinUI 3...");
-const winuiSrc = path.join(root, "src_native/winui/bin/x64/Release/net8.0-windows10.0.19041.0");
-if (fs.existsSync(winuiSrc)) {
+const winuiCandidatePaths = [
+    path.join(root, "src_native/winui/bin/x64/Release/net8.0-windows10.0.19041.0/win-x64/publish"),
+    path.join(root, "src_native/winui/bin/x64/Release/net8.0-windows10.0.19041.0/publish"),
+    path.join(root, "src_native/winui/bin/Release/net8.0-windows10.0.19041.0/win-x64/publish"),
+    path.join(root, "src_native/winui/bin/Release/net8.0-windows10.0.19041.0/publish"),
+    path.join(root, "src_native/winui/bin/x64/Release/net8.0-windows10.0.19041.0/win-x64"),
+    path.join(root, "src_native/winui/bin/x64/Release/net8.0-windows10.0.19041.0"),
+    path.join(root, "src_native/winui/bin/Release/net8.0-windows10.0.19041.0")
+];
+
+const winuiSrc = winuiCandidatePaths.find(p => fs.existsSync(p) && fs.existsSync(path.join(p, "PersonasAgentes.WinUI.exe")));
+
+if (winuiSrc) {
     fs.cpSync(winuiSrc, path.join(distDir, "winui"), { recursive: true });
-    console.log("   ✅ Binários WinUI 3 copiados para dist/winui/");
+    console.log(`   ✅ Binários WinUI 3 copiados de ${winuiSrc} para dist/winui/`);
 } else {
-    console.warn("   ⚠️ WinUI 3 Release não encontrado em " + winuiSrc);
+    console.warn("   ⚠️ Nenhuma pasta contendo PersonasAgentes.WinUI.exe foi encontrada.");
 }
 
 // 6. Copiar Censo de Identidade e Catálogo de Agentes

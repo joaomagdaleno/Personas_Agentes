@@ -10,14 +10,15 @@ namespace PersonasAgentes.WinUI
 
         public App()
         {
+            AppDomain.CurrentDomain.UnhandledException += (s, args) =>
+            {
+                LogAndShowFatalError("AppDomain.UnhandledException", args.ExceptionObject as Exception);
+            };
+
             this.UnhandledException += (sender, e) =>
             {
-                try
-                {
-                    var logPath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "winui_crash.log");
-                    System.IO.File.AppendAllText(logPath, $"[UnhandledException] {DateTime.Now}: {e.Message}\n{e.Exception}\n{e.Exception?.StackTrace}\nInner: {e.Exception?.InnerException}\n\n");
-                }
-                catch { }
+                e.Handled = true;
+                LogAndShowFatalError("Xaml.UnhandledException", e.Exception);
             };
 
             try
@@ -26,10 +27,20 @@ namespace PersonasAgentes.WinUI
             }
             catch (System.Exception ex)
             {
-                var logPath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "winui_crash.log");
-                System.IO.File.AppendAllText(logPath, $"[InitializeComponent Exception] {DateTime.Now}: {ex.Message}\n{ex.StackTrace}\nInner: {ex.InnerException}\n\n");
+                LogAndShowFatalError("InitializeComponent Exception", ex);
                 throw;
             }
+        }
+
+        private static void LogAndShowFatalError(string source, Exception? ex)
+        {
+            try
+            {
+                var logPath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "winui_crash.log");
+                string detail = $"[{source}] {DateTime.Now}: {ex?.Message}\n{ex}\n{ex?.StackTrace}\nInner: {ex?.InnerException}\n\n";
+                System.IO.File.AppendAllText(logPath, detail);
+            }
+            catch { }
         }
 
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)

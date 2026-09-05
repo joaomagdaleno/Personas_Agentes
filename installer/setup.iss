@@ -62,7 +62,7 @@ Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "Path"; Value
 [Run]
 Filename: "{app}\bin\model-downloader.exe"; Parameters: "--model 1.5b --auto-close 3 --dir ""{app}\models"""; Description: "Baixar modelo rápido de IA agora (Qwen 2.5 1.5B ~1.0 GB)"; Flags: postinstall skipifsilent; Check: not Model15bExists
 Filename: "{app}\bin\model-downloader.exe"; Parameters: "--dir ""{app}\models"""; Description: "Abrir Gerenciador de Modelos (para baixar Qwen 3 Thinking / Qwen 7B)"; Flags: postinstall unchecked skipifsilent
-Filename: "{app}\winui\{#MyAppExeName}"; Description: "{cm:LaunchProgram,PSA Agent Workbench}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\winui\{#MyAppExeName}"; Description: "{cm:LaunchProgram,PSA Agent Workbench}"; WorkingDir: "{app}\winui"; Flags: nowait postinstall skipifsilent
 
 [Code]
 function NeedsAddPath(Param: string): boolean;

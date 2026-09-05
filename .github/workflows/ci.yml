@@ -42,14 +42,27 @@ jobs:
       - name: Executar Diagnóstico 360° Soberano
         run: bun run diagnostic --skip-setup --dry-run
 
-      - name: Compilar Interface Desktop Nativa WinUI 3
-        run: dotnet build src_native/winui/PersonasAgentes.WinUI.csproj -c Release -p:Platform=x64
+      - name: Compilar e Publicar Interface Desktop Nativa WinUI 3
+        run: dotnet publish src_native/winui/PersonasAgentes.WinUI.csproj -c Release -r win-x64 --self-contained true -p:WindowsPackageType=None -p:WindowsAppSDKSelfContained=true
 
       - name: Gerar Pacote de Distribuição
         run: bun run bundle
 
-      - name: Publicar Artefato de Distribuição
+      - name: Instalar Inno Setup Compiler
+        run: choco install innosetup --no-progress -y
+
+      - name: Compilar Instalador Windows via Inno Setup
+        run: |
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" .\installer\setup.iss
+
+      - name: Publicar Instalador Executável (Setup.exe)
         uses: actions/upload-artifact@v4
         with:
-          name: PersonasAgentes-Windows-x64
+          name: PersonasAgentes-Setup-v2.0
+          path: dist-installer/PersonasAgentes-Setup-v2.0.exe
+
+      - name: Publicar Pacote Extraído de Distribuição
+        uses: actions/upload-artifact@v4
+        with:
+          name: PersonasAgentes-Windows-x64-Folder
           path: dist/
