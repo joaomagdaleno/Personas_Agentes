@@ -152,11 +152,11 @@ export class IntelligenceControlEngine {
         description: "Motor de auditoria de código e buscas Regex em Rust SIMD."
       },
       {
-        id: "nim_canvas",
-        name: "Nim Canvas Desktop Interface",
+        id: "dsh_harness",
+        name: "DeepSeek Harness Adapter & Mux Stream",
         category: "Frontend",
-        pattern: /\.nim|CoderNim/i,
-        description: "Interface desktop nativa renderizada direto em Canvas via Nim."
+        pattern: /DSHHarnessBridge|DeepSeekHarnessEngine|dsh/i,
+        description: "Adaptador MUX stream do DeepSeek Harness conectado às Super Personas."
       },
       {
         id: "sqlite_persistence",
@@ -266,7 +266,7 @@ export class IntelligenceControlEngine {
         key: "ui_ux_architect",
         name: "UI/UX Architect",
         file: "src_local/engines/reporting/ui_ux_architect_service.ts",
-        handledTechs: ["nim_canvas", "ts_bun"]
+        handledTechs: ["dsh_harness", "ts_bun"]
       }
     ];
 
