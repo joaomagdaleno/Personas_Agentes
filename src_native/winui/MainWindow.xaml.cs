@@ -375,6 +375,85 @@ namespace PersonasAgentes.WinUI
             }
         }
 
+        private void OnDownloadModelClicked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                string[] candidatePaths = new[]
+                {
+                    Path.Combine(baseDir, "model-downloader.exe"),
+                    Path.Combine(baseDir, "bin", "model-downloader.exe"),
+                    Path.Combine(baseDir, "..", "bin", "model-downloader.exe"),
+                    Path.Combine(baseDir, "..", "dist", "bin", "model-downloader.exe"),
+                    Path.Combine(Directory.GetCurrentDirectory(), "dist", "bin", "model-downloader.exe"),
+                    Path.Combine(Directory.GetCurrentDirectory(), "bin", "model-downloader.exe")
+                };
+
+                string? downloaderExe = null;
+                foreach (var pathCandidate in candidatePaths)
+                {
+                    string full = Path.GetFullPath(pathCandidate);
+                    if (File.Exists(full))
+                    {
+                        downloaderExe = full;
+                        break;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(downloaderExe))
+                {
+                    if (DownloadProgressBar != null) DownloadProgressBar.Visibility = Visibility.Visible;
+
+                    var psi = new ProcessStartInfo
+                    {
+                        FileName = downloaderExe,
+                        Arguments = $"--model {_selectedModel} --auto-close 5",
+                        WorkingDirectory = Path.GetDirectoryName(downloaderExe) ?? baseDir,
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        CreateNoWindow = true
+                    };
+
+                    var proc = new Process { StartInfo = psi };
+                    proc.OutputDataReceived += (s, argsData) =>
+                    {
+                        if (string.IsNullOrEmpty(argsData.Data)) return;
+                        DispatcherQueue.TryEnqueue(() =>
+                        {
+                            InspectorPayloadTextBlock.Text = argsData.Data;
+                            if (argsData.Data.Contains("%"))
+                            {
+                                int idx = argsData.Data.IndexOf('%');
+                                if (idx > 3)
+                                {
+                                    string sub = argsData.Data.Substring(idx - 3, 3).Trim();
+                                    if (int.TryParse(sub, out int pVal) && DownloadProgressBar != null)
+                                    {
+                                        DownloadProgressBar.Value = pVal;
+                                    }
+                                }
+                            }
+                        });
+                    };
+
+                    proc.Start();
+                    proc.BeginOutputReadLine();
+
+                    InspectorTitleTextBlock.Text = "📥 GERENCIADOR DE MODELOS INICIADO";
+                    InspectorPayloadTextBlock.Text = $"Iniciando download do modelo '{_selectedModel}' via {downloaderExe}...";
+                }
+                else
+                {
+                    AddTrajectoryErrorCard("⚠️ Executável 'model-downloader.exe' não encontrado na pasta de instalação.");
+                }
+            }
+            catch (Exception ex)
+            {
+                AddTrajectoryErrorCard($"❌ Falha ao iniciar gerenciador de modelos: {ex.Message}");
+            }
+        }
+
         private void OnModelSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ModelSelectorComboBox?.SelectedItem is ComboBoxItem item && item.Tag is string modelTag)
@@ -1205,8 +1284,16 @@ namespace PersonasAgentes.WinUI
                             TextWrapping = TextWrapping.Wrap,
                             Padding = new Thickness(12, 10, 12, 10)
                         };
+                    var codeScrollViewer = new ScrollViewer
+                    {
+                        MaxHeight = 400,
+                        VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                        HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                        Content = codeTextBlock
+                    };
+
                         cardStack.Children.Add(cardHeader);
-                        cardStack.Children.Add(codeTextBlock);
+                    cardStack.Children.Add(codeScrollViewer);
                     }
                     codeCard.Child = cardStack;
 

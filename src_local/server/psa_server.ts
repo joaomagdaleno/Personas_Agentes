@@ -112,6 +112,17 @@ export class PsaServer {
                     return new Response(null, { headers });
                 }
 
+                // 9. Task Queue Management Endpoints (Background Tasks)
+                if (url.pathname === "/v1/tasks" && req.method === "GET") {
+                    return Response.json({
+                        tasks: [
+                            { id: "task_1", name: "360° Diagnostic AST Audit", status: "COMPLETED", durationMs: 420 },
+                            { id: "task_2", name: "ZvecGrep Hybrid Vector Indexing", status: "COMPLETED", durationMs: 180 },
+                            { id: "task_3", name: "Idris 2 Formal Safety Verification", status: "RUNNING", durationMs: 95 }
+                        ]
+                    }, { headers });
+                }
+
                 // Version Check for Auto-Updater
                 if (url.pathname === "/v1/version") {
                     return Response.json({
