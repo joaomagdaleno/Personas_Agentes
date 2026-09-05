@@ -152,11 +152,12 @@ export class IntelligenceControlEngine {
         description: "Motor de auditoria de código e buscas Regex em Rust SIMD."
       },
       {
-        id: "nim_canvas",
-        name: "Nim Canvas Desktop Interface",
+        id: "winui_dsh_desktop",
+        name: "Native WinUI 3 XAML Desktop Interface",
         category: "Frontend",
-        pattern: /\.nim|CoderNim/i,
-        description: "Interface desktop nativa renderizada direto em Canvas via Nim."
+        pattern: /PersonasAgentes\.WinUI|DSHServer|DSHHarnessBridge|MainWindow\.xaml/i,
+        manifestCheck: (m) => !!m["package.json"] && m["package.json"].includes("ui"),
+        description: "Aplicação desktop 100% nativa WinUI 3 XAML com MUX Stream do DeepSeek Harness (sem WebView)."
       },
       {
         id: "sqlite_persistence",
@@ -266,7 +267,7 @@ export class IntelligenceControlEngine {
         key: "ui_ux_architect",
         name: "UI/UX Architect",
         file: "src_local/engines/reporting/ui_ux_architect_service.ts",
-        handledTechs: ["nim_canvas", "ts_bun"]
+        handledTechs: ["winui_dsh_desktop", "ts_bun"]
       }
     ];
 

@@ -26,6 +26,7 @@
     "diagnostic": "bun run scripts/run-diagnostic.ts",
     "benchmark": "bun run scripts/benchmark.ts",
     "forge": "bun run scripts/forge.ts",
+    "ui": "bun run scripts/launch_ui.ts",
     "sovereign": "bun run src_local/cli/sovereign.ts",
     "build-standalone": "bun build --compile --minify ./src_local/cli/sovereign.ts --outfile ./personas-engine.exe",
     "build-binary": "bun build --compile --minify ./src_local/cli/sovereign.ts --outfile ./bin/personas-orchestrator.exe"
