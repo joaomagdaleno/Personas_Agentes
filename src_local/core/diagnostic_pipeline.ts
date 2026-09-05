@@ -127,8 +127,8 @@ export class DiagnosticPipeline {
     }
 
     private async reset() {
-        // TaskQueue is now a class instance, reset via its own logic if needed
-        // this.orc.taskQueue.clear(); 
         this.orc.metrics.files_scanned = 0;
+        const { eventBus } = await import("./event_bus.ts");
+        eventBus.resetBus();
     }
 }

@@ -32,7 +32,7 @@ export class SystemManager {
     /**
      * Limpa processos órfãos que possam estar travando as portas gRPC/HTTP do Hub e Sidecar.
      */
-    private cleanupPorts(ports: number[]) {
+    public cleanupPorts(ports: number[] = [50051, 8080]) {
         const isWin = process.platform === "win32";
         for (const port of ports) {
             try {
