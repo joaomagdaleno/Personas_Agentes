@@ -45,10 +45,13 @@ src_native/analyzer/rust_check.json
 target/
 target_alt/
 target_v3/
+bin/
 *.exe
 *.bin
 *.pdb
 *.lib
+*.dll
+!src_native/zig_analyzer/*.dll
 src_native/hub/hub
 
 # Internal Gemini/Agent files

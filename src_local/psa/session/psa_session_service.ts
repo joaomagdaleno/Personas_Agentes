@@ -1,5 +1,6 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
+import * as os from "node:os";
 import { createHash } from "node:crypto";
 import type { PsaContext } from "../kernel/psa_context.ts";
 
@@ -29,9 +30,24 @@ export class PsaSessionService {
     private eventCounts: Map<string, number> = new Map();
 
     constructor(ctx: PsaContext, storageRoot?: string) {
-        this.storageDir = storageRoot || path.join(process.cwd(), ".psa_sessions");
-        if (!fs.existsSync(this.storageDir)) {
-            fs.mkdirSync(this.storageDir, { recursive: true });
+        if (storageRoot) {
+            this.storageDir = storageRoot;
+        } else {
+            const cwdDir = path.join(process.cwd(), ".psa_sessions");
+            try {
+                if (!fs.existsSync(cwdDir)) {
+                    fs.mkdirSync(cwdDir, { recursive: true });
+                }
+                const testFile = path.join(cwdDir, `.test_${Date.now()}`);
+                fs.writeFileSync(testFile, "1");
+                fs.unlinkSync(testFile);
+                this.storageDir = cwdDir;
+            } catch {
+                this.storageDir = path.join(process.env.LOCALAPPDATA || os.homedir(), "PersonasAgentes", "sessions");
+                if (!fs.existsSync(this.storageDir)) {
+                    fs.mkdirSync(this.storageDir, { recursive: true });
+                }
+            }
         }
     }
 

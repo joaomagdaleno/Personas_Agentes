@@ -37,10 +37,11 @@ fs.writeFileSync(path.join(distDir, "models", "README.txt"),
     "Execute bin\\model-downloader.exe para baixar automaticamente o modelo recomendado.\r\n"
 );
 
-// 3. Copiar binários nativos acelerados
-console.log("⚙️ [2/5] Copiando aceleradores nativos (Go Hub, Rust SIMD, Zig FFI)...");
+// 3. Copiar aceleradores nativos e runtime Llama.cpp (Go Hub, Rust SIMD, Zig FFI, Llama-Server)
+console.log("⚙️ [2/5] Copiando aceleradores nativos e runtime Llama.cpp...");
 const nativeFiles = [
     { src: "bin/hub.exe", fallback: "src_native/hub/hub.exe", dest: "dist/bin/hub.exe" },
+    { src: "bin/cert_gen.exe", fallback: "src_native/hub/tls_certs/cert_gen.exe", dest: "dist/bin/cert_gen.exe" },
     { src: "bin/analyzer_lib.dll", fallback: "src_native/analyzer/target/release/analyzer_lib.dll", dest: "dist/bin/analyzer_lib.dll" },
     { src: "bin/analyzer.dll", fallback: "src_native/zig_analyzer/analyzer.dll", dest: "dist/bin/analyzer.dll" }
 ];
@@ -56,6 +57,20 @@ for (const item of nativeFiles) {
     } else {
         console.warn(`   ⚠️ Binário não encontrado: ${item.src}`);
     }
+}
+
+// Copia binários do Llama.cpp (llama-server.exe, llama-cli.exe e DLLs de aceleração CPU Zen/AVX)
+const binDir = path.join(root, "bin");
+if (fs.existsSync(binDir)) {
+    const binFiles = fs.readdirSync(binDir);
+    let llamaCount = 0;
+    for (const f of binFiles) {
+        if ((f.startsWith("llama") || f.startsWith("ggml")) && (f.endsWith(".exe") || f.endsWith(".dll"))) {
+            fs.copyFileSync(path.join(binDir, f), path.join(distDir, "bin", f));
+            llamaCount++;
+        }
+    }
+    console.log(`   ✅ Copiados ${llamaCount} arquivos do motor Llama.cpp para dist/bin/`);
 }
 
 // 4. Copiar certificados mTLS

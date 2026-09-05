@@ -1,5 +1,8 @@
 import { Database } from "bun:sqlite";
 import winston from "winston";
+import * as fs from "node:fs";
+import * as path from "node:path";
+import * as os from "node:os";
 import { Path } from "./path_utils.ts";
 
 const logger = winston.child({ module: "DatabaseHub" });
@@ -16,8 +19,28 @@ export class DatabaseHub {
 
     private dbPath: string;
 
+    private static resolveDbPath(projectRoot: string): string {
+        if (process.env.PSA_DATABASE_PATH) return process.env.PSA_DATABASE_PATH;
+        if (process.env.PSA_DATA_DIR) {
+            fs.mkdirSync(process.env.PSA_DATA_DIR, { recursive: true });
+            return path.join(process.env.PSA_DATA_DIR, "system_vault.db");
+        }
+
+        const candidatePath = new Path(projectRoot).join("system_vault.db").toString();
+        try {
+            const testFile = path.join(projectRoot, `.w_test_${Date.now()}`);
+            fs.writeFileSync(testFile, "1");
+            fs.unlinkSync(testFile);
+            return candidatePath;
+        } catch {
+            const fallbackDir = path.join(process.env.LOCALAPPDATA || os.homedir(), "PersonasAgentes", "data");
+            fs.mkdirSync(fallbackDir, { recursive: true });
+            return path.join(fallbackDir, "system_vault.db");
+        }
+    }
+
     private constructor(projectRoot: string) {
-        this.dbPath = new Path(projectRoot).join("system_vault.db").toString();
+        this.dbPath = DatabaseHub.resolveDbPath(projectRoot);
         this.db = new Database(this.dbPath);
         this.db.run("PRAGMA journal_mode = WAL;"); // Melhora performance de concorrência
         this._ensureKVStore();
@@ -39,7 +62,7 @@ export class DatabaseHub {
     }
 
     public static getInstance(projectRoot: string): DatabaseHub {
-        const targetPath = new Path(projectRoot).join("system_vault.db").toString();
+        const targetPath = DatabaseHub.resolveDbPath(projectRoot);
         if (!DatabaseHub.instance || DatabaseHub.instance.dbPath !== targetPath) {
             if (DatabaseHub.instance) {
                 DatabaseHub.instance.close();

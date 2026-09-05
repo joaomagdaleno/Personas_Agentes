@@ -1,6 +1,7 @@
 import winston from "winston";
 import * as path from "node:path";
 import * as fs from "node:fs";
+import * as os from "node:os";
 import { SovereignResourceBudget } from "../../engines/maintenance/sovereign_resource_budget.ts";
 import { eventBus } from "../../core/event_bus.ts";
 
@@ -152,32 +153,60 @@ export class WarmPurgeOfflineEngine {
         return responseText;
     }
 
+    private activeProcess: any = null;
+    private activeServerProcess: any = null;
+
     private findModelPath(): string | null {
         const candidateDirs = [
             path.join(process.cwd(), "models"),
+            path.join(process.env.PSA_MODELS_DIR || "", ""),
+            path.join(process.env.LOCALAPPDATA || "", "PersonasAgentes", "models"),
+            path.join(path.dirname(process.execPath), "..", "models"),
             path.join(process.cwd(), ".models"),
             path.join(process.cwd(), ".gemini", "models")
         ];
 
         for (const dir of candidateDirs) {
+            if (!dir) continue;
             const p = path.join(dir, this.modelName);
             if (fs.existsSync(p)) return p;
         }
         return null;
     }
 
+    public checkMemorySafety(requiredMb: number = 2048): boolean {
+        const freeMb = os.freemem() / (1024 * 1024);
+        if (freeMb < (requiredMb + 1024)) {
+            logger.warn(`⚠️ [WarmPurge] Memória RAM livre crítica (${freeMb.toFixed(0)}MB livres vs ~${requiredMb}MB requeridos). Forçando purge de processos.`);
+            this.forcePurge();
+            return false;
+        }
+        return true;
+    }
+
     private async runLlamaCli(fullPrompt: string, options: OfflineGenerateOptions): Promise<string> {
         const modelPath = this.findModelPath();
         if (!modelPath) {
-            throw new Error(`Modelo GGUF '${this.modelName}' não encontrado em ./models, ./.models ou ./.gemini/models`);
+            throw new Error(`Modelo GGUF '${this.modelName}' não encontrado em ./models ou caminhos do sistema.`);
         }
+
+        // Anti-OOM protection
+        const is7bOr8b = this.modelName.includes("7b") || this.modelName.includes("8b");
+        const requiredMb = is7bOr8b ? 4800 : 1500;
+        this.checkMemorySafety(requiredMb);
 
         const isTestEnv = process.env.BUN_ENV === "test" || process.env.NODE_ENV === "test" || Boolean(process.env.TEST);
         const maxTokens = options.maxTokens ?? (isTestEnv ? 32 : 512);
         const temp = options.temperature ?? 0.2;
         const threads = process.env.LOCAL_SLM_THREADS || "8";
 
-        const proc = Bun.spawn([
+        // Mata qualquer processo de inferência anterior antes de iniciar o novo
+        if (this.activeProcess) {
+            try { this.activeProcess.kill(); } catch {}
+            this.activeProcess = null;
+        }
+
+        this.activeProcess = Bun.spawn([
             this.llamaCliPath,
             "-m", modelPath,
             "-p", fullPrompt,
@@ -192,11 +221,13 @@ export class WarmPurgeOfflineEngine {
             stderr: "pipe"
         });
 
-        const rawStdout = await new Response(proc.stdout).text();
-        await proc.exited;
+        const rawStdout = await new Response(this.activeProcess.stdout).text();
+        await this.activeProcess.exited;
+        const exitCode = this.activeProcess.exitCode;
+        this.activeProcess = null;
 
-        if (proc.exitCode !== 0 || !rawStdout.trim()) {
-            throw new Error(`llama-cli finalizou com código ${proc.exitCode}`);
+        if (exitCode !== 0 || !rawStdout.trim()) {
+            throw new Error(`llama-cli finalizou com código ${exitCode}`);
         }
 
         let output = rawStdout
@@ -250,6 +281,14 @@ export class WarmPurgeOfflineEngine {
      * Forces immediate purge of model from RAM (releasing ~300MB memory allocation to 0MB).
      */
     public forcePurge(): void {
+        if (this.activeProcess) {
+            try { this.activeProcess.kill(); } catch {}
+            this.activeProcess = null;
+        }
+        if (this.activeServerProcess) {
+            try { this.activeServerProcess.kill(); } catch {}
+            this.activeServerProcess = null;
+        }
         if (this.isWarm) {
             this.isWarm = false;
             logger.info(`❄️ [WarmPurge] Forced Purge ativado: Modelo ${this.modelName} descarregado da RAM. Memória 100% devolvida ao SO (0MB).`);

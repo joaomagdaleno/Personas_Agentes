@@ -40,7 +40,9 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "addtopath"; Description: "Adicionar binários (personas-engine) ao PATH do sistema"; GroupDescription: "Configurações Avançadas:"
 
 [Dirs]
-Name: "{app}\models"
+Name: "{app}\models"; Permissions: users-modify
+Name: "{app}\data"; Permissions: users-modify
+Name: "{app}\sessions"; Permissions: users-modify
 
 [Files]
 Source: "..\dist\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs

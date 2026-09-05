@@ -43,13 +43,65 @@ export class HubManagerGRPC {
     private circuitStatus: "CLOSED" | "OPEN" | "HALF_OPEN" = "CLOSED";
     private readonly FAILURE_THRESHOLD = 5;
     private readonly COOLDOWN_MS = 30000; // 30s
+    private static ensureTlsCertificates(): string {
+        const candidateDirs = [
+            path.resolve(__dirname, "../../src_native/hub/tls_certs"),
+            path.resolve(process.cwd(), "src_native/hub/tls_certs"),
+            path.resolve(process.cwd(), "bin/tls_certs"),
+            path.resolve(path.dirname(process.execPath), "tls_certs")
+        ];
+
+        let targetDir = candidateDirs[0];
+        for (const dir of candidateDirs) {
+            if (fs.existsSync(dir)) {
+                targetDir = dir;
+                break;
+            }
+        }
+
+        const caPath = path.join(targetDir, "ca.crt");
+        const clientCertPath = path.join(targetDir, "client.crt");
+        const clientKeyPath = path.join(targetDir, "client.key");
+
+        if (fs.existsSync(caPath) && fs.existsSync(clientCertPath) && fs.existsSync(clientKeyPath)) {
+            return targetDir;
+        }
+
+        // Tenta auto-gerar certificados mTLS se estiverem ausentes
+        try {
+            if (!fs.existsSync(targetDir)) {
+                fs.mkdirSync(targetDir, { recursive: true });
+            }
+
+            const certGenCandidates = [
+                path.resolve(process.cwd(), "bin/cert_gen.exe"),
+                path.resolve(path.dirname(process.execPath), "cert_gen.exe"),
+                path.resolve(__dirname, "../../bin/cert_gen.exe")
+            ];
+
+            const certGenBin = certGenCandidates.find(p => fs.existsSync(p));
+            const goScript = path.resolve(__dirname, "../../src_native/hub/tls_certs/gen_certs.go");
+
+            if (certGenBin) {
+                logger.info(`🔐 Auto-gerando certificados mTLS via ${certGenBin}...`);
+                Bun.spawnSync([certGenBin], { cwd: targetDir });
+            } else if (fs.existsSync(goScript)) {
+                logger.info("🔐 Auto-gerando certificados mTLS via Go...");
+                Bun.spawnSync(["go", "run", goScript], { cwd: targetDir });
+            }
+        } catch (e: any) {
+            logger.warn(`⚠️ Não foi possível auto-gerar certificados mTLS: ${e.message}`);
+        }
+
+        return targetDir;
+    }
 
     private constructor(host: string = String(ENV_GATE.HUB_GRPC_HOST || "localhost:50051")) {
         let channelCredentials: ChannelCredentials;
         const validHost = typeof host === "string" ? host : "localhost:50051";
 
-        // Auto-detect mTLS certificates
-        const certDir = path.resolve(__dirname, "../../src_native/hub/tls_certs");
+        // Auto-detect & ensure mTLS certificates
+        const certDir = HubManagerGRPC.ensureTlsCertificates();
         const caPath = path.join(certDir, "ca.crt");
         const clientCertPath = path.join(certDir, "client.crt");
         const clientKeyPath = path.join(certDir, "client.key");
