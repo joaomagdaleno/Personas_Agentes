@@ -463,9 +463,8 @@ export class IntelligenceControlEngine {
     const results: string[] = [];
     if (!fs.existsSync(dir)) return results;
 
-    // Scan all project source, config, and native directories without excluding internal modules
-    // Only exclude external build artifacts / node_modules to avoid scanning third-party dependencies twice
-    const IGNORED_DIRS = new Set(["node_modules", ".git", "target", "build", ".gemini", "dist", "tmp_predictor_test"]);
+    // Ignorar pastas pesadas/de terceiros/caches para varreduras de I/O ultrarrápidas
+    const IGNORED_DIRS = new Set(["node_modules", ".git", "target", "build", ".gemini", "dist", "tmp_predictor_test", ".opencode"]);
 
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
       if (IGNORED_DIRS.has(entry.name)) continue;
@@ -474,7 +473,10 @@ export class IntelligenceControlEngine {
       if (entry.isDirectory()) {
         results.push(...this.getAllFiles(full));
       } else {
-        results.push(full);
+        // Apenas varrer arquivos com extensoes de código-fonte/configuração relevantes
+        if (/\.(ts|js|json|zig|nim|wasm|rs|go|py|md|template|toml|mod|c|h|cpp|hpp)$/i.test(entry.name) || ["Dockerfile", ".env.example", "LICENSE"].includes(entry.name)) {
+          results.push(full);
+        }
       }
     }
     return results;
