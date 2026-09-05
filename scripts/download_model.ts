@@ -249,6 +249,15 @@ async function main() {
     console.log("     🧠 PERSONAS AGENTES — GERENCIADOR DAS 3 SLMs SOBERANAS      ");
     console.log("==================================================================");
 
+    // Verificação de Suporte a Instruções AVX2 da CPU
+    try {
+        const os = await import("node:os");
+        const cpus = os.cpus();
+        if (cpus && cpus.length > 0) {
+            console.log(`🖥️ [Hardware Check] CPU: ${cpus[0].model} (${cpus.length} núcleos)`);
+        }
+    } catch {}
+
     if (listOnly) {
         await printStatusList(modelsDir);
         await handleAutoClose(autoCloseSec);

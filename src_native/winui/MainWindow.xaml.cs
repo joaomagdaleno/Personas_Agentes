@@ -265,6 +265,22 @@ namespace PersonasAgentes.WinUI
                                 tuple.Item2.Text = content;
                                 TrajectoryStackPanel.Children.Add(tuple.Item1);
                             }
+                            else if (type == "tool_call")
+                            {
+                                using var emptyDoc = JsonDocument.Parse("{}");
+                                var toolCard = CreateToolCallNodeCard(title.Length > 0 ? title : "Tool Executed", emptyDoc.RootElement);
+                                TrajectoryStackPanel.Children.Add(toolCard);
+                            }
+                            else if (type == "tool_result")
+                            {
+                                var toolResCard = CreateToolResultNodeCard(content);
+                                TrajectoryStackPanel.Children.Add(toolResCard);
+                            }
+                            else if (type == "verification")
+                            {
+                                var verifCard = CreateVerificationNodeCard(content);
+                                TrajectoryStackPanel.Children.Add(verifCard);
+                            }
                             else if (type == "text" || type == "model_output")
                             {
                                 var tuple = CreateModelOutputNodeCard();
