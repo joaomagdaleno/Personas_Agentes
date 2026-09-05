@@ -69,6 +69,43 @@ namespace PersonasAgentes.WinUI
             InitializeSessions();
             InitializePersonas();
             _ = EnsureBackendRunningAsync();
+            CheckPreviousCrashLogs();
+        }
+
+        private void CheckPreviousCrashLogs()
+        {
+            try
+            {
+                string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                string logPath = Path.Combine(localAppData, "PersonasAgentes", "logs", "winui_crash.log");
+                if (File.Exists(logPath) && new FileInfo(logPath).Length > 0)
+                {
+                    InspectorTitleTextBlock.Text = "⚠️ REGISTRO DE ERRO ANTERIOR DETECTADO";
+                    InspectorMetaTextBlock.Text = $"Arquivo: {logPath}\nStatus: Registrado em log de diagnóstico";
+                    string crashContent = File.ReadAllText(logPath);
+                    InspectorPayloadTextBlock.Text = crashContent.Substring(Math.Max(0, crashContent.Length - 1000));
+                }
+            }
+            catch { }
+        }
+
+        private void UpdateSlmTelemetryVisual(bool isWarm, string modelName)
+        {
+            if (SlmStateTextBlock == null || SlmStateBorder == null) return;
+            if (isWarm)
+            {
+                SlmStateTextBlock.Text = $"🟢 SLM: Warmed (~1.0GB)";
+                SlmStateTextBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 16, 185, 129));
+                SlmStateBorder.Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 22, 46, 34));
+                SlmStateBorder.BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 16, 185, 129));
+            }
+            else
+            {
+                SlmStateTextBlock.Text = $"❄️ SLM: Purged (0MB)";
+                SlmStateTextBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 137, 180, 250));
+                SlmStateBorder.Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 29, 36, 50));
+                SlmStateBorder.BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 137, 180, 250));
+            }
         }
 
         private async Task EnsureBackendRunningAsync()
@@ -1088,19 +1125,52 @@ namespace PersonasAgentes.WinUI
                     Grid.SetColumn(copyBtn, 1);
                     cardHeader.Children.Add(copyBtn);
 
-                    // Code Content Block
-                    var codeTextBlock = new TextBlock
+                    // Code Content Block with Diff Highlighting
+                    if (lang.Equals("diff", StringComparison.OrdinalIgnoreCase))
                     {
-                        Text = codeContent.Trim(),
-                        FontSize = 12,
-                        FontFamily = new FontFamily("Consolas"),
-                        Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 166, 227, 161)),
-                        TextWrapping = TextWrapping.Wrap,
-                        Padding = new Thickness(12, 10, 12, 10)
-                    };
+                        var diffContainer = new StackPanel { Padding = new Thickness(12, 8, 12, 8), Spacing = 2 };
+                        string[] diffLines = codeContent.Trim().Split('\n');
+                        foreach (string dLine in diffLines)
+                        {
+                            var lineBlock = new TextBlock
+                            {
+                                Text = dLine,
+                                FontSize = 12,
+                                FontFamily = new FontFamily("Consolas"),
+                                TextWrapping = TextWrapping.Wrap
+                            };
 
-                    cardStack.Children.Add(cardHeader);
-                    cardStack.Children.Add(codeTextBlock);
+                            if (dLine.StartsWith("+"))
+                            {
+                                lineBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 166, 227, 161));
+                            }
+                            else if (dLine.StartsWith("-"))
+                            {
+                                lineBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 243, 139, 168));
+                            }
+                            else
+                            {
+                                lineBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 166, 173, 200));
+                            }
+                            diffContainer.Children.Add(lineBlock);
+                        }
+                        cardStack.Children.Add(cardHeader);
+                        cardStack.Children.Add(diffContainer);
+                    }
+                    else
+                    {
+                        var codeTextBlock = new TextBlock
+                        {
+                            Text = codeContent.Trim(),
+                            FontSize = 12,
+                            FontFamily = new FontFamily("Consolas"),
+                            Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 166, 227, 161)),
+                            TextWrapping = TextWrapping.Wrap,
+                            Padding = new Thickness(12, 10, 12, 10)
+                        };
+                        cardStack.Children.Add(cardHeader);
+                        cardStack.Children.Add(codeTextBlock);
+                    }
                     codeCard.Child = cardStack;
 
                     container.Children.Add(codeCard);

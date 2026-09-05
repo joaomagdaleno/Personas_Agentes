@@ -91,6 +91,9 @@
 
                 <!-- Status & Refresh Button -->
                 <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                    <Border x:Name="SlmStateBorder" Background="#1D2432" BorderBrush="#89B4FA" BorderThickness="1" CornerRadius="6" Padding="8,4">
+                        <TextBlock x:Name="SlmStateTextBlock" Text="❄️ SLM: Purged (0MB)" FontSize="11" FontWeight="Bold" Foreground="#89B4FA"/>
+                    </Border>
                     <Border Background="#162E22" BorderBrush="#10B981" BorderThickness="1" CornerRadius="6" Padding="8,4">
                         <TextBlock Text="🟢 Host: 3080" FontSize="11" FontWeight="Bold" Foreground="#10B981"/>
                     </Border>
