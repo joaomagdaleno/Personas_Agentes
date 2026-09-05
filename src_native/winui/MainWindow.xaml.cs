@@ -1351,6 +1351,25 @@ namespace PersonasAgentes.WinUI
             ScrollToBottom();
         }
 
+        private async void OnRefreshTasksClicked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var res = await _httpClient.GetAsync("http://127.0.0.1:3080/v1/tasks");
+                if (res.IsSuccessStatusCode)
+                {
+                    string json = await res.Content.ReadAsStringAsync();
+                    InspectorTitleTextBlock.Text = "🔄 FILA DE TAREFAS DE SEGUNDO PLANO";
+                    InspectorMetaTextBlock.Text = "Servidor: http://127.0.0.1:3080\nStatus: 100% Sincronizado";
+                    InspectorPayloadTextBlock.Text = json;
+                }
+            }
+            catch (Exception ex)
+            {
+                AddTrajectoryErrorCard($"❌ Falha ao consultar fila de tarefas: {ex.Message}");
+            }
+        }
+
         private void SelectNodeForInspection(string title, string payload, long durMs, int tokens)
         {
             InspectorTitleTextBlock.Text = title;
