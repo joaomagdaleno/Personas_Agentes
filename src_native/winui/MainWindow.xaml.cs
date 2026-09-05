@@ -85,9 +85,19 @@ namespace PersonasAgentes.WinUI
                     if (doc.RootElement.TryGetProperty("version", out var vProp))
                     {
                         string currentVersion = vProp.GetString() ?? "2.0.0";
+                        bool hasUpdate = doc.RootElement.TryGetProperty("updateAvailable", out var uProp) && uProp.GetBoolean();
+
                         DispatcherQueue.TryEnqueue(() =>
                         {
-                            TelemetryTurnsTextBlock.Text = $"Versão: v{currentVersion}";
+                            if (hasUpdate)
+                            {
+                                TelemetryTurnsTextBlock.Text = $"Versão: v{currentVersion} (Nova Versão Disponível 🚀)";
+                                TelemetryTurnsTextBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 16, 185, 129));
+                            }
+                            else
+                            {
+                                TelemetryTurnsTextBlock.Text = $"Versão: v{currentVersion}";
+                            }
                         });
                     }
                 }
@@ -1204,6 +1214,7 @@ namespace PersonasAgentes.WinUI
                     cardHeader.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                     cardHeader.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
 
+                    var langStack = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 6, VerticalAlignment = VerticalAlignment.Center };
                     var langText = new TextBlock
                     {
                         Text = $"📄 {lang.ToUpper()}",
@@ -1212,8 +1223,19 @@ namespace PersonasAgentes.WinUI
                         Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 137, 180, 250)),
                         VerticalAlignment = VerticalAlignment.Center
                     };
-                    Grid.SetColumn(langText, 0);
-                    cardHeader.Children.Add(langText);
+
+                    var syntaxBadge = new Border
+                    {
+                        Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 22, 46, 34)),
+                        CornerRadius = new CornerRadius(4),
+                        Padding = new Thickness(4, 1, 4, 1),
+                        Child = new TextBlock { Text = "Sintaxe Válida ✅", FontSize = 8, FontWeight = Microsoft.UI.Text.FontWeights.Bold, Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 16, 185, 129)) }
+                    };
+
+                    langStack.Children.Add(langText);
+                    langStack.Children.Add(syntaxBadge);
+                    Grid.SetColumn(langStack, 0);
+                    cardHeader.Children.Add(langStack);
 
                     var copyBtn = new Button
                     {

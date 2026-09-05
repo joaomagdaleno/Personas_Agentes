@@ -125,9 +125,27 @@ export class PsaServer {
 
                 // Version Check for Auto-Updater
                 if (url.pathname === "/v1/version") {
+                    let latestTag = "v2.0.0";
+                    let updateAvailable = false;
+                    try {
+                        const ghRes = await fetch("https://api.github.com/repos/joaomagdaleno/Personas_Agentes/releases/latest", {
+                            headers: { "User-Agent": "PersonasAgentes-AutoUpdater/2.0" }
+                        });
+                        if (ghRes.ok) {
+                            const ghData = await ghRes.json() as any;
+                            if (ghData?.tag_name) {
+                                latestTag = ghData.tag_name;
+                                if (latestTag !== "v2.0.0" && latestTag !== "2.0.0") {
+                                    updateAvailable = true;
+                                }
+                            }
+                        }
+                    } catch {}
+
                     return Response.json({
                         version: "2.0.0",
-                        latestTag: "v2.0.0",
+                        latestTag,
+                        updateAvailable,
                         releaseUrl: "https://github.com/joaomagdaleno/Personas_Agentes/releases/latest",
                         setupDownloadUrl: "https://github.com/joaomagdaleno/Personas_Agentes/releases/latest/download/PersonasAgentes-Setup-v2.0.exe"
                     }, { headers });
