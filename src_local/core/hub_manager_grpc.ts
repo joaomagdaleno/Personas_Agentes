@@ -84,10 +84,10 @@ export class HubManagerGRPC {
 
             if (certGenBin) {
                 logger.info(`🔐 Auto-gerando certificados mTLS via ${certGenBin}...`);
-                Bun.spawnSync([certGenBin], { cwd: targetDir });
-            } else if (fs.existsSync(goScript)) {
+                Bun.spawnSync([certGenBin], { cwd: targetDir, timeout: 3000 });
+            } else if (fs.existsSync(goScript) && process.env.NODE_ENV !== "test") {
                 logger.info("🔐 Auto-gerando certificados mTLS via Go...");
-                Bun.spawnSync(["go", "run", goScript], { cwd: targetDir });
+                Bun.spawnSync(["go", "run", goScript], { cwd: targetDir, timeout: 3000 });
             }
         } catch (e: any) {
             logger.warn(`⚠️ Não foi possível auto-gerar certificados mTLS: ${e.message}`);

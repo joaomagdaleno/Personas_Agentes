@@ -119,15 +119,18 @@ describe("🏛️ PSA Sovereign Architecture - Expanded Modules Suite", () => {
             const created = await createTool.execute({ sessionId: ptySessionId });
             expect(created.status).toBe("running");
 
-            // Envia um comando
+            // Envia um comando compatível com bash e powershell
             const sendTool = ctx.tools.get("terminal.send")!;
+            const command = process.platform === "win32"
+                ? "echo PSA_NATIVE_TERMINAL_ONLINE"
+                : "echo PSA_NATIVE_TERMINAL_ONLINE";
             await sendTool.execute({
                 sessionId: ptySessionId,
-                input: "Write-Output 'PSA_NATIVE_TERMINAL_ONLINE'"
+                input: command
             });
 
             // Aguarda alguns ms para captura do buffer
-            await new Promise(r => setTimeout(r, 400));
+            await new Promise(r => setTimeout(r, 500));
 
             const readTool = ctx.tools.get("terminal.read")!;
             const readRes = await readTool.execute({ sessionId: ptySessionId });

@@ -1,6 +1,6 @@
 # 🧠 Relatório de Cobertura de Inteligência e Pontos Cegos das Super Personas
 
-> **Data de Gerado:** 2026-09-05T17:09:53.828Z
+> **Data de Gerado:** 2026-09-05T18:56:52.504Z
 > **Status Geral de Inteligência:** 100% Coberto (11/11 Tecnologias)
 
 ---
@@ -16,17 +16,17 @@
 ## 🛠️ Tecnologias Mapeadas no Projeto
 | ID | Tecnologia / Feature | Categoria | Evidências / Módulos |
 | :--- | :--- | :--- | :--- |
-| `ts_bun` | **TypeScript / Bun Runtime** | Runtime | `package.json`, `.sovereign_cache.json` |
-| `slm_gguf` | **SLM / Local GGUF (Llama.cpp)** | AI/SLM | `.env.example`, `.sovereign_cache.json` |
-| `local_slm_engine` | **Local SLM Engine (Llama.cpp / GGUF)** | AI/SLM | `.sovereign_cache.json`, `models/README.md` |
-| `zvec_grep` | **ZvecGrep (Hybrid Vector/BM25 Search)** | Search Engine | `package.json`, `.sovereign_cache.json` |
-| `wasm_micro_agents` | **WASM Micro-Agents (WASI Runtime)** | Runtime | `.sovereign_cache.json`, `docs/ARCH_EXPANSION_PLAN_PHD.md` |
-| `zig_native_ffi` | **Zig Native Analyzer & FFI** | Language | `.sovereign_cache.json`, `docs/ARCH_EXPANSION_PLAN_PHD.md` |
-| `go_hub_grpc` | **Go Hub gRPC Proxy** | IPC/RPC | `package.json`, `.sovereign_cache.json` |
-| `rust_simd` | **Rust SIMD Analyzer & FFI** | Language | `.sovereign_cache.json`, `docs/ARCH_EXPANSION_PLAN_PHD.md` |
-| `winui_dsh_desktop` | **Native WinUI 3 XAML Desktop Interface** | Frontend | `package.json`, `scripts/bundle_distribution.ts` |
-| `sqlite_persistence` | **SQLite Persistence & Stability Ledger** | Database | `.sovereign_cache.json`, `scripts/benchmark.ts` |
-| `micro_gpt_neural` | **MicroGPT Neural Subsystem** | AI/SLM | `.sovereign_cache.json`, `docs/INTELLIGENCE_COVERAGE_REPORT.md` |
+| `ts_bun` | **TypeScript / Bun Runtime** | Runtime | `package.json`, `src_local/utils/ai/warm_purge_offline_engine.ts` |
+| `slm_gguf` | **SLM / Local GGUF (Llama.cpp)** | AI/SLM | `.env.example`, `src_local/utils/ai/local_slm_engine.ts` |
+| `local_slm_engine` | **Local SLM Engine (Llama.cpp / GGUF)** | AI/SLM | `src_local/utils/ai/local_slm_engine.ts`, `src_local/utils/ai/warm_purge_offline_engine.ts` |
+| `zvec_grep` | **ZvecGrep (Hybrid Vector/BM25 Search)** | Search Engine | `package.json`, `src_local/utils/zvec/zvec_grep_engine.ts` |
+| `wasm_micro_agents` | **WASM Micro-Agents (WASI Runtime)** | Runtime | `src_local/utils/ai/wasm_micro_agent_runtime.ts`, `src_local/engines/maintenance/sys_perf_architect_service.ts` |
+| `zig_native_ffi` | **Zig Native Analyzer & FFI** | Language | `src_native/zig_analyzer/analyzer.zig`, `src_local/metadata/identity_census.json` |
+| `go_hub_grpc` | **Go Hub gRPC Proxy** | IPC/RPC | `package.json`, `walkthrough.md` |
+| `rust_simd` | **Rust SIMD Analyzer & FFI** | Language | `src_native/tray_rust/Cargo.toml`, `src_native/analyzer/src/connectivity.rs` |
+| `winui_dsh_desktop` | **Native WinUI 3 XAML Desktop Interface** | Frontend | `package.json`, `src_local/server/psa_server.ts` |
+| `sqlite_persistence` | **SQLite Persistence & Stability Ledger** | Database | `src_local/utils/stability_ledger.test.ts`, `src_local/core/orchestrator.ts` |
+| `micro_gpt_neural` | **MicroGPT Neural Subsystem** | AI/SLM | `src_local/utils/ai/test_predictor.ts`, `src_local/utils/ai/predictor_engine.test.ts` |
 
 ---
 

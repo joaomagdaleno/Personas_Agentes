@@ -185,7 +185,7 @@ namespace PersonasAgentes.WinUI
 
         private void OnSessionSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (SessionsListView.SelectedItem is PsaSessionItem session)
+            if (SessionsListView?.SelectedItem is PsaSessionItem session)
             {
                 _currentSession = session;
                 RenderSessionTrajectory(session);
@@ -194,7 +194,7 @@ namespace PersonasAgentes.WinUI
 
         private void OnPersonaSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (PersonasListView.SelectedItem is PersonaItem persona)
+            if (PersonasListView?.SelectedItem is PersonaItem persona)
             {
                 _selectedPersona = persona;
             }
@@ -202,7 +202,7 @@ namespace PersonasAgentes.WinUI
 
         private void OnModeSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ModeComboBox.SelectedItem is ComboBoxItem item && item.Content is string modeName)
+            if (ModeComboBox?.SelectedItem is ComboBoxItem item && item.Content is string modeName)
             {
                 _selectedMode = modeName;
             }
@@ -210,38 +210,46 @@ namespace PersonasAgentes.WinUI
 
         private void OnModelSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ModelSelectorComboBox.SelectedItem is ComboBoxItem item && item.Tag is string modelTag)
+            if (ModelSelectorComboBox?.SelectedItem is ComboBoxItem item && item.Tag is string modelTag)
             {
                 _selectedModel = modelTag;
-                if (_selectedModel == "qwen3-8b-thinking")
+                if (DeepThinkToggle != null)
                 {
-                    DeepThinkToggle.IsChecked = true;
-                    UpdateToggleVisual(DeepThinkToggle, true);
-                }
-                else
-                {
-                    DeepThinkToggle.IsChecked = false;
-                    UpdateToggleVisual(DeepThinkToggle, false);
+                    if (_selectedModel == "qwen3-8b-thinking")
+                    {
+                        DeepThinkToggle.IsChecked = true;
+                        UpdateToggleVisual(DeepThinkToggle, true);
+                    }
+                    else
+                    {
+                        DeepThinkToggle.IsChecked = false;
+                        UpdateToggleVisual(DeepThinkToggle, false);
+                    }
                 }
             }
         }
 
         private void OnDeepThinkToggleClicked(object sender, RoutedEventArgs e)
         {
+            if (DeepThinkToggle == null) return;
             bool isChecked = DeepThinkToggle.IsChecked == true;
             UpdateToggleVisual(DeepThinkToggle, isChecked);
-            if (isChecked && _selectedModel != "qwen3-8b-thinking")
+            if (ModelSelectorComboBox != null)
             {
-                ModelSelectorComboBox.SelectedIndex = 2; // qwen3-8b-thinking
-            }
-            else if (!isChecked && _selectedModel == "qwen3-8b-thinking")
-            {
-                ModelSelectorComboBox.SelectedIndex = 0; // qwen2.5-coder-1.5b (Fast / Lite)
+                if (isChecked && _selectedModel != "qwen3-8b-thinking")
+                {
+                    ModelSelectorComboBox.SelectedIndex = 2; // qwen3-8b-thinking
+                }
+                else if (!isChecked && _selectedModel == "qwen3-8b-thinking")
+                {
+                    ModelSelectorComboBox.SelectedIndex = 0; // qwen2.5-coder-1.5b (Fast / Lite)
+                }
             }
         }
 
-        private void UpdateToggleVisual(ToggleButton toggle, bool isChecked)
+        private void UpdateToggleVisual(ToggleButton? toggle, bool isChecked)
         {
+            if (toggle == null) return;
             if (isChecked)
             {
                 toggle.Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 77, 107, 254));
