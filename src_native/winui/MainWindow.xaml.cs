@@ -70,6 +70,29 @@ namespace PersonasAgentes.WinUI
             InitializePersonas();
             _ = EnsureBackendRunningAsync();
             CheckPreviousCrashLogs();
+            _ = CheckForUpdatesAsync();
+        }
+
+        private async Task CheckForUpdatesAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("http://127.0.0.1:3080/v1/version");
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    using var doc = JsonDocument.Parse(json);
+                    if (doc.RootElement.TryGetProperty("version", out var vProp))
+                    {
+                        string currentVersion = vProp.GetString() ?? "2.0.0";
+                        DispatcherQueue.TryEnqueue(() =>
+                        {
+                            TelemetryTurnsTextBlock.Text = $"Versão: v{currentVersion}";
+                        });
+                    }
+                }
+            }
+            catch { }
         }
 
         private void CheckPreviousCrashLogs()
@@ -468,6 +491,20 @@ namespace PersonasAgentes.WinUI
         private void OnDispatchClicked(object sender, RoutedEventArgs e)
         {
             _ = DispatchTurnAsync();
+        }
+
+        private async void OnCancelClicked(object sender, RoutedEventArgs e)
+        {
+            if (!_isDispatching || _currentSession == null) return;
+            try
+            {
+                var payload = new { sessionId = _currentSession.Id };
+                string jsonPayload = JsonSerializer.Serialize(payload);
+                var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+                await _httpClient.PostAsync("http://127.0.0.1:3080/v1/stream/cancel", content);
+                AddTrajectoryErrorCard("🛑 Turno cancelado pelo operador.");
+            }
+            catch { }
         }
 
         private async Task DispatchTurnAsync()

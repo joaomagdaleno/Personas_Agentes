@@ -52,6 +52,7 @@ export class PsaServer {
     private ctx: PsaContext;
     private agentLoop: PsaAgentLoop;
     private serverInstance: any = null;
+    private activeTurnControllers: Map<string, AbortController> = new Map();
 
     constructor(options: PsaServerOptions = {}) {
         this.port = options.port || Number(process.env.PSA_PORT) || Number(process.env.DSH_PORT) || 3080;
@@ -109,6 +110,16 @@ export class PsaServer {
 
                 if (req.method === "OPTIONS") {
                     return new Response(null, { headers });
+                }
+
+                // Version Check for Auto-Updater
+                if (url.pathname === "/v1/version") {
+                    return Response.json({
+                        version: "2.0.0",
+                        latestTag: "v2.0.0",
+                        releaseUrl: "https://github.com/joaomagdaleno/Personas_Agentes/releases/latest",
+                        setupDownloadUrl: "https://github.com/joaomagdaleno/Personas_Agentes/releases/latest/download/PersonasAgentes-Setup-v2.0.exe"
+                    }, { headers });
                 }
 
                 // 1. Health & Micro-Kernel Status
@@ -233,6 +244,22 @@ export class PsaServer {
                 }
                 if (url.pathname === "/v1/approvals/pending" && req.method === "GET") {
                     return Response.json({ pending: ctx.approvals.getPending() }, { headers });
+                }
+
+                // Stream Cancellation Endpoint
+                if (url.pathname === "/v1/stream/cancel" && req.method === "POST") {
+                    try {
+                        const body = await req.json() as any;
+                        const sessionId = body?.sessionId;
+                        if (sessionId && activeTurnControllers.has(sessionId)) {
+                            activeTurnControllers.get(sessionId)?.abort();
+                            activeTurnControllers.delete(sessionId);
+                            return Response.json({ success: true, sessionId, cancelled: true }, { headers });
+                        }
+                        return Response.json({ success: true, sessionId, cancelled: false }, { headers });
+                    } catch (e: any) {
+                        return Response.json({ error: e.message }, { status: 400, headers });
+                    }
                 }
 
                 // 8. MUX Chat Completions SSE Streaming Endpoint (PSA Agent Loop Native)

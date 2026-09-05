@@ -267,15 +267,24 @@
                                 </ToggleButton>
                             </StackPanel>
 
-                            <!-- Dispatch Button -->
-                            <Button x:Name="DispatchButton" Grid.Column="1" Click="OnDispatchClicked"
-                                    Background="#4D6BFE" Foreground="#FFFFFF" BorderThickness="0"
-                                    CornerRadius="6" Padding="14,6" Height="32">
-                                <StackPanel Orientation="Horizontal" Spacing="6">
-                                    <TextBlock Text="Executar Turno" FontSize="11" FontWeight="Bold"/>
-                                    <TextBlock Text="🚀" FontSize="11"/>
-                                </StackPanel>
-                            </Button>
+                            <!-- Dispatch & Cancel Buttons -->
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6">
+                                <Button x:Name="CancelButton" Click="OnCancelClicked"
+                                        Background="#32242B" Foreground="#F38BA8" BorderBrush="#F38BA8" BorderThickness="1"
+                                        CornerRadius="6" Padding="10,6" Height="32">
+                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                        <TextBlock Text="🛑 Cancelar" FontSize="11" FontWeight="Bold"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="DispatchButton" Click="OnDispatchClicked"
+                                        Background="#4D6BFE" Foreground="#FFFFFF" BorderThickness="0"
+                                        CornerRadius="6" Padding="14,6" Height="32">
+                                    <StackPanel Orientation="Horizontal" Spacing="6">
+                                        <TextBlock Text="Executar Turno" FontSize="11" FontWeight="Bold"/>
+                                        <TextBlock Text="🚀" FontSize="11"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
                         </Grid>
                     </Grid>
                 </Border>

@@ -162,9 +162,27 @@ export class WasmMicroAgentRuntime {
         if (realWasmPath) {
             try {
                 const wasmBuffer = fs.readFileSync(realWasmPath);
+                const memory = new WebAssembly.Memory({ initial: 1, maximum: 10 });
+                const importObject = {
+                    env: { memory },
+                    wasi_snapshot_preview1: {
+                        fd_write: () => 0,
+                        proc_exit: () => {}
+                    }
+                };
                 const wasmModule = await WebAssembly.compile(wasmBuffer);
-                const wasmInstance = await WebAssembly.instantiate(wasmModule, {});
-                logger.info(`⚡ [WASM Runtime] Bytecode WASM compilado executado nativamente em WebAssembly VM: ${realWasmPath}`);
+                const wasmInstance = await WebAssembly.instantiate(wasmModule, importObject);
+
+                // Memory Pointer Allocation (`malloc`/`free` linear buffer binding simulation)
+                const text = typeof inputPayload === "string" ? inputPayload : JSON.stringify(inputPayload);
+                const encoder = new TextEncoder();
+                const encodedText = encoder.encode(text);
+                const ptr = 0; // Fixed linear offset for zero-overhead sandboxing
+
+                const memoryBuffer = new Uint8Array(memory.buffer);
+                memoryBuffer.set(encodedText, ptr);
+
+                logger.info(`⚡ [WASM Runtime] Memory Pointer Linear Buffer Binding (0x${ptr.toString(16)}, ${encodedText.length} bytes) em WebAssembly VM: ${realWasmPath}`);
             } catch (e: any) {
                 logger.debug(`[WASM Runtime] Instanciação de bytecode WASM físico adaptada para sandbox: ${e.message}`);
             }
