@@ -22,6 +22,11 @@ export type SystemEventMap = {
 export type EventName = keyof SystemEventMap;
 
 class SovereignEventBus extends EventEmitter {
+    constructor() {
+        super();
+        this.setMaxListeners(100);
+    }
+
     override emit<K extends EventName>(event: K, ...args: SystemEventMap[K]): boolean {
         logger.info(`📡 [EventBus] Emitting: ${String(event)}`);
         return super.emit(event as string, ...args);
@@ -33,6 +38,15 @@ class SovereignEventBus extends EventEmitter {
 
     override once<K extends EventName>(event: K, listener: (...args: SystemEventMap[K]) => void): this {
         return super.once(event as string, listener as any);
+    }
+
+    /**
+     * Resets and cleans up all registered event listeners to prevent memory leaks during test or pipeline re-runs.
+     */
+    resetBus(): void {
+        this.removeAllListeners();
+        this.setMaxListeners(100);
+        logger.info("📡 [EventBus] Todos os ouvintes do barramento foram limpos (Bus reset).");
     }
 
     /**

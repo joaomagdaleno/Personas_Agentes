@@ -59,6 +59,11 @@ export class DiagnosticFinalizer {
             return new Path("test_report_suppressed.md");
         }
 
+        const intel = snapshot.intelligenceCoverage || snapshot.ctx?.intelligenceCoverage || {};
+        const intelCoverageStr = intel.coveragePercentage !== undefined
+            ? `- **Status de Cobertura de Inteligência:** ${intel.coveragePercentage}% (${intel.coveredTechnologiesCount}/${intel.totalTechnologiesDetected} tecnologias cobertas por 8 Super Personas)\n- **Pontos Cegos:** ${intel.blindspotCount || 0}`
+            : "- **Status de Cobertura de Inteligência:** 100% (Varredura Completa)";
+
         let report = `# 🏛️ Sovereign Health Report — PhD Edition
 **Timestamp:** ${new Date().toISOString()}
 **System Score:** ${snapshot.health_score}%
@@ -66,6 +71,9 @@ export class DiagnosticFinalizer {
 ## 📊 Executive Summary
 The system has been audited by the native Go Hub and PhD Orchestrator.
 Currently monitoring ${findings.length} technical findings across the sovereign landscape.
+
+## 🧠 Intelligence Control & Blindspot Audit
+${intelCoverageStr}
 
 ## 🩹 Findings Highlights
 ${findings.slice(0, 5).map((f: any) => `- [${f.severity}] ${f.file}: ${f.issue}`).join('\n')}

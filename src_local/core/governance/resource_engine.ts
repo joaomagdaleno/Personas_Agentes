@@ -34,14 +34,14 @@ export class ResourceEngine {
     public isSystemOverloaded(): { overloaded: boolean; reason?: string } {
         const metrics = this.getCurrentLoad();
         
-        // Regra 1: Menos de 1.5GB de RAM livre
-        if (metrics.freeMemoryGb < 1.5) {
+        // Regra 1: Menos de 0.8GB de RAM livre
+        if (metrics.freeMemoryGb < 0.8) {
             return { overloaded: true, reason: `Critically low memory: ${metrics.freeMemoryGb.toFixed(2)} GB free.` };
         }
 
-        // Regra 2: Carga média da CPU nos últimos 1 minuto supera 90% dos cores disponíveis
+        // Regra 2: Carga média da CPU nos últimos 1 minuto supera 1.5x os cores disponíveis (permite rajadas sem travar a fila)
         // (Apenas disponível em sistemas Unix-like, no Windows loadavg retorna [0,0,0])
-        if (metrics.loadAvg[0] > (metrics.cpuCores * 0.90) && metrics.loadAvg[0] > 0) {
+        if (metrics.loadAvg[0] > (metrics.cpuCores * 1.5) && metrics.loadAvg[0] > 0) {
             return { overloaded: true, reason: `High CPU Load average: ${metrics.loadAvg[0].toFixed(2)}.` };
         }
 

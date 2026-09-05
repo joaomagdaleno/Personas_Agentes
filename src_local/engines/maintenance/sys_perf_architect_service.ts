@@ -497,6 +497,23 @@ export class SysPerfArchitectService {
     shouldVetoLine(line: string, file: string, domain?: string): boolean {
         return VetoEngine.shouldSkip(line, file, domain);
     }
+
+    /**
+     * 🌐 WASI Sandbox & WASM Micro-Agents Audit
+     * Audita vazamento de memória e limite de concorrência dos micro-agentes WASM.
+     */
+    async auditWasmMicroAgentsMemoryAndConcurrency(activeAgentsCount: number, memoryUsageMB: number): Promise<{ isSafe: boolean; recommendation?: string }> {
+        const maxConcurrency = SovereignResourceBudget.getInstance().getMaxWasmConcurrency();
+        if (activeAgentsCount > maxConcurrency) {
+            logger.warn(`⚠️ [SysPerf] Concorrência WASM excedida: ${activeAgentsCount}/${maxConcurrency}. Solicitando Instant Purge.`);
+            return { isSafe: false, recommendation: "Reduzir concorrência de sandboxes WASM ativas via Instant Purge." };
+        }
+        if (memoryUsageMB > 50) {
+            logger.warn(`⚠️ [SysPerf] Consumo de memória WASM elevado (${memoryUsageMB}MB). Solicitando limpeza de heap WASI.`);
+            return { isSafe: false, recommendation: "Executar WasmMicroAgentRuntime.purgeAll() para liberar heap." };
+        }
+        return { isSafe: true };
+    }
 }
 
 export function configureLogging(level: string = "info") {

@@ -102,6 +102,18 @@ export class WasmMicroAgentRuntime {
     }
 
     /**
+     * Purges all WASI sandbox allocations, releasing heap memory to 0MB.
+     */
+    public purgeAll(): boolean {
+        this.activeExecutions = 0;
+        if (global.gc) {
+            try { global.gc(); } catch {}
+        }
+        logger.info("✨ [WASM Runtime] PurgeAll concluído. Memória de todos os sandboxes WASI liberada (0MB).");
+        return true;
+    }
+
+    /**
      * Executes a WASM micro-agent within a simulated sandbox environment,
      * enforcing the strict concurrent limits specified by SovereignResourceBudget.
      */

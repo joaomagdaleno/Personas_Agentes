@@ -41,9 +41,14 @@ export class DualAPIEngine {
     private lastSwitchReason: string = "initial";
 
     constructor(config: DualAPIConfig = {}) {
-        this.geminiApiKey = config.geminiApiKey || process.env.GEMINI_API_KEY || "";
+        const rawGeminiKey = config.geminiApiKey || process.env.GEMINI_API_KEY || "";
+        const rawHfKey = config.huggingFaceApiKey || process.env.HUGGINGFACE_API_KEY || process.env.HF_TOKEN || "";
+
+        const isPlaceholder = (k: string) => !k || k.includes("YOUR_") || k.includes("placeholder") || k.length < 10;
+
+        this.geminiApiKey = isPlaceholder(rawGeminiKey) ? "" : rawGeminiKey;
         this.geminiModel = config.geminiModel || "gemini-1.5-flash";
-        this.huggingFaceApiKey = config.huggingFaceApiKey || process.env.HUGGINGFACE_API_KEY || process.env.HF_TOKEN || "";
+        this.huggingFaceApiKey = isPlaceholder(rawHfKey) ? "" : rawHfKey;
         this.huggingFaceModel = config.huggingFaceModel || "Qwen/Qwen2.5-Coder-7B-Instruct";
         this.timeoutMs = config.timeoutMs || 10000;
         this.geminiMaxRpm = config.geminiMaxRpm || 15;

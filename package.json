@@ -16,6 +16,7 @@
     "@protobuf-ts/plugin": "^2.11.1",
     "@protobuf-ts/runtime": "^2.11.1",
     "@protobuf-ts/runtime-rpc": "^2.11.1",
+    "@zvec/zvec-grep": "^0.2.1",
     "winston": "^3.19.0"
   },
   "scripts": {
