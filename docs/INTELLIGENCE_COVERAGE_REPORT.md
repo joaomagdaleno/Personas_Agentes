@@ -1,6 +1,6 @@
 # 🧠 Relatório de Cobertura de Inteligência e Pontos Cegos das Super Personas
 
-> **Data de Gerado:** 2026-09-05T01:52:28.312Z
+> **Data de Gerado:** 2026-09-05T02:25:39.575Z
 > **Status Geral de Inteligência:** 100% Coberto (11/11 Tecnologias)
 
 ---
@@ -16,7 +16,7 @@
 ## 🛠️ Tecnologias Mapeadas no Projeto
 | ID | Tecnologia / Feature | Categoria | Evidências / Módulos |
 | :--- | :--- | :--- | :--- |
-| `ts_bun` | **TypeScript / Bun Runtime** | Runtime | `package.json`, `dashboard/dev.ts` |
+| `ts_bun` | **TypeScript / Bun Runtime** | Runtime | `package.json`, `src_local/utils/nim/coder_bridge.ts` |
 | `slm_gguf` | **SLM / Local GGUF (Llama.cpp)** | AI/SLM | `src_local/utils/ai/warm_purge_offline_engine.ts`, `src_local/engines/diagnostics/intelligence_control_engine.ts` |
 | `cloud_ai_dual` | **Dual-API Cloud Engine (Gemini/HF)** | AI/SLM | `src_local/utils/ai/dual_api_engine.ts`, `src_local/engines/diagnostics/intelligence_control_engine.ts` |
 | `zvec_grep` | **ZvecGrep (Hybrid Vector/BM25 Search)** | Search Engine | `package.json`, `src_local/utils/zvec/zvec_grep_engine.ts` |
