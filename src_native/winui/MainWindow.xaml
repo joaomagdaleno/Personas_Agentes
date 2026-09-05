@@ -52,9 +52,9 @@
                     <TextBlock Text="Modelo:" FontSize="12" Foreground="#8A8F9E" VerticalAlignment="Center" Margin="10,0,0,0"/>
                     <ComboBox x:Name="ModelSelectorComboBox" SelectionChanged="OnModelSelectionChanged"
                               Background="#202127" Foreground="#ECECED" BorderBrush="#32343E" CornerRadius="6" Height="30" FontSize="11">
-                        <ComboBoxItem Content="🛠️ Qwen 2.5 Coder 7B (Coder)" Tag="qwen2.5-coder-7b" IsSelected="True"/>
+                        <ComboBoxItem Content="⚡ Qwen 2.5 Coder 1.5B (Fast / Lite)" Tag="qwen2.5-coder-1.5b" IsSelected="True"/>
+                        <ComboBoxItem Content="🛠️ Qwen 2.5 Coder 7B (Coder)" Tag="qwen2.5-coder-7b"/>
                         <ComboBoxItem Content="🧠 Qwen3-8B Thinking (Architect)" Tag="qwen3-8b-thinking"/>
-                        <ComboBoxItem Content="⚡ Qwen 2.5 Coder 1.5B (Fast / Chat)" Tag="qwen2.5-coder-1.5b"/>
                     </ComboBox>
                 </StackPanel>
 

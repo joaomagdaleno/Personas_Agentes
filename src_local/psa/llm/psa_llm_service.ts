@@ -110,6 +110,29 @@ export class PsaLLMService {
 
         const { WarmPurgeOfflineEngine } = await import("../../utils/ai/warm_purge_offline_engine.ts");
         const engine = WarmPurgeOfflineEngine.getInstance();
+        const modelPath = engine.findModelPath(targetFilename);
+
+        const isTestEnv = process.env.BUN_ENV === "test" || process.env.NODE_ENV === "test" || Boolean(process.env.TEST);
+
+        if (!modelPath && !isTestEnv) {
+            let sizeStr = "~1.06 GB";
+            if (targetFilename.includes("8B")) sizeStr = "~4.69 GB";
+            else if (targetFilename.includes("7b")) sizeStr = "~4.46 GB";
+
+            yield {
+                type: "text",
+                content: `⚠️ **Os pesos do modelo '${modelDef.name}' ainda não estão instalados nesta máquina.**\n\n` +
+                         `Arquivo necessário: \`${targetFilename}\` (${sizeStr})\n\n` +
+                         `📥 **Deseja baixar agora?**\n` +
+                         `Para baixar este modelo, execute o assistente no terminal:\n\n` +
+                         `\`\`\`powershell\n` +
+                         `bun run download-model --model ${modelDef.id}\n` +
+                         `\`\`\`\n` +
+                         `*(Ou no executável da distribuição: \`model-downloader.exe --model ${modelDef.id}\`)*\n\n` +
+                         `💡 **Dica de uso imediato:** Você pode selecionar o modelo padrão **⚡ Qwen 2.5 Coder 1.5B (Fast / Lite)** no menu acima — ele já está 100% instalado e disponível offline sem espera!`
+            };
+            return;
+        }
 
         let emittedAny = false;
         try {

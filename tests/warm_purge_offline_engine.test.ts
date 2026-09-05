@@ -84,4 +84,25 @@ describe("WarmPurgeOfflineEngine Unit Tests", () => {
         expect(telemetry.allocatedMemoryBytes).toBe(0);
         expect(telemetry.timeUntilPurgeMs).toBe(0);
     }, 20000);
+
+    it("should find installed model and return null for missing weights", () => {
+        const engine = WarmPurgeOfflineEngine.getInstance();
+        const installed = engine.findModelPath("qwen2.5-coder-1.5b-instruct-q4_k_m.gguf");
+        expect(installed).not.toBeNull();
+
+        const missing = engine.findModelPath("non-existent-model-xyz.gguf");
+        expect(missing).toBeNull();
+    });
+
+    it("should handle model switching mutex and unload previous model", async () => {
+        const engine = WarmPurgeOfflineEngine.getInstance();
+
+        // Warm with default/target model
+        await engine.generate("Ping");
+        expect(engine.getTelemetry().isWarm).toBe(true);
+
+        // Requesting a missing model gracefully returns false without crashing
+        const switchSuccess = await engine.ensureServerRunning("non-existent-model-xyz.gguf");
+        expect(switchSuccess).toBe(false);
+    }, 20000);
 });

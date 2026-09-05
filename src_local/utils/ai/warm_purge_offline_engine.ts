@@ -48,6 +48,7 @@ export class WarmPurgeOfflineEngine {
     private serverPort: number = Number(process.env.LLAMA_SERVER_PORT || 8081);
     private activeProcess: any = null;
     private activeServerProcess: any = null;
+    private currentLoadedModel: string | null = null;
 
     constructor() {
         this.checkBinaries();
@@ -164,12 +165,15 @@ export class WarmPurgeOfflineEngine {
     }
 
     /**
-     * Garante que o daemon llama-server.exe esteja ativo e pronto na porta 8081
+     * Garante que o daemon llama-server.exe esteja ativo e pronto na porta 8081.
+     * Caso um modelo diferente do atual tenha sido solicitado, realiza o chaveamento
+     * atômico (descarrega o anterior, libera a porta e carrega o novo).
      */
     public async ensureServerRunning(modelTarget?: string): Promise<boolean> {
-        const modelPath = this.findModelPath(modelTarget);
+        const targetName = modelTarget || this.modelName;
+        const modelPath = this.findModelPath(targetName);
         if (!modelPath) {
-            logger.warn(`⚠️ [WarmPurge] Modelo '${modelTarget || this.modelName}' não encontrado em disco.`);
+            logger.warn(`⚠️ [WarmPurge] Modelo '${targetName}' não encontrado em disco.`);
             return false;
         }
 
@@ -178,14 +182,22 @@ export class WarmPurgeOfflineEngine {
             return false;
         }
 
-        // Verifica se já está respondendo
-        try {
-            const check = await fetch(`http://127.0.0.1:${this.serverPort}/health`, { signal: AbortSignal.timeout(600) });
-            if (check.ok) {
-                this.isWarm = true;
-                return true;
+        // Se já está aquecido com um modelo diferente, encerra o modelo anterior para liberar a porta 8081 e a RAM
+        if (this.isWarm && this.currentLoadedModel && this.currentLoadedModel !== targetName) {
+            logger.info(`🔄 [WarmPurge] Alternando modelo: descarregando '${this.currentLoadedModel}' para carregar '${targetName}'...`);
+            this.forcePurge();
+            await new Promise(r => setTimeout(r, 600)); // Aguarda liberação do socket de rede pelo SO
+        } else if (this.isWarm && this.currentLoadedModel === targetName) {
+            // Verifica se o servidor já está ativo e saudável com o mesmo modelo
+            try {
+                const check = await fetch(`http://127.0.0.1:${this.serverPort}/health`, { signal: AbortSignal.timeout(600) });
+                if (check.ok) {
+                    return true;
+                }
+            } catch {
+                this.forcePurge();
             }
-        } catch {}
+        }
 
         // Verifica trava de RAM anti-OOM
         const is7bOr8b = modelPath.includes("7b") || modelPath.includes("8b");
@@ -220,7 +232,9 @@ export class WarmPurgeOfflineEngine {
                     const healthRes = await fetch(`http://127.0.0.1:${this.serverPort}/health`, { signal: AbortSignal.timeout(500) });
                     if (healthRes.ok) {
                         this.isWarm = true;
-                        logger.info(`✨ [WarmPurge] llama-server daemon operacional e aquecido na RAM!`);
+                        this.currentLoadedModel = targetName;
+                        this.estimatedRamBytes = is7bOr8b ? 4800 * 1024 * 1024 : 1500 * 1024 * 1024;
+                        logger.info(`✨ [WarmPurge] llama-server operacional e aquecido com '${targetName}'!`);
                         return true;
                     }
                 } catch {}
@@ -340,24 +354,6 @@ export class WarmPurgeOfflineEngine {
         return fullText || this.runDeterministicFallback(prompt, options.context);
     }
 
-    private findModelPath(): string | null {
-        const candidateDirs = [
-            path.join(process.cwd(), "models"),
-            path.join(process.env.PSA_MODELS_DIR || "", ""),
-            path.join(process.env.LOCALAPPDATA || "", "PersonasAgentes", "models"),
-            path.join(path.dirname(process.execPath), "..", "models"),
-            path.join(process.cwd(), ".models"),
-            path.join(process.cwd(), ".gemini", "models")
-        ];
-
-        for (const dir of candidateDirs) {
-            if (!dir) continue;
-            const p = path.join(dir, this.modelName);
-            if (fs.existsSync(p)) return p;
-        }
-        return null;
-    }
-
     public checkMemorySafety(requiredMb: number = 2048): boolean {
         const freeMb = os.freemem() / (1024 * 1024);
         if (freeMb < (requiredMb + 1024)) {
@@ -475,8 +471,9 @@ export class WarmPurgeOfflineEngine {
         }
         if (this.isWarm) {
             this.isWarm = false;
-            logger.info(`❄️ [WarmPurge] Forced Purge ativado: Modelo ${this.modelName} descarregado da RAM. Memória 100% devolvida ao SO (0MB).`);
+            logger.info(`❄️ [WarmPurge] Forced Purge ativado: Modelo '${this.currentLoadedModel || this.modelName}' descarregado da RAM. Memória 100% devolvida ao SO (0MB).`);
         }
+        this.currentLoadedModel = null;
         if (this.purgeTimer) {
             clearTimeout(this.purgeTimer);
             this.purgeTimer = null;
@@ -490,7 +487,7 @@ export class WarmPurgeOfflineEngine {
 
         return {
             isWarm: this.isWarm,
-            loadedModel: this.modelName,
+            loadedModel: this.currentLoadedModel || this.modelName,
             allocatedMemoryBytes: this.isWarm ? this.estimatedRamBytes : 0,
             lingerWindowMs: this.lingerWindowMs,
             timeUntilPurgeMs,

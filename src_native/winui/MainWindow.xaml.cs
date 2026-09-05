@@ -57,16 +57,93 @@ namespace PersonasAgentes.WinUI
         
         private PsaSessionItem? _currentSession;
         private PersonaItem? _selectedPersona;
-        private string _selectedModel = "qwen2.5-coder-7b";
+        private string _selectedModel = "qwen2.5-coder-1.5b";
         private string _selectedMode = "Standard";
         private bool _isDispatching = false;
         private int _totalTurnsCount = 0;
+        private Process? _backendProcess;
 
         public MainWindow()
         {
             this.InitializeComponent();
             InitializeSessions();
             InitializePersonas();
+            _ = EnsureBackendRunningAsync();
+        }
+
+        private async Task EnsureBackendRunningAsync()
+        {
+            try
+            {
+                using var cts = new System.Threading.CancellationTokenSource(TimeSpan.FromSeconds(1));
+                var response = await _httpClient.GetAsync("http://127.0.0.1:3080/health", cts.Token);
+                if (response.IsSuccessStatusCode)
+                {
+                    return; // Backend já operacional
+                }
+            }
+            catch
+            {
+                // Porta 3080 offline, precisa iniciar o backend
+            }
+
+            try
+            {
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                string[] candidatePaths = new[]
+                {
+                    Path.Combine(baseDir, "personas-engine.exe"),
+                    Path.Combine(baseDir, "bin", "personas-engine.exe"),
+                    Path.Combine(baseDir, "..", "bin", "personas-engine.exe"),
+                    Path.Combine(baseDir, "..", "dist", "bin", "personas-engine.exe"),
+                    Path.Combine(baseDir, "..", "..", "dist", "bin", "personas-engine.exe"),
+                    Path.Combine(baseDir, "..", "..", "..", "dist", "bin", "personas-engine.exe"),
+                    Path.Combine(Directory.GetCurrentDirectory(), "dist", "bin", "personas-engine.exe"),
+                    Path.Combine(Directory.GetCurrentDirectory(), "bin", "personas-engine.exe")
+                };
+
+                string? engineExe = null;
+                foreach (var pathCandidate in candidatePaths)
+                {
+                    string full = Path.GetFullPath(pathCandidate);
+                    if (File.Exists(full))
+                    {
+                        engineExe = full;
+                        break;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(engineExe))
+                {
+                    var psi = new ProcessStartInfo
+                    {
+                        FileName = engineExe,
+                        Arguments = "serve",
+                        WorkingDirectory = Path.GetDirectoryName(engineExe) ?? baseDir,
+                        CreateNoWindow = true,
+                        UseShellExecute = false,
+                        WindowStyle = ProcessWindowStyle.Hidden
+                    };
+                    _backendProcess = Process.Start(psi);
+
+                    // Aguarda estabilização do backend
+                    for (int i = 0; i < 25; i++)
+                    {
+                        await Task.Delay(400);
+                        try
+                        {
+                            using var cts = new System.Threading.CancellationTokenSource(TimeSpan.FromMilliseconds(600));
+                            var check = await _httpClient.GetAsync("http://127.0.0.1:3080/health", cts.Token);
+                            if (check.IsSuccessStatusCode) break;
+                        }
+                        catch {}
+                    }
+                }
+            }
+            catch
+            {
+                // Fallback silencioso
+            }
         }
 
         private void InitializeSessions()
@@ -155,11 +232,11 @@ namespace PersonasAgentes.WinUI
             UpdateToggleVisual(DeepThinkToggle, isChecked);
             if (isChecked && _selectedModel != "qwen3-8b-thinking")
             {
-                ModelSelectorComboBox.SelectedIndex = 1; // qwen3-8b-thinking
+                ModelSelectorComboBox.SelectedIndex = 2; // qwen3-8b-thinking
             }
             else if (!isChecked && _selectedModel == "qwen3-8b-thinking")
             {
-                ModelSelectorComboBox.SelectedIndex = 0; // qwen2.5-coder-7b
+                ModelSelectorComboBox.SelectedIndex = 0; // qwen2.5-coder-1.5b (Fast / Lite)
             }
         }
 
