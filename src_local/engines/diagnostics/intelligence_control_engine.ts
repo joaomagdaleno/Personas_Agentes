@@ -70,36 +70,133 @@ export class IntelligenceControlEngine {
     const technologies: DetectedTechnology[] = [];
     const files = this.getAllFiles(this.projectRoot);
 
+    // Inspect manifest files directly (e.g., package.json, Cargo.toml, go.mod, build.zig, opencode.jsonc)
+    const manifests = ["package.json", "opencode.jsonc", "Cargo.toml", "go.mod", "build.zig", ".env.example"];
+    const manifestContents: Record<string, string> = {};
+    for (const m of manifests) {
+      const p = path.join(this.projectRoot, m);
+      if (fs.existsSync(p)) {
+        try {
+          manifestContents[m] = fs.readFileSync(p, "utf-8");
+        } catch {}
+      }
+    }
+
     const techCatalog: Array<{
       id: string;
       name: string;
       category: DetectedTechnology["category"];
       pattern: RegExp;
+      manifestCheck?: (manifests: Record<string, string>) => boolean;
       description: string;
     }> = [
-      { id: "ts_bun", name: "TypeScript / Bun Runtime", category: "Runtime", pattern: /Bun\.(serve|file|spawn|FFI)|from "bun"/i, description: "Runtime JS/TS de alta velocidade com FFI nativo." },
-      { id: "slm_gguf", name: "SLM / Local GGUF (Llama.cpp)", category: "AI/SLM", pattern: /\.gguf|WarmPurgeOfflineEngine|llama/i, description: "Modelos locais offline compactos Qwen 0.5B em formato GGUF." },
-      { id: "cloud_ai_dual", name: "Dual-API Cloud Engine (Gemini/HF)", category: "AI/SLM", pattern: /DualAPIEngine|generativelanguage\.googleapis\.com|huggingface/i, description: "Roteamento inteligente com failover entre Gemini 1.5 e Hugging Face." },
-      { id: "zvec_grep", name: "ZvecGrep (Hybrid Vector/BM25 Search)", category: "Search Engine", pattern: /@zvec\/zvec-grep|ZvecGrepEngine|createZvecGrep/i, description: "Motor de busca híbrido vetorial + BM25 + ripgrep para agentes." },
-      { id: "wasm_micro_agents", name: "WASM Micro-Agents (WASI Runtime)", category: "Runtime", pattern: /WasmMicroAgentRuntime|\.wasm|WASI/i, description: "Micro-agentes efémeros rodando em sandbox WebAssembly WASI." },
-      { id: "zig_native_ffi", name: "Zig Native Analyzer & FFI", category: "Language", pattern: /\.zig|libzig_analyzer|ReadDirectoryChangesW/i, description: "Código de alta performance em Zig integrado via FFI no Bun." },
-      { id: "go_hub_grpc", name: "Go Hub gRPC Proxy", category: "IPC/RPC", pattern: /go-scanner|hub\.exe|@grpc\/grpc-js|HubManagerGRPC/i, description: "Barramento gRPC Go persistente para movimentação massiva de dados e AST." },
-      { id: "rust_simd", name: "Rust SIMD Analyzer & FFI", category: "Language", pattern: /PatternFinder|cargo|src_native\/analyzer/i, description: "Motor de auditoria de código e buscas Regex em Rust SIMD." },
-      { id: "nim_canvas", name: "Nim Canvas Desktop Interface", category: "Frontend", pattern: /\.nim|CoderNim/i, description: "Interface desktop nativa renderizada direto em Canvas via Nim." },
-      { id: "sqlite_persistence", name: "SQLite Persistence & Stability Ledger", category: "Database", pattern: /DatabaseHub|bun:sqlite|stability_ledger/i, description: "Persistência relacional local SQLite para histórico e estado." },
-      { id: "micro_gpt_neural", name: "MicroGPT Neural Subsystem", category: "AI/SLM", pattern: /MicroGPT|NeuralSubsystemService|PredictorEngine/i, description: "Rede neural própria em TypeScript para análise preditiva de anomalias." }
+      {
+        id: "ts_bun",
+        name: "TypeScript / Bun Runtime",
+        category: "Runtime",
+        pattern: /Bun\.(serve|file|spawn|FFI)|from "bun"/i,
+        manifestCheck: (m) => !!m["package.json"] && m["package.json"].includes("typescript"),
+        description: "Runtime JS/TS de alta velocidade com FFI nativo."
+      },
+      {
+        id: "slm_gguf",
+        name: "SLM / Local GGUF (Llama.cpp)",
+        category: "AI/SLM",
+        pattern: /\.gguf|WarmPurgeOfflineEngine|llama/i,
+        description: "Modelos locais offline compactos Qwen 0.5B em formato GGUF."
+      },
+      {
+        id: "cloud_ai_dual",
+        name: "Dual-API Cloud Engine (Gemini/HF)",
+        category: "AI/SLM",
+        pattern: /DualAPIEngine|generativelanguage\.googleapis\.com|huggingface/i,
+        description: "Roteamento inteligente com failover entre Gemini 1.5 e Hugging Face."
+      },
+      {
+        id: "zvec_grep",
+        name: "ZvecGrep (Hybrid Vector/BM25 Search)",
+        category: "Search Engine",
+        pattern: /@zvec\/zvec-grep|ZvecGrepEngine|createZvecGrep/i,
+        manifestCheck: (m) => !!m["package.json"] && m["package.json"].includes("@zvec/zvec-grep"),
+        description: "Motor de busca híbrido vetorial + BM25 + ripgrep para agentes."
+      },
+      {
+        id: "wasm_micro_agents",
+        name: "WASM Micro-Agents (WASI Runtime)",
+        category: "Runtime",
+        pattern: /WasmMicroAgentRuntime|\.wasm|WASI/i,
+        manifestCheck: (m) => !!m["package.json"] && (m["package.json"].includes("wasm") || m["package.json"].includes("agents_registry")),
+        description: "Micro-agentes efémeros rodando em sandbox WebAssembly WASI."
+      },
+      {
+        id: "zig_native_ffi",
+        name: "Zig Native Analyzer & FFI",
+        category: "Language",
+        pattern: /\.zig|libzig_analyzer|ReadDirectoryChangesW/i,
+        manifestCheck: (m) => !!m["build.zig"],
+        description: "Código de alta performance em Zig integrado via FFI no Bun."
+      },
+      {
+        id: "go_hub_grpc",
+        name: "Go Hub gRPC Proxy",
+        category: "IPC/RPC",
+        pattern: /go-scanner|hub\.exe|@grpc\/grpc-js|HubManagerGRPC/i,
+        manifestCheck: (m) => !!m["package.json"] && m["package.json"].includes("@grpc/grpc-js"),
+        description: "Barramento gRPC Go persistente para movimentação massiva de dados e AST."
+      },
+      {
+        id: "rust_simd",
+        name: "Rust SIMD Analyzer & FFI",
+        category: "Language",
+        pattern: /PatternFinder|cargo|src_native\/analyzer/i,
+        description: "Motor de auditoria de código e buscas Regex em Rust SIMD."
+      },
+      {
+        id: "nim_canvas",
+        name: "Nim Canvas Desktop Interface",
+        category: "Frontend",
+        pattern: /\.nim|CoderNim/i,
+        description: "Interface desktop nativa renderizada direto em Canvas via Nim."
+      },
+      {
+        id: "sqlite_persistence",
+        name: "SQLite Persistence & Stability Ledger",
+        category: "Database",
+        pattern: /DatabaseHub|bun:sqlite|stability_ledger/i,
+        description: "Persistência relacional local SQLite para histórico e estado."
+      },
+      {
+        id: "micro_gpt_neural",
+        name: "MicroGPT Neural Subsystem",
+        category: "AI/SLM",
+        pattern: /MicroGPT|NeuralSubsystemService|PredictorEngine/i,
+        description: "Rede neural própria em TypeScript para análise preditiva de anomalias."
+      }
     ];
 
     for (const tech of techCatalog) {
       const evidences: string[] = [];
+
+      // Add manifest evidence if manifest check passes
+      if (tech.manifestCheck && tech.manifestCheck(manifestContents)) {
+        for (const mName of manifests) {
+          if (manifestContents[mName] && (tech.pattern.test(manifestContents[mName]) || mName === "package.json")) {
+            evidences.push(mName);
+            break;
+          }
+        }
+      }
+
+      // Scan all repository files
       for (const filePath of files) {
-        if (filePath.includes("node_modules") || filePath.includes(".git") || filePath.includes("dist")) continue;
         try {
           const relativePath = path.relative(this.projectRoot, filePath).replace(/\\/g, "/");
           const content = fs.readFileSync(filePath, "utf-8");
           if (tech.pattern.test(content) || tech.pattern.test(relativePath)) {
-            evidences.push(relativePath);
-            if (evidences.length >= 5) break; // limite de até 5 evidências por tecnologia
+            if (!evidences.includes(relativePath)) {
+              evidences.push(relativePath);
+            }
+            if (evidences.length >= 5) break;
           }
         } catch {}
       }
@@ -365,10 +462,16 @@ export class IntelligenceControlEngine {
   private getAllFiles(dir: string): string[] {
     const results: string[] = [];
     if (!fs.existsSync(dir)) return results;
+
+    // Scan all project source, config, and native directories without excluding internal modules
+    // Only exclude external build artifacts / node_modules to avoid scanning third-party dependencies twice
+    const IGNORED_DIRS = new Set(["node_modules", ".git", "target", "build", ".gemini", "dist", "tmp_predictor_test"]);
+
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (IGNORED_DIRS.has(entry.name)) continue;
+
       const full = path.join(dir, entry.name);
       if (entry.isDirectory()) {
-        if (["node_modules", ".git", "target", "build", ".gemini", "dist"].includes(entry.name)) continue;
         results.push(...this.getAllFiles(full));
       } else {
         results.push(full);
