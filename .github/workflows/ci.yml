@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ main, master ]
 
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validate-and-build:
     runs-on: windows-latest
@@ -24,32 +28,27 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
+          cache: true
+          cache-dependency-path: src_native/winui/PersonasAgentes.WinUI.csproj
 
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.22'
-
-      - name: Instalar Dependências NPM/Bun
+      - name: Instalar Dependências
         run: bun install
 
-      - name: Verificar Binários Nativos
-        run: bun run ensure-binaries
-
-      - name: Executar Bateria de Testes (118 Testes Unitários)
-        run: bun test
-
-      - name: Executar Diagnóstico 360° Soberano
-        run: bun run diagnostic --skip-setup --dry-run
-
-      - name: Compilar Interface Desktop Nativa WinUI 3
-        run: dotnet build src_native/winui/PersonasAgentes.WinUI.csproj -c Release -p:Platform=x64
+      - name: Compilar e Publicar WinUI 3 (Self-Contained)
+        run: dotnet publish src_native/winui/PersonasAgentes.WinUI.csproj -c Release -r win-x64 --self-contained true -p:WindowsPackageType=None -p:WindowsAppSDKSelfContained=true
 
       - name: Gerar Pacote de Distribuição
         run: bun run bundle
 
-      - name: Publicar Artefato de Distribuição
+      - name: Instalar Inno Setup
+        run: choco install innosetup --no-progress -y
+
+      - name: Compilar Instalador (.exe)
+        run: |
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" .\installer\setup.iss
+
+      - name: Publicar Instalador (Setup Executável)
         uses: actions/upload-artifact@v4
         with:
-          name: PersonasAgentes-Windows-x64
-          path: dist/
+          name: PersonasAgentes-Setup-v2.0
+          path: dist-installer/PersonasAgentes-Setup-v2.0.exe
