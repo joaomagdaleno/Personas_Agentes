@@ -218,13 +218,69 @@ namespace PersonasAgentes.WinUI
             _selectedPersona = personas[0];
         }
 
-        private void OnSessionSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void OnSessionSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (SessionsListView?.SelectedItem is PsaSessionItem session)
             {
                 _currentSession = session;
-                RenderSessionTrajectory(session);
+                await LoadSessionTrajectoryFromBackendAsync(session);
             }
+        }
+
+        private async Task LoadSessionTrajectoryFromBackendAsync(PsaSessionItem session)
+        {
+            TrajectoryStackPanel.Children.Clear();
+            try
+            {
+                var response = await _httpClient.GetAsync($"http://127.0.0.1:3080/v1/sessions/{session.Id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    using var doc = JsonDocument.Parse(json);
+                    if (doc.RootElement.TryGetProperty("records", out var recArr) && recArr.ValueKind == JsonValueKind.Array)
+                    {
+                        session.Records.Clear();
+                        foreach (var elem in recArr.EnumerateArray())
+                        {
+                            string type = elem.TryGetProperty("type", out var t) ? t.GetString() ?? "text" : "text";
+                            string title = elem.TryGetProperty("title", out var ti) ? ti.GetString() ?? "" : "";
+                            string content = elem.TryGetProperty("content", out var c) ? c.GetString() ?? "" : "";
+                            long durationMs = elem.TryGetProperty("durationMs", out var d) ? d.GetInt64() : 0;
+
+                            session.Records.Add(new DshTrajectoryRecord
+                            {
+                                Type = type,
+                                Title = title,
+                                Content = content,
+                                DurationMs = durationMs
+                            });
+
+                            if (type == "UserPrompt" || type == "user_prompt")
+                            {
+                                TrajectoryStackPanel.Children.Add(CreateTurnHeaderCard(session.Records.Count, content));
+                            }
+                            else if (type == "reasoning")
+                            {
+                                var tuple = CreateReasoningNodeCard();
+                                tuple.Item2.Text = content;
+                                TrajectoryStackPanel.Children.Add(tuple.Item1);
+                            }
+                            else if (type == "text" || type == "model_output")
+                            {
+                                var tuple = CreateModelOutputNodeCard();
+                                tuple.Item2.Text = content;
+                                TrajectoryStackPanel.Children.Add(tuple.Item1);
+                            }
+                        }
+                        ScrollToBottom();
+                        return;
+                    }
+                }
+            }
+            catch { }
+
+            // Fallback para histórico local se a chamada de API falhar
+            RenderSessionTrajectory(session);
         }
 
         private void OnPersonaSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -981,7 +1037,7 @@ namespace PersonasAgentes.WinUI
 
                     var langText = new TextBlock
                     {
-                        Text = `📄 ${lang.ToUpper()}`,
+                        Text = $"📄 {lang.ToUpper()}",
                         FontSize = 10,
                         FontWeight = Microsoft.UI.Text.FontWeights.Bold,
                         Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 137, 180, 250)),

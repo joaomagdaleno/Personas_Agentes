@@ -70,7 +70,16 @@ const binaries = [
     }
 ];
 
-// 3. Tenta auto-compilar a DLL do Zig FFI se o compilador do Zig estiver presente
+import { buildWasmAgents } from "./build_wasm.ts";
+
+// 3. Compila micro-agentes WASM se o compilador do Zig estiver presente
+try {
+    buildWasmAgents();
+} catch (e: any) {
+    console.warn(`⚠️ [WASM Builder] Aviso: ${e.message}`);
+}
+
+// 4. Tenta auto-compilar a DLL do Zig FFI se o compilador do Zig estiver presente
 try {
     const zigDllPath = path.resolve(projectRoot, "src_native/zig_analyzer", zigDllName);
     const binZigDllPath = path.resolve(projectRoot, "bin", zigDllName);

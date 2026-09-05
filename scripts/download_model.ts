@@ -21,6 +21,7 @@ export const SLM_MODELS: SlmModelInfo[] = [
         name: "⚡ Qwen 2.5 Coder 1.5B (Ultra-Rápido / Triagem & Agentes)",
         filename: "qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
         url: "https://huggingface.co/Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF/resolve/main/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+        sha256: "4715f5c88c7b805847525381aa0909f29bf8eb543f339433ff9e3b1c67d16ee4",
         sizeMb: 1065,
         description: "Ideal para triagem de eventos, auto-healing, background e testes rápidos de latência."
     },
@@ -30,6 +31,7 @@ export const SLM_MODELS: SlmModelInfo[] = [
         name: "🧠 Qwen 3 / DeepSeek-R1 Distill 8B Thinking (Arquitetura & Raciocínio)",
         filename: "DeepSeek-R1-Distill-Llama-8B-Q4_K_M.gguf",
         url: "https://huggingface.co/bartowski/DeepSeek-R1-Distill-Llama-8B-GGUF/resolve/main/DeepSeek-R1-Distill-Llama-8B-Q4_K_M.gguf",
+        sha256: "888ed4ee21e06f1406e232eb1e93c1d9333919e83f063d8ff436e2f170e87b7a",
         sizeMb: 4692,
         description: "Raciocínio cognitivo profundo com tags <think>, planejamento de arquitetura e análise estrutural."
     },
@@ -39,6 +41,7 @@ export const SLM_MODELS: SlmModelInfo[] = [
         name: "🛠️ Qwen 2.5 Coder 7B (Engenharia de Código Completa & AST)",
         filename: "qwen2.5-coder-7b-instruct-q4_k_m.gguf",
         url: "https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct-GGUF/resolve/main/qwen2.5-coder-7b-instruct-q4_k_m.gguf",
+        sha256: "a9985392471cf4525ddc67e85c2c7760773d2f347f2ef8c13038a8e32906bb1b",
         sizeMb: 4466,
         description: "Geração pesada de código, refatoração de AST, execução de ferramentas e patches multilíngues."
     }
