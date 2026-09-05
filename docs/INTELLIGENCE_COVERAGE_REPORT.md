@@ -1,6 +1,6 @@
 # 🧠 Relatório de Cobertura de Inteligência e Pontos Cegos das Super Personas
 
-> **Data de Gerado:** 2026-09-04T23:55:46.220Z
+> **Data de Gerado:** 2026-09-05T00:18:31.136Z
 > **Status Geral de Inteligência:** 100% Coberto (11/11 Tecnologias)
 
 ---
@@ -20,7 +20,7 @@
 | `slm_gguf` | **SLM / Local GGUF (Llama.cpp)** | AI/SLM | `src_local/utils/ai/warm_purge_offline_engine.ts`, `src_local/engines/diagnostics/intelligence_control_engine.ts` |
 | `cloud_ai_dual` | **Dual-API Cloud Engine (Gemini/HF)** | AI/SLM | `src_local/utils/ai/dual_api_engine.ts`, `src_local/engines/diagnostics/intelligence_control_engine.ts` |
 | `zvec_grep` | **ZvecGrep (Hybrid Vector/BM25 Search)** | Search Engine | `src_local/utils/zvec/zvec_grep_engine.ts`, `src_local/engines/diagnostics/intelligence_control_engine.ts` |
-| `wasm_micro_agents` | **WASM Micro-Agents (WASI Runtime)** | Runtime | `src_native/hub/hub.exe`, `src_native/zig_analyzer/libzig_analyzer.so` |
+| `wasm_micro_agents` | **WASM Micro-Agents (WASI Runtime)** | Runtime | `src_native/analyzer/Cargo.lock`, `src_native/hub/hub` |
 | `zig_native_ffi` | **Zig Native Analyzer & FFI** | Language | `src_native/hub/hub.exe`, `src_native/zig_analyzer/libzig_analyzer.so` |
 | `go_hub_grpc` | **Go Hub gRPC Proxy** | IPC/RPC | `walkthrough.md`, `src_native/hub/hub.exe` |
 | `rust_simd` | **Rust SIMD Analyzer & FFI** | Language | `src_native/tray_rust/Cargo.toml`, `src_native/analyzer/src/connectivity.rs` |

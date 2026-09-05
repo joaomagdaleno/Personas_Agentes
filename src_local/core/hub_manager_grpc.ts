@@ -44,8 +44,9 @@ export class HubManagerGRPC {
     private readonly FAILURE_THRESHOLD = 5;
     private readonly COOLDOWN_MS = 30000; // 30s
 
-    private constructor(host: string = ENV_GATE.HUB_GRPC_HOST) {
+    private constructor(host: string = String(ENV_GATE.HUB_GRPC_HOST || "localhost:50051")) {
         let channelCredentials: ChannelCredentials;
+        const validHost = typeof host === "string" ? host : "localhost:50051";
 
         // Auto-detect mTLS certificates
         const certDir = path.resolve(__dirname, "../../src_native/hub/tls_certs");
@@ -68,7 +69,7 @@ export class HubManagerGRPC {
         }
 
         this.transport = new GrpcTransport({
-            host,
+            host: validHost,
             channelCredentials,
         });
         this.client = new HubServiceClient(this.transport);
