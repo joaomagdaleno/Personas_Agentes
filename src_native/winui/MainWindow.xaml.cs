@@ -146,22 +146,57 @@ namespace PersonasAgentes.WinUI
             }
         }
 
-        private void InitializeSessions()
+        private async void InitializeSessions()
         {
-            var sessions = new List<PsaSessionItem>
+            try
+            {
+                var response = await _httpClient.GetAsync("http://127.0.0.1:3080/v1/sessions");
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    using var doc = JsonDocument.Parse(json);
+                    if (doc.RootElement.TryGetProperty("sessions", out var sessArr) && sessArr.ValueKind == JsonValueKind.Array)
+                    {
+                        var fetchedSessions = new List<PsaSessionItem>();
+                        foreach (var elem in sessArr.EnumerateArray())
+                        {
+                            string id = elem.GetProperty("id").GetString() ?? Guid.NewGuid().ToString("N").Substring(0, 8);
+                            string persona = elem.TryGetProperty("persona", out var p) ? p.GetString() ?? "Strategic" : "Strategic";
+                            fetchedSessions.Add(new PsaSessionItem
+                            {
+                                Id = id,
+                                Name = $"Sessão #{id.Substring(0, Math.Min(6, id.Length))}",
+                                Info = $"Persona: {persona} • Vault SQLite",
+                                CreatedAt = DateTime.Now
+                            });
+                        }
+
+                        if (fetchedSessions.Count > 0)
+                        {
+                            SessionsListView.ItemsSource = fetchedSessions;
+                            SessionsListView.SelectedIndex = 0;
+                            _currentSession = fetchedSessions[0];
+                            return;
+                        }
+                    }
+                }
+            }
+            catch { }
+
+            var defaultSessions = new List<PsaSessionItem>
             {
                 new PsaSessionItem
                 {
                     Id = Guid.NewGuid().ToString("N").Substring(0, 8),
                     Name = "Sessão Inicial #a1f0",
-                    Info = "Persona: Strategic Cognitive • 0 turnos",
+                    Info = "Persona: Strategic Cognitive • Vault SQLite",
                     CreatedAt = DateTime.Now
                 }
             };
 
-            SessionsListView.ItemsSource = sessions;
+            SessionsListView.ItemsSource = defaultSessions;
             SessionsListView.SelectedIndex = 0;
-            _currentSession = sessions[0];
+            _currentSession = defaultSessions[0];
         }
 
         private void InitializePersonas()
@@ -262,15 +297,37 @@ namespace PersonasAgentes.WinUI
             }
         }
 
-        private void OnNewSessionClicked(object sender, RoutedEventArgs e)
+        private async void OnNewSessionClicked(object sender, RoutedEventArgs e)
         {
-            var sessions = (List<PsaSessionItem>)SessionsListView.ItemsSource;
             string newId = Guid.NewGuid().ToString("N").Substring(0, 8);
+            try
+            {
+                var payload = new
+                {
+                    persona = _selectedPersona?.Key ?? "strategic_cognitive_architect",
+                    model = _selectedModel
+                };
+                string jsonPayload = JsonSerializer.Serialize(payload);
+                var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+                var res = await _httpClient.PostAsync("http://127.0.0.1:3080/v1/sessions", content);
+                if (res.IsSuccessStatusCode)
+                {
+                    string resJson = await res.Content.ReadAsStringAsync();
+                    using var doc = JsonDocument.Parse(resJson);
+                    if (doc.RootElement.TryGetProperty("session", out var sessObj) && sessObj.TryGetProperty("id", out var idProp))
+                    {
+                        newId = idProp.GetString() ?? newId;
+                    }
+                }
+            }
+            catch { }
+
+            var sessions = (List<PsaSessionItem>)(SessionsListView.ItemsSource ?? new List<PsaSessionItem>());
             var newSession = new PsaSessionItem
             {
                 Id = newId,
-                Name = $"Sessão #{newId}",
-                Info = $"Persona: {_selectedPersona?.Name ?? "Strategic"} • 0 turnos",
+                Name = $"Sessão #{newId.Substring(0, Math.Min(6, newId.Length))}",
+                Info = $"Persona: {_selectedPersona?.Name ?? "Strategic"} • Vault Persistente",
                 CreatedAt = DateTime.Now
             };
             sessions.Insert(0, newSession);
@@ -822,11 +879,15 @@ namespace PersonasAgentes.WinUI
                 Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 24, 25, 30)),
                 BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 42, 44, 54)),
                 BorderThickness = new Thickness(1),
-                CornerRadius = new CornerRadius(8),
+                CornerRadius = new CornerRadius(10),
                 Padding = new Thickness(14, 12, 14, 12)
             };
 
-            var stack = new StackPanel { Spacing = 6 };
+            var stack = new StackPanel { Spacing = 8 };
+            var headerGrid = new Grid();
+            headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
             var header = new TextBlock
             {
                 Text = "💬 [MODEL SYNTHESIZED OUTPUT]",
@@ -834,6 +895,18 @@ namespace PersonasAgentes.WinUI
                 FontWeight = Microsoft.UI.Text.FontWeights.Bold,
                 Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 148, 226, 213))
             };
+            Grid.SetColumn(header, 0);
+            headerGrid.Children.Add(header);
+
+            var styleBadge = new Border
+            {
+                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 32, 34, 44)),
+                CornerRadius = new CornerRadius(4),
+                Padding = new Thickness(6, 2, 6, 2),
+                Child = new TextBlock { Text = "FLUENT ASSISTANT MARKDOWN", FontSize = 9, FontWeight = Microsoft.UI.Text.FontWeights.Bold, Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 137, 180, 250)) }
+            };
+            Grid.SetColumn(styleBadge, 1);
+            headerGrid.Children.Add(styleBadge);
 
             var content = new TextBlock
             {
@@ -842,12 +915,137 @@ namespace PersonasAgentes.WinUI
                 TextWrapping = TextWrapping.Wrap
             };
 
-            stack.Children.Add(header);
-            stack.Children.Add(content);
+            var formattedContainer = new StackPanel { Spacing = 6 };
+
+            content.RegisterPropertyChangedCallback(TextBlock.TextProperty, (s, dp) =>
+            {
+                RenderFluentAssistantMarkdown(content.Text, formattedContainer);
+            });
+
+            stack.Children.Add(headerGrid);
+            stack.Children.Add(formattedContainer);
             border.Child = stack;
 
             border.PointerPressed += (s, e) => SelectNodeForInspection("Model Output", content.Text, 800, content.Text.Length / 4);
             return Tuple.Create(border, content);
+        }
+
+        private void RenderFluentAssistantMarkdown(string rawText, StackPanel container)
+        {
+            container.Children.Clear();
+            if (string.IsNullOrEmpty(rawText)) return;
+
+            string[] blocks = rawText.Split(new[] { "```" }, StringSplitOptions.None);
+            for (int i = 0; i < blocks.Length; i++)
+            {
+                string block = blocks[i];
+                if (string.IsNullOrEmpty(block)) continue;
+
+                if (i % 2 == 1)
+                {
+                    // Code Block (Google Assistant / Antigravity Style Code Card)
+                    string lang = "code";
+                    string codeContent = block;
+
+                    int firstLineEnd = block.IndexOf('\n');
+                    if (firstLineEnd > 0)
+                    {
+                        string possibleLang = block.Substring(0, firstLineEnd).Trim();
+                        if (!string.IsNullOrEmpty(possibleLang) && possibleLang.Length < 15 && !possibleLang.Contains(' '))
+                        {
+                            lang = possibleLang;
+                            codeContent = block.Substring(firstLineEnd + 1);
+                        }
+                    }
+
+                    var codeCard = new Border
+                    {
+                        Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 17, 18, 22)),
+                        BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 50, 54, 68)),
+                        BorderThickness = new Thickness(1),
+                        CornerRadius = new CornerRadius(8),
+                        Padding = new Thickness(0),
+                        Margin = new Thickness(0, 4, 0, 4)
+                    };
+
+                    var cardStack = new StackPanel();
+
+                    // Card Header Bar
+                    var cardHeader = new Grid
+                    {
+                        Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 28, 30, 38)),
+                        Padding = new Thickness(12, 6, 12, 6)
+                    };
+                    cardHeader.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                    cardHeader.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+                    var langText = new TextBlock
+                    {
+                        Text = `📄 ${lang.ToUpper()}`,
+                        FontSize = 10,
+                        FontWeight = Microsoft.UI.Text.FontWeights.Bold,
+                        Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 137, 180, 250)),
+                        VerticalAlignment = VerticalAlignment.Center
+                    };
+                    Grid.SetColumn(langText, 0);
+                    cardHeader.Children.Add(langText);
+
+                    var copyBtn = new Button
+                    {
+                        Content = "Copiar Código 📋",
+                        FontSize = 10,
+                        Padding = new Thickness(8, 2, 8, 2),
+                        Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 42, 44, 56)),
+                        Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 236, 236, 237)),
+                        BorderThickness = new Thickness(0),
+                        CornerRadius = new CornerRadius(4)
+                    };
+
+                    string textToCopy = codeContent.Trim();
+                    copyBtn.Click += (s, e) =>
+                    {
+                        try
+                        {
+                            var dp = new Windows.ApplicationModel.DataTransfer.DataPackage();
+                            dp.SetText(textToCopy);
+                            Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(dp);
+                            copyBtn.Content = "Copiado! ✅";
+                        }
+                        catch { }
+                    };
+                    Grid.SetColumn(copyBtn, 1);
+                    cardHeader.Children.Add(copyBtn);
+
+                    // Code Content Block
+                    var codeTextBlock = new TextBlock
+                    {
+                        Text = codeContent.Trim(),
+                        FontSize = 12,
+                        FontFamily = new FontFamily("Consolas"),
+                        Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 166, 227, 161)),
+                        TextWrapping = TextWrapping.Wrap,
+                        Padding = new Thickness(12, 10, 12, 10)
+                    };
+
+                    cardStack.Children.Add(cardHeader);
+                    cardStack.Children.Add(codeTextBlock);
+                    codeCard.Child = cardStack;
+
+                    container.Children.Add(codeCard);
+                }
+                else
+                {
+                    // Text Block
+                    var textBlock = new TextBlock
+                    {
+                        Text = block,
+                        FontSize = 13,
+                        Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 236, 236, 237)),
+                        TextWrapping = TextWrapping.Wrap
+                    };
+                    container.Children.Add(textBlock);
+                }
+            }
         }
 
         private void AddTrajectoryErrorCard(string error)

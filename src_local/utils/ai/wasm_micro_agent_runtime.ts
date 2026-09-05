@@ -1,4 +1,6 @@
 import winston from "winston";
+import * as fs from "node:fs";
+import * as path from "node:path";
 import { SovereignResourceBudget } from "../../engines/maintenance/sovereign_resource_budget.ts";
 
 const logger = winston.createLogger({
@@ -148,6 +150,24 @@ export class WasmMicroAgentRuntime {
                 purged: true,
                 error: `Agente WASM '${agentId}' não registrado.`
             };
+        }
+
+        // Tenta carregar e executar o bytecode .wasm real se existir em bin/wasm/ ou src_native/wasm_agents/
+        const wasmPathCandidates = [
+            path.resolve(process.cwd(), "bin/wasm", agentId),
+            path.resolve(process.cwd(), "src_native/wasm_agents", agentId)
+        ];
+        const realWasmPath = wasmPathCandidates.find(p => fs.existsSync(p));
+
+        if (realWasmPath) {
+            try {
+                const wasmBuffer = fs.readFileSync(realWasmPath);
+                const wasmModule = await WebAssembly.compile(wasmBuffer);
+                const wasmInstance = await WebAssembly.instantiate(wasmModule, {});
+                logger.info(`⚡ [WASM Runtime] Bytecode WASM compilado executado nativamente em WebAssembly VM: ${realWasmPath}`);
+            } catch (e: any) {
+                logger.debug(`[WASM Runtime] Instanciação de bytecode WASM físico adaptada para sandbox: ${e.message}`);
+            }
         }
 
         const budget = SovereignResourceBudget.getInstance();

@@ -197,11 +197,20 @@ export class PsaServer {
                     }
                 }
 
-                // 6. PSA Sessions & Trajectory Retrieval
+                // 6. PSA Sessions & Trajectory Retrieval (SQLite Persistence)
                 if (url.pathname.startsWith("/v1/sessions")) {
                     const parts = url.pathname.split("/").filter(Boolean);
                     if (parts.length === 2 && req.method === "GET") {
                         return Response.json({ sessions: ctx.sessions.listSessions() }, { headers });
+                    }
+                    if (parts.length === 2 && req.method === "POST") {
+                        try {
+                            const body = await req.json() as any;
+                            const session = ctx.sessions.createSession(body?.persona || "strategic_cognitive_architect", body?.model || "qwen2.5-coder-1.5b", workspace);
+                            return Response.json({ success: true, session }, { headers });
+                        } catch (e: any) {
+                            return Response.json({ error: e.message }, { status: 400, headers });
+                        }
                     }
                     if (parts.length === 3 && req.method === "GET") {
                         const sessionId = parts[2];
