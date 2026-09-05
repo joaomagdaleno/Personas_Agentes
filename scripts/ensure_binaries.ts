@@ -53,6 +53,7 @@ const envReady = verifyEnvironment();
 const isWin = process.platform === "win32";
 const hubBinaryName = isWin ? "hub.exe" : "hub";
 const analyzerBinaryName = isWin ? "analyzer.exe" : "analyzer";
+const zigDllName = isWin ? "analyzer.dll" : "libzig_analyzer.so";
 
 const binaries = [
     {
@@ -68,6 +69,45 @@ const binaries = [
         buildCmd: `go build -o ${hubBinaryName} main.go`
     }
 ];
+
+import { buildWasmAgents } from "./build_wasm.ts";
+
+// 3. Compila micro-agentes WASM se o compilador do Zig estiver presente
+try {
+    buildWasmAgents();
+} catch (e: any) {
+    console.warn(`⚠️ [WASM Builder] Aviso: ${e.message}`);
+}
+
+// 4. Tenta auto-compilar a DLL do Zig FFI se o compilador do Zig estiver presente
+try {
+    const zigDllPath = path.resolve(projectRoot, "src_native/zig_analyzer", zigDllName);
+    const binZigDllPath = path.resolve(projectRoot, "bin", zigDllName);
+
+    if (!fs.existsSync(zigDllPath) && !fs.existsSync(binZigDllPath)) {
+        const hasZig = checkVersion("zig", ["version"], /(\d+\.\d+\.\d+)/, "0.11.0");
+        if (hasZig) {
+            console.log(`🛠️ [Zig FFI] Compilando lib compartilhada Zig (${zigDllName})...`);
+            execSync(`zig build-lib -O ReleaseFast -dynamic analyzer.zig -femit-bin=${zigDllName}`, {
+                cwd: path.resolve(projectRoot, "src_native/zig_analyzer"),
+                stdio: "inherit"
+            });
+
+            // Copia para a pasta bin
+            fs.mkdirSync(path.resolve(projectRoot, "bin"), { recursive: true });
+            if (fs.existsSync(zigDllPath)) {
+                fs.copyFileSync(zigDllPath, binZigDllPath);
+                console.log(`✅ [Zig FFI] ${zigDllName} compilado e copiado para bin/ com sucesso.`);
+            }
+        } else {
+            console.log("ℹ️ [Zig FFI] Compilador Zig não detectado. O orquestrador usará o fallback reativo em TypeScript.");
+        }
+    } else {
+        console.log(`✅ [Zig FFI] ${zigDllName} presente.`);
+    }
+} catch (e: any) {
+    console.warn(`⚠️ [Zig FFI] Não foi possível compilar ${zigDllName} (${e.message}). O sistema usará o fallback em TypeScript.`);
+}
 
 console.log("🔍 Verificando integridade dos binários nativos...");
 

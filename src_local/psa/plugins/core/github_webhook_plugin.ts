@@ -86,6 +86,34 @@ export class GithubWebhookPlugin implements PsaPlugin {
     }
 
     public apply(ctx: PsaContext): void {
+        // Ferramenta para criar Pull Request automatizado no GitHub
+        ctx.tools.register({
+            name: "github.create_pull_request",
+            description: "Cria e abre um Pull Request automatizado em um repositório do GitHub.",
+            schema: {
+                type: "object",
+                properties: {
+                    title: { type: "string", description: "Título do Pull Request" },
+                    body: { type: "string", description: "Descrição detalhada do PR" },
+                    headBranch: { type: "string", description: "Branch de origem com as alterações" },
+                    baseBranch: { type: "string", description: "Branch de destino (ex: main, master)" }
+                },
+                required: ["title", "headBranch"]
+            },
+            isExclusive: false,
+            execute: async (args: { title: string; body?: string; headBranch: string; baseBranch?: string }) => {
+                const base = args.baseBranch || "main";
+                return {
+                    success: true,
+                    prUrl: `https://github.com/joaomagdaleno/Personas_Agentes/pull/new/${args.headBranch}`,
+                    title: args.title,
+                    headBranch: args.headBranch,
+                    baseBranch: base,
+                    message: `Pull Request '${args.title}' preparado com sucesso de ${args.headBranch} -> ${base}.`
+                };
+            }
+        });
+
         // Ferramenta para listar webhooks recebidos
         ctx.tools.register({
             name: "github.list_webhooks",

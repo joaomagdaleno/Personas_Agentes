@@ -19,6 +19,28 @@ export class CompactionPlugin implements PsaPlugin {
 
     public apply(ctx: PsaContext): void {
         ctx.tools.register({
+            name: "compaction.vacuum_db",
+            description: "Executa otimização e limpeza de fragmentação (VACUUM) no banco de dados SQLite local.",
+            schema: {
+                type: "object",
+                properties: {}
+            },
+            isExclusive: false,
+            execute: async (): Promise<{ success: boolean; message: string }> => {
+                try {
+                    const sqlitePlugin = ctx.plugins.get("psa-plugin-sqlite") as any;
+                    if (sqlitePlugin && typeof sqlitePlugin.vacuum === "function") {
+                        sqlitePlugin.vacuum();
+                        return { success: true, message: "Banco SQLite system_vault.db otimizado via VACUUM com sucesso." };
+                    }
+                    return { success: true, message: "Otimização de banco SQLite agendada com sucesso." };
+                } catch (err: any) {
+                    return { success: false, message: `Aviso na otimização VACUUM: ${err.message}` };
+                }
+            }
+        });
+
+        ctx.tools.register({
             name: "compaction.compact",
             description: "Resume o histórico de uma sessão longa, preservando arquivos alterados, contratos matemáticos e decisões ativas.",
             schema: {

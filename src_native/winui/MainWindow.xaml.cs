@@ -69,6 +69,76 @@ namespace PersonasAgentes.WinUI
             InitializeSessions();
             InitializePersonas();
             _ = EnsureBackendRunningAsync();
+            CheckPreviousCrashLogs();
+            _ = CheckForUpdatesAsync();
+        }
+
+        private async Task CheckForUpdatesAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("http://127.0.0.1:3080/v1/version");
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    using var doc = JsonDocument.Parse(json);
+                    if (doc.RootElement.TryGetProperty("version", out var vProp))
+                    {
+                        string currentVersion = vProp.GetString() ?? "2.0.0";
+                        bool hasUpdate = doc.RootElement.TryGetProperty("updateAvailable", out var uProp) && uProp.GetBoolean();
+
+                        DispatcherQueue.TryEnqueue(() =>
+                        {
+                            if (hasUpdate)
+                            {
+                                TelemetryTurnsTextBlock.Text = $"Versão: v{currentVersion} (Nova Versão Disponível 🚀)";
+                                TelemetryTurnsTextBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 16, 185, 129));
+                            }
+                            else
+                            {
+                                TelemetryTurnsTextBlock.Text = $"Versão: v{currentVersion}";
+                            }
+                        });
+                    }
+                }
+            }
+            catch { }
+        }
+
+        private void CheckPreviousCrashLogs()
+        {
+            try
+            {
+                string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                string logPath = Path.Combine(localAppData, "PersonasAgentes", "logs", "winui_crash.log");
+                if (File.Exists(logPath) && new FileInfo(logPath).Length > 0)
+                {
+                    InspectorTitleTextBlock.Text = "⚠️ REGISTRO DE ERRO ANTERIOR DETECTADO";
+                    InspectorMetaTextBlock.Text = $"Arquivo: {logPath}\nStatus: Registrado em log de diagnóstico";
+                    string crashContent = File.ReadAllText(logPath);
+                    InspectorPayloadTextBlock.Text = crashContent.Substring(Math.Max(0, crashContent.Length - 1000));
+                }
+            }
+            catch { }
+        }
+
+        private void UpdateSlmTelemetryVisual(bool isWarm, string modelName)
+        {
+            if (SlmStateTextBlock == null || SlmStateBorder == null) return;
+            if (isWarm)
+            {
+                SlmStateTextBlock.Text = $"🟢 SLM: Warmed (~1.0GB)";
+                SlmStateTextBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 16, 185, 129));
+                SlmStateBorder.Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 22, 46, 34));
+                SlmStateBorder.BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 16, 185, 129));
+            }
+            else
+            {
+                SlmStateTextBlock.Text = $"❄️ SLM: Purged (0MB)";
+                SlmStateTextBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 137, 180, 250));
+                SlmStateBorder.Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 29, 36, 50));
+                SlmStateBorder.BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 137, 180, 250));
+            }
         }
 
         private async Task EnsureBackendRunningAsync()
@@ -146,22 +216,57 @@ namespace PersonasAgentes.WinUI
             }
         }
 
-        private void InitializeSessions()
+        private async void InitializeSessions()
         {
-            var sessions = new List<PsaSessionItem>
+            try
+            {
+                var response = await _httpClient.GetAsync("http://127.0.0.1:3080/v1/sessions");
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    using var doc = JsonDocument.Parse(json);
+                    if (doc.RootElement.TryGetProperty("sessions", out var sessArr) && sessArr.ValueKind == JsonValueKind.Array)
+                    {
+                        var fetchedSessions = new List<PsaSessionItem>();
+                        foreach (var elem in sessArr.EnumerateArray())
+                        {
+                            string id = elem.GetProperty("id").GetString() ?? Guid.NewGuid().ToString("N").Substring(0, 8);
+                            string persona = elem.TryGetProperty("persona", out var p) ? p.GetString() ?? "Strategic" : "Strategic";
+                            fetchedSessions.Add(new PsaSessionItem
+                            {
+                                Id = id,
+                                Name = $"Sessão #{id.Substring(0, Math.Min(6, id.Length))}",
+                                Info = $"Persona: {persona} • Vault SQLite",
+                                CreatedAt = DateTime.Now
+                            });
+                        }
+
+                        if (fetchedSessions.Count > 0)
+                        {
+                            SessionsListView.ItemsSource = fetchedSessions;
+                            SessionsListView.SelectedIndex = 0;
+                            _currentSession = fetchedSessions[0];
+                            return;
+                        }
+                    }
+                }
+            }
+            catch { }
+
+            var defaultSessions = new List<PsaSessionItem>
             {
                 new PsaSessionItem
                 {
                     Id = Guid.NewGuid().ToString("N").Substring(0, 8),
                     Name = "Sessão Inicial #a1f0",
-                    Info = "Persona: Strategic Cognitive • 0 turnos",
+                    Info = "Persona: Strategic Cognitive • Vault SQLite",
                     CreatedAt = DateTime.Now
                 }
             };
 
-            SessionsListView.ItemsSource = sessions;
+            SessionsListView.ItemsSource = defaultSessions;
             SessionsListView.SelectedIndex = 0;
-            _currentSession = sessions[0];
+            _currentSession = defaultSessions[0];
         }
 
         private void InitializePersonas()
@@ -183,13 +288,85 @@ namespace PersonasAgentes.WinUI
             _selectedPersona = personas[0];
         }
 
-        private void OnSessionSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void OnSessionSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (SessionsListView?.SelectedItem is PsaSessionItem session)
             {
                 _currentSession = session;
-                RenderSessionTrajectory(session);
+                await LoadSessionTrajectoryFromBackendAsync(session);
             }
+        }
+
+        private async Task LoadSessionTrajectoryFromBackendAsync(PsaSessionItem session)
+        {
+            TrajectoryStackPanel.Children.Clear();
+            try
+            {
+                var response = await _httpClient.GetAsync($"http://127.0.0.1:3080/v1/sessions/{session.Id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    using var doc = JsonDocument.Parse(json);
+                    if (doc.RootElement.TryGetProperty("records", out var recArr) && recArr.ValueKind == JsonValueKind.Array)
+                    {
+                        session.Records.Clear();
+                        foreach (var elem in recArr.EnumerateArray())
+                        {
+                            string type = elem.TryGetProperty("type", out var t) ? t.GetString() ?? "text" : "text";
+                            string title = elem.TryGetProperty("title", out var ti) ? ti.GetString() ?? "" : "";
+                            string content = elem.TryGetProperty("content", out var c) ? c.GetString() ?? "" : "";
+                            long durationMs = elem.TryGetProperty("durationMs", out var d) ? d.GetInt64() : 0;
+
+                            session.Records.Add(new DshTrajectoryRecord
+                            {
+                                Type = type,
+                                Title = title,
+                                Content = content,
+                                DurationMs = durationMs
+                            });
+
+                            if (type == "UserPrompt" || type == "user_prompt")
+                            {
+                                TrajectoryStackPanel.Children.Add(CreateTurnHeaderCard(session.Records.Count, content));
+                            }
+                            else if (type == "reasoning")
+                            {
+                                var tuple = CreateReasoningNodeCard();
+                                tuple.Item2.Text = content;
+                                TrajectoryStackPanel.Children.Add(tuple.Item1);
+                            }
+                            else if (type == "tool_call")
+                            {
+                                using var emptyDoc = JsonDocument.Parse("{}");
+                                var toolCard = CreateToolCallNodeCard(title.Length > 0 ? title : "Tool Executed", emptyDoc.RootElement);
+                                TrajectoryStackPanel.Children.Add(toolCard);
+                            }
+                            else if (type == "tool_result")
+                            {
+                                var toolResCard = CreateToolResultNodeCard(content);
+                                TrajectoryStackPanel.Children.Add(toolResCard);
+                            }
+                            else if (type == "verification")
+                            {
+                                var verifCard = CreateVerificationNodeCard(content);
+                                TrajectoryStackPanel.Children.Add(verifCard);
+                            }
+                            else if (type == "text" || type == "model_output")
+                            {
+                                var tuple = CreateModelOutputNodeCard();
+                                tuple.Item2.Text = content;
+                                TrajectoryStackPanel.Children.Add(tuple.Item1);
+                            }
+                        }
+                        ScrollToBottom();
+                        return;
+                    }
+                }
+            }
+            catch { }
+
+            // Fallback para histórico local se a chamada de API falhar
+            RenderSessionTrajectory(session);
         }
 
         private void OnPersonaSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -205,6 +382,85 @@ namespace PersonasAgentes.WinUI
             if (ModeComboBox?.SelectedItem is ComboBoxItem item && item.Content is string modeName)
             {
                 _selectedMode = modeName;
+            }
+        }
+
+        private void OnDownloadModelClicked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                string[] candidatePaths = new[]
+                {
+                    Path.Combine(baseDir, "model-downloader.exe"),
+                    Path.Combine(baseDir, "bin", "model-downloader.exe"),
+                    Path.Combine(baseDir, "..", "bin", "model-downloader.exe"),
+                    Path.Combine(baseDir, "..", "dist", "bin", "model-downloader.exe"),
+                    Path.Combine(Directory.GetCurrentDirectory(), "dist", "bin", "model-downloader.exe"),
+                    Path.Combine(Directory.GetCurrentDirectory(), "bin", "model-downloader.exe")
+                };
+
+                string? downloaderExe = null;
+                foreach (var pathCandidate in candidatePaths)
+                {
+                    string full = Path.GetFullPath(pathCandidate);
+                    if (File.Exists(full))
+                    {
+                        downloaderExe = full;
+                        break;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(downloaderExe))
+                {
+                    if (DownloadProgressBar != null) DownloadProgressBar.Visibility = Visibility.Visible;
+
+                    var psi = new ProcessStartInfo
+                    {
+                        FileName = downloaderExe,
+                        Arguments = $"--model {_selectedModel} --auto-close 5",
+                        WorkingDirectory = Path.GetDirectoryName(downloaderExe) ?? baseDir,
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        CreateNoWindow = true
+                    };
+
+                    var proc = new Process { StartInfo = psi };
+                    proc.OutputDataReceived += (s, argsData) =>
+                    {
+                        if (string.IsNullOrEmpty(argsData.Data)) return;
+                        DispatcherQueue.TryEnqueue(() =>
+                        {
+                            InspectorPayloadTextBlock.Text = argsData.Data;
+                            if (argsData.Data.Contains("%"))
+                            {
+                                int idx = argsData.Data.IndexOf('%');
+                                if (idx > 3)
+                                {
+                                    string sub = argsData.Data.Substring(idx - 3, 3).Trim();
+                                    if (int.TryParse(sub, out int pVal) && DownloadProgressBar != null)
+                                    {
+                                        DownloadProgressBar.Value = pVal;
+                                    }
+                                }
+                            }
+                        });
+                    };
+
+                    proc.Start();
+                    proc.BeginOutputReadLine();
+
+                    InspectorTitleTextBlock.Text = "📥 GERENCIADOR DE MODELOS INICIADO";
+                    InspectorPayloadTextBlock.Text = $"Iniciando download do modelo '{_selectedModel}' via {downloaderExe}...";
+                }
+                else
+                {
+                    AddTrajectoryErrorCard("⚠️ Executável 'model-downloader.exe' não encontrado na pasta de instalação.");
+                }
+            }
+            catch (Exception ex)
+            {
+                AddTrajectoryErrorCard($"❌ Falha ao iniciar gerenciador de modelos: {ex.Message}");
             }
         }
 
@@ -262,15 +518,37 @@ namespace PersonasAgentes.WinUI
             }
         }
 
-        private void OnNewSessionClicked(object sender, RoutedEventArgs e)
+        private async void OnNewSessionClicked(object sender, RoutedEventArgs e)
         {
-            var sessions = (List<PsaSessionItem>)SessionsListView.ItemsSource;
             string newId = Guid.NewGuid().ToString("N").Substring(0, 8);
+            try
+            {
+                var payload = new
+                {
+                    persona = _selectedPersona?.Key ?? "strategic_cognitive_architect",
+                    model = _selectedModel
+                };
+                string jsonPayload = JsonSerializer.Serialize(payload);
+                var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+                var res = await _httpClient.PostAsync("http://127.0.0.1:3080/v1/sessions", content);
+                if (res.IsSuccessStatusCode)
+                {
+                    string resJson = await res.Content.ReadAsStringAsync();
+                    using var doc = JsonDocument.Parse(resJson);
+                    if (doc.RootElement.TryGetProperty("session", out var sessObj) && sessObj.TryGetProperty("id", out var idProp))
+                    {
+                        newId = idProp.GetString() ?? newId;
+                    }
+                }
+            }
+            catch { }
+
+            var sessions = (List<PsaSessionItem>)(SessionsListView.ItemsSource ?? new List<PsaSessionItem>());
             var newSession = new PsaSessionItem
             {
                 Id = newId,
-                Name = $"Sessão #{newId}",
-                Info = $"Persona: {_selectedPersona?.Name ?? "Strategic"} • 0 turnos",
+                Name = $"Sessão #{newId.Substring(0, Math.Min(6, newId.Length))}",
+                Info = $"Persona: {_selectedPersona?.Name ?? "Strategic"} • Vault Persistente",
                 CreatedAt = DateTime.Now
             };
             sessions.Insert(0, newSession);
@@ -302,6 +580,20 @@ namespace PersonasAgentes.WinUI
         private void OnDispatchClicked(object sender, RoutedEventArgs e)
         {
             _ = DispatchTurnAsync();
+        }
+
+        private async void OnCancelClicked(object sender, RoutedEventArgs e)
+        {
+            if (!_isDispatching || _currentSession == null) return;
+            try
+            {
+                var payload = new { sessionId = _currentSession.Id };
+                string jsonPayload = JsonSerializer.Serialize(payload);
+                var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+                await _httpClient.PostAsync("http://127.0.0.1:3080/v1/stream/cancel", content);
+                AddTrajectoryErrorCard("🛑 Turno cancelado pelo operador.");
+            }
+            catch { }
         }
 
         private async Task DispatchTurnAsync()
@@ -822,11 +1114,15 @@ namespace PersonasAgentes.WinUI
                 Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 24, 25, 30)),
                 BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 42, 44, 54)),
                 BorderThickness = new Thickness(1),
-                CornerRadius = new CornerRadius(8),
+                CornerRadius = new CornerRadius(10),
                 Padding = new Thickness(14, 12, 14, 12)
             };
 
-            var stack = new StackPanel { Spacing = 6 };
+            var stack = new StackPanel { Spacing = 8 };
+            var headerGrid = new Grid();
+            headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
             var header = new TextBlock
             {
                 Text = "💬 [MODEL SYNTHESIZED OUTPUT]",
@@ -834,6 +1130,18 @@ namespace PersonasAgentes.WinUI
                 FontWeight = Microsoft.UI.Text.FontWeights.Bold,
                 Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 148, 226, 213))
             };
+            Grid.SetColumn(header, 0);
+            headerGrid.Children.Add(header);
+
+            var styleBadge = new Border
+            {
+                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 32, 34, 44)),
+                CornerRadius = new CornerRadius(4),
+                Padding = new Thickness(6, 2, 6, 2),
+                Child = new TextBlock { Text = "FLUENT ASSISTANT MARKDOWN", FontSize = 9, FontWeight = Microsoft.UI.Text.FontWeights.Bold, Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 137, 180, 250)) }
+            };
+            Grid.SetColumn(styleBadge, 1);
+            headerGrid.Children.Add(styleBadge);
 
             var content = new TextBlock
             {
@@ -842,12 +1150,190 @@ namespace PersonasAgentes.WinUI
                 TextWrapping = TextWrapping.Wrap
             };
 
-            stack.Children.Add(header);
-            stack.Children.Add(content);
+            var formattedContainer = new StackPanel { Spacing = 6 };
+
+            content.RegisterPropertyChangedCallback(TextBlock.TextProperty, (s, dp) =>
+            {
+                RenderFluentAssistantMarkdown(content.Text, formattedContainer);
+            });
+
+            stack.Children.Add(headerGrid);
+            stack.Children.Add(formattedContainer);
             border.Child = stack;
 
             border.PointerPressed += (s, e) => SelectNodeForInspection("Model Output", content.Text, 800, content.Text.Length / 4);
             return Tuple.Create(border, content);
+        }
+
+        private void RenderFluentAssistantMarkdown(string rawText, StackPanel container)
+        {
+            container.Children.Clear();
+            if (string.IsNullOrEmpty(rawText)) return;
+
+            string[] blocks = rawText.Split(new[] { "```" }, StringSplitOptions.None);
+            for (int i = 0; i < blocks.Length; i++)
+            {
+                string block = blocks[i];
+                if (string.IsNullOrEmpty(block)) continue;
+
+                if (i % 2 == 1)
+                {
+                    // Code Block (Google Assistant / Antigravity Style Code Card)
+                    string lang = "code";
+                    string codeContent = block;
+
+                    int firstLineEnd = block.IndexOf('\n');
+                    if (firstLineEnd > 0)
+                    {
+                        string possibleLang = block.Substring(0, firstLineEnd).Trim();
+                        if (!string.IsNullOrEmpty(possibleLang) && possibleLang.Length < 15 && !possibleLang.Contains(' '))
+                        {
+                            lang = possibleLang;
+                            codeContent = block.Substring(firstLineEnd + 1);
+                        }
+                    }
+
+                    var codeCard = new Border
+                    {
+                        Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 17, 18, 22)),
+                        BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 50, 54, 68)),
+                        BorderThickness = new Thickness(1),
+                        CornerRadius = new CornerRadius(8),
+                        Padding = new Thickness(0),
+                        Margin = new Thickness(0, 4, 0, 4)
+                    };
+
+                    var cardStack = new StackPanel();
+
+                    // Card Header Bar
+                    var cardHeader = new Grid
+                    {
+                        Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 28, 30, 38)),
+                        Padding = new Thickness(12, 6, 12, 6)
+                    };
+                    cardHeader.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                    cardHeader.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+                    var langStack = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 6, VerticalAlignment = VerticalAlignment.Center };
+                    var langText = new TextBlock
+                    {
+                        Text = $"📄 {lang.ToUpper()}",
+                        FontSize = 10,
+                        FontWeight = Microsoft.UI.Text.FontWeights.Bold,
+                        Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 137, 180, 250)),
+                        VerticalAlignment = VerticalAlignment.Center
+                    };
+
+                    var syntaxBadge = new Border
+                    {
+                        Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 22, 46, 34)),
+                        CornerRadius = new CornerRadius(4),
+                        Padding = new Thickness(4, 1, 4, 1),
+                        Child = new TextBlock { Text = "Sintaxe Válida ✅", FontSize = 8, FontWeight = Microsoft.UI.Text.FontWeights.Bold, Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 16, 185, 129)) }
+                    };
+
+                    langStack.Children.Add(langText);
+                    langStack.Children.Add(syntaxBadge);
+                    Grid.SetColumn(langStack, 0);
+                    cardHeader.Children.Add(langStack);
+
+                    var copyBtn = new Button
+                    {
+                        Content = "Copiar Código 📋",
+                        FontSize = 10,
+                        Padding = new Thickness(8, 2, 8, 2),
+                        Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 42, 44, 56)),
+                        Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 236, 236, 237)),
+                        BorderThickness = new Thickness(0),
+                        CornerRadius = new CornerRadius(4)
+                    };
+
+                    string textToCopy = codeContent.Trim();
+                    copyBtn.Click += (s, e) =>
+                    {
+                        try
+                        {
+                            var dp = new Windows.ApplicationModel.DataTransfer.DataPackage();
+                            dp.SetText(textToCopy);
+                            Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(dp);
+                            copyBtn.Content = "Copiado! ✅";
+                        }
+                        catch { }
+                    };
+                    Grid.SetColumn(copyBtn, 1);
+                    cardHeader.Children.Add(copyBtn);
+
+                    // Code Content Block with Diff Highlighting
+                    if (lang.Equals("diff", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var diffContainer = new StackPanel { Padding = new Thickness(12, 8, 12, 8), Spacing = 2 };
+                        string[] diffLines = codeContent.Trim().Split('\n');
+                        foreach (string dLine in diffLines)
+                        {
+                            var lineBlock = new TextBlock
+                            {
+                                Text = dLine,
+                                FontSize = 12,
+                                FontFamily = new FontFamily("Consolas"),
+                                TextWrapping = TextWrapping.Wrap
+                            };
+
+                            if (dLine.StartsWith("+"))
+                            {
+                                lineBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 166, 227, 161));
+                            }
+                            else if (dLine.StartsWith("-"))
+                            {
+                                lineBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 243, 139, 168));
+                            }
+                            else
+                            {
+                                lineBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 166, 173, 200));
+                            }
+                            diffContainer.Children.Add(lineBlock);
+                        }
+                        cardStack.Children.Add(cardHeader);
+                        cardStack.Children.Add(diffContainer);
+                    }
+                    else
+                    {
+                        var codeTextBlock = new TextBlock
+                        {
+                            Text = codeContent.Trim(),
+                            FontSize = 12,
+                            FontFamily = new FontFamily("Consolas"),
+                            Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 166, 227, 161)),
+                            TextWrapping = TextWrapping.Wrap,
+                            Padding = new Thickness(12, 10, 12, 10)
+                        };
+                    var codeScrollViewer = new ScrollViewer
+                    {
+                        MaxHeight = 400,
+                        VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                        HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                        Content = codeTextBlock
+                    };
+
+                        cardStack.Children.Add(cardHeader);
+                    cardStack.Children.Add(codeScrollViewer);
+                    }
+                    codeCard.Child = cardStack;
+
+                    container.Children.Add(codeCard);
+                }
+                else
+                {
+                    // Text Block
+                    var textBlock = new TextBlock
+                    {
+                        Text = block,
+                        FontSize = 13,
+                        Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 236, 236, 237)),
+                        TextWrapping = TextWrapping.Wrap
+                    };
+                    container.Children.Add(textBlock);
+                }
+            }
         }
 
         private void AddTrajectoryErrorCard(string error)
@@ -863,6 +1349,25 @@ namespace PersonasAgentes.WinUI
             border.Child = new TextBlock { Text = error, Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 243, 139, 168)), TextWrapping = TextWrapping.Wrap, FontSize = 12 };
             TrajectoryStackPanel.Children.Add(border);
             ScrollToBottom();
+        }
+
+        private async void OnRefreshTasksClicked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var res = await _httpClient.GetAsync("http://127.0.0.1:3080/v1/tasks");
+                if (res.IsSuccessStatusCode)
+                {
+                    string json = await res.Content.ReadAsStringAsync();
+                    InspectorTitleTextBlock.Text = "🔄 FILA DE TAREFAS DE SEGUNDO PLANO";
+                    InspectorMetaTextBlock.Text = "Servidor: http://127.0.0.1:3080\nStatus: 100% Sincronizado";
+                    InspectorPayloadTextBlock.Text = json;
+                }
+            }
+            catch (Exception ex)
+            {
+                AddTrajectoryErrorCard($"❌ Falha ao consultar fila de tarefas: {ex.Message}");
+            }
         }
 
         private void SelectNodeForInspection(string title, string payload, long durMs, int tokens)

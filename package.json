@@ -32,6 +32,7 @@
     "sovereign": "bun run src_local/cli/sovereign.ts",
     "build-standalone": "bun build --compile --minify --external node-llama-cpp --external \"@node-llama-cpp/*\" ./src_local/cli/sovereign.ts --outfile ./personas-engine.exe",
     "build-binary": "bun build --compile --minify --external node-llama-cpp --external \"@node-llama-cpp/*\" ./src_local/cli/sovereign.ts --outfile ./bin/personas-orchestrator.exe",
+    "build-wasm": "bun run scripts/build_wasm.ts",
     "bundle": "bun run scripts/bundle_distribution.ts",
     "download-model": "bun run scripts/download_model.ts"
   }

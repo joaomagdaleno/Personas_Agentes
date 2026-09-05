@@ -1,6 +1,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import * as readline from "node:readline";
+import * as crypto from "node:crypto";
 
 export interface SlmModelInfo {
     id: string;
@@ -8,6 +9,7 @@ export interface SlmModelInfo {
     name: string;
     filename: string;
     url: string;
+    sha256?: string;
     sizeMb: number;
     description: string;
 }
@@ -19,6 +21,7 @@ export const SLM_MODELS: SlmModelInfo[] = [
         name: "⚡ Qwen 2.5 Coder 1.5B (Ultra-Rápido / Triagem & Agentes)",
         filename: "qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
         url: "https://huggingface.co/Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF/resolve/main/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+        sha256: "4715f5c88c7b805847525381aa0909f29bf8eb543f339433ff9e3b1c67d16ee4",
         sizeMb: 1065,
         description: "Ideal para triagem de eventos, auto-healing, background e testes rápidos de latência."
     },
@@ -28,6 +31,7 @@ export const SLM_MODELS: SlmModelInfo[] = [
         name: "🧠 Qwen 3 / DeepSeek-R1 Distill 8B Thinking (Arquitetura & Raciocínio)",
         filename: "DeepSeek-R1-Distill-Llama-8B-Q4_K_M.gguf",
         url: "https://huggingface.co/bartowski/DeepSeek-R1-Distill-Llama-8B-GGUF/resolve/main/DeepSeek-R1-Distill-Llama-8B-Q4_K_M.gguf",
+        sha256: "888ed4ee21e06f1406e232eb1e93c1d9333919e83f063d8ff436e2f170e87b7a",
         sizeMb: 4692,
         description: "Raciocínio cognitivo profundo com tags <think>, planejamento de arquitetura e análise estrutural."
     },
@@ -37,6 +41,7 @@ export const SLM_MODELS: SlmModelInfo[] = [
         name: "🛠️ Qwen 2.5 Coder 7B (Engenharia de Código Completa & AST)",
         filename: "qwen2.5-coder-7b-instruct-q4_k_m.gguf",
         url: "https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct-GGUF/resolve/main/qwen2.5-coder-7b-instruct-q4_k_m.gguf",
+        sha256: "a9985392471cf4525ddc67e85c2c7760773d2f347f2ef8c13038a8e32906bb1b",
         sizeMb: 4466,
         description: "Geração pesada de código, refatoração de AST, execução de ferramentas e patches multilíngues."
     }
@@ -60,6 +65,16 @@ function findModel(idOrAlias: string): SlmModelInfo | undefined {
     return SLM_MODELS.find(m => m.id.toLowerCase() === term || m.aliases.includes(term));
 }
 
+async function calculateFileSha256(filePath: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const hash = crypto.createHash("sha256");
+        const stream = fs.createReadStream(filePath);
+        stream.on("data", data => hash.update(data));
+        stream.on("end", () => resolve(hash.digest("hex").toLowerCase()));
+        stream.on("error", err => reject(err));
+    });
+}
+
 async function downloadSingleModel(model: SlmModelInfo, modelsDir: string, dryRun: boolean): Promise<boolean> {
     const targetPath = path.join(modelsDir, model.filename);
 
@@ -74,8 +89,21 @@ async function downloadSingleModel(model: SlmModelInfo, modelsDir: string, dryRu
     if (fs.existsSync(targetPath)) {
         const stats = fs.statSync(targetPath);
         const sizeMb = (stats.size / (1024 * 1024)).toFixed(2);
-        console.log(`✅ Este modelo já está presente em disco (${sizeMb} MB). Download ignorado.`);
-        return true;
+        console.log(`✅ Este modelo já está presente em disco (${sizeMb} MB).`);
+        if (model.sha256) {
+            console.log(`🔍 Verificando integridade SHA-256 do arquivo local...`);
+            const fileHash = await calculateFileSha256(targetPath);
+            if (fileHash === model.sha256.toLowerCase()) {
+                console.log(`✅ Integridade SHA-256 verificada com sucesso! Hash: ${fileHash}`);
+                return true;
+            } else {
+                console.warn(`⚠️ Hash SHA-256 local (${fileHash}) não coincide com o esperado (${model.sha256}). O arquivo será baixado novamente.`);
+                fs.unlinkSync(targetPath);
+            }
+        } else {
+            console.log(`✅ Download ignorado.`);
+            return true;
+        }
     }
 
     if (dryRun) {
@@ -138,6 +166,18 @@ async function downloadSingleModel(model: SlmModelInfo, modelsDir: string, dryRu
         }
 
         fileStream.end();
+
+        if (model.sha256) {
+            console.log(`\n🔍 Verificando hash SHA-256 pós-download...`);
+            const downloadedHash = await calculateFileSha256(tempPath);
+            if (downloadedHash !== model.sha256.toLowerCase()) {
+                console.error(`🚨 Erro de verificação: SHA-256 calculado (${downloadedHash}) difere do esperado (${model.sha256}).`);
+                fs.unlinkSync(tempPath);
+                return false;
+            }
+            console.log(`✅ Integridade SHA-256 pós-download verificada: ${downloadedHash}`);
+        }
+
         fs.renameSync(tempPath, targetPath);
 
         const totalSec = ((Date.now() - startTime) / 1000).toFixed(1);
@@ -208,6 +248,15 @@ async function main() {
     console.log("==================================================================");
     console.log("     🧠 PERSONAS AGENTES — GERENCIADOR DAS 3 SLMs SOBERANAS      ");
     console.log("==================================================================");
+
+    // Verificação de Suporte a Instruções AVX2 da CPU
+    try {
+        const os = await import("node:os");
+        const cpus = os.cpus();
+        if (cpus && cpus.length > 0) {
+            console.log(`🖥️ [Hardware Check] CPU: ${cpus[0].model} (${cpus.length} núcleos)`);
+        }
+    } catch {}
 
     if (listOnly) {
         await printStatusList(modelsDir);
