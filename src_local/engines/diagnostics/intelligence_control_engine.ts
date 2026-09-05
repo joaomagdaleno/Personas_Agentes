@@ -109,7 +109,7 @@ export class IntelligenceControlEngine {
         id: "local_slm_engine",
         name: "Local SLM Engine (Llama.cpp / GGUF)",
         category: "AI/SLM",
-        pattern: /LocalSLMEngine|DualAPIEngine|WarmPurgeOfflineEngine|huggingface/i,
+        pattern: /LocalSLMEngine|WarmPurgeOfflineEngine|llama-server/i,
         description: "Motor de inferência local autônomo baseado em SLM com Llama.cpp e modelos GGUF."
       },
       {
@@ -155,9 +155,9 @@ export class IntelligenceControlEngine {
         id: "winui_dsh_desktop",
         name: "Native WinUI 3 XAML Desktop Interface",
         category: "Frontend",
-        pattern: /PersonasAgentes\.WinUI|DSHServer|DSHHarnessBridge|MainWindow\.xaml/i,
+        pattern: /PersonasAgentes\.WinUI|PsaServer|MainWindow\.xaml/i,
         manifestCheck: (m) => !!m["package.json"] && m["package.json"].includes("ui"),
-        description: "Aplicação desktop 100% nativa WinUI 3 XAML com MUX Stream do DeepSeek Harness (sem WebView)."
+        description: "Aplicação desktop 100% nativa WinUI 3 XAML com MUX Stream do PSA (sem WebView)."
       },
       {
         id: "sqlite_persistence",

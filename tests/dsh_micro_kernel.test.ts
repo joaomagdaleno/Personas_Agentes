@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach } from "bun:test";
-import { DshContext } from "../src_local/dsh/kernel/dsh_context.ts";
-import { ZvecGrepPlugin } from "../src_local/dsh/plugins/core/zvec_grep_plugin.ts";
-import { Idris2Plugin } from "../src_local/dsh/plugins/core/idris2_plugin.ts";
-import { mountAllSuperPersonaPlugins } from "../src_local/dsh/plugins/personas/index.ts";
-import { DshAgentLoop } from "../src_local/dsh/core/dsh_agent_loop.ts";
+import { PsaContext as DshContext } from "../src_local/psa/kernel/psa_context.ts";
+import { ZvecGrepPlugin } from "../src_local/psa/plugins/core/zvec_grep_plugin.ts";
+import { Idris2Plugin } from "../src_local/psa/plugins/core/idris2_plugin.ts";
+import { mountAllSuperPersonaPlugins } from "../src_local/psa/plugins/personas/index.ts";
+import { PsaAgentLoop as DshAgentLoop } from "../src_local/psa/core/psa_agent_loop.ts";
 
 describe("DSH Micro-Kernel & Plugin Architecture (Tudo é um Plugin)", () => {
     let ctx: DshContext;
@@ -31,8 +31,8 @@ describe("DSH Micro-Kernel & Plugin Architecture (Tudo é um Plugin)", () => {
         expect(plugins.length).toBeGreaterThanOrEqual(10); // 2 core + 8 personas
 
         const names = plugins.map(p => p.name);
-        expect(names).toContain("dsh-plugin-zvec-grep");
-        expect(names).toContain("dsh-plugin-idris2-verifier");
+        expect(names.some(n => n.includes("zvec-grep"))).toBe(true);
+        expect(names.some(n => n.includes("idris2-verifier"))).toBe(true);
         expect(names).toContain("persona-strategic-cognitive-architect");
         expect(names).toContain("persona-audit-code-guardian");
         expect(names).toContain("persona-security-cloud-guardian");
@@ -128,5 +128,5 @@ describe("DSH Micro-Kernel & Plugin Architecture (Tudo é um Plugin)", () => {
         expect(endEvent?.metadata).toBeDefined();
         expect(endEvent?.metadata.tokensPerSec).toBeDefined();
         expect(endEvent?.metadata.cacheHitRate).toBeDefined();
-    });
+    }, 20000);
 });

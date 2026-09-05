@@ -81,45 +81,64 @@ export class PsaAgentLoop {
         const tools = this.ctx.tools.list();
         let contextData = "";
 
-        const isDiagnosticRequest = /(diagn[oó]stico|sa[uú]de|health|censo|coverage)/i.test(request.prompt);
-        const isAuditStagedRequest = /(auditoria|auditar|staged|obfuscation|ofusca)/i.test(request.prompt);
-        const isRegistryRequest = /(cat[aá]logo|stacks|registro|agentes dispon[ií]veis|listar agentes)/i.test(request.prompt);
-        const isHealingRequest = /(auto[- ]?cura|curar|healer|consertar)/i.test(request.prompt);
-        const isGovernanceRequest = /(hardware|governan[cç]a|mem[oó]ria ram|cpu|recursos)/i.test(request.prompt);
-        const isShellRequest = /(executar|rodar|execute|run|comando|terminal|powershell|cmd)/i.test(request.prompt) && request.prompt.includes("shell");
-        const isFsListRequest = /(listar|listar arquivos|conteúdo do diretório|arquivos na pasta)/i.test(request.prompt);
-        const isCompactRequest = /(compactar|compactar histórico|resumir sessão|compaction)/i.test(request.prompt);
-
+        // 3.1 Verificação de chamada explícita estruturada (ex: tool:nome_da_tool {args})
         let selectedTool: any = null;
-        let toolArgs: any = null;
+        let toolArgs: any = {};
 
-        if (isDiagnosticRequest) {
-            selectedTool = tools.find(t => t.name === "system.run_diagnostic");
-            toolArgs = { skipTests: true, dryRun: true };
-        } else if (isAuditStagedRequest) {
-            selectedTool = tools.find(t => t.name === "audit.staged");
-            toolArgs = { dryRun: true };
-        } else if (isRegistryRequest) {
-            selectedTool = tools.find(t => t.name === "registry.list_stacks");
-            toolArgs = {};
-        } else if (isHealingRequest) {
-            selectedTool = tools.find(t => t.name === "healing.run_auto_heal");
-            toolArgs = { dryRun: true };
-        } else if (isGovernanceRequest) {
-            selectedTool = tools.find(t => t.name === "native.governance_status");
-            toolArgs = {};
-        } else if (isCompactRequest) {
-            selectedTool = tools.find(t => t.name === "compaction.compact");
-            toolArgs = { sessionId: request.sessionId };
-        } else if (isShellRequest) {
-            selectedTool = tools.find(t => t.name === "shell.exec");
-            toolArgs = { command: "powershell.exe -NoProfile -Command \"Get-ChildItem -Name | Select-Object -First 5\"" };
-        } else if (isFsListRequest) {
-            selectedTool = tools.find(t => t.name === "fs.list_dir");
-            toolArgs = { dirPath: "." };
-        } else {
-            selectedTool = tools.find(t => t.name === "zvec_grep.search");
-            toolArgs = { query: request.prompt, limit: 3 };
+        const explicitToolMatch = request.prompt.match(/(?:chamar[- ]ferramenta|tool|execute[- ]tool):\s*([a-zA-Z0-9_\.]+)(?:\s+args:\s*(\{.*\}))?/i);
+        if (explicitToolMatch) {
+            const toolName = explicitToolMatch[1];
+            selectedTool = tools.find(t => t.name.toLowerCase() === toolName.toLowerCase());
+            if (explicitToolMatch[2]) {
+                try { toolArgs = JSON.parse(explicitToolMatch[2]); } catch {}
+            }
+        }
+
+        // 3.2 Se não houver chamada explícita, avalia intent semântica por capacidade
+        if (!selectedTool) {
+            const isDiagnosticRequest = /(diagn[oó]stico|sa[uú]de|health|censo|coverage)/i.test(request.prompt);
+            const isAuditStagedRequest = /(auditoria|auditar|staged|obfuscation|ofusca)/i.test(request.prompt);
+            const isRegistryRequest = /(cat[aá]logo|stacks|registro|agentes dispon[ií]veis|listar agentes)/i.test(request.prompt);
+            const isHealingRequest = /(auto[- ]?cura|curar|healer|consertar)/i.test(request.prompt);
+            const isGovernanceRequest = /(hardware|governan[cç]a|mem[oó]ria ram|cpu|recursos)/i.test(request.prompt);
+            const isShellRequest = /(executar|rodar|execute|run|comando|terminal|powershell|cmd)/i.test(request.prompt) && request.prompt.includes("shell");
+            const isFsListRequest = /(listar arquivos|conteúdo do diretório|arquivos na pasta)/i.test(request.prompt);
+            const isCompactRequest = /(compactar|compactar histórico|resumir sessão|compaction)/i.test(request.prompt);
+            const isCodeSearch = /(onde est[aá]|qual arquivo|procurar por|pesquisar|buscar no c[oó]digo|buscar na base|grep|find)/i.test(request.prompt);
+            const isConversational = /^(ol[aá]|oi|hello|hi|bom dia|boa tarde|boa noite|quem [eé] voc[eê]|o que voc[eê] faz)\b/i.test(request.prompt.trim());
+
+            if (isDiagnosticRequest) {
+                selectedTool = tools.find(t => t.name === "system.run_diagnostic");
+                toolArgs = { skipTests: true, dryRun: true };
+            } else if (isAuditStagedRequest) {
+                selectedTool = tools.find(t => t.name === "audit.staged");
+                toolArgs = { dryRun: true };
+            } else if (isRegistryRequest) {
+                selectedTool = tools.find(t => t.name === "registry.list_stacks");
+                toolArgs = {};
+            } else if (isHealingRequest) {
+                selectedTool = tools.find(t => t.name === "healing.run_auto_heal");
+                toolArgs = { dryRun: true };
+            } else if (isGovernanceRequest) {
+                selectedTool = tools.find(t => t.name === "native.governance_status");
+                toolArgs = {};
+            } else if (isCompactRequest) {
+                selectedTool = tools.find(t => t.name === "compaction.compact");
+                toolArgs = { sessionId: request.sessionId };
+            } else if (isShellRequest) {
+                selectedTool = tools.find(t => t.name === "shell.exec");
+                toolArgs = { command: "powershell.exe -NoProfile -Command \"Get-ChildItem -Name | Select-Object -First 5\"" };
+            } else if (isFsListRequest) {
+                selectedTool = tools.find(t => t.name === "fs.list_dir");
+                toolArgs = { dirPath: "." };
+            } else if (isCodeSearch) {
+                selectedTool = tools.find(t => t.name === "zvec_grep.search");
+                toolArgs = { query: request.prompt, limit: 3 };
+            } else if (!isConversational && request.prompt.length > 20) {
+                // Se a pergunta tiver complexidade técnica, fornece contexto via ZvecGrep
+                selectedTool = tools.find(t => t.name === "zvec_grep.search");
+                toolArgs = { query: request.prompt, limit: 3 };
+            }
         }
 
         if (selectedTool) {

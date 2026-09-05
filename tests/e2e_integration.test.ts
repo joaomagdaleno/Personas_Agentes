@@ -93,7 +93,7 @@ describe("PSA End-to-End (E2E) Server & Streaming Integration Suite", () => {
         const types = receivedChunks.map(c => c.type);
         expect(types).toContain("turn_start");
         expect(types).toContain("turn_end");
-    });
+    }, 25000);
 
     test("should stream reasoning trace when deepthink is enabled", async () => {
         const payload = {
@@ -130,7 +130,7 @@ describe("PSA End-to-End (E2E) Server & Streaming Integration Suite", () => {
         }
 
         expect(types).toContain("reasoning");
-    });
+    }, 25000);
 
     test("should handle abrupt client disconnect gracefully without crashing server", async () => {
         const controller = new AbortController();

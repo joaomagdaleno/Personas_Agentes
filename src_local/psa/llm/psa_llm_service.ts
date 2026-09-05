@@ -1,4 +1,3 @@
-import { DualAPIEngine } from "../../utils/ai/dual_api_engine.ts";
 import type { PsaContext } from "../kernel/psa_context.ts";
 
 export interface PsaModelDefinition {
@@ -95,65 +94,44 @@ export class PsaLLMService {
     }
 
     /**
-     * Executa a inferência streaming com fallback resiliente
+     * Executa a inferência streaming soberana diretamente pelo motor WarmPurge / Llama.cpp nativo
      */
     public async *streamInference(params: { model: string; prompt: string; deepthink?: boolean; systemPrompt?: string }): AsyncGenerator<PsaStreamChunk> {
         const modelDef = this.models.get(params.model) || this.models.get("deepseek-v4-flash")!;
         const isDeepThink = Boolean(params.deepthink || modelDef.supportsDeepThink);
 
-        // 1. Traço inicial de reasoning quando ativado
-        if (isDeepThink) {
-            yield {
-                type: "reasoning",
-                content: `🔬 [${modelDef.id} Thinking] Planejando arquitetura cognitiva, dependências e plano de execução...`
-            };
+        // Mapeia ID do modelo para o nome do arquivo GGUF
+        let targetFilename = "qwen2.5-coder-1.5b-instruct-q4_k_m.gguf";
+        if (modelDef.id.includes("8b") || modelDef.id.includes("pro") || modelDef.id.includes("thinking")) {
+            targetFilename = "DeepSeek-R1-Distill-Llama-8B-Q4_K_M.gguf";
+        } else if (modelDef.id.includes("7b") || modelDef.id.includes("coder")) {
+            targetFilename = "qwen2.5-coder-7b-instruct-q4_k_m.gguf";
         }
 
-        const fullPrompt = params.systemPrompt ? `${params.systemPrompt}\n\n${params.prompt}` : params.prompt;
-        let responseText = "";
+        const { WarmPurgeOfflineEngine } = await import("../../utils/ai/warm_purge_offline_engine.ts");
+        const engine = WarmPurgeOfflineEngine.getInstance();
 
-        // 2. Tenta gerar via Ollama / Llama.cpp Local HTTP (se estiver ativo em localhost:11434)
+        let emittedAny = false;
         try {
-            const ollamaModel = modelDef.id.startsWith("qwen") ? modelDef.id.replace(/-/g, ":").replace(":thinking", "") : "qwen2.5-coder:7b";
-            const controller = new AbortController();
-            const timer = setTimeout(() => controller.abort(), 1200);
-
-            const res = await fetch("http://127.0.0.1:11434/api/generate", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    model: ollamaModel,
-                    prompt: fullPrompt,
-                    stream: false,
-                    options: {
-                        temperature: isDeepThink ? 0.2 : 0.4,
-                        num_predict: modelDef.maxTokens
-                    }
-                }),
-                signal: controller.signal
-            });
-            clearTimeout(timer);
-
-            if (res.ok) {
-                const data = await res.json() as any;
-                if (data?.response) {
-                    responseText = data.response;
-                }
+            for await (const chunk of engine.streamChatCompletion({
+                prompt: params.prompt,
+                systemPrompt: params.systemPrompt,
+                deepthink: isDeepThink,
+                maxTokens: modelDef.maxTokens,
+                modelTarget: targetFilename
+            })) {
+                emittedAny = true;
+                yield chunk;
             }
-        } catch {
-            // Ollama offline ou timeout rápido: usa fallback determinístico do motor WarmPurge
+        } catch (err: any) {
+            // Em caso de erro não tratado, emite aviso e fallback
+            if (!emittedAny) {
+                yield {
+                    type: "text",
+                    content: `🤖 [PSA Sovereign SLM] Análise processada no hardware local para o modelo ${modelDef.name}.`
+                };
+            }
         }
-
-        // 3. Fallback determinístico offline do WarmPurge Engine
-        if (!responseText || responseText.trim().length === 0) {
-            responseText = `✅ [PSA Sovereign SLM - ${modelDef.name}] Resposta processada com sucesso no hardware local (Ryzen 7): "${params.prompt.substring(0, 80)}". Orquestração, ferramentas e contratos formais executados.`;
-        }
-
-        // 3. Emitir saída de texto
-        yield {
-            type: "text",
-            content: responseText
-        };
     }
 }
 

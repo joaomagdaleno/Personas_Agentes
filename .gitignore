@@ -60,6 +60,7 @@ src_native/analyzer/.gemini/
 .gemini/models/
 models/*.gguf
 *.gguf
+*.part
 
 # Generated Protobuf
 *.pb.go

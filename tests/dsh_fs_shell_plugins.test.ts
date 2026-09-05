@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeEach } from "bun:test";
 import * as path from "node:path";
 import * as fs from "node:fs";
-import { DshContext } from "../src_local/dsh/kernel/dsh_context.ts";
-import { FSPlugin } from "../src_local/dsh/plugins/core/fs_plugin.ts";
-import { ShellPlugin } from "../src_local/dsh/plugins/core/shell_plugin.ts";
-import { InteractionPlugin } from "../src_local/dsh/plugins/core/interaction_plugin.ts";
+import { PsaContext as DshContext } from "../src_local/psa/kernel/psa_context.ts";
+import { FSPlugin } from "../src_local/psa/plugins/core/fs_plugin.ts";
+import { ShellPlugin } from "../src_local/psa/plugins/core/shell_plugin.ts";
+import { InteractionPlugin } from "../src_local/psa/plugins/core/interaction_plugin.ts";
 
 describe("DeepSeek Harness — FS, Shell & Human-in-the-Loop Plugins", () => {
     let ctx: DshContext;

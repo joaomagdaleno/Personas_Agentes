@@ -95,15 +95,30 @@ export class SystemManager {
         // Determina o root do Personas_Agentes (onde os binários vivem)
         const personasRoot = path.resolve(import.meta.dirname, "../../");
         
-        const hubExe = path.join(personasRoot, "src_native/hub", hubBinaryName);
-        const analyzerExe = path.join(personasRoot, "src_native/analyzer/target/release", analyzerBinaryName);
+        const hubCandidates = [
+            path.join(personasRoot, "bin", hubBinaryName),
+            path.join(personasRoot, "dist/bin", hubBinaryName),
+            path.join(personasRoot, "src_native/hub", hubBinaryName),
+            path.join(path.dirname(process.execPath), hubBinaryName),
+            path.join(path.dirname(process.execPath), "bin", hubBinaryName)
+        ];
+        const analyzerCandidates = [
+            path.join(personasRoot, "bin", analyzerBinaryName),
+            path.join(personasRoot, "dist/bin", analyzerBinaryName),
+            path.join(personasRoot, "src_native/analyzer/target/release", analyzerBinaryName),
+            path.join(path.dirname(process.execPath), analyzerBinaryName),
+            path.join(path.dirname(process.execPath), "bin", analyzerBinaryName)
+        ];
 
-        if (!fs.existsSync(hubExe)) {
-            logger.error(`❌ Não encontrado: ${hubExe}`);
+        const hubExe = hubCandidates.find(p => fs.existsSync(p));
+        const analyzerExe = analyzerCandidates.find(p => fs.existsSync(p));
+
+        if (!hubExe) {
+            logger.error(`❌ Não encontrado ${hubBinaryName} em nenhum dos caminhos esperados (${hubCandidates.join(", ")})`);
             return false;
         }
-        if (!fs.existsSync(analyzerExe)) {
-            logger.error(`❌ Não encontrado: ${analyzerExe}`);
+        if (!analyzerExe) {
+            logger.error(`❌ Não encontrado ${analyzerBinaryName} em nenhum dos caminhos esperados (${analyzerCandidates.join(", ")})`);
             return false;
         }
 

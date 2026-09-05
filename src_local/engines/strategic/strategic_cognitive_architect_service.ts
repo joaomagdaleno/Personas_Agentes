@@ -15,11 +15,9 @@ import { CogHelpers } from "../analysis/architecture_types_service.ts";
 import { FileSystemScanner } from "../healing/resilience_healing_architect_service.ts";
 import type { CognitiveStatus, IAgent } from "../../core/types.ts";
 import { LocalSLMEngine } from "../../utils/ai/local_slm_engine.ts";
-import { DualAPIEngine } from "../../utils/ai/dual_api_engine.ts";
 import { WarmPurgeOfflineEngine } from "../../utils/ai/warm_purge_offline_engine.ts";
 import { ZvecGrepEngine } from "../../utils/zvec/zvec_grep_engine.ts";
 export { LocalSLMEngine } from "../../utils/ai/local_slm_engine.ts";
-export { DualAPIEngine } from "../../utils/ai/dual_api_engine.ts";
 export { WarmPurgeOfflineEngine } from "../../utils/ai/warm_purge_offline_engine.ts";
 export { ZvecGrepEngine } from "../../utils/zvec/zvec_grep_engine.ts";
 

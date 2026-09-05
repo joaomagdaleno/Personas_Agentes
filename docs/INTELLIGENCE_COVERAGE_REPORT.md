@@ -1,6 +1,6 @@
 # 🧠 Relatório de Cobertura de Inteligência e Pontos Cegos das Super Personas
 
-> **Data de Gerado:** 2026-09-05T16:19:07.029Z
+> **Data de Gerado:** 2026-09-05T16:49:20.545Z
 > **Status Geral de Inteligência:** 100% Coberto (11/11 Tecnologias)
 
 ---
@@ -18,7 +18,7 @@
 | :--- | :--- | :--- | :--- |
 | `ts_bun` | **TypeScript / Bun Runtime** | Runtime | `package.json`, `.sovereign_cache.json` |
 | `slm_gguf` | **SLM / Local GGUF (Llama.cpp)** | AI/SLM | `.env.example`, `.sovereign_cache.json` |
-| `local_slm_engine` | **Local SLM Engine (Llama.cpp / GGUF)** | AI/SLM | `.sovereign_cache.json`, `docs/ARCH_EXPANSION_PLAN_PHD.md` |
+| `local_slm_engine` | **Local SLM Engine (Llama.cpp / GGUF)** | AI/SLM | `.sovereign_cache.json`, `models/README.md` |
 | `zvec_grep` | **ZvecGrep (Hybrid Vector/BM25 Search)** | Search Engine | `package.json`, `.sovereign_cache.json` |
 | `wasm_micro_agents` | **WASM Micro-Agents (WASI Runtime)** | Runtime | `.sovereign_cache.json`, `docs/ARCH_EXPANSION_PLAN_PHD.md` |
 | `zig_native_ffi` | **Zig Native Analyzer & FFI** | Language | `.sovereign_cache.json`, `docs/ARCH_EXPANSION_PLAN_PHD.md` |
