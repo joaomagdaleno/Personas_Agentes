@@ -118,4 +118,61 @@ class Greeter(val name: String) {
             expect(complexity).toBeGreaterThanOrEqual(1);
         });
     });
+
+    describe("Polyglot Analysis (C#, Rust, Go, C++)", () => {
+        test("should parse C# functions, classes and imports", async () => {
+            const csCode = `
+using System;
+using System.IO;
+
+namespace SampleApp {
+    public class UserProcessor {
+        public void ProcessUser() { }
+    }
+}`;
+            const res = await parser.analyze_file_logic(csCode, "UserProcessor.cs");
+            expect(res).not.toBeNull();
+            expect(res!.classes).toContain("UserProcessor");
+            expect(res!.functions).toContain("ProcessUser");
+            expect(res!.imports).toContain("System");
+        });
+
+        test("should parse Rust functions, structs and imports", async () => {
+            const rsCode = `
+use std::fs::File;
+
+pub struct Config {
+    pub name: String,
+}
+
+pub fn run_app() { }
+`;
+            const res = await parser.analyze_file_logic(rsCode, "main.rs");
+            expect(res).not.toBeNull();
+            expect(res!.classes).toContain("Config");
+            expect(res!.functions).toContain("run_app");
+            expect(res!.imports).toContain("std::fs::File");
+        });
+
+        test("should parse Go functions, structs and imports", async () => {
+            const goCode = `
+package main
+
+import (
+    "fmt"
+    "net/http"
+)
+
+type Server struct{}
+
+func StartServer() {}
+`;
+            const res = await parser.analyze_file_logic(goCode, "main.go");
+            expect(res).not.toBeNull();
+            expect(res!.classes).toContain("Server");
+            expect(res!.functions).toContain("StartServer");
+            expect(res!.imports).toContain("fmt");
+            expect(res!.imports).toContain("net/http");
+        });
+    });
 });

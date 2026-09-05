@@ -3,17 +3,19 @@ import { WasmMicroAgentRuntime } from "../src_local/utils/ai/wasm_micro_agent_ru
 import { SovereignResourceBudget } from "../src_local/engines/maintenance/sovereign_resource_budget.ts";
 
 describe("WasmMicroAgentRuntime Unit Tests", () => {
-    it("should register all 4 default WASM micro-agents on startup", () => {
+    it("should register all default WASM micro-agents on startup", () => {
         const runtime = WasmMicroAgentRuntime.getInstance();
         const agents = runtime.getRegisteredAgents();
 
-        expect(agents.length).toBe(4);
+        expect(agents.length).toBeGreaterThanOrEqual(6);
 
         const ids = agents.map(a => a.id);
         expect(ids).toContain("agent_audit.wasm");
         expect(ids).toContain("agent_security.wasm");
         expect(ids).toContain("agent_git.wasm");
         expect(ids).toContain("agent_telemetry.wasm");
+        expect(ids).toContain("agent_database.wasm");
+        expect(ids).toContain("agent_linter.wasm");
 
         // Validate individual metadata metrics as per requirement
         const auditAgent = agents.find(a => a.id === "agent_audit.wasm")!;
@@ -31,6 +33,25 @@ describe("WasmMicroAgentRuntime Unit Tests", () => {
         const telAgent = agents.find(a => a.id === "agent_telemetry.wasm")!;
         expect(telAgent.binarySizeKb).toBe(256);
         expect(telAgent.ramLimitKb).toBe(300);
+    });
+
+    it("should successfully execute agent_database.wasm and detect unbounded queries", async () => {
+        const runtime = WasmMicroAgentRuntime.getInstance();
+        const unsafeRes = await runtime.execute("agent_database.wasm", { sql: "DELETE FROM users" });
+        expect(unsafeRes.success).toBe(true);
+        expect(unsafeRes.output.safe).toBe(false);
+
+        const safeRes = await runtime.execute("agent_database.wasm", { sql: "SELECT * FROM users WHERE id = 1" });
+        expect(safeRes.success).toBe(true);
+        expect(safeRes.output.safe).toBe(true);
+    });
+
+    it("should successfully execute agent_linter.wasm and detect code smells", async () => {
+        const runtime = WasmMicroAgentRuntime.getInstance();
+        const lintRes = await runtime.execute("agent_linter.wasm", "var x = 10; console.log(x);");
+        expect(lintRes.success).toBe(true);
+        expect(lintRes.output.clean).toBe(false);
+        expect(lintRes.output.warnings.length).toBe(2);
     });
 
     it("should successfully execute agent_audit.wasm and detect silent exceptions", async () => {

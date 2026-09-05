@@ -57,6 +57,9 @@ export class SourceCodeParser {
         if (ext === "ts" || ext === "js" || ext === "tsx") return await this.analyzeTs(content, fileName);
         if (ext === "kt") return { ...await this.analyzeKt(content), complexity: await this.calculateKtComplexity(fileName) };
         if (ext === "go") return { ...this.polyParser.analyzeGo(content), complexity: await this.polyParser.calculateGoComplexity(fileName) };
+        if (ext === "cs") return { ...this.polyParser.analyzeCs(content), complexity: 1 };
+        if (ext === "rs") return { ...this.polyParser.analyzeRs(content), complexity: 1 };
+        if (ext === "cpp" || ext === "hpp" || ext === "c" || ext === "h") return { ...this.polyParser.analyzeCpp(content), complexity: 1 };
         if (ext === "dart") return this.polyParser.analyzeDart(content);
         return null;
     }

@@ -1,6 +1,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import * as readline from "node:readline";
+import * as crypto from "node:crypto";
 
 export interface SlmModelInfo {
     id: string;
@@ -8,6 +9,7 @@ export interface SlmModelInfo {
     name: string;
     filename: string;
     url: string;
+    sha256?: string;
     sizeMb: number;
     description: string;
 }
@@ -60,6 +62,16 @@ function findModel(idOrAlias: string): SlmModelInfo | undefined {
     return SLM_MODELS.find(m => m.id.toLowerCase() === term || m.aliases.includes(term));
 }
 
+async function calculateFileSha256(filePath: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const hash = crypto.createHash("sha256");
+        const stream = fs.createReadStream(filePath);
+        stream.on("data", data => hash.update(data));
+        stream.on("end", () => resolve(hash.digest("hex").toLowerCase()));
+        stream.on("error", err => reject(err));
+    });
+}
+
 async function downloadSingleModel(model: SlmModelInfo, modelsDir: string, dryRun: boolean): Promise<boolean> {
     const targetPath = path.join(modelsDir, model.filename);
 
@@ -74,8 +86,21 @@ async function downloadSingleModel(model: SlmModelInfo, modelsDir: string, dryRu
     if (fs.existsSync(targetPath)) {
         const stats = fs.statSync(targetPath);
         const sizeMb = (stats.size / (1024 * 1024)).toFixed(2);
-        console.log(`✅ Este modelo já está presente em disco (${sizeMb} MB). Download ignorado.`);
-        return true;
+        console.log(`✅ Este modelo já está presente em disco (${sizeMb} MB).`);
+        if (model.sha256) {
+            console.log(`🔍 Verificando integridade SHA-256 do arquivo local...`);
+            const fileHash = await calculateFileSha256(targetPath);
+            if (fileHash === model.sha256.toLowerCase()) {
+                console.log(`✅ Integridade SHA-256 verificada com sucesso! Hash: ${fileHash}`);
+                return true;
+            } else {
+                console.warn(`⚠️ Hash SHA-256 local (${fileHash}) não coincide com o esperado (${model.sha256}). O arquivo será baixado novamente.`);
+                fs.unlinkSync(targetPath);
+            }
+        } else {
+            console.log(`✅ Download ignorado.`);
+            return true;
+        }
     }
 
     if (dryRun) {
@@ -138,6 +163,18 @@ async function downloadSingleModel(model: SlmModelInfo, modelsDir: string, dryRu
         }
 
         fileStream.end();
+
+        if (model.sha256) {
+            console.log(`\n🔍 Verificando hash SHA-256 pós-download...`);
+            const downloadedHash = await calculateFileSha256(tempPath);
+            if (downloadedHash !== model.sha256.toLowerCase()) {
+                console.error(`🚨 Erro de verificação: SHA-256 calculado (${downloadedHash}) difere do esperado (${model.sha256}).`);
+                fs.unlinkSync(tempPath);
+                return false;
+            }
+            console.log(`✅ Integridade SHA-256 pós-download verificada: ${downloadedHash}`);
+        }
+
         fs.renameSync(tempPath, targetPath);
 
         const totalSec = ((Date.now() - startTime) / 1000).toFixed(1);

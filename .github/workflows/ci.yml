@@ -3,6 +3,7 @@ name: Sovereign PSA CI/CD Pipeline
 on:
   push:
     branches: [ main, master ]
+    tags: [ 'v*' ]
   pull_request:
     branches: [ main, master ]
 
@@ -52,3 +53,19 @@ jobs:
         with:
           name: PersonasAgentes-Setup-v2.0
           path: dist-installer/PersonasAgentes-Setup-v2.0.exe
+
+      - name: Criar GitHub Release Oficial (Se for Tag v*)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist-installer/PersonasAgentes-Setup-v2.0.exe
+          name: Personas & Agentes (PSA) ${{ github.ref_name }}
+          body: |
+            # 🏛️ Personas & Agentes (PSA) — Release Oficial ${{ github.ref_name }}
+
+            ### 🚀 O que há de novo:
+            - Interface Desktop Nativa WinUI 3 com Fluent Design e streaming em tempo real.
+            - Instalação auto-contida (Self-Contained) sem necessidade de dependências pré-instaladas.
+            - Suporte a 8 Super Personas e auto-cura verificada formalmente via Idris 2.
+          draft: false
+          prerelease: false

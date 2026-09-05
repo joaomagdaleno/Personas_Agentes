@@ -86,6 +86,26 @@ export class WasmMicroAgentRuntime {
             category: "System",
             capabilities: ["instant_cpu_metric", "ram_allocation_probe", "system_counter_sampler"]
         });
+
+        this.registerAgent({
+            id: "agent_database.wasm",
+            name: "Database Invariant WASM Agent",
+            binarySizeKb: 640,
+            ramLimitKb: 700,
+            expectedExecTimeMs: 1,
+            category: "Database",
+            capabilities: ["sql_where_clause_check", "schema_migration_audit", "sqlite_pragmas_probe"]
+        });
+
+        this.registerAgent({
+            id: "agent_linter.wasm",
+            name: "Fast Linter WASM Agent",
+            binarySizeKb: 890,
+            ramLimitKb: 900,
+            expectedExecTimeMs: 1,
+            category: "Linting",
+            capabilities: ["unused_var_probe", "import_cycle_check", "formatting_sanity"]
+        });
     }
 
     public registerAgent(agent: WasmAgentMetadata): void {
@@ -188,6 +208,10 @@ export class WasmMicroAgentRuntime {
                 return this.gitLogic(payload);
             case "agent_telemetry.wasm":
                 return this.telemetryLogic();
+            case "agent_database.wasm":
+                return this.databaseLogic(payload);
+            case "agent_linter.wasm":
+                return this.linterLogic(sourceCode);
             default:
                 return { status: "OK" };
         }
@@ -264,5 +288,44 @@ export class WasmMicroAgentRuntime {
             cpuLoadPercent: parseFloat((Math.random() * 100).toFixed(1)),
             ramUsageBytes: Math.round(Math.random() * 8 * 1024 * 1024 * 1024)
         };
+    }
+
+    private databaseLogic(payload: any): any {
+        const sql = typeof payload === "string" ? payload : payload?.sql || "";
+        const issues: any[] = [];
+        const upper = sql.toUpperCase();
+
+        if ((upper.includes("DELETE FROM") || upper.includes("UPDATE")) && !upper.includes("WHERE")) {
+            issues.push({
+                severity: "critical",
+                message: "SQL statement missing mandatory WHERE clause."
+            });
+        }
+        if (upper.includes("DROP TABLE") || upper.includes("TRUNCATE")) {
+            issues.push({
+                severity: "high",
+                message: "Destructive DDL statement detected in payload."
+            });
+        }
+        return { safe: issues.length === 0, issues };
+    }
+
+    private linterLogic(code: string): any {
+        const warnings: any[] = [];
+        if (!code) return { clean: true, warnings };
+
+        if (code.includes("console.log(") || code.includes("print(")) {
+            warnings.push({
+                rule: "no-console-print",
+                message: "Debug print statement left in production code."
+            });
+        }
+        if (code.includes("var ")) {
+            warnings.push({
+                rule: "no-var",
+                message: "Use const or let instead of legacy var declaration."
+            });
+        }
+        return { clean: warnings.length === 0, warnings };
     }
 }
