@@ -73,6 +73,61 @@ namespace PersonasAgentes.WinUI
             _ = CheckForUpdatesAsync();
         }
 
+        // =========================================================================
+        // NAVIGATION HANDLERS (MULTI-PAGE VIEWS)
+        // =========================================================================
+
+        private void OnNavWorkbenchClicked(object sender, RoutedEventArgs e)
+        {
+            if (WorkbenchPageView != null) WorkbenchPageView.Visibility = Visibility.Visible;
+            if (PluginsPageView != null) PluginsPageView.Visibility = Visibility.Collapsed;
+            if (SettingsPageView != null) SettingsPageView.Visibility = Visibility.Collapsed;
+
+            UpdateNavButtonVisuals(NavWorkbenchButton, true);
+            UpdateNavButtonVisuals(NavPluginsButton, false);
+            UpdateNavButtonVisuals(NavSettingsButton, false);
+        }
+
+        private void OnNavPluginsClicked(object sender, RoutedEventArgs e)
+        {
+            if (WorkbenchPageView != null) WorkbenchPageView.Visibility = Visibility.Collapsed;
+            if (PluginsPageView != null) PluginsPageView.Visibility = Visibility.Visible;
+            if (SettingsPageView != null) SettingsPageView.Visibility = Visibility.Collapsed;
+
+            UpdateNavButtonVisuals(NavWorkbenchButton, false);
+            UpdateNavButtonVisuals(NavPluginsButton, true);
+            UpdateNavButtonVisuals(NavSettingsButton, false);
+        }
+
+        private void OnNavSettingsClicked(object sender, RoutedEventArgs e)
+        {
+            if (WorkbenchPageView != null) WorkbenchPageView.Visibility = Visibility.Collapsed;
+            if (PluginsPageView != null) PluginsPageView.Visibility = Visibility.Collapsed;
+            if (SettingsPageView != null) SettingsPageView.Visibility = Visibility.Visible;
+
+            UpdateNavButtonVisuals(NavWorkbenchButton, false);
+            UpdateNavButtonVisuals(NavPluginsButton, false);
+            UpdateNavButtonVisuals(NavSettingsButton, true);
+        }
+
+        private void UpdateNavButtonVisuals(Button? btn, bool active)
+        {
+            if (btn == null) return;
+            if (active)
+            {
+                btn.Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 37, 99, 235));
+                btn.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 255, 255, 255));
+                btn.BorderThickness = new Thickness(0);
+            }
+            else
+            {
+                btn.Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 24, 27, 36));
+                btn.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 148, 163, 184));
+                btn.BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 42, 47, 64));
+                btn.BorderThickness = new Thickness(1);
+            }
+        }
+
         private async Task CheckForUpdatesAsync()
         {
             try
@@ -780,7 +835,7 @@ namespace PersonasAgentes.WinUI
             }
             catch (Exception ex)
             {
-                AddTrajectoryErrorCard($"⚠️ Exceção no runtime do DSH: {ex.Message}");
+                AddTrajectoryErrorCard($"⚠️ Exceção no runtime do Harness: {ex.Message}");
             }
             finally
             {
@@ -792,7 +847,7 @@ namespace PersonasAgentes.WinUI
         }
 
         // =========================================================================
-        // DEEPSEEK HARNESS NATIVE XAML TRAJECTORY NODES BUILDERS
+        // HARNESS NATIVE XAML TRAJECTORY NODES BUILDERS
         // =========================================================================
 
         private Border CreateTurnHeaderCard(int turnNumber, string prompt)
@@ -1125,7 +1180,7 @@ namespace PersonasAgentes.WinUI
 
             var header = new TextBlock
             {
-                Text = "💬 [DEEPSEEK HARNESS SYNTHESIZED OUTPUT]",
+                Text = "💬 [HARNESS SYNTHESIZED OUTPUT]",
                 FontSize = 10,
                 FontWeight = Microsoft.UI.Text.FontWeights.Bold,
                 Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 96, 165, 250))
@@ -1178,7 +1233,7 @@ namespace PersonasAgentes.WinUI
 
                 if (i % 2 == 1)
                 {
-                    // Code Block (DeepSeek / Agentic Code Card)
+                    // Code Block Card
                     string lang = "code";
                     string codeContent = block;
 
@@ -1392,7 +1447,7 @@ namespace PersonasAgentes.WinUI
         private void OnExportTrajectoryClicked(object sender, RoutedEventArgs e)
         {
             var sb = new StringBuilder();
-            sb.AppendLine($"# DeepSeek Harness (dsh) Trajectory Flight Recorder");
+            sb.AppendLine($"# Personas Harness Trajectory Flight Recorder");
             sb.AppendLine($"Session: {_currentSession?.Id ?? "default"}");
             sb.AppendLine($"Timestamp: {DateTime.UtcNow:O}");
             sb.AppendLine($"Total Turns: {_totalTurnsCount}");
@@ -1401,7 +1456,7 @@ namespace PersonasAgentes.WinUI
             byte[] hashBytes = sha.ComputeHash(Encoding.UTF8.GetBytes(sb.ToString()));
             string hash = BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
 
-            SelectNodeForInspection("Trajectory Export", $"SHA-256 Stamp:\n{hash}\n\nRegistro de auditoria criptográfica do append-only session log exportado com sucesso no padrão dsh-trajectory.", 0, 0);
+            SelectNodeForInspection("Trajectory Export", $"SHA-256 Stamp:\n{hash}\n\nRegistro de auditoria criptográfica do append-only session log exportado com sucesso no padrão psa-harness.", 0, 0);
         }
 
         private void ScrollToBottom()
