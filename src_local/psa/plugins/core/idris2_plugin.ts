@@ -24,7 +24,8 @@ export class Idris2FormalVerificationPlugin implements PsaPlugin {
             execute: async (args: { patchCode: string }) => {
                 const report = engine.verifyPatch(args.patchCode, "psa_verified_contract.ts");
                 if (!report.approved) {
-                    throw new Error(`Contratos formais violados: ${report.contracts.join(", ")}`);
+                    const failedDetails = report.contracts.filter(c => !c.passed).map(c => `${c.contractName}: ${c.errorReason}`);
+                    throw new Error(`Contratos formais violados: ${failedDetails.join(" | ")}`);
                 }
                 return { approved: true, contracts: report.contracts };
             }
