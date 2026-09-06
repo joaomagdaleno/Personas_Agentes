@@ -6,18 +6,18 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
-    Title="🏛️ Personas &amp; Agentes — PSA Agent Workbench (Sovereign Architecture 2.0)">
+    Title="⚡ DeepSeek Harness (dsh) — Agentic Workbench &amp; Cordis Plugin Engine">
 
-    <Grid Background="#111215">
+    <Grid Background="#0D0E12">
         <Grid.RowDefinitions>
-            <RowDefinition Height="52"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- ========================================================================= -->
-        <!-- TOP BAR: PSA Telemetry Bar & Controls                                     -->
+        <!-- TOP HEADER BAR: DeepSeek Harness Telemetry Bar & Controls                -->
         <!-- ========================================================================= -->
-        <Border Grid.Row="0" Background="#18191E" BorderBrush="#26272E" BorderThickness="0,0,0,1" Padding="16,0">
+        <Border Grid.Row="0" Background="#13151C" BorderBrush="#1F2330" BorderThickness="0,0,0,1" Padding="16,0">
             <Grid VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -26,94 +26,99 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Brand Title -->
+                <!-- DeepSeek Harness Brand Title & Plugin Badge -->
                 <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                    <TextBlock Text="🏛️" FontSize="20" VerticalAlignment="Center"/>
-                    <TextBlock Text="personas" FontSize="18" FontWeight="Bold" Foreground="#FFFFFF" VerticalAlignment="Center"/>
-                    <Border Background="#4D6BFE" CornerRadius="4" Padding="6,2" Margin="2,0,0,0">
-                        <TextBlock Text="PSA WORKBENCH" FontSize="10" FontWeight="Bold" Foreground="#FFFFFF"/>
+                    <Border Background="#2563EB" CornerRadius="6" Padding="6,4">
+                        <TextBlock Text="⚡" FontSize="14" Foreground="#FFFFFF" VerticalAlignment="Center"/>
                     </Border>
-                    <Border Background="#10B981" CornerRadius="4" Padding="5,2" Margin="4,0,0,0">
-                        <TextBlock Text="100% NATIVE" FontSize="9" FontWeight="Bold" Foreground="#111215"/>
+                    <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
+                        <TextBlock Text="deepseek" FontSize="16" FontWeight="Bold" Foreground="#FFFFFF" VerticalAlignment="Center"/>
+                        <TextBlock Text="harness" FontSize="16" FontWeight="Light" Foreground="#3B82F6" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <Border Background="#1E293B" BorderBrush="#334155" BorderThickness="1" CornerRadius="4" Padding="6,2" Margin="4,0,0,0">
+                        <TextBlock Text="dsh v2.0" FontSize="10" FontWeight="SemiBold" Foreground="#94A3B8"/>
+                    </Border>
+                    <Border Background="#064E3B" BorderBrush="#059669" BorderThickness="1" CornerRadius="4" Padding="5,2">
+                        <TextBlock Text="CORDIS ENGINE" FontSize="9" FontWeight="Bold" Foreground="#34D399"/>
                     </Border>
                 </StackPanel>
 
-                <!-- DSH Modes Selector -->
+                <!-- DSH Mode & Model Selector Dock -->
                 <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" Margin="24,0,0,0" VerticalAlignment="Center">
-                    <TextBlock Text="Modo:" FontSize="12" Foreground="#8A8F9E" VerticalAlignment="Center"/>
+                    <TextBlock Text="Modo:" FontSize="11" Foreground="#64748B" VerticalAlignment="Center"/>
                     <ComboBox x:Name="ModeComboBox" SelectionChanged="OnModeSelectionChanged"
-                              Background="#202127" Foreground="#ECECED" BorderBrush="#32343E" CornerRadius="6" Height="30" FontSize="11">
+                              Background="#181B24" Foreground="#F1F5F9" BorderBrush="#2A2F40" CornerRadius="6" Height="30" FontSize="11">
                         <ComboBoxItem Content="Standard" IsSelected="True"/>
                         <ComboBoxItem Content="Code"/>
                         <ComboBoxItem Content="Minimal"/>
                         <ComboBoxItem Content="Creator"/>
                     </ComboBox>
 
-                    <TextBlock Text="Modelo:" FontSize="12" Foreground="#8A8F9E" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    <TextBlock Text="Modelo:" FontSize="11" Foreground="#64748B" VerticalAlignment="Center" Margin="10,0,0,0"/>
                     <ComboBox x:Name="ModelSelectorComboBox" SelectionChanged="OnModelSelectionChanged"
-                              Background="#202127" Foreground="#ECECED" BorderBrush="#32343E" CornerRadius="6" Height="30" FontSize="11">
+                              Background="#181B24" Foreground="#F1F5F9" BorderBrush="#2A2F40" CornerRadius="6" Height="30" FontSize="11">
                         <ComboBoxItem Content="⚡ Qwen 2.5 Coder 1.5B (Fast / Lite)" Tag="qwen2.5-coder-1.5b" IsSelected="True"/>
                         <ComboBoxItem Content="🛠️ Qwen 2.5 Coder 7B (Coder)" Tag="qwen2.5-coder-7b"/>
                         <ComboBoxItem Content="🧠 Qwen3-8B Thinking (Architect)" Tag="qwen3-8b-thinking"/>
                     </ComboBox>
 
                     <Button x:Name="DownloadModelButton" Click="OnDownloadModelClicked"
-                            Background="#262734" Foreground="#89B4FA" BorderBrush="#36384A" BorderThickness="1"
-                            CornerRadius="6" Height="30" FontSize="10" Padding="8,0" VerticalAlignment="Center">
+                            Background="#1E293B" Foreground="#60A5FA" BorderBrush="#334155" BorderThickness="1"
+                            CornerRadius="6" Height="30" FontSize="10" Padding="10,0" VerticalAlignment="Center">
                         <StackPanel Orientation="Horizontal" Spacing="4">
-                            <TextBlock Text="📥 Baixar Modelo" FontSize="10"/>
+                            <TextBlock Text="📥 Baixar Modelo" FontSize="10" FontWeight="Medium"/>
                         </StackPanel>
                     </Button>
 
-                    <ProgressBar x:Name="DownloadProgressBar" Width="100" Height="8" Minimum="0" Maximum="100" Value="0"
-                                 Visibility="Collapsed" VerticalAlignment="Center"/>
+                    <ProgressBar x:Name="DownloadProgressBar" Width="90" Height="6" Minimum="0" Maximum="100" Value="0"
+                                 Visibility="Collapsed" VerticalAlignment="Center" Foreground="#3B82F6"/>
                 </StackPanel>
 
-                <!-- Live Performance Telemetry Chips (Tokens/s, Cache Hit, Latency, Turns) -->
-                <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,16,0">
-                    <Border Background="#202127" BorderBrush="#2C2E38" BorderThickness="1" CornerRadius="6" Padding="8,4">
+                <!-- Realtime Performance Telemetry Chips -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,16,0">
+                    <Border Background="#181B24" BorderBrush="#262B3A" BorderThickness="1" CornerRadius="6" Padding="8,4">
                         <StackPanel Orientation="Horizontal" Spacing="6">
-                            <TextBlock Text="⚡" FontSize="11"/>
-                            <TextBlock x:Name="TelemetryTokensTextBlock" Text="Tokens/s: 0.0" FontSize="11" Foreground="#10B981" FontWeight="SemiBold"/>
+                            <TextBlock Text="⚡" FontSize="10"/>
+                            <TextBlock x:Name="TelemetryTokensTextBlock" Text="Tokens/s: 0.0" FontSize="10" Foreground="#34D399" FontWeight="SemiBold"/>
                         </StackPanel>
                     </Border>
 
-                    <Border Background="#202127" BorderBrush="#2C2E38" BorderThickness="1" CornerRadius="6" Padding="8,4">
+                    <Border Background="#181B24" BorderBrush="#262B3A" BorderThickness="1" CornerRadius="6" Padding="8,4">
                         <StackPanel Orientation="Horizontal" Spacing="6">
-                            <TextBlock Text="💾" FontSize="11"/>
-                            <TextBlock x:Name="TelemetryCacheTextBlock" Text="Cache: 0.0%" FontSize="11" Foreground="#89B4FA" FontWeight="SemiBold"/>
+                            <TextBlock Text="💾" FontSize="10"/>
+                            <TextBlock x:Name="TelemetryCacheTextBlock" Text="Cache: 0.0%" FontSize="10" Foreground="#60A5FA" FontWeight="SemiBold"/>
                         </StackPanel>
                     </Border>
 
-                    <Border Background="#202127" BorderBrush="#2C2E38" BorderThickness="1" CornerRadius="6" Padding="8,4">
+                    <Border Background="#181B24" BorderBrush="#262B3A" BorderThickness="1" CornerRadius="6" Padding="8,4">
                         <StackPanel Orientation="Horizontal" Spacing="6">
-                            <TextBlock Text="⏱️" FontSize="11"/>
-                            <TextBlock x:Name="TelemetryLatencyTextBlock" Text="Latência: 0ms" FontSize="11" Foreground="#ECECED"/>
+                            <TextBlock Text="⏱️" FontSize="10"/>
+                            <TextBlock x:Name="TelemetryLatencyTextBlock" Text="Latência: 0ms" FontSize="10" Foreground="#CBD5E1"/>
                         </StackPanel>
                     </Border>
 
-                    <Border Background="#202127" BorderBrush="#2C2E38" BorderThickness="1" CornerRadius="6" Padding="8,4">
+                    <Border Background="#181B24" BorderBrush="#262B3A" BorderThickness="1" CornerRadius="6" Padding="8,4">
                         <StackPanel Orientation="Horizontal" Spacing="6">
-                            <TextBlock Text="🔄" FontSize="11"/>
-                            <TextBlock x:Name="TelemetryTurnsTextBlock" Text="Turnos: 0" FontSize="11" Foreground="#ECECED"/>
+                            <TextBlock Text="🔄" FontSize="10"/>
+                            <TextBlock x:Name="TelemetryTurnsTextBlock" Text="Turnos: 0" FontSize="10" Foreground="#CBD5E1"/>
                         </StackPanel>
                     </Border>
                 </StackPanel>
 
-                <!-- Status & Refresh Button -->
+                <!-- Engine & Backend Host Status -->
                 <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                    <Border x:Name="SlmStateBorder" Background="#1D2432" BorderBrush="#89B4FA" BorderThickness="1" CornerRadius="6" Padding="8,4">
-                        <TextBlock x:Name="SlmStateTextBlock" Text="❄️ SLM: Purged (0MB)" FontSize="11" FontWeight="Bold" Foreground="#89B4FA"/>
+                    <Border x:Name="SlmStateBorder" Background="#1E293B" BorderBrush="#3B82F6" BorderThickness="1" CornerRadius="6" Padding="8,4">
+                        <TextBlock x:Name="SlmStateTextBlock" Text="❄️ SLM: Purged (0MB)" FontSize="10" FontWeight="Bold" Foreground="#60A5FA"/>
                     </Border>
-                    <Border Background="#162E22" BorderBrush="#10B981" BorderThickness="1" CornerRadius="6" Padding="8,4">
-                        <TextBlock Text="🟢 Host: 3080" FontSize="11" FontWeight="Bold" Foreground="#10B981"/>
+                    <Border Background="#064E3B" BorderBrush="#059669" BorderThickness="1" CornerRadius="6" Padding="8,4">
+                        <TextBlock Text="🟢 Host: 3080" FontSize="10" FontWeight="Bold" Foreground="#34D399"/>
                     </Border>
                 </StackPanel>
             </Grid>
         </Border>
 
         <!-- ========================================================================= -->
-        <!-- MAIN WORKSPACE: 3-Column Native Agent Layout                              -->
+        <!-- MAIN WORKSPACE: 3-Column Agentic Workbench Layout                         -->
         <!-- ========================================================================= -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -123,9 +128,9 @@
             </Grid.ColumnDefinitions>
 
             <!-- ===================================================================== -->
-            <!-- COLUMN 0: Left Sidebar (ui-session & Personas Inventory)             -->
+            <!-- COLUMN 0: Left Sidebar (Sessions & Plugin Architecture)               -->
             <!-- ===================================================================== -->
-            <Border Grid.Column="0" Background="#15161A" BorderBrush="#24252C" BorderThickness="0,0,1,0" Padding="12">
+            <Border Grid.Column="0" Background="#111319" BorderBrush="#1F2330" BorderThickness="0,0,1,0" Padding="12">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -134,14 +139,14 @@
                         <RowDefinition Height="180"/>
                     </Grid.RowDefinitions>
 
-                    <!-- Sessions Header & New Session Button -->
+                    <!-- Sessions Section Header & New Session Button -->
                     <StackPanel Grid.Row="0" Spacing="8" Margin="0,0,0,10">
                         <Grid>
-                            <TextBlock Text="SESSÕES &amp; FORKS" FontSize="11" FontWeight="Bold" Foreground="#7A7F8D" VerticalAlignment="Center"/>
-                            <Button Click="OnNewSessionClicked" HorizontalAlignment="Right" Padding="8,4" Background="#26272F" BorderBrush="#363842" CornerRadius="6">
+                            <TextBlock Text="SESSÕES &amp; FORKS" FontSize="10" FontWeight="Bold" Foreground="#64748B" VerticalAlignment="Center"/>
+                            <Button Click="OnNewSessionClicked" HorizontalAlignment="Right" Padding="8,4" Background="#1E293B" BorderBrush="#334155" CornerRadius="6">
                                 <StackPanel Orientation="Horizontal" Spacing="4">
                                     <TextBlock Text="➕" FontSize="10"/>
-                                    <TextBlock Text="Nova" FontSize="11" Foreground="#ECECED"/>
+                                    <TextBlock Text="Nova" FontSize="11" Foreground="#F1F5F9" FontWeight="Medium"/>
                                 </StackPanel>
                             </Button>
                         </Grid>
@@ -151,30 +156,32 @@
                     <ListView x:Name="SessionsListView" Grid.Row="1" SelectionChanged="OnSessionSelectionChanged" Background="Transparent" Margin="0,0,0,8">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Border Margin="0,2" CornerRadius="6" Padding="8,6" Background="#1D1E24" BorderBrush="#292A34" BorderThickness="1">
+                                <Border Margin="0,2" CornerRadius="6" Padding="8,6" Background="#181B24" BorderBrush="#262B3A" BorderThickness="1">
                                     <StackPanel Spacing="2">
                                         <StackPanel Orientation="Horizontal" Spacing="6">
                                             <TextBlock Text="📁" FontSize="11"/>
-                                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold" Foreground="#ECECED" FontSize="11"/>
+                                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold" Foreground="#F1F5F9" FontSize="11"/>
                                         </StackPanel>
-                                        <TextBlock Text="{Binding Info}" Foreground="#7A7F8D" FontSize="9"/>
+                                        <TextBlock Text="{Binding Info}" Foreground="#64748B" FontSize="9"/>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
 
-                    <!-- Personas / Plugins Header -->
-                    <TextBlock Grid.Row="2" Text="🏛️ AGENTES (SUPER PERSONAS)" FontSize="11" FontWeight="Bold" Foreground="#7A7F8D" Margin="0,8,0,6"/>
+                    <!-- Plugins / Personas Section Header -->
+                    <StackPanel Grid.Row="2" Margin="0,8,0,6">
+                        <TextBlock Text="🔌 PLUGINS DE PERSONA (DSH)" FontSize="10" FontWeight="Bold" Foreground="#64748B"/>
+                    </StackPanel>
 
-                    <!-- Personas List -->
+                    <!-- Personas / Plugins List -->
                     <ListView x:Name="PersonasListView" Grid.Row="3" SelectionChanged="OnPersonaSelectionChanged" Background="Transparent">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Border Margin="0,1" CornerRadius="4" Padding="6,4" Background="Transparent">
+                                <Border Margin="0,2" CornerRadius="6" Padding="8,5" Background="#181B24" BorderBrush="#262B3A" BorderThickness="1">
                                     <StackPanel Spacing="1">
-                                        <TextBlock Text="{Binding Name}" FontWeight="Medium" Foreground="#ECECED" FontSize="11"/>
-                                        <TextBlock Text="{Binding Category}" Foreground="#7A7F8D" FontSize="9"/>
+                                        <TextBlock Text="{Binding Name}" FontWeight="Medium" Foreground="#F1F5F9" FontSize="11"/>
+                                        <TextBlock Text="{Binding Category}" Foreground="#64748B" FontSize="9"/>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>
@@ -184,111 +191,112 @@
             </Border>
 
             <!-- ===================================================================== -->
-            <!-- COLUMN 1: Central Trajectory View (Flight Recorder & Ledger)          -->
+            <!-- COLUMN 1: Central Trajectory View (Agent Execution Flight Recorder)   -->
             <!-- ===================================================================== -->
-            <Grid Grid.Column="1" Background="#111215" Padding="18,14">
+            <Grid Grid.Column="1" Background="#0D0E12" Padding="16,12">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- Timing Overview Bar (dsh-client-ui-trajectory) -->
-                <Border Grid.Row="0" Background="#18191E" BorderBrush="#26272E" BorderThickness="1" CornerRadius="8" Padding="12,8" Margin="0,0,0,12">
+                <!-- Timing & Execution Overview Bar -->
+                <Border Grid.Row="0" Background="#13151C" BorderBrush="#1F2330" BorderThickness="1" CornerRadius="8" Padding="12,8" Margin="0,0,0,12">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
+
                         <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                            <TextBlock Text="TIMING OVERVIEW:" FontSize="10" FontWeight="Bold" Foreground="#7A7F8D" VerticalAlignment="Center"/>
-                            <Border Background="#242630" CornerRadius="4" Padding="6,2">
-                                <TextBlock x:Name="TtftTextBlock" Text="TTFT: 0ms" FontSize="10" Foreground="#89B4FA"/>
+                            <TextBlock Text="MÉTRICAS DE DESEMPENHO:" FontSize="10" FontWeight="Bold" Foreground="#64748B" VerticalAlignment="Center"/>
+                            <Border Background="#1E293B" CornerRadius="4" Padding="6,2">
+                                <TextBlock x:Name="TtftTextBlock" Text="TTFT: 0ms" FontSize="10" Foreground="#60A5FA" FontWeight="Medium"/>
                             </Border>
-                            <Border Background="#242630" CornerRadius="4" Padding="6,2">
-                                <TextBlock x:Name="DecodingTextBlock" Text="Decoding: 0ms" FontSize="10" Foreground="#A6E3A1"/>
+                            <Border Background="#1E293B" CornerRadius="4" Padding="6,2">
+                                <TextBlock x:Name="DecodingTextBlock" Text="Decoding: 0ms" FontSize="10" Foreground="#34D399" FontWeight="Medium"/>
                             </Border>
-                            <Border Background="#242630" CornerRadius="4" Padding="6,2">
-                                <TextBlock x:Name="TotalDurationTextBlock" Text="Duração: 0ms" FontSize="10" Foreground="#F9E2AF"/>
+                            <Border Background="#1E293B" CornerRadius="4" Padding="6,2">
+                                <TextBlock x:Name="TotalDurationTextBlock" Text="Duração: 0ms" FontSize="10" Foreground="#FBBF24" FontWeight="Medium"/>
                             </Border>
                         </StackPanel>
 
                         <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
-                            <Button Content="Limpar Trajetória" Click="OnClearTrajectoryClicked" Background="#242630" Foreground="#ECECED" BorderBrush="#32343E" CornerRadius="4" Height="26" FontSize="10" Padding="8,0"/>
+                            <Button Content="Limpar Trajetória" Click="OnClearTrajectoryClicked" Background="#1E293B" Foreground="#F1F5F9" BorderBrush="#334155" CornerRadius="6" Height="26" FontSize="10" Padding="10,0"/>
                         </StackPanel>
                     </Grid>
                 </Border>
 
-                <!-- Trajectory Event Ledger (Flight Recorder Rows) -->
+                <!-- Trajectory Execution Stream Ledger -->
                 <ScrollViewer x:Name="TrajectoryScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,0,0,12">
                     <StackPanel x:Name="TrajectoryStackPanel" Spacing="10"/>
                 </ScrollViewer>
 
-                <!-- DSH Dispatch / Command Dock -->
-                <Border Grid.Row="2" Background="#18191E" BorderBrush="#26272E" BorderThickness="1" CornerRadius="10" Padding="12,10">
+                <!-- DSH Command Dock & Input Prompt -->
+                <Border Grid.Row="2" Background="#13151C" BorderBrush="#1F2330" BorderThickness="1" CornerRadius="10" Padding="12,10">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <!-- Input Prompt -->
+                        <!-- Input Prompt Box -->
                         <TextBox x:Name="PromptTextBox" Grid.Row="0"
-                                 PlaceholderText="Digite um comando, tarefa ou consulta para o agente executar na bancada..."
+                                 PlaceholderText="Digite uma instrução, tarefa de código ou consulta para o harness executar..."
                                  AcceptsReturn="True" TextWrapping="Wrap" MaxHeight="100" MinHeight="44"
                                  KeyDown="OnPromptKeyDown"
-                                 Background="Transparent" Foreground="#ECECED" BorderThickness="0"
+                                 Background="Transparent" Foreground="#F1F5F9" BorderThickness="0"
                                  FontSize="13" Padding="0,2,0,6"/>
 
-                        <!-- Dock Action Controls -->
+                        <!-- Dock Modifiers & Dispatch Action Bar -->
                         <Grid Grid.Row="1" Margin="0,4,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <!-- Tool Shortcuts & Modifiers -->
+                            <!-- Agent Plugin Modifiers -->
                             <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
                                 <ToggleButton x:Name="DeepThinkToggle" Click="OnDeepThinkToggleClicked"
-                                              Background="#242630" BorderBrush="#363844" BorderThickness="1"
+                                              Background="#1E293B" BorderBrush="#334155" BorderThickness="1"
                                               CornerRadius="14" Padding="10,3">
                                     <StackPanel Orientation="Horizontal" Spacing="4">
                                         <TextBlock Text="🧠" FontSize="11"/>
-                                        <TextBlock Text="DeepThink Pro" FontSize="11" FontWeight="SemiBold" Foreground="#ECECED"/>
+                                        <TextBlock Text="DeepThink Pro" FontSize="10" FontWeight="SemiBold" Foreground="#F1F5F9"/>
                                     </StackPanel>
                                 </ToggleButton>
 
                                 <ToggleButton x:Name="RAGAnchorToggle" IsChecked="True"
-                                              Background="#242630" BorderBrush="#363844" BorderThickness="1"
+                                              Background="#1E293B" BorderBrush="#334155" BorderThickness="1"
                                               CornerRadius="14" Padding="10,3">
                                     <StackPanel Orientation="Horizontal" Spacing="4">
                                         <TextBlock Text="🔍" FontSize="11"/>
-                                        <TextBlock Text="ZvecGrep RAG" FontSize="11" FontWeight="SemiBold" Foreground="#ECECED"/>
+                                        <TextBlock Text="ZvecGrep RAG" FontSize="10" FontWeight="SemiBold" Foreground="#F1F5F9"/>
                                     </StackPanel>
                                 </ToggleButton>
 
                                 <ToggleButton x:Name="IdrisVerifierToggle" IsChecked="True"
-                                              Background="#242630" BorderBrush="#363844" BorderThickness="1"
+                                              Background="#1E293B" BorderBrush="#334155" BorderThickness="1"
                                               CornerRadius="14" Padding="10,3">
                                     <StackPanel Orientation="Horizontal" Spacing="4">
                                         <TextBlock Text="🔬" FontSize="11"/>
-                                        <TextBlock Text="Idris 2 Safety" FontSize="11" FontWeight="SemiBold" Foreground="#ECECED"/>
+                                        <TextBlock Text="Idris 2 Safety" FontSize="10" FontWeight="SemiBold" Foreground="#F1F5F9"/>
                                     </StackPanel>
                                 </ToggleButton>
                             </StackPanel>
 
-                            <!-- Dispatch & Cancel Buttons -->
+                            <!-- Dispatch & Cancel Controls -->
                             <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6">
                                 <Button x:Name="CancelButton" Click="OnCancelClicked"
-                                        Background="#32242B" Foreground="#F38BA8" BorderBrush="#F38BA8" BorderThickness="1"
+                                        Background="#451A22" Foreground="#F87171" BorderBrush="#991B1B" BorderThickness="1"
                                         CornerRadius="6" Padding="10,6" Height="32">
                                     <StackPanel Orientation="Horizontal" Spacing="4">
                                         <TextBlock Text="🛑 Cancelar" FontSize="11" FontWeight="Bold"/>
                                     </StackPanel>
                                 </Button>
                                 <Button x:Name="DispatchButton" Click="OnDispatchClicked"
-                                        Background="#4D6BFE" Foreground="#FFFFFF" BorderThickness="0"
+                                        Background="#2563EB" Foreground="#FFFFFF" BorderThickness="0"
                                         CornerRadius="6" Padding="14,6" Height="32">
                                     <StackPanel Orientation="Horizontal" Spacing="6">
                                         <TextBlock Text="Executar Turno" FontSize="11" FontWeight="Bold"/>
@@ -302,9 +310,9 @@
             </Grid>
 
             <!-- ===================================================================== -->
-            <!-- COLUMN 2: Right Inspector & Tool Presentation Drawer (ui-tool)        -->
+            <!-- COLUMN 2: Right Inspector & Tool Plugin Drawer                        -->
             <!-- ===================================================================== -->
-            <Border Grid.Column="2" Background="#15161A" BorderBrush="#24252C" BorderThickness="1,0,0,0" Padding="14">
+            <Border Grid.Column="2" Background="#111319" BorderBrush="#1F2330" BorderThickness="1,0,0,0" Padding="14">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -316,103 +324,103 @@
 
                     <!-- Inspector Header -->
                     <StackPanel Grid.Row="0" Spacing="4" Margin="0,0,0,10">
-                        <TextBlock Text="INSPECTOR DE ETAPA (STEP)" FontSize="11" FontWeight="Bold" Foreground="#7A7F8D"/>
-                        <TextBlock x:Name="InspectorTitleTextBlock" Text="Selecione um nó da Trajetória" FontSize="13" FontWeight="Bold" Foreground="#ECECED"/>
+                        <TextBlock Text="INSPECTOR DE ETAPA (STEP)" FontSize="10" FontWeight="Bold" Foreground="#64748B"/>
+                        <TextBlock x:Name="InspectorTitleTextBlock" Text="Selecione um nó da Trajetória" FontSize="13" FontWeight="Bold" Foreground="#F1F5F9"/>
                     </StackPanel>
 
-                    <!-- Inspector Details Content -->
+                    <!-- Step Execution Details & Payload -->
                     <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                         <StackPanel Spacing="8">
-                            <Border Background="#1D1E24" BorderBrush="#292A34" BorderThickness="1" CornerRadius="6" Padding="8">
+                            <Border Background="#181B24" BorderBrush="#262B3A" BorderThickness="1" CornerRadius="6" Padding="8">
                                 <StackPanel Spacing="4">
-                                    <TextBlock Text="METADADOS DE EXECUÇÃO" FontSize="9" FontWeight="Bold" Foreground="#7A7F8D"/>
-                                    <TextBlock x:Name="InspectorMetaTextBlock" Text="Status: Pronto&#x0a;Duração: N/A&#x0a;Tokens Estimados: N/A" FontSize="11" Foreground="#CDD6F4"/>
+                                    <TextBlock Text="METADADOS DE EXECUÇÃO" FontSize="9" FontWeight="Bold" Foreground="#64748B"/>
+                                    <TextBlock x:Name="InspectorMetaTextBlock" Text="Status: Pronto&#x0a;Duração: N/A&#x0a;Tokens Estimados: N/A" FontSize="11" Foreground="#CBD5E1"/>
                                 </StackPanel>
                             </Border>
 
-                            <Border Background="#1D1E24" BorderBrush="#292A34" BorderThickness="1" CornerRadius="6" Padding="8">
+                            <Border Background="#181B24" BorderBrush="#262B3A" BorderThickness="1" CornerRadius="6" Padding="8">
                                 <StackPanel Spacing="4">
-                                    <TextBlock Text="PAYLOAD / RESUMO" FontSize="9" FontWeight="Bold" Foreground="#7A7F8D"/>
-                                    <TextBlock x:Name="InspectorPayloadTextBlock" Text="Nenhuma etapa selecionada." TextWrapping="Wrap" FontSize="11" Foreground="#A6ADC8" FontFamily="Consolas"/>
+                                    <TextBlock Text="PAYLOAD / RESUMO" FontSize="9" FontWeight="Bold" Foreground="#64748B"/>
+                                    <TextBlock x:Name="InspectorPayloadTextBlock" Text="Nenhuma etapa selecionada." TextWrapping="Wrap" FontSize="11" Foreground="#94A3B8" FontFamily="Consolas"/>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
                     </ScrollViewer>
 
-                    <!-- Tools Section Header -->
-                    <TextBlock Grid.Row="2" Text="FERRAMENTAS REGISTRADAS (TOOLS)" FontSize="11" FontWeight="Bold" Foreground="#7A7F8D" Margin="0,10,0,6"/>
+                    <!-- Registered Tools Header -->
+                    <TextBlock Grid.Row="2" Text="FERRAMENTAS REGISTRADAS (TOOLS)" FontSize="10" FontWeight="Bold" Foreground="#64748B" Margin="0,10,0,6"/>
 
-                    <!-- Tools Registry List -->
+                    <!-- Tools List -->
                     <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto">
                         <StackPanel Spacing="4">
-                            <Border Background="#1D1E24" CornerRadius="4" Padding="6,4">
-                                <TextBlock Text="🩺 system.run_diagnostic (360° Health)" FontSize="10" Foreground="#10B981" FontWeight="SemiBold"/>
+                            <Border Background="#181B24" CornerRadius="4" Padding="6,4">
+                                <TextBlock Text="🩺 system.run_diagnostic (360° Health)" FontSize="10" Foreground="#34D399" FontWeight="SemiBold"/>
                             </Border>
-                            <Border Background="#1D1E24" CornerRadius="4" Padding="6,4">
-                                <TextBlock Text="🛡️ audit.staged (Git Risk &amp; Security)" FontSize="10" Foreground="#89B4FA" FontWeight="SemiBold"/>
+                            <Border Background="#181B24" CornerRadius="4" Padding="6,4">
+                                <TextBlock Text="🛡️ audit.staged (Git Risk &amp; Security)" FontSize="10" Foreground="#60A5FA" FontWeight="SemiBold"/>
                             </Border>
-                            <Border Background="#1D1E24" CornerRadius="4" Padding="6,4">
-                                <TextBlock Text="📚 registry.list_stacks (9 Polyglot Stacks)" FontSize="10" Foreground="#ECECED"/>
+                            <Border Background="#181B24" CornerRadius="4" Padding="6,4">
+                                <TextBlock Text="📚 registry.list_stacks (9 Polyglot Stacks)" FontSize="10" Foreground="#F1F5F9"/>
                             </Border>
-                            <Border Background="#1D1E24" CornerRadius="4" Padding="6,4">
-                                <TextBlock Text="🧪 healing.run_auto_heal (Atomic Healer)" FontSize="10" Foreground="#ECECED"/>
+                            <Border Background="#181B24" CornerRadius="4" Padding="6,4">
+                                <TextBlock Text="🧪 healing.run_auto_heal (Atomic Healer)" FontSize="10" Foreground="#F1F5F9"/>
                             </Border>
-                            <Border Background="#1D1E24" CornerRadius="4" Padding="6,4">
-                                <TextBlock Text="⚡ native.governance_status (16GB RAM/CPU)" FontSize="10" Foreground="#ECECED"/>
+                            <Border Background="#181B24" CornerRadius="4" Padding="6,4">
+                                <TextBlock Text="⚡ native.governance_status (16GB RAM/CPU)" FontSize="10" Foreground="#F1F5F9"/>
                             </Border>
-                            <Border Background="#1D1E24" CornerRadius="4" Padding="6,4">
-                                <TextBlock Text="📝 todo.write (Imperative Snapshot)" FontSize="10" Foreground="#ECECED"/>
+                            <Border Background="#181B24" CornerRadius="4" Padding="6,4">
+                                <TextBlock Text="📝 todo.write (Imperative Snapshot)" FontSize="10" Foreground="#F1F5F9"/>
                             </Border>
-                            <Border Background="#1D1E24" CornerRadius="4" Padding="6,4">
-                                <TextBlock Text="🌐 web.search / fetch (Markdown RAG)" FontSize="10" Foreground="#ECECED"/>
+                            <Border Background="#181B24" CornerRadius="4" Padding="6,4">
+                                <TextBlock Text="🌐 web.search / fetch (Markdown RAG)" FontSize="10" Foreground="#F1F5F9"/>
                             </Border>
-                            <Border Background="#1D1E24" CornerRadius="4" Padding="6,4">
-                                <TextBlock Text="🧠 skill.load (Modular Skill Registry)" FontSize="10" Foreground="#ECECED"/>
+                            <Border Background="#181B24" CornerRadius="4" Padding="6,4">
+                                <TextBlock Text="🧠 skill.load (Modular Skill Registry)" FontSize="10" Foreground="#F1F5F9"/>
                             </Border>
-                            <Border Background="#1D1E24" CornerRadius="4" Padding="6,4">
-                                <TextBlock Text="🗄️ session_query_sql (bun:sqlite DB)" FontSize="10" Foreground="#ECECED"/>
+                            <Border Background="#181B24" CornerRadius="4" Padding="6,4">
+                                <TextBlock Text="🗄️ session_query_sql (bun:sqlite DB)" FontSize="10" Foreground="#F1F5F9"/>
                             </Border>
-                            <Border Background="#1D1E24" CornerRadius="4" Padding="6,4">
-                                <TextBlock Text="🐙 github.webhook (Autonomous CI/CD)" FontSize="10" Foreground="#ECECED"/>
+                            <Border Background="#181B24" CornerRadius="4" Padding="6,4">
+                                <TextBlock Text="🐙 github.webhook (Autonomous CI/CD)" FontSize="10" Foreground="#F1F5F9"/>
                             </Border>
-                            <Border Background="#1D1E24" CornerRadius="4" Padding="6,4">
-                                <TextBlock Text="💻 terminal.pty (Continuous Shell)" FontSize="10" Foreground="#ECECED"/>
+                            <Border Background="#181B24" CornerRadius="4" Padding="6,4">
+                                <TextBlock Text="💻 terminal.pty (Continuous Shell)" FontSize="10" Foreground="#F1F5F9"/>
                             </Border>
-                            <Border Background="#1D1E24" CornerRadius="4" Padding="6,4">
-                                <TextBlock Text="🔍 lsp.definition (Semantic Symbols)" FontSize="10" Foreground="#ECECED"/>
+                            <Border Background="#181B24" CornerRadius="4" Padding="6,4">
+                                <TextBlock Text="🔍 lsp.definition (Semantic Symbols)" FontSize="10" Foreground="#F1F5F9"/>
                             </Border>
-                            <Border Background="#1D1E24" CornerRadius="4" Padding="6,4">
-                                <TextBlock Text="⚡ zvec_grep.search (SIMD Fast RAG)" FontSize="10" Foreground="#ECECED"/>
+                            <Border Background="#181B24" CornerRadius="4" Padding="6,4">
+                                <TextBlock Text="⚡ zvec_grep.search (SIMD Fast RAG)" FontSize="10" Foreground="#F1F5F9"/>
                             </Border>
-                            <Border Background="#1D1E24" CornerRadius="4" Padding="6,4">
-                                <TextBlock Text="🔬 idris2_verifier.verify (Formal Proofs)" FontSize="10" Foreground="#ECECED"/>
+                            <Border Background="#181B24" CornerRadius="4" Padding="6,4">
+                                <TextBlock Text="🔬 idris2_verifier.verify (Formal Proofs)" FontSize="10" Foreground="#F1F5F9"/>
                             </Border>
-                            <Border Background="#1D1E24" CornerRadius="4" Padding="6,4">
-                                <TextBlock Text="📁 fs.read / write / edit (Sandboxed)" FontSize="10" Foreground="#ECECED"/>
+                            <Border Background="#181B24" CornerRadius="4" Padding="6,4">
+                                <TextBlock Text="📁 fs.read / write / edit (Sandboxed)" FontSize="10" Foreground="#F1F5F9"/>
                             </Border>
-                            <Border Background="#1D1E24" CornerRadius="4" Padding="6,4">
-                                <TextBlock Text="🐚 shell.exec (PowerShell Native)" FontSize="10" Foreground="#ECECED"/>
+                            <Border Background="#181B24" CornerRadius="4" Padding="6,4">
+                                <TextBlock Text="🐚 shell.exec (PowerShell Native)" FontSize="10" Foreground="#F1F5F9"/>
                             </Border>
-                            <Border Background="#1D1E24" CornerRadius="4" Padding="6,4">
-                                <TextBlock Text="🤝 subagent.spawn (Parallel Sessions)" FontSize="10" Foreground="#ECECED"/>
+                            <Border Background="#181B24" CornerRadius="4" Padding="6,4">
+                                <TextBlock Text="🤝 subagent.spawn (Parallel Sessions)" FontSize="10" Foreground="#F1F5F9"/>
                             </Border>
                         </StackPanel>
                     </ScrollViewer>
 
-                    <!-- Export Trajectory & Task Queue Buttons -->
+                    <!-- Export Trajectory & Task Queue Actions -->
                     <StackPanel Grid.Row="4" Spacing="6" Margin="0,10,0,0">
                         <Button HorizontalAlignment="Stretch" Click="OnRefreshTasksClicked"
-                                Background="#1D2432" BorderBrush="#89B4FA" BorderThickness="1" CornerRadius="6" Padding="10,6">
+                                Background="#181B24" BorderBrush="#3B82F6" BorderThickness="1" CornerRadius="6" Padding="10,6">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="6">
                                 <TextBlock Text="🔄" FontSize="11"/>
-                                <TextBlock Text="Fila de Tarefas de Segundo Plano" FontSize="11" FontWeight="SemiBold" Foreground="#89B4FA"/>
+                                <TextBlock Text="Fila de Tarefas de Segundo Plano" FontSize="11" FontWeight="SemiBold" Foreground="#60A5FA"/>
                             </StackPanel>
                         </Button>
                         <Button HorizontalAlignment="Stretch" Click="OnExportTrajectoryClicked"
-                                Background="#26272F" BorderBrush="#363842" BorderThickness="1" CornerRadius="6" Padding="10,6">
+                                Background="#1E293B" BorderBrush="#334155" BorderThickness="1" CornerRadius="6" Padding="10,6">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="6">
                                 <TextBlock Text="📜" FontSize="11"/>
-                                <TextBlock Text="Exportar Trajetória (SHA-256)" FontSize="11" FontWeight="SemiBold" Foreground="#ECECED"/>
+                                <TextBlock Text="Exportar Trajetória (SHA-256)" FontSize="11" FontWeight="SemiBold" Foreground="#F1F5F9"/>
                             </StackPanel>
                         </Button>
                     </StackPanel>
