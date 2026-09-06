@@ -49,10 +49,6 @@ Source: "..\dist\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs creat
 
 [Icons]
 Name: "{group}\PSA Agent Workbench"; Filename: "{app}\winui\{#MyAppExeName}"; WorkingDir: "{app}\winui"
-Name: "{group}\Gerenciador de Modelos de IA (Trindade PSA)"; Filename: "{app}\bin\model-downloader.exe"; Parameters: "--dir ""{app}\models"""; WorkingDir: "{app}"
-Name: "{group}\Modelos de IA\Baixar Qwen 1.5B (Rápido)"; Filename: "{app}\bin\model-downloader.exe"; Parameters: "--model 1.5b --auto-close 5 --dir ""{app}\models"""; WorkingDir: "{app}"
-Name: "{group}\Modelos de IA\Baixar Qwen 3 Thinking (Raciocínio)"; Filename: "{app}\bin\model-downloader.exe"; Parameters: "--model thinking --auto-close 5 --dir ""{app}\models"""; WorkingDir: "{app}"
-Name: "{group}\Modelos de IA\Baixar Qwen 7B (Engenharia de Código)"; Filename: "{app}\bin\model-downloader.exe"; Parameters: "--model 7b --auto-close 5 --dir ""{app}\models"""; WorkingDir: "{app}"
 Name: "{group}\Desinstalar {#MyAppName}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\PSA Agent Workbench"; Filename: "{app}\winui\{#MyAppExeName}"; WorkingDir: "{app}\winui"; Tasks: desktopicon
 
