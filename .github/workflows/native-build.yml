@@ -94,19 +94,19 @@ jobs:
           path: |
             ~/go/pkg/mod
             ~/.cache/go-build
-          key: go-${{ matrix.os }}-${{ hashFiles('src_native/go.sum') }}
+          key: go-${{ matrix.os }}-${{ hashFiles('src_native/hub/go.sum') }}
           restore-keys: go-${{ matrix.os }}-
 
       - name: Run Tests
-        working-directory: ./src_native
+        working-directory: ./src_native/hub
         run: go test ./...
 
       - name: Build Scanner
-        working-directory: ./src_native/scanner
+        working-directory: ./src_native/hub
         run: go build -o ${{ matrix.binary_name }} main.go
 
       - name: Upload Scanner Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact_name }}
-          path: ./src_native/scanner/${{ matrix.binary_name }}
+          path: ./src_native/hub/${{ matrix.binary_name }}
