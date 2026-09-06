@@ -89,6 +89,9 @@ get_batch*.py
 *_scan_results.json
 *_scan_release.json
 
+# Dynamic formal verification generated specs
+src_native/formal/generated/
+
 # PSA Scratch Test Directories & Native UI Builds
 .psa_test_scratch_*
 .psa_plugin_test_*
