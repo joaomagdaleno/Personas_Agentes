@@ -73,6 +73,61 @@ namespace PersonasAgentes.WinUI
             _ = CheckForUpdatesAsync();
         }
 
+        // =========================================================================
+        // NAVIGATION HANDLERS (MULTI-PAGE VIEWS)
+        // =========================================================================
+
+        private void OnNavWorkbenchClicked(object sender, RoutedEventArgs e)
+        {
+            if (WorkbenchPageView != null) WorkbenchPageView.Visibility = Visibility.Visible;
+            if (PluginsPageView != null) PluginsPageView.Visibility = Visibility.Collapsed;
+            if (SettingsPageView != null) SettingsPageView.Visibility = Visibility.Collapsed;
+
+            UpdateNavButtonVisuals(NavWorkbenchButton, true);
+            UpdateNavButtonVisuals(NavPluginsButton, false);
+            UpdateNavButtonVisuals(NavSettingsButton, false);
+        }
+
+        private void OnNavPluginsClicked(object sender, RoutedEventArgs e)
+        {
+            if (WorkbenchPageView != null) WorkbenchPageView.Visibility = Visibility.Collapsed;
+            if (PluginsPageView != null) PluginsPageView.Visibility = Visibility.Visible;
+            if (SettingsPageView != null) SettingsPageView.Visibility = Visibility.Collapsed;
+
+            UpdateNavButtonVisuals(NavWorkbenchButton, false);
+            UpdateNavButtonVisuals(NavPluginsButton, true);
+            UpdateNavButtonVisuals(NavSettingsButton, false);
+        }
+
+        private void OnNavSettingsClicked(object sender, RoutedEventArgs e)
+        {
+            if (WorkbenchPageView != null) WorkbenchPageView.Visibility = Visibility.Collapsed;
+            if (PluginsPageView != null) PluginsPageView.Visibility = Visibility.Collapsed;
+            if (SettingsPageView != null) SettingsPageView.Visibility = Visibility.Visible;
+
+            UpdateNavButtonVisuals(NavWorkbenchButton, false);
+            UpdateNavButtonVisuals(NavPluginsButton, false);
+            UpdateNavButtonVisuals(NavSettingsButton, true);
+        }
+
+        private void UpdateNavButtonVisuals(Button? btn, bool active)
+        {
+            if (btn == null) return;
+            if (active)
+            {
+                btn.Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 37, 99, 235));
+                btn.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 255, 255, 255));
+                btn.BorderThickness = new Thickness(0);
+            }
+            else
+            {
+                btn.Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 24, 27, 36));
+                btn.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 148, 163, 184));
+                btn.BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 42, 47, 64));
+                btn.BorderThickness = new Thickness(1);
+            }
+        }
+
         private async Task CheckForUpdatesAsync()
         {
             try
@@ -91,12 +146,12 @@ namespace PersonasAgentes.WinUI
                         {
                             if (hasUpdate)
                             {
-                                TelemetryTurnsTextBlock.Text = $"Versão: v{currentVersion} (Nova Versão Disponível 🚀)";
-                                TelemetryTurnsTextBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 16, 185, 129));
+                                TelemetryTurnsTextBlock.Text = $"v{currentVersion} (Nova Versão Disponível 🚀)";
+                                TelemetryTurnsTextBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 52, 211, 153));
                             }
                             else
                             {
-                                TelemetryTurnsTextBlock.Text = $"Versão: v{currentVersion}";
+                                TelemetryTurnsTextBlock.Text = $"v{currentVersion}";
                             }
                         });
                     }
@@ -128,16 +183,16 @@ namespace PersonasAgentes.WinUI
             if (isWarm)
             {
                 SlmStateTextBlock.Text = $"🟢 SLM: Warmed (~1.0GB)";
-                SlmStateTextBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 16, 185, 129));
-                SlmStateBorder.Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 22, 46, 34));
-                SlmStateBorder.BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 16, 185, 129));
+                SlmStateTextBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 52, 211, 153));
+                SlmStateBorder.Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 6, 78, 59));
+                SlmStateBorder.BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 52, 211, 153));
             }
             else
             {
                 SlmStateTextBlock.Text = $"❄️ SLM: Purged (0MB)";
-                SlmStateTextBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 137, 180, 250));
-                SlmStateBorder.Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 29, 36, 50));
-                SlmStateBorder.BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 137, 180, 250));
+                SlmStateTextBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 96, 165, 250));
+                SlmStateBorder.Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 30, 41, 59));
+                SlmStateBorder.BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 96, 165, 250));
             }
         }
 
@@ -508,13 +563,13 @@ namespace PersonasAgentes.WinUI
             if (toggle == null) return;
             if (isChecked)
             {
-                toggle.Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 77, 107, 254));
-                toggle.BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 77, 107, 254));
+                toggle.Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 37, 99, 235));
+                toggle.BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 37, 99, 235));
             }
             else
             {
-                toggle.Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 36, 38, 48));
-                toggle.BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 54, 56, 68));
+                toggle.Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 30, 41, 59));
+                toggle.BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 51, 65, 85));
             }
         }
 
@@ -780,7 +835,7 @@ namespace PersonasAgentes.WinUI
             }
             catch (Exception ex)
             {
-                AddTrajectoryErrorCard($"⚠️ Exceção no runtime do DSH: {ex.Message}");
+                AddTrajectoryErrorCard($"⚠️ Exceção no runtime do Harness: {ex.Message}");
             }
             finally
             {
@@ -792,15 +847,15 @@ namespace PersonasAgentes.WinUI
         }
 
         // =========================================================================
-        // NATIVE XAML TRAJECTORY NODES BUILDERS
+        // HARNESS NATIVE XAML TRAJECTORY NODES BUILDERS
         // =========================================================================
 
         private Border CreateTurnHeaderCard(int turnNumber, string prompt)
         {
             var border = new Border
             {
-                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 26, 28, 34)),
-                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 42, 44, 54)),
+                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 24, 27, 36)),
+                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 42, 47, 64)),
                 BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(8),
                 Padding = new Thickness(12, 10, 12, 10)
@@ -813,10 +868,10 @@ namespace PersonasAgentes.WinUI
 
             var turnTitle = new TextBlock
             {
-                Text = $"🚩 [TURN {turnNumber}] EXECUÇÃO DE BANCADA",
-                FontSize = 11,
+                Text = $"🚩 [TURN {turnNumber}] EXECUÇÃO DE BANCADA HARNESS",
+                FontSize = 10,
                 FontWeight = Microsoft.UI.Text.FontWeights.Bold,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 137, 180, 250))
+                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 96, 165, 250))
             };
             Grid.SetColumn(turnTitle, 0);
             headerGrid.Children.Add(turnTitle);
@@ -825,7 +880,7 @@ namespace PersonasAgentes.WinUI
             {
                 Text = DateTime.Now.ToString("HH:mm:ss"),
                 FontSize = 10,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 122, 127, 141))
+                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 100, 116, 139))
             };
             Grid.SetColumn(timeText, 1);
             headerGrid.Children.Add(timeText);
@@ -834,7 +889,7 @@ namespace PersonasAgentes.WinUI
             {
                 Text = $"📥 Prompt: \"{prompt}\"",
                 FontSize = 13,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 236, 236, 237)),
+                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 241, 245, 249)),
                 TextWrapping = TextWrapping.Wrap,
                 FontWeight = Microsoft.UI.Text.FontWeights.SemiBold
             };
@@ -851,8 +906,8 @@ namespace PersonasAgentes.WinUI
         {
             var border = new Border
             {
-                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 20, 21, 26)),
-                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 36, 38, 48)),
+                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 19, 21, 28)),
+                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 38, 43, 58)),
                 BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(8),
                 Padding = new Thickness(12, 8, 12, 8)
@@ -861,16 +916,16 @@ namespace PersonasAgentes.WinUI
             var stack = new StackPanel { Spacing = 4 };
             var title = new TextBlock
             {
-                Text = "🧠 [MODEL REASONING TRACE] Reflexão Cognitiva",
+                Text = "🧠 [DEEPTHINK REASONING TRACE] Reflexão Cognitiva",
                 FontSize = 10,
                 FontWeight = Microsoft.UI.Text.FontWeights.Bold,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 203, 166, 247))
+                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 167, 139, 250))
             };
 
             var content = new TextBlock
             {
                 FontSize = 12,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 166, 173, 200)),
+                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 148, 163, 184)),
                 TextWrapping = TextWrapping.Wrap,
                 FontStyle = Windows.UI.Text.FontStyle.Italic
             };
@@ -887,9 +942,9 @@ namespace PersonasAgentes.WinUI
         {
             var border = new Border
             {
-                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 22, 24, 30)),
-                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 77, 107, 254)),
-                BorderThickness = new Thickness(1, 1, 1, 1),
+                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 20, 24, 34)),
+                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 37, 99, 235)),
+                BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(8),
                 Padding = new Thickness(12, 8, 12, 8)
             };
@@ -901,20 +956,20 @@ namespace PersonasAgentes.WinUI
 
             var title = new TextBlock
             {
-                Text = $"🛠️ [TOOL CALL DISPATCH] {toolName}",
+                Text = $"🛠️ [TOOL PLUGIN DISPATCH] {toolName}",
                 FontSize = 11,
                 FontWeight = Microsoft.UI.Text.FontWeights.Bold,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 77, 107, 254))
+                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 96, 165, 250))
             };
             Grid.SetColumn(title, 0);
             headerGrid.Children.Add(title);
 
             var statusBadge = new Border
             {
-                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 38, 50, 72)),
+                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 30, 58, 138)),
                 CornerRadius = new CornerRadius(4),
                 Padding = new Thickness(6, 2, 6, 2),
-                Child = new TextBlock { Text = "RUNNING", FontSize = 9, FontWeight = Microsoft.UI.Text.FontWeights.Bold, Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 137, 180, 250)) }
+                Child = new TextBlock { Text = "RUNNING", FontSize = 9, FontWeight = Microsoft.UI.Text.FontWeights.Bold, Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 147, 197, 253)) }
             };
             Grid.SetColumn(statusBadge, 1);
             headerGrid.Children.Add(statusBadge);
@@ -924,7 +979,7 @@ namespace PersonasAgentes.WinUI
             {
                 Text = $"Args: {argsText}",
                 FontSize = 10,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 166, 173, 200)),
+                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 148, 163, 184)),
                 FontFamily = new FontFamily("Consolas"),
                 TextWrapping = TextWrapping.Wrap
             };
@@ -941,8 +996,8 @@ namespace PersonasAgentes.WinUI
         {
             var border = new Border
             {
-                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 20, 26, 24)),
-                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 16, 185, 129)),
+                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 16, 28, 24)),
+                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 52, 211, 153)),
                 BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(8),
                 Padding = new Thickness(12, 8, 12, 8)
@@ -954,14 +1009,14 @@ namespace PersonasAgentes.WinUI
                 Text = "📦 [TOOL RESULT / OBSERVATION]",
                 FontSize = 10,
                 FontWeight = Microsoft.UI.Text.FontWeights.Bold,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 16, 185, 129))
+                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 52, 211, 153))
             };
 
             var text = new TextBlock
             {
                 Text = resultSummary,
                 FontSize = 11,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 205, 214, 244)),
+                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 226, 232, 240)),
                 TextWrapping = TextWrapping.Wrap
             };
 
@@ -977,8 +1032,8 @@ namespace PersonasAgentes.WinUI
         {
             var border = new Border
             {
-                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 22, 28, 38)),
-                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 137, 180, 250)),
+                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 18, 28, 42)),
+                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 96, 165, 250)),
                 BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(8),
                 Padding = new Thickness(12, 8, 12, 8)
@@ -990,14 +1045,14 @@ namespace PersonasAgentes.WinUI
                 Text = "🔬 [FORMAL PROOF SAFETY GATE — IDRIS 2]",
                 FontSize = 10,
                 FontWeight = Microsoft.UI.Text.FontWeights.Bold,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 137, 180, 250))
+                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 96, 165, 250))
             };
 
             var text = new TextBlock
             {
                 Text = verifText,
                 FontSize = 11,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 166, 227, 161)),
+                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 52, 211, 153)),
                 FontWeight = Microsoft.UI.Text.FontWeights.SemiBold
             };
 
@@ -1013,8 +1068,8 @@ namespace PersonasAgentes.WinUI
         {
             var border = new Border
             {
-                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 34, 28, 22)),
-                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 249, 226, 175)),
+                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 41, 31, 20)),
+                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 251, 191, 36)),
                 BorderThickness = new Thickness(1.5),
                 CornerRadius = new CornerRadius(8),
                 Padding = new Thickness(14, 10, 14, 10)
@@ -1026,14 +1081,14 @@ namespace PersonasAgentes.WinUI
                 Text = "🛡️ [HUMAN-IN-THE-LOOP APPROVAL REQUIRED]",
                 FontSize = 10,
                 FontWeight = Microsoft.UI.Text.FontWeights.Bold,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 249, 226, 175))
+                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 251, 191, 36))
             });
 
             stack.Children.Add(new TextBlock
             {
                 Text = promptContent,
                 FontSize = 12,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 205, 214, 244)),
+                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 226, 232, 240)),
                 TextWrapping = TextWrapping.Wrap
             });
 
@@ -1043,7 +1098,7 @@ namespace PersonasAgentes.WinUI
             {
                 Content = "Aprovar Execução ✅",
                 Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 16, 185, 129)),
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 17, 18, 21)),
+                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 15, 23, 42)),
                 FontWeight = Microsoft.UI.Text.FontWeights.Bold,
                 CornerRadius = new CornerRadius(4)
             };
@@ -1051,8 +1106,8 @@ namespace PersonasAgentes.WinUI
             var rejectBtn = new Button
             {
                 Content = "Rejeitar ❌",
-                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 243, 139, 168)),
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 17, 18, 21)),
+                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 239, 68, 68)),
+                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 15, 23, 42)),
                 FontWeight = Microsoft.UI.Text.FontWeights.Bold,
                 CornerRadius = new CornerRadius(4)
             };
@@ -1071,7 +1126,7 @@ namespace PersonasAgentes.WinUI
                 rejectBtn.IsEnabled = false;
                 await SendApprovalDecisionAsync(callId, true);
                 statusBadge.Text = "✓ AUTORIZADO PELO OPERADOR";
-                statusBadge.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 16, 185, 129));
+                statusBadge.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 52, 211, 153));
                 statusBadge.Visibility = Visibility.Visible;
             };
 
@@ -1081,7 +1136,7 @@ namespace PersonasAgentes.WinUI
                 rejectBtn.IsEnabled = false;
                 await SendApprovalDecisionAsync(callId, false);
                 statusBadge.Text = "✗ REJEITADO PELO OPERADOR";
-                statusBadge.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 243, 139, 168));
+                statusBadge.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 248, 113, 113));
                 statusBadge.Visibility = Visibility.Visible;
             };
 
@@ -1111,8 +1166,8 @@ namespace PersonasAgentes.WinUI
         {
             var border = new Border
             {
-                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 24, 25, 30)),
-                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 42, 44, 54)),
+                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 24, 27, 36)),
+                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 42, 47, 64)),
                 BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(10),
                 Padding = new Thickness(14, 12, 14, 12)
@@ -1125,20 +1180,20 @@ namespace PersonasAgentes.WinUI
 
             var header = new TextBlock
             {
-                Text = "💬 [MODEL SYNTHESIZED OUTPUT]",
+                Text = "💬 [HARNESS SYNTHESIZED OUTPUT]",
                 FontSize = 10,
                 FontWeight = Microsoft.UI.Text.FontWeights.Bold,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 148, 226, 213))
+                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 96, 165, 250))
             };
             Grid.SetColumn(header, 0);
             headerGrid.Children.Add(header);
 
             var styleBadge = new Border
             {
-                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 32, 34, 44)),
+                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 30, 41, 59)),
                 CornerRadius = new CornerRadius(4),
                 Padding = new Thickness(6, 2, 6, 2),
-                Child = new TextBlock { Text = "FLUENT ASSISTANT MARKDOWN", FontSize = 9, FontWeight = Microsoft.UI.Text.FontWeights.Bold, Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 137, 180, 250)) }
+                Child = new TextBlock { Text = "FLUENT MARKDOWN", FontSize = 9, FontWeight = Microsoft.UI.Text.FontWeights.Bold, Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 147, 197, 253)) }
             };
             Grid.SetColumn(styleBadge, 1);
             headerGrid.Children.Add(styleBadge);
@@ -1146,7 +1201,7 @@ namespace PersonasAgentes.WinUI
             var content = new TextBlock
             {
                 FontSize = 13,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 236, 236, 237)),
+                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 241, 245, 249)),
                 TextWrapping = TextWrapping.Wrap
             };
 
@@ -1178,7 +1233,7 @@ namespace PersonasAgentes.WinUI
 
                 if (i % 2 == 1)
                 {
-                    // Code Block (Google Assistant / Antigravity Style Code Card)
+                    // Code Block Card
                     string lang = "code";
                     string codeContent = block;
 
@@ -1195,8 +1250,8 @@ namespace PersonasAgentes.WinUI
 
                     var codeCard = new Border
                     {
-                        Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 17, 18, 22)),
-                        BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 50, 54, 68)),
+                        Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 15, 17, 23)),
+                        BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 42, 47, 64)),
                         BorderThickness = new Thickness(1),
                         CornerRadius = new CornerRadius(8),
                         Padding = new Thickness(0),
@@ -1208,7 +1263,7 @@ namespace PersonasAgentes.WinUI
                     // Card Header Bar
                     var cardHeader = new Grid
                     {
-                        Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 28, 30, 38)),
+                        Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 24, 27, 36)),
                         Padding = new Thickness(12, 6, 12, 6)
                     };
                     cardHeader.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
@@ -1220,16 +1275,16 @@ namespace PersonasAgentes.WinUI
                         Text = $"📄 {lang.ToUpper()}",
                         FontSize = 10,
                         FontWeight = Microsoft.UI.Text.FontWeights.Bold,
-                        Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 137, 180, 250)),
+                        Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 96, 165, 250)),
                         VerticalAlignment = VerticalAlignment.Center
                     };
 
                     var syntaxBadge = new Border
                     {
-                        Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 22, 46, 34)),
+                        Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 6, 78, 59)),
                         CornerRadius = new CornerRadius(4),
                         Padding = new Thickness(4, 1, 4, 1),
-                        Child = new TextBlock { Text = "Sintaxe Válida ✅", FontSize = 8, FontWeight = Microsoft.UI.Text.FontWeights.Bold, Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 16, 185, 129)) }
+                        Child = new TextBlock { Text = "Sintaxe Válida ✅", FontSize = 8, FontWeight = Microsoft.UI.Text.FontWeights.Bold, Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 52, 211, 153)) }
                     };
 
                     langStack.Children.Add(langText);
@@ -1242,8 +1297,8 @@ namespace PersonasAgentes.WinUI
                         Content = "Copiar Código 📋",
                         FontSize = 10,
                         Padding = new Thickness(8, 2, 8, 2),
-                        Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 42, 44, 56)),
-                        Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 236, 236, 237)),
+                        Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 30, 41, 59)),
+                        Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 241, 245, 249)),
                         BorderThickness = new Thickness(0),
                         CornerRadius = new CornerRadius(4)
                     };
@@ -1280,15 +1335,15 @@ namespace PersonasAgentes.WinUI
 
                             if (dLine.StartsWith("+"))
                             {
-                                lineBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 166, 227, 161));
+                                lineBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 52, 211, 153));
                             }
                             else if (dLine.StartsWith("-"))
                             {
-                                lineBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 243, 139, 168));
+                                lineBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 248, 113, 113));
                             }
                             else
                             {
-                                lineBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 166, 173, 200));
+                                lineBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 148, 163, 184));
                             }
                             diffContainer.Children.Add(lineBlock);
                         }
@@ -1302,20 +1357,20 @@ namespace PersonasAgentes.WinUI
                             Text = codeContent.Trim(),
                             FontSize = 12,
                             FontFamily = new FontFamily("Consolas"),
-                            Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 166, 227, 161)),
+                            Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 52, 211, 153)),
                             TextWrapping = TextWrapping.Wrap,
                             Padding = new Thickness(12, 10, 12, 10)
                         };
-                    var codeScrollViewer = new ScrollViewer
-                    {
-                        MaxHeight = 400,
-                        VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
-                        HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
-                        Content = codeTextBlock
-                    };
+                        var codeScrollViewer = new ScrollViewer
+                        {
+                            MaxHeight = 400,
+                            VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                            HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                            Content = codeTextBlock
+                        };
 
                         cardStack.Children.Add(cardHeader);
-                    cardStack.Children.Add(codeScrollViewer);
+                        cardStack.Children.Add(codeScrollViewer);
                     }
                     codeCard.Child = cardStack;
 
@@ -1328,7 +1383,7 @@ namespace PersonasAgentes.WinUI
                     {
                         Text = block,
                         FontSize = 13,
-                        Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 236, 236, 237)),
+                        Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 241, 245, 249)),
                         TextWrapping = TextWrapping.Wrap
                     };
                     container.Children.Add(textBlock);
@@ -1340,13 +1395,13 @@ namespace PersonasAgentes.WinUI
         {
             var border = new Border
             {
-                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 40, 20, 24)),
-                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 243, 139, 168)),
+                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 45, 26, 34)),
+                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 248, 113, 113)),
                 BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(8),
                 Padding = new Thickness(12, 8, 12, 8)
             };
-            border.Child = new TextBlock { Text = error, Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 243, 139, 168)), TextWrapping = TextWrapping.Wrap, FontSize = 12 };
+            border.Child = new TextBlock { Text = error, Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 248, 113, 113)), TextWrapping = TextWrapping.Wrap, FontSize = 12 };
             TrajectoryStackPanel.Children.Add(border);
             ScrollToBottom();
         }
@@ -1392,7 +1447,7 @@ namespace PersonasAgentes.WinUI
         private void OnExportTrajectoryClicked(object sender, RoutedEventArgs e)
         {
             var sb = new StringBuilder();
-            sb.AppendLine($"# Personas & Agentes (PSA) Trajectory Flight Recorder");
+            sb.AppendLine($"# Personas Harness Trajectory Flight Recorder");
             sb.AppendLine($"Session: {_currentSession?.Id ?? "default"}");
             sb.AppendLine($"Timestamp: {DateTime.UtcNow:O}");
             sb.AppendLine($"Total Turns: {_totalTurnsCount}");
@@ -1401,7 +1456,7 @@ namespace PersonasAgentes.WinUI
             byte[] hashBytes = sha.ComputeHash(Encoding.UTF8.GetBytes(sb.ToString()));
             string hash = BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
 
-            SelectNodeForInspection("Trajectory Export", $"SHA-256 Stamp:\n{hash}\n\nRegistro de auditoria criptográfica do append-only session log exportado com sucesso no padrão psa-trajectory.", 0, 0);
+            SelectNodeForInspection("Trajectory Export", $"SHA-256 Stamp:\n{hash}\n\nRegistro de auditoria criptográfica do append-only session log exportado com sucesso no padrão psa-harness.", 0, 0);
         }
 
         private void ScrollToBottom()
