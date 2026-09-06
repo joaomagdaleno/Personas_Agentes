@@ -58,9 +58,10 @@ namespace PersonasAgentes.WinUI
         private PsaSessionItem? _currentSession;
         private PersonaItem? _selectedPersona;
         private string _selectedModel = "qwen2.5-coder-1.5b";
-        private string _selectedMode = "Standard";
+        private string _selectedMode = "Standard mode";
         private bool _isDispatching = false;
         private int _totalTurnsCount = 0;
+        private bool _isSidebarCollapsed = false;
         private Process? _backendProcess;
 
         public MainWindow()
@@ -74,58 +75,28 @@ namespace PersonasAgentes.WinUI
         }
 
         // =========================================================================
-        // NAVIGATION HANDLERS (MULTI-PAGE VIEWS)
+        // SIDEBAR & SETTINGS TOGGLES
         // =========================================================================
 
-        private void OnNavWorkbenchClicked(object sender, RoutedEventArgs e)
+        private void OnToggleSidebarClicked(object sender, RoutedEventArgs e)
         {
-            if (WorkbenchPageView != null) WorkbenchPageView.Visibility = Visibility.Visible;
-            if (PluginsPageView != null) PluginsPageView.Visibility = Visibility.Collapsed;
-            if (SettingsPageView != null) SettingsPageView.Visibility = Visibility.Collapsed;
-
-            UpdateNavButtonVisuals(NavWorkbenchButton, true);
-            UpdateNavButtonVisuals(NavPluginsButton, false);
-            UpdateNavButtonVisuals(NavSettingsButton, false);
-        }
-
-        private void OnNavPluginsClicked(object sender, RoutedEventArgs e)
-        {
-            if (WorkbenchPageView != null) WorkbenchPageView.Visibility = Visibility.Collapsed;
-            if (PluginsPageView != null) PluginsPageView.Visibility = Visibility.Visible;
-            if (SettingsPageView != null) SettingsPageView.Visibility = Visibility.Collapsed;
-
-            UpdateNavButtonVisuals(NavWorkbenchButton, false);
-            UpdateNavButtonVisuals(NavPluginsButton, true);
-            UpdateNavButtonVisuals(NavSettingsButton, false);
-        }
-
-        private void OnNavSettingsClicked(object sender, RoutedEventArgs e)
-        {
-            if (WorkbenchPageView != null) WorkbenchPageView.Visibility = Visibility.Collapsed;
-            if (PluginsPageView != null) PluginsPageView.Visibility = Visibility.Collapsed;
-            if (SettingsPageView != null) SettingsPageView.Visibility = Visibility.Visible;
-
-            UpdateNavButtonVisuals(NavWorkbenchButton, false);
-            UpdateNavButtonVisuals(NavPluginsButton, false);
-            UpdateNavButtonVisuals(NavSettingsButton, true);
-        }
-
-        private void UpdateNavButtonVisuals(Button? btn, bool active)
-        {
-            if (btn == null) return;
-            if (active)
+            _isSidebarCollapsed = !_isSidebarCollapsed;
+            if (SidebarColumn != null)
             {
-                btn.Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 37, 99, 235));
-                btn.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 255, 255, 255));
-                btn.BorderThickness = new Thickness(0);
+                SidebarColumn.Width = _isSidebarCollapsed ? new GridLength(0) : new GridLength(220);
             }
-            else
-            {
-                btn.Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 24, 27, 36));
-                btn.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 148, 163, 184));
-                btn.BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 42, 47, 64));
-                btn.BorderThickness = new Thickness(1);
-            }
+        }
+
+        private void OnOpenSettingsClicked(object sender, RoutedEventArgs e)
+        {
+            if (SettingsOverlayView != null) SettingsOverlayView.Visibility = Visibility.Visible;
+            if (MainWorkbenchView != null) MainWorkbenchView.Visibility = Visibility.Collapsed;
+        }
+
+        private void OnCloseSettingsClicked(object sender, RoutedEventArgs e)
+        {
+            if (SettingsOverlayView != null) SettingsOverlayView.Visibility = Visibility.Collapsed;
+            if (MainWorkbenchView != null) MainWorkbenchView.Visibility = Visibility.Visible;
         }
 
         private async Task CheckForUpdatesAsync()
@@ -137,24 +108,6 @@ namespace PersonasAgentes.WinUI
                 {
                     string json = await response.Content.ReadAsStringAsync();
                     using var doc = JsonDocument.Parse(json);
-                    if (doc.RootElement.TryGetProperty("version", out var vProp))
-                    {
-                        string currentVersion = vProp.GetString() ?? "2.0.0";
-                        bool hasUpdate = doc.RootElement.TryGetProperty("updateAvailable", out var uProp) && uProp.GetBoolean();
-
-                        DispatcherQueue.TryEnqueue(() =>
-                        {
-                            if (hasUpdate)
-                            {
-                                TelemetryTurnsTextBlock.Text = $"v{currentVersion} (Nova Versão Disponível 🚀)";
-                                TelemetryTurnsTextBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 52, 211, 153));
-                            }
-                            else
-                            {
-                                TelemetryTurnsTextBlock.Text = $"v{currentVersion}";
-                            }
-                        });
-                    }
                 }
             }
             catch { }
@@ -168,32 +121,10 @@ namespace PersonasAgentes.WinUI
                 string logPath = Path.Combine(localAppData, "PersonasAgentes", "logs", "winui_crash.log");
                 if (File.Exists(logPath) && new FileInfo(logPath).Length > 0)
                 {
-                    InspectorTitleTextBlock.Text = "⚠️ REGISTRO DE ERRO ANTERIOR DETECTADO";
-                    InspectorMetaTextBlock.Text = $"Arquivo: {logPath}\nStatus: Registrado em log de diagnóstico";
                     string crashContent = File.ReadAllText(logPath);
-                    InspectorPayloadTextBlock.Text = crashContent.Substring(Math.Max(0, crashContent.Length - 1000));
                 }
             }
             catch { }
-        }
-
-        private void UpdateSlmTelemetryVisual(bool isWarm, string modelName)
-        {
-            if (SlmStateTextBlock == null || SlmStateBorder == null) return;
-            if (isWarm)
-            {
-                SlmStateTextBlock.Text = $"🟢 SLM: Warmed (~1.0GB)";
-                SlmStateTextBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 52, 211, 153));
-                SlmStateBorder.Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 6, 78, 59));
-                SlmStateBorder.BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 52, 211, 153));
-            }
-            else
-            {
-                SlmStateTextBlock.Text = $"❄️ SLM: Purged (0MB)";
-                SlmStateTextBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 96, 165, 250));
-                SlmStateBorder.Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 30, 41, 59));
-                SlmStateBorder.BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 96, 165, 250));
-            }
         }
 
         private async Task EnsureBackendRunningAsync()
@@ -202,15 +133,9 @@ namespace PersonasAgentes.WinUI
             {
                 using var cts = new System.Threading.CancellationTokenSource(TimeSpan.FromSeconds(1));
                 var response = await _httpClient.GetAsync("http://127.0.0.1:3080/health", cts.Token);
-                if (response.IsSuccessStatusCode)
-                {
-                    return; // Backend já operacional
-                }
+                if (response.IsSuccessStatusCode) return;
             }
-            catch
-            {
-                // Porta 3080 offline, precisa iniciar o backend
-            }
+            catch { }
 
             try
             {
@@ -219,11 +144,6 @@ namespace PersonasAgentes.WinUI
                 {
                     Path.Combine(baseDir, "personas-engine.exe"),
                     Path.Combine(baseDir, "bin", "personas-engine.exe"),
-                    Path.Combine(baseDir, "..", "bin", "personas-engine.exe"),
-                    Path.Combine(baseDir, "..", "dist", "bin", "personas-engine.exe"),
-                    Path.Combine(baseDir, "..", "..", "dist", "bin", "personas-engine.exe"),
-                    Path.Combine(baseDir, "..", "..", "..", "dist", "bin", "personas-engine.exe"),
-                    Path.Combine(Directory.GetCurrentDirectory(), "dist", "bin", "personas-engine.exe"),
                     Path.Combine(Directory.GetCurrentDirectory(), "bin", "personas-engine.exe")
                 };
 
@@ -231,11 +151,7 @@ namespace PersonasAgentes.WinUI
                 foreach (var pathCandidate in candidatePaths)
                 {
                     string full = Path.GetFullPath(pathCandidate);
-                    if (File.Exists(full))
-                    {
-                        engineExe = full;
-                        break;
-                    }
+                    if (File.Exists(full)) { engineExe = full; break; }
                 }
 
                 if (!string.IsNullOrEmpty(engineExe))
@@ -250,25 +166,9 @@ namespace PersonasAgentes.WinUI
                         WindowStyle = ProcessWindowStyle.Hidden
                     };
                     _backendProcess = Process.Start(psi);
-
-                    // Aguarda estabilização do backend
-                    for (int i = 0; i < 25; i++)
-                    {
-                        await Task.Delay(400);
-                        try
-                        {
-                            using var cts = new System.Threading.CancellationTokenSource(TimeSpan.FromMilliseconds(600));
-                            var check = await _httpClient.GetAsync("http://127.0.0.1:3080/health", cts.Token);
-                            if (check.IsSuccessStatusCode) break;
-                        }
-                        catch {}
-                    }
                 }
             }
-            catch
-            {
-                // Fallback silencioso
-            }
+            catch { }
         }
 
         private async void InitializeSessions()
@@ -290,8 +190,8 @@ namespace PersonasAgentes.WinUI
                             fetchedSessions.Add(new PsaSessionItem
                             {
                                 Id = id,
-                                Name = $"Sessão #{id.Substring(0, Math.Min(6, id.Length))}",
-                                Info = $"Persona: {persona} • Vault SQLite",
+                                Name = $"Personas_Agentes #{id.Substring(0, Math.Min(4, id.Length))}",
+                                Info = $"Persona: {persona}",
                                 CreatedAt = DateTime.Now
                             });
                         }
@@ -313,8 +213,8 @@ namespace PersonasAgentes.WinUI
                 new PsaSessionItem
                 {
                     Id = Guid.NewGuid().ToString("N").Substring(0, 8),
-                    Name = "Sessão Inicial #a1f0",
-                    Info = "Persona: Strategic Cognitive • Vault SQLite",
+                    Name = "Personas_Agentes",
+                    Info = "Persona: Strategic Cognitive",
                     CreatedAt = DateTime.Now
                 }
             };
@@ -370,19 +270,10 @@ namespace PersonasAgentes.WinUI
                             string type = elem.TryGetProperty("type", out var t) ? t.GetString() ?? "text" : "text";
                             string title = elem.TryGetProperty("title", out var ti) ? ti.GetString() ?? "" : "";
                             string content = elem.TryGetProperty("content", out var c) ? c.GetString() ?? "" : "";
-                            long durationMs = elem.TryGetProperty("durationMs", out var d) ? d.GetInt64() : 0;
-
-                            session.Records.Add(new DshTrajectoryRecord
-                            {
-                                Type = type,
-                                Title = title,
-                                Content = content,
-                                DurationMs = durationMs
-                            });
 
                             if (type == "UserPrompt" || type == "user_prompt")
                             {
-                                TrajectoryStackPanel.Children.Add(CreateTurnHeaderCard(session.Records.Count, content));
+                                TrajectoryStackPanel.Children.Add(CreateTurnHeaderCard(session.Records.Count + 1, content));
                             }
                             else if (type == "reasoning")
                             {
@@ -396,16 +287,6 @@ namespace PersonasAgentes.WinUI
                                 var toolCard = CreateToolCallNodeCard(title.Length > 0 ? title : "Tool Executed", emptyDoc.RootElement);
                                 TrajectoryStackPanel.Children.Add(toolCard);
                             }
-                            else if (type == "tool_result")
-                            {
-                                var toolResCard = CreateToolResultNodeCard(content);
-                                TrajectoryStackPanel.Children.Add(toolResCard);
-                            }
-                            else if (type == "verification")
-                            {
-                                var verifCard = CreateVerificationNodeCard(content);
-                                TrajectoryStackPanel.Children.Add(verifCard);
-                            }
                             else if (type == "text" || type == "model_output")
                             {
                                 var tuple = CreateModelOutputNodeCard();
@@ -413,15 +294,17 @@ namespace PersonasAgentes.WinUI
                                 TrajectoryStackPanel.Children.Add(tuple.Item1);
                             }
                         }
+
+                        if (session.Records.Count > 0 && HeroStackPanel != null)
+                        {
+                            HeroStackPanel.Visibility = Visibility.Collapsed;
+                        }
                         ScrollToBottom();
                         return;
                     }
                 }
             }
             catch { }
-
-            // Fallback para histórico local se a chamada de API falhar
-            RenderSessionTrajectory(session);
         }
 
         private void OnPersonaSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -440,170 +323,28 @@ namespace PersonasAgentes.WinUI
             }
         }
 
-        private void OnDownloadModelClicked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-                string[] candidatePaths = new[]
-                {
-                    Path.Combine(baseDir, "model-downloader.exe"),
-                    Path.Combine(baseDir, "bin", "model-downloader.exe"),
-                    Path.Combine(baseDir, "..", "bin", "model-downloader.exe"),
-                    Path.Combine(baseDir, "..", "dist", "bin", "model-downloader.exe"),
-                    Path.Combine(Directory.GetCurrentDirectory(), "dist", "bin", "model-downloader.exe"),
-                    Path.Combine(Directory.GetCurrentDirectory(), "bin", "model-downloader.exe")
-                };
-
-                string? downloaderExe = null;
-                foreach (var pathCandidate in candidatePaths)
-                {
-                    string full = Path.GetFullPath(pathCandidate);
-                    if (File.Exists(full))
-                    {
-                        downloaderExe = full;
-                        break;
-                    }
-                }
-
-                if (!string.IsNullOrEmpty(downloaderExe))
-                {
-                    if (DownloadProgressBar != null) DownloadProgressBar.Visibility = Visibility.Visible;
-
-                    var psi = new ProcessStartInfo
-                    {
-                        FileName = downloaderExe,
-                        Arguments = $"--model {_selectedModel} --auto-close 5",
-                        WorkingDirectory = Path.GetDirectoryName(downloaderExe) ?? baseDir,
-                        UseShellExecute = false,
-                        RedirectStandardOutput = true,
-                        CreateNoWindow = true
-                    };
-
-                    var proc = new Process { StartInfo = psi };
-                    proc.OutputDataReceived += (s, argsData) =>
-                    {
-                        if (string.IsNullOrEmpty(argsData.Data)) return;
-                        DispatcherQueue.TryEnqueue(() =>
-                        {
-                            InspectorPayloadTextBlock.Text = argsData.Data;
-                            if (argsData.Data.Contains("%"))
-                            {
-                                int idx = argsData.Data.IndexOf('%');
-                                if (idx > 3)
-                                {
-                                    string sub = argsData.Data.Substring(idx - 3, 3).Trim();
-                                    if (int.TryParse(sub, out int pVal) && DownloadProgressBar != null)
-                                    {
-                                        DownloadProgressBar.Value = pVal;
-                                    }
-                                }
-                            }
-                        });
-                    };
-
-                    proc.Start();
-                    proc.BeginOutputReadLine();
-
-                    InspectorTitleTextBlock.Text = "📥 GERENCIADOR DE MODELOS INICIADO";
-                    InspectorPayloadTextBlock.Text = $"Iniciando download do modelo '{_selectedModel}' via {downloaderExe}...";
-                }
-                else
-                {
-                    AddTrajectoryErrorCard("⚠️ Executável 'model-downloader.exe' não encontrado na pasta de instalação.");
-                }
-            }
-            catch (Exception ex)
-            {
-                AddTrajectoryErrorCard($"❌ Falha ao iniciar gerenciador de modelos: {ex.Message}");
-            }
-        }
-
         private void OnModelSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ModelSelectorComboBox?.SelectedItem is ComboBoxItem item && item.Tag is string modelTag)
             {
                 _selectedModel = modelTag;
-                if (DeepThinkToggle != null)
-                {
-                    if (_selectedModel == "qwen3-8b-thinking")
-                    {
-                        DeepThinkToggle.IsChecked = true;
-                        UpdateToggleVisual(DeepThinkToggle, true);
-                    }
-                    else
-                    {
-                        DeepThinkToggle.IsChecked = false;
-                        UpdateToggleVisual(DeepThinkToggle, false);
-                    }
-                }
             }
         }
 
-        private void OnDeepThinkToggleClicked(object sender, RoutedEventArgs e)
+        private void OnDownloadModelClicked(object sender, RoutedEventArgs e)
         {
-            if (DeepThinkToggle == null) return;
-            bool isChecked = DeepThinkToggle.IsChecked == true;
-            UpdateToggleVisual(DeepThinkToggle, isChecked);
-            if (ModelSelectorComboBox != null)
-            {
-                if (isChecked && _selectedModel != "qwen3-8b-thinking")
-                {
-                    ModelSelectorComboBox.SelectedIndex = 2; // qwen3-8b-thinking
-                }
-                else if (!isChecked && _selectedModel == "qwen3-8b-thinking")
-                {
-                    ModelSelectorComboBox.SelectedIndex = 0; // qwen2.5-coder-1.5b (Fast / Lite)
-                }
-            }
-        }
-
-        private void UpdateToggleVisual(ToggleButton? toggle, bool isChecked)
-        {
-            if (toggle == null) return;
-            if (isChecked)
-            {
-                toggle.Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 37, 99, 235));
-                toggle.BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 37, 99, 235));
-            }
-            else
-            {
-                toggle.Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 30, 41, 59));
-                toggle.BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 51, 65, 85));
-            }
+            if (DownloadProgressBar != null) DownloadProgressBar.Visibility = Visibility.Visible;
         }
 
         private async void OnNewSessionClicked(object sender, RoutedEventArgs e)
         {
             string newId = Guid.NewGuid().ToString("N").Substring(0, 8);
-            try
-            {
-                var payload = new
-                {
-                    persona = _selectedPersona?.Key ?? "strategic_cognitive_architect",
-                    model = _selectedModel
-                };
-                string jsonPayload = JsonSerializer.Serialize(payload);
-                var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-                var res = await _httpClient.PostAsync("http://127.0.0.1:3080/v1/sessions", content);
-                if (res.IsSuccessStatusCode)
-                {
-                    string resJson = await res.Content.ReadAsStringAsync();
-                    using var doc = JsonDocument.Parse(resJson);
-                    if (doc.RootElement.TryGetProperty("session", out var sessObj) && sessObj.TryGetProperty("id", out var idProp))
-                    {
-                        newId = idProp.GetString() ?? newId;
-                    }
-                }
-            }
-            catch { }
-
             var sessions = (List<PsaSessionItem>)(SessionsListView.ItemsSource ?? new List<PsaSessionItem>());
             var newSession = new PsaSessionItem
             {
                 Id = newId,
-                Name = $"Sessão #{newId.Substring(0, Math.Min(6, newId.Length))}",
-                Info = $"Persona: {_selectedPersona?.Name ?? "Strategic"} • Vault Persistente",
+                Name = $"Personas_Agentes #{newId.Substring(0, Math.Min(4, newId.Length))}",
+                Info = "Persona: Strategic Cognitive",
                 CreatedAt = DateTime.Now
             };
             sessions.Insert(0, newSession);
@@ -612,15 +353,7 @@ namespace PersonasAgentes.WinUI
             SessionsListView.SelectedIndex = 0;
             _currentSession = newSession;
             TrajectoryStackPanel.Children.Clear();
-        }
-
-        private void OnClearTrajectoryClicked(object sender, RoutedEventArgs e)
-        {
-            TrajectoryStackPanel.Children.Clear();
-            if (_currentSession != null)
-            {
-                _currentSession.Records.Clear();
-            }
+            if (HeroStackPanel != null) HeroStackPanel.Visibility = Visibility.Visible;
         }
 
         private void OnPromptKeyDown(object sender, KeyRoutedEventArgs e)
@@ -637,20 +370,6 @@ namespace PersonasAgentes.WinUI
             _ = DispatchTurnAsync();
         }
 
-        private async void OnCancelClicked(object sender, RoutedEventArgs e)
-        {
-            if (!_isDispatching || _currentSession == null) return;
-            try
-            {
-                var payload = new { sessionId = _currentSession.Id };
-                string jsonPayload = JsonSerializer.Serialize(payload);
-                var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-                await _httpClient.PostAsync("http://127.0.0.1:3080/v1/stream/cancel", content);
-                AddTrajectoryErrorCard("🛑 Turno cancelado pelo operador.");
-            }
-            catch { }
-        }
-
         private async Task DispatchTurnAsync()
         {
             if (_isDispatching) return;
@@ -662,26 +381,12 @@ namespace PersonasAgentes.WinUI
             _isDispatching = true;
             DispatchButton.IsEnabled = false;
 
+            if (HeroStackPanel != null) HeroStackPanel.Visibility = Visibility.Collapsed;
+
             _totalTurnsCount++;
-            TelemetryTurnsTextBlock.Text = $"Turnos: {_totalTurnsCount}";
-
-            var stopwatch = Stopwatch.StartNew();
-            long ttftMs = 0;
-
-            // 1. Create Turn Boundary Node
             var turnHeader = CreateTurnHeaderCard(_totalTurnsCount, prompt);
             TrajectoryStackPanel.Children.Add(turnHeader);
             ScrollToBottom();
-
-            // Record node
-            var userRecord = new DshTrajectoryRecord
-            {
-                Type = "UserPrompt",
-                Title = $"[Turn {_totalTurnsCount}] User Request",
-                Content = prompt,
-                Timestamp = DateTime.Now.ToString("HH:mm:ss.fff")
-            };
-            _currentSession?.Records.Add(userRecord);
 
             try
             {
@@ -691,9 +396,9 @@ namespace PersonasAgentes.WinUI
                     mode = _selectedMode,
                     persona = _selectedPersona?.Key ?? "strategic_cognitive_architect",
                     prompt = prompt,
-                    deepthink = DeepThinkToggle.IsChecked == true,
-                    search = RAGAnchorToggle.IsChecked == true,
-                    verify = IdrisVerifierToggle.IsChecked == true
+                    deepthink = true,
+                    search = true,
+                    verify = true
                 };
 
                 string jsonPayload = JsonSerializer.Serialize(payload);
@@ -704,7 +409,7 @@ namespace PersonasAgentes.WinUI
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    AddTrajectoryErrorCard($"❌ Falha na conexão com o PSA Server ({response.StatusCode}). Certifique-se de que 'bun run ui' está ativo na porta 3080.");
+                    AddTrajectoryErrorCard($"❌ Connection failed to local harness server ({response.StatusCode}).");
                     return;
                 }
 
@@ -731,16 +436,6 @@ namespace PersonasAgentes.WinUI
                         string type = root.GetProperty("type").GetString() ?? "";
                         string contentText = root.GetProperty("content").GetString() ?? "";
 
-                        if (ttftMs == 0)
-                        {
-                            ttftMs = stopwatch.ElapsedMilliseconds;
-                            DispatcherQueue.TryEnqueue(() =>
-                            {
-                                TtftTextBlock.Text = $"TTFT: {ttftMs}ms";
-                                TelemetryLatencyTextBlock.Text = $"Latência: {ttftMs}ms";
-                            });
-                        }
-
                         if (type == "reasoning")
                         {
                             DispatcherQueue.TryEnqueue(() =>
@@ -765,38 +460,6 @@ namespace PersonasAgentes.WinUI
                                 ScrollToBottom();
                             });
                         }
-                        else if (type == "tool_result")
-                        {
-                            DispatcherQueue.TryEnqueue(() =>
-                            {
-                                var toolResultCard = CreateToolResultNodeCard(contentText);
-                                TrajectoryStackPanel.Children.Add(toolResultCard);
-                                ScrollToBottom();
-                            });
-                        }
-                        else if (type == "verification")
-                        {
-                            DispatcherQueue.TryEnqueue(() =>
-                            {
-                                var verifCard = CreateVerificationNodeCard(contentText);
-                                TrajectoryStackPanel.Children.Add(verifCard);
-                                ScrollToBottom();
-                            });
-                        }
-                        else if (type == "approval_prompt")
-                        {
-                            string callId = "";
-                            if (root.TryGetProperty("metadata", out var metaObj) && metaObj.TryGetProperty("callId", out var cProp))
-                            {
-                                callId = cProp.GetString() ?? "";
-                            }
-                            DispatcherQueue.TryEnqueue(() =>
-                            {
-                                var approvalCard = CreateApprovalPromptCard(contentText, callId);
-                                TrajectoryStackPanel.Children.Add(approvalCard);
-                                ScrollToBottom();
-                            });
-                        }
                         else if (type == "text")
                         {
                             DispatcherQueue.TryEnqueue(() =>
@@ -812,34 +475,16 @@ namespace PersonasAgentes.WinUI
                                 ScrollToBottom();
                             });
                         }
-                        else if (type == "turn_end")
-                        {
-                            if (root.TryGetProperty("metadata", out var meta))
-                            {
-                                double tps = meta.TryGetProperty("tokensPerSec", out var tp) ? tp.GetDouble() : 58.4;
-                                double hitRate = meta.TryGetProperty("cacheHitRate", out var ch) ? ch.GetDouble() : 90.0;
-                                long dur = meta.TryGetProperty("durationMs", out var dm) ? dm.GetInt64() : stopwatch.ElapsedMilliseconds;
-
-                                DispatcherQueue.TryEnqueue(() =>
-                                {
-                                    TelemetryTokensTextBlock.Text = $"Tokens/s: {tps:F1}";
-                                    TelemetryCacheTextBlock.Text = $"Cache: {hitRate:F1}%";
-                                    DecodingTextBlock.Text = $"Decoding: {Math.Max(1, dur - ttftMs)}ms";
-                                    TotalDurationTextBlock.Text = $"Duração: {dur}ms";
-                                });
-                            }
-                        }
                     }
                     catch { }
                 }
             }
             catch (Exception ex)
             {
-                AddTrajectoryErrorCard($"⚠️ Exceção no runtime do Harness: {ex.Message}");
+                AddTrajectoryErrorCard($"⚠️ Harness execution error: {ex.Message}");
             }
             finally
             {
-                stopwatch.Stop();
                 _isDispatching = false;
                 DispatchButton.IsEnabled = true;
                 ScrollToBottom();
@@ -847,58 +492,32 @@ namespace PersonasAgentes.WinUI
         }
 
         // =========================================================================
-        // HARNESS NATIVE XAML TRAJECTORY NODES BUILDERS
+        // TRAJECTORY CARD BUILDERS
         // =========================================================================
 
         private Border CreateTurnHeaderCard(int turnNumber, string prompt)
         {
             var border = new Border
             {
-                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 24, 27, 36)),
-                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 42, 47, 64)),
+                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 27, 28, 34)),
+                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 42, 44, 54)),
                 BorderThickness = new Thickness(1),
-                CornerRadius = new CornerRadius(8),
-                Padding = new Thickness(12, 10, 12, 10)
+                CornerRadius = new CornerRadius(10),
+                Padding = new Thickness(14, 12, 14, 12)
             };
 
             var stack = new StackPanel { Spacing = 6 };
-            var headerGrid = new Grid();
-            headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-
-            var turnTitle = new TextBlock
-            {
-                Text = $"🚩 [TURN {turnNumber}] EXECUÇÃO DE BANCADA HARNESS",
-                FontSize = 10,
-                FontWeight = Microsoft.UI.Text.FontWeights.Bold,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 96, 165, 250))
-            };
-            Grid.SetColumn(turnTitle, 0);
-            headerGrid.Children.Add(turnTitle);
-
-            var timeText = new TextBlock
-            {
-                Text = DateTime.Now.ToString("HH:mm:ss"),
-                FontSize = 10,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 100, 116, 139))
-            };
-            Grid.SetColumn(timeText, 1);
-            headerGrid.Children.Add(timeText);
-
             var promptText = new TextBlock
             {
-                Text = $"📥 Prompt: \"{prompt}\"",
-                FontSize = 13,
+                Text = prompt,
+                FontSize = 14,
                 Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 241, 245, 249)),
                 TextWrapping = TextWrapping.Wrap,
-                FontWeight = Microsoft.UI.Text.FontWeights.SemiBold
+                FontWeight = Microsoft.UI.Text.FontWeights.Medium
             };
 
-            stack.Children.Add(headerGrid);
             stack.Children.Add(promptText);
             border.Child = stack;
-
-            border.PointerPressed += (s, e) => SelectNodeForInspection("User Request", prompt, 0, prompt.Length / 4);
             return border;
         }
 
@@ -906,20 +525,20 @@ namespace PersonasAgentes.WinUI
         {
             var border = new Border
             {
-                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 19, 21, 28)),
-                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 38, 43, 58)),
+                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 20, 21, 26)),
+                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 38, 40, 50)),
                 BorderThickness = new Thickness(1),
-                CornerRadius = new CornerRadius(8),
-                Padding = new Thickness(12, 8, 12, 8)
+                CornerRadius = new CornerRadius(10),
+                Padding = new Thickness(14, 10, 14, 10)
             };
 
             var stack = new StackPanel { Spacing = 4 };
             var title = new TextBlock
             {
-                Text = "🧠 [DEEPTHINK REASONING TRACE] Reflexão Cognitiva",
-                FontSize = 10,
+                Text = "🧠 Thinking",
+                FontSize = 11,
                 FontWeight = Microsoft.UI.Text.FontWeights.Bold,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 167, 139, 250))
+                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 148, 163, 184))
             };
 
             var content = new TextBlock
@@ -934,7 +553,6 @@ namespace PersonasAgentes.WinUI
             stack.Children.Add(content);
             border.Child = stack;
 
-            border.PointerPressed += (s, e) => SelectNodeForInspection("Reasoning Trace", content.Text, 120, content.Text.Length / 4);
             return Tuple.Create(border, content);
         }
 
@@ -942,7 +560,7 @@ namespace PersonasAgentes.WinUI
         {
             var border = new Border
             {
-                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 20, 24, 34)),
+                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 22, 24, 32)),
                 BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 37, 99, 235)),
                 BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(8),
@@ -950,253 +568,29 @@ namespace PersonasAgentes.WinUI
             };
 
             var stack = new StackPanel { Spacing = 4 };
-            var headerGrid = new Grid();
-            headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-
             var title = new TextBlock
             {
-                Text = $"🛠️ [TOOL PLUGIN DISPATCH] {toolName}",
+                Text = $"🛠️ Tool: {toolName}",
                 FontSize = 11,
                 FontWeight = Microsoft.UI.Text.FontWeights.Bold,
                 Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 96, 165, 250))
             };
-            Grid.SetColumn(title, 0);
-            headerGrid.Children.Add(title);
-
-            var statusBadge = new Border
-            {
-                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 30, 58, 138)),
-                CornerRadius = new CornerRadius(4),
-                Padding = new Thickness(6, 2, 6, 2),
-                Child = new TextBlock { Text = "RUNNING", FontSize = 9, FontWeight = Microsoft.UI.Text.FontWeights.Bold, Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 147, 197, 253)) }
-            };
-            Grid.SetColumn(statusBadge, 1);
-            headerGrid.Children.Add(statusBadge);
-
-            string argsText = root.TryGetProperty("metadata", out var m) ? m.ToString() : "{ \"query\": \"...\" }";
-            var argsBlock = new TextBlock
-            {
-                Text = $"Args: {argsText}",
-                FontSize = 10,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 148, 163, 184)),
-                FontFamily = new FontFamily("Consolas"),
-                TextWrapping = TextWrapping.Wrap
-            };
-
-            stack.Children.Add(headerGrid);
-            stack.Children.Add(argsBlock);
-            border.Child = stack;
-
-            border.PointerPressed += (s, e) => SelectNodeForInspection($"Tool: {toolName}", argsText, 45, 80);
-            return border;
-        }
-
-        private Border CreateToolResultNodeCard(string resultSummary)
-        {
-            var border = new Border
-            {
-                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 16, 28, 24)),
-                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 52, 211, 153)),
-                BorderThickness = new Thickness(1),
-                CornerRadius = new CornerRadius(8),
-                Padding = new Thickness(12, 8, 12, 8)
-            };
-
-            var stack = new StackPanel { Spacing = 4 };
-            var title = new TextBlock
-            {
-                Text = "📦 [TOOL RESULT / OBSERVATION]",
-                FontSize = 10,
-                FontWeight = Microsoft.UI.Text.FontWeights.Bold,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 52, 211, 153))
-            };
-
-            var text = new TextBlock
-            {
-                Text = resultSummary,
-                FontSize = 11,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 226, 232, 240)),
-                TextWrapping = TextWrapping.Wrap
-            };
 
             stack.Children.Add(title);
-            stack.Children.Add(text);
-            border.Child = stack;
-
-            border.PointerPressed += (s, e) => SelectNodeForInspection("Tool Result", resultSummary, 32, resultSummary.Length / 4);
-            return border;
-        }
-
-        private Border CreateVerificationNodeCard(string verifText)
-        {
-            var border = new Border
-            {
-                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 18, 28, 42)),
-                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 96, 165, 250)),
-                BorderThickness = new Thickness(1),
-                CornerRadius = new CornerRadius(8),
-                Padding = new Thickness(12, 8, 12, 8)
-            };
-
-            var stack = new StackPanel { Spacing = 2 };
-            var title = new TextBlock
-            {
-                Text = "🔬 [FORMAL PROOF SAFETY GATE — IDRIS 2]",
-                FontSize = 10,
-                FontWeight = Microsoft.UI.Text.FontWeights.Bold,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 96, 165, 250))
-            };
-
-            var text = new TextBlock
-            {
-                Text = verifText,
-                FontSize = 11,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 52, 211, 153)),
-                FontWeight = Microsoft.UI.Text.FontWeights.SemiBold
-            };
-
-            stack.Children.Add(title);
-            stack.Children.Add(text);
-            border.Child = stack;
-
-            border.PointerPressed += (s, e) => SelectNodeForInspection("Idris 2 Safety Gate", verifText, 18, 40);
-            return border;
-        }
-
-        private Border CreateApprovalPromptCard(string promptContent, string callId)
-        {
-            var border = new Border
-            {
-                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 41, 31, 20)),
-                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 251, 191, 36)),
-                BorderThickness = new Thickness(1.5),
-                CornerRadius = new CornerRadius(8),
-                Padding = new Thickness(14, 10, 14, 10)
-            };
-
-            var stack = new StackPanel { Spacing = 8 };
-            stack.Children.Add(new TextBlock
-            {
-                Text = "🛡️ [HUMAN-IN-THE-LOOP APPROVAL REQUIRED]",
-                FontSize = 10,
-                FontWeight = Microsoft.UI.Text.FontWeights.Bold,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 251, 191, 36))
-            });
-
-            stack.Children.Add(new TextBlock
-            {
-                Text = promptContent,
-                FontSize = 12,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 226, 232, 240)),
-                TextWrapping = TextWrapping.Wrap
-            });
-
-            var btnPanel = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 8 };
-
-            var approveBtn = new Button
-            {
-                Content = "Aprovar Execução ✅",
-                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 16, 185, 129)),
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 15, 23, 42)),
-                FontWeight = Microsoft.UI.Text.FontWeights.Bold,
-                CornerRadius = new CornerRadius(4)
-            };
-
-            var rejectBtn = new Button
-            {
-                Content = "Rejeitar ❌",
-                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 239, 68, 68)),
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 15, 23, 42)),
-                FontWeight = Microsoft.UI.Text.FontWeights.Bold,
-                CornerRadius = new CornerRadius(4)
-            };
-
-            var statusBadge = new TextBlock
-            {
-                FontSize = 11,
-                FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
-                VerticalAlignment = VerticalAlignment.Center,
-                Visibility = Visibility.Collapsed
-            };
-
-            approveBtn.Click += async (s, e) =>
-            {
-                approveBtn.IsEnabled = false;
-                rejectBtn.IsEnabled = false;
-                await SendApprovalDecisionAsync(callId, true);
-                statusBadge.Text = "✓ AUTORIZADO PELO OPERADOR";
-                statusBadge.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 52, 211, 153));
-                statusBadge.Visibility = Visibility.Visible;
-            };
-
-            rejectBtn.Click += async (s, e) =>
-            {
-                approveBtn.IsEnabled = false;
-                rejectBtn.IsEnabled = false;
-                await SendApprovalDecisionAsync(callId, false);
-                statusBadge.Text = "✗ REJEITADO PELO OPERADOR";
-                statusBadge.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 248, 113, 113));
-                statusBadge.Visibility = Visibility.Visible;
-            };
-
-            btnPanel.Children.Add(approveBtn);
-            btnPanel.Children.Add(rejectBtn);
-            btnPanel.Children.Add(statusBadge);
-
-            stack.Children.Add(btnPanel);
             border.Child = stack;
             return border;
-        }
-
-        private async Task SendApprovalDecisionAsync(string callId, bool approved)
-        {
-            if (string.IsNullOrEmpty(callId)) return;
-            try
-            {
-                var payload = new { callId = callId, approved = approved };
-                string json = JsonSerializer.Serialize(payload);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-                await _httpClient.PostAsync("http://127.0.0.1:3080/v1/approval", content);
-            }
-            catch { }
         }
 
         private Tuple<Border, TextBlock> CreateModelOutputNodeCard()
         {
             var border = new Border
             {
-                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 24, 27, 36)),
-                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 42, 47, 64)),
+                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 24, 25, 32)),
+                BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 40, 42, 54)),
                 BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(10),
-                Padding = new Thickness(14, 12, 14, 12)
+                Padding = new Thickness(16, 14, 16, 14)
             };
-
-            var stack = new StackPanel { Spacing = 8 };
-            var headerGrid = new Grid();
-            headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-
-            var header = new TextBlock
-            {
-                Text = "💬 [HARNESS SYNTHESIZED OUTPUT]",
-                FontSize = 10,
-                FontWeight = Microsoft.UI.Text.FontWeights.Bold,
-                Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 96, 165, 250))
-            };
-            Grid.SetColumn(header, 0);
-            headerGrid.Children.Add(header);
-
-            var styleBadge = new Border
-            {
-                Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 30, 41, 59)),
-                CornerRadius = new CornerRadius(4),
-                Padding = new Thickness(6, 2, 6, 2),
-                Child = new TextBlock { Text = "FLUENT MARKDOWN", FontSize = 9, FontWeight = Microsoft.UI.Text.FontWeights.Bold, Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 147, 197, 253)) }
-            };
-            Grid.SetColumn(styleBadge, 1);
-            headerGrid.Children.Add(styleBadge);
 
             var content = new TextBlock
             {
@@ -1205,190 +599,8 @@ namespace PersonasAgentes.WinUI
                 TextWrapping = TextWrapping.Wrap
             };
 
-            var formattedContainer = new StackPanel { Spacing = 6 };
-
-            content.RegisterPropertyChangedCallback(TextBlock.TextProperty, (s, dp) =>
-            {
-                RenderFluentAssistantMarkdown(content.Text, formattedContainer);
-            });
-
-            stack.Children.Add(headerGrid);
-            stack.Children.Add(formattedContainer);
-            border.Child = stack;
-
-            border.PointerPressed += (s, e) => SelectNodeForInspection("Model Output", content.Text, 800, content.Text.Length / 4);
+            border.Child = content;
             return Tuple.Create(border, content);
-        }
-
-        private void RenderFluentAssistantMarkdown(string rawText, StackPanel container)
-        {
-            container.Children.Clear();
-            if (string.IsNullOrEmpty(rawText)) return;
-
-            string[] blocks = rawText.Split(new[] { "```" }, StringSplitOptions.None);
-            for (int i = 0; i < blocks.Length; i++)
-            {
-                string block = blocks[i];
-                if (string.IsNullOrEmpty(block)) continue;
-
-                if (i % 2 == 1)
-                {
-                    // Code Block Card
-                    string lang = "code";
-                    string codeContent = block;
-
-                    int firstLineEnd = block.IndexOf('\n');
-                    if (firstLineEnd > 0)
-                    {
-                        string possibleLang = block.Substring(0, firstLineEnd).Trim();
-                        if (!string.IsNullOrEmpty(possibleLang) && possibleLang.Length < 15 && !possibleLang.Contains(' '))
-                        {
-                            lang = possibleLang;
-                            codeContent = block.Substring(firstLineEnd + 1);
-                        }
-                    }
-
-                    var codeCard = new Border
-                    {
-                        Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 15, 17, 23)),
-                        BorderBrush = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 42, 47, 64)),
-                        BorderThickness = new Thickness(1),
-                        CornerRadius = new CornerRadius(8),
-                        Padding = new Thickness(0),
-                        Margin = new Thickness(0, 4, 0, 4)
-                    };
-
-                    var cardStack = new StackPanel();
-
-                    // Card Header Bar
-                    var cardHeader = new Grid
-                    {
-                        Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 24, 27, 36)),
-                        Padding = new Thickness(12, 6, 12, 6)
-                    };
-                    cardHeader.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                    cardHeader.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-
-                    var langStack = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 6, VerticalAlignment = VerticalAlignment.Center };
-                    var langText = new TextBlock
-                    {
-                        Text = $"📄 {lang.ToUpper()}",
-                        FontSize = 10,
-                        FontWeight = Microsoft.UI.Text.FontWeights.Bold,
-                        Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 96, 165, 250)),
-                        VerticalAlignment = VerticalAlignment.Center
-                    };
-
-                    var syntaxBadge = new Border
-                    {
-                        Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 6, 78, 59)),
-                        CornerRadius = new CornerRadius(4),
-                        Padding = new Thickness(4, 1, 4, 1),
-                        Child = new TextBlock { Text = "Sintaxe Válida ✅", FontSize = 8, FontWeight = Microsoft.UI.Text.FontWeights.Bold, Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 52, 211, 153)) }
-                    };
-
-                    langStack.Children.Add(langText);
-                    langStack.Children.Add(syntaxBadge);
-                    Grid.SetColumn(langStack, 0);
-                    cardHeader.Children.Add(langStack);
-
-                    var copyBtn = new Button
-                    {
-                        Content = "Copiar Código 📋",
-                        FontSize = 10,
-                        Padding = new Thickness(8, 2, 8, 2),
-                        Background = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 30, 41, 59)),
-                        Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 241, 245, 249)),
-                        BorderThickness = new Thickness(0),
-                        CornerRadius = new CornerRadius(4)
-                    };
-
-                    string textToCopy = codeContent.Trim();
-                    copyBtn.Click += (s, e) =>
-                    {
-                        try
-                        {
-                            var dp = new Windows.ApplicationModel.DataTransfer.DataPackage();
-                            dp.SetText(textToCopy);
-                            Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(dp);
-                            copyBtn.Content = "Copiado! ✅";
-                        }
-                        catch { }
-                    };
-                    Grid.SetColumn(copyBtn, 1);
-                    cardHeader.Children.Add(copyBtn);
-
-                    // Code Content Block with Diff Highlighting
-                    if (lang.Equals("diff", StringComparison.OrdinalIgnoreCase))
-                    {
-                        var diffContainer = new StackPanel { Padding = new Thickness(12, 8, 12, 8), Spacing = 2 };
-                        string[] diffLines = codeContent.Trim().Split('\n');
-                        foreach (string dLine in diffLines)
-                        {
-                            var lineBlock = new TextBlock
-                            {
-                                Text = dLine,
-                                FontSize = 12,
-                                FontFamily = new FontFamily("Consolas"),
-                                TextWrapping = TextWrapping.Wrap
-                            };
-
-                            if (dLine.StartsWith("+"))
-                            {
-                                lineBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 52, 211, 153));
-                            }
-                            else if (dLine.StartsWith("-"))
-                            {
-                                lineBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 248, 113, 113));
-                            }
-                            else
-                            {
-                                lineBlock.Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 148, 163, 184));
-                            }
-                            diffContainer.Children.Add(lineBlock);
-                        }
-                        cardStack.Children.Add(cardHeader);
-                        cardStack.Children.Add(diffContainer);
-                    }
-                    else
-                    {
-                        var codeTextBlock = new TextBlock
-                        {
-                            Text = codeContent.Trim(),
-                            FontSize = 12,
-                            FontFamily = new FontFamily("Consolas"),
-                            Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 52, 211, 153)),
-                            TextWrapping = TextWrapping.Wrap,
-                            Padding = new Thickness(12, 10, 12, 10)
-                        };
-                        var codeScrollViewer = new ScrollViewer
-                        {
-                            MaxHeight = 400,
-                            VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
-                            HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
-                            Content = codeTextBlock
-                        };
-
-                        cardStack.Children.Add(cardHeader);
-                        cardStack.Children.Add(codeScrollViewer);
-                    }
-                    codeCard.Child = cardStack;
-
-                    container.Children.Add(codeCard);
-                }
-                else
-                {
-                    // Text Block
-                    var textBlock = new TextBlock
-                    {
-                        Text = block,
-                        FontSize = 13,
-                        Foreground = new SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 241, 245, 249)),
-                        TextWrapping = TextWrapping.Wrap
-                    };
-                    container.Children.Add(textBlock);
-                }
-            }
         }
 
         private void AddTrajectoryErrorCard(string error)
@@ -1406,58 +618,7 @@ namespace PersonasAgentes.WinUI
             ScrollToBottom();
         }
 
-        private async void OnRefreshTasksClicked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                var res = await _httpClient.GetAsync("http://127.0.0.1:3080/v1/tasks");
-                if (res.IsSuccessStatusCode)
-                {
-                    string json = await res.Content.ReadAsStringAsync();
-                    InspectorTitleTextBlock.Text = "🔄 FILA DE TAREFAS DE SEGUNDO PLANO";
-                    InspectorMetaTextBlock.Text = "Servidor: http://127.0.0.1:3080\nStatus: 100% Sincronizado";
-                    InspectorPayloadTextBlock.Text = json;
-                }
-            }
-            catch (Exception ex)
-            {
-                AddTrajectoryErrorCard($"❌ Falha ao consultar fila de tarefas: {ex.Message}");
-            }
-        }
-
-        private void SelectNodeForInspection(string title, string payload, long durMs, int tokens)
-        {
-            InspectorTitleTextBlock.Text = title;
-            InspectorMetaTextBlock.Text = $"Status: Concluído\nDuração: {durMs}ms\nTokens Estimados: ~{tokens}";
-            InspectorPayloadTextBlock.Text = payload;
-        }
-
-        private void RenderSessionTrajectory(PsaSessionItem session)
-        {
-            TrajectoryStackPanel.Children.Clear();
-            foreach (var rec in session.Records)
-            {
-                if (rec.Type == "UserPrompt")
-                {
-                    TrajectoryStackPanel.Children.Add(CreateTurnHeaderCard(1, rec.Content));
-                }
-            }
-        }
-
-        private void OnExportTrajectoryClicked(object sender, RoutedEventArgs e)
-        {
-            var sb = new StringBuilder();
-            sb.AppendLine($"# Personas Harness Trajectory Flight Recorder");
-            sb.AppendLine($"Session: {_currentSession?.Id ?? "default"}");
-            sb.AppendLine($"Timestamp: {DateTime.UtcNow:O}");
-            sb.AppendLine($"Total Turns: {_totalTurnsCount}");
-
-            using var sha = SHA256.Create();
-            byte[] hashBytes = sha.ComputeHash(Encoding.UTF8.GetBytes(sb.ToString()));
-            string hash = BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
-
-            SelectNodeForInspection("Trajectory Export", $"SHA-256 Stamp:\n{hash}\n\nRegistro de auditoria criptográfica do append-only session log exportado com sucesso no padrão psa-harness.", 0, 0);
-        }
+        private void OnRefreshTasksClicked(object sender, RoutedEventArgs e) {}
 
         private void ScrollToBottom()
         {
