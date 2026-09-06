@@ -28,7 +28,7 @@ export class CompactionPlugin implements PsaPlugin {
             isExclusive: false,
             execute: async (): Promise<{ success: boolean; message: string }> => {
                 try {
-                    const sqlitePlugin = ctx.plugins.get("psa-plugin-sqlite") as any;
+                    const sqlitePlugin = (ctx.plugins.get("psa-plugin-sqlite") || ctx.plugins.get("psa-plugin-sqlite-storage")) as any;
                     if (sqlitePlugin && typeof sqlitePlugin.vacuum === "function") {
                         sqlitePlugin.vacuum();
                         return { success: true, message: "Banco SQLite system_vault.db otimizado via VACUUM com sucesso." };

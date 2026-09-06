@@ -289,6 +289,12 @@ export class SqliteStoragePlugin implements PsaPlugin {
         });
     }
 
+    public vacuum(): void {
+        try {
+            this.db.exec("VACUUM;");
+        } catch {}
+    }
+
     public close(): void {
         try {
             this.db.close();
