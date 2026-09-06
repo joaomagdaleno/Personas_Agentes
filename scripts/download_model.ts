@@ -47,7 +47,7 @@ export const SLM_MODELS: SlmModelInfo[] = [
     }
 ];
 
-function resolveModelsDir(customDir?: string): string {
+export function resolveModelsDir(customDir?: string): string {
     if (customDir) return path.resolve(customDir);
     if (process.env.PSA_MODELS_DIR) return path.resolve(process.env.PSA_MODELS_DIR);
     
@@ -60,12 +60,12 @@ function resolveModelsDir(customDir?: string): string {
     return siblingModels;
 }
 
-function findModel(idOrAlias: string): SlmModelInfo | undefined {
+export function findModel(idOrAlias: string): SlmModelInfo | undefined {
     const term = idOrAlias.toLowerCase().trim();
     return SLM_MODELS.find(m => m.id.toLowerCase() === term || m.aliases.includes(term));
 }
 
-async function calculateFileSha256(filePath: string): Promise<string> {
+export async function calculateFileSha256(filePath: string): Promise<string> {
     return new Promise((resolve, reject) => {
         const hash = crypto.createHash("sha256");
         const stream = fs.createReadStream(filePath);
@@ -75,7 +75,7 @@ async function calculateFileSha256(filePath: string): Promise<string> {
     });
 }
 
-async function downloadSingleModel(model: SlmModelInfo, modelsDir: string, dryRun: boolean): Promise<boolean> {
+export async function downloadSingleModel(model: SlmModelInfo, modelsDir: string, dryRun: boolean): Promise<boolean> {
     const targetPath = path.join(modelsDir, model.filename);
 
     console.log("\n------------------------------------------------------------------");
