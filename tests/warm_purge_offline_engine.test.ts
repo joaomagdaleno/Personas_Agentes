@@ -111,4 +111,25 @@ describe("WarmPurgeOfflineEngine Unit Tests", () => {
         const switchSuccess = await engine.ensureServerRunning("non-existent-model-xyz.gguf");
         expect(switchSuccess).toBe(false);
     }, 20000);
+
+    it("should automatically purge RAM allocation after the linger window timer expires due to inactivity", async () => {
+        // Arrange
+        const engine = WarmPurgeOfflineEngine.getInstance();
+
+        // Act: generate prompt to transition engine to warm state
+        await engine.generate("Ping auto-purge test");
+        expect(engine.getTelemetry().isWarm).toBe(true);
+
+        // Set a short 50ms linger window and trigger purge timer
+        (engine as any).lingerWindowMs = 50;
+        (engine as any).schedulePurge();
+
+        // Assert: wait 80ms for inactive linger window timer to fire automatically
+        await new Promise(r => setTimeout(r, 80));
+
+        const telemetry = engine.getTelemetry();
+        expect(telemetry.isWarm).toBe(false);
+        expect(telemetry.allocatedMemoryBytes).toBe(0);
+        expect(telemetry.timeUntilPurgeMs).toBe(0);
+    }, 5000);
 });
