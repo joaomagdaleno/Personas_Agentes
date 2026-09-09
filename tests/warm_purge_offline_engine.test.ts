@@ -111,4 +111,58 @@ describe("WarmPurgeOfflineEngine Unit Tests", () => {
         const switchSuccess = await engine.ensureServerRunning("non-existent-model-xyz.gguf");
         expect(switchSuccess).toBe(false);
     }, 20000);
+
+    it("should remain idempotent when forcePurge is called multiple times on cold state", () => {
+        // Arrange - Component: WarmPurgeOfflineEngine | Pattern: Given-When-Then
+        const engine = WarmPurgeOfflineEngine.getInstance();
+        expect(engine.getTelemetry().isWarm).toBe(false);
+
+        // Act
+        expect(() => {
+            engine.forcePurge();
+            engine.forcePurge();
+            engine.forcePurge();
+        }).not.toThrow();
+
+        // Assert
+        const telemetry = engine.getTelemetry();
+        expect(telemetry.isWarm).toBe(false);
+        expect(telemetry.allocatedMemoryBytes).toBe(0);
+        expect(telemetry.timeUntilPurgeMs).toBe(0);
+    });
+
+    it("should stream tokens via streamChatCompletion and transition engine to warm state", async () => {
+        // Arrange - Component: WarmPurgeOfflineEngine (Streaming) | Pattern: AAA
+        const engine = WarmPurgeOfflineEngine.getInstance();
+        const chunks: Array<{ type: "reasoning" | "text"; content: string }> = [];
+
+        // Act
+        for await (const chunk of engine.streamChatCompletion({
+            prompt: "Responda apenas 'PING'.",
+            systemPrompt: "Você é um assistente conciso.",
+            deepthink: true
+        })) {
+            chunks.push(chunk);
+        }
+
+        // Assert
+        expect(chunks.length).toBeGreaterThan(0);
+        expect(chunks.some(c => c.type === "text")).toBe(true);
+
+        const telemetry = engine.getTelemetry();
+        expect(telemetry.isWarm).toBe(true);
+        expect(telemetry.allocatedMemoryBytes).toBeGreaterThan(0);
+        expect(telemetry.timeUntilPurgeMs).toBeGreaterThan(0);
+    }, 20000);
+
+    it("should verify checkMemorySafety evaluates OS free memory threshold", () => {
+        // Arrange - Component: WarmPurgeOfflineEngine (Memory Safety) | Pattern: AAA
+        const engine = WarmPurgeOfflineEngine.getInstance();
+
+        // Act
+        const isSafeForSmallAlloc = engine.checkMemorySafety(100);
+
+        // Assert
+        expect(typeof isSafeForSmallAlloc).toBe("boolean");
+    });
 });
