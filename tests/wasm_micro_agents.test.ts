@@ -134,4 +134,20 @@ describe("WasmMicroAgentRuntime Unit Tests", () => {
         expect(results.every(r => r.success)).toBe(true);
         expect(runtime.getActiveExecutions()).toBe(0);
     });
+
+    it("should purge all WASI sandbox allocations and reset active executions to zero", () => {
+        // Arrange - Component: WasmMicroAgentRuntime | Pattern: Given-When-Then
+        const runtime = WasmMicroAgentRuntime.getInstance();
+
+        // Simulate active WASI sandbox executions
+        (runtime as any).activeExecutions = 3;
+        expect(runtime.getActiveExecutions()).toBe(3);
+
+        // Act
+        const purgeResult = runtime.purgeAll();
+
+        // Assert
+        expect(purgeResult).toBe(true);
+        expect(runtime.getActiveExecutions()).toBe(0);
+    });
 });

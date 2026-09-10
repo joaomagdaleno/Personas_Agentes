@@ -45,6 +45,15 @@ export class PsaLLMService {
             maxTokens: 8192
         });
 
+        this.register({
+            id: "qwen2.5-coder-7b",
+            name: "🛠️ Qwen 2.5 Coder 7B (Full Coding Model)",
+            provider: "local",
+            supportsDeepThink: false,
+            supportsReasoning: false,
+            contextWindow: 32768,
+            maxTokens: 4096
+        });
 
         // Aliases para compatibilidade retroativa
         this.register({
