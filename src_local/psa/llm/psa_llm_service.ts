@@ -45,15 +45,6 @@ export class PsaLLMService {
             maxTokens: 8192
         });
 
-        this.register({
-            id: "qwen2.5-coder-7b",
-            name: "🛠️ Qwen 2.5 Coder 7B (Code Engineering & Tool Execution)",
-            provider: "local",
-            supportsDeepThink: false,
-            supportsReasoning: true,
-            contextWindow: 131072,
-            maxTokens: 8192
-        });
 
         // Aliases para compatibilidade retroativa
         this.register({
@@ -104,8 +95,6 @@ export class PsaLLMService {
         let targetFilename = "qwen2.5-coder-1.5b-instruct-q4_k_m.gguf";
         if (modelDef.id.includes("8b") || modelDef.id.includes("pro") || modelDef.id.includes("thinking")) {
             targetFilename = "DeepSeek-R1-Distill-Llama-8B-Q4_K_M.gguf";
-        } else if (modelDef.id.includes("7b") || modelDef.id.includes("coder")) {
-            targetFilename = "qwen2.5-coder-7b-instruct-q4_k_m.gguf";
         }
 
         const { WarmPurgeOfflineEngine } = await import("../../utils/ai/warm_purge_offline_engine.ts");
@@ -117,7 +106,7 @@ export class PsaLLMService {
         if (!modelPath && !isTestEnv) {
             let sizeStr = "~1.06 GB";
             if (targetFilename.includes("8B")) sizeStr = "~4.69 GB";
-            else if (targetFilename.includes("7b")) sizeStr = "~4.46 GB";
+           
 
             yield {
                 type: "text",
@@ -129,7 +118,7 @@ export class PsaLLMService {
                          `bun run download-model --model ${modelDef.id}\n` +
                          `\`\`\`\n` +
                          `*(Ou no executável da distribuição: \`model-downloader.exe --model ${modelDef.id}\`)*\n\n` +
-                         `💡 **Dica de uso imediato:** Você pode selecionar o modelo padrão **⚡ Qwen 2.5 Coder 1.5B (Fast / Lite)** no menu acima — ele já está 100% instalado e disponível offline sem espera!`
+                         `💡 **Dica:** O modelo padrão **⚡ Qwen 2.5 Coder 1.5B** já está instalado e pronto para uso.`
             };
             return;
         }

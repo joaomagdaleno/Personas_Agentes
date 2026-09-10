@@ -30,7 +30,7 @@ Uso:
   bun run psa "<instrução>" [opções]
 
 Opções:
-  --model <id>       Modelo a utilizar (qwen2.5-coder-7b, qwen3-8b-thinking, qwen2.5-coder-1.5b) [padrão: qwen2.5-coder-7b]
+  --model <id>       Modelo a utilizar (qwen3-8b-thinking, qwen2.5-coder-1.5b) [padrão: qwen2.5-coder-1.5b]
   --persona <key>    Super Persona ativa [padrão: strategic_cognitive_architect]
   --deepthink        Ativar raciocínio profundo de planejamento
   --mode <modo>      Modo operacional (Standard, Code, Minimal, Creator)
@@ -41,7 +41,7 @@ Opções:
 
     // Extração de parâmetros
     let prompt = "";
-    let model = "qwen2.5-coder-7b";
+    let model = "qwen2.5-coder-1.5b";
     let persona = "strategic_cognitive_architect";
     let deepthink = true;
     let mode = "Standard";

@@ -18,9 +18,9 @@ export const SLM_MODELS: SlmModelInfo[] = [
     {
         id: "qwen2.5-coder-1.5b",
         aliases: ["1.5b", "fast", "chat", "triage"],
-        name: "⚡ Qwen 2.5 Coder 1.5B (Ultra-Rápido / Triagem & Agentes)",
+        name: "⚡ Qwen 2.5 Coder 1.5B (Ultra-Rápido / Triagem \u0026 Agentes)",
         filename: "qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
-        url: "https://huggingface.co/Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF/resolve/main/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+        url: "https://huggingface.co/Qwen/Qwen2.5-Coder-1.5b-Instruct-GGUF/resolve/main/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
         sha256: "4715f5c88c7b805847525381aa0909f29bf8eb543f339433ff9e3b1c67d16ee4",
         sizeMb: 1065,
         description: "Ideal para triagem de eventos, auto-healing, background e testes rápidos de latência."
@@ -28,22 +28,12 @@ export const SLM_MODELS: SlmModelInfo[] = [
     {
         id: "qwen3-8b-thinking",
         aliases: ["thinking", "8b", "architect", "reasoning", "qwen3", "qwen-3.8"],
-        name: "🧠 Qwen 3 / DeepSeek-R1 Distill 8B Thinking (Arquitetura & Raciocínio)",
+        name: "🧠 Qwen3 / DeepSeek-R1 Distill 8B Thinking (Arquitetura \u0026 Raciocínio)",
         filename: "DeepSeek-R1-Distill-Llama-8B-Q4_K_M.gguf",
         url: "https://huggingface.co/bartowski/DeepSeek-R1-Distill-Llama-8B-GGUF/resolve/main/DeepSeek-R1-Distill-Llama-8B-Q4_K_M.gguf",
         sha256: "888ed4ee21e06f1406e232eb1e93c1d9333919e83f063d8ff436e2f170e87b7a",
         sizeMb: 4692,
         description: "Raciocínio cognitivo profundo com tags <think>, planejamento de arquitetura e análise estrutural."
-    },
-    {
-        id: "qwen2.5-coder-7b",
-        aliases: ["7b", "coder", "full", "heavy", "engineering"],
-        name: "🛠️ Qwen 2.5 Coder 7B (Engenharia de Código Completa & AST)",
-        filename: "qwen2.5-coder-7b-instruct-q4_k_m.gguf",
-        url: "https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct-GGUF/resolve/main/qwen2.5-coder-7b-instruct-q4_k_m.gguf",
-        sha256: "a9985392471cf4525ddc67e85c2c7760773d2f347f2ef8c13038a8e32906bb1b",
-        sizeMb: 4466,
-        description: "Geração pesada de código, refatoração de AST, execução de ferramentas e patches multilíngues."
     }
 ];
 
@@ -278,7 +268,7 @@ async function main() {
     } else if (requestedModelId) {
         const found = findModel(requestedModelId);
         if (!found) {
-            console.error(`❌ Modelo '${requestedModelId}' não encontrado. Modelos válidos: 1.5b, thinking, 7b`);
+            console.error(`❌ Modelo '${requestedModelId}' não encontrado. Modelos válidos: 1.5b, thinking`);
             process.exit(1);
         }
         selectedModels = [found];
@@ -288,15 +278,13 @@ async function main() {
         console.log("Escolha qual SLM deseja baixar:");
         console.log("  [1] ⚡ Qwen 2.5 Coder 1.5B (Ultra-Rápido / Triagem ~1.0 GB)");
         console.log("  [2] 🧠 Qwen 3 Thinking / DeepSeek-R1 8B (Raciocínio Profundo ~4.7 GB)");
-        console.log("  [3] 🛠️ Qwen 2.5 Coder 7B (Engenharia de Código Completa ~4.5 GB)");
-        console.log("  [4] 🌟 Baixar Todas as 3 SLMs (~10.2 GB)");
+        console.log("  [3] 🌟 Baixar Todas as SLMs (~5.7 GB)");
         console.log("  [0] Sair sem baixar nada\n");
 
-        const choice = await promptUser("Digite sua opção [1-4 ou 0]: ");
+        const choice = await promptUser("Digite sua opção [1-3 ou 0]: ");
         if (choice === "1") selectedModels = [SLM_MODELS[0]];
         else if (choice === "2") selectedModels = [SLM_MODELS[1]];
-        else if (choice === "3") selectedModels = [SLM_MODELS[2]];
-        else if (choice === "4") selectedModels = SLM_MODELS;
+        else if (choice === "3") selectedModels = SLM_MODELS;
         else {
             console.log("Operação cancelada pelo usuário.");
             process.exit(0);

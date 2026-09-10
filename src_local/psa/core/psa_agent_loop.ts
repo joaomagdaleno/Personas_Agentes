@@ -33,11 +33,11 @@ export class PsaAgentLoop {
         const startTime = Date.now();
         // Dynamic SLM Triad Resolution & Handoff:
         // - "qwen3-8b-thinking" for Planning, Architecture, Deep Reasoning
-        // - "qwen2.5-coder-7b" for Code Engineering, Terminal & Tool Execution (Default)
+        // Note: The 7b model reference was removed; default model is now qwen2.5-coder-1.5b
         // - "qwen2.5-coder-1.5b" for Ultra-Fast Triage, RAG Filtering & Lightweight Chat
         let modelChoice = request.model;
         if (!modelChoice || modelChoice === "deepseek-v4-flash") {
-            modelChoice = request.mode === "Minimal" ? "qwen2.5-coder-1.5b" : "qwen2.5-coder-7b";
+            modelChoice = request.mode === "Minimal" ? "qwen2.5-coder-1.5b" : "qwen2.5-coder-1.5b";
         } else if (modelChoice === "deepseek-v4-pro") {
             modelChoice = "qwen3-8b-thinking";
         }
