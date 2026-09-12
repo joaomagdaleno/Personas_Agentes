@@ -35,6 +35,9 @@ jobs:
       - name: Instalar Dependências
         run: bun install
 
+      - name: Executar Testes e Gerar Relatório de Coverage
+        run: bun run test:coverage
+
       - name: Compilar e Publicar WinUI 3 (Self-Contained)
         run: dotnet publish src_native/winui/PersonasAgentes.WinUI.csproj -c Release -r win-x64 --self-contained true -p:WindowsPackageType=None -p:WindowsAppSDKSelfContained=true
 
