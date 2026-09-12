@@ -5,6 +5,17 @@ use walkdir::WalkDir;
 use rayon::prelude::*;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Default)]
+struct AnalysisFlags {
+    comments: usize,
+    has_import: bool,
+    has_function: bool,
+    has_test: bool,
+    has_config: bool,
+    has_observability: bool,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct FileAnalysis {
     pub path: String,
     pub exists: bool,
@@ -42,27 +53,20 @@ pub fn analyze_file(path: &Path, root: &Path) -> Result<FileAnalysis, std::io::E
     let (comments, sloc, intent) = if let Some(lang) = language {
         if parser.set_language(lang).is_ok() {
             if let Some(tree) = parser.parse(&content, None) {
-                let mut comment_count = 0;
-                let mut has_import = false;
-                let mut has_function = false;
-                let mut has_test = false;
-                let mut has_config = false;
-                let mut has_observability = false;
+                let mut flags = AnalysisFlags::default();
                 
-                walk_for_analysis(&mut tree.root_node().walk(), content.as_bytes(), 
-                    &mut comment_count, &mut has_import, &mut has_function, 
-                    &mut has_test, &mut has_config, &mut has_observability);
+                walk_for_analysis(&mut tree.root_node().walk(), content.as_bytes(), &mut flags);
                 
                 let non_empty = content.lines().filter(|l| !l.trim().is_empty()).count();
-                let sloc_val = non_empty.saturating_sub(comment_count);
+                let sloc_val = non_empty.saturating_sub(flags.comments);
                 
-                let intent_val = if has_test { "TEST" }
-                    else if has_observability { "OBSERVABILITY" }
-                    else if has_config { "CONFIGURATION" }
-                    else if has_import && !has_function { "METADATA" }
+                let intent_val = if flags.has_test { "TEST" }
+                    else if flags.has_observability { "OBSERVABILITY" }
+                    else if flags.has_config { "CONFIGURATION" }
+                    else if flags.has_import && !flags.has_function { "METADATA" }
                     else { "LOGIC" };
                 
-                (comment_count, sloc_val, intent_val.to_string())
+                (flags.comments, sloc_val, intent_val.to_string())
             } else {
                 fallback_analysis(&content)
             }
@@ -111,10 +115,7 @@ fn fallback_analysis(content: &str) -> (usize, usize, String) {
     (comments, sloc, "LOGIC".to_string())
 }
 
-fn walk_for_analysis(cursor: &mut tree_sitter::TreeCursor, source: &[u8],
-    comments: &mut usize, has_import: &mut bool, has_function: &mut bool,
-    has_test: &mut bool, has_config: &mut bool, has_observability: &mut bool)
-{
+fn walk_for_analysis(cursor: &mut tree_sitter::TreeCursor, source: &[u8], flags: &mut AnalysisFlags) {
     let node = cursor.node();
     let kind = node.kind();
     
@@ -123,66 +124,62 @@ fn walk_for_analysis(cursor: &mut tree_sitter::TreeCursor, source: &[u8],
             // Count unique lines spanned by the comment
             let start_row = node.start_position().row;
             let end_row = node.end_position().row;
-            *comments += (end_row - start_row) + 1;
+            flags.comments += (end_row - start_row) + 1;
             
             if let Ok(text) = node.utf8_text(source) {
                 let low = text.to_lowercase();
-                if low.contains("test") || low.contains("spec") { *has_test = true; }
-                if low.contains("config") || low.contains("setup") { *has_config = true; }
+                if low.contains("test") || low.contains("spec") { flags.has_test = true; }
+                if low.contains("config") || low.contains("setup") { flags.has_config = true; }
             }
         }
         "import_statement" | "import_declaration" | "use_declaration" | "export_statement" => {
-            *has_import = true;
+            flags.has_import = true;
         }
         "function_declaration" | "function_item" | "method_definition" | "class_declaration" => {
-            *has_function = true;
-            if let Some(name_node) = node.child_by_field_name("name") {
-                if let Ok(name) = name_node.utf8_text(source) {
-                    let low = name.to_lowercase();
-                    if low.contains("test") || low.starts_with("test_") || low.starts_with("it_") {
-                        *has_test = true;
-                    }
+            flags.has_function = true;
+            if let Some(name_node) = node.child_by_field_name("name")
+                && let Ok(name) = name_node.utf8_text(source) {
+                let low = name.to_lowercase();
+                if low.contains("test") || low.starts_with("test_") || low.starts_with("it_") {
+                    flags.has_test = true;
                 }
             }
         }
         "call_expression" => {
-            if let Some(func_node) = node.child_by_field_name("function") {
-                if let Ok(func_text) = func_node.utf8_text(source) {
-                    let text = func_text.to_string();
-                    if text.contains("logger") || text.contains("console") || text.contains("telemetry") || text.contains("winston") {
-                        *has_observability = true;
-                    }
-                    if text == "describe" || text == "it" || text == "test" || text == "expect" {
-                        *has_test = true;
-                    }
-                    
-                    // Dangerous Execution Check
-                    let dangerous = ["eval", "exec", "spawnSync", "execSync", "Function"];
-                    if dangerous.iter().any(|&d| text.contains(d)) {
-                         // This could be flagged as a security finding in a more complex pass
-                    }
+            if let Some(func_node) = node.child_by_field_name("function")
+                && let Ok(func_text) = func_node.utf8_text(source) {
+                let text = func_text.to_string();
+                if text.contains("logger") || text.contains("console") || text.contains("telemetry") || text.contains("winston") {
+                    flags.has_observability = true;
+                }
+                if text == "describe" || text == "it" || text == "test" || text == "expect" {
+                    flags.has_test = true;
+                }
+
+                // Dangerous Execution Check
+                let dangerous = ["eval", "exec", "spawnSync", "execSync", "Function"];
+                if dangerous.iter().any(|&d| text.contains(d)) {
+                     // This could be flagged as a security finding in a more complex pass
                 }
             }
         }
         "catch_clause" => {
             // Check for Silent Errors (Empty catch blocks)
-            if let Some(body) = node.child_by_field_name("body") {
-               if body.child_count() <= 2 { // Only '{' and '}'
-                   // Potencial Silent Error
-               }
+            if let Some(body) = node.child_by_field_name("body")
+               && body.child_count() <= 2 { // Only '{' and '}'
+               // Potencial Silent Error
             }
         }
         "decorator" => {
-            if let Ok(text) = node.utf8_text(source) {
-                if text.contains("Test") || text.contains("test") { *has_test = true; }
-            }
+            if let Ok(text) = node.utf8_text(source)
+                && (text.contains("Test") || text.contains("test")) { flags.has_test = true; }
         }
         _ => {}
     }
     
     if cursor.goto_first_child() {
         loop {
-            walk_for_analysis(cursor, source, comments, has_import, has_function, has_test, has_config, has_observability);
+            walk_for_analysis(cursor, source, flags);
             if !cursor.goto_next_sibling() { break; }
         }
         cursor.goto_parent();
@@ -215,7 +212,7 @@ pub fn scan_directory(dir: &Path, root: &Path) -> Vec<FileAnalysis> {
         .map(|path| {
             let res = analyze_file(&path, root);
             let done = counter.fetch_add(1, std::sync::atomic::Ordering::SeqCst) + 1;
-            if done % 100 == 0 || done == total {
+            if done.is_multiple_of(100) || done == total {
                 eprint!("\r📂 Escaneando arquivos: {}/{}", done, total);
             }
             res

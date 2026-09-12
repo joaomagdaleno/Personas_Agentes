@@ -41,9 +41,11 @@ export class MemoryPruningAgent implements IAgent {
         try {
             const db = new Database(this.dbPath);
 
+            // High Security / Parameterized SQLite Query (CWE-89)
             // Note: date('now') in SQLite returns UTC date.
-            const query = db.query(`DELETE FROM health_history WHERE timestamp < datetime('now', '-${days} days')`);
-            query.run();
+            const daysOffset = `-${Math.max(1, Math.floor(days))} days`;
+            const query = db.query("DELETE FROM health_history WHERE timestamp < datetime('now', ?)");
+            query.run(daysOffset);
 
             // Bun:sqlite doesn't have rowcount directly in run() for DELETE, 
             // but we can assume success if no error.
