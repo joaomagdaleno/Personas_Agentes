@@ -1,34 +1,50 @@
-name: Auto-merge agent PRs
+name: Auto-merge agent PRs (Scheduled)
+
 on:
-  pull_request:
-    types: [labeled, synchronize]
-  check_suite:
-    types: [completed]
+  schedule:
+    # Runs daily at 07:00 UTC, after the Review agent completes its 06:00 UTC run
+    - cron: '0 7 * * *'
+  workflow_dispatch:
 
 permissions:
   contents: write
   pull-requests: write
 
 jobs:
-  auto-merge:
-    if: contains(github.event.pull_request.labels.*.name, 'auto-merged')
+  auto-merge-batch:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
+
       - uses: oven-sh/setup-bun@v2
-      - name: Install and test
-        run: |
-          bun install
-          bun test
-      - name: Auto-merge
-        if: success()
-        uses: pascalgn/automerge-action@v0.16.3
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Fetch, test, and merge all auto-merged PRs
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MERGE_LABELS: "auto-merged"
-          MERGE_METHOD: "squash"
-          MERGE_REMOVE_LABELS: "auto-merged"
-          MERGE_RETRIES: "3"
-          MERGE_RETRY_SLEEP: "30000"
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          prs=$(gh pr list --label "auto-merged" --json number,headRefName,headRepositoryOwner --jq '.[] | .number')
+
+          if [ -z "$prs" ]; then
+            echo "No open PRs found with label 'auto-merged'."
+            exit 0
+          fi
+
+          echo "Found PRs to auto-merge: $prs"
+
+          for pr in $prs; do
+            echo "Processing PR #$pr..."
+
+            # Checkout PR branch
+            gh pr checkout $pr
+
+            # Run test suite
+            bun test
+
+            # If tests pass, approve and squash-merge
+            gh pr review $pr --approve --body "Auto-merge: tests passed on scheduled run."
+            gh pr merge $pr --squash --delete-branch
+            echo "PR #$pr merged successfully."
+          done

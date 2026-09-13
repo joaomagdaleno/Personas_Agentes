@@ -127,12 +127,13 @@ Everything else: act autonomously.
 
 Times are UTC.
 
-02:00  Spec      (daily)
-03:00  Bolt      (daily)
-04:00  Sentinel  (daily)
-05:00  Scribe    (Mon only)
-05:00  Refactor  (Wed only)
-06:00  Architect (1st only)
+01:00 Spec
+02:00 Bolt
+03:00 Sentinel
+04:00 Scribe (Mon) / Refactor (Wed)
+05:00 Architect (1st of month)
+06:00 Review (batch mode)
+07:00 Auto-merge (scheduled)
 
 If an agent's schedule is missed, the next run catches up by reading `state.md`.
 If two agents run in the same window, the file lock (§5) prevents conflicts.
