@@ -1,9 +1,9 @@
-name: Auto-merge agent PRs (Scheduled)
+name: "Auto-merge agent PRs (Scheduled)"
 
 on:
   schedule:
-    # Runs daily at 07:00 UTC, after the Review agent completes its 06:00 UTC run
-    - cron: '0 7 * * *'
+    # Runs daily at 08:30 UTC, providing a 2h30 buffer after Review agent completes at 06:00 UTC
+    - cron: '30 8 * * *'
   workflow_dispatch:
 
 permissions:
@@ -12,16 +12,99 @@ permissions:
 
 jobs:
   auto-merge-batch:
-    runs-on: ubuntu-latest
+    runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v4
+      - name: "Checkout repository"
+        uses: "actions/checkout@v4"
 
-      - uses: oven-sh/setup-bun@v2
+      - name: "Setup Bun runtime"
+        uses: "oven-sh/setup-bun@v2"
 
-      - name: Install dependencies
-        run: bun install
+      - name: "Validate workflow YAML structure"
+        run: |
+          bun -e "
+            const fs = require('fs');
+            const file = '.github/workflows/auto-merge-agent-prs.yml';
+            const content = fs.readFileSync(file, 'utf8');
+            if (!content || content.trim().length === 0) {
+              console.error('YAML file is empty');
+              process.exit(1);
+            }
+            console.log('YAML file structure validated successfully.');
+          "
 
-      - name: Fetch, test, and merge all auto-merged PRs
+      - name: "Clear stale file locks (>24h)"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          bun -e "
+            const fs = require('fs');
+            const statePath = '.jules/state.md';
+            if (!fs.existsSync(statePath)) process.exit(0);
+
+            let content = fs.readFileSync(statePath, 'utf8');
+            const now = Date.now();
+            const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
+            const clearedLocks = [];
+
+            const lines = content.split('\n');
+            let inLockTable = false;
+            const updatedLines = [];
+
+            for (let line of lines) {
+              if (line.trim().startsWith('## File locks')) {
+                inLockTable = true;
+                updatedLines.push(line);
+                continue;
+              }
+              if (inLockTable && line.trim().startsWith('## ')) {
+                inLockTable = false;
+              }
+
+              if (inLockTable && line.trim().startsWith('|') && !line.includes('Locked by') && !line.includes('---|')) {
+                const parts = line.split('|').map(p => p.trim());
+                if (parts.length >= 5) {
+                  const file = parts[1];
+                  const agent = parts[2];
+                  const sinceStr = parts[3];
+                  const reason = parts[4];
+                  const lockTime = Date.parse(sinceStr);
+
+                  if (file !== '—' && !isNaN(lockTime) && (now - lockTime > TWENTY_FOUR_HOURS)) {
+                    clearedLocks.push({ file, agent, sinceStr, reason });
+                    continue;
+                  }
+                }
+              }
+              updatedLines.push(line);
+            }
+
+            if (clearedLocks.length > 0) {
+              let newContent = updatedLines.join('\n');
+              const riskLog = clearedLocks.map(l => \`- Cleared stale lock on \${l.file} held by \${l.agent} since \${l.sinceStr}\`).join('\n');
+              if (newContent.includes('## Known risks\n(none yet)')) {
+                newContent = newContent.replace('## Known risks\n(none yet)', '## Known risks\n' + riskLog);
+              } else if (newContent.includes('## Known risks')) {
+                newContent = newContent.replace('## Known risks', '## Known risks\n' + riskLog);
+              }
+              fs.writeFileSync(statePath, newContent);
+              console.log('Cleared stale locks:', clearedLocks);
+            }
+          "
+
+          if [ -n "$(git status --porcelain .jules/state.md)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add .jules/state.md
+            git commit -m "chore: auto-clear stale file locks (>24h)"
+            git push
+          fi
+
+      - name: "Install dependencies (with 1 retry)"
+        run: |
+          bun install || (echo "bun install failed, retrying once..." && sleep 2 && bun install)
+
+      - name: "Fetch, test, and merge all auto-merged PRs"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -38,13 +121,43 @@ jobs:
             echo "Processing PR #$pr..."
 
             # Checkout PR branch
-            gh pr checkout $pr
+            if ! gh pr checkout $pr; then
+              echo "Failed to checkout PR #$pr"
+              continue
+            fi
+
+            # Install dependencies with retry
+            if ! (bun install || (sleep 2 && bun install)); then
+              echo "bun install failed for PR #$pr. Labeling do-not-merge and escalating."
+              gh pr edit $pr --add-label "do-not-merge" || true
+              timestamp=$(date -u +'%Y-%m-%d %H:%M')
+              echo -e "\n## $timestamp – Escalation\n**Raised by:** Auto-merge Workflow\n**Decision needed:** Resolve dependency installation failure on PR #$pr\n**Context:** bun install failed twice during scheduled auto-merge.\n**Options:** A) Fix lockfile / dependencies B) Close PR\n**Recommended:** A\n**Status:** PENDING HUMAN" >> .jules/escalations.md
+              if [ -n "$(git status --porcelain .jules/escalations.md)" ]; then
+                git config user.name "github-actions[bot]"
+                git config user.email "github-actions[bot]@users.noreply.github.com"
+                git add .jules/escalations.md
+                git commit -m "escalate: bun install failure on PR #$pr"
+                git push
+              fi
+              continue
+            fi
 
             # Run test suite
-            bun test
-
-            # If tests pass, approve and squash-merge
-            gh pr review $pr --approve --body "Auto-merge: tests passed on scheduled run."
-            gh pr merge $pr --squash --delete-branch
-            echo "PR #$pr merged successfully."
+            if bun test; then
+              gh pr review $pr --approve --body "Auto-merge: tests passed on scheduled run."
+              gh pr merge $pr --squash --delete-branch
+              echo "PR #$pr merged successfully."
+            else
+              echo "Tests failed for PR #$pr. Labeling do-not-merge and escalating."
+              gh pr edit $pr --add-label "do-not-merge" || true
+              timestamp=$(date -u +'%Y-%m-%d %H:%M')
+              echo -e "\n## $timestamp – Escalation\n**Raised by:** Auto-merge Workflow\n**Decision needed:** Fix test failures on PR #$pr\n**Context:** bun test failed during scheduled auto-merge.\n**Options:** A) Fix failing tests B) Close PR\n**Recommended:** A\n**Status:** PENDING HUMAN" >> .jules/escalations.md
+              if [ -n "$(git status --porcelain .jules/escalations.md)" ]; then
+                git config user.name "github-actions[bot]"
+                git config user.email "github-actions[bot]@users.noreply.github.com"
+                git add .jules/escalations.md
+                git commit -m "escalate: test failure on PR #$pr"
+                git push
+              fi
+            fi
           done

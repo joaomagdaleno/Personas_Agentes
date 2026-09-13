@@ -38,6 +38,7 @@ Rules:
 3. Never edit another agent's row. Only your own.
 4. Never release another agent's file lock. Only your own.
 5. If a file lock is older than 24h, you may reclaim it — log this in your journal.
+6. Merge conflicts in `state.md` must be resolved by keeping BOTH rows (never dropping another agent's entry) and adding a note to your journal.
 
 ## 3. COMMUNICATION CHANNELS
 
@@ -47,7 +48,7 @@ Agents never message each other directly. Three channels exist:
 Write here after every action. Every agent reads this before acting.
 
 ### Channel 2 – `.jules/queue.md` (direct handoff)
-When you need another agent to do something before you can proceed.
+When you need another agent to do something before you can proceed. Any handoff in `.jules/queue.md` older than 72 hours must be escalated to `.jules/escalations.md`.
 
 ### Channel 3 – `.jules/escalations.md` (human-in-the-loop)
 Only for decisions listed in §7. Never for routine work.
@@ -85,7 +86,7 @@ Release a lock:
 1. Remove your row from the table.
 2. Update your `Active work-in-progress` row to `idle`.
 
-Stale locks (> 24h): you may reclaim, but log it and mention it under `Known risks`.
+Stale locks (> 24h): automatically cleared by the auto-merge workflow before merging (and logged to `.jules/state.md` under `Known risks`). Agents may also reclaim stale locks (> 24h), logging it in their journal and mentioning it under `Known risks`.
 
 Lock granularity: file-level. Do not lock directories.
 
@@ -135,7 +136,7 @@ Times are UTC.
 04:00 Scribe (Mon) / Refactor (Wed)
 05:00 Architect (1st of month)
 06:00 Review (batch mode)
-07:00 Auto-merge (scheduled)
+08:30 Auto-merge (moved from 07:00)
 
 If an agent's schedule is missed, the next run catches up by reading `state.md`.
 If two agents run in the same window, the file lock (§5) prevents conflicts.
