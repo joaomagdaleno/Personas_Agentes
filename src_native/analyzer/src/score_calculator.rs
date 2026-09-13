@@ -113,21 +113,21 @@ pub fn calculate_score(request: ScoreRequest) -> ScoreResponse {
 }
 
 fn calc_stability(map: &HashMap<String, FileInfo>) -> (f64, f64, f64) {
-    let core_types = vec!["AGENT", "CORE", "LOGIC", "UTIL", "UNKNOWN"];
+    let core_types = ["AGENT", "CORE", "LOGIC", "UTIL", "UNKNOWN"];
     let relevant: Vec<_> = map.iter().filter(|(f, i)| 
         (core_types.contains(&i.component_type.as_str()) || i.complexity >= 1.0) &&
-        !vec!["DOC", "TEST"].contains(&i.component_type.as_str()) &&
+        !["DOC", "TEST"].contains(&i.component_type.as_str()) &&
         !f.contains("/test/") && !f.contains("__init__.py")
     ).collect();
 
     let markers: Vec<_> = map.values().filter(|i| 
-        vec!["PACKAGE_MARKER", "CONFIG"].contains(&i.component_type.as_str())
+        ["PACKAGE_MARKER", "CONFIG"].contains(&i.component_type.as_str())
     ).collect();
 
     let total = (relevant.len() + markers.len()) as f64;
     let covered: f64 = relevant.iter().map(|(_, i)| {
-        if i.has_test || i.advanced_metrics.as_ref().map_or(false, |m| m.quality_gate == "GREEN") { 1.0 }
-        else if i.advanced_metrics.as_ref().map_or(false, |m| m.quality_gate == "YELLOW") { 0.5 }
+        if i.has_test || i.advanced_metrics.as_ref().is_some_and(|m| m.quality_gate == "GREEN") { 1.0 }
+        else if i.advanced_metrics.as_ref().is_some_and(|m| m.quality_gate == "YELLOW") { 0.5 }
         else { 0.0 }
     }).sum();
 
@@ -159,7 +159,7 @@ fn calc_purity(map: &HashMap<String, FileInfo>, total: f64) -> (f64, f64) {
 }
 
 fn calc_observability(map: &HashMap<String, FileInfo>) -> (f64, f64, f64) {
-    let excluded = vec!["TEST", "PACKAGE_MARKER", "CONFIG"];
+    let excluded = ["TEST", "PACKAGE_MARKER", "CONFIG"];
     let relevant: Vec<_> = map.values().filter(|i| 
         !excluded.contains(&i.component_type.as_str()) || i.complexity > 1.0
     ).collect();
@@ -170,13 +170,13 @@ fn calc_observability(map: &HashMap<String, FileInfo>) -> (f64, f64, f64) {
 }
 
 fn calc_security(alerts: &[Alert]) -> (f64, f64) {
-    let high = alerts.iter().filter(|a| vec!["critical", "high"].contains(&a.severity.as_str())).count() as f64;
+    let high = alerts.iter().filter(|a| ["critical", "high"].contains(&a.severity.as_str())).count() as f64;
     ( (15.0 - (high * 5.0)).max(0.0), high )
 }
 
 fn calc_excellence(map: &HashMap<String, FileInfo>, total: f64) -> (f64, f64) {
     let kdoc = map.values().filter(|i| 
-        i.purpose != "UNKNOWN" || vec!["PACKAGE_MARKER", "CONFIG"].contains(&i.component_type.as_str())
+        i.purpose != "UNKNOWN" || ["PACKAGE_MARKER", "CONFIG"].contains(&i.component_type.as_str())
     ).count() as f64;
     ((kdoc / total.max(1.0)) * 10.0, kdoc)
 }

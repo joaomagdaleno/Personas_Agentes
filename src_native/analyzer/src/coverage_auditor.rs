@@ -39,7 +39,7 @@ pub fn detect_test(request: CoverageRequest) -> CoverageResponse {
 fn is_exempt_from_testing(comp_type: &str, complexity: f64) -> bool {
     let is_boilerplate = complexity <= 1.0;
     if comp_type == "DOC" || comp_type == "TEST" { return true; }
-    vec!["CONFIG", "PACKAGE_MARKER", "UTIL"].contains(&comp_type) && is_boilerplate
+    ["CONFIG", "PACKAGE_MARKER", "UTIL"].contains(&comp_type) && is_boilerplate
 }
 
 fn get_clean_stem(file_name: &str) -> String {

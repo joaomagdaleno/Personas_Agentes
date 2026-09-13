@@ -22,6 +22,12 @@ pub struct CacheManager {
     pub path: String,
 }
 
+impl Default for CacheManager {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl CacheManager {
     pub fn new() -> Self {
         let path = ".sovereign_cache.json".to_string();
@@ -44,10 +50,9 @@ impl CacheManager {
     }
 
     pub fn get_analysis(&self, file_path: &str, current_hash: &str) -> Option<Value> {
-        if let Some(entry) = self.map.entries.get(file_path) {
-            if entry.hash == current_hash {
-                return entry.analysis.clone();
-            }
+        if let Some(entry) = self.map.entries.get(file_path)
+            && entry.hash == current_hash {
+            return entry.analysis.clone();
         }
         None
     }
@@ -63,10 +68,9 @@ impl CacheManager {
     }
     
     pub fn get_fingerprint(&self, file_path: &str, current_hash: &str) -> Option<Value> {
-        if let Some(entry) = self.map.entries.get(file_path) {
-            if entry.hash == current_hash {
-                return entry.fingerprint.clone();
-            }
+        if let Some(entry) = self.map.entries.get(file_path)
+            && entry.hash == current_hash {
+            return entry.fingerprint.clone();
         }
         None
     }
