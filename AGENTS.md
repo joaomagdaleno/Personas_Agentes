@@ -23,6 +23,7 @@ Default behavior: ACT. Not asking is the norm. Asking is the exception.
 | Scribe | 📝 | Documentation | Weekly Mon 05:00 | Yes (docs only) |
 | Refactor | 🔧 | Code clarity | Weekly Wed 05:00 | Yes (no behavior change) |
 | Architect | 🏛️ | Architecture | Monthly 1st 06:00 | Never (always human) |
+| Review | 👁️ | Independent PR review | Daily 05:00 | Never (only signals) |
 
 Each agent has its own detailed prompt in `.jules/prompts/<agent>.txt`.
 This file (`AGENTS.md`) contains the rules shared by all.
@@ -67,6 +68,7 @@ Only for decisions listed in §7. Never for routine work.
    - Cascade failover order (Gemini → Hugging Face)
 7. No agent may add a new dependency without escalating to a human.
 8. No agent may merge a PR that another agent has marked `DO NOT MERGE` in `state.md`.
+9. No PR may be auto-merged until Review has emitted an APPROVE verdict in the last 24h. Review is the gate.
 
 If a rule blocks you: STOP. Do not find a workaround. Write a handoff or escalation, then exit cleanly.
 
@@ -130,6 +132,7 @@ Times are UTC.
 02:00  Spec      (daily)
 03:00  Bolt      (daily)
 04:00  Sentinel  (daily)
+05:00  Review    (daily)     — reviews yesterday's auto-merged PRs
 05:00  Scribe    (Mon only)
 05:00  Refactor  (Wed only)
 06:00  Architect (1st only)

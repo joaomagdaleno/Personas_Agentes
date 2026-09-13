@@ -7,9 +7,13 @@ This directory contains the shared state of six autonomous agents that improve t
 - `state.md` — shared blackboard (read before acting, write after acting)
 - `queue.md` — handoffs between agents
 - `escalations.md` — decisions that require a human
-- `bolt.md`, `spec.md`, `sentinel.md`, `scribe.md`, `refactor.md`, `architect.md` — each agent's private journal
+- `bolt.md`, `spec.md`, `sentinel.md`, `scribe.md`, `refactor.md`, `architect.md`, `review.md` — each agent's private journal
 - `prompts/` — the prompt for each Scheduled Task (copy into the Jules dashboard)
 - `rounds/` — weekly summaries
+
+## Agents
+
+- Review 👁️ – independent PR review (never merges, only signals)
 
 ## How it works
 
