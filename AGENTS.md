@@ -23,7 +23,7 @@ Default behavior: ACT. Not asking is the norm. Asking is the exception.
 | Scribe | 📝 | Documentation | Weekly Mon 05:00 | Yes (docs only) |
 | Refactor | 🔧 | Code clarity | Weekly Wed 05:00 | Yes (no behavior change) |
 | Architect | 🏛️ | Architecture | Monthly 1st 06:00 | Never (always human) |
-| Review | 👁️ | Independent PR review | Daily 05:00 | Never (only signals) |
+| Review | 👁️ | Independent PR review | Daily 06:00 | Never (only signals) |
 
 Each agent has its own detailed prompt in `.jules/prompts/<agent>.txt`.
 This file (`AGENTS.md`) contains the rules shared by all.
@@ -129,13 +129,13 @@ Everything else: act autonomously.
 
 Times are UTC.
 
-02:00  Spec      (daily)
-03:00  Bolt      (daily)
-04:00  Sentinel  (daily)
-05:00  Review    (daily)     — reviews yesterday's auto-merged PRs
-05:00  Scribe    (Mon only)
-05:00  Refactor  (Wed only)
-06:00  Architect (1st only)
+01:00 Spec
+02:00 Bolt
+03:00 Sentinel
+04:00 Scribe (Mon) / Refactor (Wed)
+05:00 Architect (1st of month)
+06:00 Review (batch mode)
+07:00 Auto-merge (scheduled)
 
 If an agent's schedule is missed, the next run catches up by reading `state.md`.
 If two agents run in the same window, the file lock (§5) prevents conflicts.

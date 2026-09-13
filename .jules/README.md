@@ -29,15 +29,13 @@ The repo currently has 186 passing tests. They are the safety net for every agen
 
 ## Setup (one-time, in the Jules dashboard)
 
-1. Create 6 Scheduled Tasks (one per agent) with the prompts from `.jules/prompts/`.
+1. Create Scheduled Tasks for the agents with the prompts from `.jules/prompts/`.
 2. Set the times per `AGENTS.md` §8.
 3. Add secret `JULES_API_KEY` in GitHub → Settings → Secrets → Actions.
 4. Verify the workflows in `.github/workflows/` are enabled.
 
-## How to dispatch an issue to Jules
+## How auto-merge and review work
 
-1. Open an issue describing the task.
-2. Add the label `jules`.
-3. The workflow `.github/workflows/jules-on-issue.yml` fires and sends the issue to a Jules session.
-4. Jules reads `AGENTS.md` and routes to the right agent.
-5. A PR appears (auto-merged if it meets §6).
+1. Agents produce PRs throughout the day and label eligible ones `auto-merged`.
+2. At 06:00 UTC, the **Review agent** inspects all open PRs labeled `auto-merged` in batch mode, verifying them against `AGENTS.md` §6.
+3. At 07:00 UTC, the scheduled auto-merge workflow (`.github/workflows/auto-merge-agent-prs.yml`) runs tests on each remaining `auto-merged` PR, approves, and squash-merges it.
