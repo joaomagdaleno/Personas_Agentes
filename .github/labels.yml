@@ -1,0 +1,12 @@
+- name: auto-merged
+  description: PR is safe to auto-merge per AGENTS.md §6
+  color: "0E8A16"
+- name: jules
+  description: Dispatch to Jules agent
+  color: "1D76DB"
+- name: do-not-merge
+  description: Blocked by an agent conflict
+  color: "B60205"
+- name: escalation
+  description: Requires human decision
+  color: "D93F0B"
