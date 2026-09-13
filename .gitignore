@@ -11,6 +11,9 @@ node_modules/
 !task.md
 !docs/*.md
 !models/README.md
+!AGENTS.md
+!.jules/**/*.md
+!.jules/**/*.txt
 dist/
 dist-installer/
 build/
