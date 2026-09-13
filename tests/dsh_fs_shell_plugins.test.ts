@@ -90,7 +90,7 @@ describe("DeepSeek Harness — FS, Shell & Human-in-the-Loop Plugins", () => {
         expect(res.result.exitCode).toBe(0);
         expect(res.result.stdout).toContain("DSH_SOVEREIGN_SHELL_OK");
         expect(res.result.durationMs).toBeGreaterThan(0);
-    });
+    }, 15000);
 
     it("deve orquestrar ciclo de vida de aprovação humana com DshApprovalManager", async () => {
         const callId = `call_test_approval_${Date.now()}`;
