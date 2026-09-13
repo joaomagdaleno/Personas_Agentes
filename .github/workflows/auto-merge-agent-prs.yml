@@ -2,8 +2,8 @@ name: "Auto-merge agent PRs (Scheduled)"
 
 on:
   schedule:
-    # Runs daily at 08:30 UTC, providing a 2h30 buffer after Review agent completes at 06:00 UTC
-    - cron: '30 8 * * *'
+    # Runs daily at 23:00 UTC, providing a 5h buffer after Review agent completes at 18:00 UTC
+    - cron: '0 23 * * *'
   workflow_dispatch:
 
 permissions:
