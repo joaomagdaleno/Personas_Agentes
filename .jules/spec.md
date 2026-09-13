@@ -1,4 +1,7 @@
-# Spec's Quality Journal
+# Spec's Journal
+
+Critical learnings only.
+Format: ## YYYY-MM-DD - [Title] / **Learning:** ... / **Action:** ...
 
 ## 2026-09-10 - Default Models Registration Parity in PsaLLMService & /v1/models
 **Learning:** `PsaLLMService` model registration is the single source of truth for available SLM models across both the engine and HTTP/SSE endpoints (`/v1/models`). Missing model definitions like `qwen2.5-coder-7b` in `registerDefaultModels()` cause model lookups and E2E list checks to fail.
