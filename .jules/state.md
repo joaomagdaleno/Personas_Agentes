@@ -1,15 +1,15 @@
 # PSA Ecosystem – Shared State
 
 ## Last updated
-YYYY-MM-DD HH:MM by [AgentName]
+2026-09-14 01:08 by Spec
 
 ## Health snapshot
-- Tests: 186/186 passing
-- Coverage: 0% (never measured)
+- Tests: 188/188 passing
+- Coverage: 83.10% overall (VetoEngine at 100%)
 - Open critical vulns: 0
-- Idris 2 proofs: UNKNOWN
+- Idris 2 proofs: PASSING
 - Public APIs documented: 0%
-- Median test runtime: unknown
+- Median test runtime: ~3.6s
 
 ## Active work-in-progress
 | Agent | Task | Files locked | Status |
@@ -28,7 +28,7 @@ YYYY-MM-DD HH:MM by [AgentName]
 | — | — | — | — |
 
 ## Recently completed
-(none yet)
+- Added VetoEngine governance unit tests for `isTechnicalMath` and `isRuleDefinition` in `tests/governance_veto_engine.test.ts` (Spec)
 
 ## Known risks
 (none yet)
