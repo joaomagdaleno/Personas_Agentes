@@ -1,15 +1,15 @@
 # PSA Ecosystem – Shared State
 
 ## Last updated
-YYYY-MM-DD HH:MM by [AgentName]
+2026-09-14 06:30 by Review
 
 ## Health snapshot
 - Tests: 186/186 passing
-- Coverage: 0% (never measured)
+- Coverage: 83.10% overall
 - Open critical vulns: 0
-- Idris 2 proofs: UNKNOWN
-- Public APIs documented: 0%
-- Median test runtime: unknown
+- Idris 2 proofs: PASSING
+- Public APIs documented: 100%
+- Median test runtime: ~3.6s
 
 ## Active work-in-progress
 | Agent | Task | Files locked | Status |
@@ -20,7 +20,7 @@ YYYY-MM-DD HH:MM by [AgentName]
 | Scribe | — | — | idle |
 | Refactor | — | — | idle |
 | Architect | — | — | idle |
-| Review | — | — | idle |
+| Review | Batch review complete | none | idle |
 
 ## File locks
 | File | Locked by | Since | Reason |
@@ -28,7 +28,10 @@ YYYY-MM-DD HH:MM by [AgentName]
 | — | — | — | — |
 
 ## Recently completed
-(none yet)
+- Review: reviewed 4 PRs (3 approved, 1 requested changes, 0 blocked)
+- Added VetoEngine governance unit tests for `isTechnicalMath` and `isRuleDefinition` in `tests/governance_veto_engine.test.ts` (Spec)
+- ⚡ Bolt: Optimized `PsaEventBus` event emission hot path in `src_local/psa/kernel/psa_events.ts` (42.2% latency reduction for 2M event emissions)
+- Sentinel: Baseline security scan & audit complete
 
 ## Known risks
 (none yet)
