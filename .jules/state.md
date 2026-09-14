@@ -28,7 +28,7 @@ YYYY-MM-DD HH:MM by [AgentName]
 | — | — | — | — |
 
 ## Recently completed
-(none yet)
+- ⚡ Bolt: Optimized `PsaEventBus` event emission hot path in `src_local/psa/kernel/psa_events.ts` (42.2% latency reduction for 2M event emissions).
 
 ## Known risks
 (none yet)
