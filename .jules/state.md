@@ -1,15 +1,15 @@
 # PSA Ecosystem – Shared State
 
 ## Last updated
-2026-09-13 20:10 UTC by Review
+2026-09-15 04:25 UTC by Bolt
 
 ## Health snapshot
 - Tests: 186/186 passing
-- Coverage: 0% (never measured)
+- Coverage: 81.25% (PsaEventBus)
 - Open critical vulns: 0
-- Idris 2 proofs: UNKNOWN
-- Public APIs documented: 0%
-- Median test runtime: unknown
+- Idris 2 proofs: PASSING
+- Public APIs documented: 100%
+- Median test runtime: ~3.5s
 
 ## Active work-in-progress
 | Agent | Task | Files locked | Status |
