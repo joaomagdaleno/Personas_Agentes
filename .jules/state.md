@@ -4,8 +4,8 @@
 YYYY-MM-DD HH:MM by [AgentName]
 
 ## Health snapshot
-- Tests: 186/186 passing
-- Coverage: 0% (never measured)
+- Tests: 191/191 passing
+- Coverage: 82.93% lines
 - Open critical vulns: 0
 - Idris 2 proofs: UNKNOWN
 - Public APIs documented: 0%
@@ -28,7 +28,7 @@ YYYY-MM-DD HH:MM by [AgentName]
 | — | — | — | — |
 
 ## Recently completed
-(none yet)
+- 2026-09-15: Spec expanded VetoEngine unit tests (tests/governance_veto_engine.test.ts), line coverage 42.86% → 100%. All 191 tests passing.
 
 ## Known risks
 (none yet)
