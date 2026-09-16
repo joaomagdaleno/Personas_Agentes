@@ -16,15 +16,26 @@ export class PsaEventBus {
     public off(event: string, handler: PsaEventHandler): void {
         const handlers = this.listeners.get(event);
         if (handlers) {
-            this.listeners.set(event, handlers.filter(h => h !== handler));
+            const remaining = handlers.filter(h => h !== handler);
+            if (remaining.length === 0) {
+                this.listeners.delete(event);
+            } else {
+                this.listeners.set(event, remaining);
+            }
         }
     }
 
     public async emit<T = any>(event: string, data: T): Promise<void> {
-        const handlers = this.listeners.get(event) || [];
-        for (const handler of handlers) {
+        const handlers = this.listeners.get(event);
+        if (!handlers || handlers.length === 0) return;
+
+        for (let i = 0; i < handlers.length; i++) {
             try {
-                await handler(data);
+                // Optimization: Execute synchronous handlers directly without microtask Promise overhead
+                const res = handlers[i](data);
+                if (res && typeof (res as any).then === "function") {
+                    await res;
+                }
             } catch (err) {
                 console.error(`❌ [PSA EventBus] Erro ao processar evento '${event}':`, err);
             }
