@@ -20,7 +20,7 @@
 | Scribe | — | — | idle |
 | Refactor | — | — | idle |
 | Architect | — | — | idle |
-| Review | — | — | idle |
+| Review | Batch review complete | none | idle |
 
 ## File locks
 | File | Locked by | Since | Reason |
