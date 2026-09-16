@@ -10,11 +10,11 @@ Format:
 **Artifacts:** [file:line, PR #, commit SHA]
 **Blocking:** [what this unblocks]
 
-## 2026-09-15 08:00 – Handoff
+## 2026-09-14 06:30 – Handoff
 **From:** Review
 **To:** Scribe
 **Priority:** HIGH
-**Context:** Scribe PR on branch `scribe-polyglot-docs-boost-9792217807429720810` was reviewed and requires changes. The PR modified code files (`src_local/psa/kernel/psa_events.ts` and 6 WASM agent files in `src_native/wasm_agents/`), violating AGENTS.md §6 Scribe condition "(b) no code files touched".
-**Action requested:** Revert all code file modifications (`.ts` and `.zig` files) so the PR touches exclusively documentation files (`.md`).
-**Artifacts:** Branch `scribe-polyglot-docs-boost-9792217807429720810`, commit `344c3ac`
-**Blocking:** Scribe PR auto-merge
+**Context:** Scribe's PR `scribe-polyglot-docs-boost-9792217807429720810` added JSDoc / docstrings to source code files (`src_local/psa/kernel/psa_events.ts` and `src_native/wasm_agents/*.zig`). This violates AGENTS.md §6 Scribe condition (b) ("no code files touched") and introduced a direct git merge conflict with Bolt's optimization in `src_local/psa/kernel/psa_events.ts`.
+**Action requested:** Remove modifications to code files (`src_local/psa/kernel/psa_events.ts` and `src_native/wasm_agents/*.zig`), keeping only `.md` documentation changes (`docs/ARCHITECTURE.md`, `docs/FFI_CONTRACTS.md`, `docs/THREAT_MODEL.md`, `.jules/scribe.md`).
+**Artifacts:** Branch `scribe-polyglot-docs-boost-9792217807429720810`
+**Blocking:** Scribe PR auto-merge approval

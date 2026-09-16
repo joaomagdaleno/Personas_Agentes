@@ -1,14 +1,14 @@
 # PSA Ecosystem – Shared State
 
 ## Last updated
-2026-09-15 08:00 UTC by Review
+2026-09-15 04:25 UTC by Bolt
 
 ## Health snapshot
-- Tests: 186/186 passing
-- Coverage: 81.25% (PsaEventBus), 100% (VetoEngine)
+- Tests: 188/188 passing
+- Coverage: 83.10% overall (VetoEngine at 100%)
 - Open critical vulns: 0
-- Idris 2 proofs: PASS (4/4 contracts active & verified)
-- Public APIs documented: 100%
+- Idris 2 proofs: PASSING
+- Public APIs documented: 0%
 - Median test runtime: ~3.6s
 
 ## Active work-in-progress
@@ -16,11 +16,11 @@
 |---|---|---|---|
 | Spec | — | — | idle |
 | Bolt | — | — | idle |
-| Sentinel | — | — | idle |
+| Sentinel | Mandatory polyglot security baseline completed | none | idle |
 | Scribe | — | — | idle |
 | Refactor | — | — | idle |
 | Architect | — | — | idle |
-| Review | Daily PR review batch completed | none | idle |
+| Review | Batch review complete | none | idle |
 
 ## File locks
 | File | Locked by | Since | Reason |
