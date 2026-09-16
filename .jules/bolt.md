@@ -1,8 +1,5 @@
 # Bolt's Journal
 
-Critical learnings only.
-Format: ## YYYY-MM-DD - [Title] / **Learning:** ... / **Action:** ...
-
-## 2026-09-15 - EventBus Synchronous Fast-Path & Map Memory Pruning
-**Learning:** In TypeScript/Bun event buses, always using `await handler(data)` inside a `for..of` loop forces JS runtime microtask queue scheduling and Promise allocation even when event handlers execute completely synchronously. By executing handlers directly and only awaiting thenable promises (`res !== undefined && typeof res?.then === 'function'`), emit latency dropped from 411.53ms to 87.67ms for 500k ops (78.7% reduction). Additionally, deleting empty listener arrays in `off()` prevents Map key accumulation over long session lifecycles.
-**Action:** Apply synchronous fast-path checking for high-frequency internal event buses and hook dispatchers across the micro-kernel stack, and ensure Map listener cleanups purge empty keys.
+## 2026-09-14 - EventBus Synchronous Handler Fast-Path & Handler Map Cleanup
+**Learning:** `PsaEventBus.emit()` previously always initialized an empty array fallback `this.listeners.get(event) || []` and looped over handlers using `await handler(data)`. In Bun/JS, using `await` on every element forces microtask queue scheduling even when handlers return `void` or synchronous values. By adding an early return for unhandled events (`if (!handlers || handlers.length === 0) return;`) and inspecting synchronous execution results before awaiting thenables, emission latency drops dramatically. Furthermore, deleting empty arrays from `this.listeners` in `off()` prevents Map size bloat over time.
+**Action:** When working on EventBus or hot loop event dispatchers in TypeScript/Bun, prefer checking `res && typeof res.then === "function"` before `await`ing to avoid microtask tick overhead for synchronous event handlers.

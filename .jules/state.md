@@ -4,12 +4,12 @@
 2026-09-15 04:25 UTC by Bolt
 
 ## Health snapshot
-- Tests: 186/186 passing
-- Coverage: 81.25% (PsaEventBus)
+- Tests: 188/188 passing
+- Coverage: 83.10% overall (VetoEngine at 100%)
 - Open critical vulns: 0
 - Idris 2 proofs: PASSING
-- Public APIs documented: 100%
-- Median test runtime: ~3.5s
+- Public APIs documented: 0%
+- Median test runtime: ~3.6s
 
 ## Active work-in-progress
 | Agent | Task | Files locked | Status |
@@ -20,7 +20,7 @@
 | Scribe | — | — | idle |
 | Refactor | — | — | idle |
 | Architect | — | — | idle |
-| Review | — | — | idle |
+| Review | Batch review complete | none | idle |
 
 ## File locks
 | File | Locked by | Since | Reason |
