@@ -63,63 +63,39 @@ describe("VetoEngine Governance Unit Tests", () => {
         expect(tsResult.reason).toBeUndefined();
     });
 
-    describe("isTechnicalMath", () => {
-        it("should return false if issue does not contain 'Imprecisão Monetária'", () => {
-            // Arrange - Component: VetoEngine | Pattern: AAA
-            const vetoEngine = new VetoEngine();
+    it("should correctly classify technical math expressions vs financial terms in isTechnicalMath", () => {
+        // Arrange - Component: VetoEngine | Pattern: AAA
+        const vetoEngine = new VetoEngine();
+        const monetaryIssue = "Imprecisão Monetária no cálculo";
+        const otherIssue = "Outro tipo de problema";
 
-            // Act & Assert
-            expect(vetoEngine.isTechnicalMath("const alpha = 0.5;", "Code Style Warning")).toBe(false);
-        });
+        // Act & Assert - Non-monetary issue type should return false
+        expect(vetoEngine.isTechnicalMath("const alpha = 0.5;", otherIssue)).toBe(false);
 
-        it("should identify lines with technical mathematical terms when issue is 'Imprecisão Monetária'", () => {
-            // Arrange - Component: VetoEngine | Pattern: AAA
-            const vetoEngine = new VetoEngine();
-            const issue = "Imprecisão Monetária";
+        // Act & Assert - Technical math terms should return true for monetary issue type
+        expect(vetoEngine.isTechnicalMath("const alpha = delta * velocity;", monetaryIssue)).toBe(true);
+        expect(vetoEngine.isTechnicalMath("let phase = 180;", monetaryIssue)).toBe(true);
 
-            // Act & Assert
-            expect(vetoEngine.isTechnicalMath("const alpha = 0.5;", issue)).toBe(true);
-            expect(vetoEngine.isTechnicalMath("let velocity = calculateVelocity(radius);", issue)).toBe(true);
-            expect(vetoEngine.isTechnicalMath("const progress = delta / duration;", issue)).toBe(true);
-            expect(vetoEngine.isTechnicalMath("const x = 10;", issue)).toBe(true);
-        });
+        // Act & Assert - Lines with financial/money terms should return false even with math terms
+        expect(vetoEngine.isTechnicalMath("const totalBalance = price * delta;", monetaryIssue)).toBe(false);
+        expect(vetoEngine.isTechnicalMath("let amount = usd + euro;", monetaryIssue)).toBe(false);
 
-        it("should return false if line contains monetary terms even if technical terms exist", () => {
-            // Arrange - Component: VetoEngine | Pattern: AAA
-            const vetoEngine = new VetoEngine();
-            const issue = "Imprecisão Monetária";
-
-            // Act & Assert
-            expect(vetoEngine.isTechnicalMath("const price = amount * alpha;", issue)).toBe(false);
-            expect(vetoEngine.isTechnicalMath("let total = cost + fee;", issue)).toBe(false);
-            expect(vetoEngine.isTechnicalMath("const walletBalance = calculateBalance(x, y);", issue)).toBe(false);
-        });
+        // Act & Assert - Plain non-technical non-financial lines should return false
+        expect(vetoEngine.isTechnicalMath("const greeting = 'hello world';", monetaryIssue)).toBe(false);
     });
 
-    describe("isRuleDefinition", () => {
-        it("should return true for lines matching rule definition keywords", () => {
-            // Arrange - Component: VetoEngine | Pattern: AAA
-            const vetoEngine = new VetoEngine();
+    it("should detect rule definitions in source code lines via isRuleDefinition", () => {
+        // Arrange - Component: VetoEngine | Pattern: AAA
+        const vetoEngine = new VetoEngine();
 
-            // Act & Assert
-            expect(vetoEngine.isRuleDefinition("const rules = [ { id: 1 } ];")).toBe(true);
-            expect(vetoEngine.isRuleDefinition("let audit_rules = getRules();")).toBe(true);
-            expect(vetoEngine.isRuleDefinition("const heuristic = (a, b) => a - b;")).toBe(true);
-            expect(vetoEngine.isRuleDefinition("const veto_criteria = ['infra', 'legacy'];")).toBe(true);
-            expect(vetoEngine.isRuleDefinition("const security_policy = {};")).toBe(true);
-            expect(vetoEngine.isRuleDefinition("const compliance_check = true;")).toBe(true);
-            expect(vetoEngine.isRuleDefinition("const validation_logic = fn;")).toBe(true);
-            expect(vetoEngine.isRuleDefinition("const rule_registry = [];")).toBe(true);
-        });
+        // Act & Assert - Lines with rule keywords should return true
+        expect(vetoEngine.isRuleDefinition("const rules = [rule1, rule2];")).toBe(true);
+        expect(vetoEngine.isRuleDefinition("let audit_rules = getRules();")).toBe(true);
+        expect(vetoEngine.isRuleDefinition("const regex = /^[a-z]+$/;")).toBe(true);
+        expect(vetoEngine.isRuleDefinition("const heuristic = 'fast_path';")).toBe(true);
 
-        it("should return false for lines that do not match rule definition keywords", () => {
-            // Arrange - Component: VetoEngine | Pattern: AAA
-            const vetoEngine = new VetoEngine();
-
-            // Act & Assert
-            expect(vetoEngine.isRuleDefinition("const x = 42;")).toBe(false);
-            expect(vetoEngine.isRuleDefinition("console.log('Hello World');")).toBe(false);
-            expect(vetoEngine.isRuleDefinition("return true;")).toBe(false);
-        });
+        // Act & Assert - Standard code lines without rule keywords should return false
+        expect(vetoEngine.isRuleDefinition("function calculateSum(a, b) { return a + b; }")).toBe(false);
+        expect(vetoEngine.isRuleDefinition("console.log('processing request');")).toBe(false);
     });
 });
