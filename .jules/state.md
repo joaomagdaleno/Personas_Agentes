@@ -16,7 +16,7 @@
 |---|---|---|---|
 | Spec | — | — | idle |
 | Bolt | — | — | idle |
-| Sentinel | Baseline security scan & audit complete | none | idle |
+| Sentinel | PsaEventBus map cleanup security enhancement | none | idle |
 | Scribe | — | — | idle |
 | Refactor | — | — | idle |
 | Architect | — | — | idle |

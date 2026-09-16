@@ -16,7 +16,12 @@ export class PsaEventBus {
     public off(event: string, handler: PsaEventHandler): void {
         const handlers = this.listeners.get(event);
         if (handlers) {
-            this.listeners.set(event, handlers.filter(h => h !== handler));
+            const filtered = handlers.filter(h => h !== handler);
+            if (filtered.length === 0) {
+                this.listeners.delete(event);
+            } else {
+                this.listeners.set(event, filtered);
+            }
         }
     }
 
