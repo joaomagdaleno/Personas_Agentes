@@ -28,7 +28,10 @@
 | — | — | — | — |
 
 ## Recently completed
-- Review: reviewed 0 PRs (0 approved, 0 requested changes, 0 blocked)
+- 2026-09-15: Review completed batch review of 4 open PRs (3 approved: Spec, Bolt, Sentinel; 1 requested changes: Scribe).
+- 2026-09-15: Sentinel verified polyglot baseline security audit (0 critical vulnerabilities).
+- 2026-09-15: Bolt optimized PsaEventBus synchronous emission fast-path and listener pruning.
+- 2026-09-15: Spec expanded VetoEngine unit tests to 100% coverage.
 
 ## Known risks
 (none yet)
