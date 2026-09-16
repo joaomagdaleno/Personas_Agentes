@@ -21,11 +21,13 @@ export class PsaEventBus {
      * @returns An unsubscribe function that removes the listener.
      */
     public on<T = any>(event: string, handler: PsaEventHandler<T>): () => void {
-        if (!this.listeners.has(event)) {
-            this.listeners.set(event, []);
+        let handlers = this.listeners.get(event);
+        if (!handlers) {
+            handlers = [];
+            this.listeners.set(event, handlers);
         }
-        this.listeners.get(event)!.push(handler);
-        return () => this.off(event, handler);
+        handlers.push(handler as PsaEventHandler);
+        return () => this.off(event, handler as PsaEventHandler);
     }
 
     /**
@@ -68,10 +70,12 @@ export class PsaEventBus {
      * Registers a waterfall middleware hook for intercepted operations.
      */
     public waterfall<T = any, R = any>(hookName: string, hook: PsaWaterfallHook<T, R>): void {
-        if (!this.waterfalls.has(hookName)) {
-            this.waterfalls.set(hookName, []);
+        let hooks = this.waterfalls.get(hookName);
+        if (!hooks) {
+            hooks = [];
+            this.waterfalls.set(hookName, hooks);
         }
-        this.waterfalls.get(hookName)!.push(hook);
+        hooks.push(hook);
     }
 
     /**
@@ -79,8 +83,11 @@ export class PsaEventBus {
      */
     public async runWaterfall<T = any, R = any>(hookName: string, initialPayload: T, finalHandler: (payload: T) => Promise<R>): Promise<R> {
         const hooks = this.waterfalls.get(hookName) || [];
-        let index = 0;
+        if (hooks.length === 0) {
+            return await finalHandler(initialPayload);
+        }
 
+        let index = 0;
         const dispatch = async (currentPayload: T): Promise<R> => {
             if (index < hooks.length) {
                 const currentHook = hooks[index++];
