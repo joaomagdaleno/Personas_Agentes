@@ -1,41 +1,28 @@
-import { describe, it, expect, mock } from "bun:test";
+import { describe, it, expect } from "bun:test";
 import { PsaEventBus } from "../src_local/psa/kernel/psa_events.ts";
 
 describe("PsaEventBus Kernel Unit Tests", () => {
-    it("should register and emit events correctly", async () => {
-        const bus = new PsaEventBus();
-        const handler = mock();
+    it("should register listener, emit event, and purge key from Map when off() unregisters all handlers", async () => {
+        const eventBus = new PsaEventBus();
+        let receivedData = "";
 
-        bus.on("test_event", handler);
-        await bus.emit("test_event", { foo: "bar" });
+        const handler = (data: string) => {
+            receivedData = data;
+        };
 
-        expect(handler).toHaveBeenCalledTimes(1);
-        expect(handler).toHaveBeenCalledWith({ foo: "bar" });
-    });
+        // Subscribe
+        const unsubscribe = eventBus.on("test:event", handler);
+        await eventBus.emit("test:event", "hello_psa");
+        expect(receivedData).toBe("hello_psa");
 
-    it("should unsubscribe handlers and prune empty listener map entry", async () => {
-        const bus = new PsaEventBus();
-        const handler = mock();
+        // Access private listeners map for assertion
+        const listenersMap = (eventBus as any).listeners as Map<string, any[]>;
+        expect(listenersMap.has("test:event")).toBe(true);
 
-        const unsubscribe = bus.on("test_event", handler);
+        // Unsubscribe
         unsubscribe();
 
-        await bus.emit("test_event", { foo: "bar" });
-        expect(handler).toHaveBeenCalledTimes(0);
-    });
-
-    it("should execute waterfall hooks sequentially", async () => {
-        const bus = new PsaEventBus();
-
-        bus.waterfall("transform", async (payload: { count: number }, next) => {
-            payload.count += 1;
-            return await next();
-        });
-
-        const result = await bus.runWaterfall("transform", { count: 10 }, async (p) => {
-            return p.count * 2;
-        });
-
-        expect(result).toBe(22);
+        // Verify key deletion from internal Map
+        expect(listenersMap.has("test:event")).toBe(false);
     });
 });

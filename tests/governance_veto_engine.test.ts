@@ -62,4 +62,40 @@ describe("VetoEngine Governance Unit Tests", () => {
         expect(tsResult.veto).toBe(false);
         expect(tsResult.reason).toBeUndefined();
     });
+
+    it("should correctly classify technical math expressions vs financial terms in isTechnicalMath", () => {
+        // Arrange - Component: VetoEngine | Pattern: AAA
+        const vetoEngine = new VetoEngine();
+        const monetaryIssue = "Imprecisão Monetária no cálculo";
+        const otherIssue = "Outro tipo de problema";
+
+        // Act & Assert - Non-monetary issue type should return false
+        expect(vetoEngine.isTechnicalMath("const alpha = 0.5;", otherIssue)).toBe(false);
+
+        // Act & Assert - Technical math terms should return true for monetary issue type
+        expect(vetoEngine.isTechnicalMath("const alpha = delta * velocity;", monetaryIssue)).toBe(true);
+        expect(vetoEngine.isTechnicalMath("let phase = 180;", monetaryIssue)).toBe(true);
+
+        // Act & Assert - Lines with financial/money terms should return false even with math terms
+        expect(vetoEngine.isTechnicalMath("const totalBalance = price * delta;", monetaryIssue)).toBe(false);
+        expect(vetoEngine.isTechnicalMath("let amount = usd + euro;", monetaryIssue)).toBe(false);
+
+        // Act & Assert - Plain non-technical non-financial lines should return false
+        expect(vetoEngine.isTechnicalMath("const greeting = 'hello world';", monetaryIssue)).toBe(false);
+    });
+
+    it("should detect rule definitions in source code lines via isRuleDefinition", () => {
+        // Arrange - Component: VetoEngine | Pattern: AAA
+        const vetoEngine = new VetoEngine();
+
+        // Act & Assert - Lines with rule keywords should return true
+        expect(vetoEngine.isRuleDefinition("const rules = [rule1, rule2];")).toBe(true);
+        expect(vetoEngine.isRuleDefinition("let audit_rules = getRules();")).toBe(true);
+        expect(vetoEngine.isRuleDefinition("const regex = /^[a-z]+$/;")).toBe(true);
+        expect(vetoEngine.isRuleDefinition("const heuristic = 'fast_path';")).toBe(true);
+
+        // Act & Assert - Standard code lines without rule keywords should return false
+        expect(vetoEngine.isRuleDefinition("function calculateSum(a, b) { return a + b; }")).toBe(false);
+        expect(vetoEngine.isRuleDefinition("console.log('processing request');")).toBe(false);
+    });
 });
