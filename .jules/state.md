@@ -20,7 +20,6 @@
 | Scribe | — | — | idle |
 | Refactor | — | — | idle |
 | Architect | — | — | idle |
-| Review | — | — | idle |
 
 ## File locks
 | File | Locked by | Since | Reason |
