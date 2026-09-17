@@ -16,7 +16,7 @@
 |---|---|---|---|
 | Spec | — | — | idle |
 | Bolt | — | — | idle |
-| Sentinel | Mandatory polyglot security baseline completed | none | idle |
+| Sentinel | Polyglot security baseline audit & test suite verification completed | none | idle |
 | Scribe | — | — | idle |
 | Refactor | — | — | idle |
 | Architect | — | — | idle |
