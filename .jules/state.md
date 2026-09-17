@@ -14,7 +14,7 @@
 ## Active work-in-progress
 | Agent | Task | Files locked | Status |
 |---|---|---|---|
-| Spec | — | — | idle |
+| Spec | Added GoHubPlugin unit test suite (100% coverage) | tests/go_hub_plugin.test.ts | idle |
 | Bolt | — | — | idle |
 | Sentinel | Mandatory polyglot security baseline completed | none | idle |
 | Scribe | — | — | idle |
@@ -31,6 +31,7 @@
 - 2026-09-15: Review completed batch review of 4 open PRs (3 approved: Spec, Bolt, Sentinel; 1 requested changes: Scribe).
 - 2026-09-15: Sentinel verified polyglot baseline security audit (0 critical vulnerabilities).
 - 2026-09-15: Bolt optimized PsaEventBus synchronous emission fast-path and listener pruning.
+- 2026-09-17: Spec expanded GoHubPlugin unit tests to 100% line coverage (tests/go_hub_plugin.test.ts).
 - 2026-09-15: Spec expanded VetoEngine unit tests to 100% coverage.
 
 ## Known risks
