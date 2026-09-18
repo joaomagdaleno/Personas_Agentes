@@ -4,8 +4,8 @@
 2026-09-15 04:25 UTC by Bolt
 
 ## Health snapshot
-- Tests: 188/188 passing
-- Coverage: 83.10% overall (VetoEngine at 100%)
+- Tests: 194/194 passing
+- Coverage: 83.42% overall (GoHubPlugin at 100%)
 - Open critical vulns: 0
 - Idris 2 proofs: PASSING
 - Public APIs documented: 0%
@@ -28,6 +28,7 @@
 | — | — | — | — |
 
 ## Recently completed
+- 2026-09-18: Spec added unit test suite for GoHubPlugin (`tests/go_hub_plugin.test.ts`), boosting `src_local/psa/plugins/native/go_hub_plugin.ts` line coverage from 49.06% to 100% (194 tests passing).
 - 2026-09-15: Review completed batch review of 4 open PRs (3 approved: Spec, Bolt, Sentinel; 1 requested changes: Scribe).
 - 2026-09-15: Sentinel verified polyglot baseline security audit (0 critical vulnerabilities).
 - 2026-09-15: Bolt optimized PsaEventBus synchronous emission fast-path and listener pruning.
