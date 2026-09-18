@@ -10,6 +10,15 @@ Format:
 **Artifacts:** [file:line, PR #, commit SHA]
 **Blocking:** [what this unblocks]
 
+## 2026-09-15 07:25 – Handoff
+**From:** Sentinel
+**To:** Spec
+**Priority:** HIGH
+**Context:** Vulnerability found in `src_local/psa/plugins/core/sqlite_storage_plugin.ts:133`. `querySql` validates read-only intent via `.startsWith("select")`, `.startsWith("pragma")`, or `.startsWith("with")`. However, SQLite permits stacked statements separated by semicolons (e.g. `SELECT 1; DELETE FROM sessions;`), enabling SQL command injection / modification (CWE-89).
+**Action requested:** Write a reproducing unit test in `tests/psa_expanded_suite.test.ts` or a new test file that attempts executing stacked/multi-statement SQL queries via `session_query_sql` or `SqliteStoragePlugin.querySql` and expects it to fail / reject non-read statements.
+**Artifacts:** `src_local/psa/plugins/core/sqlite_storage_plugin.ts:133`, CWE-89
+**Blocking:** Sentinel's patch for `SqliteStoragePlugin`
+
 ## 2026-09-14 06:30 – Handoff
 **From:** Review
 **To:** Scribe
