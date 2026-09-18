@@ -3,6 +3,11 @@
 Critical learnings only.
 Format: ## YYYY-MM-DD - [Title] / **Learning:** ... / **Action:** ...
 
+## 2026-09-15 - Stacked SQL Statement Inspection & Mandatory Spec Handoff
+**Vulnerability:** `SqliteStoragePlugin.querySql` inspected SQL queries using simple string prefix matching (`sql.startsWith("select")`) to enforce read-only access. However, SQLite and Bun:SQLite drivers allow stacked multi-statement execution separated by semicolons (e.g., `SELECT 1; DROP TABLE sessions;`), potentially allowing SQL command execution and state corruption (CWE-89).
+**Learning:** Per AGENTS.md §4.3, fixing security vulnerabilities in non-test source code strictly requires requesting a reproducing test from Spec first before applying any patch.
+**Prevention:** Queue high-priority handoffs to Spec for reproducing tests on non-test security findings before patching, and validate SQL query ASTs / forbidden syntax tokens (such as stacked `;` delimiters in analytical query bridges). Also queue Spec handoffs for process stdio handle isolation (`shell_plugin.ts`) rather than modifying code files directly without prior tests.
+
 ## 2026-09-15 - Polyglot Security Baseline Audit Verification
 **Vulnerability:** Comprehensive multi-layer security scan verified zero active critical vulnerabilities in gRPC/mTLS, WASM sandbox isolation, SQLite parameterized queries, or Idris 2 formal proofs.
 **Learning:** Resolving missing node dependencies (`bun install winston`) restored full test suite execution (186/186 tests passing). Go gRPC hub (`go vet`) passed without findings, while Rust analyzer (`cargo clippy`) highlighted style cleanup items.

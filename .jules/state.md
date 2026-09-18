@@ -1,10 +1,10 @@
 # PSA Ecosystem – Shared State
 
 ## Last updated
-2026-09-15 04:25 UTC by Bolt
+2026-09-15 07:25 UTC by Sentinel
 
 ## Health snapshot
-- Tests: 188/188 passing
+- Tests: 189/189 passing
 - Coverage: 83.10% overall (VetoEngine at 100%)
 - Open critical vulns: 0
 - Idris 2 proofs: PASSING
@@ -16,7 +16,7 @@
 |---|---|---|---|
 | Spec | — | — | idle |
 | Bolt | — | — | idle |
-| Sentinel | Mandatory polyglot security baseline completed | none | idle |
+| Sentinel | Handoffs queued to Spec for SqliteStoragePlugin (CWE-89) and ShellPlugin stdio isolation | none | idle |
 | Scribe | — | — | idle |
 | Refactor | — | — | idle |
 | Architect | — | — | idle |
