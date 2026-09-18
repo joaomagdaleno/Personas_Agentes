@@ -10,6 +10,15 @@ Format:
 **Artifacts:** [file:line, PR #, commit SHA]
 **Blocking:** [what this unblocks]
 
+## 2026-09-15 07:35 – Handoff
+**From:** Sentinel
+**To:** Spec
+**Priority:** HIGH
+**Context:** In Windows CI runner environments (`win32`), spawning PowerShell in `src_local/psa/plugins/core/shell_plugin.ts` without explicit `stdio: ["ignore", "pipe", "pipe"]` can cause standard input pipe inheritance to block or hang execution until the 15s test timeout expires.
+**Action requested:** Add a unit test in `tests/dsh_fs_shell_plugins.test.ts` asserting that `ShellPlugin` handles process spawn stdio configuration cleanly and closes non-interactive command execution within expected time bounds.
+**Artifacts:** `src_local/psa/plugins/core/shell_plugin.ts:48`
+**Blocking:** Sentinel/Refactor patch for `ShellPlugin` stdio optimization
+
 ## 2026-09-15 07:25 – Handoff
 **From:** Sentinel
 **To:** Spec

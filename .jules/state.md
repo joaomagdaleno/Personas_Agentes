@@ -16,7 +16,7 @@
 |---|---|---|---|
 | Spec | — | — | idle |
 | Bolt | — | — | idle |
-| Sentinel | Handoff queued to Spec for SqliteStoragePlugin stacked query test (CWE-89) | none | idle |
+| Sentinel | Handoffs queued to Spec for SqliteStoragePlugin (CWE-89) and ShellPlugin stdio isolation | none | idle |
 | Scribe | — | — | idle |
 | Refactor | — | — | idle |
 | Architect | — | — | idle |
