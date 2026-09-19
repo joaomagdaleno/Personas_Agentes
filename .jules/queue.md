@@ -10,6 +10,15 @@ Format:
 **Artifacts:** [file:line, PR #, commit SHA]
 **Blocking:** [what this unblocks]
 
+## 2026-09-15 08:00 – Handoff
+**From:** Sentinel
+**To:** Spec
+**Priority:** HIGH
+**Context:** During security baseline review of `SqliteStoragePlugin.querySql` in `src_local/psa/plugins/core/sqlite_storage_plugin.ts` (line 120), string prefix validation `trimmed.startsWith("select")` was found susceptible to stacked multi-statement SQL execution (e.g. `SELECT 1; DROP TABLE sessions;`) (CWE-89). Per AGENTS.md §4.3, Sentinel must request a reproducing test before fixing non-test code.
+**Action requested:** Write a unit test in `tests/psa_expanded_suite.test.ts` or a new test file that reproduces multi-statement SQL injection rejection in `SqliteStoragePlugin.querySql`.
+**Artifacts:** `src_local/psa/plugins/core/sqlite_storage_plugin.ts:120`
+**Blocking:** Sentinel fix for `SqliteStoragePlugin.querySql`
+
 ## 2026-09-14 06:30 – Handoff
 **From:** Review
 **To:** Scribe

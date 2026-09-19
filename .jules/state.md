@@ -16,7 +16,7 @@
 |---|---|---|---|
 | Spec | — | — | idle |
 | Bolt | — | — | idle |
-| Sentinel | Mandatory polyglot security baseline completed | none | idle |
+| Sentinel | Polyglot baseline completed; handed off SQLi test request to Spec | none | idle |
 | Scribe | — | — | idle |
 | Refactor | — | — | idle |
 | Architect | — | — | idle |
