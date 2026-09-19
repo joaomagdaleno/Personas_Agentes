@@ -3,6 +3,11 @@
 Critical learnings only.
 Format: ## YYYY-MM-DD - [Title] / **Learning:** ... / **Action:** ...
 
+## 2026-09-15 - Stacked Multi-Statement SQL Injection Risk in String Prefix Guards
+**Vulnerability:** String prefix checks (e.g., `sql.trim().toLowerCase().startsWith("select")`) in SQLite query helpers like `SqliteStoragePlugin.querySql` fail to prevent stacked multi-statement execution (CWE-89) if semicolons separate chained queries.
+**Learning:** `bun:sqlite` executes chained SQL queries separated by semicolons within a single `.query()` call. A simple `startsWith("select")` guard is insufficient to guarantee read-only query isolation.
+**Prevention:** Hand off reproducing test creation to Spec before Sentinel applies structural parameterization / single-statement parsing guards.
+
 ## 2026-09-15 - Polyglot Security Baseline Audit Verification
 **Vulnerability:** Comprehensive multi-layer security scan verified zero active critical vulnerabilities in gRPC/mTLS, WASM sandbox isolation, SQLite parameterized queries, or Idris 2 formal proofs.
 **Learning:** Resolving missing node dependencies (`bun install winston`) restored full test suite execution (186/186 tests passing). Go gRPC hub (`go vet`) passed without findings, while Rust analyzer (`cargo clippy`) highlighted style cleanup items.
