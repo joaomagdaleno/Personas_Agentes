@@ -28,6 +28,7 @@
 | — | — | — | — |
 
 ## Recently completed
+- 2026-09-19: Bolt optimized VetoEngine regex evaluation in isTechnicalMath (+149.5% throughput gain / 59.9% latency reduction).
 - 2026-09-15: Review completed batch review of 4 open PRs (3 approved: Spec, Bolt, Sentinel; 1 requested changes: Scribe).
 - 2026-09-15: Sentinel verified polyglot baseline security audit (0 critical vulnerabilities).
 - 2026-09-15: Bolt optimized PsaEventBus synchronous emission fast-path and listener pruning.
