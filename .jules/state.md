@@ -4,7 +4,7 @@
 2026-09-15 04:25 UTC by Bolt
 
 ## Health snapshot
-- Tests: 188/188 passing
+- Tests: 189/189 passing
 - Coverage: 83.10% overall (VetoEngine at 100%)
 - Open critical vulns: 0
 - Idris 2 proofs: PASSING
@@ -16,7 +16,7 @@
 |---|---|---|---|
 | Spec | — | — | idle |
 | Bolt | — | — | idle |
-| Sentinel | Mandatory polyglot security baseline completed | none | idle |
+| Sentinel | Polyglot security baseline verified (189 tests passing, 0 critical vulns) | none | idle |
 | Scribe | — | — | idle |
 | Refactor | — | — | idle |
 | Architect | — | — | idle |

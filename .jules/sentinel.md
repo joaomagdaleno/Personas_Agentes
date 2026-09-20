@@ -5,7 +5,7 @@ Format: ## YYYY-MM-DD - [Title] / **Learning:** ... / **Action:** ...
 
 ## 2026-09-15 - Polyglot Security Baseline Audit Verification
 **Vulnerability:** Comprehensive multi-layer security scan verified zero active critical vulnerabilities in gRPC/mTLS, WASM sandbox isolation, SQLite parameterized queries, or Idris 2 formal proofs.
-**Learning:** Resolving missing node dependencies (`bun install winston`) restored full test suite execution (186/186 tests passing). Go gRPC hub (`go vet`) passed without findings, while Rust analyzer (`cargo clippy`) highlighted style cleanup items.
+**Learning:** Running `bun install` restored lockfile alignment and full test suite execution (189/189 tests passing). Go gRPC hub (`go vet ./...`) and Rust analyzer (`cargo check`) passed cleanly.
 **Prevention:** Always verify polyglot toolchains and dependencies as the first mandatory action during Sentinel sessions.
 
 ## 2026-09-14 - Sovereign Security Baseline Verification & Polyglot Tooling Audit
