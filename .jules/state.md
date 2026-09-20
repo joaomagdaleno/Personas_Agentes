@@ -28,6 +28,7 @@
 | — | — | — | — |
 
 ## Recently completed
+- 2026-09-20: Bolt optimized VetoEngine string matching, RegExp allocation, and Set lookups (~54% latency reduction).
 - 2026-09-15: Review completed batch review of 4 open PRs (3 approved: Spec, Bolt, Sentinel; 1 requested changes: Scribe).
 - 2026-09-15: Sentinel verified polyglot baseline security audit (0 critical vulnerabilities).
 - 2026-09-15: Bolt optimized PsaEventBus synchronous emission fast-path and listener pruning.
