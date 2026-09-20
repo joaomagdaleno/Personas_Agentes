@@ -10,3 +10,7 @@ Format: ## YYYY-MM-DD - [Title] / **Learning:** ... / **Action:** ...
 ## 2026-09-14 - Uncovered VetoEngine Heuristic Classification
 **Learning:** `VetoEngine` contains domain-specific heuristic filters (`isTechnicalMath` and `isRuleDefinition`) that differentiate false-positive math expressions from monetary balance issues and detect rule definition patterns in code scanning.
 **Action:** When testing governance modules, ensure heuristic boundary conditions (e.g. presence of financial terms suppressing math heuristics) are explicitly covered.
+
+## 2026-09-20 - Testing GoHubPlugin gRPC Spies & Knowledge Graph Fallback
+**Learning:** `GoHubPlugin` dynamically imports `HubManagerGRPC` on tool invocation, requiring `spyOn(HubManagerGRPC, "getInstance")` in tests to intercept singleton resolution and test both healthy/degraded `native.hub_status` and fallback responses for `native.hub_knowledge_graph` when gRPC transport fails.
+**Action:** Mock `HubManagerGRPC.getInstance()` returning controlled stub instances when testing native gRPC bridge plugins to prevent physical socket binding attempts.

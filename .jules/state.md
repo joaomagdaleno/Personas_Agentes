@@ -1,20 +1,20 @@
 # PSA Ecosystem – Shared State
 
 ## Last updated
-2026-09-15 04:25 UTC by Bolt
+2026-09-20 01:28 UTC by Spec
 
 ## Health snapshot
-- Tests: 188/188 passing
-- Coverage: 83.10% overall (VetoEngine at 100%)
+- Tests: 194/194 passing
+- Coverage: 84.60% overall (GoHubPlugin at 100.00% lines)
 - Open critical vulns: 0
 - Idris 2 proofs: PASSING
 - Public APIs documented: 0%
-- Median test runtime: ~3.6s
+- Median test runtime: ~3.8s
 
 ## Active work-in-progress
 | Agent | Task | Files locked | Status |
 |---|---|---|---|
-| Spec | — | — | idle |
+| Spec | Unit test suite for GoHubPlugin | none | idle |
 | Bolt | — | — | idle |
 | Sentinel | Mandatory polyglot security baseline completed | none | idle |
 | Scribe | — | — | idle |
@@ -28,6 +28,7 @@
 | — | — | — | — |
 
 ## Recently completed
+- 2026-09-20: Spec created GoHubPlugin unit tests in tests/go_hub_plugin.test.ts, increasing go_hub_plugin.ts line coverage from 49.06% to 100.00%.
 - 2026-09-15: Review completed batch review of 4 open PRs (3 approved: Spec, Bolt, Sentinel; 1 requested changes: Scribe).
 - 2026-09-15: Sentinel verified polyglot baseline security audit (0 critical vulnerabilities).
 - 2026-09-15: Bolt optimized PsaEventBus synchronous emission fast-path and listener pruning.
