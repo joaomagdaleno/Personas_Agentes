@@ -305,20 +305,26 @@ export class ContextMappingLogic {
 
         const filePaths = await this.getAllFiles(scanner);
 
+        let loadedViaRust = false;
         if (this.hubManager && filePaths.length > 5) {
             try {
                 const results = await this.processBatchRust(filePaths, engine.projectRoot);
-                for (const res of results) {
-                    contentCache[res.path] = res.content;
-                    this.metadataCache[res.path] = {
-                        dna: res.dna,
-                        semantic_blocks: res.semantic_blocks
-                    };
+                if (results && results.length > 0) {
+                    for (const res of results) {
+                        contentCache[res.path] = res.content;
+                        this.metadataCache[res.path] = {
+                            dna: res.dna,
+                            semantic_blocks: res.semantic_blocks
+                        };
+                    }
+                    loadedViaRust = true;
                 }
             } catch (err) {
-                await this.readFilesIntoCache(filePaths, engine, contentCache);
+                // fall through to local read
             }
-        } else {
+        }
+
+        if (!loadedViaRust) {
             await this.readFilesIntoCache(filePaths, engine, contentCache);
         }
 
