@@ -10,6 +10,15 @@ Format:
 **Artifacts:** [file:line, PR #, commit SHA]
 **Blocking:** [what this unblocks]
 
+## 2026-09-15 04:30 – Handoff
+**From:** Sentinel
+**To:** Spec
+**Priority:** HIGH
+**Context:** Sentinel identified a SQL injection / stacked statement bypass vulnerability (CWE-89) in `SqliteStoragePlugin.querySql` (`src_local/psa/plugins/core/sqlite_storage_plugin.ts:148`). The current check `if (!trimmed.startsWith("select") && !trimmed.startsWith("pragma") && !trimmed.startsWith("with"))` allows stacked SQL execution such as `SELECT 1; DROP TABLE sessions;` or `SELECT 1; UPDATE sessions SET total_events = 0;`. Per AGENTS.md §4.3, Sentinel must obtain a reproducing test from Spec before patching non-test code.
+**Action requested:** Write a unit test in `tests/psa_expanded_suite.test.ts` (or `tests/sqlite_storage_plugin.test.ts`) that executes a stacked SQL query with multi-statement mutation via `session_query_sql` / `SqliteStoragePlugin.querySql` and asserts that stacked/mutating query execution is blocked or throws an error.
+**Artifacts:** `src_local/psa/plugins/core/sqlite_storage_plugin.ts:148`, CWE-89
+**Blocking:** Sentinel's security fix for `SqliteStoragePlugin.querySql`
+
 ## 2026-09-14 06:30 – Handoff
 **From:** Review
 **To:** Scribe

@@ -16,7 +16,7 @@
 |---|---|---|---|
 | Spec | — | — | idle |
 | Bolt | — | — | idle |
-| Sentinel | Mandatory polyglot security baseline completed | none | idle |
+| Sentinel | Baseline audit complete; requested reproducing test for CWE-89 from Spec | none | idle |
 | Scribe | — | — | idle |
 | Refactor | — | — | idle |
 | Architect | — | — | idle |
