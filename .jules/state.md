@@ -8,7 +8,7 @@
 - Coverage: 83.10% overall (VetoEngine at 100%)
 - Open critical vulns: 0
 - Idris 2 proofs: PASSING
-- Public APIs documented: 0%
+- Public APIs documented: 39.3% TS (216/550), 1.0% RS (1/104), 23.6% GO (17/72), 0.0% ZIG (0/0), 0.0% CS (0/5), 100% IDR (52/52)
 - Median test runtime: ~3.6s
 
 ## Active work-in-progress
@@ -17,7 +17,7 @@
 | Spec | — | — | idle |
 | Bolt | — | — | idle |
 | Sentinel | Mandatory polyglot security baseline completed | none | idle |
-| Scribe | — | — | idle |
+| Scribe | Added CONTRIBUTING.md & docs/TROUBLESHOOTING.md | none | idle |
 | Refactor | — | — | idle |
 | Architect | — | — | idle |
 | Review | Batch review complete | none | idle |
