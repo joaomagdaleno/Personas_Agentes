@@ -16,7 +16,7 @@
 |---|---|---|---|
 | Spec | Added GoHubPlugin unit test suite (100% coverage) | tests/go_hub_plugin.test.ts | idle |
 | Bolt | — | — | idle |
-| Sentinel | Mandatory polyglot security baseline completed | none | idle |
+| Sentinel | Polyglot security baseline audit & test suite verification completed | none | idle |
 | Scribe | — | — | idle |
 | Refactor | — | — | idle |
 | Architect | — | — | idle |
