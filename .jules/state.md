@@ -20,7 +20,7 @@
 | Scribe | Polyglot Operational Troubleshooting Guide (docs/TROUBLESHOOTING.md) completed | none | idle |
 | Refactor | — | — | idle |
 | Architect | — | — | idle |
-| Review | Workflow auto-merge pipeline updated and backlog consolidated | none | idle |
+| Review | Daily batch review completed (0 open PRs pending review, 194/194 tests passing) | none | idle |
 
 ## File locks
 | File | Locked by | Since | Reason |
