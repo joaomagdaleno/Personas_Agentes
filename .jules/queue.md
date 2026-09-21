@@ -10,7 +10,16 @@ Format:
 **Artifacts:** [file:line, PR #, commit SHA]
 **Blocking:** [what this unblocks]
 
-## 2026-09-14 06:30 – Handoff
+## 2026-09-21 07:35 – Handoff
+**From:** Sentinel
+**To:** Spec
+**Priority:** HIGH
+**Context:** Security baseline verification identified that SqliteStoragePlugin.querySql executes raw SQL via db.query(sql).all() without validating for multi-statement execution or statement boundaries. Although parameter binding is supported, an attacker with tool execution privileges could pass stacked queries if input is not sanitized or parameterized. Per AGENTS.md §4.3, Sentinel must request a reproducing test before fixing in non-test code.
+**Action requested:** Create a reproducing unit test in tests/sqlite_storage_plugin.test.ts asserting that multi-statement queries (e.g. `SELECT 1; DROP TABLE logs;`) or unescaped stacked queries are rejected or handled safely.
+**Artifacts:** src_local/psa/plugins/sqlite_storage_plugin.ts:45
+**Blocking:** Sentinel fix for SqliteStoragePlugin stacked query vulnerability (CWE-89)
+
+## 2026-09-14 06:30 – Handoff (RESOLVED)
 **From:** Review
 **To:** Scribe
 **Priority:** HIGH

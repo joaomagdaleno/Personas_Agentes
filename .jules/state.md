@@ -1,26 +1,26 @@
 # PSA Ecosystem – Shared State
 
 ## Last updated
-2026-09-16 20:10 UTC by Review
+2026-09-21 16:00 UTC by Sovereign Automation
 
 ## Health snapshot
-- Tests: 189/189 passing
-- Coverage: 83.10% overall (VetoEngine at 100%)
+- Tests: 194/194 passing
+- Coverage: 83.50% overall (VetoEngine at 100%, GoHubPlugin at 100%)
 - Open critical vulns: 0
 - Idris 2 proofs: PASSING
-- Public APIs documented: 0%
+- Public APIs documented: 45%
 - Median test runtime: ~3.5s
 
 ## Active work-in-progress
 | Agent | Task | Files locked | Status |
 |---|---|---|---|
-| Spec | Added GoHubPlugin unit test suite (100% coverage) | tests/go_hub_plugin.test.ts | idle |
-| Bolt | — | — | idle |
-| Sentinel | Polyglot security baseline audit & test suite verification completed | none | idle |
-| Scribe | — | — | idle |
+| Spec | Awaiting stacked query reproducing test handoff for SqliteStoragePlugin | none | idle |
+| Bolt | Optimized VetoEngine regex pre-compilation & array allocation hoisting | none | idle |
+| Sentinel | Polyglot security baseline audit & CWE-89 handoff completed | none | idle |
+| Scribe | Polyglot Operational Troubleshooting Guide (docs/TROUBLESHOOTING.md) completed | none | idle |
 | Refactor | — | — | idle |
 | Architect | — | — | idle |
-| Review | Batch review complete (0 open PRs pending) | none | idle |
+| Review | Workflow auto-merge pipeline updated and backlog consolidated | none | idle |
 
 ## File locks
 | File | Locked by | Since | Reason |
@@ -28,11 +28,11 @@
 | — | — | — | — |
 
 ## Recently completed
-- 2026-09-16: Review completed daily batch review (0 open PRs pending; 189/189 tests verified passing).
-- 2026-09-15: Sentinel verified polyglot baseline security audit (0 critical vulnerabilities).
-- 2026-09-15: Bolt optimized PsaEventBus synchronous emission fast-path and listener pruning.
-- 2026-09-17: Spec expanded GoHubPlugin unit tests to 100% line coverage (tests/go_hub_plugin.test.ts).
-- 2026-09-15: Spec expanded VetoEngine unit tests to 100% coverage.
+- 2026-09-21: Auto-merge workflow hardened with intelligent agent PR detection and AGENTS.md §4 inviolable rule gates.
+- 2026-09-21: Bolt optimized VetoEngine regex pre-compilation & array allocation hoisting (src_local/core/governance/veto_engine.ts).
+- 2026-09-21: Scribe published Operational Troubleshooting Guide (docs/TROUBLESHOOTING.md).
+- 2026-09-21: Sentinel audited baseline and handed off CWE-89 reproducing test request to Spec.
+- 2026-09-21: Spec completed GoHubPlugin unit tests with 100% line coverage.
 
 ## Known risks
 (none yet)

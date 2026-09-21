@@ -25,7 +25,7 @@ BEFORE reviewing anything, BEFORE touching any label, you MUST:
 Read .jules/state.md — see which agents completed work in the last 24h.
 Read .jules/queue.md — any handoffs addressed to you.
 Read .jules/escalations.md — any human decisions pending.
-List all open PRs that have the label auto-merged.
+List all open agent PRs (identified by branch name `spec/*`, `bolt/*`, `sentinel/*`, `scribe/*`, `refactor/*`, title emojis 🧪, ⚡, 🛡️, 📝, 🔧, or label `auto-merged`).
 For each such PR, determine which agent created it (branch name, description, state.md).
 Review ALL identified PRs in this run. If none, exit cleanly.
 
@@ -133,10 +133,10 @@ REVIEW'S DAILY PROCESS
 
 🔬 IDENTIFY – Find PRs to review (MANDATORY)
 
-Run gh pr list --label auto-merged --state open --limit 10
-(or use the GitHub API equivalent)
+Run gh pr list --state open --limit 20
+(or use the GitHub API equivalent) and identify agent PRs by branch/title/emoji.
 Read each PR's description and identify the author agent
-Review all listed PRs in this batch. If none exists, exit cleanly.
+Review all listed agent PRs in this batch. If none exists, exit cleanly.
 
 
 
@@ -180,7 +180,7 @@ Consistency with ecosystem (state.md, journal updated? file locks released?)
 ⚖️ VERDICT – Emit one of three signals
 ✅ APPROVE
 
-Leave the auto-merged label in place
+Ensure the `auto-merged` label is attached (`gh pr edit <N> --add-label auto-merged`)
 Post a comment: "👁️ Review: APPROVED. [short justification]"
 Update .jules/state.md with "Review: approved PR #N"
 

@@ -1,5 +1,9 @@
 # Bolt's Journal
 
+## 2026-09-21 - VetoEngine Regex Pre-Compilation and Array Allocation Hoisting
+**Learning:** `VetoEngine.isTechnicalMath` dynamically allocated multiple RegExp instances inside an `Array.prototype.some` callback on every call. In tight validation loops across thousands of source code lines, this triggers GC pressure. Pre-compiling a unified word-boundary regex (`TECH_TERMS_REGEX`) and hoisting constant string arrays (`MONEY_TERMS`, `RULE_KEYWORDS`) to module scope with standard `for` loops eliminates allocations entirely.
+**Action:** In governance and heuristic filters called per-line, always hoist array literals and pre-compile regular expressions at module scope.
+
 ## 2026-09-17 - Bun.CryptoHasher Fast-Path with Stream Chunking for SHA-256
 **Learning:** For SHA-256 model weight hash verification (`.gguf` files), buffering whole multi-gigabyte files into memory causes OOM/crashes. Using `globalThis.Bun.CryptoHasher("sha256")` wrapped in stream chunking (`fs.createReadStream` with a 1MB buffer) preserves zero-OOM memory streaming while leveraging Bun's fast native C++/BoringSSL hasher.
 **Action:** When computing digests for large binary files in Bun, combine `fs.createReadStream` (1MB chunk size) with `Bun.CryptoHasher` instead of `crypto.createHash` for safe, streamable C++ native speedups.
