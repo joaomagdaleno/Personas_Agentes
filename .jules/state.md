@@ -30,6 +30,7 @@
 ## Recently completed
 - 2026-09-15: Review completed batch review of 4 open PRs (3 approved: Spec, Bolt, Sentinel; 1 requested changes: Scribe).
 - 2026-09-15: Sentinel verified polyglot baseline security audit (0 critical vulnerabilities).
+- 2026-09-15: Bolt optimized VetoEngine regex pre-compilation and array allocation hoisting (~66% speedup).
 - 2026-09-15: Bolt optimized PsaEventBus synchronous emission fast-path and listener pruning.
 - 2026-09-15: Spec expanded VetoEngine unit tests to 100% coverage.
 
