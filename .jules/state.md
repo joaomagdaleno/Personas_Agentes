@@ -15,7 +15,7 @@
 | Agent | Task | Files locked | Status |
 |---|---|---|---|
 | Spec | Awaiting stacked query reproducing test handoff for SqliteStoragePlugin | none | idle |
-| Bolt | Optimized VetoEngine regex pre-compilation & array allocation hoisting | none | idle |
+| Bolt | Optimized PsaEventBus waterfall allocation & PsaToolService fast-path execution | none | idle |
 | Sentinel | Polyglot security baseline audit & CWE-89 handoff completed | none | idle |
 | Scribe | Polyglot Operational Troubleshooting Guide (docs/TROUBLESHOOTING.md) completed | none | idle |
 | Refactor | — | — | idle |
@@ -28,6 +28,7 @@
 | — | — | — | — |
 
 ## Recently completed
+- 2026-09-22: Bolt optimized PsaEventBus waterfall checks and PsaToolService fast-path execution (42.5% latency reduction, 136.41ms -> 78.35ms for 50,000 tool calls).
 - 2026-09-21: Auto-merge workflow hardened with intelligent agent PR detection and AGENTS.md §4 inviolable rule gates.
 - 2026-09-21: Bolt optimized VetoEngine regex pre-compilation & array allocation hoisting (src_local/core/governance/veto_engine.ts).
 - 2026-09-21: Scribe published Operational Troubleshooting Guide (docs/TROUBLESHOOTING.md).
