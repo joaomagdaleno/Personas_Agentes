@@ -49,7 +49,11 @@ describe("SqliteStoragePlugin Unit & Security Tests (CWE-89)", () => {
         // Cleanup resources
         plugin.close();
         if (fs.existsSync(tmpDir)) {
-            fs.rmSync(tmpDir, { recursive: true, force: true });
+            try {
+                fs.rmSync(tmpDir, { recursive: true, force: true });
+            } catch {
+                // Ignore transient Windows EBUSY locks on temporary database files
+            }
         }
     });
 
