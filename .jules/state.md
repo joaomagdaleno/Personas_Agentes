@@ -16,7 +16,7 @@
 |---|---|---|---|
 | Spec | Awaiting stacked query reproducing test handoff for SqliteStoragePlugin | none | idle |
 | Bolt | Optimized VetoEngine regex pre-compilation & array allocation hoisting | none | idle |
-| Sentinel | Polyglot security baseline audit & CWE-89 handoff completed | none | idle |
+| Sentinel | Polyglot security baseline audit re-verified (194/194 tests pass, go vet clean); awaiting Spec reproducing test | none | idle |
 | Scribe | Polyglot Operational Troubleshooting Guide (docs/TROUBLESHOOTING.md) completed | none | idle |
 | Refactor | — | — | idle |
 | Architect | — | — | idle |
