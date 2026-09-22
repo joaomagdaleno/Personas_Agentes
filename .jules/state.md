@@ -4,7 +4,7 @@
 2026-09-21 16:00 UTC by Sovereign Automation
 
 ## Health snapshot
-- Tests: 194/194 passing
+- Tests: 198/198 passing
 - Coverage: 83.50% overall (VetoEngine at 100%, GoHubPlugin at 100%)
 - Open critical vulns: 0
 - Idris 2 proofs: PASSING
@@ -14,7 +14,7 @@
 ## Active work-in-progress
 | Agent | Task | Files locked | Status |
 |---|---|---|---|
-| Spec | Awaiting stacked query reproducing test handoff for SqliteStoragePlugin | none | idle |
+| Spec | Added reproducing unit test for SqliteStoragePlugin stacked query safety (CWE-89) | none | idle |
 | Bolt | Optimized VetoEngine regex pre-compilation & array allocation hoisting | none | idle |
 | Sentinel | Polyglot security baseline audit & CWE-89 handoff completed | none | idle |
 | Scribe | Polyglot Operational Troubleshooting Guide (docs/TROUBLESHOOTING.md) completed | none | idle |
@@ -28,6 +28,7 @@
 | — | — | — | — |
 
 ## Recently completed
+- 2026-09-22: Spec created reproducing unit tests for SqliteStoragePlugin stacked query safety (tests/sqlite_storage_plugin.test.ts).
 - 2026-09-21: Auto-merge workflow hardened with intelligent agent PR detection and AGENTS.md §4 inviolable rule gates.
 - 2026-09-21: Bolt optimized VetoEngine regex pre-compilation & array allocation hoisting (src_local/core/governance/veto_engine.ts).
 - 2026-09-21: Scribe published Operational Troubleshooting Guide (docs/TROUBLESHOOTING.md).

@@ -11,6 +11,10 @@ Format: ## YYYY-MM-DD - [Title] / **Learning:** ... / **Action:** ...
 **Learning:** `GoHubPlugin` relies on `HubManagerGRPC.getInstance()` singleton for native gRPC communications. Spying directly on the singleton instance using `spyOn(HubManagerGRPC.getInstance(), "isHealthy")` and `spyOn(HubManagerGRPC.getInstance(), "getKnowledgeGraph")` enables clean isolation of plugin behavior without needing native Go process execution during unit tests.
 **Action:** Always mock singleton backend methods via `spyOn(Instance, "method")` and restore them in `finally` blocks to maintain isolation and prevent side-effects in subsequent tests.
 
+## 2026-09-22 - Stacked Query Testing Boundaries for SqliteStoragePlugin (CWE-89)
+**Learning:** `SqliteStoragePlugin.querySql` evaluates `SELECT`/`WITH`/`PRAGMA` string prefixes. Testing stacked multi-statement query boundaries requires verifying that table schema and session data integrity remain uncompromised even when queries starting with `SELECT` append destructive commands like `DROP` or `DELETE`.
+**Action:** When testing raw SQL execution tools across SQLite plugins, always assert post-execution table row counts and schema integrity to ensure stacked mutations do not execute silently.
+
 ## 2026-09-14 - Uncovered VetoEngine Heuristic Classification
 **Learning:** `VetoEngine` contains domain-specific heuristic filters (`isTechnicalMath` and `isRuleDefinition`) that differentiate false-positive math expressions from monetary balance issues and detect rule definition patterns in code scanning.
 **Action:** When testing governance modules, ensure heuristic boundary conditions (e.g. presence of financial terms suppressing math heuristics) are explicitly covered.
