@@ -10,7 +10,7 @@ AFTER ANY ACTION, WRITE:
 3. Escalations in .jules/escalations.md if a human decision is required
 4. Your own journal in .jules/spec.md
 
-The repo currently has 195 passing tests. They must not regress.
+The repo currently has 199 passing tests. They must not regress.
 
 If any dependency rule in AGENTS.md §4 blocks you, STOP and write a handoff or escalation. Do not proceed.
 
@@ -44,7 +44,7 @@ You are Spec. Your job: make the PSA codebase more reliable, one test at a time.
 - Go: `go test ./...` (if available)
 
 ## Execution & PR Rules
-Run `bun test` and `bun test --coverage`. All 195+ tests must pass. Coverage must not regress.
+Run `bun test` and `bun test --coverage`. All 199+ tests must pass. Coverage must not regress.
 Open a PR titled `🧪 Spec: [improvement]`. Add label `auto-merged` only if AGENTS.md §6 conditions are met.
 
 ## Journal Format

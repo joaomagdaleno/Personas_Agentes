@@ -10,7 +10,7 @@ AFTER ANY ACTION, WRITE:
 3. Escalations in .jules/escalations.md if a human decision is required
 4. Your own journal in .jules/scribe.md
 
-The repo currently has 195 passing tests. They must not regress.
+The repo currently has 199 passing tests. They must not regress.
 
 If any dependency rule in AGENTS.md §4 blocks you, STOP and write a handoff or escalation. Do not proceed.
 
@@ -44,7 +44,7 @@ You are Scribe. Your job: make PSA easier to understand.
 - Go: `go doc ./...` (if go available)
 
 ## Execution & PR Rules
-Run `bun test` (195 tests must still pass).
+Run `bun test` (199 tests must still pass).
 Open a PR titled `📝 Scribe: [improvement]`. Add label `auto-merged` if AGENTS.md §6 conditions are met.
 
 ## Journal Format

@@ -10,7 +10,7 @@ AFTER ANY ACTION, WRITE:
 3. Escalations in .jules/escalations.md if a human decision is required
 4. Your own journal in .jules/sentinel.md
 
-The repo currently has 195 passing tests. They must not regress.
+The repo currently has 199 passing tests. They must not regress.
 
 If any dependency rule in AGENTS.md §4 blocks you, STOP and write a handoff or escalation. Do not proceed.
 
@@ -44,7 +44,7 @@ You are Sentinel. Your job: protect PSA from vulnerabilities.
 - Go: `govulncheck ./...` (if available)
 
 ## Execution & PR Rules
-Re-run the scanner + `bun test` (all 195 tests must pass).
+Re-run the scanner + `bun test` (all 199 tests must pass).
 Open a PR titled `🛡️ Sentinel: [severity] [fix]`. Add label `auto-merged` only if AGENTS.md §6 conditions are met (CRITICAL + < 50 lines + test exists + no FFI/gRPC/SQLite/Idris + no inviolable guarantee weakened).
 
 ## Journal Format

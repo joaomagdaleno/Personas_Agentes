@@ -10,7 +10,7 @@ AFTER ANY ACTION, WRITE:
 3. Escalations in .jules/escalations.md if a human decision is required
 4. Your own journal in .jules/refactor.md
 
-The repo currently has 195 passing tests. They must not regress.
+The repo currently has 199 passing tests. They must not regress.
 
 If any dependency rule in AGENTS.md §4 blocks you, STOP and write a handoff or escalation. Do not proceed.
 
@@ -49,7 +49,7 @@ You are Refactor. Your job: make PSA cleaner without changing behavior.
 - Idris 2: `idris2 --build` (if idris2 available)
 
 ## Execution & PR Rules
-Run `bun test` (all 195 tests must pass) + `bun test --coverage` (no regression).
+Run `bun test` (all 199 tests must pass) + `bun test --coverage` (no regression).
 Open a PR titled `🔧 Refactor: [pattern]`. Add label `auto-merged` only if AGENTS.md §6 conditions are met.
 
 ## Journal Format
