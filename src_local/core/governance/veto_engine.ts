@@ -18,6 +18,22 @@ const RULE_KEYWORDS = [
  * Decides what gets blocked based on infrastructure, legacy, or security rules.
  */
 export class VetoEngine {
+    public static shouldSkip(line: string, filePath: string, domain: string = "PRODUCTION"): boolean {
+        const clean = (line || "").trim();
+        if (clean.startsWith("//") || clean.startsWith("/*") || clean.startsWith("*") || clean.startsWith("#")) {
+            return true;
+        }
+        if (domain === "EXPERIMENTATION" && !line.toLowerCase().includes("critical")) {
+            return true;
+        }
+        if (filePath.includes("/tests/") || filePath.includes(".test.") || filePath.includes(".spec.")) {
+            return true;
+        }
+        const ignored = ['.git', '__pycache__', 'build', 'node_modules', '.venv', '.agent', '.gemini', 'submodules', 'dist', 'target', 'bin'];
+        const parts = filePath.split(/[/\\]/);
+        return parts.some(part => ignored.includes(part));
+    }
+
     public shouldVeto(relPath: string): { veto: boolean; reason?: VetoReason; justification?: string } {
         const ignored = ['.git', '__pycache__', 'build', 'node_modules', '.venv', '.agent', '.gemini', 'submodules', 'dist', 'target', 'bin'];
         const parts = relPath.split(/[/\\]/);

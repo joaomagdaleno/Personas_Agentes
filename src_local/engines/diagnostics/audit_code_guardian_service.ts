@@ -673,10 +673,51 @@ export class ScoreCalculator {
         // 1. Tentar cálculo via gRPC do Go Hub
         if (this.hubManager) {
             try {
+                const normalizeMetrics = (m: any) => {
+                    if (!m || typeof m !== "object") return null;
+                    return {
+                        cyclomatic_complexity: typeof m.cyclomatic_complexity === "number" ? m.cyclomatic_complexity : (typeof m.complexity === "number" ? m.complexity : 1),
+                        cognitive_complexity: typeof m.cognitive_complexity === "number" ? m.cognitive_complexity : 1,
+                        maintainability_index: typeof m.maintainability_index === "number" ? m.maintainability_index : 80,
+                        quality_gate: typeof m.quality_gate === "string" ? m.quality_gate : "PASSED",
+                        nesting_depth: typeof m.nesting_depth === "number" ? m.nesting_depth : 1,
+                        cbo: typeof m.cbo === "number" ? m.cbo : 0,
+                        dit: typeof m.dit === "number" ? m.dit : 0,
+                        defect_density: typeof m.defect_density === "number" ? m.defect_density : 0,
+                    };
+                };
+
+                const slimMapData: Record<string, any> = {};
+                for (const [k, v] of Object.entries(mapData)) {
+                    const item = v as any;
+                    slimMapData[k] = {
+                        component_type: item.component_type || item.type || "module",
+                        complexity: typeof item.complexity === "number" ? item.complexity : 1,
+                        has_test: Boolean(item.has_test || item.test),
+                        has_telemetry: Boolean(item.has_telemetry || item.telemetry),
+                        purpose: typeof item.purpose === "string" ? item.purpose : "",
+                        advanced_metrics: normalizeMetrics(item.advanced_metrics)
+                    };
+                }
+
                 const scoreRequest = {
-                    map_data: mapData,
+                    map_data: slimMapData,
                     alerts: allAlerts.map(a => ({ severity: (a.severity || "medium").toLowerCase() })),
-                    qa_data: qaData,
+                    qa_data: qaData && Array.isArray(qaData.matrix) ? {
+                        matrix: qaData.matrix.map((mi: any) => ({
+                            file: mi.file || "",
+                            advanced_metrics: normalizeMetrics(mi.advanced_metrics) || {
+                                cyclomatic_complexity: 1,
+                                cognitive_complexity: 1,
+                                maintainability_index: 80,
+                                quality_gate: "PASSED",
+                                nesting_depth: 1,
+                                cbo: 0,
+                                dit: 0,
+                                defect_density: 0,
+                            }
+                        }))
+                    } : null,
                     cognitive: cognitive ? { status: cognitive.status } : null
                 };
                 const response = await this.hubManager.calculateScore(scoreRequest);

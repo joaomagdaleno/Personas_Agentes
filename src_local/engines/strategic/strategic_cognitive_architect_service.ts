@@ -72,7 +72,8 @@ export class CognitiveEngine {
         let enrichedContext = options.context || "";
         try {
             const zg = ZvecGrepEngine.getInstance();
-            const searchHits = await zg.search(prompt, 3);
+            const searchTopic = prompt.split("\n")[0].replace(/^Audite se o código cumpre:\s*/i, "").trim().slice(0, 100);
+            const searchHits = await zg.search(searchTopic || prompt.slice(0, 80), 3);
             if (searchHits.length > 0) {
                 const zgSnippets = searchHits.map(h => `[ZvecGrep Hit - ${h.filePath}]: ${h.content}`).join("\n");
                 enrichedContext = enrichedContext ? `${enrichedContext}\n\n${zgSnippets}` : zgSnippets;

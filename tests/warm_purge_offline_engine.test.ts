@@ -186,4 +186,24 @@ describe("WarmPurgeOfflineEngine Unit Tests", () => {
         // Assert
         expect(typeof isSafeForSmallAlloc).toBe("boolean");
     });
+
+    it("should dynamically calculate optimal SLM threads, context, and WASM concurrency based on host hardware", () => {
+        // Arrange - Component: SovereignResourceBudget Hardware Adaptation
+        const budget = SovereignResourceBudget.getInstance();
+
+        // Act
+        const threads = budget.getOptimalSlmThreads();
+        const ctx = budget.getOptimalSlmContextSize();
+        const wasmLimit = budget.getMaxWasmConcurrency();
+        const config = budget.getAdaptiveConfig();
+
+        // Assert
+        expect(threads).toBeGreaterThanOrEqual(1);
+        expect(threads).toBeLessThanOrEqual(32);
+        expect([2048, 4096]).toContain(ctx);
+        expect(wasmLimit).toBeGreaterThanOrEqual(1);
+        expect(config.optimalSlmThreads).toBe(threads);
+        expect(config.optimalSlmContextSize).toBe(ctx);
+    });
 });
+
