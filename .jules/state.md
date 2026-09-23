@@ -16,7 +16,7 @@
 | Agent | Task | Files locked | Status |
 |---|---|---|---|
 | Spec | Completed reproducing test for SqliteStoragePlugin (CWE-89) | none | idle |
-| Bolt | Optimized VetoEngine regex pre-compilation & array allocation hoisting | none | idle |
+| Bolt | Optimized VetoEngine path checking via zero-allocation Set lookup and path iterator | none | idle |
 | Sentinel | Ready for SqliteStoragePlugin stacked query validation fix | none | idle |
 | Scribe | Queued: MD022 heading compliance in docs/ and auto_healing reports | none | idle |
 | Refactor | Queued: Reduce nesting depth <= 3 in pyramid_analyst.ts & PurityScorer.ts | none | idle |
