@@ -3,6 +3,10 @@
 Critical learnings only.
 Format: ## YYYY-MM-DD - [Title] / **Learning:** ... / **Action:** ...
 
+## 2026-09-23 - PsaContext WorkspaceRoot Constructor Type and PsaPluginLoader Isolation
+**Learning:** `PsaContext` accepts `workspaceRoot` directly as a `string` parameter (not an options object like `{ workspaceRoot: dir }`). Passing an object causes path joining in `PsaPluginLoader` to produce type errors when resolving relative plugin paths.
+**Action:** Always instantiate `PsaContext` with string parameter `new PsaContext(tmpDir)` in test suites when working with isolated workspace directories.
+
 ## 2026-09-10 - Default Models Registration Parity in PsaLLMService & /v1/models
 **Learning:** `PsaLLMService` model registration is the single source of truth for available SLM models across both the engine and HTTP/SSE endpoints (`/v1/models`). Missing model definitions like `qwen2.5-coder-7b` in `registerDefaultModels()` cause model lookups and E2E list checks to fail.
 **Action:** Ensure all default models (`qwen2.5-coder-1.5b`, `qwen3-8b-thinking`, `qwen2.5-coder-7b`, and aliases) are registered upon `PsaLLMService` initialization and verified by unit/E2E test suites.
