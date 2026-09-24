@@ -33,6 +33,8 @@ export interface AdaptiveConfig {
     maxWasmMicroAgents: number;
     fileWatchIntervalMs: number;
     aiStrategy: "CloudOnly" | "CloudOrWarmPurge" | "LocalOrCloudWithCache";
+    optimalSlmThreads: number;
+    optimalSlmContextSize: number;
 }
 
 export class SovereignResourceBudget {
@@ -179,6 +181,7 @@ export class SovereignResourceBudget {
     public getAdaptiveConfig(): AdaptiveConfig {
         const snapshot = this.getLatestSnapshot();
         const cores = snapshot.cpuCount;
+        const effectiveCores = cores > 4 ? Math.max(4, Math.floor(cores / 2)) : cores;
 
         switch (snapshot.mode) {
             case "Ultraleve":
@@ -188,7 +191,9 @@ export class SovereignResourceBudget {
                     maxConcurrentWorkers: 1,
                     maxWasmMicroAgents: 1,
                     fileWatchIntervalMs: 10000,
-                    aiStrategy: "CloudOnly"
+                    aiStrategy: "CloudOnly",
+                    optimalSlmThreads: Math.max(1, Math.min(Math.floor(effectiveCores * 0.5), 4)),
+                    optimalSlmContextSize: 2048
                 };
 
             case "Balanceado":
@@ -198,7 +203,9 @@ export class SovereignResourceBudget {
                     maxConcurrentWorkers: Math.max(2, cores),
                     maxWasmMicroAgents: 3,
                     fileWatchIntervalMs: 3000,
-                    aiStrategy: "CloudOrWarmPurge"
+                    aiStrategy: "CloudOrWarmPurge",
+                    optimalSlmThreads: Math.max(1, Math.min(Math.floor(effectiveCores * 0.75), 6)),
+                    optimalSlmContextSize: snapshot.ramTotalGB >= 16 ? 4096 : 2048
                 };
 
             case "Turbo":
@@ -208,9 +215,27 @@ export class SovereignResourceBudget {
                     maxConcurrentWorkers: Math.max(4, cores * 2),
                     maxWasmMicroAgents: 8,
                     fileWatchIntervalMs: 1000,
-                    aiStrategy: "LocalOrCloudWithCache"
+                    aiStrategy: "LocalOrCloudWithCache",
+                    optimalSlmThreads: Math.max(1, Math.min(effectiveCores, 8)),
+                    optimalSlmContextSize: 4096
                 };
         }
+    }
+
+    public getMaxWasmConcurrency(): number {
+        return this.getAdaptiveConfig().maxWasmMicroAgents;
+    }
+
+    public getOptimalSlmThreads(): number {
+        return this.getAdaptiveConfig().optimalSlmThreads;
+    }
+
+    public getOptimalSlmContextSize(is7bOr8b: boolean = false): number {
+        const baseCtx = this.getAdaptiveConfig().optimalSlmContextSize;
+        if (is7bOr8b && this.getLatestSnapshot().ramFreeGB < 4) {
+            return 2048;
+        }
+        return baseCtx;
     }
 
     public getLatestSnapshot(): TelemetrySnapshot {

@@ -67,6 +67,14 @@ export class PsaEventBus {
     }
 
     /**
+     * Checks if any waterfall hooks are registered for the specified operation.
+     */
+    public hasWaterfall(hookName: string): boolean {
+        const hooks = this.waterfalls.get(hookName);
+        return Boolean(hooks && hooks.length > 0);
+    }
+
+    /**
      * Registers a waterfall middleware hook for intercepted operations.
      */
     public waterfall<T = any, R = any>(hookName: string, hook: PsaWaterfallHook<T, R>): void {
@@ -82,8 +90,9 @@ export class PsaEventBus {
      * Runs the chain of waterfall middleware hooks sequentially before calling the final handler.
      */
     public async runWaterfall<T = any, R = any>(hookName: string, initialPayload: T, finalHandler: (payload: T) => Promise<R>): Promise<R> {
-        const hooks = this.waterfalls.get(hookName) || [];
-        if (hooks.length === 0) {
+        // ⚡ Bolt Optimization: Avoid allocating an empty array fallback `[]` when no hooks are registered
+        const hooks = this.waterfalls.get(hookName);
+        if (!hooks || hooks.length === 0) {
             return await finalHandler(initialPayload);
         }
 
