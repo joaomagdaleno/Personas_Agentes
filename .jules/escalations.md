@@ -8,3 +8,11 @@ Format:
 **Options:** A) ... B) ... C) ...
 **Recommended:** [A/B/C] because ...
 **Status:** PENDING HUMAN
+
+## 2026-09-24 15:03 – Escalation
+**Raised by:** Auto-merge Workflow
+**Decision needed:** Fix test failures on PR #85
+**Context:** bun test failed on PR #85.
+**Options:** A) Fix failing tests B) Close PR
+**Recommended:** A
+**Status:** PENDING HUMAN
