@@ -59,9 +59,17 @@ Requisitos:
             if (count >= 150) break;
             const nid = this._id(f), lbl = new Path(f).name();
             if (!nodes.has(nid)) { nodes.add(nid); this._style(nid, f, lines); }
-            (d.dependencies || []).forEach((dep: any) => {
-                if (count < 150 && !(count > 100 && /(utils|types)/.test(dep))) {
-                    lines.push(`    ${nid}["${lbl}"] --> ${this._id(dep.toString())}`);
+
+            let deps: string[] = [];
+            if (Array.isArray(d?.dependencies)) {
+                deps = d.dependencies;
+            } else if (d?.dependencies && typeof d.dependencies === "object") {
+                deps = Object.keys(d.dependencies);
+            }
+
+            deps.forEach((dep: any) => {
+                if (count < 150 && !(count > 100 && /(utils|types)/.test(String(dep)))) {
+                    lines.push(`    ${nid}["${lbl}"] --> ${this._id(String(dep))}`);
                     count++;
                 }
             });
