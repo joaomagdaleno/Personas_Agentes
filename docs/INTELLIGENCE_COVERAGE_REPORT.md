@@ -1,6 +1,6 @@
 # 🧠 Relatório de Cobertura de Inteligência e Pontos Cegos das Super Personas
 
-> **Data de Gerado:** 2026-09-18T04:12:58.719Z
+> **Data de Gerado:** 2026-09-22T16:32:52.133Z
 > **Status Geral de Inteligência:** 100% Coberto (11/11 Tecnologias)
 
 ---
@@ -16,17 +16,17 @@
 ## 🛠️ Tecnologias Mapeadas no Projeto
 | ID | Tecnologia / Feature | Categoria | Evidências / Módulos |
 | :--- | :--- | :--- | :--- |
-| `ts_bun` | **TypeScript / Bun Runtime** | Runtime | `package.json`, `src_local/utils/ai/warm_purge_offline_engine.ts` |
-| `slm_gguf` | **SLM / Local GGUF (Llama.cpp)** | AI/SLM | `.env.example`, `src_local/utils/ai/local_slm_engine.ts` |
-| `local_slm_engine` | **Local SLM Engine (Llama.cpp / GGUF)** | AI/SLM | `src_local/utils/ai/local_slm_engine.ts`, `src_local/utils/ai/warm_purge_offline_engine.ts` |
-| `zvec_grep` | **ZvecGrep (Hybrid Vector/BM25 Search)** | Search Engine | `package.json`, `src_local/utils/zvec/zvec_grep_engine.ts` |
-| `wasm_micro_agents` | **WASM Micro-Agents (WASI Runtime)** | Runtime | `package.json`, `src_native/wasm_agents/agent_telemetry.zig` |
-| `zig_native_ffi` | **Zig Native Analyzer & FFI** | Language | `src_native/zig_analyzer/analyzer.zig`, `src_native/wasm_agents/agent_telemetry.zig` |
-| `go_hub_grpc` | **Go Hub gRPC Proxy** | IPC/RPC | `package.json`, `walkthrough.md` |
-| `rust_simd` | **Rust SIMD Analyzer & FFI** | Language | `src_native/tray_rust/Cargo.toml`, `src_native/analyzer/src/connectivity.rs` |
-| `winui_dsh_desktop` | **Native WinUI 3 XAML Desktop Interface** | Frontend | `package.json`, `src_local/server/psa_server.ts` |
-| `sqlite_persistence` | **SQLite Persistence & Stability Ledger** | Database | `src_local/utils/stability_ledger.test.ts`, `src_local/core/orchestrator.ts` |
-| `micro_gpt_neural` | **MicroGPT Neural Subsystem** | AI/SLM | `src_local/utils/ai/test_predictor.ts`, `src_local/utils/ai/predictor_engine.test.ts` |
+| `ts_bun` | **TypeScript / Bun Runtime** | Runtime | `package.json`, `.sovereign_cache.json` |
+| `slm_gguf` | **SLM / Local GGUF (Llama.cpp)** | AI/SLM | `.env.example`, `.jules/bolt.md` |
+| `local_slm_engine` | **Local SLM Engine (Llama.cpp / GGUF)** | AI/SLM | `.jules/sentinel.md`, `.sovereign_cache.json` |
+| `zvec_grep` | **ZvecGrep (Hybrid Vector/BM25 Search)** | Search Engine | `package.json`, `.sovereign_cache.json` |
+| `wasm_micro_agents` | **WASM Micro-Agents (WASI Runtime)** | Runtime | `package.json`, `.jules/scribe.md` |
+| `zig_native_ffi` | **Zig Native Analyzer & FFI** | Language | `.jules/queue.md`, `.jules/review.md` |
+| `go_hub_grpc` | **Go Hub gRPC Proxy** | IPC/RPC | `package.json`, `.jules/spec.md` |
+| `rust_simd` | **Rust SIMD Analyzer & FFI** | Language | `.jules/sentinel.md`, `.sovereign_cache.json` |
+| `winui_dsh_desktop` | **Native WinUI 3 XAML Desktop Interface** | Frontend | `package.json`, `.sovereign_cache.json` |
+| `sqlite_persistence` | **SQLite Persistence & Stability Ledger** | Database | `.sovereign_cache.json`, `scripts/benchmark.ts` |
+| `micro_gpt_neural` | **MicroGPT Neural Subsystem** | AI/SLM | `.sovereign_cache.json`, `docs/INTELLIGENCE_COVERAGE_REPORT.md` |
 
 ---
 
