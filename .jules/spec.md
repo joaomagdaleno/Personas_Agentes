@@ -14,3 +14,7 @@ Format: ## YYYY-MM-DD - [Title] / **Learning:** ... / **Action:** ...
 ## 2026-09-14 - Uncovered VetoEngine Heuristic Classification
 **Learning:** `VetoEngine` contains domain-specific heuristic filters (`isTechnicalMath` and `isRuleDefinition`) that differentiate false-positive math expressions from monetary balance issues and detect rule definition patterns in code scanning.
 **Action:** When testing governance modules, ensure heuristic boundary conditions (e.g. presence of financial terms suppressing math heuristics) are explicitly covered.
+
+## 2026-09-19 - WorkspaceRoot Dependency in RegistryManager & PsaSystemControlPlugin Unit Testing
+**Learning:** `RegistryManager` loads stack files from `agents_registry/*.json` relative to `PsaContext`'s `workspaceRoot`. When initializing `PsaContext` with isolated temporary folders, `agents_registry` must either be populated or `workspaceRoot` must point to the repository root for catalog tools like `registry.get_agent_info` to find indexed agent metadata (such as `bolt`, `scribe`, `sentinel`).
+**Action:** In plugin unit tests requiring `agents_registry` data, pass `path.resolve(".")` as `workspaceRoot` to `PsaContext` while creating separate temporary directories for file outputs.
