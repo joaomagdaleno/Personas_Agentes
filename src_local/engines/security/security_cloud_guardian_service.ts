@@ -2,6 +2,7 @@ import winston from "winston";
 import * as ts from "typescript";
 import type { AuditRule } from "../../core/types.ts";
 import { HubManagerGRPC } from "../../core/hub_manager_grpc.ts";
+import { VetoEngine } from "../../core/governance/veto_engine.ts";
 
 const logger = winston.child({ module: "SecurityCloudGuardianService" });
 

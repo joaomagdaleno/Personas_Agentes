@@ -1,102 +1,146 @@
-import { describe, it, expect, beforeEach, spyOn } from "bun:test";
+import { describe, it, expect, beforeEach, afterEach, spyOn } from "bun:test";
 import { PsaContext } from "../src_local/psa/kernel/psa_context.ts";
 import { GoHubPlugin } from "../src_local/psa/plugins/native/go_hub_plugin.ts";
 import { HubManagerGRPC } from "../src_local/core/hub_manager_grpc.ts";
+import * as fs from "node:fs";
+import * as path from "node:path";
 
-/**
- * Component Under Test: src_local/psa/plugins/native/go_hub_plugin.ts
- * Layer: Native Plugins / Go Hub Proxy gRPC Bridge
- * Pattern: Arrange-Act-Assert (AAA)
- */
-describe("GoHubPlugin Unit Tests", () => {
+describe("GoHubPlugin Native Plugin Unit Tests", () => {
     let ctx: PsaContext;
+    let scratchDir: string;
+    let plugin: GoHubPlugin;
 
     beforeEach(() => {
-        ctx = new PsaContext(process.cwd());
-        const plugin = new GoHubPlugin();
-        plugin.apply(ctx);
-        ctx.plugins.register(plugin);
+        PsaContext.resetInstance();
+        scratchDir = path.resolve(process.cwd(), `.psa_gohub_test_${Date.now()}`);
+        fs.mkdirSync(scratchDir, { recursive: true });
+        ctx = PsaContext.getInstance(scratchDir);
+        plugin = new GoHubPlugin();
     });
 
-    it("should register native.hub_status and native.hub_knowledge_graph tools in PsaContext", () => {
-        // Arrange & Act
-        const registeredTools = ctx.tools.list();
-        const toolNames = registeredTools.map(t => t.name);
-
-        // Assert
-        expect(toolNames).toContain("native.hub_status");
-        expect(toolNames).toContain("native.hub_knowledge_graph");
+    afterEach(() => {
+        PsaContext.resetInstance();
+        try {
+            if (fs.existsSync(scratchDir)) {
+                fs.rmSync(scratchDir, { recursive: true, force: true });
+            }
+        } catch {}
     });
 
-    it("should verify Go Hub Proxy status via native.hub_status tool", async () => {
-        // Act
-        const result = await ctx.tools.executeTool("native.hub_status", {});
-
-        // Assert
-        expect(result.status).toBe("success");
-        const resData = result.result as {
-            status: string;
-            healthy: boolean;
-            host: string;
-            transport: string;
-            maxMessageBuffer: string;
-            circuitBreaker: string;
-        };
-        expect(typeof resData.healthy).toBe("boolean");
-        expect(resData.host).toBe("127.0.0.1:50051");
-        expect(resData.transport).toBe("gRPC over HTTP/2");
-        expect(resData.maxMessageBuffer).toBe("128 MB");
-        expect(resData.circuitBreaker).toBe("ARMED");
-    });
-
-    it("should query sovereign knowledge graph via native.hub_knowledge_graph tool when Hub returns data or null", async () => {
-        // Act
-        const result = await ctx.tools.executeTool("native.hub_knowledge_graph", {});
-
-        // Assert
-        expect(result.status).toBe("success");
-        const resData = result.result as { status: string; data: any };
-        expect(resData.status).toBe("success");
-        expect(resData.data).toBeDefined();
-        expect(Array.isArray(resData.data.nodes)).toBe(true);
-        expect(Array.isArray(resData.data.edges)).toBe(true);
-    });
-
-    it("should query sovereign knowledge graph via native.hub_knowledge_graph tool with specific focus and depth", async () => {
-        // Act
-        const result = await ctx.tools.executeTool("native.hub_knowledge_graph", {
-            focus: "src_local/psa/kernel/psa_events.ts",
-            depth: 2
-        });
-
-        // Assert
-        expect(result.status).toBe("success");
-        const resData = result.result as { status: string; data: any };
-        expect(resData.status).toBe("success");
-        expect(resData.data).toBeDefined();
-        expect(Array.isArray(resData.data.nodes)).toBe(true);
-        expect(Array.isArray(resData.data.edges)).toBe(true);
-    });
-
-    it("should handle thrown errors gracefully with fallback payload in native.hub_knowledge_graph", async () => {
+    it("should register plugin metadata and tools in PsaContext", async () => {
         // Arrange
+        expect(plugin.name).toBe("native-go-hub");
+        expect(plugin.version).toBe("2.0.0");
+        expect(plugin.description).toContain("Go Hub Proxy");
+
+        // Act
+        await ctx.use(plugin);
+
+        // Assert
+        expect(ctx.plugins.has("native-go-hub")).toBe(true);
+        expect(ctx.tools.has("native.hub_status")).toBe(true);
+        expect(ctx.tools.has("native.hub_knowledge_graph")).toBe(true);
+    });
+
+    it("should execute native.hub_status tool and return connectivity metrics", async () => {
+        // Arrange
+        await ctx.use(plugin);
         const hub = HubManagerGRPC.getInstance();
-        const spy = spyOn(hub, "getKnowledgeGraph").mockImplementation(async () => {
-            throw new Error("gRPC Connection Refused Test Error");
+        const spyIsHealthy = spyOn(hub, "isHealthy").mockImplementation(async () => true);
+
+        try {
+            // Act
+            const res = await ctx.tools.executeTool("native.hub_status", {});
+
+            // Assert
+            expect(res.status).toBe("success");
+            expect(res.result).toEqual({
+                status: "ONLINE",
+                healthy: true,
+                host: "127.0.0.1:50051",
+                transport: "gRPC over HTTP/2",
+                maxMessageBuffer: "128 MB",
+                circuitBreaker: "ARMED"
+            });
+        } finally {
+            spyIsHealthy.mockRestore();
+        }
+    });
+
+    it("should execute native.hub_status tool with OFFLINE_DEGRADED status when hub is unhealthy", async () => {
+        // Arrange
+        await ctx.use(plugin);
+        const hub = HubManagerGRPC.getInstance();
+        const spyIsHealthy = spyOn(hub, "isHealthy").mockImplementation(async () => false);
+
+        try {
+            // Act
+            const res = await ctx.tools.executeTool("native.hub_status", {});
+
+            // Assert
+            expect(res.status).toBe("success");
+            expect(res.result.status).toBe("OFFLINE_DEGRADED");
+            expect(res.result.healthy).toBe(false);
+        } finally {
+            spyIsHealthy.mockRestore();
+        }
+    });
+
+    it("should execute native.hub_knowledge_graph tool successfully with default and custom arguments", async () => {
+        // Arrange
+        await ctx.use(plugin);
+        const hub = HubManagerGRPC.getInstance();
+        const mockGraphData = { nodes: [{ id: "A" }], edges: [] };
+        const spyGraph = spyOn(hub, "getKnowledgeGraph").mockImplementation(async (focus, depth) => mockGraphData);
+
+        try {
+            // Act 1: Default args
+            const resDefault = await ctx.tools.executeTool("native.hub_knowledge_graph", {});
+
+            // Assert 1
+            expect(resDefault.status).toBe("success");
+            expect(resDefault.result).toEqual({
+                status: "success",
+                data: mockGraphData
+            });
+            expect(spyGraph).toHaveBeenCalledWith("", 1);
+
+            // Act 2: Custom args
+            const resCustom = await ctx.tools.executeTool("native.hub_knowledge_graph", { focus: "src/main.ts", depth: 3 });
+
+            // Assert 2
+            expect(resCustom.status).toBe("success");
+            expect(resCustom.result).toEqual({
+                status: "success",
+                data: mockGraphData
+            });
+            expect(spyGraph).toHaveBeenCalledWith("src/main.ts", 3);
+        } finally {
+            spyGraph.mockRestore();
+        }
+    });
+
+    it("should handle error fallback in native.hub_knowledge_graph tool when getKnowledgeGraph throws", async () => {
+        // Arrange
+        await ctx.use(plugin);
+        const hub = HubManagerGRPC.getInstance();
+        const spyGraph = spyOn(hub, "getKnowledgeGraph").mockImplementation(async () => {
+            throw new Error("gRPC Connection refused");
         });
 
         try {
             // Act
-            const result = await ctx.tools.executeTool("native.hub_knowledge_graph", { focus: "test" });
+            const res = await ctx.tools.executeTool("native.hub_knowledge_graph", { focus: "test.ts" });
 
             // Assert
-            expect(result.status).toBe("success");
-            const resData = result.result as { status: string; error: string; data: any };
-            expect(resData.status).toBe("fallback");
-            expect(resData.error).toBe("gRPC Connection Refused Test Error");
-            expect(resData.data.note).toBe("Offline local graph used");
+            expect(res.status).toBe("success");
+            expect(res.result).toEqual({
+                status: "fallback",
+                error: "gRPC Connection refused",
+                data: { nodes: [], edges: [], note: "Offline local graph used" }
+            });
         } finally {
-            spy.mockRestore();
+            spyGraph.mockRestore();
         }
     });
 });

@@ -7,9 +7,9 @@ Format: ## YYYY-MM-DD - [Title] / **Learning:** ... / **Action:** ...
 **Learning:** `PsaLLMService` model registration is the single source of truth for available SLM models across both the engine and HTTP/SSE endpoints (`/v1/models`). Missing model definitions like `qwen2.5-coder-7b` in `registerDefaultModels()` cause model lookups and E2E list checks to fail.
 **Action:** Ensure all default models (`qwen2.5-coder-1.5b`, `qwen3-8b-thinking`, `qwen2.5-coder-7b`, and aliases) are registered upon `PsaLLMService` initialization and verified by unit/E2E test suites.
 
-## 2026-09-18 - Native Plugin gRPC Fallback Mocking Strategy
-**Learning:** `GoHubPlugin` wraps `HubManagerGRPC` calls (`isHealthy` and `getKnowledgeGraph`) which handle gRPC network exceptions internally and return structured fallback payloads. Mocking methods on `HubManagerGRPC.getInstance()` allows testing both the online response path and exception fallback branches cleanly without requiring active gRPC server listeners during unit tests.
-**Action:** Use `spyOn(HubManagerGRPC.getInstance(), 'getKnowledgeGraph')` to simulate gRPC connection failures and verify plugin fallback response schemas.
+## 2026-09-17 - Spying on HubManagerGRPC Singleton Methods
+**Learning:** `GoHubPlugin` relies on `HubManagerGRPC.getInstance()` singleton for native gRPC communications. Spying directly on the singleton instance using `spyOn(HubManagerGRPC.getInstance(), "isHealthy")` and `spyOn(HubManagerGRPC.getInstance(), "getKnowledgeGraph")` enables clean isolation of plugin behavior without needing native Go process execution during unit tests.
+**Action:** Always mock singleton backend methods via `spyOn(Instance, "method")` and restore them in `finally` blocks to maintain isolation and prevent side-effects in subsequent tests.
 
 ## 2026-09-14 - Uncovered VetoEngine Heuristic Classification
 **Learning:** `VetoEngine` contains domain-specific heuristic filters (`isTechnicalMath` and `isRuleDefinition`) that differentiate false-positive math expressions from monetary balance issues and detect rule definition patterns in code scanning.
