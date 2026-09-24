@@ -14,3 +14,7 @@ Format: ## YYYY-MM-DD - [Title] / **Learning:** ... / **Action:** ...
 ## 2026-09-14 - Uncovered VetoEngine Heuristic Classification
 **Learning:** `VetoEngine` contains domain-specific heuristic filters (`isTechnicalMath` and `isRuleDefinition`) that differentiate false-positive math expressions from monetary balance issues and detect rule definition patterns in code scanning.
 **Action:** When testing governance modules, ensure heuristic boundary conditions (e.g. presence of financial terms suppressing math heuristics) are explicitly covered.
+
+## 2026-09-22 - Dynamic Plugin Hot-Reload Unregistration Verification
+**Learning:** When testing dynamic plugin hot-reloading (`PsaPluginLoader.reloadPlugin`), reloading a plugin with a new file requires specifying a distinct plugin file or updated class definition. `PsaPluginRegistry.unregister` automatically cleans up tools registered by the old plugin instance, ensuring tool map integrity across hot-reloads.
+**Action:** In dynamic plugin loader tests, verify that tools from unregistered plugins are removed from `PsaContext.tools` upon reload or unregistration.
