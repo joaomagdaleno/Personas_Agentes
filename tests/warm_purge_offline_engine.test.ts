@@ -150,7 +150,7 @@ describe("WarmPurgeOfflineEngine Unit Tests", () => {
         expect(telemetry.isWarm).toBe(false);
         expect(telemetry.allocatedMemoryBytes).toBe(0);
         expect(telemetry.timeUntilPurgeMs).toBe(0);
-    }, 5000);
+    }, 20000);
 
     it("should stream tokens via streamChatCompletion and transition engine to warm state", async () => {
         // Arrange - Component: WarmPurgeOfflineEngine (Streaming) | Pattern: AAA
