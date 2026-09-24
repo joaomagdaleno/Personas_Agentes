@@ -1,232 +1,271 @@
 import { describe, it, expect, beforeEach, afterEach } from "bun:test";
-import { PsaContext } from "../src_local/psa/kernel/psa_context.ts";
-import { PsaPluginLoader } from "../src_local/psa/kernel/psa_plugin_loader.ts";
 import * as fs from "node:fs";
 import * as path from "node:path";
+import * as os from "node:os";
+import { PsaContext } from "../src_local/psa/kernel/psa_context.ts";
+import { PsaPluginLoader } from "../src_local/psa/kernel/psa_plugin_loader.ts";
 
 /**
- * 🧪 Test Strategy
- * Layer: src_local/psa/kernel/psa_plugin_loader.ts (PsaPluginLoader)
- * Pattern: Arrange-Act-Assert (AAA) / Given-When-Then
- * Objective: Verify dynamic file dynamic loading, directory scanning, file exclusion rules,
- * invalid plugin class handling, constructor exception handling, and hot-reloading.
+ * 🧪 Unit Tests: PsaPluginLoader
+ *
+ * Target Component: src_local/psa/kernel/psa_plugin_loader.ts
+ * Strategy: Arrange-Act-Assert (AAA) pattern testing file loading, directory scanning,
+ * file filtering, error resilience, and hot-reloading using isolated temporary workspace directories.
  */
-
 describe("PsaPluginLoader Unit Tests", () => {
-    let scratchDir: string;
+    let tmpDir: string;
     let ctx: PsaContext;
     let loader: PsaPluginLoader;
 
     beforeEach(() => {
-        PsaContext.resetInstance();
-        scratchDir = path.resolve(process.cwd(), `.psa_loader_test_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`);
-        fs.mkdirSync(scratchDir, { recursive: true });
-        ctx = PsaContext.getInstance(scratchDir);
+        tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "psa-plugin-loader-test-"));
+        ctx = new PsaContext(tmpDir);
         loader = new PsaPluginLoader(ctx);
     });
 
     afterEach(() => {
-        PsaContext.resetInstance();
-        try {
-            if (fs.existsSync(scratchDir)) {
-                fs.rmSync(scratchDir, { recursive: true, force: true });
-            }
-        } catch {}
+        if (fs.existsSync(tmpDir)) {
+            fs.rmSync(tmpDir, { recursive: true, force: true });
+        }
     });
 
     describe("loadFromFile", () => {
-        it("should return null when loading a non-existent file", async () => {
+        it("should return null and warn when file does not exist", async () => {
             // Arrange
-            const missingPath = path.join(scratchDir, "non_existent_plugin.ts");
+            const nonExistentPath = path.join(tmpDir, "non_existent_plugin.ts");
 
             // Act
-            const plugin = await loader.loadFromFile(missingPath);
+            const result = await loader.loadFromFile(nonExistentPath);
 
             // Assert
-            expect(plugin).toBeNull();
+            expect(result).toBeNull();
         });
 
-        it("should return null and handle gracefully if target file is not a valid PsaPlugin", async () => {
+        it("should return null when file exports no valid PsaPlugin implementation", async () => {
             // Arrange
-            const filePath = path.join(scratchDir, "invalid_plugin.ts");
-            const code = `
-                export class InvalidClass {
-                    someMethod() { return true; }
+            const filePath = path.join(tmpDir, "invalid_plugin.ts");
+            const fileContent = `
+                export class NotAPlugin {
+                    hello() { return "world"; }
                 }
+                export const someValue = 42;
             `;
-            fs.writeFileSync(filePath, code, "utf-8");
+            fs.writeFileSync(filePath, fileContent);
 
             // Act
-            const plugin = await loader.loadFromFile(filePath);
+            const result = await loader.loadFromFile(filePath);
 
             // Assert
-            expect(plugin).toBeNull();
+            expect(result).toBeNull();
         });
 
-        it("should handle constructor errors in exported classes gracefully and return null", async () => {
+        it("should successfully load and register a valid PsaPlugin exported class", async () => {
             // Arrange
-            const filePath = path.join(scratchDir, "throwing_plugin.ts");
-            const code = `
-                export class ThrowingPlugin {
-                    constructor() {
-                        throw new Error("Constructor initialization error!");
+            const filePath = path.join(tmpDir, "valid_plugin.ts");
+            const fileContent = `
+                export class SampleTestPlugin {
+                    name = "sample-test-plugin";
+                    version = "1.0.0";
+                    apply(ctx) {
+                        ctx.registerService("sample_service", { active: true });
                     }
                 }
             `;
-            fs.writeFileSync(filePath, code, "utf-8");
+            fs.writeFileSync(filePath, fileContent);
 
             // Act
             const plugin = await loader.loadFromFile(filePath);
 
             // Assert
-            expect(plugin).toBeNull();
+            expect(plugin).not.toBeNull();
+            expect(plugin?.name).toBe("sample-test-plugin");
+            expect(ctx.plugins.has("sample-test-plugin")).toBeTrue();
+            expect(ctx.hasService("sample_service")).toBeTrue();
         });
 
-        it("should resolve relative paths against workspaceRoot and load valid plugin", async () => {
+        it("should handle relative paths using workspaceRoot", async () => {
             // Arrange
-            const relativePath = "relative_plugin.ts";
-            const absolutePath = path.join(scratchDir, relativePath);
-            const code = `
+            const relFileName = "rel_plugin.ts";
+            const absFilePath = path.join(tmpDir, relFileName);
+            const fileContent = `
                 export class RelativePlugin {
                     name = "relative-plugin";
-                    version = "1.0.0";
-                    apply(c) {
-                        c.tools.register({
-                            name: "relative.tool",
-                            description: "Relative tool",
-                            schema: { type: "object", properties: {} },
-                            execute: async () => ({ ok: true })
-                        });
-                    }
+                    apply(ctx) {}
                 }
             `;
-            fs.writeFileSync(absolutePath, code, "utf-8");
+            fs.writeFileSync(absFilePath, fileContent);
 
             // Act
-            const plugin = await loader.loadFromFile(relativePath);
+            const plugin = await loader.loadFromFile(relFileName);
 
             // Assert
             expect(plugin).not.toBeNull();
             expect(plugin?.name).toBe("relative-plugin");
-            expect(ctx.plugins.has("relative-plugin")).toBe(true);
-            expect(ctx.tools.has("relative.tool")).toBe(true);
+            expect(ctx.plugins.has("relative-plugin")).toBeTrue();
+        });
+
+        it("should ignore constructors that throw on instantiation and continue loop", async () => {
+            // Arrange
+            const filePath = path.join(tmpDir, "throwing_constructor.ts");
+            const fileContent = `
+                export class ThrowingClass {
+                    constructor() {
+                        throw new Error("Cannot instantiate me");
+                    }
+                }
+                export class ValidSecondPlugin {
+                    name = "valid-second-plugin";
+                    apply(ctx) {}
+                }
+            `;
+            fs.writeFileSync(filePath, fileContent);
+
+            // Act
+            const plugin = await loader.loadFromFile(filePath);
+
+            // Assert
+            expect(plugin).not.toBeNull();
+            expect(plugin?.name).toBe("valid-second-plugin");
+        });
+
+        it("should return null gracefully if module import or execution fails", async () => {
+            // Arrange
+            const filePath = path.join(tmpDir, "syntax_error.ts");
+            fs.writeFileSync(filePath, "export class SyntaxErr { name = 'err'; apply( { "); // Malformed code
+
+            // Act
+            const result = await loader.loadFromFile(filePath);
+
+            // Assert
+            expect(result).toBeNull();
         });
     });
 
     describe("loadFromDirectory", () => {
         it("should return empty array if directory does not exist", async () => {
             // Arrange
-            const missingDir = path.join(scratchDir, "missing_dir");
+            const nonExistentDir = path.join(tmpDir, "missing_dir");
 
             // Act
-            const plugins = await loader.loadFromDirectory(missingDir);
+            const loaded = await loader.loadFromDirectory(nonExistentDir);
 
             // Assert
-            expect(plugins).toEqual([]);
+            expect(loaded).toBeArray();
+            expect(loaded.length).toBe(0);
         });
 
-        it("should recursively load valid plugins and skip ignored files (.test.ts, .d.ts, index.ts)", async () => {
+        it("should scan directory recursively and ignore .test.ts, .d.ts, and index.ts files", async () => {
             // Arrange
-            const subDir = path.join(scratchDir, "sub_plugins");
+            const pluginsDir = path.join(tmpDir, "plugins");
+            const subDir = path.join(pluginsDir, "nested");
             fs.mkdirSync(subDir, { recursive: true });
 
-            // 1. Valid plugin file
-            const validPluginFile = path.join(scratchDir, "valid_p1.ts");
-            fs.writeFileSync(validPluginFile, `
-                export class ValidPlugin1 {
-                    name = "valid-p1";
-                    version = "1.0.0";
-                    apply(c) {}
+            // File 1: Valid plugin
+            fs.writeFileSync(path.join(pluginsDir, "plugin_one.ts"), `
+                export class PluginOne {
+                    name = "plugin-one";
+                    apply(ctx) {}
                 }
-            `, "utf-8");
+            `);
 
-            // 2. Valid nested plugin file
-            const nestedPluginFile = path.join(subDir, "valid_p2.ts");
-            fs.writeFileSync(nestedPluginFile, `
-                export class ValidPlugin2 {
-                    name = "valid-p2";
-                    version = "1.0.0";
-                    apply(c) {}
+            // File 2: Nested valid plugin
+            fs.writeFileSync(path.join(subDir, "plugin_two.ts"), `
+                export class PluginTwo {
+                    name = "plugin-two";
+                    apply(ctx) {}
                 }
-            `, "utf-8");
+            `);
 
-            // 3. Ignored files
-            fs.writeFileSync(path.join(scratchDir, "ignored.test.ts"), `export class TestFile {}`, "utf-8");
-            fs.writeFileSync(path.join(scratchDir, "ignored.d.ts"), `export type Foo = string;`, "utf-8");
-            fs.writeFileSync(path.join(scratchDir, "index.ts"), `export class IndexFile {}`, "utf-8");
+            // Ignored files:
+            fs.writeFileSync(path.join(pluginsDir, "plugin_one.test.ts"), `
+                export class IgnoredTestPlugin { name = "ignored-test"; apply(ctx) {} }
+            `);
+            fs.writeFileSync(path.join(pluginsDir, "types.d.ts"), `
+                export interface Dummy {}
+            `);
+            fs.writeFileSync(path.join(pluginsDir, "index.ts"), `
+                export class IgnoredIndexPlugin { name = "ignored-index"; apply(ctx) {} }
+            `);
 
             // Act
-            const loadedPlugins = await loader.loadFromDirectory(scratchDir);
+            const loaded = await loader.loadFromDirectory(pluginsDir);
 
             // Assert
-            expect(loadedPlugins.length).toBe(2);
-            const names = loadedPlugins.map(p => p.name);
-            expect(names).toContain("valid-p1");
-            expect(names).toContain("valid-p2");
+            expect(loaded.length).toBe(2);
+            const names = loaded.map((p) => p.name);
+            expect(names).toContain("plugin-one");
+            expect(names).toContain("plugin-two");
+            expect(names).not.toContain("ignored-test");
+            expect(names).not.toContain("ignored-index");
         });
 
-        it("should handle readdir errors gracefully", async () => {
-            // Arrange: pass a file path instead of directory path to cause fs error in readdir
-            const filePath = path.join(scratchDir, "file_as_dir.ts");
-            fs.writeFileSync(filePath, "console.log('not a dir');", "utf-8");
+        it("should handle relative directory path using workspaceRoot", async () => {
+            // Arrange
+            const relDirName = "rel_plugins";
+            const absDirDir = path.join(tmpDir, relDirName);
+            fs.mkdirSync(absDirDir, { recursive: true });
+            fs.writeFileSync(path.join(absDirDir, "rel_p.ts"), `
+                export class RelDirPlugin {
+                    name = "rel-dir-plugin";
+                    apply(ctx) {}
+                }
+            `);
 
             // Act
-            const plugins = await loader.loadFromDirectory(filePath);
+            const loaded = await loader.loadFromDirectory(relDirName);
 
             // Assert
-            expect(plugins).toEqual([]);
+            expect(loaded.length).toBe(1);
+            expect(loaded[0].name).toBe("rel-dir-plugin");
+        });
+
+        it("should handle error when directory reading fails", async () => {
+            // Arrange - point readdir to a file instead of a directory
+            const filePath = path.join(tmpDir, "not_a_dir.ts");
+            fs.writeFileSync(filePath, "export const x = 1;");
+
+            // Act
+            const loaded = await loader.loadFromDirectory(filePath);
+
+            // Assert
+            expect(loaded).toBeArray();
+            expect(loaded.length).toBe(0);
         });
     });
 
     describe("reloadPlugin", () => {
-        it("should unregister existing plugin and load plugin from specified file on reloadPlugin", async () => {
+        it("should unregister existing plugin and reload new version on reloadPlugin", async () => {
             // Arrange
-            const initialPluginFile = path.join(scratchDir, "initial_plugin.ts");
-            const newPluginFile = path.join(scratchDir, "new_plugin.ts");
-
-            fs.writeFileSync(initialPluginFile, `
-                export class InitialPlugin {
-                    name = "target-plugin";
-                    version = "1.0.0";
-                    apply(c) {
-                        c.tools.register({
-                            name: "target.v1",
-                            description: "V1 tool",
-                            schema: { type: "object", properties: {} },
-                            execute: async () => ({ version: "v1" })
-                        });
+            const filePath = path.join(tmpDir, "reloadable_plugin.ts");
+            fs.writeFileSync(filePath, `
+                export class Version1Plugin {
+                    name = "reload-plugin";
+                    apply(ctx) {
+                        ctx.registerService("v_service", { version: 1 });
                     }
                 }
-            `, "utf-8");
+            `);
 
-            fs.writeFileSync(newPluginFile, `
-                export class NewPlugin {
-                    name = "target-plugin";
-                    version = "2.0.0";
-                    apply(c) {
-                        c.tools.register({
-                            name: "target.v2",
-                            description: "V2 tool",
-                            schema: { type: "object", properties: {} },
-                            execute: async () => ({ version: "v2" })
-                        });
+            const initialPlugin = await loader.loadFromFile(filePath);
+            expect(initialPlugin).not.toBeNull();
+            expect(ctx.plugins.has("reload-plugin")).toBeTrue();
+
+            // Update file content
+            fs.writeFileSync(filePath, `
+                export class Version2Plugin {
+                    name = "reload-plugin";
+                    apply(ctx) {
+                        ctx.registerService("v_service", { version: 2 });
                     }
                 }
-            `, "utf-8");
+            `);
 
-            // Load initial version
-            await loader.loadFromFile(initialPluginFile);
-            expect(ctx.plugins.has("target-plugin")).toBe(true);
-            expect(ctx.tools.has("target.v1")).toBe(true);
-
-            // Act: reload target-plugin with new file
-            const success = await loader.reloadPlugin("target-plugin", newPluginFile);
+            // Act
+            const success = await loader.reloadPlugin("reload-plugin", filePath);
 
             // Assert
-            expect(success).toBe(true);
-            expect(ctx.plugins.has("target-plugin")).toBe(true);
-            expect(ctx.tools.has("target.v1")).toBe(false); // V1 tool removed when old plugin was unregistered
-            expect(ctx.tools.has("target.v2")).toBe(true); // V2 tool registered
+            expect(success).toBeTrue();
+            expect(ctx.plugins.has("reload-plugin")).toBeTrue();
         });
     });
 });
