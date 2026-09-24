@@ -22,8 +22,15 @@ export class ConnectivityMapper {
         try {
             const sanitizedMap: Record<string, any> = {};
             for (const [file, data] of Object.entries(allMap)) {
+                let depList: string[] = [];
+                if (Array.isArray(data.dependencies)) {
+                    depList = data.dependencies.map((d: any) => typeof d === "string" ? d : (d?.path || d?.name || String(d)));
+                } else if (data.dependencies && typeof data.dependencies === "object") {
+                    depList = Object.keys(data.dependencies);
+                }
+
                 sanitizedMap[file] = {
-                    dependencies: data.dependencies || [],
+                    dependencies: depList,
                     advanced_metrics: data.advanced_metrics ? {
                         cyclomatic_complexity: data.advanced_metrics.cyclomaticComplexity || 1,
                         cognitive_complexity: data.advanced_metrics.cognitiveComplexity || 0,
