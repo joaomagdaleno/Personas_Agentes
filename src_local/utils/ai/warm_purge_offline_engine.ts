@@ -206,10 +206,11 @@ export class WarmPurgeOfflineEngine {
             return false;
         }
 
-        logger.info(`🔥 [WarmPurge] Inicializando daemon llama-server.exe para ${path.basename(modelPath)} na porta ${this.serverPort}...`);
+        const budget = SovereignResourceBudget.getInstance();
+        const threads = process.env.LOCAL_SLM_THREADS || String(budget.getOptimalSlmThreads());
+        const ctxSize = process.env.LOCAL_SLM_CTX || String(budget.getOptimalSlmContextSize(is7bOr8b));
 
-        const threads = process.env.LOCAL_SLM_THREADS || "8";
-        const ctxSize = is7bOr8b ? "4096" : "4096";
+        logger.info(`🔥 [WarmPurge] Inicializando daemon llama-server.exe para ${path.basename(modelPath)} na porta ${this.serverPort} (Threads: ${threads}, Ctx: ${ctxSize})...`);
 
         try {
             this.activeServerProcess = Bun.spawn([
@@ -219,6 +220,9 @@ export class WarmPurgeOfflineEngine {
                 "--port", String(this.serverPort),
                 "-c", ctxSize,
                 "-t", threads,
+                "--batch-size", "512",
+                "--ubatch-size", "256",
+                "--n-gpu-layers", "0",
                 "--reasoning-format", "deepseek"
             ], {
                 stdout: "ignore",
@@ -378,7 +382,8 @@ export class WarmPurgeOfflineEngine {
         const isTestEnv = process.env.BUN_ENV === "test" || process.env.NODE_ENV === "test" || Boolean(process.env.TEST);
         const maxTokens = options.maxTokens ?? (isTestEnv ? 32 : 512);
         const temp = options.temperature ?? 0.2;
-        const threads = process.env.LOCAL_SLM_THREADS || "8";
+        const budget = SovereignResourceBudget.getInstance();
+        const threads = process.env.LOCAL_SLM_THREADS || String(budget.getOptimalSlmThreads());
 
         // Mata qualquer processo de inferência anterior antes de iniciar o novo
         if (this.activeProcess) {
