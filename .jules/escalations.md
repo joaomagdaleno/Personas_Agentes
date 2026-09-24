@@ -24,3 +24,11 @@ Format:
 **Options:** A) Fix failing tests B) Close PR
 **Recommended:** A
 **Status:** PENDING HUMAN
+
+## 2026-09-24 15:08 – Escalation
+**Raised by:** Auto-merge Workflow
+**Decision needed:** Fix test failures on PR #87
+**Context:** bun test failed on PR #87.
+**Options:** A) Fix failing tests B) Close PR
+**Recommended:** A
+**Status:** PENDING HUMAN
