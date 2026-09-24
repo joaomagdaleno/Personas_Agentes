@@ -57,11 +57,14 @@ export function findModel(idOrAlias: string): SlmModelInfo | undefined {
 
 export async function calculateFileSha256(filePath: string): Promise<string> {
     return new Promise((resolve, reject) => {
-        const hash = crypto.createHash("sha256");
-        // ⚡ Bolt Optimization: Use 1MB highWaterMark buffer to minimize event-loop tick overhead and saturate I/O throughput for multi-gigabyte .gguf model files (~34% speedup)
+        // ⚡ Bolt Optimization: Use Bun.CryptoHasher when available or crypto.createHash fallback with 1MB streaming buffer to prevent OOM on multi-gigabyte .gguf files
+        const hasher = (typeof globalThis.Bun !== "undefined" && typeof globalThis.Bun.CryptoHasher === "function")
+            ? new globalThis.Bun.CryptoHasher("sha256")
+            : crypto.createHash("sha256");
+
         const stream = fs.createReadStream(filePath, { highWaterMark: 1024 * 1024 });
-        stream.on("data", data => hash.update(data));
-        stream.on("end", () => resolve(hash.digest("hex").toLowerCase()));
+        stream.on("data", data => hasher.update(data));
+        stream.on("end", () => resolve(hasher.digest("hex").toLowerCase()));
         stream.on("error", err => reject(err));
     });
 }

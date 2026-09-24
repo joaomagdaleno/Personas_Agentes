@@ -308,11 +308,22 @@ export class HubManagerGRPC {
      * Deduplicates a list of findings using the Rust analyzer.
      */
     async deduplicate(findings: AuditFinding[]) {
+        const normalized = (findings || []).map(f => ({
+            file: f.file || "",
+            agent: f.agent || "Security Guard",
+            role: (f as any).role || (f.agent ? `${f.agent} Specialist` : "Protector"),
+            emoji: (f as any).emoji || "🛡️",
+            issue: f.issue || "Security finding",
+            severity: f.severity || "MEDIUM",
+            stack: (f as any).stack || "General",
+            evidence: (f as any).evidence || "",
+            line: typeof f.line === "number" ? f.line : 0
+        }));
         const res = await this._call(async (meta) => {
-            const { response } = await this.client.deduplicate({ findingsJson: JSON.stringify(findings) }, { meta });
+            const { response } = await this.client.deduplicate({ findingsJson: JSON.stringify(normalized) }, { meta });
             return JSON.parse(response.jsonData) as AuditFinding[];
         }, "deduplicate");
-        return res || [];
+        return res || findings;
     }
 
     /**
