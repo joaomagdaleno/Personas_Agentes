@@ -78,16 +78,45 @@ pub fn run_analyze_core(path: &str, source_code: String) -> AnalysisResult {
         _ => None,
     };
 
-    if let Some(language) = tree_res {
-        parser.set_language(language).ok();
-    } else {
-        // Fallback or simple Loc-only analysis
-    }
+    let language = match tree_res {
+        Some(lang) => lang,
+        None => {
+            let non_empty = source_code.lines().filter(|l| !l.trim().is_empty()).count();
+            return AnalysisResult {
+                path: path.to_string(),
+                cyclomatic_complexity: 1,
+                cognitive_complexity: 0,
+                functions: Vec::new(),
+                symbols: Vec::new(),
+                findings: Vec::new(),
+                dependencies: dependencies::DependencyInfo::default(),
+                loc,
+                sloc: non_empty,
+                comments: 0,
+            };
+        }
+    };
 
-    let tree = parser.parse(&source_code, None).unwrap_or_else(|| {
-        // Create an empty tree or handle error
-        parser.parse("", None).unwrap()
-    });
+    parser.set_language(language).ok();
+
+    let tree = match parser.parse(&source_code, None) {
+        Some(t) => t,
+        None => {
+            let non_empty = source_code.lines().filter(|l| !l.trim().is_empty()).count();
+            return AnalysisResult {
+                path: path.to_string(),
+                cyclomatic_complexity: 1,
+                cognitive_complexity: 0,
+                functions: Vec::new(),
+                symbols: Vec::new(),
+                findings: Vec::new(),
+                dependencies: dependencies::DependencyInfo::default(),
+                loc,
+                sloc: non_empty,
+                comments: 0,
+            };
+        }
+    };
     let root_node = tree.root_node();
 
     // AST-based comment counting
