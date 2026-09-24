@@ -44,10 +44,8 @@ export class PsaSystemControlPlugin implements PsaPlugin {
                     autoHeal: false
                 });
 
-                const healthScore = orc.metrics.health_score || 100;
-                if (orc.hubWatcher) {
-                    orc.hubWatcher.stop();
-                }
+                const healthScore = typeof orc.metrics?.health_score === "number" ? orc.metrics.health_score : 0;
+                await orc.shutdown();
 
                 return {
                     status: "success",
