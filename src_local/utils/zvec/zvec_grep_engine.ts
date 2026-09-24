@@ -81,9 +81,20 @@ export class ZvecGrepEngine {
       }
     }
 
+    // Sanitiza e formata a query para evitar estouro de buffer ou erro no ripgrep com textos multilinha
+    const sanitizedQuery = (query || "")
+      .split("\n")[0]
+      .replace(/[^\w\s\.\-_]/g, " ")
+      .trim()
+      .slice(0, 120);
+
+    if (!sanitizedQuery) {
+      return [];
+    }
+
     try {
       const contextOptions: ZvecGrepContextOptions = {
-        query,
+        query: sanitizedQuery,
         limit,
         rg: true // Habilita ripgrep fallback se o índice não estiver construído
       };

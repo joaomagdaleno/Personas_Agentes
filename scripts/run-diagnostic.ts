@@ -72,8 +72,11 @@ async function main() {
                 skipTests: !!args.values["skip-tests"],
                 dryRun: !!args.values["dry-run"]
             });
-            logger.info(`✨ Resultado: ${(res.result as any)?.summary || "Concluído"}`);
-            logger.info(`🩺 Health Score do Sistema: ${(res.result as any)?.healthScore || 100}%`);
+            if (res.status === "error") {
+                logger.error(`❌ Erro no pipeline de diagnóstico: ${res.result}`);
+            }
+            const score = (res.result as any)?.healthScore;
+            logger.info(`🩺 Health Score do Sistema: ${score !== undefined ? score : "N/A"}%`);
         }
 
         logger.info("🏁 Operação concluída.");

@@ -10,6 +10,9 @@ export class DiagnosticFinalizer {
     static async finalize(pipeline: any, ctx: any, health: any, findings: any[], dryRun: boolean = false): Promise<Path> {
         const orc = pipeline.orc;
         const snapshot = await orc.getSystemHealth360(ctx, health, findings);
+        if (orc.metrics) {
+            orc.metrics.health_score = snapshot.health_score;
+        }
 
         logger.info(`✨ Finalizando diagnóstico com score: ${snapshot.health_score}%`);
 
