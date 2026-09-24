@@ -32,7 +32,7 @@ export class SystemManager {
     /**
      * Limpa processos órfãos que possam estar travando as portas gRPC/HTTP do Hub e Sidecar.
      */
-    public cleanupPorts(ports: number[] = [50051, 8080]) {
+    public cleanupPorts(ports: number[] = [50051, 50052, 8080]) {
         const isWin = process.platform === "win32";
         for (const port of ports) {
             try {
@@ -85,7 +85,7 @@ export class SystemManager {
         logger.info("🚀 Iniciando infraestrutura nativa (Hub + Sidecar) pelo SystemManager...");
         
         // Executa limpeza de processos órfãos que possam estar ocupando as portas de gRPC/HTTP
-        this.cleanupPorts([50051, 8080]);
+        this.cleanupPorts([50051, 50052, 8080]);
 
         const absRoot = path.resolve(projectRoot);
         const isWin = process.platform === "win32";
