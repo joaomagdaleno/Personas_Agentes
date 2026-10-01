@@ -111,3 +111,42 @@ The verifier enforces 4 inviolable mathematical safety contracts:
 **Resolution Steps:**
 1. Inspect the generated patch for missing `WHERE` clauses in SQL queries or unbounded loop constructs.
 2. Ensure explicit guard conditions are present in the patch code before re-submitting to `FormalVerificationEngine`.
+
+---
+
+## 5. Test Suite Reports 204/207 Instead of 207/207 (Sandboxed Environment)
+
+### Issue: Three Tests Fail Locally With `EPERM`, But Pass in CI
+
+**Symptoms:**
+- `bun test` reports `204 pass, 3 fail` instead of the documented 207/207 baseline.
+- The three failures are always the same:
+  - `dsh_fs_shell_plugins.test.ts` → *deve executar comando nativo via ShellPlugin e capturar stdout/exitCode*
+  - `psa_expanded_suite.test.ts` → *TerminalPtyPlugin > deve instanciar processo interativo, ler buffer e encerrar sessão*
+  - `zvec_grep_plugin.test.ts` → *should execute zvec_grep.search and return formatted RAG search hits with content and filePath*
+- The error is `EPERM: operation not permitted, uv_spawn '<binary>'`.
+
+**Root Causes & Diagnosis:**
+This is an **environment limitation, not a code defect**. Some sandboxed harnesses (e.g. the DSH file/process sandbox) deny child processes that use **piped stdio**. All three tests legitimately require piping, so they cannot succeed under confinement:
+
+| Component | Spawn site | Blocked binary |
+| :--- | :--- | :--- |
+| `ShellPlugin` (`shell.exec`) | `src_local/psa/plugins/core/shell_plugin.ts` | `powershell.exe` |
+| `TerminalPtyPlugin` | `src_local/psa/plugins/core/terminal_pty_plugin.ts` | `cmd.exe` (uses `stdin/stdout/stderr: "pipe"`) |
+| `@zvec/zvec-grep` | `node_modules/@zvec/zvec-grep` → `execFile` | `rg.exe` (bundled `@vscode/ripgrep`) |
+
+The `zvec` case is the least obvious: the logged message is a wrapper. Inspecting `error.cause` reveals the true `EPERM` originating from ripgrep.
+
+To confirm the boundary, compare spawn behaviour:
+
+```typescript
+spawn(cmd, args, { stdio: "inherit" }) // works under sandbox
+spawn(cmd, args, { stdio: "ignore"  }) // works under sandbox
+spawn(cmd, args)                       // defaults to "pipe" -> EPERM
+```
+
+**Resolution Steps:**
+1. **Do NOT change the code to make these pass under a sandbox.** Switching to `stdio: "inherit"` would silence the failure while destroying the actual feature — `shell.exec` exists precisely to capture stdout/exitCode, and the PTY requires all three pipes.
+2. **Run the suite in a non-sandboxed environment for a true baseline.** The CI pipeline (`.github/workflows/ci.yml`, `windows-latest`) runs `bun run test:coverage` without any sandbox and reliably reports 207/207.
+3. **Trust the 207/207 baseline from CI.** A local `204/207` in a confined shell is expected and is not a regression.
+4. If you must run elevated locally, granting the process full access restores all three tests (`207 pass, 0 fail`, exit code 0).
