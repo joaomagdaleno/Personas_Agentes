@@ -114,12 +114,24 @@ The verifier enforces 4 inviolable mathematical safety contracts:
 
 ---
 
-## 5. Test Suite Reports 204/207 Instead of 207/207 (Sandboxed Environment)
+## 5. Test Suite Reports Fewer Passing Tests Than the 211 Baseline
 
-### Issue: Three Tests Fail Locally With `EPERM`, But Pass in CI
+The test suite has **three independent ways to report a wrong or reduced result**, and they look
+similar but have completely different causes. Check them in this order — the first two are the
+common cases and neither is a real test failure.
+
+| Symptom | Real cause | Go to |
+| :--- | :--- | :--- |
+| `208 pass, 3 fail`, error `EPERM ... uv_spawn` | Sandbox denies piped stdio | §5a |
+| `193 tests`, 13 failures, run takes ~205s instead of ~47s | `bin/` directory missing | §5b |
+| Build error `3 errors building "...veto_engine.ts"`, 4 tools fail | Duplicate declarations in source | §5c |
+
+---
+
+### 5a. Three Tests Fail With `EPERM` (Sandboxed Environment)
 
 **Symptoms:**
-- `bun test` reports `204 pass, 3 fail` instead of the documented 207/207 baseline.
+- `bun test` reports `208 pass, 3 fail` instead of the 211/211 baseline.
 - The three failures are always the same:
   - `dsh_fs_shell_plugins.test.ts` → *deve executar comando nativo via ShellPlugin e capturar stdout/exitCode*
   - `psa_expanded_suite.test.ts` → *TerminalPtyPlugin > deve instanciar processo interativo, ler buffer e encerrar sessão*
@@ -147,6 +159,57 @@ spawn(cmd, args)                       // defaults to "pipe" -> EPERM
 
 **Resolution Steps:**
 1. **Do NOT change the code to make these pass under a sandbox.** Switching to `stdio: "inherit"` would silence the failure while destroying the actual feature — `shell.exec` exists precisely to capture stdout/exitCode, and the PTY requires all three pipes.
-2. **Run the suite in a non-sandboxed environment for a true baseline.** The CI pipeline (`.github/workflows/ci.yml`, `windows-latest`) runs `bun run test:coverage` without any sandbox and reliably reports 207/207.
-3. **Trust the 207/207 baseline from CI.** A local `204/207` in a confined shell is expected and is not a regression.
-4. If you must run elevated locally, granting the process full access restores all three tests (`207 pass, 0 fail`, exit code 0).
+2. **Run the suite in a non-sandboxed environment for a true baseline.** The CI pipeline (`.github/workflows/ci.yml`, `windows-latest`) runs `bun run test:coverage` without any sandbox and reliably reports 211/211.
+3. **Trust the 211/211 baseline from CI.** A local `208/211` in a confined shell is expected and is not a regression.
+4. If you must run elevated locally, granting the process full access restores all three tests (`211 pass, 0 fail`, exit code 0).
+
+---
+
+### 5b. Test Run Reports Only 193 Tests and Takes ~205s
+
+**Symptoms:**
+- `Ran 193 tests` instead of `Ran 211 tests`.
+- ~13 failures, dominated by `WarmPurgeOfflineEngine`, `PsaLLMService`, `SubagentPlugin`, `TestRefiner` and the E2E/Parity suites.
+- Individual failures take 15–20s (timeouts) instead of milliseconds, so the whole run balloons from ~47s to ~205s.
+
+**Root Causes & Diagnosis:**
+The `bin/` directory is **gitignored and therefore absent on any clean checkout or CI runner**, but the
+suite genuinely needs it. It contains 64 native artifacts — llama.cpp/ggml DLLs, `hub.exe`,
+`analyzer.exe` and the TLS certificates.
+
+**Nothing in the repository rebuilds the full set.** `scripts/ensure_binaries.ts` compiles only the
+Rust analyzer and the Go hub; `.github/workflows/native-build.yml` only produces analyzer and scanner.
+This is precisely why the old auto-merge workflow failed on every PR: it ran `bun test` on a runner
+with no `bin/`, so every agent PR escalated as a false "test failure".
+
+**Resolution Steps:**
+1. Confirm the directory is complete: `Get-ChildItem bin` should list ~64 files including `hub.exe`, `analyzer.exe` and the `ggml-*.dll` set.
+2. Restore or rebuild it before running the suite. If `bin/` cannot be populated, treat any coverage number from that run as **invalid** — the missing modules skew the ratio.
+3. Do not report a coverage figure or a test baseline from a run that started without a complete `bin/`.
+
+---
+
+### 5c. Build Error: `3 errors building ".../veto_engine.ts"`
+
+**Symptoms:**
+- Tools `system.health_score`, `audit.obfuscation_scan`, `healing.run_auto_heal` and `native.governance_status` all return `status: "error"`.
+- The returned message is literally `3 errors building "<path>/veto_engine.ts"`.
+- Coverage appears artificially **higher** than usual (a broken module gets dropped from the denominator).
+
+**Root Causes & Diagnosis:**
+A bad merge left duplicate module-level declarations in
+`src_local/core/governance/veto_engine.ts` (the same constants defined twice, from two competing
+optimization PRs), plus unused `private static readonly` fields. The file does not compile, so every
+tool that imports it fails.
+
+This exact defect shipped in commit `a60574c` and was fixed on 2026-10-01. It is documented here
+because it produced a **misleadingly high coverage figure** that was reported as fact for days:
+the broken run measured 84.80% lines, while the true figure after the fix was **61.27%**.
+
+**Resolution Steps:**
+1. Typecheck the file directly:
+   ```bash
+   bun x tsc --noEmit --skipLibCheck --target esnext --module esnext --moduleResolution bundler --allowImportingTsExtensions src_local/core/governance/veto_engine.ts
+   ```
+2. Look for `TS2451: Cannot redeclare block-scoped variable` — that is the signature of this failure mode.
+3. Remove the duplicate declarations (keep one canonical definition) and re-run the full suite. The test count returns to 211 and the coverage number becomes trustworthy again.

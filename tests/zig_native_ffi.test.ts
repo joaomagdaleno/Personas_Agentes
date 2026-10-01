@@ -43,8 +43,11 @@ describe("Zig Native FFI & TestRunner Integration", () => {
     });
 
     it("should run and compile Zig tests using TestRunner", async () => {
-        // Skip if Zig compiler is not installed in the environment
-        const hasZig = fs.existsSync('/home/jules/zig-0.13.0/zig') || await Bun.which("zig") !== null;
+        // Skip if Zig compiler is not installed in the environment.
+        // PSA_ZIG_PATH allows overriding the agent-runtime location on other machines
+        // instead of hardcoding it; Bun.which("zig") still covers a PATH install.
+        const zigPathOverride = process.env.PSA_ZIG_PATH ?? '/home/jules/zig-0.13.0/zig';
+        const hasZig = fs.existsSync(zigPathOverride) || await Bun.which("zig") !== null;
         if (!hasZig) {
             console.log("⚠️ [Test] Skipped Zig compilation test since Zig is not installed in this environment.");
             return;

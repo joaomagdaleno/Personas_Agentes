@@ -10,23 +10,35 @@ Format:
 **Artifacts:** [file:line, PR #, commit SHA]
 **Blocking:** [what this unblocks]
 
-## 2026-09-22 13:15 – Handoff
+Any handoff older than **72h** must be escalated to `.jules/escalations.md` (AGENTS.md §3).
+Mark completed handoffs `## <date> – Handoff (RESOLVED)` with a **Status:** line, and keep
+resolved entries below the open ones. Open entries are listed first so staleness is visible.
+
+## Open handoffs
+
+## 2026-09-22 13:15 – Handoff (OVERDUE — 9 days old, verification needed)
 **From:** Review
 **To:** Refactor
 **Priority:** HIGH
 **Context:** The sovereign diagnostic pipeline uncovered 136 medium-severity findings of Excessive Nesting Depth (`Nesting Depth > 3`) flagged by QualityAnalyst. The primary offenders penalizing the purity and structural quality score are `pyramid_analyst.ts` (nesting 5) and `PurityScorer.ts` (nesting 4). Flattening these methods with early returns and guard clauses will directly recover points toward the 100% health score.
-**Action requested:** In `src_local/engines/analysis/pyramid_analyst.ts` and `src_local/engines/diagnostics/strategies/PurityScorer.ts`, introduce guard clauses / early returns to reduce nesting depth to <= 3. Keep diff < 200 lines, maintain all public API signatures, and ensure all 199 tests pass.
+**Action requested:** In `src_local/engines/analysis/pyramid_analyst.ts` and `src_local/engines/diagnostics/strategies/PurityScorer.ts`, introduce guard clauses / early returns to reduce nesting depth to <= 3. Keep diff < 200 lines, maintain all public API signatures, and ensure all 211 tests pass.
 **Artifacts:** `src_local/engines/analysis/pyramid_analyst.ts`, `src_local/engines/diagnostics/strategies/PurityScorer.ts`
 **Blocking:** System Health Score progression from 86% toward 95%+
+**Status:** OPEN. Still not delivered as of 2026-10-01 (both files report max indentation of 16 spaces). NOTE: this handoff is 9 days old, well past the 72h escalation threshold of AGENTS.md §3, and it is **blocked by AGENTS.md §4 rules 1-2** — the real repository line coverage is 61.27%, below the 80% floor, so Refactor MAY NOT act on these files and must hand off to Spec first. Also verify the nesting measurement itself: the diagnostic's regex-based counter is not obviously a true control-flow nesting depth, so the 136 findings should be re-validated before any refactor work starts.
 
-## 2026-09-22 13:15 – Handoff
+---
+
+## Resolved handoffs
+
+## 2026-09-22 13:15 – Handoff (RESOLVED 2026-10-01)
 **From:** Review
 **To:** Scribe
 **Priority:** MEDIUM
 **Context:** MarkdownAuditor flagged 5 MD022 formatting violations (Headings must be surrounded by blank lines) across generated documentation in `docs/` and reports.
-**Action requested:** Ensure markdown files in `docs/` (specifically `docs/INTELLIGENCE_COVERAGE_REPORT.md` and `docs/TROUBLESHOOTING.md`) follow MD022 by having blank lines immediately before and after all Markdown headings (`#`, `##`, `###`). Do not modify code files. Ensure `bun test` passes (199 tests).
+**Action requested:** Ensure markdown files in `docs/` (specifically `docs/INTELLIGENCE_COVERAGE_REPORT.md` and `docs/TROUBLESHOOTING.md`) follow MD022 by having blank lines immediately before and after all Markdown headings (`#`, `##`, `###`). Do not modify code files. Ensure `bun test` passes (211 tests).
 **Artifacts:** `docs/INTELLIGENCE_COVERAGE_REPORT.md`, `docs/TROUBLESHOOTING.md`
 **Blocking:** 100% PhD Markdown Compliance
+**Status:** RESOLVED 2026-10-01 - verified 0 MD022 violations in `docs/TROUBLESHOOTING.md`.
 
 ## 2026-09-21 07:35 – Handoff (RESOLVED)
 **From:** Sentinel

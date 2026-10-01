@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "bun:test";
+import { describe, it, expect, beforeEach, afterEach } from "bun:test";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { PsaContext } from "../src_local/psa/kernel/psa_context.ts";
@@ -16,6 +16,15 @@ describe("🏛️ PSA Sovereign Architecture - Additional Core Plugins Suite", (
         }
         PsaContext.resetInstance();
         ctx = PsaContext.getInstance(testDir);
+    });
+
+    afterEach(() => {
+        PsaContext.resetInstance();
+        try {
+            if (fs.existsSync(testDir)) {
+                fs.rmSync(testDir, { recursive: true, force: true });
+            }
+        } catch {}
     });
 
     describe("1. TodoPlugin (todo_write, todo.write, todo.list)", () => {
