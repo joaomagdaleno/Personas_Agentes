@@ -94,13 +94,4 @@ describe("StructuralAnalyst", () => {
         });
     });
 
-    test("should read project files", async () => {
-        // Create a temporary test file
-        const testContent = "test content";
-        const testFile = Bun.file("test-temp-file.txt");
-        
-        // This test will fail if Bun doesn't have write access
-        // For safety, we'll skip actually creating files
-        expect(true).toBe(true);
     });
-});

@@ -3,6 +3,10 @@ import { MemoryEngine, HistoryAgent } from "../../src_local/engines/healing/resi
 import { join } from "path";
 import { rmSync, mkdirSync, writeFileSync } from "fs";
 
+// Pruned 2026-10-01: three cases here (setDepth / syncProjectMemory / prune)
+// asserted a constant tautology while exercising near coverage-neutral code, so
+// they inflated the suite count without adding signal. They were removed rather
+// than propped up with fabricated assertions.
 describe("MemoryEngine", () => {
     let engine: MemoryEngine;
     const testRoot = join(process.cwd(), "tmp_memory_test");
@@ -20,27 +24,9 @@ describe("MemoryEngine", () => {
         } catch {}
     });
 
-    it("should set thinking depth", () => {
-        engine.setDepth(10);
-        expect(true).toBe(true);
-    });
-
     it("should remember findings", () => {
         engine.rememberFinding({ file: "test.ts", issue: "Memory Leak", severity: "HIGH" });
         const results = engine.searchSimilar("Memory Leak");
         expect(results.length).toBeGreaterThan(0);
-    });
-
-    it("should sync file memory and extract anchors", async () => {
-        const map = {
-            [join(testRoot, "src", "index.ts")]: { content: "class Main { start() {} }", component_type: "CORE" }
-        };
-        await engine.syncProjectMemory(map as any);
-        expect(true).toBe(true);
-    });
-
-    it("should prune old entries", () => {
-        engine.prune();
-        expect(true).toBe(true);
     });
 });
