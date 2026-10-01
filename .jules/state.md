@@ -10,7 +10,7 @@
 - Open critical vulns: 0
 - Idris 2 proofs: PASSING
 - Public APIs documented: 45%
-- Median test runtime: ~3.5s
+- Median test runtime: ~3.7s
 
 ## Active work-in-progress
 | Agent | Task | Files locked | Status |
