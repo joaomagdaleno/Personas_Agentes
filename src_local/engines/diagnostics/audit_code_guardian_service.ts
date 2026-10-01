@@ -5,6 +5,7 @@ import winston from "winston";
 import * as ts from "typescript";
 import { Path } from "../../core/path_utils.ts";
 import { HubManagerGRPC } from "../../core/hub_manager_grpc.ts";
+import { DependencyHelpers } from "../analysis/architecture_types_service.ts";
 import { GitClient, ConflictPolicy, GitSyncManager } from "../automation/sync_devops_architect_service.ts";
 import { TopologyInfoProvider } from "../healing/resilience_healing_architect_service.ts";
 import { TELEMETRY_KEYWORDS, CRITICAL_LOG_METHODS } from "../security/security_cloud_guardian_service.ts";

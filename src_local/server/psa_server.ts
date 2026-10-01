@@ -94,6 +94,9 @@ export class PsaServer {
         const ctx = this.ctx;
         const agentLoop = this.agentLoop;
         const workspace = this.workspaceRoot;
+        // `fetch` below is a shorthand method, so `this` is not in scope inside it.
+        // Capture the controller registry here, matching the ctx/agentLoop/workspace pattern.
+        const activeTurnControllers = this.activeTurnControllers;
 
         this.serverInstance = Bun.serve({
             port: this.port,
@@ -246,7 +249,11 @@ export class PsaServer {
                     if (parts.length === 2 && req.method === "POST") {
                         try {
                             const body = await req.json() as any;
-                            const session = ctx.sessions.createSession(body?.persona || "strategic_cognitive_architect", body?.model || "qwen2.5-coder-1.5b", workspace);
+                            const session = ctx.sessions.create({
+                                persona: body?.persona || "strategic_cognitive_architect",
+                                model: body?.model || "qwen2.5-coder-1.5b",
+                                workspace
+                            });
                             return Response.json({ success: true, session }, { headers });
                         } catch (e: any) {
                             return Response.json({ error: e.message }, { status: 400, headers });

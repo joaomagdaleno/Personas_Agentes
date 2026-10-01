@@ -6,6 +6,9 @@ import { formatDate } from "../reporting/ui_ux_architect_service.ts";
 import { HubManagerGRPC } from "../../core/hub_manager_grpc.ts";
 import { PhdGovernanceSystem } from "../../core/governance/system_facade.ts";
 import { eventBus } from "../../core/event_bus.ts";
+// SovereignResourceBudget is re-exported below for consumers; it also needs a real
+// import here because `auditWasmMicroAgentsMemoryAndConcurrency` calls getInstance().
+import { SovereignResourceBudget } from "./sovereign_resource_budget.ts";
 export { SovereignResourceBudget } from "./sovereign_resource_budget.ts";
 export type { AdaptiveMode, TelemetrySnapshot, AdaptiveConfig } from "./sovereign_resource_budget.ts";
 
@@ -203,14 +206,14 @@ export class SystemSentinel {
         return suggestions;
     }
 
-    enforceGovernance() { BaseResourceGovernor.enforce(process.pid); }
+    enforceGovernance() { ResourceGovernorStrategy.enforce(process.pid); }
 
     async shouldThrottle(cpuLimit: number = 85, memLimit: number = 95): Promise<boolean> {
-        return BaseResourceGovernor.shouldThrottle(await this.getSystemHealth(), cpuLimit, memLimit);
+        return ResourceGovernorStrategy.shouldThrottle(await this.getSystemHealth(), cpuLimit, memLimit);
     }
 
     async yieldIfHighLoad(cpuL: number = 85, memL: number = 95) {
-        await BaseResourceGovernor.yield(async () => await this.shouldThrottle(cpuL, memL));
+        await ResourceGovernorStrategy.yield(async () => await this.shouldThrottle(cpuL, memL));
     }
 
     async analyze_and_kill_bloatware(): Promise<{ process: string, mem_mb: string, action: string }[]> {

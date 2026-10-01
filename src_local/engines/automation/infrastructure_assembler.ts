@@ -1,7 +1,7 @@
 
 import winston from "winston";
 import * as path from "node:path";
-import { StructuralAnalyst } from "./../analysis/structural_analyst";
+import { StructuralAnalyst } from "./../analysis/architecture_types_service";
 import { PatternFinder } from "./PatternFinder";
 import { IntegrityGuardian } from "./../healing/integrity_guardian";
 import { ConnectivityMapper } from "./../analysis/connectivity_mapper";
@@ -12,12 +12,28 @@ import { CoreValidator } from "../../core/validator";
 import { TestRefiner } from "./test_refiner";
 import { TestRunner } from "./test_runner";
 import { HealerPersona } from "./../healing/healer_persona";
-import { TestArchitectAgent } from "./test_architect_agent";
-import { DocGenAgent } from "./doc_gen_agent";
 import { SecuritySentinelAgent } from "./../security/security_sentinel_agent";
 import { QualityAnalyst } from "./../diagnostics/quality_analyst";
-import { MaturityEvaluator } from "./../diagnostics/maturity_evaluator";
-import { TopologyGraphAgent } from "./topology_graph_agent";
+import { HealthSynthesizer } from "./../diagnostics/health_synthesizer";
+
+// Consolidated service locations (2026-10-01).
+// The old 1-line barrel modules (doc_gen_agent.ts, test_architect_agent.ts,
+// topology_graph_agent.ts) were deleted in commit 24ed7a5 along with
+// maturity_evaluator.ts; the classes below absorbed those roles.
+import {
+    DiagnosticStrategist,
+    MaturityEvaluator,
+} from "./../diagnostics/audit_code_guardian_service";
+import { QADiagnosticsService } from "./qa_diagnostics_service";
+import { MasterOrchestratorService } from "./../strategic/master_orchestrator_service";
+
+// Legacy aliases preserved so the tool-cache shape used by consumers does not change.
+// These barrels were deleted in commit 24ed7a5; the roles were absorbed by the
+// consolidated services, so the names below are thin local aliases.
+const TestArchitectAgent = QADiagnosticsService;
+const DocGenAgent = MasterOrchestratorService;
+const TopologyGraphAgent = MasterOrchestratorService;
+export { QADiagnosticsService, MasterOrchestratorService };
 
 import { HubManagerGRPC } from "../../core/hub_manager_grpc.ts";
 import type { CoreSupportTools, OrchestratorTools } from "../../core/types.ts";

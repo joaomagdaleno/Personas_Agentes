@@ -8,9 +8,16 @@ describe("EventBus Test Suite", () => {
     });
 
     it("should emit and handle events registered on EventBus", () => {
+        // Use a real key from SystemEventMap — "cache:updated" carries an empty payload.
+        // The previous name "test_event" was not in the map and could not type-check.
         let called = false;
-        eventBus.on("test_event", () => { called = true; });
-        eventBus.emit("test_event", { payload: 123 });
-        expect(called).toBe(true);
+        const onCacheUpdated = () => { called = true; };
+        eventBus.on("cache:updated", onCacheUpdated);
+        try {
+            eventBus.emit("cache:updated");
+            expect(called).toBe(true);
+        } finally {
+            eventBus.off("cache:updated", onCacheUpdated);
+        }
     });
 });

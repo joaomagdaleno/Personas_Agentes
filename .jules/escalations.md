@@ -18,7 +18,38 @@ at the top.
 
 ## Active escalations
 
-(none)
+## 2026-10-01 04:10 – Escalation
+**Raised by:** Refactor (audit of typecheck errors)
+**Decision needed:** How should `code_auditor.scorecard` report a health score, given that its current value is fabricated?
+**Context:** `src_local/psa/plugins/personas/audit_code_plugin.ts` calls
+`ScoreCalculator.calculateHealth([], 100, 1.8)`. That method **has never existed** — not on the
+current `ScoreCalculator`, not in the deleted `score_calculator.ts`, and not in any commit
+(verified with `git log --all -S`). The call sits inside a `try` block around a **dynamic**
+`await import(...)`, so `tsc` resolves the module but never type-checks the member. The call
+therefore throws `TypeError` at runtime and the `catch` returns a **hardcoded
+`healthScore: 100`**. The repository has been reporting a perfect audit score purely by
+accident, and no gate could see it.
+
+The faithful implementation lives one layer down:
+`PhdGovernanceSystem.getInstance().calculateHealth({ files, alerts, totalFiles, avgComplexity })`
+(`src_local/core/governance/system_facade.ts:41` → `scoring_engine.ts:7`).
+
+**Why a human is needed:** every honest fix changes the tool's observable contract.
+`tests/psa_pure_plugin_architecture.test.ts:119` asserts `healthScore >= 80`. Calling the real
+implementation with the empty file list this tool currently passes returns **`0`**
+(`scoring_engine.ts:9` early-returns on empty input), so the test fails. AGENTS.md §7.6 requires
+escalation when a change alters tested behaviour.
+
+**Options:**
+- A) Keep the fabricated `100` and mark it clearly as a known defect (current state).
+- B) Add a real `calculateHealth` to `ScoreCalculator` and make the plugin gather actual metrics
+  before scoring — new behaviour, and the test expectation must be revisited.
+- C) Make the tool report `status: "unavailable"` honestly instead of a fake score — moves the
+  failure into the open and requires updating `psa_pure_plugin_architecture.test.ts:119`.
+
+**Recommended:** **B**, but it is genuinely a product decision about what a "scorecard" with no
+inputs should mean. Option A is only acceptable as a temporary, clearly-labelled state.
+**Status:** PENDING HUMAN
 
 ---
 

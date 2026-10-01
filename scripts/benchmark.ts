@@ -43,8 +43,8 @@ async function benchmark() {
     const arch = new ArchitectureTypesService();
     const perf = new SysPerfArchitectService();
     const strategic = new StrategicCognitiveArchitectService();
-    const audit = new AuditCodeGuardianService();
-    const sync = new SyncDevopsArchitectService();
+    const audit = new AuditCodeGuardianService(projectRoot);
+    const sync = new SyncDevopsArchitectService(projectRoot);
     const healing = new ResilienceHealingArchitectService();
 
     const engineInitDuration = performance.now() - engineStart;

@@ -17,6 +17,12 @@ export type SystemEventMap = {
     "task:failed": [{ taskId: string; error: string }];
     "audit:findings": [{ findings: any[] }];
     "cache:updated": [];
+    /**
+     * Emitted by SovereignResourceBudget when the adaptive mode changes, and consumed by
+     * the Zig file-watcher bridge and the warm-purge engine. It was already emitted and
+     * listened to before being declared here, which forced callers to cast `as any`.
+     */
+    "resource:mode_changed": [{ mode: string; score: number; config: any }];
 };
 
 export type EventName = keyof SystemEventMap;

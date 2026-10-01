@@ -123,6 +123,10 @@ export class DepthIntelligence {
 
 import { HubManagerGRPC } from "../../core/hub_manager_grpc.ts";
 import type { FileContextData } from "../../core/types.ts";
+import * as fs from "node:fs";
+import { Path } from "../../core/path_utils.ts";
+import { IntegrityGuardian } from "../healing/integrity_guardian.ts";
+import { IntentClassifier } from "./strategies/IntentClassifier.ts";
 
 export class ContextHelpers {
     static resolveDependency(dep: string, map: Record<string, FileContextData>): string | null {
@@ -454,8 +458,18 @@ export class ComponentClassifier {
 
 export class StructuralAnalyst {
     classifier: ComponentClassifier;
+    // Restored 2026-10-01: the consolidation into this file dropped `integrityGuardian`
+    // and `analyze_intent()`, which the previous standalone structural_analyst.ts provided
+    // and which strategic_cognitive_architect_service.ts still calls.
+    integrityGuardian: IntegrityGuardian;
     constructor(private hubManager?: HubManagerGRPC) {
         this.classifier = new ComponentClassifier();
+        this.integrityGuardian = new IntegrityGuardian();
+    }
+
+    /** Parity: analyze_intent — Classifies the primary intent of a file (logic, metadata, observability). */
+    analyze_intent(content: string, filename: string, rustMetadata?: any): string {
+        return IntentClassifier.classify(content, filename, rustMetadata);
     }
 
     shouldIgnore(relPath: string | any): boolean {

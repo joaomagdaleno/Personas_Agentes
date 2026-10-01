@@ -9,7 +9,7 @@ import {
 
 describe("SyncDevopsArchitectService Deep Test Suite", () => {
     it("should instantiate SyncDevopsArchitectService correctly", () => {
-        const service = new SyncDevopsArchitectService();
+        const service = new SyncDevopsArchitectService(process.cwd());
         expect(service).toBeDefined();
     });
 

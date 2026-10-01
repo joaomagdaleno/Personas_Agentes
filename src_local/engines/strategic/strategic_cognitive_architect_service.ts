@@ -699,4 +699,6 @@ export class ActivityClassifier {
 // ==========================================
 // 🧠 SUBSISTEMA NEURAL MICROGPT
 // ==========================================
-export { NeuralSubsystemService, MicroGPT, PredictorEngine };
+// The neural subsystem is re-exported once, at the top of this file, from
+// "./neural_subsystem_service.ts". A duplicate bare `export { ... }` here
+// (without a module source) was a leftover of a bad merge and did not compile.

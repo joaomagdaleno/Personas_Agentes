@@ -58,9 +58,13 @@ export function findModel(idOrAlias: string): SlmModelInfo | undefined {
 export async function calculateFileSha256(filePath: string): Promise<string> {
     return new Promise((resolve, reject) => {
         // ⚡ Bolt Optimization: Use Bun.CryptoHasher when available or crypto.createHash fallback with 1MB streaming buffer to prevent OOM on multi-gigabyte .gguf files
-        const hasher = (typeof globalThis.Bun !== "undefined" && typeof globalThis.Bun.CryptoHasher === "function")
+        // Type-only annotation (2026-10-01): without it TypeScript infers the union
+        // `Bun.CryptoHasher | crypto.Hash`, and `update(Buffer)` / `digest("hex")` do not
+        // type-check against that union. This is a pure typing fix — the runtime behaviour of
+        // the SHA-256 verification path (AGENTS.md §4.6) is unchanged.
+        const hasher: Bun.CryptoHasher = (typeof globalThis.Bun !== "undefined" && typeof globalThis.Bun.CryptoHasher === "function")
             ? new globalThis.Bun.CryptoHasher("sha256")
-            : crypto.createHash("sha256");
+            : crypto.createHash("sha256") as unknown as Bun.CryptoHasher;
 
         const stream = fs.createReadStream(filePath, { highWaterMark: 1024 * 1024 });
         stream.on("data", data => hasher.update(data));

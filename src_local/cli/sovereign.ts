@@ -99,7 +99,10 @@ async function printStatus() {
         const stat = await Bun.file(dbPath).stat();
         console.log(`   • Status:                   ✅ Operacional (${(stat.size / 1024).toFixed(1)} KB)`);
         const dbHub = DatabaseHub.getInstance(process.cwd());
-        const historyCount = dbHub.query<{ total: number }>("SELECT COUNT(*) as total FROM health_history")[0]?.total || 0;
+        // DatabaseHub.query() returns a Bun Statement (not an array and not generic),
+        // so the row must be materialised with .get() before indexing.
+        const row = dbHub.query("SELECT COUNT(*) as total FROM health_history").get() as { total: number } | null;
+        const historyCount = row?.total ?? 0;
         console.log(`   • Histórico de Saúde:       ${historyCount} registros gravados`);
     } else {
         console.log(`   • Status:                   ⚠️ Não Inicializado`);

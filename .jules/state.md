@@ -6,11 +6,12 @@
 ## Health snapshot
 - Tests: 211/211 passing (0 failures across 40 test suites)
 - System Health Score: 86% (verified by Go Hub & Rust Sidecar)
-- Coverage: 61.27% lines / 47.18% funcs overall (see `Known risks`)
+- **Typecheck: `bun x tsc --noEmit` reports 0 errors** (was 63 on 2026-10-01)
+- Coverage: 60.56% lines / 46.25% funcs overall (see `Known risks`)
 - Open critical vulns: 0
 - Idris 2 proofs: PASSING
 - Public APIs documented: 45%
-- Median test runtime: ~47s (requires a fully populated `bin/`; ~205s with 13 failures without it)
+- Median test runtime: ~30s (requires a fully populated `bin/`; ~205s with 13 failures without it)
 
 ## Active work-in-progress
 | Agent | Task | Files locked | Status |
@@ -29,6 +30,7 @@
 | — | — | — | — |
 
 ## Recently completed
+- 2026-10-01: **Typecheck driven to zero (63 → 0 errors).** Root cause was a single destructive commit, `24ed7a5` (2026-08-12), which deleted **113 `.ts` files** and left stale imports behind for six weeks. Nothing caught it because `bunfig.toml` restricts `bun test` to `tests/`, so the 45 `src_local/**/*.test.ts` files are never executed, and because `bun test` never typechecks. Fixes: restored `safety_identifiers.ts` / `safety_patterns.ts` / `safety_definitions.ts` (these unblocked `safety_supreme_judge.ts`, the security judge, plus 3 other files); restored `StructuralAnalyst.analyze_intent()` and `.integrityGuardian` which the consolidation had dropped; repointed `infrastructure_assembler.ts` to the consolidated services (its 3 imports were 1-line alias barrels deleted in `24ed7a5`); added missing imports (`fs`, `Path`, `DependencyHelpers`, `SovereignResourceBudget`); renamed 3 phantom symbols (`BaseResourceGovernor` → `ResourceGovernorStrategy`, which never existed under the old name); fixed `join(` → `path.join(`; captured `activeTurnControllers` (a class member unreachable inside the `async fetch(req)` shorthand); registered `"resource:mode_changed"` in `SystemEventMap`; removed a bare `export { … }` with no module source in `strategic_cognitive_architect_service.ts`; repointed `sessions.createSession(...)` → `sessions.create({…})`; added `GitClient.isDirty()`/`status()`; fixed the `Bun.CryptoHasher | crypto.Hash` union in `download_model.ts` (typing only — the SHA-256 path is byte-identical); added the missing `projectRoot` argument to two constructors in `benchmark.ts`; corrected `DatabaseHub.query(...)` to materialise the Statement with `.get()`; fixed 5 orphan test files; deleted the unreachable `src_local/utils/ai/test_predictor.ts`.
 - 2026-10-01: **Baseline corrected 207 -> 211** (verified: 211 test declarations across 40 files, 211/211 passing). The `207` figure had been stale since before commit `a60574c`.
 - 2026-10-01: **Fixed build-breaking duplicate declarations in `src_local/core/governance/veto_engine.ts`.** Commit `a60574c` merged PR #93 and PR #94 keeping BOTH versions of the module constants (`TECH_TERMS_REGEX`, `MONEY_TERMS`, `RULE_KEYWORDS` declared twice) plus dead `private static readonly` fields. The file did not compile, which broke 4 tools (`system.health_score`, `audit.obfuscation_scan`, `healing.run_auto_heal`, `native.governance_status`) and invalidated the coverage measurement. Removed the duplicates (-34 lines); `tsc` now clean.
 - 2026-10-01: **Auto-merge workflow no longer runs `bun test`.** It delegated nothing and always failed because `bin/` (64 native artifacts, gitignored) is absent on clean runners. Validation is now delegated to `ci.yml` via `gh pr merge --auto`; the workflow never checks out PR code (API-only inspection). Inviolable §4.4/§4.6 checks preserved.

@@ -48,6 +48,27 @@ export class GitClient {
         return res.stdout.trim();
     }
 
+    /**
+     * Ported 2026-10-01: `sync_devops_plugin.ts` calls these two methods, which were
+     * lost when the old sync_devops agent was consolidated into this service.
+     * Implemented on top of the existing run()/getOutput() plumbing.
+     */
+    async isDirty(): Promise<boolean> {
+        try {
+            return (await this.getOutput(["status", "--porcelain"])).length > 0;
+        } catch {
+            return false;
+        }
+    }
+
+    async status(): Promise<string> {
+        try {
+            return await this.getOutput(["status", "--short", "--branch"]);
+        } catch (e: any) {
+            return `git status unavailable: ${e?.message ?? String(e)}`;
+        }
+    }
+
     async fetchPrune(remote: string): Promise<void> {
         await this.run(["fetch", remote, "--prune"]);
     }
@@ -445,7 +466,7 @@ export class MaintenanceEnginePhd {
     }
 
     private static async cleanSingleSubmodule(root: string, sub: string): Promise<void> {
-        const subPath = join(root, sub);
+        const subPath = path.join(root, sub);
         if (fs.existsSync(subPath)) {
             logger.info(`🧹 [Maintenance] Limpando submódulo: ${sub}`);
             await Bun.spawn(["git", "clean", "-fd"], { cwd: subPath }).exited;
@@ -458,7 +479,7 @@ export class MaintenanceEnginePhd {
             const theirs = await this.getGitVersion(root, filePath, 3);
             const mergedMap = this.performSkillsMerge(ours, theirs, protectedIds);
             const result = Array.from(mergedMap.values()).sort((a, b) => (a.id || "").localeCompare(b.id || ""));
-            await Bun.write(join(root, filePath), JSON.stringify(result, null, 2));
+            await Bun.write(path.join(root, filePath), JSON.stringify(result, null, 2));
             return true;
         } catch (error) {
             logger.error(`❌ [Maintenance] Falha no merge de skills: ${error}`);
