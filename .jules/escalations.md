@@ -18,6 +18,12 @@ at the top.
 
 ## Active escalations
 
+(none)
+
+---
+
+## Resolved history
+
 ## 2026-10-01 04:10 – Escalation
 **Raised by:** Refactor (audit of typecheck errors)
 **Decision needed:** How should `code_auditor.scorecard` report a health score, given that its current value is fabricated?
@@ -79,8 +85,6 @@ that returned a hardcoded `100` is gone; a failure now surfaces instead of being
 Also removed the now-dead `ScoreCalculator` import path from the plugin.
 
 ---
-
-## Resolved history
 
 ## 2026-09-24 15:03 – Escalation
 **Raised by:** Auto-merge Workflow
