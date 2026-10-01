@@ -114,7 +114,7 @@ The verifier enforces 4 inviolable mathematical safety contracts:
 
 ---
 
-## 5. Test Suite Reports Fewer Passing Tests Than the 211 Baseline
+## 5. Test Suite Reports Fewer Passing Tests Than the Baseline
 
 The test suite has **three independent ways to report a wrong or reduced result**, and they look
 similar but have completely different causes. Check them in this order — the first two are the
@@ -131,7 +131,7 @@ common cases and neither is a real test failure.
 ### 5a. Three Tests Fail With `EPERM` (Sandboxed Environment)
 
 **Symptoms:**
-- `bun test` reports `208 pass, 3 fail` instead of the 211/211 baseline.
+- `bun test` reports `208 pass, 3 fail` instead of the full baseline.
 - The three failures are always the same:
   - `dsh_fs_shell_plugins.test.ts` → *deve executar comando nativo via ShellPlugin e capturar stdout/exitCode*
   - `psa_expanded_suite.test.ts` → *TerminalPtyPlugin > deve instanciar processo interativo, ler buffer e encerrar sessão*
@@ -159,16 +159,16 @@ spawn(cmd, args)                       // defaults to "pipe" -> EPERM
 
 **Resolution Steps:**
 1. **Do NOT change the code to make these pass under a sandbox.** Switching to `stdio: "inherit"` would silence the failure while destroying the actual feature — `shell.exec` exists precisely to capture stdout/exitCode, and the PTY requires all three pipes.
-2. **Run the suite in a non-sandboxed environment for a true baseline.** The CI pipeline (`.github/workflows/ci.yml`, `windows-latest`) runs `bun run test:coverage` without any sandbox and reliably reports 211/211.
-3. **Trust the 211/211 baseline from CI.** A local `208/211` in a confined shell is expected and is not a regression.
-4. If you must run elevated locally, granting the process full access restores all three tests (`211 pass, 0 fail`, exit code 0).
+2. **Run the suite in a non-sandboxed environment for a true baseline.** The CI pipeline (`.github/workflows/ci.yml`, `windows-latest`) runs `bun run test:coverage` without any sandbox and reliably reports the full baseline (currently 324/324 - see `.jules/state.md`).
+3. **Trust the CI baseline.** A local shortfall in a confined shell is expected and is not a regression.
+4. If you must run elevated locally, granting the process full access restores all three tests (full suite, exit code 0).
 
 ---
 
 ### 5b. Test Run Reports Only 193 Tests and Takes ~205s
 
 **Symptoms:**
-- `Ran 193 tests` instead of `Ran 211 tests`.
+- `Ran 193 tests` instead of the full suite size.
 - ~13 failures, dominated by `WarmPurgeOfflineEngine`, `PsaLLMService`, `SubagentPlugin`, `TestRefiner` and the E2E/Parity suites.
 - Individual failures take 15–20s (timeouts) instead of milliseconds, so the whole run balloons from ~47s to ~205s.
 
@@ -212,4 +212,4 @@ the broken run measured 84.80% lines, while the true figure after the fix was **
    bun x tsc --noEmit --skipLibCheck --target esnext --module esnext --moduleResolution bundler --allowImportingTsExtensions src_local/core/governance/veto_engine.ts
    ```
 2. Look for `TS2451: Cannot redeclare block-scoped variable` — that is the signature of this failure mode.
-3. Remove the duplicate declarations (keep one canonical definition) and re-run the full suite. The test count returns to 211 and the coverage number becomes trustworthy again.
+3. Remove the duplicate declarations (keep one canonical definition) and re-run the full suite. The test count returns to the `.jules/state.md` baseline and the coverage number becomes trustworthy again.

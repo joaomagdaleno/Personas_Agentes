@@ -1,17 +1,17 @@
 # PSA Ecosystem – Shared State
 
 ## Last updated
-2026-10-01 02:55 UTC by Sovereign Automation
+2026-10-01 04:40 UTC by Sovereign Automation
 
 ## Health snapshot
-- Tests: 211/211 passing (0 failures across 40 test suites)
+- **Tests: 324/324 passing (0 failures across 85 test suites)** — this is the authoritative test baseline referenced by AGENTS.md §4.5
 - System Health Score: 86% (verified by Go Hub & Rust Sidecar)
 - **Typecheck: `bun x tsc --noEmit` reports 0 errors** (was 63 on 2026-10-01)
-- Coverage: 60.56% lines / 46.25% funcs overall (see `Known risks`)
+- Coverage: 64.29% lines / 52.19% funcs overall (see `Known risks`)
 - Open critical vulns: 0
 - Idris 2 proofs: PASSING
 - Public APIs documented: 45%
-- Median test runtime: ~30s (requires a fully populated `bin/`; ~205s with 13 failures without it)
+- Median test runtime: ~35s (requires a fully populated `bin/`; ~205s with 13 failures without it)
 
 ## Active work-in-progress
 | Agent | Task | Files locked | Status |
@@ -22,7 +22,7 @@
 | Scribe | Queued: MD022 heading compliance in docs/ and auto_healing reports | none | idle |
 | Refactor | Queued: Reduce nesting depth <= 3 in pyramid_analyst.ts & PurityScorer.ts | none | idle |
 | Architect | — | — | idle |
-| Review | PRs #93 and #94 approved and integrated: 211 tests active | none | idle |
+| Review | PRs #93 and #94 approved and integrated: 324 tests active | none | idle |
 
 ## File locks
 | File | Locked by | Since | Reason |
@@ -30,6 +30,8 @@
 | — | — | — | — |
 
 ## Recently completed
+- 2026-10-01: **Largest coverage gain of the project: 45 dead test files made live. Baseline 211 -> 324 tests.** All 45 `src_local/**/*.test.ts` files were relocated to `tests/` mirroring the source tree, with every static and dynamic relative import re-resolved for the new depth. They had NEVER run, because `bunfig.toml` scopes `bun test` to `tests/`. Result: **+113 test cases, +45 suites, coverage 60.56% -> 64.29% lines and 46.25% -> 52.19% funcs**, measured, with zero new failures. `tests/activate-phase.test.ts` and `tests/psa_pure_plugin_architecture.test.ts` were already in place and untouched. Note: the moved files include 11 suites whose only assertions are `.toBeDefined()` (smoke) and 4 auto-generated "Parity Healer" stubs that assert nothing (`expect(true).toBe(true)`) — they were moved rather than deleted so no decision was made silently, but they add count without coverage and are candidates for pruning.
+- 2026-10-01: **Test baseline number de-hardcoded.** The baseline was written literally in 4 places (AGENTS.md §4.5/§6/§7.6 and 7 agent prompts), which is how it drifted from 207 to 211 unnoticed. AGENTS.md now defines the baseline as "the count recorded in `.jules/state.md`", and every prompt instructs the agent to read that file as authoritative. Current value: 324.
 - 2026-10-01: **Typecheck driven to zero (63 → 0 errors).** Root cause was a single destructive commit, `24ed7a5` (2026-08-12), which deleted **113 `.ts` files** and left stale imports behind for six weeks. Nothing caught it because `bunfig.toml` restricts `bun test` to `tests/`, so the 45 `src_local/**/*.test.ts` files are never executed, and because `bun test` never typechecks. Fixes: restored `safety_identifiers.ts` / `safety_patterns.ts` / `safety_definitions.ts` (these unblocked `safety_supreme_judge.ts`, the security judge, plus 3 other files); restored `StructuralAnalyst.analyze_intent()` and `.integrityGuardian` which the consolidation had dropped; repointed `infrastructure_assembler.ts` to the consolidated services (its 3 imports were 1-line alias barrels deleted in `24ed7a5`); added missing imports (`fs`, `Path`, `DependencyHelpers`, `SovereignResourceBudget`); renamed 3 phantom symbols (`BaseResourceGovernor` → `ResourceGovernorStrategy`, which never existed under the old name); fixed `join(` → `path.join(`; captured `activeTurnControllers` (a class member unreachable inside the `async fetch(req)` shorthand); registered `"resource:mode_changed"` in `SystemEventMap`; removed a bare `export { … }` with no module source in `strategic_cognitive_architect_service.ts`; repointed `sessions.createSession(...)` → `sessions.create({…})`; added `GitClient.isDirty()`/`status()`; fixed the `Bun.CryptoHasher | crypto.Hash` union in `download_model.ts` (typing only — the SHA-256 path is byte-identical); added the missing `projectRoot` argument to two constructors in `benchmark.ts`; corrected `DatabaseHub.query(...)` to materialise the Statement with `.get()`; fixed 5 orphan test files; deleted the unreachable `src_local/utils/ai/test_predictor.ts`.
 - 2026-10-01: **Baseline corrected 207 -> 211** (verified: 211 test declarations across 40 files, 211/211 passing). The `207` figure had been stale since before commit `a60574c`.
 - 2026-10-01: **Fixed build-breaking duplicate declarations in `src_local/core/governance/veto_engine.ts`.** Commit `a60574c` merged PR #93 and PR #94 keeping BOTH versions of the module constants (`TECH_TERMS_REGEX`, `MONEY_TERMS`, `RULE_KEYWORDS` declared twice) plus dead `private static readonly` fields. The file did not compile, which broke 4 tools (`system.health_score`, `audit.obfuscation_scan`, `healing.run_auto_heal`, `native.governance_status`) and invalidated the coverage measurement. Removed the duplicates (-34 lines); `tsc` now clean.

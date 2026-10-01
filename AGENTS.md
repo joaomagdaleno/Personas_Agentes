@@ -59,7 +59,7 @@ Only for decisions listed in §7. Never for routine work.
 2. Bolt MAY NOT optimize code with coverage < 80%. → Handoff to Spec.
 3. Sentinel MUST request a reproducing test from Spec before fixing a vulnerability in non-test code.
 4. Any change touching FFI, gRPC, SQLite schema, or Idris 2 proofs MUST be escalated to a human BEFORE implementation.
-5. Any change to the **211-test baseline** MUST be noted in `state.md`.
+5. The **test baseline** is the count recorded in `.jules/state.md`. Any change to it MUST be noted in `state.md`. (Current: **324**.)
 6. No agent may weaken, disable, or bypass:
    - mTLS in the Go Hub
    - SHA-256 verification of `.gguf` files
@@ -98,17 +98,17 @@ A PR may add the label `auto-merged` (and be auto-merged by CI) ONLY if all cond
 
 | Agent | Conditions |
 |---|---|
-| Spec | (a) only adds new test files/cases, (b) does NOT modify existing test assertions, (c) all 211 tests pass, (d) coverage does not regress |
-| Bolt | (a) all 211 tests pass, (b) coverage unchanged or improved, (c) benchmark shows >= 5% improvement, (d) no FFI/gRPC/SQLite/Idris files touched, (e) Sentinel has not flagged the file in last 7 days |
-| Scribe | (a) only `.md` files or doc comments changed, (b) no code files touched, (c) `bun test` still passes with 211 tests |
-| Refactor | (a) target coverage >= 80%, (b) all 211 tests pass, (c) coverage unchanged, (d) diff < 200 lines, (e) no public API signature changed, (f) no FFI/gRPC/SQLite/Idris files touched |
+| Spec | (a) only adds new test files/cases, (b) does NOT modify existing test assertions, (c) all tests in the `.jules/state.md` baseline pass, (d) coverage does not regress |
+| Bolt | (a) all tests in the `.jules/state.md` baseline pass, (b) coverage unchanged or improved, (c) benchmark shows >= 5% improvement, (d) no FFI/gRPC/SQLite/Idris files touched, (e) Sentinel has not flagged the file in last 7 days |
+| Scribe | (a) only `.md` files or doc comments changed, (b) no code files touched, (c) `bun test` still passes with the full baseline |
+| Refactor | (a) target coverage >= 80%, (b) all tests in the `.jules/state.md` baseline pass, (c) coverage unchanged, (d) diff < 200 lines, (e) no public API signature changed, (f) no FFI/gRPC/SQLite/Idris files touched |
 | Sentinel | Only if: severity CRITICAL AND fix < 50 lines AND reproducing test exists AND no FFI/gRPC/SQLite/Idris touched AND no inviolable guarantee weakened |
 
 Never auto-merge:
 - Any PR from Architect
 - Any PR touching FFI, gRPC, SQLite schema, or Idris 2 proofs
 - Any PR adding a new dependency
-- Any PR changing the 211-test baseline in a non-additive way
+- Any PR changing the test baseline (`.jules/state.md`) in a non-additive way
 - Any PR with `do-not-merge` label
 - Any PR where an agent conflict is unresolved
 
@@ -121,7 +121,7 @@ Escalate to a human ONLY when one of these is true:
 3. A new dependency would be added.
 4. Two agents disagree on the same file or decision.
 5. A security fix does not meet auto-merge conditions (§6).
-6. An agent's action would change the 211-test baseline non-additively.
+6. An agent's action would change the test baseline (`.jules/state.md`) non-additively.
 7. An inviolable guarantee (§4.6) would be affected.
 8. The same PR has failed auto-merge 3 times in a row.
 9. The state file shows the same agent stuck for > 48h.
