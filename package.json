@@ -26,6 +26,7 @@
     "test:coverage": "bun test --coverage",
     "test:report": "bun run scripts/test_summary.ts",
     "ensure-binaries": "bun run scripts/ensure_binaries.ts",
+    "fetch-llama": "bun run scripts/fetch_llama_runtime.ts",
     "diagnostic": "bun run scripts/run-diagnostic.ts",
     "benchmark": "bun run scripts/benchmark.ts",
     "forge": "bun run scripts/forge.ts",

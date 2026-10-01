@@ -177,15 +177,23 @@ The `bin/` directory is **gitignored and therefore absent on any clean checkout 
 suite genuinely needs it. It contains 64 native artifacts — llama.cpp/ggml DLLs, `hub.exe`,
 `analyzer.exe` and the TLS certificates.
 
-**Nothing in the repository rebuilds the full set.** `scripts/ensure_binaries.ts` compiles only the
-Rust analyzer and the Go hub; `.github/workflows/native-build.yml` only produces analyzer and scanner.
-This is precisely why the old auto-merge workflow failed on every PR: it ran `bun test` on a runner
-with no `bin/`, so every agent PR escalated as a false "test failure".
+`hub.exe` was untracked on 2026-10-01 (it was committed before `*.exe` reached `.gitignore`) and is now
+built by `bun run ensure-binaries`, which `ci.yml` runs. The **Llama.cpp runtime** (~48 `llama*`/`ggml*`
+files) is fetched by `bun run fetch-llama`, which downloads a pinned release and verifies its
+SHA-256 before extracting; `ci.yml` runs that too.
 
 **Resolution Steps:**
-1. Confirm the directory is complete: `Get-ChildItem bin` should list ~64 files including `hub.exe`, `analyzer.exe` and the `ggml-*.dll` set.
-2. Restore or rebuild it before running the suite. If `bin/` cannot be populated, treat any coverage number from that run as **invalid** — the missing modules skew the ratio.
-3. Do not report a coverage figure or a test baseline from a run that started without a complete `bin/`.
+1. Populate the native dependencies before running the suite:
+   ```bash
+   bun run ensure-binaries   # builds the Go Hub (and Rust analyzer if missing)
+   bun run fetch-llama       # downloads the pinned Llama.cpp runtime + verifies SHA-256
+   ```
+2. Confirm completeness: `Get-ChildItem bin` should list ~64 files including the `ggml-*.dll` set, and
+   `bun run fetch-llama -- --check` should exit 0.
+3. If `bin/` still cannot be populated, treat any coverage number from that run as **invalid** — the
+   missing modules skew the ratio, and the SLM suites will fail with 15-20s timeouts instead of
+   reporting a real result.
+4. Do not report a coverage figure or a test baseline from a run that started without a complete `bin/`.
 
 ---
 

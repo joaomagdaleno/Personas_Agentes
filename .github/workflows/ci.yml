@@ -53,6 +53,16 @@ jobs:
       - name: Garantir Binários Nativos
         run: bun run ensure-binaries
 
+      # Fetches the pinned Llama.cpp runtime so the SLM suites run against real
+      # artifacts instead of timing out. Until 2026-10-01 these ~48 files had to be
+      # placed in bin/ by hand: nothing in the repo produced or downloaded them, and
+      # without them a full run degrades from ~32s to ~205s with 13 timeout failures.
+      # This is a deliberate third-party dependency, approved by the maintainer under
+      # AGENTS.md 4.7. The release tag is pinned and the asset's SHA-256 is verified
+      # before extraction (scripts/fetch_llama_runtime.ts).
+      - name: Baixar Runtime Llama.cpp (pinado + SHA-256)
+        run: bun run fetch-llama
+
       # Blocks the pipeline on type errors. `bun test` strips types without
       # checking them, so without this gate the repository silently accumulated
       # 63 type errors (including a broken security module) over six weeks.
