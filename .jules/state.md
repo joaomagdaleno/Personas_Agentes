@@ -4,10 +4,10 @@
 2026-10-01 04:40 UTC by Sovereign Automation
 
 ## Health snapshot
-- **Tests: 318/318 passing (0 failures across 84 test suites)** — this is the authoritative test baseline referenced by AGENTS.md §4.5
+- **Tests: 323/323 passing (0 failures across 85 test suites)** — this is the authoritative test baseline referenced by AGENTS.md §4.5
 - System Health Score: 86% (verified by Go Hub & Rust Sidecar)
 - **Typecheck: `bun x tsc --noEmit` reports 0 errors** (was 63 on 2026-10-01)
-- Coverage: 64.46% lines / 52.39% funcs overall (see `Known risks`)
+- Coverage: 65.05% lines / 52.98% funcs overall (see `Known risks`)
 - Open critical vulns: 0
 - Idris 2 proofs: PASSING
 - Public APIs documented: 45%
@@ -22,7 +22,7 @@
 | Scribe | Queued: MD022 heading compliance in docs/ and auto_healing reports | none | idle |
 | Refactor | Queued: Reduce nesting depth <= 3 in pyramid_analyst.ts & PurityScorer.ts | none | idle |
 | Architect | — | — | idle |
-| Review | PRs #93 and #94 approved and integrated: 318 tests active | none | idle |
+| Review | PRs #93 and #94 approved and integrated: 323 tests active | none | idle |
 
 ## File locks
 | File | Locked by | Since | Reason |
@@ -30,6 +30,7 @@
 | — | — | — | — |
 
 ## Recently completed
+- 2026-10-01: **`code_auditor.scorecard` now reports a real score instead of a fabricated 100 (escalation resolved, option B).** The plugin called `ScoreCalculator.calculateHealth`, a method that has never existed in any commit; the `TypeError` was swallowed by a `catch` that returned a hardcoded `healthScore: 100`, so the project advertised a perfect audit score by accident. New `src_local/engines/diagnostics/code_scorecard.ts` scans the workspace (skipping build/vendor/scratch), derives `has_test`/`telemetry`/`purpose`/complexity per file, and delegates to `PhdGovernanceSystem.calculateHealth()` → `ScoringEngine`. **The honest measured score is 53.71, not 80** — and the breakdown names exactly why: `stability 3.50` (only ~10% of modules are imported by a test), `observability 4.05`, `excellence 5.86`. The old `healthScore >= 80` assertion only ever passed because the value was fabricated; it is now an explicit regression guard (`> 50`) plus an independence check that the tool agrees with `new ScoringEngine().calculateHealth(...)`. The `>= 80` aspiration is a REAL gap, tracked with the coverage debt below. Two bugs were found and fixed while wiring it: an empty workspace previously reported 100 (the engine correctly early-returns 0 on `totalFiles === 0`), and matching tests by filename missed `veto_engine.ts`, whose coverage lives in `governance_veto_engine.test.ts` — detection is now by resolving the modules each test file imports.
 - 2026-10-01: **Weak test cases pruned, and the "Parity Healer" stubs made honest. Baseline 324 -> 318, coverage UP to 64.46% lines / 52.39% funcs.** Inspecting the moved suites showed they were not uniformly worthless, so each weak pattern was handled by what it actually did:
   - **Deleted** `tests/core/bridge_orchestrator.test.ts` — it tested a `bridge_orchestrator.py` that has never existed in any commit, asserting only constant tautologies.
   - **Deleted 4 valueless cases**: a `structural_analyst` placeholder whose own comment admitted it never reads a file, plus three `memory_engine` cases (`setDepth` / `syncProjectMemory` / `prune`) that asserted a tautology over near coverage-neutral code.

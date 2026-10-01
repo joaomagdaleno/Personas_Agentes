@@ -114,9 +114,16 @@ export class DiskCustomPlugin {
         mountAllSuperPersonaPlugins(ctx);
 
         // 1. Audit Code Guardian
+        // This ctx's workspaceRoot is an EMPTY scratch directory, so the scorecard has
+        // nothing to audit and correctly reports 0. It previously asserted >= 80 only
+        // because the plugin returned a fabricated hardcoded 100 (see
+        // .jules/escalations.md, resolved 2026-10-01). The honest contract for an empty
+        // workspace is checked here; scoring real code is covered in code_scorecard.test.ts.
         const auditRes = await ctx.tools.executeTool("code_auditor.scorecard", { scope: "fast" });
         expect(auditRes.status).toBe("success");
-        expect(auditRes.result.healthScore).toBeGreaterThanOrEqual(80);
+        expect(auditRes.result.healthScore).toBe(0);
+        expect(auditRes.result.emptyScope).toBe(true);
+        expect(auditRes.result.filesAnalyzed).toBe(0);
 
         // 2. Sys Perf Architect
         const perfRes = await ctx.tools.executeTool("sys_perf.profile", {});

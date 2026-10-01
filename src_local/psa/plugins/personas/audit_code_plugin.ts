@@ -18,35 +18,23 @@ export class AuditCodePlugin implements PsaPlugin {
             },
             isExclusive: false,
             execute: async (args: { scope?: string }) => {
-                try {
-                    const { ScoreCalculator } = await import("../../../engines/diagnostics/audit_code_guardian_service.ts");
-                    // ⚠️ KNOWN DEFECT (documented 2026-10-01, escalated to .jules/escalations.md).
-                    // `ScoreCalculator.calculateHealth` has NEVER existed — not in this class, not in
-                    // any commit (verified with `git log --all -S`). Because the call sits in a
-                    // try/catch around a *dynamic* import, `tsc` cannot see the bad member, the call
-                    // throws TypeError at runtime, and the catch below returns a FABRICATED
-                    // healthScore of 100. The real implementation lives one layer down in
-                    // PhdGovernanceSystem.getInstance().calculateHealth(...), but wiring it faithfully
-                    // returns 0 for an empty file list, which changes the tool's contract.
-                    // Left byte-identical to the shipped behaviour until a human picks a fix.
-                    const health = (ScoreCalculator as any).calculateHealth({}, 100, 1.8);
-                    return {
-                        healthScore: health.score,
-                        breakdown: health.breakdown,
-                        status: "sovereign-grade",
-                        cyclomaticComplexityAverage: 1.8,
-                        deadCodePathsFound: 0,
-                        scope: args.scope || "fast"
-                    };
-                } catch {
-                    return {
-                        healthScore: 100,
-                        status: "sovereign-grade",
-                        cyclomaticComplexityAverage: 2.1,
-                        deadCodePathsFound: 0,
-                        scope: args.scope || "fast"
-                    };
-                }
+                // Implemented 2026-10-01 (escalation resolution, option B).
+                // Previously this called `ScoreCalculator.calculateHealth`, a method that never
+                // existed; the TypeError was swallowed by a catch that returned a FABRICATED
+                // healthScore of 100. It now scans the workspace and feeds real metrics to the
+                // canonical engine. An empty scope legitimately scores 0.
+                const { computeScorecard } = await import("../../../engines/diagnostics/code_scorecard.ts");
+                const scorecard = computeScorecard(ctx.workspaceRoot, args.scope || "fast");
+                return {
+                    healthScore: scorecard.healthScore,
+                    breakdown: scorecard.breakdown,
+                    status: scorecard.status,
+                    cyclomaticComplexityAverage: scorecard.cyclomaticComplexityAverage,
+                    deadCodePathsFound: scorecard.deadCodePathsFound,
+                    scope: scorecard.scope,
+                    filesAnalyzed: scorecard.filesAnalyzed,
+                    emptyScope: scorecard.emptyScope
+                };
             }
         });
 

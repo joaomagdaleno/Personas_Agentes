@@ -49,7 +49,34 @@ escalation when a change alters tested behaviour.
 
 **Recommended:** **B**, but it is genuinely a product decision about what a "scorecard" with no
 inputs should mean. Option A is only acceptable as a temporary, clearly-labelled state.
-**Status:** PENDING HUMAN
+**Status:** RESOLVED 2026-10-01
+
+**Resolution (option B, chosen by the maintainer):** implemented in
+`src_local/engines/diagnostics/code_scorecard.ts` and wired into the plugin. The tool now scans the
+workspace (skipping build/vendor/scratch dirs), derives `has_test` / `telemetry` / `purpose` /
+complexity per file, and delegates to the canonical engine —
+`PhdGovernanceSystem.getInstance().calculateHealth()` → `ScoringEngine`. The misleading `try/catch`
+that returned a hardcoded `100` is gone; a failure now surfaces instead of being swallowed.
+
+**Two things the investigation changed about the decision:**
+
+1. **The honest score is 53.71, not 80.** Measured on the real tree (250 files, avg complexity 4.44):
+   `stability 3.50` (only ~10% of modules are imported by a test), `purity 10.25`,
+   `observability 4.05`, `security 15`, `excellence 5.86`, `compliance 15`. The old assertion
+   `healthScore >= 80` was never a property of the code — it only ever passed because the value was
+   fabricated. The new dedicated test therefore uses `> 50` as an explicit **regression guard**, and
+   additionally asserts the tool agrees with `new ScoringEngine().calculateHealth(...)` so nobody can
+   reintroduce a hand-rolled score. The `>= 80` aspiration was NOT silently lowered: it is tracked as
+   a real gap in `state.md` (the same low test-coverage signal that drives the coverage debt).
+2. **The plugin's own test was asserting nothing meaningful.** `psa_pure_plugin_architecture.test.ts`
+   runs with an EMPTY scratch directory as `workspaceRoot`, so the real scorecard correctly reports 0
+   (`ScoringEngine` early-returns on `totalFiles === 0`). That assertion now checks the honest empty
+   contract (`healthScore === 0`, `emptyScope === true`), and real-code scoring is covered by the new
+   `tests/code_scorecard.test.ts`. A scanner bug was also caught this way: matching tests by filename
+   alone missed `veto_engine.ts`, which is covered by `governance_veto_engine.test.ts`; detection is
+   now done by resolving the modules each test file actually imports.
+
+Also removed the now-dead `ScoreCalculator` import path from the plugin.
 
 ---
 
