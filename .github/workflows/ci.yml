@@ -35,6 +35,12 @@ jobs:
       - name: Instalar Dependências
         run: bun install
 
+      # Blocks the pipeline on type errors. `bun test` strips types without
+      # checking them, so without this gate the repository silently accumulated
+      # 63 type errors (including a broken security module) over six weeks.
+      - name: Verificar Tipos (tsc --noEmit)
+        run: bun run typecheck
+
       - name: Executar Testes e Gerar Relatório de Coverage
         run: bun run test:coverage
 

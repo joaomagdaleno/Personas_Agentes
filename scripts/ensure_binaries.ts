@@ -150,4 +150,37 @@ if (!allPresent) {
     process.exit(1);
 }
 
+/**
+ * The Llama.cpp runtime is the one native dependency this script CANNOT build.
+ * `bin/` is gitignored and holds ~55 llama/ggml artifacts that come from a
+ * prebuilt Llama.cpp release; nothing in the repository downloads them.
+ * Without them the SLM suites (WarmPurgeOfflineEngine, PsaLLMService, E2E)
+ * fail with 15-20s timeouts and the whole run slows from ~35s to ~205s.
+ * Report the gap explicitly instead of letting it surface as mystery timeouts.
+ */
+const llamaRequired = [
+    "llama-cli.exe",
+    "llama-server.exe",
+    "llama.dll",
+    "ggml.dll",
+    "ggml-base.dll",
+];
+const binDir = path.resolve(projectRoot, "bin");
+const missingLlama = llamaRequired.filter((f) => !fs.existsSync(path.join(binDir, f)));
+
+const llamaArtifactCount = fs.existsSync(binDir)
+    ? fs.readdirSync(binDir).filter((f) => f.startsWith("llama") || f.startsWith("ggml")).length
+    : 0;
+
+if (missingLlama.length > 0) {
+    console.warn("\n⚠️  [Llama.cpp] Runtime incompleto em bin/ — os testes de SLM vão falhar por timeout.");
+    console.warn(`   Faltando: ${missingLlama.join(", ")}`);
+    console.warn(`   Artefatos llama/ggml encontrados: ${llamaArtifactCount}`);
+    console.warn("   Estes arquivos vêm de um release pré-compilado do Llama.cpp (Windows) e");
+    console.warn("   NÃO são produzidos por este script nem baixados por nenhum outro no repo.");
+    console.warn("   Ver docs/TROUBLESHOOTING.md §5b antes de investigar falhas de SLM.");
+} else {
+    console.log(`✅ [Llama.cpp] Runtime presente (${llamaArtifactCount} artefatos llama/ggml em bin/).`);
+}
+
 console.log("\n🚀 Todos os binários nativos estão prontos para uso.");

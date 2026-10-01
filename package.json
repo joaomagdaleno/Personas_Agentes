@@ -21,6 +21,7 @@
   },
   "scripts": {
     "verify-all": "bun run ensure-binaries && bun run --parallel test diagnostic",
+    "typecheck": "tsc --noEmit",
     "test": "bun test",
     "test:coverage": "bun test --coverage",
     "test:report": "bun run scripts/test_summary.ts",
