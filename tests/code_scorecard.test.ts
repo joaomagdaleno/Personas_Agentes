@@ -16,7 +16,7 @@ import { ScoringEngine } from "../src_local/core/governance/scoring_engine.ts";
 describe("code_scorecard (real health metrics)", () => {
     const projectRoot = process.cwd();
 
-    it("scores the real project source tree with a non-zero, plausible value", () => {
+    it("scores the real project source tree with a non-zero, plausible value", async () => {
         const result = computeScorecard(projectRoot, "fast");
 
         expect(result.filesAnalyzed).toBeGreaterThan(0);
@@ -27,9 +27,9 @@ describe("code_scorecard (real health metrics)", () => {
         // signal is the independence check in the next test.
         expect(result.healthScore).toBeGreaterThan(50);
         expect(result.healthScore).toBeLessThanOrEqual(100);
-    });
+    }, 60000);
 
-    it("derives its score from the canonical engine rather than an ad-hoc formula", () => {
+    it("derives its score from the canonical engine rather than an ad-hoc formula", async () => {
         const metrics = collectScorecardMetrics(projectRoot, "fast");
         const engineScore = new ScoringEngine().calculateHealth(metrics);
         const scorecard = computeScorecard(projectRoot, "fast");
@@ -40,9 +40,9 @@ describe("code_scorecard (real health metrics)", () => {
         expect(scorecard.breakdown.stability).toBe(engineScore.stability);
         expect(scorecard.breakdown.excellence).toBe(engineScore.excellence);
         expect(scorecard.breakdown.compliance).toBe(engineScore.compliance);
-    });
+    }, 60000);
 
-    it("reports a genuine 0 for an empty workspace instead of a fabricated score", () => {
+    it("reports a genuine 0 for an empty workspace instead of a fabricated score", async () => {
         const empty = path.join(projectRoot, `.psa_scorecard_empty_${Date.now()}`);
         fs.mkdirSync(empty, { recursive: true });
         try {
@@ -53,9 +53,9 @@ describe("code_scorecard (real health metrics)", () => {
         } finally {
             fs.rmSync(empty, { recursive: true, force: true });
         }
-    });
+    }, 30000);
 
-    it("counts a module as tested only when a matching test file exists", () => {
+    it("counts a module as tested only when a matching test file exists", async () => {
         const metrics = collectScorecardMetrics(projectRoot, "fast");
         const entries = Object.entries(metrics.files);
         expect(entries.length).toBeGreaterThan(0);

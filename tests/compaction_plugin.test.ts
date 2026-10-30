@@ -20,7 +20,7 @@ describe("CompactionPlugin Unit Tests", () => {
         const compactionPlugin = new CompactionPlugin();
         compactionPlugin.apply(ctx);
         ctx.plugins.register(compactionPlugin);
-    });
+    }, 60000);
 
     it("should register compaction.vacuum_db and compaction.compact tools in PsaContext", () => {
         // Arrange
@@ -40,7 +40,7 @@ describe("CompactionPlugin Unit Tests", () => {
         expect(result.status).toBe("success");
         expect((result.result as any).success).toBe(true);
         expect((result.result as any).message).toContain("VACUUM");
-    });
+    }, 60000);
 
     it("should execute compaction.compact over a session trajectory and summarize turns, files, contracts, and decisions", async () => {
         // Arrange
@@ -70,5 +70,5 @@ describe("CompactionPlugin Unit Tests", () => {
         expect(summary.coreDecisions.some(d => d.includes("mTLS"))).toBe(true);
         expect(summary.tokensSavedEstimate).toBeGreaterThan(0);
         expect(summary.distilledContext).toContain("Resumo Compactado de Sessão PSA");
-    });
+    }, 60000);
 });

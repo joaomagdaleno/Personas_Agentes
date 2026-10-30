@@ -40,21 +40,36 @@ export class ShellPlugin implements PsaPlugin {
                 const shellBinary = isWindows ? "powershell.exe" : "bash";
                 const shellArgs = isWindows ? ["-NoProfile", "-NonInteractive", "-Command", args.command] : ["-c", args.command];
 
-                return new Promise<ShellExecResult>((resolve) => {
-                    let stdoutBuffer = "";
-                    let stderrBuffer = "";
-                    let timedOut = false;
+                let stdoutBuffer = "";
+                let stderrBuffer = "";
+                let timedOut = false;
 
-                    const child = spawn(shellBinary, shellArgs, {
-                        cwd: workingDir,
-                        env: { ...process.env, PAGER: "cat" },
-                        windowsHide: true
-                    });
+                return new Promise<ShellExecResult>((resolve) => {
+                    let child: ReturnType<typeof spawn>;
+                    try {
+                        child = spawn(shellBinary, shellArgs, {
+                            cwd: workingDir,
+                            env: { ...process.env, PAGER: "cat" },
+                            windowsHide: true
+                        });
+                    } catch (err) {
+                        // spawn() can throw synchronously (e.g. EPERM in restricted sandboxes).
+                        // Surface the failure as a normal ShellExecResult instead of crashing.
+                        resolve({
+                            command: args.command,
+                            exitCode: -1,
+                            stdout: "",
+                            stderr: `Erro de execução do processo: ${err instanceof Error ? err.message : String(err)}`,
+                            durationMs: Date.now() - startTime,
+                            timedOut: false
+                        });
+                        return;
+                    }
 
                     const timer = setTimeout(() => {
                         timedOut = true;
-                        child.kill("SIGTERM");
-                        setTimeout(() => child.kill("SIGKILL"), 1000);
+                        try { child.kill("SIGTERM"); } catch {}
+                        setTimeout(() => { try { child.kill("SIGKILL"); } catch {} }, 1000);
                     }, timeoutLimit);
 
                     child.stdout.on("data", (data) => {
